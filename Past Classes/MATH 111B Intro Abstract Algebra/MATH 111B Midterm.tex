@@ -1,0 +1,219 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amsthm, amssymb, physics}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{4pt}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+
+% Extra Commands
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\divides}{\mid}
+
+% Document Info
+\title{\vspace{-0.5in}Midterm \\
+    \large MATH 111B
+}
+\author{Harry Coleman}
+\date{February 10, 2021}
+
+% Begin Document
+\begin{document}
+\maketitle
+
+
+\section{}
+
+\subsection{}
+
+No. We have
+\[
+    \phi((a,b))\phi((c,d))
+        = (a + b)(c + d)
+        = ac + ad + bc + bd,
+\]
+\[
+    \phi((a,b)(c,d))
+        = \phi((ac,bd))
+        = ac + bd,
+\]
+and the two are equal if and only if $ad + bc = 0$. But this is not the case if we consider $a=b=c=d=1 \in \Z$.
+
+\subsection{}
+
+Yes. Let $A, B \in M_N(\Q)$. Then
+\begin{align*}
+    \phi(A + B) 
+        &= \alpha(A + B)\alpha^{-1} \\
+        &= \alpha A \alpha^{-1} + \alpha B \alpha^{-1} \\
+        &= \phi(A) + \phi(B),
+\end{align*}
+and
+\begin{align*}
+    \phi(AB) 
+        &= \alpha AB \alpha^{-1} \\
+        &= \alpha A \alpha^{-1} \alpha B \alpha^{-1} \\
+        &= \phi(A) \phi(B).
+\end{align*}
+
+
+
+\newpage
+\section{}
+
+\subsection{}
+
+Yes. Since $0 \in 3\Z$, so $0 \in I$. For any $p(x), q(x) \in I$, we have $p(2), q(2) \in 3\Z$, so
+\[
+    (p - q)(2) = p(2) - q(2) \in 3\Z.
+\]
+Hence, $I$ is a subgroup of $\Z[x]$ for addition. If $p(x) \in I$ and $q(x) \in \Z[x]$, then $p(2) \in 3\Z$ and $q(2) \in \Z$, so
+\[
+    (qp)(2) = (pq)(2) = p(2)q(2) \in 3\Z.
+\]
+Hence, $I$ is an ideal of $\Z[x]$.
+
+\subsection{}
+
+No. Consider $(1, 1) \in I$ and $(0, 1) \in R$, then
+\[
+    (1, 1)(0, 1) = (1\cdot 0 , 1 \cdot 1) = (0, 1).
+\]
+And $(0, 1) \notin I$ since $1 \ne 0$.
+
+
+
+\newpage
+\section{}
+
+\subsection{}
+
+Let $(a + b\sqrt{3}), (c, +d\sqrt{3}) \in Z[\sqrt{3}]$. First,
+\begin{align*}
+    \phi(a + b\sqrt{3}) + \phi(c + d\sqrt{3})
+        &= \eqc{a + b} + \eqc{c + d} \\
+        &= \eqc{(a + b) + (c + d)} \\
+        &= \eqc{(a + c) + (b + d)} \\
+        &= \phi((a+c) + (c+d)\sqrt{3}) \\
+        &= \phi((a+b\sqrt{3}) + (c+d\sqrt{3})).
+\end{align*}
+Second
+\begin{align*}
+    \phi(a + b\sqrt{3})\phi(c + d\sqrt{3})
+        &= \eqc{a + b} \cdot \eqc{c + d} \\
+        &= \eqc{(a + b)(c + d)} \\
+        &= \eqc{ac + ad + bc + bd}\\
+        &= \eqc{(ac + 3bd) + (ad + bc)}\\
+        &= \phi((ac + 3bd) + (ad + bc)\sqrt{3}) \\
+        &= \phi((a + b\sqrt{3})(c + d\sqrt{3})).
+\end{align*}
+Note that we have $\eqc{bd} = \eqc{3bd}$ since $\eqc{3} = \eqc{1}$ in $\Z/2\Z$. Hence, $\phi$ is a ring homomorphism.
+
+\subsection{}
+
+We claim that $\ker \phi = (1 - \sqrt{3})$. If $x \in (1 - \sqrt{3})$, then for some $a, b \in \Z$, we have
+\[
+    x = (a + \sqrt{3})(1 - \sqrt{3}) = (a - 3b) + (-a + b)\sqrt{3}.
+\]
+Then
+\[
+    \phi(x) = \eqc{(a - 3b) + (-a + b)} = \eqc{-2b} = 2,
+\]
+so $x \in \ker \phi$. Now suppose $y \in \ker \phi$, then $y = a + b\sqrt{3}$ for some $a, b \in \Z$ and $a + b = 2k$ for some $k \in \Z$. Then
+\begin{align*}
+    (a - k\sqrt{3})(1 - \sqrt{3})
+        &= (a + 3k) + (-a - k)\sqrt{3}
+\end{align*}
+Should be able to obtain $y \in (1 - \sqrt{3})$, in which case, $\Z[\sqrt{3}]/(1- \sqrt{3}) \isom \Z/2\Z$ which is a field, so the ideal is maximal.
+
+
+\newpage
+\section{}
+
+\subsection{}
+
+First, $x^2 + 6$ is irreducible in $\Q[x]$. Otherwise, we would have $x^2 + 6 = (ax + b)(cx + d)$, with $a, b, c, d \in Q$ nonzero. In which case, $x^2 + 6$ would have a zero at $-b/a \in Q$, but this is a contradiction, as $x^2 + 6$ has no zeros in $\Q$. Then since $\Q$ is a field, $\Q[x]$ is a PID, in particular a UFD. And irreducible elements in a UFD are prime, so $x^2 + 6$ is prime in $\Q[x]$, so $(x^2 + 6)$ is a prime ideal. And prime ideals are maximal in PID's, so $(x^2 + 6)$ is maximal in $\Q[x]$.
+
+\subsection{}
+
+We want $(ax + b) \in \Q[x]$ such that $\eqc{x(ax + b)} = \eqc{1}$ in $\Q[x]/(x^2 + 6)$. By the Euclidean algorithm, we have
+\[
+    ax^2 + bx = a(x^2 + 6) + bx - a/6. 
+\]
+That is,
+\[
+    \eqc{x(ax + b)} = \eqc{bx - a/6}
+\]
+so taking $b = 0$ and $a = -6$ gives us
+\[
+    \eqc{x(-6x)} = \eqc{1},
+\]
+so $\eqc{-6x}$ is the inverse of $\eqc{x}$ in $\Q[x]/(x^2 + 6)$.
+
+
+
+\newpage
+
+\section{}
+
+\subsection{}
+
+Since $\Z$ is a UFD, $\Z[x]$ is a UFD, so $2x + 6$ is prime in $\Z[x]$ if and only if it is irreducible in $\Z[x]$. However, we have
+\[
+    2x + 6 = 2(x+3),
+\]
+where neither $2$ nor $x + 3$ is a unit in $\Z[x]$. So $2x + 6$ is prime, therefore irreducible, in $\Z[x]$, so $(2x + 6)$ is a prime ideal.
+
+
+\subsection{}
+
+We have ideals $(7)$ and $(7, x^2 + 6)$ in $\Z[x]$ with $(7) \subseteq (7, x^2 + 6)$. So by the third isomorphism theorem, we have
+\[
+    (\Z[x]/(7))/((7,x^2+6)/(7)) \isom \Z[x]/(7, x^2 + 6).
+\]
+Moreover, we have $\Z[x]/(7) \isom (\Z/7\Z)[x]$ and
+\[
+    (7,x^2+6)/(7) = (\eqc{7}, \eqc{x^2 + 6}) = (\eqc{0}, \eqc{x^2 + 6}) = (x^2 + \eqc{6})
+\]
+Therefore, we have
+\[
+    (\Z/7\Z)[x]/(x^2 + \eqc{6}) \isom \Z[x]/(7, x^2 + 6).
+\]
+Now in $\Z/7\Z[x]$, we have $(x^2 + \eqc{6}) = (x + \eqc{1})(x + \eqc{6})$, so it is not prime in $\Z/7\Z[x]$. Therefore, $(x^2 + \eqc{6})$ is not a prime ideal of $\Z/7\Z[x]$, which is a PID since $\Z/7\Z$ is a field as $7$ is a prime number, so it is also not a maximal ideal. Hence, $(\Z/7\Z)[x]/(x^2 + \eqc{6}) \isom \Z[x]/(7, x^2 + 6)$ is not a field, so $(7, x^2 + 6)$ is not a maximal ideal of $\Z[x]$.
+
+
+
+\newpage
+
+\section{}
+
+There is a maximum degree $n \in \N$ for which $p$ is coprime to the coefficient of $x^n$ in all polynomials of $I$. Then the desired $a(x)$ would be one which generates the remaining polynomials of lesser degree, maybe.
+
+
+
+\end{document}

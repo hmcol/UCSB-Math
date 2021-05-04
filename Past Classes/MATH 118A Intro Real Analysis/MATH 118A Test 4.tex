@@ -1,0 +1,308 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amsthm, amssymb}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}
+    {\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\mybox}}}
+
+% Default Commands
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+
+% Extra Commands
+\newcommand{\seq}[2][n]{\left\{#2\right\}_{#1\in\N}}
+
+\begin{document}
+ 
+\title{Test 4 \\
+    %\large MATH CS 121 Intro to Probability
+    %\large MATH 111A Intro to Abstract Algebra
+    %\large MATH CS 122A Complex Analysis I
+    \large MATH 118A Intro to Real Analysis
+    %\large MATH 104A Intro to Numerical Analysis
+}
+\author{Harry Coleman}
+\date{December 12, 2020}
+\maketitle
+
+\section{}
+\begin{problem}
+    Let $f:\R\to\R$ and $g:\R\to\R$ be continuous functions. 
+\end{problem}
+
+\subsection{}
+\begin{problem}
+    Prove that $|f|$ is continuous.
+\end{problem}
+
+\begin{proof}
+    Let $x_0 \in \R$ and let $\eps > 0$ be given. Since $f$ is continuous at $x_0$, let $\delta > 0$ such that for all $x \in \R$,
+    \[
+        |x - x_0| < \delta \implies |f(x) - f(x_0)| < \eps.
+    \]
+    Moreover, if $x \in \R$ with $|x - x_0| < \delta$, the reverse triangle inequality gives us
+    \begin{align*}
+        \Big| |f|(x) - |f|(x_0) \Big|
+            &= \Big| |f(x)| - |f(x_0)| \Big| \\
+            &\leq |f(x) - f(x_0)| \\
+            &< \eps.
+    \end{align*}
+    Thus, $|f|$ is continuous at $x_0$ and, moreover, on all of $\R$.
+    
+\end{proof}
+
+\newpage
+\subsection{}
+\begin{problem}
+    Prove that 
+    \begin{equation}
+        h(x) = \max \left \{ f(x),g(x)\right \},\quad x\in \R
+    \end{equation}
+    is continuous.
+\end{problem}
+
+\begin{proof}
+    For any $a, b \in \R$, we can write the maximum of the pair as
+    \[
+        \max\{a, b\} = \frac{a + b + |a - b|}{2}.
+    \]
+    To see that this is true, first suppose $a \geq b$. Then
+    \[
+        \frac{a + b + |a - b|}{2} = \frac{a + b + a - b}{2} = \frac{2a}{2} = a = \max\{a, b\}.
+    \]
+    Similarly, if $a \leq b$, then
+    \[
+        \frac{a + b + |a - b|}{2} = \frac{a + b - a + b}{2} = \frac{2b}{2} = b = \max\{a, b\}.
+    \]
+    Because $f$ and $g$ are continuous on $\R$, so is $f - g$. Then by 1(a), we have that $|f - g|$ is continuous on $\R$. Thus, as the sum of continuous functions,
+    \[
+        h(x) = \max \left \{ f(x),g(x)\right \} = \frac{f(x) + g(x) + |f(x) - g(x)|}{2}
+    \]
+    is continuous on $\R$.
+    
+\end{proof}
+
+\newpage
+\section{}
+\begin{problem}
+    Let $a_0,a_1,a_2,a_3$ be real constants such that $a_3\ne 0$, and consider the polynomial 
+    \begin{equation}
+        p(x) = a_0 + a_1x + a_2x^2 + a_3x^3.
+    \end{equation}
+    Prove that it has at least one real root. 
+    ({\it Hint: Consider what happens as $x\to +\infty$ and as $x\to -\infty$}).
+\end{problem}
+
+\begin{proof}
+    For $x \ne 0$, we can write $p(x)$ as
+    \[
+        p(x) = x^3 \left( \frac{a_0}{x^3} + \frac{a_1}{x^2} + \frac{a_2}{x} + a_3 \right).
+    \]
+    We note the limit
+    \[
+        \lim_{x \to \pm\infty} \left( \frac{a_0}{x^3} + \frac{a_1}{x^2} + \frac{a_2}{x} + a_3 \right) = 0 + 0 + 0 + a_3 = a_3.
+    \]
+    Additionally, we note the limits
+    \[
+        \lim_{x \to -\infty} x^3 = -\infty \isp{and} \lim_{x \to +\infty} x^3 = +\infty.
+    \]
+    Without loss of generality, we assume $a_3 > 0$ (The polynomials $p(x)$ and $-p(x)$ have the same zeros; we take whichever has a positive leading order coefficient). Then
+    \[
+        \lim_{x \to -\infty} p(x) = -\infty \isp{and} \lim_{x \to +\infty} p(x) = +\infty.
+    \]
+    So for some $M > 0$, we can find $x_1, x_2 \in \R$ (in particular with $x_1 < x_2$) such that
+    \[
+        p(x_1) \leq -M \isp{and} M \leq p(x_2).
+    \]
+    Because $p(x)$ is a polynomial, it is continuous on the interval $[x_1, x_2]$. And since $0$ is in the interval $(p(x_1), p(x_2))$, then by the intermediate value theorem, there exists some $x_0 \in (x_1, x_2)$ such that
+    \[
+        p(x_0) = 0.
+    \]
+    That is, $x_0$ is a real root of $p(x)$.
+    
+\end{proof}
+
+
+\newpage
+\section{}
+\subsection{}
+\begin{problem}
+    Let $(X,d_X)$ and $(Y,d_Y)$ be  metric spaces, and $f:X \to Y$ a uniformly continuous function. Prove that if $\{x_n\}_{n\in\N}$ is a Cauchy sequence in $X$, then $\{f(x_n)\}_{n\in\N}$ is a Cauchy sequence in $Y$. 
+\end{problem}
+
+\begin{proof}
+    Let $\eps > 0$ be given. Since $f$ is uniformly continuous, let $\delta > 0$ such that for all $x, x' \in X$,
+    \[
+        d_X(x, x') < \delta \implies d_Y(f(x), f(x')) < \eps.
+    \]
+    Now since $\seq{x_n}$ is Cauchy in $X$, let $N \in \N$ such that for all $n, m \in \N$,
+    \[
+        n, m \geq N \implies d_X(x_n, x_m) < \delta.
+    \]
+    Then for all $n, m \in \N$, we have
+    \[
+        n, m \geq N \implies d_X(x_n, x_m) < \delta \implies d_Y(f(x_n), f(x_m)) < \eps.
+    \]
+    Thus, $\seq{f(x_n)}$ is Cauchy in $Y$.
+    
+\end{proof}
+
+\subsection{}
+\begin{problem}
+    Prove that if $S\subseteq \R$ is a bounded set and $f:S\to \R$ is a uniformly continuous function, then $f$ is bounded on $S$.
+\end{problem}
+
+\begin{proof}
+    Suppose, for contradiction, that $f$ is unbounded on $S$. Then for every $n \in \N$, we can find some $x_n \in S$ such that $|f(x_n)| \geq n$. Since $\seq{x_n}$ is a bounded sequence, then we can pick a subsequence $\seq[k]{x_{n_k}}$ converging in the closure $\overline{S}$. Since $\seq[k]{x_{n_k}}$ converges it is Cauchy, and since $f$ is uniformly continuous on $S$, then by 3(a) the image sequence $\seq[k]{f(x_{n_k})}$ is Cauchy in $\R$. Therefore, the Cauchy sequence $\{f(x_{n_k})\}$ converges to some $y \in \R$. However, we can now pick some $K \in \N$ such that for all $k > K$, we have $n_k > y$. Then for all $k > K$, we have
+    \[
+        f(x_{n_k}) \geq n_k > y,
+    \]
+    which is a contradiction since $f(x_{n_k}) \to y$.
+    
+\end{proof}
+
+\newpage
+\section{}
+\subsection{}
+\begin{problem}
+    Find the  limit 
+    \begin{equation}
+        \lim_{x\to 0} \frac{\sqrt{b + x} - \sqrt{b}}{x},
+    \end{equation}
+    where $b>0$.
+\end{problem}
+\medskip
+
+For all $x \ne 0$, we have
+\begin{align*}
+    \frac{\sqrt{b+x} - \sqrt{b}}{x}
+        &= \frac{\sqrt{b+x} - \sqrt{b}}{x} \cdot \frac{\sqrt{b + x} + \sqrt{b}}{\sqrt{b + x} + \sqrt{b}} \\[1em]
+        &= \frac{b + x - b}{x \left( \sqrt{b + x} + \sqrt{b} \right)} \\[1em]
+        &= \frac{x}{x \left( \sqrt{b + x} + \sqrt{b} \right)} \\[1em]
+        &= \frac{1}{\sqrt{b + x} + \sqrt{b}}.
+\end{align*}
+Then
+\[
+    \lim_{x\to 0} \frac{\sqrt{b + x} - \sqrt{b}}{x}
+        = \lim_{x\to 0} \frac{1}{\sqrt{b + x} + \sqrt{b}} 
+        = \frac{1}{\sqrt{b + 0} + \sqrt{b}}
+        = \frac{1}{2\sqrt{b}}.
+\]
+
+\newpage
+\subsection{}
+\begin{problem}
+    Determine whether the following function is continuous in $\R^2$:
+    \begin{equation}
+        f(x,y) = \left \{ \begin{array}{lr}
+            \frac{xy^2-x^2y}{x^2+y^2},& (x,y) \ne (0,0),\\
+            0,& (x,y) = (0,0).
+        \end{array}\right .
+    \end{equation}
+\end{problem}
+
+\begin{proposition}
+    The function is continuous on $\R^2$.
+\end{proposition}
+
+\begin{proof}
+    The functions
+    \[
+        xy^2 - x^2y \isp{and} x^2 + y^2
+    \]
+    are each continuous on all of $\R^2$. In particular, the function
+    \[
+        x^2 + y^2
+    \]
+    is nonzero on $\R^2 \setminus \{(0, 0)\}$. Thus, the quotient
+    \[
+        \frac{xy^2 - x^2y}{x^2 + y^2}
+    \]
+    is continuous on $\R^2 \setminus \{(0, 0)\}$. Since this is the value $f(x, y)$ takes for $(x, y) \ne (0, 0)$, we have that $f$ is continuous on $\R^2 \setminus \{(0, 0)\}$. We now show that $f$ is continuous at $(0, 0)$. Since $f(0, 0) = 0$, it suffices to prove that
+    \[
+        \lim_{(x, y) \to (0, 0)} |f(x, y)| = 0.
+    \]
+    For any $(x, y) \in \R^2$, the Euclidean norm is given by
+    \[
+        \| (x, y) \| = \sqrt{x^2 + y^2} \geq 0.
+    \]
+    It can be seen that
+    \[
+        |x| = \sqrt{x^2} \leq \sqrt{x^2 + y^2} = \| (x, y) \| \isp{and} |y| = \sqrt{y^2} \leq \sqrt{x^2 + y^2} = \| (x, y) \|
+    \]
+    For a given $(x, y) \ne (0, 0)$ (so $\|(x,y)\| \ne 0$), we find
+    \begin{align*}
+        |f(x, y)|
+            &=\left| \frac{xy^2 - x^2y}{x^2 + y^2} \right| \\[1em]
+            &= \frac{|xy^2 - x^2y|}{\| (x, y) \|^2} \\[1em]
+            &\leq \frac{|x||y|^2 + |x|^2|y|}{\| (x, y) \|^2} \\[1em]
+            &\leq \frac{\| (x, y) \| \cdot \| (x, y) \|^2 + \| (x, y) \|^2 \cdot \| (x, y) \|}{\| (x, y) \|^2} \\[1em]
+            &= 2\| (x, y) \|.
+    \end{align*}
+    Now since
+    \[
+        0 \leq |f(x, y)| \leq 2\| (x, y) \|
+    \]
+    for all $(x, y) \ne (0, 0)$, and we have the limit
+    \[
+        \lim_{(x, y) \to (0, 0)} 2\| (x, y) \| = 0,
+    \]
+    then we obtain
+    \[
+        \lim_{(x, y) \to (0, 0)} |f(x, y)| = 0.
+    \]
+    Thus, $f$ is continuous at $(0, 0)$ and, moreover, on all of $\R^2$.
+    
+    
+\end{proof}
+
+\newpage
+\section{}
+\begin{problem}
+    Assume a function $f:[0,+\infty) \to \R$ is continuous, and it is uniformly continuous on $[a,+\infty)$ for some $a>0$. Prove that $f$ is uniformly continuous on $[0,+\infty)$.
+\end{problem}
+
+\begin{proof}
+    Since the interval $[0, a]$ is closed and bounded, it is compact in $\R$. Since $f$ is continuous on the compact set $[0, a]$, then it is uniformly continuous on $[0, a]$. Let $\eps > 0$ be given. Since $f$ is uniformly continuous on both $[0, a]$ and $[a, +\infty)$, let $\delta_1, \delta_2 > 0$ such that
+    \begin{align*}
+        x, x' \in [0, a],\, |x - x'| < \delta_1 &\implies |f(x) - f(x')| < \frac\eps2, \\[1em]
+        x, x' \in [a, +\infty),\, |x - x'| < \delta_2 &\implies |f(x) - f(x')| < \frac\eps2.
+    \end{align*}
+    We define $\delta = \min\{\delta_1, \delta_2\}$. Now suppose $x, x' \in [0, +\infty)$ and, without loss of generality, assume $x < x'$. Then either $x$ and $x'$ are contained in the same interval or in different intervals; in other words, either $a$ separates the pair of points or it does not. On one hand, if the points $x$ and $x'$ are not separated by $a$, then as a case of uniform continuity on the particular interval containing both $x$ and $x'$, we obtain
+    \[
+        |x - x'| < \delta \implies |f(x) - f(x')| < \frac\eps2 < \eps.
+    \]
+    On the other hand, if $a$ does separate $x$ and $x'$, then
+    \[
+        x < a < x'.
+    \]
+    Supposing $|x - x'| < \delta$, this implies
+    \[
+        |x - a| < |x - x'| < \delta \isp{and} |x' - a| < |x - x'| < \delta.
+    \]
+    Now using the uniform continuity of $f$ on the interval $[0,a]$ for the points $x$ and $a$, and on the interval $[a, +\infty)$ for the points $x'$ and $a$, we have
+    \[
+        |f(x) - f(x')| \leq |f(x) - f(a)| + |f(x') - f(a)| < \frac\eps2 + \frac\eps2 = \eps.
+    \]
+    Thus, $f$ is uniformly continuous on the entire interval $[0, +\infty)$.
+    
+\end{proof}
+
+
+\end{document}

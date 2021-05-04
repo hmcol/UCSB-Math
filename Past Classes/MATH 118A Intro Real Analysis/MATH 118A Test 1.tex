@@ -1,0 +1,160 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow,enumitem}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools,babel}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{\textwidth-10pt}}
+    {\end{minipage}\end{lrbox}\framebox[6.5in]{\usebox{\mybox}}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+\newenvironment{response}{\paragraph{}}{}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\seq}[2]{\left\{#1\right\}_{#2=1}^\infty}
+\newcommand{\clo}[1]{\overline{#1}}
+\newcommand{\conj}[1]{\overline{#1}}
+\newcommand{\eqc}[1]{\overline{#1}}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ang}{\langle}{\rangle}
+
+% Sets
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+
+% Misc Characters
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\let\eps\varepsilon
+\let\emptyset\varnothing
+
+% Functions
+\newcommand{\id}[1]{\mathsf{id}_{#1}}
+
+% Babel Shorthands
+\useshorthands*{"}
+\defineshorthand{"-}{\setminus}
+\defineshorthand{"d}{\partial}
+
+% Probability
+\newcommand{\FF}{\mathcal{F}}
+\renewcommand{\P}{\mathbb{P}}
+
+% Complex Analysis
+\renewcommand{\Im}{\text{Im }}
+\renewcommand{\Re}{\text{Re }}
+\newcommand{\Arg}{\text{Arg }}
+\newcommand{\pd}[2]{\frac{"d#1}{"d#2}}
+\newcommand{\pdn}[3]{\frac{"d^{#3}#1}{"d#2^{#3}}}
+
+% Real Analysis
+\renewcommand{\int}[1]{\accentset{\circ}{#1}}
+
+
+\begin{document}
+ 
+\title{Test 1\\
+    %\large MATH CS 121 Intro to Probability
+    %\large MATH CS 122A Complex Analysis I
+    \large MATH 118A Intro to Real Analysis
+    %\large MATH 111A Intro to Abstract Algebra
+    %\large MATH 104A Intro to Numerical Analysis
+}
+\author{Harry Coleman}
+\date{October 24, 2020}
+\maketitle
+
+\section*{Problem 1}
+\begin{proof}
+    Suppose $A\subseteq\R$ is bounded below. Define the set
+    \[-A = \{-x : x\in A\}.\]
+    Since $A$ is bounded below, there exists some $M\in\R$ such that $M\leq x$ for all $x\in A$. For any $-x\in - A$, we have $x\in A$, which implies that $M\leq x$. Moreover, this implies that $-x\leq - M$, so $-A$ is bounded above by $-M$. Now since $-A$ is bounded above, then by the least upper bound property, $-\alpha = \sup-A$ exists. We claim that $\alpha$ is the greatest lower bound for $A$.
+    
+    For any $x\in A$, we have $-x\in-A$, which implies $-x\leq - \alpha$. Therefore, $\alpha \leq x$, so $\alpha$ is a lower bound on $A$. Suppose $M\in\R$ is a lower bound on $A$. As we have already seen, if $M$ is a lower bound on $A$, then $-M$ is an upper bound on $-A$. Now since $-M$ is an upper bound on $-A$, then by the definition of least upper bound, we have $-\alpha\leq-M$. Thus, we have $M\leq \alpha$, so $\inf A$ exists (and equals $\alpha$).
+    
+\end{proof}
+
+\section*{Problem 2}
+\begin{proof}
+    Let $S,T\subseteq\R$ whose suprema exist. For any $x\in S\cup T$, we have that $x\in S$ or $x\in T$. If $x\in S$, then $x\leq \sup S$, and if $x\in T$, then $x\leq\sup T$. Now since both $\sup S$ and $\sup T$ are less than or equal to $\max\{\sup S, \sup T\}$, then in either case, we have $x\leq\max\{\sup S, \sup T\}$. Therefore, $\max\{\sup S, \sup T\}$ is an upper bound for $S\cup T$. Now suppose $M$ is an upper bound for $S\cup T$. Then $M$ is an upper bound for both $S$ and $T$, individually, since any element of either is in $S\cup T$ and therefore less than or equal to $M$. This implies that $\sup S \leq M$ and $\sup T \leq M$, by the definition of supremum. It is either the case that $\sup S\leq \sup T$ or $\sup T\leq \sup S$. If the former is true, then
+    \[\sup S\leq \sup T = \max\{\sup S, \sup T\} \leq M.\]
+    If the latter is true, then
+    \[\sup T\leq \sup S = \max\{\sup S, \sup T\} \leq M.\]
+    Either way, we have $\max\{\sup S, \sup T\} \leq M$, so $\sup(S\cup T) = \max\{\sup S, \sup T\}$.
+    
+\end{proof}
+
+\section*{Problem 3}
+\begin{proof}
+    Let $a\in\R$ with $a>0$. Since $a,1\in\R$ with $a>0$, then by the Archimedean property, there exists some $n\in N$ such that
+    \[1 < an \iff \frac1n < a.\]
+    Additionally, by the Archimedean property, since $1>0$, then there exists some $m\in\N$ such that
+    \[a < 1m \iff a < m.\]
+    Now we either have $n\leq m$ or $m\leq n$. If $n\leq m$, then
+    \[\frac1m \leq \frac1n < a < m,\]
+    and if $m\leq n$, then we have
+    \[\frac1n < a < m \leq n.\]
+    Either way, there exists some $k\in\N$ such that $\frac1k < a < k$.
+    
+\end{proof}
+
+\section*{Problem 4}
+\begin{proof}
+    Let $a\in \R$ and define the set $A=\{x\in\Q : x<a\}$. Now for any $x\in A$, by the definition of $A$, we have $x<a$. Therefore, $a$ is an upper bound for $A$. Now suppose $y\in\R$ such that $y<a$. By the density of $\Q$ in $\R$, there exists some $x\in\Q$ such that $y<x<a$. Moreover, this implies that $x\in A$, so $y$ is not an upper bound for $A$, and thus, $a=\sup A$.
+    
+\end{proof}
+
+\newpage
+\section*{Problem 5}
+\begin{proof}
+    Define $S' = \{\frac1x : x\in S\}$. Suppose that $S$ is bounded above, so $\sup S$ exists by the least upper bound property. Then for any $\frac1x\in S'$, we have $x\in S$. Now since $0 < x\leq \sup S$, we have $\frac1{\sup S} \leq \frac1x$, so $\frac1{\sup S}$ is a lower bound for $S'$. Now if we have $m\in\R$ such that $0<\frac1{\sup S} < m$, then $\frac1m < \sup S$. By the definition of supremeum, there exists some $x\in S$ such that $0<\frac1m < x \leq \sup S$. Therefore, $\frac1{\sup S} \leq \frac1x < m$, and since $\frac1x\in S'$, we know that $m$ is not a lower bound for $S'$. Thus, $\inf S' = \frac1{\sup S}$.
+    
+    Now suppose $S$ is unbounded above. Note that since $0<x$ for all $x\in S$, we also have $0<\frac1x$ for all $\frac1x\in S'$, so $0$ is a lower bound for $S'$. Now suppose $m\in\R$ such that $0<m$. Since $S$ is unbounded above, there exists some $x\in S$ such that $\frac1m< x$. This implies that $0<\frac1x<m$, and since $\frac1x\in S'$, we know that $m$ is not a lower bound for $S'$. Thus, $\inf S' = 0$.
+    
+\end{proof}
+
+\begin{proposition}
+    If $S\subseteq\R$ be a set of positive real numbers, then
+    \[ \sup\left\{\frac1x : x\in S\right\} = \begin{cases}
+        \frac1{\inf S}, & \textnormal{if } 0<\inf S, \\
+        \textnormal{nonexistent},   & \textnormal{otherwise}.
+    \end{cases}\]
+\end{proposition}
+
+\begin{proof}
+    Suppose $\inf S \leq 0$. Since $0<x$ for all $x\in S$, then we in fact have equality, $\inf S= 0$. Let $M\in \R$. If $M\leq 0$, then $M< \frac1x$ for any $\frac1x\in S'$. Without loss of generality, assume $0<M$, so $0<\frac1M$. Since $\inf S = 0$, there exists some $x\in S$ such that $0<x<\frac1M$. This implies that $M < \frac1x$, and since $\frac1x\in S'$, then $S'$ is unbounded above and it's supremum does not exist.
+    
+    Now suppose that $0<\inf S$. For any $\frac1x\in S'$, we have $x\in S$, so $\inf S \leq x$. This implies that $\frac1x \leq \frac1{\inf S}$, so $\frac1{\inf S}$ is an upper bound for $S'$. Now suppose $y\in \R$ such that $0<y<\frac1{\inf S}$, then $\inf S < y$. By definition of supremum, there exists some $x\in S$ such that $\inf S \leq x < y$, which implies that $\frac1y < \frac1x \leq \frac1{\sup S}$. And since $\frac1x\in S'$, we know that $y$ is not an upper bound for $S'$, thus $\sup S' = \frac1{\inf S}$.
+    
+\end{proof}
+
+
+
+
+\end{document}

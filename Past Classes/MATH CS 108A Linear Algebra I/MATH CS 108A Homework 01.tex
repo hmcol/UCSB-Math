@@ -1,0 +1,128 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage[margin=1in]{geometry}
+\usepackage{framed}
+\usepackage[table]{xcolor}
+\usepackage{colortbl, multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym}
+\usepackage{mathrsfs, mathtools}
+\usepackage{tikz,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\usepackage{graphicx}
+
+% custom commands
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\p}{^{\prime}}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+ 
+\begin{document}
+ 
+\title{Homework 1\\
+    \large MATH CS 108A Linear Algebra I}
+\author{Harry Coleman}
+\date{January 8, 2020}
+
+\maketitle
+
+\section*{Exercise 6}
+\fbox{
+    \parbox{\textwidth} {
+        Let $G \ne \empty$ and let $\star$ be a binary operation on $G$. Assume that $(G, \star)$ is a group. Let $a \in G$. Show that the inverse of $a$ is unique. How about if $\star$ is not associative? Is it still true that if $a \in G$ has an inverse it has to be unique?
+    }
+}
+\\
+
+let $e$ be the identity element in $(G, \star)$. We will show by contradiction that the inverse of $a$ in $G$ is unique. First, we assume that it is not unique. We will let $x$ and $y$ both be inverses of $a$ such that $x\ne y$. We will start with
+\[e=e,\]
+and replace each identity with $a$ starred by one of it's inverses to obtain
+\[a\star x = a\star y.\]
+We next star each side by an arbitrary inverse of $a$, it doesn't matter whether this is $x,y$ or anything else. We will use the associativity of the group to rearrange the parenthesis, then simplify using the identity. So
+\[a^{-1}\star (a\star x) = a^{-1}\star (a\star y),\]
+\[(a^{-1}\star a)\star x = (a^{-1}\star a)\star y,\]
+\[e\star x = e\star y, \text{ and}\]
+\[x = y.\]
+This is a contradiction, so our assumption is false. therefore, the inverse of $a$ is unique. However, this proof relies on $(G, \star)$ being associative. We cannot necessarily say if
+\[a^{-1}\star (a\star x) = a^{-1}\star (a\star y) \text{ implies}\]
+\[(a^{-1}\star a)\star x = (a^{-1}\star a)\star y.\]
+
+It seems to be the case that the inverse would still have to be unique, even without associativity. However, this is just a conjecture based on inability to find a counterexample.
+
+
+\section*{Exercise 9}
+\fbox{
+    \parbox{\textwidth} {
+        If $\star$ is a binary operation on a set $S$, an element $x$ of $S$ is an idempotent for $\star$ if $x\star x = x$. Prove that a group has exactly one idempotent element. Which element?
+    }
+}
+\\
+
+Let $(S,\star)$ be a group. Also let $e,x,c \in S$, where $e$ is the identity element, $x$ is an idempotent element, and $c$ is an arbitrary element. We can say
+\[x \star c = x \star c.\]
+Since we have that $x\star x=x$, we can substitute for $x$ on the left hand side to obtain
+\[(x \star x)\star c = x \star c.\]
+By associativity, we have that
+\[x \star (x\star c) = x \star c.\]
+Now we apply the inverse of $x$ to both sides, so
+\[x^{-1} \star (x \star (x\star c)) = x^{-1} \star (x \star c).\]
+We use associativity again, then simplify with the identity to find
+\[(x^{-1} \star x) \star (x\star c) = (x^{-1} \star x) \star c,\]
+\[e \star (x\star c) = e \star c \text{, and}\]
+\[x\star c = c.\]
+Finally, we apply the inverse of $c$ to both sides, use associativity, and simplify with the identity. This gives us
+\[(x\star c) \star c^{-1} = c\star c^{-1},\]
+\[x\star (c \star c^{-1}) = c\star c^{-1},\]
+\[x\star e = e, \text{ and}\]
+\[x = e.\]
+Therefore, any idempotent element is the identity element, which is unique.
+
+\newpage
+\section*{Exercise 11}
+\fbox{
+    \parbox{\textwidth} {
+        Let $G$ be an abelian group and let $c^n = c \star c \star \dots \star c$ for $n$ factors $c$, where $c \in G$ and $n$ is a positive integer. Prove by induction that $(a \star b)^n = a^n \star b^n$.
+    }
+}
+\\
+
+To show by induction that $(a \star b)^n = a^n \star b^n$, we first verify that the base case of $n=1$ is true. Since the $n$ in $c^n$ counts the number of instances of $c$ in the expansion, $c^1 = c$. We use this to show that
+\[(a\star b)^1 = (a\star b) =a^1 \star b^1.\]
+
+For the inductive step, we will assume that for an arbitrary positive integer $n$, we have that
+\[(a \star b)^n = a^n \star b^n.\]
+We now want to show
+\[(a \star b)^{n+1} = a^{n+1} \star b^{n+1}.\]
+To do so, we begin with the right hand side, $(a \star b)^{n+1}$. The exponent here tells use there are $n+1$ factors of $(a \star b)$ in the expansion, which is the same as $n$ factors with one additional factor. So we have that
+\[(a \star b)^{n+1} = (a \star b)^n \star (a \star b)^1.\]
+Using our inductive hypothesis we find
+\[(a \star b)^{n+1} = (a^n \star b^n) \star (a^1 \star b^1).\]
+Associativity and commutativity allows us to obtain
+\[(a \star b)^{n+1} = (a^n \star a^1) \star (b^n \star b^1).\]
+And finally,
+\[(a \star b)^{n+1} = a^{n+1} \star b^{n+1}.\]
+
+By the principle of induction, we have shown that for any positive integer $n$, 
+\[(a \star b)^n = a^n \star b^n.\]
+
+
+\section*{Exercise 12}
+\fbox{
+    \parbox{\textwidth} {
+        Let $G$ be a group with a finite number of elements. Show that for any $a \in G$, there exists a positive integer $n$ such that $a^n = e$, where $e$ denotes the identity element
+    }
+}
+\\
+
+Let $a$ be an arbitrary element in $G$. Since $G$ has a finite number of elements, and we can find $a^n$ for any value of $n$, there must be two positive integers, say $x$ and $y$, such that $x\ne y$ and $a^x = a^y$. Without loss of generality, we will assume $x<y$, and let $x+z=y$, for some positive integer $z$. So, $a^x = a^{x+z} = a^x \star a^z$. If we apply the inverse of $a^x$ to both sides, we find that
+\[(a^x)^{-1} \star a^x = (a^x)^{-1} \star (a^x \star a^z),\]
+\[(a^x)^{-1} \star a^x = ((a^x)^{-1} \star a^x) \star a^z, \text{ and}\]
+\[e = a^z.\]
+So, for any $a \in G$, there exists a positive integer $n$ such that $a^n = e$.
+
+\end{document}

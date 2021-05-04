@@ -1,0 +1,170 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{amsmath, amsthm, amssymb, physics, graphicx}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{4pt}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\pfrac}[2]{\left(\frac{#1}{#2}\right)}
+
+% Extra Commands
+
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{GEOG 191 Assignment 9}
+    \fancyhead[C]{March 8, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+
+\begin{pbox}[1]
+    The below data indicates the benefit, $c$, and the resource consumption (space), $a$, for each object. The total capacity is $24$. Solve the associated knapsack problem using the greedy heuristic, with the objective of maximizing total benefit subject to the capacity constraint, where each object is either included or it is not.
+\end{pbox}
+
+For each item $j$, we calculate the bang/buck ratio, given by $c_j/a_j$, then sort the items by this value.
+
+\[\begin{array}{r*{4}{|r}}
+    \text{ID} & c    & a   & c/a  & \text{Total} \\
+    \hline
+    2  & 16.0 & 2.1 & 7.62 & 2.1   \\
+    9  & 16.3 & 2.2 & 7.41 & 4.3   \\
+    13 & 13.4 & 1.9 & 7.05 & 6.2   \\
+    12 & 11.5 & 1.8 & 6.39 & 8.0   \\
+    7  & 13.0 & 2.3 & 5.65 & 10.3  \\
+    5  & 15.8 & 3.2 & 4.94 & 13.5  \\
+    14 & 16.8 & 4.3 & 3.91 & 17.8  \\
+    1  & 19.4 & 5.1 & 3.80 & 22.9  \\
+    6  & 13.7 & 3.8 & 3.61 & 26.7  \\
+    3  & 14.3 & 4.4 & 3.25 & 31.1  \\
+    4  & 15.7 & 4.9 & 3.20 & 36.0  \\
+    8  & 14.1 & 5.1 & 2.76 & 41.1  \\
+    15 & 13.4 & 5.1 & 2.63 & 46.2  \\
+    10 & 12.6 & 5.1 & 2.47 & 51.3  \\
+    11 & 15.4 & 6.4 & 2.41 & 57.7  \\
+    16 & 10.9 & 5.3 & 2.06 & 63.0
+\end{array}\]
+
+The last column, titled ``Total'', represents the total space required for all the items from that row to the top of the table. In other words, the value of Total in row $j$ represents the total space required to select the first $j$ items, when ordered by the bang/buck ratio. The greedy heuristic dictates that we should select items starting from the top, until just before the total space required exceeds the total capacity. Therefore, we select the first eight items: $S = \{2, 9, 13, 12, 7, 5, 14, 1\}$. This gives us a total benefit of $\sum_{j \in S} c_j = 122.2$.
+
+
+\newpage
+\begin{pbox}[2]
+    Isla Vista wants to locate TWO recycling centers. They identified the major sources from which materials will come (coordinates below). You recognize this as a multi-facility Weber problem. Identify the two best locations using the local search (alternating) heuristic.
+    \[\begin{array}{c|c|c}
+        j & x_j & y_j \\
+        \hline
+        1 & 32 & 31 \\
+        2 & 29 & 32 \\
+        3 & 27 & 36 \\
+        4 & 29 & 29 \\
+        5 & 32 & 29
+    \end{array}\]
+\end{pbox}
+
+
+
+For the initial feasible solution, we want to choose locations reasonably near the bulk of material source locations. Let $m_j = (x_j, y_j)$ for $j = 1, \dots, 5$. Then the average location of the material sources is given by
+\[
+    \frac{1}{5}\sum_{j=1}^5 m_j = (29.8, 31.4).
+\]
+Choosing initial recycling center locations near this point, we take
+\[
+    p_1 = (29, 31.4) \isp{and} p_2 = (31, 31.4).
+\]
+We now calculate the distances between the material sources and the recycling centers.
+\[\begin{array}{c|c|c}
+    j & \norm{m_j - p_1} & \norm{m_j - p_2} \\
+    \hline
+    1 & 3.03 & 1.08 \\
+    2 & 0.60 & 2.09 \\
+    3 & 5.02 & 6.10 \\
+    4 & 2.40 & 3.12 \\
+    5 & 3.84 & 2.60 
+\end{array}\]
+Assigning each $m_j$ to the closest $p_i$, we have $m_2, m_3, m_4$ assigned to $p_1$ and $m_1, m_5$ assigned to $p_2$. We now calculate the new locations of $p_1, p_2$ by taking the average location of their respectively assigned $m_j$'s.
+\begin{align*}
+    p_1' &= \frac{m_2 + m_3 + m_4}{3} = (28.33, 32.33) \\
+    p_2' &= \frac{m_1 + m_5}{2} = (32, 30)
+\end{align*}
+We redefine $p_1 = p_1'$ and $p_2 = p_2'$, then calculate the new distances.
+\[\begin{array}{c|c|c}
+    j & \norm{m_j - p_1} & \norm{m_j - p_2} \\
+    \hline
+    1 & 3.90 &	1.00 \\
+    2 & 0.75 &	3.61 \\
+    3 & 3.90 &	7.81 \\
+    4 & 3.40 &	3.16 \\
+    5 & 4.96 &	1.00 
+\end{array}\]
+This time, we assign $m_2, m_3$ to $p_1$ and $m_1, m_4, m_5$ to $p_2$. Since the assignments have changed, we are not yet at the local optimum, so we now calculate the average locations of assigned $m_j$'s.
+\begin{align*}
+    p_1' &= \frac{m_2 + m_3}{2} = (28, 34) \\
+    p_2' &= \frac{m_1 + m_4 + m_5}{3} = (31, 29.66)
+\end{align*}
+We redefine $p_1 = p_1'$ and $p_2 = p_2'$, then calculate the new distances.
+\[\begin{array}{c|c|c}
+    j & \norm{m_j - p_1} & \norm{m_j - p_2} \\
+    \hline
+    1 & 5.00 &	1.67 \\
+    2 & 2.24 &	3.08 \\
+    3 & 2.24 &	7.50 \\
+    4 & 5.10 &	2.11 \\
+    5 & 6.40 &	1.20
+\end{array}\]
+This time, we assign $m_2, m_3$ to $p_1$ and $m_1, m_4, m_5$ to $p_2$. Since the assignments did not change, the alternating local search heuristic tells us that we are at the local optimum. In conclusion, we recommend that the two recycling centers be built at the locations $(28, 34)$ and $(31, 29.66)$, which gives an average distance from material sources to recycling centers of
+\[
+    \sum_{j=2,3}\norm{m_j - p_1} + \sum_{j=1,4,5}\norm{m_j - p_2}
+        = 9.46.
+\]
+
+
+
+
+
+
+
+
+
+
+\end{document}

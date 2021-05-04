@@ -1,0 +1,370 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amsthm, amssymb}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}
+    {\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\mybox}}}
+
+% Default Commands
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\let\eps\varepsilon
+\let\emptyset\varnothing
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+% Extra Commands
+\newcommand{\seq}[2][n]{\left\{#2\right\}_{#1\in\N}}
+
+\begin{document}
+ 
+\title{Homework 9\\
+    \large MATH 118A Intro to Real Analysis
+}
+\author{Harry Coleman}
+\date{December 8, 2020}
+\maketitle
+
+
+\section{}
+\begin{problem}
+    Find the following limits:
+\end{problem}
+
+\subsection{}
+\begin{problem}
+    \begin{equation}
+        \lim_{x\to +\infty} \frac{\sqrt{x^2+3}+x}{\sqrt{x^2+4}+2x}.
+    \end{equation}
+\end{problem}
+\medskip
+
+For any $x \ne 0$, we divide the numerator and denominator of the function to find an equivalent expression:
+\begin{align*}
+    \frac{\sqrt{x^2 + 3} + x}{\sqrt{x^2 + 4} + 2x}
+        &= \frac{\frac{\sqrt{x^2 + 3}}{x} + \frac{x}{x}}{\frac{\sqrt{x^2 + 4}}{x} + \frac{2x}{x}} \\[1em]
+        &= \frac{\sqrt{1 + \frac{3}{x^2}} + 1}{\sqrt{1 + \frac{4}{x^2}} + 2}.
+\end{align*}
+For any $\eps > 0$ If $x > 1/\eps$, then
+\[
+    \frac1x < \frac{1}{1/\eps} = \eps.
+\]
+Therefore,
+\[
+    \lim_{x \to +\infty} \frac1x = 0,
+\]
+and, by the arithmetic of limits, we have
+\[
+    \lim_{x\to +\infty} \frac{\sqrt{x^2+3}+x}{\sqrt{x^2+4}+2x} = \lim_{n \to \infty} \frac{\sqrt{1 + \frac{3}{x^2}} + 1}{\sqrt{1 + \frac{4}{x^2}} + 2} = \frac{\sqrt{1 + 0} + 1}{\sqrt{1 + 0} + 2} = \frac23.
+\]
+
+
+
+\subsection{}
+\begin{problem}
+    \begin{equation}
+        \lim_{x\to 2} \left ( \frac{5}{x^2+x-6} - \frac{3}{x^2-x-2}\right ).
+    \end{equation}
+\end{problem}
+\medskip
+
+For all $x \ne 2$, we have
+\begin{align*}
+    \frac{5}{x^2 + x - 6} - \frac{3}{x^2 - x - 2}
+        &= \frac{5}{(x - 2)(x + 3)} - \frac{3}{(x - 2)(x + 1)} \\[1em]
+        &= \frac{1}{x-2} \left( \frac{5}{x + 3} - \frac{3}{x + 1} \right) \\[1em]
+        &= \frac{1}{x-2} \left( \frac{5(x + 1)}{(x + 3)(x + 1)} - \frac{3(x + 3)}{(x + 3)(x + 1)} \right) \\[1em]
+        &= \frac{1}{x-2} \cdot \frac{2x - 4}{(x + 3)(x + 1)} \\[1em]
+        &= \frac{2}{(x + 3)(x + 1)}.
+\end{align*}
+Now, by the arithmetic of limits, we have
+\[
+    \lim_{x\to 2} \left ( \frac{5}{x^2+x-6} - \frac{3}{x^2-x-2}\right ) = \lim_{x\to 2} \frac{2}{(x + 3)(x + 1)} = \frac{2}{(2 + 3)(2 + 1)} = \frac{2}{15}.
+\]
+
+\newpage
+\section{}
+\begin{problem}
+    Let $(X,d)$ be a metric space, and $A\subseteq X$ a subset. Consider the function $f:X\to \R$ given by the distance to $A$:
+    \begin{equation}
+        f(x) = d(x,A),\quad x\in X.
+    \end{equation}
+\end{problem}
+
+\subsection{}
+\begin{problem}
+    Prove that $f$ is uniformly continuous.
+\end{problem}
+
+\begin{proof}
+    Let $\eps > 0$ be given and take $\delta = \eps$. Let $x, y \in X$ and suppose that $d(x, y) < \delta$. Then by the reverse triangle inequality on sets, we have
+    \[
+        |f(x) - f(y)| = |d(x, A) - d(y, A)| \leq d(x, y) < \delta = \eps.
+    \]
+    Thus, $f$ is uniformly continuous.
+    
+\end{proof}
+
+
+\subsection{}
+\begin{problem}
+    Use this to show that if $A$ is compact, for any $x \in X$, $\exists\, z\in A$ such that $d(x,A) = d(x,z)$.
+\end{problem}
+
+\begin{proof}
+    Suppose $A$ is compact and let $x \in X$. Define the function $g : A \to \R$ by
+    \[
+        g(a) = d(a, \{x\}) = d(a, x), \quad a \in A.
+    \]
+    Now since $g$ is continuous and $A$ is compact, then $g$ attains its minimum on $A$, i.e., there exists some $z \in A$ such that
+    \[
+        g(z) = \inf_{a \in A} g(a) = \inf_{a \in A} d(a, x) = d(x, A).
+    \]
+    Thus, we have $z \in A$ with $d(x, z) = d(x, A)$.
+    
+    
+\end{proof}
+
+\newpage
+\subsection{}
+\begin{problem}
+    Let $F,U\subseteq X$ subsets such that $F$ is closed, $U$ is open, and $F\subseteq U$. Show that the function $f:X\to \R$ defined by 
+    \begin{equation}
+        f(x) = \frac{d(x,U^c)}{d(x,F) + d(x,U^c)},\quad x\in X,
+    \end{equation}
+    is continuous, $f(X) \subseteq [0,1]$, and $f$ satisfies 
+    \begin{equation}
+        f(x) = \left \{ \begin{array}{lr}
+            1,& x\in F,\\
+            0,& x\notin U. 
+        \end{array}\right .
+    \end{equation}
+\end{problem}
+
+\begin{lemma}
+    If $V \subseteq X$ is an open subset and $x \in V$, then $d(x, V^C) > 0$.
+\end{lemma}
+
+\begin{proof}
+    Suppose $x \in V$ with $V \subseteq X$ open. Then $B_r(x) \subseteq V$ for some $r > 0$. Equivalently, we have
+    \[
+        V^C \subseteq B_r(x)^C = \{y \in X : d(x, y) \geq r\}.
+    \]
+    This means that for all $y \in V^C$, we have $d(x, y) \geq r$ and, therefore, $d(x, V^C) \geq r > 0$.
+    
+\end{proof}
+
+\begin{proposition}
+    The function $f$ is continuous.
+\end{proposition}
+
+\begin{proof}
+    Since $F \subseteq U$, then
+    \[
+        X = F \cup F^C \subseteq U \cup F^C.
+    \]
+    Let $x \in X$. If $x \in U$, which is open, then $d(x, U^C) > 0$. If $x \in F^C$, which is open, then $d(x, F) > 0$. In either case,
+    \[
+        d(x,F) + d(x,U^c) > 0.
+    \]
+    As shown in 2(a), each of the functions $d(x, U^C)$ and $d(x, F)$ are continuous on $X$. Then by the arithmetic of continuous functions, $f$ is continuous on $X$.
+    
+\end{proof}
+
+\begin{proposition}
+    The function $f$ satisfies
+    \begin{equation*}
+        f(x) = \left \{ \begin{array}{lr}
+            1,& x\in F,\\
+            0,& x\notin U. 
+        \end{array}\right .
+    \end{equation*}
+\end{proposition}
+
+\begin{proof}
+    Suppose $x \in F \subseteq U$. Since $U$ is open, we have $d(x, U^C) > 0$ and
+    \[
+        f(x) = \frac{d(x,U^c)}{d(x,F) + d(x,U^c)} = \frac{d(x,U^c)}{0 + d(x,U^c)} = 1.
+    \]
+    Now suppose $x \in U^C \subseteq F^C$. Since $F^C$ is open, $d(x, F) > 0$ and
+    \[
+        f(x) = \frac{d(x,U^c)}{d(x,F) + d(x,U^c)} = \frac{0}{d(x,F) + 0} = 0.
+    \]
+    
+\end{proof}
+
+\begin{proposition}
+    The function $f$ satisfies $f(X) \subseteq [0,1]$.
+\end{proposition}
+
+\begin{proof}
+    Let $x \in X$. If $x \in U^C$, then $f(x) = 0$. Otherwise, $x \in U$, and we have $d(x, U^C) > 0$. Therefore,
+    \[
+        f(x) = \frac{d(x,U^c)}{d(x,F) + d(x,U^c)} = \frac{1}{\frac{d(x,F)}{d(x,U^c)} + 1}.
+    \]
+    And we derive
+    \begin{align*}
+        \frac{d(x,F)}{d(x,U^c)} &\geq 0, \\
+         \frac{d(x,F)}{d(x,U^c)} + 1 &\geq 1, \\
+         0 \leq \frac{1}{\frac{d(x,F)}{d(x,U^c)} + 1} &\leq 1, \\
+         0 \leq f(x) &\leq 1.
+    \end{align*}
+    Thus, $f(x) \in [0, 1]$ for all $x \in X$ or, equivalently, $F(X) \subseteq [0, 1]$.
+    
+\end{proof}
+
+\newpage
+\section{}
+\begin{problem}
+    Consider the function 
+    \begin{equation}
+        f(x,y) = \left \{ \begin{array}{lr}
+            \frac{x^2y}{x^4+y^2},& (x,y) \ne (0,0),\\
+            0,& (x,y) = (0,0).
+        \end{array}\right .
+    \end{equation}
+\end{problem}
+
+\subsection{}
+\begin{problem}
+    Show that the $f$ is bounded on $\R^2$.
+\end{problem}
+
+\begin{proof}
+    Let $(x, y) \in \R^2$. If $(x, y) = (0, 0)$, then $f(x, y) = 0$. If $x = 0$ and $y \ne 0$, then
+    \[
+        f(x, y) = \frac{x^2y}{x^4 + y^2} = \frac{0y}{0 + y^2} = 0.
+    \]
+    If $y = 0$ and $x \ne 0$, then
+    \[
+        f(x, y) = \frac{x^2y}{x^4 + y^2} = \frac{x^20}{x^4 + 0} = 0.
+    \]
+    We assume $x \ne 0$ and $y \ne 0$. Since real numbers to even powers are nonnegative, we have
+    \[
+        |f(x, y)| = \left| \frac{x^2y}{x^4 + y^2} \right| = \frac{x^2|y|}{x^4 + y^2}.
+    \]
+    In particular, $y^2 > 0$ implies
+    \[
+        \frac{x^2|y|}{x^4 + y^2} \leq \frac{x^2|y|}{x^4} = \frac{|y|}{x^2},
+    \]
+    and $x^4 > 0$ implies
+    \[
+        \frac{x^2|y|}{x^4 + y^2}  \leq \frac{x^2|y|}{y^2} = \frac{x^2}{|y|}.
+    \]
+    Therefore, we have
+    \begin{align*}
+        |f(x, y)| \cdot |f(x, y)| &\leq \frac{|y|}{x^2} \cdot \frac{x^2}{|y|}, \\[1em]
+        |f(x, y)|^2 &\leq 1, \\[1em]
+        |f(x, y)| &\leq 1.
+    \end{align*}
+    Thus, $|f(x,y)| \leq 1$ for all $(x, y) \in \R^2$, and $f$ is bounded on $\R^2$.
+    
+\end{proof}
+
+\newpage
+\subsection{}
+\begin{problem}
+    Show that the restriction of $f$ to any straight line in $\R^2$ is continuous.
+\end{problem}
+
+\begin{proof}
+    Consider a line $L$ in $\R^2$. If $L$ is a vertical line, then for some fixed $y_0 \in \R$, we have
+    \[
+        L = \{(x, y_0) : x \in \R\}.
+    \]
+    Then the restriction of $f$ to the line $L$ is given by
+    \[
+        f(x, y_0) = \frac{x^2y_0}{x^4 + y_0^2}.
+    \]
+    If $y_0 = 0$, then $f(x,y_0) = 0$ for all $x \in \R$. Otherwise,
+    \[
+        x^4 + y_0^2 \geq y_0^2 > 0,
+    \]
+    and by the arithmetic of continuous functions, $f(x, y_0)$ is continuous with respect to $x$. If $L$ is not a vertical line, then for some $m, b \in \R$, we have
+    \[
+        L = \{(x, mx + b) : x \in \R\}.
+    \]
+    Then the restriction of $f$ to the line $L$ is given by
+    \[
+        f(x, mx + b) = \frac{x^2(mx + b)}{x^4 + (mx + b)^2} = \frac{mx^3 + bx^2}{x^4 + m^2x^2 + 2mbx + b^2}.
+    \]
+    For all $x \ne 0$, we have
+    \[
+        x^4 + (mx + b)^2 \geq x^4 > 0
+    \]
+    and, by the arithmetic of continuous functions, $f(x, mx + b)$ is continuous for. If $b \ne 0$, since $f(0, m0 + b) = 0$ and
+    \[
+        \lim_{x \to 0} f(0, 0mx + b) = \lim_{x \to 0} \frac{x^2(mx + b)}{x^4 + (mx + b)^2} = \frac{0(m0 + b)}{0^4 + (m0 + b)^2} = \frac{0}{b^2} = 0,
+    \]
+    then $f(x, mx + b)$ is continuous at zero. If $b = 0$, then $m \ne 0$ and
+    \[
+        \lim_{x \to 0} f(x, mx) = \lim_{x \to 0} \frac{x^2(mx)}{x^4 + (mx)^2} = \lim_{x \to 0} \frac{mx}{x^2 + m^2} = \frac{m0}{0 + m^2} = 0.
+    \]
+    Thus, $f$ is continuous on the line $L$.
+    
+\end{proof}
+
+\newpage
+\subsection{}
+\begin{problem}
+    Show that $f$ is not continuous at $(0,0)$.
+\end{problem}
+
+\begin{proof}
+    Consider the curve $\{(x, x^2) : x \in \R\}$. The values of $f$ on this curve, for $x \ne 0$ are given by
+    \[
+        f(x, x^2) = \frac{x^2x^2}{x^4 + (x^2)^2} = \frac{x^4}{2x^4} = \frac12.
+    \]
+    So
+    \[
+        \lim_{x \to 0} f(x, x^2) = \lim_{x \to 0} \frac12 = \frac12.
+    \]
+    Then for any sequence $\seq{x_n}$ converging to zero, but never equal to zero, we have $(x_n, x_n^2) \to (0, 0)$. Taking the limit of the image of this sequence under $f$, we find
+    \[
+        \lim_{n \to \infty} f(x_n, x_n^2) = \frac12 \ne 0 = f(0, 0).
+    \]
+    Thus, $f$ is not continuous at $(0, 0)$.
+    
+    
+\end{proof}
+
+\newpage
+\section{}
+\begin{problem}
+    Let $f:[a,b]\to [a,b]$ be a continuous function. Prove that $\exists\, c \in [a,b]$ such that $f(c) = c$.
+\end{problem}
+
+\begin{proof}
+    We define a function $g : [a, b] \to \R$ by
+    \[
+        g(x) = f(x) - x.
+    \]
+    Note that $g$ is continuous on $[a, b]$ by the arithmetic of continuous functions. We consider the values of $g$ at $a$ and $b$:
+    \[
+        g(a) = f(a) - a \geq a - a = 0
+    \]
+    and
+    \[
+        g(b) = f(b) - b \leq b - b = 0.
+    \]
+    If $g(a) = 0$, then $f(a) = a$. If $g(b) = 0$, the $f(b) = b$. Otherwise, we have
+    \[
+        g(b) < 0 < g(a),
+    \]
+    and by the intermediate value theorem, there exists some $c \in [a, b]$ such that $g(c) = 0$. In which case, $g(c) = c$.
+    
+\end{proof}
+
+
+\end{document}

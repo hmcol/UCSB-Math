@@ -1,0 +1,198 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% custom commands
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\p}{^{\prime}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\setlength{\fboxsep}{4pt}
+\newcommand{\ex}[2]{\section*{Exercise #1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\prob}[2]{\section*{Problem #1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\ques}[2]{\section*{Question #1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\generic}[2]{\section*{#1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+ 
+\begin{document}
+ 
+\title{Flower Snark\\
+    \large MATH CS 120FG Graph Theory I}
+\author{Harry Coleman}
+\date{March 5, 2020}
+\maketitle
+
+\generic{}{
+    Prove that the flower snarks $J_n$ defined in class do have chromatic index 4.
+}
+
+Let $J_n$ with $n\geq3$ odd be the flower snark with $n$ claws of the form
+\begin{drawing}
+    \draw[fill=black] (0,2) circle (2pt) node[anchor=east]{$a_i$};
+    \draw[fill=black] (2,2) circle (2pt) node[anchor=west]{$b_i$};
+    \draw[fill=black] (1,1) circle (2pt) node[anchor=west]{$c_i$};
+    \draw[fill=black] (1,0) circle (2pt) node[anchor=west]{$d_i$};
+    
+    \draw (0,2)--(1,1)--(2,2);
+    \draw (1,0)--(1,1);
+\end{drawing}
+and the edges
+\begin{drawing}
+    \foreach \x in {1,2,3} {
+        \draw[fill=black] (\x,0) circle (2pt) node[anchor=south]{$a_\x$};
+    }
+    \draw (1,0) -- (3.5,0);
+    \draw (4,0) node{$\cdots$};
+    \draw (4.5,0) -- (5,0)--(5,-1);
+    \draw[fill=black] (5,0) circle (2pt) node[anchor=south]{$a_n$};
+    \foreach \x in {1,2,3} {
+        \draw[fill=black] (6-\x,-1) circle (2pt) node[anchor=north]{$b_\x$};
+    }
+    \draw (5,-1) -- (2.5,-1);
+    \draw (2,-1) node{$\cdots$};
+    \draw (1.5,-1) -- (1,-1)--(1,0);
+    \draw[fill=black] (1,-1) circle (2pt) node[anchor=north]{$b_n$};
+    
+    \draw[fill=black] (8,0) circle (2pt) node[anchor=south]{$d_1$};
+    \draw[fill=black] (10,0) circle (2pt) node[anchor=south]{$d_2$};
+    \draw[fill=black] (10,-1) circle (2pt) node[anchor=north]{$d_3$};
+    \draw[fill=black] (8,-1) circle (2pt) node[anchor=north]{$d_n$};
+    \draw (8.5,-1)--(8,-1)--(8,0)--(10,0)--(10,-1)--(9.5,-1);
+    \draw (9,-1) node{$\cdots$};
+\end{drawing}
+
+We will show by contradiction that $\chi'(J_n)=\Delta J_n +1 = 4$. Suppose, to the contrary, that $J_n$ has a proper 3-edge-coloring, and let $P$ be such a coloring.  We define the ordered tuple
+\[Y_i = (P(a_ic_i),P(b_ic_i),P(d_ic_i)),\]
+for each $i$, with $1\leq i \leq n$, and where $P(e)$ is the color assigned to the edge $e$ under $P$. This $Y_i$ represents the colors assigned to the three edges of each claw. Since $P$ is a proper edge-coloring, and the three edges of a claw are all incident to each other, the three values of $Y_i$ are distinct. 
+
+We define now the ordered tuple
+\[E_i = (P(a_ia_{i+1}), P(b_ib_{i+1}), P(c_ic_{i+1})),\]
+for each $i$, with $1\leq i\leq n-1$, as well as
+\[E_0 = (P(b_na_1), P(a_n,b_1), P(c_nc_1)).\]
+These tuples represent the colors assigned to the three edges between each claw.
+
+\newpage
+To better illustrate the meaning of $E$ and $Y$, we now consider three consecutive claws and the colors given to edges by $P$:
+\begin{drawing}
+    \foreach \x in {1,3,5} {
+        \draw[fill=black] (2*\x,2) circle (2pt);
+        \draw[fill=black] (2*\x+2,2) circle (2pt);
+        \draw[fill=black] (2*\x+1,1) circle (2pt);
+        \draw[fill=black] (2*\x+1,0) circle (2pt);
+        
+        \draw (2*\x+1,1)--(2*\x,2) node[midway,xshift=-6pt,yshift=-5pt]{$A_{\x}$};
+        \draw (2*\x+1,1)--(2*\x+2,2) node[midway,xshift=6pt,yshift=-5pt]{$B_{\x}$};
+        \draw (2*\x+1,0)--(2*\x+1,1) node[midway,anchor=west]{$C_{\x}$};
+    }
+    \foreach \x in {2,4}{
+        \draw[] (2*\x-2,2)to[out=30, in=150](2*\x+2,2);
+        \draw (2*\x,2.5) node[anchor=south]{$A_{\x}$};
+    }
+    \foreach \x in {2,4}{
+        \draw[] (2*\x,2)to[out=30, in=150](2*\x+4,2);
+        \draw (2*\x+2,2.5) node[anchor=south]{$B_{\x}$};
+    }
+    \foreach \x in {2,4}{
+        \draw[] (2*\x-1,0)--(2*\x+3,0)node[midway,anchor=south]{$C_{\x}$};
+    }
+\end{drawing}
+
+If the leftmost claw is the $i$th claw, then we find
+\begin{center}
+    \begin{tabular}{r r r r}
+        $Y_i$       &=($A_1$, & $B_1$, & $C_1$),  \\
+        $E_i$       &=($A_2$, & $B_2$, & $C_2$),  \\
+        $Y_{i+1}$   &=($A_3$, & $B_3$, & $C_3$),  \\
+        $E_{i+1}$   &=($A_4$, & $B_4$, & $C_4$),  \\
+        $Y_{i+2}$   &=($A_5$, & $B_5$, & $C_5$).  \\
+    \end{tabular}
+\end{center}
+Notice that any sequence of $E_i,Y_{i+1},E_{i+1}$ cannot have any equal place values, since this would correspond to adjacent edges being of the same color. This means that if we know any two tuples in such a sequence, we can determine the third. Note, however, that the same cannot be said for a sequence $Y_i,E_i,Y_{i+1}$, since $Y_i$ and $Y_{i+1}$ to not correspond to colors of adjacent edges. Consider now the adjacency between the first and $n$th claws:
+\begin{drawing}
+    \foreach \x in {1,3} {
+        \draw[fill=black] (2*\x,2) circle (2pt);
+        \draw[fill=black] (2*\x+2,2) circle (2pt);
+        \draw[fill=black] (2*\x+1,1) circle (2pt);
+        \draw[fill=black] (2*\x+1,0) circle (2pt);
+        
+        \draw (2*\x+1,1)--(2*\x,2);
+        \draw (2*\x+1,1)--(2*\x+2,2);
+        \draw (2*\x+1,0)--(2*\x+1,1);
+    }
+    \draw[] (2,2)to[out=30, in=150](8,2);
+    \draw (5,3) node[anchor=south]{$B$};
+    
+    \draw[] (4,2)--(6,2) node[midway, anchor=south]{$A$};
+    
+    \draw[] (3,0)--(7,0)node[midway,anchor=south]{$C$};
+\end{drawing}
+This gives us $E_0=(A,B,C)$, which acts the same as other $E_i$ towards the right. However, from the left, it functions as if $A$ and $B$ were swapped. We will define $E_0'=(B,A,C)$ to account for this. So, the coloring of $P$ is described by the sequence
+\[E_0,Y_1,E_1,Y_2,E_2,\dots,Y_n,E_0'.\]
+
+If the colors of $P$ are given by the set $\{\alpha,\beta,\gamma\}$, then each $E_i$ is one of 27 ordered 3-tuples of these colors. We either have all three values of $E_i$ the same, two the same and one different, or all three different. If all are the same (e.g. $E_i=\{\alpha,\alpha,\alpha\}$), then $Y_{i+1}$ would have to have one of each color but not have any equal place values to $E_i$, which is not possible. So no $E_i$ has all three values the same.
+
+\newpage
+We consider now the case where all three are different. Suppose some $E_i=(\alpha,\beta,\gamma)$, then we have either
+\[Y_{i+1} = (\beta,\gamma,\alpha) \text{ or } Y_{i+1} = (\gamma,\alpha,\beta).\]
+Since $E_{i+1}$ does not share any place values with $E_i$ or $Y_{i+1}$,
+\[E_{i+1} = (\gamma, \alpha, \beta) \text{ or } E_{i+1} = (\beta, \gamma, \alpha).\]
+
+For the third case, suppose now that some $E_i=(\alpha,\alpha,\beta)$, then
+\[Y_{i+1} = (\beta,\gamma,\alpha) \text{ or } Y_{i+1} = (\gamma,\beta,\alpha),\]
+which implies
+\[E_{i+1} = (\gamma, \beta, \gamma) \text{ or } E_{i+1} = (\beta, \gamma, \gamma).\]
+
+Performing a similar process for all distinct values of $E_i$, we obtain the following graph with vertices as possible values of $E_i$ and directed edges as choices for $Y_i$, yielding $E_{i+1}$:
+\begin{drawing}
+    \draw (0,0) node{$(\alpha,\alpha,\beta)$};
+    \draw (1,1.75) node{$(\beta,\gamma,\gamma)$};
+    \draw (4,1.75) node{$(\alpha,\beta,\alpha)$};
+    \draw (5,0) node{$(\gamma,\gamma,\beta)$};
+    \draw (1,-1.75) node{$(\gamma,\beta,\gamma)$};
+    \draw (4,-1.75) node{$(\beta,\alpha,\alpha)$};
+    
+    \draw[<->] (0,0.25) -- (1,1.5);
+    \draw[<->] (0,-0.25) -- (1,-1.5);
+    \draw[<->] (5,0.25) -- (4,1.5);
+    \draw[<->] (5,-0.25) -- (4,-1.5);
+    \draw[<->] (2,1.75) -- (3,1.75);
+    \draw[<->] (2,-1.75) -- (3,-1.75);
+    
+    \draw (9,0) node{$(\alpha,\beta,\gamma)$};
+    \draw (13,1.75) node{$(\alpha,\gamma,\beta)$};
+    \draw (13,-1.75) node{$(\gamma,\beta,\alpha)$};
+    \draw[<->] (9,0.25) -- (12,1.75);
+    \draw[<->] (9,-0.25) -- (12,-1.75);
+    \draw[<->] (13,-1.5) -- (13,1.5);
+\end{drawing}
+
+A walk along this graph is a sequence of $E$'s and $Y$'s. The coloring $P$ of $J_n$ is captured by the walk
+\[W_P = E_0,Y_1,E_1,Y_2,E_2,\dots,Y_n,E_0'\]
+in this graph. This walk uses an odd number $n$ of edges. However, any choice of $E_0$ in this graph results in an $E_0'$ which is an even number of edges away or unreachable. For example, if $E_0=(\alpha,\beta,\alpha)$, then $E_0'=(\beta,\alpha,\alpha$. So $W_P$ is an odd $(E_0,E_0')$-walk, however, it is clear that the only walks between these two vertices in the above graph are even. Similarly, if $E_0=(\alpha,\beta,\gamma)$, then $E_0'=(\beta,\alpha,\gamma$. However, there is no walk between these two vertices, so $W_P$ is impossible.
+
+Therefore, $W_P$ is impossible, so $\chi'(J_n)=4$.
+
+
+
+
+
+\end{document}

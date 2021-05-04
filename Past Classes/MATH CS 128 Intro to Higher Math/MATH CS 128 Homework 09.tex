@@ -1,0 +1,143 @@
+\documentclass[11pt]{article}
+ 
+\usepackage[table]{xcolor}
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{colortbl}
+\usepackage{verbatim}
+\usetikzlibrary{arrows, angles, quotes}
+\usepackage{framed}
+
+
+\lstset{basicstyle=\footnotesize}
+\usetikzlibrary{calc}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+ 
+\begin{document}
+ 
+\title{Homework 9\\
+    \large CS128 Intro to Higher Mathematics}
+\author{Harry Coleman}
+\date{November 1, 2019}
+
+\maketitle
+
+\section*{Exercise 5}
+\fbox{
+    \parbox{\textwidth}{
+       (Exo-exercise) For each natural number $n$, let $A_n=\{7,n\}$. Find $$ \bigcup_n A_n \quad \textrm{and} \quad \bigcap_n A_n.$$
+    }
+}
+\\
+
+Since for all natural numbers $n$,
+\[n\in A_n \text{ and } A_n \subseteq \bigcup_n A_n\]
+we also know that for all natural numbers $n$,
+\[n \in \bigcup_n A_n\]
+so
+\[\bigcup_n A_n = \N\]
+
+And since all $A_n=\{7,n\}$, for two $k,l\in\N$ such thatt $k\ne l$, we have
+\[A_k = \{7,l\} \text{ and } A_l = \{7, l\}\]
+so
+\[A_k \cap A_l = \{7\}\]
+and for all following $n$
+\[A_n \cap {7} = \{7\}\]
+so
+\[\bigcap_n A_n = \{7\}\]
+
+
+\newpage
+\section*{Exercise 6}
+\fbox{
+    \parbox{\textwidth}{
+       A singleton is any set of the form $\{a\}$: that is, any set that contains exactly one element. Consider the class formed by all singletons, that is, $$S =\{ A | \; \textrm{$A$ is a singleton set}\}.$$ Is $S$ a set? Why?
+    }
+}
+\\
+
+
+If we assume that $S$ exists and it is s the set of all singletons, then if we take $\bigcup S$, we would have the set of all sets. As previously discussed, we cannot have the set of all sets. As an example, if we have the set of all sets, we would have the elements $B$ such that
+\[B = \{x: x\notin x\}\]
+This leads to a contradiction if we take an arbitrary constant $c$, we can state the tautology
+\[c \in B \lor c\notin B\]
+By our definition of $B$, we have
+\[\forall x\in B(x\notin B)\]
+and
+\[\forall x\notin B(x\in B)\]
+so we can then say
+\[(c \in B \land c\notin B) \lor (c\notin B \land c\in B)\]
+\[F \lor F\]
+\[F\]
+By our condition of anti-tautology, we have a contradiction, so our assumption that the set of all singletons exists is false.
+
+
+
+\newpage
+\section*{Exercise 8}
+\fbox{
+    \parbox{\textwidth}{
+       (Exo-exercise) A subset $K$ of $\mathbb{R}$ is called cofinite provided $\mathbb{R} \setminus K$ is finite. Let $\mathcal{A}$ be a nonempty collection of cofinite subsets of $\mathbb{R}$. Prove that $\bigcup \mathcal{A}$ is a cofinite subset of $\mathbb{R}$. 
+    }
+}
+\\
+
+For this excercise, we first need to prove that for any sets $A$, $B$, $C$
+\[B \subseteq C \implies (A\setminus C) \subseteq (A\setminus B)\]
+
+We'll prove this using the conditional method, with sets $A$, $B$, $C$, first assuming
+\[B \subseteq C\]
+
+By the definition of set difference
+\[A\setminus C = \{x\in A: x\notin C\}\]
+\[A\setminus B = \{x\in A: x\notin B\}\]
+
+By the definition of subset, we also have
+\[\forall x\in B(x\in C)\]
+and the contrapositive
+\[\forall x\notin C(x\notin B)\]
+
+Since
+\[\forall x\in(A\setminus C)(x\notin C)\]
+we also know that
+\[\forall x\in(A\setminus C)(x\notin B)\]
+and therefore
+\[\forall x\in(A\setminus C)(x\in (A\setminus B))\]
+
+So by the definition of subset
+\[(A\setminus C) \subseteq (A\setminus B)\]
+and we have shown
+\[B \subseteq C \implies (A\setminus C) \subseteq (A\setminus B)\]
+
+Using this, we can take any set $K\in\mathcal{A}$, which means $K\subseteq\bigcup\mathcal{A}$. With this, we can say
+\[(\R\setminus\bigcup\mathcal{A}) \subseteq (\R\setminus K)\]
+And since $\R\setminus K$ is finite, then any subset, will be finite. So $\bigcup\mathcal{A}$ is a cofinite subset of $\R$.
+
+
+\section*{Exercise 9}
+\fbox{
+    \parbox{\textwidth}{
+       (Exo-exercise) Give an example of a family $\mathcal{C}= \{C_n: n\in \mathbb{N}\}$ such that $\bigcap \mathcal{C} = \emptyset$, but for each $n\in \mathbb{N}$, $$\bigcap \{C_k: 1 \leq k \leq n\} \neq \emptyset.$$
+    }
+}
+\\
+
+If we let each $C_n$ equal the set of all natural numbers without $n$, then we would have our family
+\[\mathcal{C} = \{C_n=\N\setminus \{n\} : n\in\N\}.\]
+
+In this case we would have
+\[\bigcap\mathcal{C} = \emptyset\]
+
+Since every element in the intersection would have to be an element of every $C_n$, however, for every $n\in\N$, there is some $C_n$ that is $\N\setminus \{n\}$, so it would not be in the intersection. So we cannot have any elements in the intersection. However, for a given $n\in\N$, we would have
+\[\bigcap \{C_k: 1 \leq k \leq n\} = \N\setminus\{1,2,3,\dots,n\} \ne \emptyset\]
+which would be every natural number greater than $n$. Since each $C_n$ contains every natural number except $n$, The intersection of all $C_1, C_2, C_3,\dots,C_n$ would have every natural number except those less than or equal to $n$.
+
+\end{document}
+

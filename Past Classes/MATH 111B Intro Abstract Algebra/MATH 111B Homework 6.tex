@@ -1,0 +1,191 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{amsmath, amsthm, amssymb, physics}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{4pt}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+
+% Extra Commands
+\newcommand{\isom}{\cong}
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\eqc}{\overline}
+
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH 111B Homework 6}
+    \fancyhead[C]{February 19, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+
+\begin{pbox}[Q1]
+    Let $R$ be an integral domain and $r \in R$. Prove the following statements.
+\end{pbox}
+
+\begin{pbox}[(1)]
+    $r$ is irreducible in $R$ if and only if $r$ is irreducible in $R[x]$.
+\end{pbox}
+
+\begin{proof}
+    Suppose $r$ is irreducible in $R$ and $r = a(x)b(x)$ with $a(x), b(x) \in R[x]$. Taking the degree, we find
+    \[
+        0
+            =\deg r
+            = \deg(a(x)b(x))
+            = \deg a(x) + \deg b(x).
+    \]
+    Since $\deg a(x), \deg b(x) \geq 0$, this implies they are zero, i.e., $a(x) = a$ and $b(x) = b$ for some $a, b \in R$. So $r = ab$, and the irreducibility of $r$ in $R$ implies that either $a$ or $b$ is in $R^\times = (R[x])^\times$. Thus, $r$ is irreducible in $R[x]$.
+    
+    Suppose $r$ is irreducible in $R[x]$ and $r = ab$ with $a, b \in R$. Then $a, b \in R[x]$, and the irreducibility of $r$ in $R[x]$ implies that $a, b \in (R[x])^\times = R^\times$. Thus, $r$ is irreducible in $R$.
+    
+\end{proof}
+
+\begin{pbox}[(2)]
+    $r$ is prime in $R$ if and only if $r$ is prime in $R[x]$.
+\end{pbox}
+
+\begin{proof}
+    Suppose $r$ is prime in $R$. Then $I = rR$ is a prime ideal of $R$, so $R/I$ is an integral domain. Then $(R/I)[x] \isom R[x]/(I)$ is is an integral domain. Thus, $(I) = rR[x]$ is a prime ideal of $R[x]$, so $r$ is prime in $R[x]$.
+    
+    Suppose $r$ is prime in $R[x]$, then $I = rR[x]$ is a prime ideal of $R[x]$. Considering $R$ as a subset of $R[x]$, then $I \cap R = rR$ is a prime ideal of $R$, so $r$ is prime in $R$.
+    
+\end{proof}
+
+\begin{pbox}[Q2]
+    Let $P$ be a prime ideal of $\Z[x]$. Show that if $P \cap \Z = \{0\}$, then $P$ is a principal ideal and is not a maximal ideal. 
+\end{pbox}
+
+
+
+
+
+\newpage
+\begin{pbox}[Q3]
+    Determine whether the following polynomials are irreducible in $\Z[x]$
+\end{pbox}
+
+\begin{pbox}[(1)]
+    $2x^3 - 5x^2 + 1$.
+\end{pbox}
+
+Let $p(x) = 2x^3 - 5x^2 + 1 \in \Z[x]$. Since $\Z$ is a unique factorization domain with fraction field $\Q$, and the greatest common divisor of the coefficients of $p(x)$ is $1$, then it is irreducible in $\Z[x]$ if and only if it is irreducible in $\Q[x]$. Since $\deg p(x) = 3$, then it is reducible in $\Q[x]$ if and only if it has a root in $\Q$. Checking the possible rational roots, $\pm1$ and $\pm1/2$, we find that $p(1/2) = 0$. Thus, $p(x)$ is reducible in $\Z[x]$.
+
+In particular, we know $x - 1/2$ is a factor of $p(x)$, and we can find an explicit factorization using the division algorithm, which gives us
+\[
+    p(x) = (x - 1/2)(2x^2 - 4x - 2) = (2x - 1)(x^2 - 2x - 1)
+\]
+
+\begin{pbox}[(2)]
+    $ x^5 + x^2 + 1$.
+\end{pbox}
+
+\begin{proof}
+    We consider the polynomial $p(x) = x^5 + x^2 + \eqc{1}$ in quotient ring $F[x] = (\Z/2\Z)[x]$. Since $p(\eqc{1}) = p(\eqc{0}) = \eqc{1}$, then it has no factors of degree $1$. If $p(x)$ can be factored into two monic polynomials in $F[x]$, then one must be of degree at least $2$. There are four polynomials of degree $4$ in $F[x]$, and three of then are reducible:
+    \begin{align*}
+        x^2 &= x \cdot x \\
+        x^2 + \eqc{1} &= (x + \eqc{1})(x + \eqc{1}), \\
+        x^2 + x &= x(x + \eqc{1}).
+    \end{align*}
+    So the only degree $2$ polynomial to check is $x^2 + x + \eqc{1}$. The division algorithm gives us
+    \[
+        x^5 + x^2 + \eqc{1} = (x^2 + x + \eqc{1})(x^3 + x^2) + \eqc{1},
+    \]
+    so $p(x)$ is irreducible in $F[x]$. Thus, $p(x)$ is irreducible in $\Z[x]$.
+    
+\end{proof}
+
+
+\newpage
+\begin{pbox}[Q4 Problem 9.4.6]
+    Construct fields of each of the following orders
+\end{pbox}
+
+\begin{pbox}[(b)]
+    $49$
+\end{pbox}
+
+Consider the field $F = \Z/7\Z$, which has $7$ elements. For any polynomial $p(x) \in F[x]$ with $\deg p(x) = 2$, the quotient ring $F[x]/(p(x))$ has $7^2 = 49$ elements. We want to choose $p(x)$ such that $F[x]/(p(x))$ is in fact a field. This will be the case if and only if $(p(x))$ is a maximal ideal, and since $F$ is a field, this is equivalent to $p(x)$ being irreducible in $F[x]$. Moreover, since $\deg p(x) = 2$, then this is equivalent to $p(x)$ having no roots in $F$.
+
+We claim that $p(x) = x^2 + \eqc{1} \in F[x]$ is a possible choice, and we check that it has no roots in $F = \Z/7\Z$.
+\begin{align*}
+    \eqc{0}^2 + \eqc{1} &= \eqc{1} &
+    \eqc{1}^2 + \eqc{1} &= \eqc{2} &
+    \eqc{2}^2 + \eqc{1} &= \eqc{5} &
+    \eqc{3}^2 + \eqc{1} &= \eqc{3} \\
+    \eqc{4}^2 + \eqc{1} &= \eqc{3} &
+    \eqc{5}^2 + \eqc{1} &= \eqc{3} &
+    \eqc{6}^2 + \eqc{1} &= \eqc{2} &
+\end{align*}
+Hence, $(\Z/7/Z)[x]/(x^2 + \eqc{1}) \isom \Z[x]/(7, x^2 + 1)$ is a field of order 49.
+
+\begin{pbox}[(c)]
+    $8$
+\end{pbox}
+
+Similar to (b), we now want a polynomial $p(x) \in (\Z/2\Z)[x]$ of degree $3$ with no roots in $\Z/2\Z$. We claim that $p(x) = x^3 + x + \eqc{1}$ is such a polynomial.
+\[
+    \eqc{0}^3 + \eqc{0} + \eqc{1} = \eqc{1} \hspace{1in} \eqc{1}^3 + \eqc{1} + \eqc{1} = \eqc{1}.
+\]
+Hence, $(\Z/2\Z)[x]/(x^3 + x + \eqc{1}) \isom \Z[x]/(2, x^3 + x + 1)$ is a field of order $2^3 = 8$.
+
+
+\newpage
+\begin{pbox}[Q5 Problem 9.4.13]
+    Prove that $x^3 + nx + 2$ is irreducible over $\Z$ for all integers $n \ne 1, -3, -5$.
+\end{pbox}
+
+\begin{proof}
+    Since $p(x) = x^3 + nx + 2$ is a monic polynomial, then the only possible integer roots are those which divide the constant term: $\pm1, \pm2$. Evaluating $p(x)$ at these points we find
+    \begin{align*}
+        1^3 + n(1) + 2 &= n + 3, \\
+        (-1)^3 + n(-1) + 2 &= - n - 1, \\
+        2^3 + n(2) + 2 &= 2n + 10, \\
+        (-2)^3 + n(-2) + 2 &= -2n - 6.
+    \end{align*}
+    Assuming $n \ne 1, -3, -5$, then all of the above are nonzero, so $p(x)$ has no roots in $\Z$ and, therefore, is irreducible in $\Z[x]$.
+    
+\end{proof}
+
+\end{document}

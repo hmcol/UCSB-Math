@@ -1,0 +1,63 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amsthm, amssymb, physics}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-8pt\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+%\addtolength{\jot}{1em}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+
+% Extra Commands
+\usepackage{tikzsymbols}
+\newcommand*{\putxys}[4]{%
+    \makebox[0pt][l]{%
+        \hspace*{#1}%
+        \raisebox{#2}{%
+            {\fontsize{#3}{#3}#4}%
+        }%
+    }%
+}
+\newcommand{\DD}{\operatorname{D\putxys{-6.1pt}{2pt}{5pt}{\Cat}}}
+
+
+% Document Info
+\title{Homework\\
+    \large MATH N
+}
+\author{Harry Coleman}
+\date{, 2021}
+
+% Begin Document
+\begin{document}
+\maketitle
+
+\[
+    \DD
+\]
+
+
+
+\end{document}

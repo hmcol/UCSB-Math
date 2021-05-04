@@ -1,0 +1,316 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry} % proper margins
+\usepackage{enumitem} % custom numbering for lists
+\usepackage{amsmath} % align, cases, eqref, matrices, dots, roots, delimiters, math mode functions, mod, arrows
+\usepackage{amsthm} % theorems, proofs
+\usepackage{amssymb} % fancy letters, niche relations/negations
+\usepackage{mathrsfs} % much more loopy calligraphy font
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}
+    {\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\mybox}}}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+
+% Alternate Characters
+\let\eps\varepsilon % double curved, rather than single curve with midline
+\let\emptyset\varnothing % circular, rather than tall
+
+% Named Sets
+\newcommand{\N}{\mathbb{N}} % natural numbers
+\newcommand{\Z}{\mathbb{Z}} % integers 
+\newcommand{\Q}{\mathbb{Q}} % rational numbers
+\newcommand{\R}{\mathbb{R}} % real numbers
+\newcommand{\C}{\mathbb{C}} % complex numbers
+
+% Fancy Characters
+\newcommand{\F}{\mathbb{F}} % arbitrary field
+\renewcommand{\P}{\mathbb{P}} % probability measure (apparently, sometimes prime numbers)
+\newcommand{\E}{\mathbb{E}} % expected value
+\newcommand{\FF}{\mathcal{F}} % sigma algebra
+\newcommand{\BB}{\mathcal{B}} % Borel sigma algebra
+
+% Paired Delimiters
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil} % ceiling
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor} % floor
+\newcommand{\<}{\left\langle} % left angle bracket
+\renewcommand{\>}{\right\rangle} % right angle bracket
+
+% Functions
+\renewcommand{\Im}{\operatorname{Im}} % imaginary part of a complex number
+\renewcommand{\Re}{\operatorname{Re}} % real part of a complex number
+\newcommand{\Arg}{\operatorname{Arg}} % principal argument (angle) of complex number
+
+% Simplified Notation
+\newcommand{\id}[1]{\operatorname{id_{\mathnormal{#1}}}} % identity operator
+\newcommand{\seq}[2][n]{\left\{#2\right\}_{#1\in\N}} % sequence
+\newcommand{\pdv}[3][1]{\ifnum#1=1{\frac{\partial #2}{\partial#3}}\else{\frac{\partial^{#1}#2}{\partial#3^{#1}}}\fi} % partial derivative
+\newcommand{\intr}[1]{\accentset{\circ}{#1}} % interior of a set
+
+% Renaming
+\let\sm\setminus % set minus (difference)
+\let\clo\overline % closure of a set
+\let\conj\overline % conjugate of an object
+\let\eqc\overline % equivalence class of an object
+\let\teq\trianglelefteq % normal subgroup
+\let\iso\cong % isomorphic (groups)
+
+% Notes
+% medskip for header-less paragraph
+% intertext{} for short text inside big display structure
+% dots is dynamic based on surroundings
+% dfrac and tfrac to force large or small fractions
+% operatorname for new operators instead of text
+% consider using nath; it seems to break most formatting and is not compatible with many packages
+
+\begin{document}
+ 
+\title{Homework 4\\
+    \large MATH CS 121 Intro to Probability
+    %\large MATH 111A Intro to Abstract Algebra
+    %\large MATH CS 122A Complex Analysis I
+    %\large MATH 118A Intro to Real Analysis
+    %\large MATH 104A Intro to Numerical Analysis
+}
+\author{Harry Coleman}
+\date{November 16, 2020}
+\maketitle
+
+\section*{Exercise 1}
+\begin{problem}
+    We consider $(\R, \BB(\R), \P)$ and define $F:\R\to[0,1]$ by $F(\alpha):=\P((-\infty,\alpha])$. Show that the following properties hold for $F$:
+\end{problem}
+
+\subsection*{Exercise 1(i)}
+\begin{problem}
+    $F$ is non-decreasing
+\end{problem}
+
+\begin{proof}
+    Let $a,b\in\R$ with $a\leq b$. Then $(-\infty, a] \subseteq (-\infty, b]$, and by the properties of the probability measure, we have
+    \[F(a) = \P((-\infty,a]) \leq \P((-\infty,b]) = F(b).\]
+    Thus, $F$ is non-decreasing.
+    
+\end{proof}
+
+\subsection*{Exercise 1(ii)}
+\begin{problem}
+    $F$ is right continuous
+\end{problem}
+
+\begin{proof}
+    Let $\seq{a_n} \subseteq\R$ be a sequence converging to $a$ from the right, so $a \leq a_n$ for all $n\in\N$. Now because $F$ is non-decreasing, then for all $n\in\N$, we have
+    \[F(a) \leq F(a_n).\]
+    We now define the following value for all $k\in\N$:
+    \[a_n' = \sup_{k\geq n} a_k.\]
+    This definition gives us $a_n\leq a_n'$ for all $n\in\N$, and, moreover, that
+    \[F(a_n) \leq F(a_n')\]
+    for all $n\in\N$. Since $a_n\to a$, then by the definition of limit superior, we have
+    \[\lim_{n\to\infty}a_n' = \lim_{n\to\infty}\sup_{k\geq n} a_k = \limsup_{n\to\infty}a_n = \lim_{n\to\infty}a_n = a.\]
+    We now consider the limit
+    \[\lim_{n\to\infty}F(a_n') = \lim_{n\to\infty}\P((-\infty,a_n']).\]
+    Since $\seq{a_n'}$ is a non-increasing sequence, then $\seq{(-\infty,a_n']}$ is a non-increasing sequence with respect to inclusion. Then by the continuity of the probability measure, we have
+    \[\lim_{n\to\infty}F(a_n') = \P\left(\bigcap_{n=1}^\infty (-\infty, a_n']\right).\]
+    Now since $a\leq a_n \leq a_n'$ for all $n\in\N$ and $a_n' \to a$, then
+    \[\bigcap_{n=1}^\infty (-\infty, a_n'] = (-\infty, a].\]
+    Therefore, we have
+    \[\lim_{n\to\infty}F(a_n') = \P((-\infty,a]) = F(a).\]
+    Finally, since
+    \[F(a) \leq F(a_n) \leq F(a_n')\]
+    for all $n\in\N$, then by the squeeze theorem, we obtain
+    \[\lim_{n\to\infty}F(a_n) = F(a).\]
+    Since this is true of all sequences $\seq{a_n}\subseteq\R$ converging to $a$ from the right, we can conclude that
+    \[\lim_{x\to a^+}F(x) = F(a).\]
+    Thus, $F$ is right-continuous.
+    
+\end{proof}
+
+\newpage
+\subsection*{Exercise 1(iii)}
+\begin{problem}
+    $\ds\lim_{\alpha\to-\infty}F(\alpha)=0$ and $\ds\lim_{\alpha\to\infty}F(\alpha)=1$.
+\end{problem}
+
+\begin{proof}
+    Suppose $\seq{a_n}\subseteq\R$ such that $a_n\to-\infty$. Without loss of generality, assume $\seq{a_n}$ is non-increasing, since if it is not, we simply take a non-increasing subsequence. Then by the continuity of the the probability measure, we have
+    \begin{align*}
+        \lim_{\alpha\to-\infty}F(\alpha) 
+            &= \lim_{n\to\infty}F(a_n) \\
+            &= \lim_{n\to\infty}\P((-\infty,a_n]) \\
+            &= \P\left(\bigcap_{n=1}^\infty(-\infty,a_n]\right) \\
+            &= \P(\emptyset) \\
+            &= 0.
+    \end{align*}
+    
+    Similarly, if $\seq{a_n}\subseteq\R$ is a non-decreasing sequence such that $a_n\to\infty$, then by the continuity of the probability measure, we have
+    \begin{align*}
+        \lim_{\alpha\to\infty}F(\alpha) 
+            &= \lim_{n\to\infty}F(a_n) \\
+            &= \lim_{n\to\infty}\P((-\infty,a_n]) \\
+            &= \P\left(\bigcup_{n=1}^\infty(-\infty,a_n]\right) \\
+            &= \P(\Omega) \\
+            &= 1.
+    \end{align*}
+    
+\end{proof}
+
+\newpage
+\section*{Exercise 2}
+\begin{problem}
+    Let $\Omega = \{a,b,c\}$ and define three $\sigma$-algebras $\FF_1=\{\emptyset,\Omega\}$, $\FF_2=\{\{a,b,c\},\{a,b\},\{c\},\emptyset\}$ and $\FF_3 = 2^\Omega$. Define three functions $X,Y,Z:\Omega\to\R$ with the following properties:
+\end{problem}
+
+\subsection*{Exercise 2(i)}
+\begin{problem}
+    $X$ is $\FF_3$-measurable but not $\FF_2$-measurable,
+\end{problem}
+\medskip
+
+Define the function $X$ as follows:
+\begin{align*}
+    X: \Omega &\to \R \\
+    a &\mapsto 1 \\
+    b &\mapsto 0 \\
+    c &\mapsto 1.
+\end{align*}
+Since $\FF_3=2^\Omega$, then every function $\Omega\to\R$ will be $\FF_3$-measurable, including $X$, in particular. However, $X^{-1}((-\infty,0]) = \{b\} \notin \FF_2$, so $X$ is not $\FF_2$-measurable.
+
+\subsection*{Exercise 2(ii)}
+\begin{problem}
+    $Y$ is $\FF_2$-measurable but not $\FF_1$-measurable,
+\end{problem}
+\medskip
+
+Define the function $Y$ as follows:
+\begin{align*}
+    Y: \Omega &\to \R \\
+    a &\mapsto 0 \\
+    b &\mapsto 0 \\
+    c &\mapsto 1.
+\end{align*}
+Then we have
+\[Y^{-1}((-\infty,\alpha]) =
+    \begin{cases}
+        \emptyset &\text{if $\alpha <0$,} \\
+        \{a,b\}  &\text{if $0\leq\alpha<1$,} \\
+        \Omega  &\text{if $1\leq\alpha$.}
+    \end{cases}
+\]
+So for all $\alpha\in\R$, we have $Y^{-1}((-\infty,\alpha])\in\FF_2$, so $Y$ is $\FF_2$-measurable. However, $Y^{-1}((-\infty,0]) = \{a,b\}\notin\FF_1$, so $Y$ is not $\FF_1$-measurable.
+
+\newpage
+\subsection*{Exercise 2(iii)}
+\begin{problem}
+    $Z$ is $\FF_1$-measurable.
+\end{problem}
+\medskip
+
+Define the function $Z$ as follows:
+\begin{align*}
+    Y: \Omega &\to \R \\
+    a &\mapsto 0 \\
+    b &\mapsto 0 \\
+    c &\mapsto 0.
+\end{align*}
+Then we have
+\[Y^{-1}((-\infty,\alpha]) =
+    \begin{cases}
+        \emptyset &\text{if $\alpha <0$,} \\
+        \Omega  &\text{if $0\leq\alpha$.}
+    \end{cases}
+\]
+So for all $\alpha\in\R$, we have $Y^{-1}((-\infty,\alpha])\in\FF_1$, so $Y$ is $\FF_1$-measurable.
+
+\newpage
+\section*{Exercise 3}
+\begin{problem}
+    Let's assume we have random variables $X_1,X_2,\dots$ such that for every $\omega\in\Omega$, the limit $\ds\lim_{n\to\infty}X_n(\omega)$ exists. Define a new function $X:\Omega\to\R$ by $X(\omega):=\ds\lim_{n\to\infty}X_n(\omega)$. Is $X$ a random variable? (Hint: start with lim inf and lim sup.)
+\end{problem}
+
+\begin{proof}
+    Let $\alpha\in\R$. We aim to prove that
+    \[X^{-1}((-\infty,\alpha]) \in \FF.\]
+    For each $n\in\N$, we define the function $Y_n : \Omega \to\R$ such that $Y_n(\omega) = \ds\inf_{k\geq n}X_k(\omega)$. This definition of $Y_n$ gives us
+    \[X(\omega) = \lim_{n\to\infty}X_n(\omega) = \sup_{n\in\N}\left(\inf_{k\geq n} X_k(\omega)\right) = \sup_{n\in\N}Y_n(\omega).\]
+    Moreover, we have
+    \[X^{-1}((\infty,\alpha]) = \{\omega\in\Omega : X(\omega)\leq \alpha\} = \{\omega\in\Omega : \sup_{n\in\N}Y_n(\omega)\leq \alpha\}.\]
+    By the definition of supremum, $\ds\sup_{n\in\N}Y_n(\omega) \leq \alpha$ if and only if $Y_n(\omega) \leq \alpha$ for all $n\in\N$. Therefore,
+    \begin{align*}
+        X^{-1}((\infty,\alpha])
+            &= \{\omega\in\Omega : Y_n(\omega)\leq \alpha,\text{ for all } n\in\N\} \\
+            &= \bigcap_{n=1}^\infty\{\omega\in\Omega : Y_n(\omega)\leq \alpha\} \\
+            &= \bigcap_{n=1}^\infty Y_n^{-1}((\infty,\alpha]).
+    \end{align*}
+    For a fixed $n\in\N$, we now consider the set $Y_n^{-1}((\infty,\alpha])$. By the definition of $Y_n$, we have
+    \[Y_n^{-1}((\infty,\alpha]) = \{\omega\in\Omega : Y_n(\omega)\leq \alpha\}.\]
+    For a given $\omega\in\Omega$, we will prove that $Y_n(\omega)\leq \alpha$ if and only if
+    \[\forall\eps>0,\; \exists \ell\geq n \text{ such that } X_\ell(\omega) < \alpha + \eps.\]
+    First assume that $Y_n(\omega)\leq\alpha$. Because $Y_n(\omega)=\ds\inf_{k\geq n}X_k(\omega)$, we have that for every $\eps>0$, there exists some $\ell\geq n$ such that
+    \[X_\ell(\omega)< Y_n(\omega) + \eps \leq \alpha+\eps.\]
+    Now assume that $Y_n(\omega)\not\leq\alpha$, i.e., that $\alpha<Y_n(\omega)$, and let
+    \[\eps = Y_n(\omega) - \alpha >0.\]
+    Now for all $\ell\geq n$ we find that
+    \[\alpha + \eps = \alpha + Y_n(\omega) - \alpha = Y_n(\omega) \leq X_\ell(\omega),\]
+    that is, $X_\ell(\omega) \not< \alpha +\eps.$ Thus, the equivalence is proven, and we can write
+    \[Y_n^{-1}((\infty,\alpha]) = \{\omega\in\Omega : \forall\eps>0, \exists \ell\geq n : X_\ell(\omega) < \alpha + \eps\}.\]
+    Moreover, we write
+    \[Y_n^{-1}((\infty,\alpha]) = \{\omega\in\Omega : \forall m\in\N, \exists \ell\geq n : X_k(\omega) < \alpha + \tfrac1m\}.\]
+    The condition involving $\eps$ and the condition involving $\frac1m$ are equivalent since both are being used to express the notion inherent to an infimum that for any value which is strictly greater than the infimum by an arbitrarily small, yet nonzero, amount we can always find an element in the set which is strictly less than this value. Since $\eps$ and $\frac1m$ are nonzero and can be made arbitrarily small, they function equivalently, in this instance. We can now write
+    \begin{align*}
+        Y_n^{-1}((\infty,\alpha])
+            &= \bigcap_{m=1}^\infty\{\omega\in\Omega : \exists \ell\geq n : X_\ell(\omega) < \alpha + \tfrac1m\} \\
+            &= \bigcap_{m=1}^\infty\bigcup_{k=n}^\infty\{\omega\in\Omega : X_k(\omega) < \alpha + \tfrac1m\} \\
+            &= \bigcap_{m=1}^\infty\bigcup_{k=n}^\infty X_k^{-1}((-\infty,\alpha + \tfrac1m)).
+    \end{align*}
+    For any $m\in\N$, note that
+    \[(\infty, \alpha + \tfrac1m) = \bigcup_{\ell=1}^\infty(-\infty, \alpha + \tfrac1m - \tfrac1\ell].\]
+    And since preimage preserves unions, then for any $k,m\in\N$, we have
+    \[X_k^{-1}((-\infty,\alpha + \tfrac1m)) = X_k^{-1}\left(\bigcup_{\ell=1}^\infty(-\infty, \alpha + \tfrac1m - \tfrac1\ell]\right) = \bigcup_{\ell=1}^\infty X_k^{-1}((-\infty, \alpha + \tfrac1m - \tfrac1\ell]).\]
+    Therefore,
+    \[X^{-1}((-\infty,\alpha]) = \bigcap_{n=1}^\infty\bigcap_{m=1}^\infty\bigcup_{k=n}^\infty\bigcup_{\ell=1}^\infty X_k^{-1}((-\infty, \alpha + \tfrac1m - \tfrac1\ell]).\]
+    And since $X_k$ is a random variable for all $k\in\N$, then for all $k,m,\ell\in\N$, we have
+    \[X_k^{-1}((-\infty, \alpha + \tfrac1m - \tfrac1\ell]) \in \FF.\]
+    Now since $\FF$ is a $\sigma$-algebra and is closed under countable unions and intersections, we have $X^{-1}((-\infty,\alpha])\in\FF$.
+    
+\end{proof}
+
+\newpage
+\section*{Exercise 4}
+\begin{problem}
+    Use the informal definition of the integral/expectation I gave in class to derive the expected value of a Poisson distributed random variable with parameter $\lambda>0$ and with probability mass function $p(n)=\P(\{n\}) = e^{-\lambda} \ds\frac{\lambda^n}{n!}$.
+\end{problem}
+
+\begin{proof}
+    We find the expected value of $X$ by the following formula:
+    \[\E[X] = \sum_{\omega\in\Omega}X(\omega)\P(\{\omega\}).\]
+    Assuming $\Omega=\N$ and $X:\N\hookrightarrow\R$, then
+    \begin{align*}
+        \E[X]
+            &= \sum_{n\in\N}n\cdot e^{-\lambda}\frac{\lambda^n}{n!} \\
+            &= \lambda e^{-\lambda} \sum_{n=1}^\infty\frac{\lambda^{n-1}}{(n-1)!} \\
+            &= \lambda e^{-\lambda} \sum_{n=0}^\infty\frac{\lambda^n}{n!}.
+    \end{align*}
+    And since the Taylor series of $e^x$ is precisely
+    \[\sum_{n=0}^\infty\frac{x^n}{n!},\]
+    and converges everywhere; in particular, for $x>0$. So
+    \[\E[X] = \lambda e^{-\lambda} e^\lambda = \lambda.\]
+    
+\end{proof}
+
+
+
+
+
+\end{document}

@@ -1,0 +1,163 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amsthm, amssymb, physics}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}
+    {\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\mybox}}\end{center}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{1em}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+
+% Extra Commands
+
+
+
+% Document Info
+\title{Assignment 3\\
+    \large GEOG 191
+}
+\author{Harry Coleman}
+\date{January 25, 2021}
+
+% Begin Document
+\begin{document}
+\maketitle
+
+\section*{1}
+\begin{problem}
+    Solve using the simplex algorithm
+    \[
+        \begin{array}{ll}
+            \textbf{Maximize} & z = 13x_1 + 11x_2 \\
+            \textbf{subject to} & 2x_1 + 5x_2 \leq 63 \\
+                & 3x_1 + 2x_2 \leq 57 \\
+                & x_1, x_2 \geq 0
+        \end{array}
+    \]
+\end{problem}
+
+We add slack variables $s_1, s_2$ to put this problem into standard augmented form
+\[\begin{array}{rrrrrrl}
+    0 & z & -13x_1 & - 11x_2 & & & = 0\\
+    1 &   & 2x_1 & +5x_2 & +s_1 & & = 63 \\
+    2 &   & 3x_1 & +2x_2 & & +s_2 & = 57
+\end{array}\]
+To start, we take basic variables $\{s_1, s_2\}$ and nonbasic variables $\{x_1, x_2\}$. From row 0, the coefficient of $x_1$ is negative and contributes the most to the objective, so it will be our entering BV. Rows 1 and 2 give us the following restrictions on $x_1$:
+\begin{align*}
+    s_1 = 63 - 2x_1 &\implies x_1 \leq \frac{63}{2} = 31.5\\
+    s_2 = 57 - 3x_1 &\implies x_1 \leq \frac{57}{3} = 19.
+\end{align*}
+Since row 2 is the most restrictive, then $s_2$ is our leaving BV. We divide row 2 by the coefficient of $x_1$ in that row to obtain
+\[\begin{array}{rrrrrrl}
+    0 & z & -13x_1 & - 11x_2 & & & = 0\\
+    1 &   & 2x_1 & +5x_2 & +s_1 & & = 63 \\
+    2 &   & x_1 & +\frac23 x_2 & & +\frac13 s_2 & = 19
+\end{array}\]
+We now eliminate $x_1$ from the other rows by adding multiple of row 2.
+\[\begin{array}{rrrrrrl}
+    0 & z &  & -\frac73 x_2 & & +\frac{13}{3}s_2 & = 247 \\
+    1 &   &  & +\frac{11}{3}x_2 & +s_1 & -\frac{2}{3}s_2 & = 25 \\
+    2 &   & x_1 & +\frac23 x_2 & & +\frac13 s_2 & = 19
+\end{array}\]
+We now have only $x_2$ in row 0 with a negative coefficient, it will be our entering BV. From rows 1 and 2, we have the following restrictions:
+\begin{align*}
+    s_1 = 25 - \frac{11}{3}x_2 &\implies x_2 \leq \frac{75}{11} = 6.\overline{81} \\
+    x_1 = 19 - \frac23x_2 &\implies x_2 \leq \frac{57}{2} = 28.5
+\end{align*}
+Row 1 is more restrictive, so $s_1$ is our leaving BV. We divide row 1 by the coefficient of $x_2$.
+\[\begin{array}{rrrrrrl}
+    0 & z &  & -\frac73 x_2 & & +\frac{13}{3}s_2 & = 247 \\
+    1 &   &  & +x_2 & +\frac{3}{11}s_1 & -\frac{2}{11}s_2 & = \frac{75}{11} \\
+    2 &   & x_1 & +\frac23 x_2 & & +\frac13 s_2 & = 19
+\end{array}\]
+We now eliminate $x_2$ from the other rows by adding multiples of row 1.
+\[\begin{array}{rrrrrrl}
+    0 & z &  &  & +\frac{7}{11}s_1 & +\frac{43}{11}s_2 & = \frac{2892}{11} \\
+    1 &   &  & +x_2 & +\frac{3}{11}s_1 & -\frac{2}{11}s_2 & = \frac{75}{11} \\
+    2 &   & x_1 &  & -\frac{2}{11}s_1 & +\frac59 s_2 & = \frac{159}{11}
+\end{array}\]
+Row 0 now only has positive coefficients, so we cannot improve the object any more. This gives us a final solution of
+\[
+    x_1 = \frac{159}{11} = 14.\overline{45} \isp{and} x_2 = \frac{75}{11} = 6.\overline{81},
+\]
+with an objective value of
+\[
+    z = \frac{2892}{11} = 262.\overline{90}.
+\]
+
+\newpage
+\section*{3}
+\begin{problem}
+    Solve using the simplex algorithm
+    \[
+        \begin{array}{ll}
+            \textbf{Minimize} & z = -2x_1 + -2x_2 \\
+            \textbf{subject to} & 2x_1 - x_2 \leq 2 \\
+                & 2x_1 + 2x_2 \leq 4 \\
+                & x_1, x_2 \geq 0
+        \end{array}
+    \]
+\end{problem}
+
+We first put the problem in to standard augmented form.
+\[\begin{array}{rrrrrrl}
+    0 & z & +2x_1 & + 2x_2 & & & = 0\\
+    1 &   & 2x_1 & -x_2 & +s_1 & & = 2 \\
+    2 &   & 2x_1 & +2x_2 & & +s_2 & = 4
+\end{array}\]
+We take $\{s_1, s_2\}$ to be our basic variables and $\{x_1, x_2\}$ to be out nonbasic variables. Our entering BV will be $x_2$, we have the following restrictions:
+\begin{align*}
+    s_1 = 2 + x_2 &\implies x_2 \geq \frac{2}{-1} = -2 \\
+    s_2 = 4 - 2x_2 &\implies x_2 \leq \frac{4}{2} = 2.
+\end{align*}
+So $s_2$ is our leaving BV. We divide row 2 by the coefficient of $x_2$.
+\[\begin{array}{rrrrrrl}
+    0 & z & +2x_1 & + 2x_2 & & & = 0\\
+    1 &   & 2x_1 & -x_2 & +s_1 & & = 2 \\
+    2 &   & x_1 & +x_2 & & +\frac{1}{2}s_2 & = 2
+\end{array}\]
+Then we eliminate $x_2$ from the other rows
+\[\begin{array}{rrrrrrl}
+    0 & z &  &  & & -\frac{1}{2}s_2 & = -4\\
+    1 &   & 3x_1 &  & +s_1 & +\frac{1}{2}s_2 & = 2 \\
+    2 &   & x_1 & +x_2 & & +\frac{1}{2}s_2 & = 2
+\end{array}\]
+Our objective cannot be improved, so this is an optimal solution. With basic variables $\{s_1, x_2\}$, rows 1 and 2 give us
+\[
+    s_1 = 2 \isp{and} x_2 = 2.
+\]
+Since $x_1$ is a nonbasic variable, we take $x_1 = 0$, so we have the solution
+\[
+    x_1 = 0 \isp{and} x_2 = 2
+\]
+with objective value
+\[
+    z = -4.
+\]
+
+
+
+\end{document}

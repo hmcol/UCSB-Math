@@ -1,0 +1,201 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Theorem Environments
+%\theoremstyle{definition}
+%\newtheorem{proposition}{Proposition}
+%\newtheorem{lemma}{Lemma}
+
+% Options
+%\allowdisplaybreaks
+%\addtolength{\jot}{4pt}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+
+% Extra Commands
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\teq}{\trianglelefteq}
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\Ip}{I_{\mathrm{p}}}
+\newcommand{\Vp}{V_{\mathrm{p}}}
+\newcommand{\rad}{\sqrt}
+\DeclareMathOperator{\codim}{codim}
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH 120AG Homework 5}
+    \fancyhead[C]{May 3, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+\begin{pbox}[Exercise 5.23]
+    Use diagonals to prove the following statements:
+\end{pbox}
+
+\begin{pbox}[(a)]
+    The intersection of any two affine open subsets of a variety is again an affine open subset.
+\end{pbox}
+
+
+
+\begin{proof}
+    Let $U, V \subseteq X$ be affine open subsets of the variety $X$. We know $U \cap V$ is open in $X$, therefore an open subprevariety of $X$. It remains the prove affine. Since $U$ and $V$ are affine varieties, then their product $U \times V$ is again an affine variety. There is an inclusion morphism of prevarieties $\iota : U \times V \inc X \times X$ which, in particular, is continuous. By definition, $X$ being a variety means the diagonal $\Delta_X$ is closed in $X \times X$. Then the preimage $\iota^{-1}(\Delta_X)$ is closed in $U \times V$. As sets, we have
+    \[
+        \iota^{-1}(\Delta_X)
+            = (U \times V) \cap \Delta_X
+            = \Delta_{U \cap V}.
+    \]
+    As a closed subset of the affine variety $U \times V$, we deduce that $\Delta_{U \cap V}$ is an affine variety. There are inclusion morphisms of prevarieties, $U \cap V \inc U$ and $U \cap V \inc V$, which uniquely define the morphism of prevarieties
+    \begin{align*}
+        i :  U \cap V &\to \Delta_{U \cap V} \\
+            x &\mapsto (x, x).
+    \end{align*}
+    Moreover, $i$ is an isomorphism of prevarieties, with inverse given by the restriction to $\Delta_{U \cap V}$ of either the projection $\pi_U : U \times V \to U$ or the projection $\pi_V : U \times V \to V$, i.e.,
+    \[
+        i^{-1} = \pi_U|_{\Delta_{U \cap V}} = \pi_V|_{\Delta_{U \cap V}}.
+    \]
+    Hence, $U \cap V \isom \Delta_{U \cap V}$ as prevarieties. And since $\Delta_{U \cap V}$ is an affine variety, then so is $U \cap V$.
+
+\end{proof}
+
+
+\newpage
+\begin{pbox}[(b)]
+    If $X, Y \subseteq \A^n$ are two pure-dimensional affine varieties then every irreducible component of $X \cap Y$ has dimension at least $\dim X + \dim Y - n$.
+\end{pbox}
+
+\begin{proof}
+    There is an inclusion morphism $\iota : X \times Y \inc \A^n \times \A^n$. Since $\A^n$ is an affine variety, then $\Delta_{\A^n}$ is closed in $\A^n \times \A^n$, with
+    \[
+        \Delta_{\A^n} = V(x_1 - y_1, \dots, x_n - y_n),
+    \]
+    where each $x_j - y_j \in A(\A^n \times \A^n)$. Then, similar to (a), we find
+    \[
+        \iota^{-1}(\Delta_{\A^n}) = (X \times Y) \cap \Delta_{\A^n} = \Delta_{X \cap Y},
+    \]
+    with $X \cap Y \isom \Delta_{X \cap Y}$ as affine varieties. Then
+    \[
+        \Delta_{X \cap Y} = V(x_1 - y_1, \dots, x_n - y_n),
+    \]
+    where each $x_j - y_j \in A(X \times Y)$. Then
+    \[
+        I(\Delta_{X \cap Y}) = \rad{\<x_1 - y_1, \dots, x_n - y_n\>} \teq A(X \times Y).
+    \]
+    
+    With the evaluation homomorphism
+    \begin{align*}
+        K[x_1, \dots, x_n, y_1, \dots, y_n] &\to K[x_1, \dots, x_n] \\
+            p(x_1, \dots, x_n, y_1, \dots, y_n) &\mapsto p(x_1, \dots, x_n, x_1, \dots, x_n),
+    \end{align*}
+    we obtain
+    \[
+        K[x_1, \dots, x_n, y_1, \dots, y_n]/\<x_1 - y_1, \dots, x_n - y_n\> \isom K[x_1, \dots, x_n].
+    \]
+    This is an integral domain, implying that $\<x_1 - y_1, \dots, x_n - y_n\>$ is a is prime ideal in $K[x_1, \dots, x_n, y_1, \dots, y_n]$. Therefore, its projection onto the quotient
+    \[
+        A(X \times Y) = K[x_1, \dots, x_n, y_1, \dots, y_n]/I(X \times Y)
+    \]
+    will again be a prime ideal, therefore a radical ideal. Then
+    \[
+        I(\Delta_{X \cap Y}) = \<x_1 - y_1, \dots, x_n - y_n\> \teq A(X \times Y).
+    \]
+
+    That is, $I(\Delta_{X \cap Y})$ is an ideal of the Noetherian ring $A(X \times Y)$, generated by $n$ elements. By Krull's height theorem, the minimal prime ideals of $A(X \times Y)$ containing $I(\Delta_{X \cap Y})$ have height at most $n$. This corresponds to the irreducible components of $\Delta_{X \cap Y}$ having codimension in $X \times Y$ at most $n$. Each irreducible component of $X \cap Y$ is isomorphic to an irreducible component $Z$ of $\Delta_{X \cap Y}$, of the same dimension and for which we have
+    \[
+        \dim(X \times Y) = \dim Z + \codim_{X \times Y} Z \leq \dim Z + n,
+    \]
+    so
+    \[
+        \dim X + \dim Y - n \leq \dim Z.
+    \]
+
+\end{proof}
+
+
+\newpage
+\begin{pbox}[Exercise 6.13]
+    Let $a \in \P^n$ be a point. Show that the one-point set $\{a\}$ is a projective variety, and compute explicit generators for the ideal $\Ip(\{a\}) \teq K[x_0, \dots, x_n]$.
+\end{pbox}
+
+\begin{proof}
+    Suppose $a = [a_0, a_1, \dots, a_n]$. We know that not all $a_j$'s are zero, otherwise $a$ would not describe a linear subspace of $\A^{n+1}$. Without loss of generality, assume $a_0 \ne 0$ (otherwise, we replace $a_0$ with a nonzero $a_j$ in the following argument), then
+    \[
+        a = [a_0, a_1, \dots, a_n] = \left[1, \tfrac{a_1}{a_0}, \dots, \tfrac{a_n}{a_0}\right].
+    \]
+    For any $x \in \P^n$, we have $x = a$ if and only if $x = [x_0, x_1, \dots, x_n]$ with $x_0 \ne 0$ and
+    \[
+        \left[1, \tfrac{x_1}{x_0}, \dots, \tfrac{x_n}{x_0}\right] = \left[1, \tfrac{a_1}{a_0}, \dots, \tfrac{a_n}{a_0}\right].
+    \]
+    This last equality holds if and only if, for $j = 1, \dots, n$, we have $\tfrac{x_j}{x_0} = \tfrac{a_j}{a_0}$, which is equivalent to $a_0x_j - a_jx_0 = 0$. Therefore, the singleton $\{a\}$ is given as the zero locus
+    \[
+        \{a\} = \Vp\left(x_1 - \tfrac{a_1}{a_0}x_0, \dots, x_n - \tfrac{a_n}{a_0}x_0\right)
+    \]
+    of homogeneous polynomials. So in fact, $\{a\}$ is a projective variety. 
+
+\end{proof}
+
+Let
+\[
+    J = \left\<x_1 - \tfrac{a_1}{a_0}x_0, \dots, x_n - \tfrac{a_n}{a_0}x_0\right\> \teq K[x_0, \dots, x_n]
+\]
+be the ideal generated by homogeneous polynomials; we claim $\Ip(\{a\}) = J$.
+
+    By the projective Nullstellensatz, we have
+\[
+    \Ip(\{a\}) = \Ip(\Vp(J)) = \rad{J}.
+\]
+To show that $J$ is a radical ideal, we will show that it is a prime ideal, by showing that the quotient ring $K[x_0, \dots, x_n]/J$ is an integral domain. Consider the evaluation homomorphism of rings
+\begin{align*}
+    \phi : K[x_0, \dots, x_n] &\to K[x] \\
+        p(x_0, x_1, \dots, x_n) &\mapsto p\left(x, \tfrac{a_1}{a_0}x, \dots, \tfrac{a_n}{a_0}x\right).
+\end{align*}
+This map is surjective, as the restriction to $K[x_0]$ is simply the isomorphism $K[x_0] \to K[x]$ by $x_0 \mapsto x$. Moreover, its kernel is precisely the ideal $J$, so
+\[
+    K[x_0, \dots, x_n]/J = K[x_0, \dots, x_n]/\ker\phi \isom K[x].
+\]
+Since $K[x]$ is an integral domain, this proves $J$ is a prime, therefore radical, ideal. Hence,
+\[
+    \Ip(\{a\}) = \rad{J} = J = \left\<x_1 - \tfrac{a_1}{a_0}x_0, \dots, x_n - \tfrac{a_n}{a_0}x_0\right\>.
+\]
+
+\end{document}

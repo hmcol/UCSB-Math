@@ -1,0 +1,195 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow,enumitem}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools,babel}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{\textwidth-10pt}}
+    {\end{minipage}\end{lrbox}\framebox[6.5in]{\usebox{\mybox}}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+\newenvironment{response}{\paragraph{}}{}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\seq}[2]{\left\{#1\right\}_{#2=1}^\infty}
+\newcommand{\clo}[1]{\overline{#1}}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ang}{\langle}{\rangle}
+
+% Sets
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+
+% Misc Characters
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\let\eps\varepsilon
+\let\emptyset\varnothing
+
+% Functions
+\newcommand{\id}[1]{\mathsf{id}_{#1}}
+
+% Babel Shorthands
+\useshorthands*{"}
+\defineshorthand{"-}{\setminus}
+\defineshorthand{"d}{\partial}
+
+% Probability
+\newcommand{\FF}{\mathcal{F}}
+\renewcommand{\P}{\mathbb{P}}
+ 
+\begin{document}
+ 
+\title{Homework 2\\
+    \large MATH 118A Intro to Real Analysis
+}
+\author{Harry Coleman}
+\date{October 15, 2020}
+\maketitle
+
+\section*{Exercise 1}
+\begin{problem}
+    Let $x \in \mathbb{R}$ and assume that $0 \le x <  \eps$ for all $\eps >0$. Prove that $x=0$.
+\end{problem}
+
+\begin{proof}
+    Suppose that $0<x$. Then
+    \[0<\frac x2 < x,\]
+    which contradicts the fact that $0\leq x < \eps$ for all $\eps>0$. Therefore, $0\leq x\leq 0$, so $x=0$.
+    
+\end{proof}
+
+\section*{Exercise 2}
+\begin{problem}
+    Given nonempty subsets $A$ and $B$ of positive real numbers, let $C$ denote the set
+    \[
+     C = \{ xy:\ x \in A,\ y\in B\}.
+    \]
+    If each $A$ and $B$ has a supremum, then prove that $C$ has a supremum and 
+    \[
+     \sup C = \sup A \cdot  \sup B.
+    \]
+\end{problem}
+
+\begin{proof}
+    Note that since $A$ and $B$ are strictly positive and nonempty, then each has some positive element, so the supremum of each is also positive. Suppose $xy\in C$ with $x\in A$ and $y\in B$, then
+    \[xy \leq x\sup B \leq \sup A \sup B,\]
+    so $\sup A\sup B$ is an upper bound for $C$. To show it is the least upper bound, suppose $z<\sup A\sup B$. By definition of supremum, there exists some $x\in A$ such that
+    \[\frac z{\sup B} < z \leq \sup A,\]
+    which implies that
+    \[\frac zx < \sup B.\]
+    Again, by definition of supremum, there exists some $y\in B$ such that
+    \[\frac zx < y \leq \sup B,\]
+    which implies that $z<xy$. And since $xy\in C$, then $z$ is not an upper bound of $C$. Therefore, $\sup C = \sup A \sup B$.
+    
+\end{proof}
+
+\section*{Exercise 3}
+\begin{problem}
+    Check if the following sets are bounded, and if so, find their suprema and infima. Determine whether the suprema and infima belong to the set:
+\end{problem}
+
+\subsection*{Exercise 3(a)}
+\begin{problem}
+    $A = \left \{ (x+1)/(|x|+2):\ x \in \mathbb{R} \right \}$.
+\end{problem}
+
+\begin{proposition}
+    $A$ is bounded above and below with $\sup A = 1$ and $\inf A = -1$. Additionally, $\sup A, \inf A \notin A$.
+\end{proposition}
+
+\begin{proof}
+    Suppose $A$ is not strictly bounded above by $1$, then there exists some $x\in\R$ such that
+    \[1 \leq \frac{x+1}{|x|+2}.\]
+    However, this implies that
+    \[x + 2 \leq |x|+2 \leq x+1,\]
+    giving us $2\leq1$. Similarly, suppose $A$ is not strictly bounded below by $-1$, so there exists some $x\in\R$ such that
+    \[\frac{x+1}{|x|+2} \leq-1.\]
+    However, this implies that
+    \[x+1 \leq-|x|-2 \leq x -2,\]
+    giving us $1\leq-2$. Now since
+    \[\lim_{x\to\infty}\frac{x+1}{|x|+2} = 1 \isp{and} \lim_{x\to-\infty}\frac{x+1}{|x|+2} = -1,\]
+    then we have $\sup A=1$ and $\inf A=-1$, and because these are strict bounds on $A$, then they are not elements of $A$.
+    
+\end{proof}
+
+\subsection*{Exercise 3(b)}
+\begin{problem}
+    $B = \left \{ 2/n - 3/m:\ n,m\in \mathbb{N} \right \}$.
+\end{problem}
+
+\begin{proposition}
+    $B$ is bounded above and below with $\sup B = 2$ and $\inf B = -3$. Additionally, $\sup B, \inf B \notin B$.
+\end{proposition}
+
+\begin{proof}
+    For all $n,m\in\N$, we have the strict upper bound
+    \[\frac2n-\frac3m < \frac2n-0 \leq 2.\]
+    This is the least upper bound since if we fix $n=1$,
+    \[\lim_{m\to\infty}\frac2n-\frac3m = \lim_{m\to\infty}\frac21-\frac3m = 2-0 = 2.\]
+    For all $n,m\in\N$, we have the strict lower bound
+    \[-3 \leq 0 - \frac3m < \frac2n - \frac3m.\]
+    This is the greatest lower bound since if we fix $m=1$,
+    \[\lim_{n\to\infty}\frac2n-\frac3m = \lim_{n\to\infty}\frac2n-\frac31 = 0-3 = -3.\]
+    
+\end{proof}
+
+\subsection*{Exercise 3(c)}
+\begin{problem}
+    $C = \left \{ x \in \mathbb{R}:\ \Big | |x-1| - |x-2| \Big | < 2\right \}$.
+\end{problem}
+
+\begin{proposition}
+    $C=\R$, i.e., $C$ is unbounded.
+\end{proposition}
+
+\begin{proof}
+    By definition, $C\subseteq\R$. Let $x\in\R$, then by the reverse triangle inequality,
+    \[||x-1|-|x-2|| \leq |(x-1)-(x-2)| = |1| < 2.\]
+    Therefore, $x\in C$, so $\R\subseteq C$.
+    
+\end{proof}
+
+\section*{Exercise 4}
+\begin{problem}
+    Given nonempty subsets $S$ and $T$ of $\mathbb{R}$ such that $s \le t$ for all $s\in S$ and all $t \in T$. Prove that $S$ has a supremum, $T$ has a infimum, and 
+    \[
+     \sup S \le \inf T.
+    \]
+\end{problem}
+
+\begin{proof}
+    Let $t\in T$, so $s\leq t$ for all $s\in S$. So every element in $T$ is an upper bound for $S$. Similarly, every element of $S$ is a lower bound for $T$. Since $S$ and $T$ are bounded above and below, respectively, then $\sup S$ and $\inf T$ exist. Now since for every $t\in T$, $t$ is an upper bound for $S$, we have $\sup S \leq t$. This being true for all $t\in T$ then implies that $\sup S \leq \inf T$.
+    
+\end{proof}
+
+
+
+
+\end{document}

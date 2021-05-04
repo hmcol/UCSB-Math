@@ -1,0 +1,203 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow,enumitem}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Set Names
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+
+% Misc Characters
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\newcommand{\eps}{\varepsilon}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ang}{\langle}{\rangle}
+
+% Homework Sections
+\setlength{\fboxsep}{4pt}
+\newcommand{\generic}[2]{\section*{#1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\ex}[2]{\generic{Exercise #1}{#2}}
+\newcommand{\prob}[2]{\generic{Problem #1}{#2}}
+\newcommand{\ques}[2]{\generic{Question #1}{#2}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+% MATH CS 117 Intro to Real Analysis
+\newcommand{\ds}{\displaystyle}
+\newcommand{\seq}[1]{\left\{#1\right\}_{n=1}^\infty}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+ 
+\begin{document}
+ 
+\title{Assignment 6\\
+    \large MATH CS 117 Intro to Real Analysis}
+\author{Harry Coleman}
+\date{May 18, 2020}
+\maketitle
+
+\ques{1}{
+    Suppose that $f:[0,1]\to[0,1]$ and that $f$ is continuous on $[0,1]$.  Prove that there exists at least one point $x\in[0,1]$ such that $f(x)=x$.
+}
+
+Let $a_0=0$ and $b_0=1$. We define the sequences $\seq{a_n}$ and $\seq{b_n}$ recursively. Given $a_n,b_n$, we define
+\[m_n = \frac{a_n+b_n}2.\]
+Then we define
+\[a_{n+1} = \begin{cases}
+    m_n &\text{if } f(m_n)\geq m_n,\\
+    a_n &\text{otherwise;}
+\end{cases}\]
+\[b_{n+1} = \begin{cases}
+    m_n &\text{if } f(m_n)\leq m_n,\\
+    b_n &\text{otherwise.}
+\end{cases}\]
+Notice that for all $n\in\N$, we have
+\[a_n \leq f(a_n) \quad\text{and}\quad f(b_n)\leq b_n, \tag{1.1}\]
+since it is true for $a_0$ and $b_0$, and the recursive definition ensures this property holds. Also by our definition, we have
+\[a_n\leq a_{n+1}\leq m_n\leq b_{n+1}\leq b_n\]
+for all $n\in\N$, so $\seq{a_n}$ and $\seq{b_n}$ are increasing and decreasing, respectively. This also tells us that $\seq{a_n}$ is bounded above by 1 and $\seq{b_n}$ is bounded below by 0. Lastly, from this definition, we obtain
+\[b_n-a_n \leq 2^{-n}, \tag{1.2}\]
+since our starting interval is $[a_0,b_0]=[0,1]$, and each subsequent interval is at most half the previous interval. Now since $\seq{a_n}$ and $\seq{b_n}$ are monotone and bounded, they are convergent to some $M,L\in[0,1]$, respectively. Letting $n\to\infty$ in (1.2), we find
+\[M-L \leq 0,\]
+which implies $M=L$. Call this value $x=M=L$. Then letting $n\to\infty$ in (1.1), the continuity of $f$ gives us
+\[x\leq f(x) \quad\text{and}\quad f(x) \leq x.\]
+Thus, $f(x)=x$.
+
+\ques{2}{
+    Suppose that $f:\R\to\R$ and that $f$ is continuous on $\R$.  Prove that if $\seq{x_n}$ is a Cauchy sequence, then $\seq{f(x_n)}$ is also a Cauchy sequence.
+}
+
+Suppose $\seq{x_n}$ is Cauchy, then it is convergent to some $x$. Since $f$ is continuous, $\seq{f(x_n)}$ converges to $f(x)$. Therefore, $\seq{f(x_n)}$ is Cauchy.
+
+
+\ques{3}{
+    Find an example of a function $f:\R\to\R$ such that $f$ is not continuous on $\R$ and for every $a<b$, $f$ achieves a maximum and minimum value on $[a,b]$.
+}
+
+We define the function $f:\R\to\R$ by
+\[f(x) = \begin{cases}
+    1 &\text{if } x\in\Q, \\
+    0 &\text{if } x\in\R\setminus\Q,
+\end{cases}\]
+which is not continuous. Then for any $a<b$, we can find a rational number $q$ such that $a\leq q \leq b$ and an irrational real number $p$ such that $a\leq p\leq b$. Then $f(q)=1$ and $f(p)=0$, so 
+\[\max f([a,b]) = 1 \quad\text{and}\quad \min f([a,b])=0.\]
+
+\newpage
+\ques{4}{
+    \begin{enumerate}[label=(\alph*)]
+    \item
+    \label{4a}
+    Let $D\subset\R$ and suppose that $f:D\to\R$ is continuous on $D$.
+    Prove that $|f|$ is continuous on $D$.  (Suggestion:  Use the reverse triangle inequality.)
+    \item
+    Let $D\subset\R$ and suppose that $f:D\to\R$ and $g:D\to\R$ are continuous on $D$.
+    Prove that $\max\{f,g\}$ is continuous on $D$.
+    (Suggestion:  Use the fact that for any $a,b\in\R$, $\max\{a,b\}=\tfrac12[a+b+|a-b|]$.)
+    \end{enumerate}
+}
+
+\subsection*{(a)}
+
+Let $a\in D$ and let $\eps>0$ be given. Then for some $\delta>0$,
+\[x\in D, |x-a|<\delta \implies |f(x)-f(a)|<\eps.\]
+If $x\in D$ and $|x-a|<\delta$, then by the reverse triangle inequality,
+\[||f(x)|-|f(a)|| \leq |f(x)-f(a)| < \eps.\]
+Thus $|f|$ is continuous on $D$.
+
+\subsection*{(b)}
+
+Since $f$ and $g$ are continuous on $D$, and the sum of continuous functions is continuous, $f-g$ is also continuous on $D$. Since the absolute value function $|-|:\R\to\R$ is continuous on $\R$ (the range of $f-g$), and the composition of continuous functions is continuous, we have that $|f-g|$ is continuous on $D$. Then $f+g+|f-g|$ is also continuous on $D$, since the sum of continuous functions is continuous. And $\frac12(f+g+|f-g|)$ is continuous on $D$, since a scalar multiple of  a continuous function is continuous. And since for all $x\in D$,
+\[\max\{f(x),g(x)\} = \frac12(f(x)+g(x)+|f(x)-g(x)|,\]
+we have $\max\{f,g\}$ continuous on $D$.
+
+\newpage
+\ques{5}{
+    Let $f:\R\to\R$.  Prove that $f$ is continuous on $\R$ if and only if the inverse image of every open set is open.
+}
+
+Suppose $f$ is continuous on $\R$ and let $E\subset\R$ be open. We consider the preimage of $E$ under $f$,
+\[f^{-1}(E) = \{x\in\R : f(x)\in E\}.\]
+If this is the empty set, it is open, so assume nonempty. Let $a\in f^{-1}(E)$, so $f(a)\in E$. Since $E$ is open, for some $\eps>0$ small enough, the open interval $(f(a)-\eps, f(a)+\eps)\subseteq E$. Then by the continuity of $f$, there is some $\delta>0$ such that 
+\[x-a|<\delta \implies |f(x)-f(a)|<\delta,\]
+that is,
+\[x\in(a-\delta, a+\delta) \implies x\in(f(a)-\eps, f(a)+\eps).\]
+Then we have the open interval $(a-\delta, a+\delta)\in f^{-1}(E)$ around $a$. Thus, $f^{-1}(E)$ is open.
+
+Now suppose that for all open sets $E$, its preimage is open. Let $a\in\R$ and let $\eps>0$ be given. Consider the open set $(f(a)-\eps, f(a)+\eps)$, its preimage $f^{-1}(f(a)-\eps, f(a)+\eps)$ must be open. Then since $a\in f^{-1}(f(a)-\eps, f(a)+\eps)$, there is some open interval \[(a-\delta,a+\delta)\subseteq f^{-1}(f(a)-\eps, f(a)+\eps).\]
+That is, for any $x\in\R$,
+\[|x-a|<\delta \implies |f(x)-f(a)|<\eps.\]
+Thus, $f$ is continuous.
+
+\newpage
+\ques{6}{
+  Suppose that $f:\R\to\R$ and that $f$ is continuous on $\R$.  Prove that 
+    \[\{x\in\R:f(x)=0\}\]
+    is a closed set.  (One strategy would be to show that the complement is an open set.)
+}
+
+Define $C=\{x\in\R:f(x)=0\}$. Let $x\in C'$ and suppose $\seq{x_n}$ is a sequence in $C$ converging to $x$. Then, since $f$ is continuous,
+\[\lim_{x_n\to x}f(x_n)=f(x).\]
+Now since $f(x_n)=0$ for all $n\in\N$, then
+\[\lim_{x_n\to x}f(x_n) = 0.\]
+Thus, $f(x)=0$ so $x\in C$. Therefore $C'\subseteq C$, so $C$ is closed.
+
+\ques{7}{
+    Let $D\subset\R$.  Prove that $D\cup D'$ is closed.
+}
+
+We first prove that $D'$ is closed. If $(D')'=\emptyset$, then it is closed, so assume it is nonempty. Let $x\in (D')'$. So every open interval $(x-\eps,x+\eps)$ contains infinitely many points in $D'$. Let $y\in D'\cap (x-\eps,x+\eps)$. Then we pick a neighborhood of $y$, which is a subset of the interval $(x-\eps,x+\eps)$. This neighborhood contains infinitely many points in $D$, since $y\in D'$. Therefore, $(x-\eps,x+\eps)$ contains infinitely many points in $D$. So every neighborhood of $x$ contains infinitely many points in $D$, thus $x\in D'$, so $D'$ is closed.
+
+Suppose $\seq{x_n}$ is a sequence in $D\cup D'$ which converges to some $x$. We aim to prove $D\cup D'$ is closed by showing $x\in D\cup D'$. Either $\seq{x_n}$ contains infinitely many points in $D$ or infinitely many points in $D'$. If it contains infinitely many points in $D$, then we can pick a subsequence $\{x_{n_k}\}_{k=1}^\infty$ which is in $D$. This subsequence converges to $x$, and since it is a sequence in $D$, then we have $x\in D'\subseteq D\cup D'$. On the other hand, if $\seq{x_n}$ contains infinitely many points in $D'$, then we pick a subsequence $\{x_{n_k}\}_{k=1}^\infty$ in $D'$, which again, converges to $x$. Since $D'$ is closed, we have $x\in D'\subseteq D\cup D'$. So in either case, $x\in D\cup D'$, therefore $D\cup D'$ is closed. 
+
+\ques{8}{
+    Let $E\subset\R$ be compact, and define
+$
+C(E)=\{f:E\to\R: \text{$f$ is continuous on $E$}\}.
+$
+For $f\in C(E)$, define
+$
+\|f\|_\infty=\sup \{|f(x)|:x\in E\}.
+$
+\begin{enumerate}[label=(\alph*)]
+\item
+Explain why $\|f\|_\infty$ is well-defined, for all $f\in C(E)$.  (Suggestion:  Use problem 4a.)
+\item
+Prove that
+\[
+\|f-g\|_\infty\le \|f\|_\infty+\|g\|_\infty,\isp{for all} f,g\in C(E).
+\]
+\end{enumerate}
+($\|\cdot\|_\infty$ is a norm on the vector space $C(E)$, and with this norm, $C(E)$ is complete, i.e.\ every
+Cauchy sequence in $C(E)$ has a limit in $C(E)$.  A complete normed vector space is called
+ a Banach space.)
+}
+
+\subsection*{(a)}
+
+Let $f\in C(E)$. Since $f$ is continuous on $E$, $|f|$ is continuous on $E$. Since $E$ is compact and $|f|$ is continuous on $E$, we have $|f(E)|$ is also compact. Therefore $|f(E)|$ is bounded, so $\sup |f(E)|$ exists.
+
+\subsection*{(b)}
+
+Since $||-||_\infty$ is a norm on the vector space $C(E)$, the triangle inequality holds. So for any $f,g\in C(E)$,
+\[||f-g||_\infty \leq ||f||_\infty + ||-g||_\infty = ||f||_\infty + ||g||_\infty.\]
+
+
+
+
+\end{document}

@@ -1,0 +1,216 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow,enumitem}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools,babel}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{\textwidth-10pt}}
+    {\end{minipage}\end{lrbox}\framebox[6.5in]{\usebox{\mybox}}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+\newenvironment{response}{\paragraph{}}{}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\seq}[2]{\left\{#1\right\}_{#2=1}^\infty}
+\newcommand{\clo}[1]{\overline{#1}}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\newcommand{\<}{\left\langle}
+\renewcommand{\>}{\right\rangle}
+\DeclarePairedDelimiter{\ang}{\langle}{\rangle}
+
+% Sets
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+
+% Misc Characters
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\let\eps\varepsilon
+\let\emptyset\varnothing
+
+% Functions
+\newcommand{\id}[1]{\mathsf{id}_{#1}}
+
+% Babel Shorthands
+\useshorthands*{"}
+\defineshorthand{"-}{\setminus}
+\defineshorthand{"d}{\partial}
+
+% Probability
+\newcommand{\FF}{\mathcal{F}}
+\renewcommand{\P}{\mathbb{P}}
+
+% Complex Analysis
+\renewcommand{\Im}{\text{Im }}
+\renewcommand{\Re}{\text{Re }}
+\newcommand{\Arg}{\text{Arg }}
+ 
+\begin{document}
+ 
+\title{Homework 2\\
+    %\large MATH CS 121 Intro to Probability
+    %\large MATH CS 122A Complex Analysis I
+    %\large MATH 118A Intro to Real Analysis
+    \large MATH 111A Intro to Abstract Algebra
+}
+\author{Harry Coleman}
+\date{October 22, 2020}
+\maketitle
+
+\section*{Exercise 1.3.1}
+\begin{problem}
+    Let $\sigma$ be the permutation
+    \[ \left( \begin{array}{ccccc}
+        1 & 2 & 3 & 4 & 5 \\
+        3 & 4 & 5 & 2 & 1
+    \end{array}\right)\]
+    and let $\tau$ be the permutation
+    \[ \left( \begin{array}{ccccc}
+        1 & 2 & 3 & 4 & 5 \\
+        5 & 3 & 2 & 4 & 1
+    \end{array}\right)\]
+    Find the cycle decompositions of the following permutations: $\sigma, \tau, \sigma^2, \sigma\tau, \tau\sigma$, and $\tau^2\sigma$.
+\end{problem}
+
+\begin{itemize}
+    \item $\sigma = (1\ 3\ 5)(2\ 4) \quad |\sigma| = 6$
+    \item $\tau = (1\ 5)(2\ 3) \quad |\tau| = 2$
+    \item $\sigma^2 = (1\ 5\ 3) \quad |\sigma^2| = 3$
+    \item $\sigma\tau = (2\ 5\ 3\ 4) \quad |\sigma\tau| = 4$
+    \item $\tau\sigma = (1\ 2\ 4\ 3) \quad |\tau\sigma| = 4$
+    \item $\tau^2\sigma = (1\ 3\ 5)(2\ 4) \quad |\tau^2\sigma| = 6$
+\end{itemize}
+
+
+\newpage
+\section*{Exercise 1.3.10}
+\begin{problem}
+    Prove that if $\sigma$ is the $m$-cycle $(a_1a_2\dots a_m)$, then for all $i\in\{1,\dots,m\}$, $\sigma^i(a_k)=a_{k+i}$, where $k+i$ is replaced by its least residue mod $m$ when $k+i>m$. Deduce that $|\sigma|=m$.
+\end{problem}
+
+\begin{proof}
+    For a fixed $m\in\N$, let $\sigma=(a_1\ \dots\ a_m)$. We prove the claim by induction on $i\in\N$. For $i=1$, we have by definition of an $m$-cycle,
+    \[\sigma^1(a_k) = a_{(k+1 \mod m)}\]
+    for any $k\in\{1,\dots,m\}$. Now suppose that the property holds for some $i\geq 1$, and consider for some $k\in\{1,\dots,m\}$,
+    \[\sigma^{i+1}(a_k) = \sigma\sigma^i(a_k).\]
+    By the inductive hypothesis, we have
+    \[\sigma^{i+1}(a_k) = \sigma(a_{(k+i \mod m)}).\]
+    And since the property also holds for $i=1$, we have
+    \[\sigma^{i+1}(a_k) = a_{((k+i \mod m))+1 \mod m)} = a_{(k+i+1 \mod m)}.\]
+    Therefore the property is held for all $i\in\N$. Note that because $k+i \equiv k \pmod m$ if and only if $i\equiv0\pmod m$, then we in fact have $m$ as the smallest positive integer with $\sigma^m=1$, that is, $|\sigma|=m$.
+    
+\end{proof}
+
+\newpage
+\section*{Exercise 2.4.14}
+\begin{problem}
+     A group $H$ is called \emph{finitely generated} if there is a finite set $A$ such that $H=\<A\>$.
+\end{problem}
+
+\subsection*{Exercise 2.4.14(a)}
+\begin{problem}
+     Prove that every finite groups is finitely generated.
+\end{problem}
+
+\begin{proof}
+    Suppose $G$ is a finite group, then we have the finite subset $G\subseteq G$. By definition of $\<G\>$, we have $G\subseteq\<G\>\subseteq G$, which implies $\<G\>=G$. Therefore, $G$ is finitely generated.
+    
+\end{proof}
+
+\subsection*{Exercise 2.4.14(b)}
+\begin{problem}
+     Prove that $\Z$ is finitely generated.
+\end{problem}
+
+\begin{proof}
+    Consider the subset $\{-1,1\}\subseteq\Z$, and the corresponding generated subgroup $\<\{-1,1\}\>\leq\Z$. For any $a\in\Z$, we have three cases: $a=0$, $a>0$, or $a<0$. If $a=0$, then $a=0=-1+1\in\<\{-1,1\}\>$. If $a>0$, then $a = a\cdot 1 \in\<\{-1,1\}\>$. If $a<0$, then $-a = |a|\cdot(-1) \in\<\{-1,1\}\>$. Therefore, $\Z=\<\{-1,1\}\>$, so $\Z$ is finitely generated.
+    
+\end{proof}
+
+\subsection*{Exercise 2.4.14(c)}
+\begin{problem}
+     Prove that every finitely generated subgroup of the additive groups $\Q$ is cyclic. [If $H$ is a finitely generated subgroup of $\Q$, show that $\ds H\leq \<\frac1k\>$, where $k$ is the product of all the denominators which appear in a set of generators for $H$.]
+\end{problem}
+
+\begin{proof}
+    Suppose $H\leq \Q$ is finitely generated, that is, there exists some subset of $\Q$,
+    \[\left\{\frac{a_1}{b_1}, \dots, \frac{a_n}{b_n}\right\},\]
+    which generates $H$. Since the additive group $\Q$ is abelian, and so is the subgroup $H$, then for any $h\in H$, we have the representation
+    \[h = c_1\frac{a_1}{b_1} + \cdots + c_n\frac{a_n}{b_n}\]
+    for some $c_1,\dots,c_n\in\Z$. If we define $k=b_1\cdots b_n$, then
+    \[h = \frac{c_1a_1}{b_1} + \cdots + \frac{c_na_n}{b_n} = \frac{c_1a_1(k/b_1) + \cdots + c_na_n(k/b_n)}k = \frac\ell k.\]
+    Note that since $b_1,\dots,b_n$ are precisely the factors of $k$, then $\ell\in\Z$. Therefore, $\ds h\in\<\frac1k\>$, so $\ds H\leq\<\frac1k\>$. And since subgroups of cyclic groups are themselves cyclic, we have that $H$ is cyclic.
+    
+\end{proof}
+
+\subsection*{Exercise 2.4.14(d)}
+\begin{problem}
+     Prove that $\Q$ is not finitely generated.
+\end{problem}
+
+\begin{proof}
+    Suppose, for the purpose of contradiction, that $\Q$ is finitely generated. Then by the previous exercise, $\Q$ must be cyclic, i.e., there exists some $\ds\frac ab\in \Q$ such that $\ds\<\frac ab\> = \Q$. Without loss of generality, we assume that $a\ne0$, $b>0$. Therefore, there exists some $k\in\Z$ such that
+    \[k\frac ab = \frac a{b+1}.\]
+    However, this implies that
+    \begin{align*}
+        ak(b+1) &= ab, \\
+        k(b+1) &= b, \\
+        k = \frac b{b+1},
+    \end{align*}
+    Because $b$ and $b+1$ are coprime, this implies $k\notin\Z$.
+    
+\end{proof}
+
+\newpage
+\section*{Exercise 2.3.3}
+\begin{problem}
+    Find all generators for $\Z/48\Z$.
+\end{problem}
+
+\begin{proposition}
+    The set of generators for $\Z/48\Z$ is the set of equivalence classes of integers which are coprime to 48, i.e.,
+    \[\{\overline{g} : g\in\Z, (g,48) = 1\}.\]
+\end{proposition}
+
+\begin{proof}
+    Suppose $g\in\Z$ such that $(g,48)=1$, then there exist some $k,\ell\in\Z$ such that
+    \[kg + \ell48 = 1.\]
+    Then for any $\overline{h}\in\Z/48\Z$, we have
+    \[hkg + h\ell48 = h.\]
+    That is, $hkg \equiv h \pmod{48}$, so $(hk)\overline{g} = \overline{h}$. Therefore $\overline{g}$ is indeed a generator for $\Z/48\Z$. Now suppose $\overline{g}\in\Z/48\Z$ is any arbitrary generator. Then for any $\overline{h}\in\Z/48\Z$, there exists some $k\in\Z$ such that
+    \[k\overline{g} = \overline{1}.\]
+    In other words,
+    \[kg \equiv 1 \pmod{48},\]
+    or equivalently,
+    \[kg + \ell48 = 1\]
+    for some $\ell\in\Z$. Therefore, $(g,48)=1$, and the defined set is precisely the generators of $\Z/48\Z$.
+    
+\end{proof}
+
+\end{document}

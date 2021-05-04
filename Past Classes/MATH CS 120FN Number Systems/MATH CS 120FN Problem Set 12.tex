@@ -1,0 +1,100 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage[margin=1in]{geometry}
+\usepackage{framed}
+\usepackage[table]{xcolor}
+\usepackage{colortbl, multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym}
+\usepackage{mathrsfs, mathtools}
+\usepackage{tikz,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\usepackage{graphicx}
+
+% custom commands
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\p}{^{\prime}}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+ 
+\begin{document}
+ 
+\title{Problem Set 12\\
+    \large MATH CS 120FN Number Systems}
+\author{Harry Coleman}
+\date{December 5, 2019}
+
+\maketitle
+
+\section*{Problem 1}
+\fbox{
+    \parbox{\textwidth} {
+        If $A$ is a Dedekind cut, recall that we attempt to define its additive inverse by
+        \[A' = \{q\in\Q \mid \exists s\in\Q \text{ with $s>q$ and $a+s<0$ for all $a\in A$.}\}\]
+        Complete the proof that $A'$ is a Dedekind cut and that in the proof that $0 \subseteq A + A'$, that the $q$ we use is indeed in $A'$. 
+    }
+}
+\\
+
+\subsection*{1 Show $A'$ is a Dedekind Cut}
+\subsubsection*{1.1 Show $A' \ne \emptyset$}
+Since $A$ is a dedekind cut, $A\ne\Q$. So there exists some rational number, say $b$, such that $b\notin A$. Since $A$ is closed downward, we know that $\forall a\in A(a<b)$, equivalently, $\forall a\in A(a+(-b)<0)$. We now consider the values $(-b-1)\in\Q$ and $(-b)\in\Q$; clearly, $(-b-1)<(-b)$. So we have
+\begin{align*}
+    &(-b-1)\in\Q, \\
+    &(-b)\in\Q, \\
+    &(-b-1)<(-b), \\
+    &\text{and } \forall a\in A(a+(-b)<0).
+\end{align*}
+Therefore, $(-b-1)\in A'$, so $A'\ne\emptyset$.
+
+\subsubsection*{1.2 Show $A' \ne \Q$}
+Let $b\in A$, so $(-b)\in\Q$. We'll assume that $A'=\Q$, so $(-b)\in A'$. Now, we'll let $s\in\Q$ with $(-b)<s$ and $\forall a\in A(a+s<0)$. So $0<b+s$ and since $b\in A$, $b+s<0$. This is a contradiction, therefore $A'\ne\Q$.
+
+\subsubsection*{1.3 Show $A'$ Closed Downward}
+Let $a'\in A'$ and $q\in\Q$ with $q<a'$. We'll now let $s\in\Q$ with $a'<s$ and $\forall a\in A(a+s<0)$. We have that $q<a'<s$, therefore $q<s$ so $q\in A'$. This shows that
+\[\forall a'\in A', q\in\Q(q<a' \implies q\in A').\]
+So $A'$ is closed downward.
+
+\subsubsection*{1.4 Show $A'$ Has No Largest Element}
+Let $a'\in A'$, and $s\in\Q$ with $a'<s$ and $\forall a\in A(a+s<0)$. We now want let
+\[c=\frac{a'+s}{2} \in\Q\]
+With $a'<s$, we find
+\[a'+a'<a'+s.\]
+\[a'+s<s+s,\]
+\[2a' < a'+s < 2s,\]
+\[\text{and } a' < \frac{a'+s}{2} < s.\]
+\[c<s\]
+Therefore, $c\in A'$. This shows that
+\[\forall a'\in A',\exists q\in A'(a'<q).\]
+So $A'$ has no largest element.
+
+\subsubsection*{1.5 Conclusion}
+We have shown that for the given definition of $A'$,
+\begin{enumerate}
+    \item $A'\ne \emptyset, A'\ne\Q$,
+    \item $A'$ is closed downward, and
+    \item $A'$ has no largest element.
+\end{enumerate}
+
+Therefore, $A'$ is a Dedekind Cut.
+
+\subsection*{2 Show $A+A'=0$}
+\subsubsection*{2.1 Show $A+A'\subseteq 0$}
+Let $a+a'\in A+A'$ where $a\in A$ and $a'\in A'$. Now let $s\in\Q$ with $a'<s$ and $\forall x\in A(x+s<0)$. Which tells us $a+s<0$ and $a+a'<a+s$. So $a+a'<0$, therefore $a+a'\in 0$ (referring to the Dedekind cut of 0). So $A+A'\subseteq 0$.
+
+\subsubsection*{2.2 Show $0 \subseteq A+A'$}
+I did not budget my time well enough to type my solution to this section. The idea is that we would pick some $t<0$, then pick some $\alpha$ in $A$. Then add multiples of $\frac{-t}{2}$ to $\alpha$, $\alpha_n = n\frac{-t}{2}$ until we found a $k$ with $a_k\in A$ and $a_{k+2}\notin A$. Then we would have $-a_{k+2}\in A'$. So we would have an $a+a'=t$, which would give us $t\in A+A'$.
+
+\subsubsection{2.3 Conclusion}
+Having shown that $A+A'\subseteq 0$, and if we had shown $0 \subseteq A+A'$, we would have that $A+A'=0$. And therefore, our definition of $A'$ would be the Dedekind cut additive inverse of $A$.
+
+
+
+
+
+\end{document}

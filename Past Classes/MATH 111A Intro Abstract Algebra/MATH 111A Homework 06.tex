@@ -1,0 +1,188 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry} % proper margins
+\usepackage{enumitem} % custom numbering for lists
+\usepackage{amsmath} % align, cases, eqref, matrices, dots, roots, delimiters, math mode functions, mod, arrows
+\usepackage{amsthm} % theorems, proofs
+\usepackage{amssymb} % fancy letters, niche relations/negations
+\usepackage{mathrsfs} % much more loopy calligraphy font
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}
+    {\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\mybox}}}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+
+% Alternate Characters
+\let\eps\varepsilon % double curved, rather than single curve with midline
+\let\phi\varphi % single stroke loop, rather than vertical line through circle
+\let\emptyset\varnothing % circular, rather than tall
+
+% Named Sets
+\newcommand{\N}{\mathbb{N}} % natural numbers
+\newcommand{\Z}{\mathbb{Z}} % integers 
+\newcommand{\Q}{\mathbb{Q}} % rational numbers
+\newcommand{\R}{\mathbb{R}} % real numbers
+\newcommand{\C}{\mathbb{C}} % complex numbers
+
+% Fancy Characters
+\newcommand{\F}{\mathbb{F}} % arbitrary field
+\renewcommand{\P}{\mathbb{P}} % probability measure (apparently, sometimes prime numbers)
+\newcommand{\FF}{\mathcal{F}} % sigma algebra
+\newcommand{\BB}{\mathcal{B}} % Borel sigma algebra
+
+% Paired Delimiters
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil} % ceiling
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor} % floor
+\newcommand{\<}{\left\langle} % left angle bracket
+\renewcommand{\>}{\right\rangle} % right angle bracket
+
+% Functions
+\renewcommand{\Im}{\operatorname{Im}} % imaginary part of a complex number
+\renewcommand{\Re}{\operatorname{Re}} % real part of a complex number
+\newcommand{\Arg}{\operatorname{Arg}} % principal argument (angle) of complex number
+
+% Simplified Notation
+\newcommand{\id}[1]{\operatorname{id_{\mathnormal{#1}}}} % identity operator
+\newcommand{\seq}[2][n]{\left\{#2\right\}_{#1\in\N}} % sequence
+\newcommand{\pdv}[3][1]{\ifnum#1=1{\frac{\partial #2}{\partial#3}}\else{\frac{\partial^{#1}#2}{\partial#3^{#1}}}\fi} % partial derivative
+\newcommand{\intr}[1]{\accentset{\circ}{#1}} % interior of a set
+
+% Renaming
+\let\sm\setminus % set minus (difference)
+\let\clo\overline % closure of a set
+\let\conj\overline % conjugate of an object
+\let\eqc\overline % equivalence class of an object
+\let\teq\trianglelefteq % normal subgroup
+\let\iso\cong % isomorphic (groups)
+
+% Notes
+% medskip for header-less paragraph
+% intertext{} for short text inside big display structure
+% dots is dynamic based on surroundings
+% dfrac and tfrac to force large or small fractions
+% operatorname for new operators instead of text
+% consider using nath; it seems to break most formatting and is not compatible with many packages
+
+\begin{document}
+ 
+\title{Homework 6\\
+    %\large MATH CS 121 Intro to Probability
+    \large MATH 111A Intro to Abstract Algebra
+    %\large MATH CS 122A Complex Analysis I
+    %\large MATH 118A Intro to Real Analysis
+    %\large MATH 104A Intro to Numerical Analysis
+}
+\author{Harry Coleman}
+\date{November 18, 2020}
+\maketitle
+
+\section*{Q1 Exercise 1.7.3}
+\begin{problem}
+    Show that the additive group $\Z$ acts on itself by $z\cdot a = z + a$ for all $z,a\in\Z$.
+\end{problem}
+
+\begin{proof}
+    The first axiom of a group action is satisfied by the associativity of addition in $\Z$. If $z_1,z_2,a\in\Z$, then
+    \[(z_1 + z_2) \cdot a = (z_1 + z_2) + a = z_1 + (z_2 + a) = z_1 + (z_2\cdot a) = z_1\cdot(z_2\cdot a).\]
+    And the second axiom is satisfied simply by the additive identity in $\Z$:
+    \[0\cdot a = 0 + a = a.\]
+    
+\end{proof}
+
+\newpage
+\section*{Q2 Exercise 4.1.1}
+\begin{problem}
+    Let $G$ act on the set $A$. Prove that if $a,b\in A$ and $b= g\cdot a$ for some $g\in G$, then $G_b = gG_ag^{-1}$ ($G_a$ is the stabilizer of $a$). Deduce that if $G$ acts transitively on $A$, then the kernel of the action is $\ds\bigcap_{g\in G} gG_ag^{-1}$.
+\end{problem}
+
+\begin{proposition}
+    If $a,b\in A$ and $b= g\cdot a$ for some $g\in G$, then $G_b = gG_ag^{-1}$ ($G_a$ is the stabilizer of $a$).
+\end{proposition}
+
+\begin{proof}
+    Suppose we have $a,b\in A$ and $g\in G$ such that $b = g\cdot a$. Note that
+    \[gG_ag^{-1} = \{ghg^{-1} : h\in G_a\}.\]
+    Suppose $h\in G_b$, so $h \cdot b = b$. Then
+    \begin{align*}
+        g^{-1}hg \cdot a 
+            &= g^{-1}h \cdot (g \cdot a) \\
+            &= g^{-1}h \cdot b\\
+            &= g^{-1} \cdot (h \cdot b)\\
+            &= g^{-1} \cdot b\\
+            &= g^{-1} \cdot (g \cdot a)\\
+            &= g^{-1}g \cdot a\\
+            &= 1 \cdot a\\
+            &= a.
+    \end{align*}
+    This implies that $g^{-1}hg \in G_a$, so
+    \[h = g(g^{-1}hg)g^{-1} \in gG_ag^{-1}.\]
+    
+    Now suppose $h \in gG_ag^{-1}$, so $h = gkg^{-1}$ for some $k\in G_a$. Then
+    \begin{align*}
+        h \cdot b
+            &= gkg^{-1} \cdot (g\cdot a) \\
+            &= gkg^{-1}g \cdot a \\
+            &= gk \cdot a \\
+            &= g \cdot (k\cdot a) \\
+            &= g \cdot a\\
+            &= b.
+        \end{align*}
+        Thus, $h\in G_b$ and we have the equality
+        \[G_b = gG_ag^{-1}.\]
+    
+\end{proof}
+
+\newpage
+\begin{proposition}
+    If $G$ acts transitively on $A$, then the kernel of the action is $\ds\bigcap_{g\in G} gG_ag^{-1}$.
+\end{proposition}
+
+\begin{proof}
+    Suppose $G$ acts transitively on $A$, i.e., $G\cdot x = A$ for all $x\in A$. In particular, $G\cdot a = A$, so $x\in G\cdot a$ for all $x\in A$. Consider the set of all stabilizers, $\{G_x : x\in A\}$, and the set $\{gG_ag^{-1} : g\in G\}$. We claim that these sets are equal. Suppose $G_x$ is an arbitrary element of the first set. Since $G\cdot a = A$, there exists some $g\in G$ such that $g\cdot a = x$. Then by proposition 1, we have $G_x = gG_ag^{-1}$, so
+    \[G_x = gG_ag^{-1} \in \{gG_ag^{-1} : g\in G\}.\]
+    Now suppose $gG_ag^{-1}$ is an arbitrary element of the second set. By the definition of $G$ acting on $A$, we have $g\cdot a = x$ for some $x\in A$. Then by proposition 1, we have $G_x = gG_xg^{-1}$, so
+    \[gG_xg^{-1} = G_x \in \{G_x : x\in A\}.\]
+    Therefore,
+    \[\{G_x : x\in A\} = \{gG_ag^{-1} : g\in G\},\]
+    and the kernel of the group action is
+    \[\bigcap_{x\in A} G_x = \bigcap_{g\in G} gG_ag^{-1}.\]
+    
+\end{proof}
+
+\newpage
+\section*{Q3 Exercise 4.1.4}
+\begin{problem}
+    Let $S_3$ act on the set $\Omega$ of ordered pairs: $\{(i,j) : 1\leq i, j \leq 3\}$ by $\sigma((i,j)) = (\sigma(i),\sigma(j))$. Find the orbits of $S_3$ on $\Omega$.
+\end{problem}
+\medskip
+
+For any two pairs $(i,i)$ and $(j,j)$, with $i\ne j$, we have the permutation $(ij)\in S_3$. Then
+\[(ij)\cdot(i,i) = (j,j),\]
+so $(i,i)$ and $(j,j)$ are in the same orbit. Moreover, for any $(i,i)$ and $\sigma\in S_3$, if $\sigma(i) = j$, then
+\[\sigma\cdot(i,i) = (j,j),\]
+so the set
+\[\{(1,1), (2,2), (3,3)\}.\]
+is one orbit of $S_3$ on $\Omega$. For any pair $(i,j)$ with $i\ne j$, we have $(ij)\in S_3$. Then
+\[(ij) \cdot (i,j) = (j,i),\]
+So $(i,j)$ and $(j,i)$ are in the same orbit. For any two pairs $(i,j),(i,k)$, with $\{i,j,k\} = \{1,2,3\}$, we have $(jk)\in S_3$. Then
+\[(jk) \cdot (i,j) = (i,k),\]
+so $(i,j)$ and $(i,k)$ are in the same orbit. Moreover, $(i,j)$ and $(k,i)$ are in the same orbit since $(i,k)$ and $(k,i)$ are in the same orbit. Therefore, the other orbit of $S_3$ on $\Omega$ is
+\[\{(1,2),(2,1),(1,3),(3,1),(2,3),(3,2)\}.\]
+
+
+
+
+
+\end{document}

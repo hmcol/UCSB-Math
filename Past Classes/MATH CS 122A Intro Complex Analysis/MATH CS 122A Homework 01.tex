@@ -1,0 +1,601 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow,enumitem}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools,babel}
+\usepackage{tikz,graphicx,pgf,pgfplots,tkz-euclide}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{\textwidth-10pt}}
+    {\end{minipage}\end{lrbox}\framebox[6.5in]{\usebox{\mybox}}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+\newenvironment{response}{\paragraph{}}{}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\seq}[2]{\left\{#1\right\}_{#2=1}^\infty}
+\newcommand{\clo}[1]{\overline{#1}}
+\newcommand{\conj}[1]{\overline{#1}}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ang}{\langle}{\rangle}
+
+% Sets
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+
+% Misc Characters
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\let\eps\varepsilon
+\let\emptyset\varnothing
+
+% Functions
+\newcommand{\id}[1]{\mathsf{id}_{#1}}
+
+% Babel Shorthands
+\useshorthands*{"}
+\defineshorthand{"-}{\setminus}
+\defineshorthand{"d}{\partial}
+
+% Probability
+\newcommand{\FF}{\mathcal{F}}
+\renewcommand{\P}{\mathbb{P}}
+
+% Complex Analysis
+\renewcommand{\Im}{\text{Im }}
+\renewcommand{\Re}{\text{Re }}
+\newcommand{\Arg}{\text{Arg }}
+
+ 
+\begin{document}
+ 
+\title{Homework 1\\
+    \large MATH CS 122A Complex Analysis I
+}
+\author{Harry Coleman}
+\date{October 17, 2020}
+\maketitle
+
+\section*{Exercise I.1.1}
+\begin{problem}
+    Identify and sketch the set of points satisfying:
+    
+\end{problem}
+\begin{enumerate}[label=(\alph*)]
+    \item $|z-1-i| = 1$
+    
+    If $z=x+iy$, then
+    \begin{align*}
+        |x+iy-1-i| &= 1, \\
+        |(x-1)+i(y-1)| &= 1, \\
+        \sqrt{(x-1)^2 + (y-1)^2} &= 1, \\
+        (x-1)^2 + (y-1)^2 = 1.
+    \end{align*}
+    This is the circle centered at $(1,1)$ with radius $1$:
+    \begin{drawing}
+        \tkzInit[xmax=3,ymax=2,xmin=-1,ymin=-1]
+        \tkzGrid
+        \tkzAxeXY
+        
+        \draw (1,1) circle (1cm);
+    \end{drawing}
+    
+    \item $1<|2z-6|<2$
+    
+    If $z=x+iy$, then
+    \begin{alignat*}{3}
+        1 &<& |2z-6| &<& 2, \\
+        \frac12 &<& |z-3| &<& 1, \\
+        \frac12 &<& \sqrt{(x-3)^2 + y^2} &<& 1, \\
+        \left(\frac12\right)^2 &<& (x-3)^2 + y^2 &<& 1.
+    \end{alignat*}
+    This is the outside of the circle centered at $(3,0)$ with radius $\ds\frac12$ intersected with the inside of the circle centered at $(3,0)$ with radius $1$:
+    \begin{drawing}
+        \draw[fill=lightgray, dashed] (3,0) circle (1cm);
+        \draw[fill=white, dashed] (3,0) circle (0.5cm);
+    
+        \tkzInit[xmax=5,ymax=1,xmin=-1,ymin=-1]
+        \tkzGrid
+        \tkzAxeXY
+    \end{drawing}
+    
+    \item $|z-1|^2 + |z+1|^2 < 8$
+    
+    Note that $|z|^2 = z\conj z$ for all $z\in\C$. Then
+    \begin{align*}
+        (z-1)(\conj{z-1}) + (z+1)(\conj{z+1}) &< 8, \\
+        (z-1)(\conj z -1) + (z+1)(\conj z+1) &< 8, \\
+        z\conj z - z - \conj z + 1 + z\conj z  + z + \conj z + 1 &< 8, \\
+        2z\conj z + 2 < 8, \\
+        z\conj z < 3, \\
+        |z|^2 < 3, \\
+        |z| < \sqrt{3}.
+    \end{align*}
+    This is the inside of the circle centered at $(0,0)$ with radius $\sqrt{3}$:
+    \begin{drawing}
+        \draw[fill=lightgray, dashed] (0,0) circle (1.732cm);
+    
+        \tkzInit[xmax=2,ymax=2,xmin=-2,ymin=-2]
+        \tkzGrid
+        \tkzAxeXY
+    \end{drawing}
+    
+    \item $|z-1| + |z+1| \leq 2$
+    
+    This is the inside of the ``ellipse'' with foci at $(-1,0)$ and $(1,0)$ and constant distance $2$. However, since the distance between the foci is also two, this is simply the line segment between $(-1,0)$ and $(1,0)$:
+    
+    \begin{drawing}
+        \tkzInit[xmax=2,ymax=1,xmin=-2,ymin=-1]
+        \tkzGrid
+        \tkzAxeXY
+        
+        \draw[fill=black, ultra thick] (-1,0) circle (2pt) -- (1,0) circle (2pt);
+        
+    \end{drawing}
+    
+    
+    \item $|z-1|<|z|$
+    \begin{align*}
+        |z-1| &< |z| \\
+        \sqrt{(z-1)\conj{(z-1)}} &< \sqrt{z\conj z} \\
+        z\conj z - z - \conj z + 1 &< z\conj z \\
+        1 &< z + \conj z \\
+        1 &< 2\Re z \\
+        \frac12 &< \Re z
+    \end{align*}
+    
+    \begin{drawing}
+        \draw[fill=lightgray, line width = 0pt] (0.5,-2) rectangle (2, 2);
+        \draw[dashed, ultra thick] (0.5,-2)--(0.5,2);
+        
+        
+        \tkzInit[xmax=2,ymax=2,xmin=-2,ymin=-2]
+        \tkzGrid
+        \tkzAxeXY
+    \end{drawing}
+    
+    
+    \item $0< \Im z < \pi$
+    
+    \begin{drawing}
+        \draw[fill=lightgray, line width = 0pt] (-3,0) rectangle (3, 3.14);
+        \draw[dashed, ultra thick] (-3,0)--(3,0) (-3,3.14)--(3,3.14);
+        
+        
+        \tkzInit[xmax=3,ymax=5,xmin=-3,ymin=-1]
+        \tkzGrid
+        \tkzAxeXY
+    \end{drawing}
+    
+    \item $-\pi < \Re z < \pi$
+    
+    \begin{drawing}
+        \draw[fill=lightgray, line width = 0pt] (-3.14,-2) rectangle (3.14, 2);
+        \draw[dashed, ultra thick] (-3.14,-2)--(-3.14,2) (3.14,-2)--(3.14,2);
+        
+        
+        \tkzInit[xmax=4,ymax=2,xmin=-4,ymin=-2]
+        \tkzGrid
+        \tkzAxeXY
+    \end{drawing}
+    
+    \item $|\Re z| < |z|$
+    
+    If $z=x+iy$, then
+    \begin{align*}
+        |\Re z| &< |z|, \\
+        \sqrt{x^2} &< \sqrt{x^2 + y^2}, \\
+        x^2 &< x^2 + y^2, \\
+        0 &<y^2.
+    \end{align*}
+    This is the set of $z=x+iy\in\C$ such that $y\ne 0$:
+    \begin{drawing}
+        \draw[fill=lightgray, line width = 0pt] (-2,-2) rectangle (2, 2);
+        \draw[dashed, ultra thick] (-2,0)--(2,0);
+        
+        
+        \tkzInit[xmax=2,ymax=2,xmin=-2,ymin=-2]
+        \tkzGrid
+        \tkzAxeXY
+    \end{drawing}
+    
+    \item $\Re(iz+2)>0$
+    
+    If $z=x+iy$, then
+    \begin{align*}
+        \Re(iz+2) &> 0, \\
+        \Re(i(x+iy)+2) &> 0,\\
+        \Re(ix-y+2) &> 0, \\
+        -y+2 &> 0, \\
+        2 &> y.
+    \end{align*}
+    \begin{drawing}
+        \draw[fill=lightgray, line width = 0pt] (-3,-1) rectangle (3, 2);
+        \draw[dashed, ultra thick] (-3,2)--(3,2);
+        
+        
+        \tkzInit[xmax=3,ymax=3,xmin=-3,ymin=-1]
+        \tkzGrid
+        \tkzAxeXY
+    \end{drawing}
+    
+    
+    \item $|z-i|^2 + |z+i|^2 < 2$
+    \begin{align*}
+        |z-i|^2 + |z+i|^2 &< 2 \\
+        (z-i)\conj{(z-i)} + (z+i)\conj{(z+i)} &<2 \\
+        (z-i)(\conj z + i) + (z+i)(\conj z - i) &<2 \\
+        z\conj z -iz +i\conj z - i^2 + z\conj z +iz -i\conj z - i^2 &<2 \\
+        2z\conj z +2 &<2 \\
+        z\conj z &< 0 \\
+        |z|^2 &< 0 \\
+        |z| &< 0.
+    \end{align*}
+    This has no solution, so it is the empty set.
+    
+\end{enumerate}
+
+
+\section*{Exercise I.2.1}
+\begin{problem}
+    Express all values of the following expressions in both polar and Cartesian coordinates, and plot them.
+\end{problem}
+
+\begin{enumerate}[label=(\alph*)]
+    \item $\sqrt{i}$
+    
+    Note that
+    \[|i| = 1 \isp{and} \Arg i = \frac\pi2,\]
+    so we have all values of $re^{i\alpha}$ where
+    \[r=1^{1/2}=1 \isp{and} \alpha = \frac{\pi/2}2 + \frac{2\pi k}2=\frac\pi4+\pi k,\quad k\in\Z.\]
+    The solution set is
+    \begin{align*}
+        e^{i\pi/4} &=\quad \frac1{\sqrt{2}} + i\frac1{\sqrt{2}}, \\
+        e^{i5\pi/4} &=\quad -\frac1{\sqrt{2}} - i\frac1{\sqrt{2}}.
+    \end{align*}
+    
+    \begin{drawing}
+        \tkzInit[xmax=2,ymax=2,xmin=-2,ymin=-2]
+        \tkzGrid
+        \tkzAxeXY
+        
+        \draw[fill=black] (0.707,0.707) circle (2pt);
+        \draw[fill=black] (-0.707,-0.707) circle (2pt);
+    \end{drawing}
+    
+    \item $\sqrt{i-1}$
+    
+    Note that
+    \[|i-1| = \sqrt{2} \isp{and} \Arg(i-1) = \frac{3\pi}4,\]
+    so we have all values of $re^{i\alpha}$ where
+    \[r=(\sqrt{2})^{1/2}=\sqrt[4]{2} \isp{and} \alpha = \frac{3\pi/4}2 + \frac{2\pi k}2=\frac{3\pi}8+\pi k,\quad k\in\Z.\]
+     The solution set is
+    \begin{align*}
+        \sqrt[4]{2}e^{i3\pi/8} &=\quad \frac{\sqrt{2\sqrt{2}-2}}{2} + i\frac{\sqrt{2\sqrt{2}+2}}{2}, \\
+        \sqrt[4]{2}e^{i11\pi/8} &=\quad -\frac{\sqrt{2\sqrt{2}-2}}{2} - i\frac{\sqrt{2\sqrt{2}+2}}{2}.
+    \end{align*}
+    \begin{drawing}
+        \tkzInit[xmax=2,ymax=2,xmin=-2,ymin=-2]
+        \tkzGrid
+        \tkzAxeXY
+        
+        \draw[fill=black] (0.455,1.098) circle (2pt);
+        \draw[fill=black] (-0.455,-1.098) circle (2pt);
+    \end{drawing}
+    
+    \item $\sqrt[4]{-1}$
+    
+    Note that
+    \[|-1| = 1 \isp{and} \Arg(-1) = \pi,\]
+    so we have all values of $re^{i\alpha}$ where
+    \[r=1^{1/4} = 1 \isp{and} \alpha = \frac\pi4 + \frac{2\pi k}4=\frac\pi4+\frac\pi2 k,\quad k\in\Z.\]
+     The solution set is
+     \begin{align*}
+        e^{i\pi/4} &= \frac1{\sqrt{2}} + i\frac1{\sqrt{2}}, \\
+        e^{i3\pi/4} &= -\frac1{\sqrt{2}} + i\frac1{\sqrt{2}}, \\
+        e^{i5\pi/4} &= -\frac1{\sqrt{2}} - i\frac1{\sqrt{2}}, \\
+        e^{i7\pi/4} &= \frac1{\sqrt{2}} - i\frac1{\sqrt{2}}.
+    \end{align*}
+    \begin{drawing}
+        \tkzInit[xmax=2,ymax=2,xmin=-2,ymin=-2]
+        \tkzGrid
+        \tkzAxeXY
+        
+        \draw[fill=black] (0.707,0.707) circle (2pt);
+        \draw[fill=black] (-0.707,-0.707) circle (2pt);
+        \draw[fill=black] (-0.707,0.707) circle (2pt);
+        \draw[fill=black] (0.707,-0.707) circle (2pt);
+    \end{drawing}
+    
+    \item $\sqrt[4]{i}$
+    
+    Note that
+    \[|i| = 1 \isp{and} \Arg(i) = \frac\pi2,\]
+    so we have all values of $re^{i\alpha}$ where
+    \[r=1^{1/4} = 1 \isp{and} \alpha = \frac{\pi/2}4 + \frac{2\pi k}4=\frac\pi8+\frac\pi2 k,\quad k\in\Z.\]
+     The solution set is
+     \begin{align*}
+        e^{i\pi/8} &= \frac{\sqrt{2+\sqrt{2}}}{2} + i\frac{\sqrt{2-\sqrt{2}}}{2}, \\
+        e^{i5\pi/8} &=  \frac{\sqrt{2-\sqrt{2}}}{2} - i\frac{\sqrt{2+\sqrt{2}}}{2}, \\
+        e^{i9\pi/8} &= -\frac{\sqrt{2+\sqrt{2}}}{2} - i\frac{\sqrt{2-\sqrt{2}}}{2}, \\
+        e^{i13\pi/8} &= -\frac{\sqrt{2-\sqrt{2}}}{2} + i\frac{\sqrt{2+\sqrt{2}}}{2}.
+    \end{align*}
+    \begin{drawing}
+        \tkzInit[xmax=2,ymax=2,xmin=-2,ymin=-2]
+        \tkzGrid
+        \tkzAxeXY
+        
+        \draw[fill=black] (0.923,0.382) circle (2pt);
+        \draw[fill=black] (-0.923,-0.382) circle (2pt);
+        \draw[fill=black] (-0.382,0.923) circle (2pt);
+        \draw[fill=black] (0.382,-0.923) circle (2pt);
+    \end{drawing}
+    
+    \item $(-8)^{1/3}$
+    
+    Note that
+    \[|-8| = 8 \isp{and} \Arg(-8) = \pi,\]
+    so we have all values of $re^{i\alpha}$ where
+    \[r=8^{1/3} = 2 \isp{and} \alpha = \frac\pi3 + \frac{2\pi k}3=\frac\pi3 + \frac{2\pi}3 k,\quad k\in\Z.\]
+     The solution set is
+     \begin{align*}
+        e^{i\pi/3} &= \frac12 + i\frac{\sqrt{3}}2, \\
+        e^{i\pi} &= -1, \\
+        e^{i5\pi/3} &= \frac12 - i\frac{\sqrt{3}}2.
+    \end{align*}
+    \begin{drawing}
+        \tkzInit[xmax=2,ymax=2,xmin=-2,ymin=-2]
+        \tkzGrid
+        \tkzAxeXY
+        
+        \draw[fill=black] (0.5,0.866) circle (2pt);
+        \draw[fill=black] (-1,0) circle (2pt);
+        \draw[fill=black] (0.5,-0.866) circle (2pt);
+    \end{drawing}
+    
+    \item $(3-4i)^{1/8}$
+    
+    Note that
+    \[|3-4i| = 5 \isp{and} \Arg(3-4i) = \tan^{-1}(4/3),\]
+    so we have all values of $re^{i\alpha}$ where
+    \[r=5^{1/8} = \sqrt[8]{5} \isp{and} \alpha = \frac{\tan^{-1}(4/3)}8 + \frac{2\pi k}8=\frac{\tan^{-1}(4/3)}8  + \frac{2\pi}8 k,\quad k\in\Z.\]
+    The solution set is
+     \begin{drawing}
+        \tkzInit[xmax=2,ymax=2,xmin=-2,ymin=-2]
+        \tkzGrid
+        \tkzAxeXY
+        
+        \draw[fill=black] (1.214,0.141) circle (2pt);
+        \draw[fill=black] (0.758,0.958) circle (2pt);
+        \draw[fill=black] (-0.141,1.21) circle (2pt);
+        \draw[fill=black] (-0.95,0.75) circle (2pt);
+        \draw[fill=black] (-1.2,-0.14) circle (2pt);
+        \draw[fill=black] (-0.75,-0.95) circle (2pt);
+        \draw[fill=black] (0.14,-1.21) circle (2pt);
+        \draw[fill=black] (0.95,-0.75) circle (2pt);
+    \end{drawing}
+    
+    \item $(1+i)^8$
+    
+    Note that
+    \[|1+i| = \sqrt{2} \isp{and} \Arg(1+i) = \pi/4,\]
+    so 
+    \[(1+i)^8 = \sqrt{2}^8 e^{i8(\pi/4)} = 16e^{i2\pi} = 16.\]
+    
+    \item $\ds\left(\frac{1+i}{\sqrt{2}}\right)^{25}$
+    
+    Note that
+    \[|\frac{1+i}{\sqrt{2}}| = 1 \isp{and} \Arg(1+i) = \pi/4,\]
+    so
+    \[\left(\frac{1+i}{\sqrt{2}}\right)^{25} = 1^{25}e^{i25\pi/4} = e^{i\pi/4} = \frac{1+i}{\sqrt{2}}.\]
+    
+\end{enumerate}
+
+
+\section*{Exercise I.2.2}
+\begin{problem}
+    Sketch the following sets:
+\end{problem}
+
+\begin{enumerate}[label=(\alph*)]
+    \item $|\arg z| < \pi/4$
+    
+    \begin{drawing}
+        \draw[dashed, ultra thick, fill=lightgray] (2,2)--(0,0)--(2,-2);
+        
+        
+        \tkzInit[xmax=2,ymax=2,xmin=-2,ymin=-2]
+        \tkzGrid
+        \tkzAxeXY
+    \end{drawing}
+    
+    \item $0 < \arg(z-1-i) < \pi/3$
+    
+    \begin{drawing}
+        \draw[dashed, ultra thick, fill=lightgray] (1.155,2)--(-1,-1)--(2,-1);
+        \draw[line width=0pt, fill=lightgray] (1.155,2)--(2,2)--(2,-1);
+        
+        
+        \tkzInit[xmax=2,ymax=2,xmin=-2,ymin=-2]
+        \tkzGrid
+        \tkzAxeXY
+    \end{drawing}
+    
+    \item $|z| = \arg z$
+    
+    \begin{drawing}
+        \draw [domain=0:3.14,variable=\t,smooth,samples=75]
+        plot ({\t r}: {\t});
+        
+        
+        \tkzInit[xmax=2,ymax=2,xmin=-4,ymin=-2]
+        \tkzGrid
+        \tkzAxeXY
+    \end{drawing}
+    
+    \item $\log|z| = -2\arg z$
+    
+    \begin{drawing}
+        \draw [domain=-0.6:5,variable=\t,smooth,samples=75]
+        plot ({\t r}: {exp(-2*\t)});
+        
+        
+        \tkzInit[xmax=4,ymax=1,xmin=-2,ymin=-2]
+        \tkzGrid
+        \tkzAxeXY
+    \end{drawing}
+    
+\end{enumerate}
+
+
+\section*{Exercise I.2.5}
+\begin{problem}
+    For $n\geq 1$, show that
+\end{problem}
+
+\begin{enumerate}[label=(\alph*)]
+    \item $\ds1+z+z^2+\cdots+z^n = \frac{1-z^{n+1}}{1-z}, \quad z\ne1$,
+    Let
+    \[S_n = 1+z + z^2 + \cdots + z^n.\]
+    Then
+    \[zS_n = z + z^2 + \cdots + z^n + z^{n=1},\]
+    And we find
+    \[S_n-zS_n = 1-z^{n+1} \implies S_n = \frac{1-z^{n+1}}{1-z}.\]
+    
+    
+    
+    \item $1+\cos\theta + \cos2\theta + \cdots + \cos n\theta = \frac12 + \frac{\sin(n+\frac12)}{2\sin(\theta/2)}$.
+    
+    \begin{align*}
+        1+\cos\theta + \cos2\theta + \cdots + \cos n\theta
+            &= 1 + \frac12(e^{i\theta} + e^{-i\theta}) + \frac12(e^{i2\theta} + e^{-i2\theta}) + \cdots + \frac12(e^{in\theta} + e^{-in\theta}) \\
+            &= \frac12\left[(1 + e^{i\theta} + e^{i2\theta} + \cdots + e^{in\theta}) + (1 + e^{-i\theta} + e^{-i2\theta} + \cdots + e^{-in\theta})\right] \\
+            &= \frac12\left[\frac{1-e^{i(n+1)\theta}}{1-e^{i\theta}} + \frac{1-e^{-i(n+1)\theta}}{1-e^{-i\theta}}\right] \\
+            &= \frac12\frac{(1-e^{i(n+1)\theta})(1-e^{-i\theta}) + (1-e^{-i(n+1)\theta})(1-e^{i\theta})}{(1-e^{i\theta})(1-e^{-i\theta})} \\
+            &= \frac12\frac{1-e^{-i\theta} - e^{i(n+1)\theta} + e^{in\theta} + 1 - e^{i\theta} - e^{-i(n+1)\theta} + e^{-in\theta}}{1 - e^{-i\theta} - e^{i\theta} + e^0} \\
+            &= \frac12\frac{2 - (e^{i\theta} + e^{-i\theta}) + (e^{in\theta} + e^{-in\theta}) - (e^{i(n+1)\theta} + e^{-i(n+1)\theta})}{1-(e^{i\theta} + e^{-i\theta})} \\
+            &= \frac12\frac{2 - 2\cos\theta + 2\cos n\theta - 2\cos(n+1)\theta}{2-2\cos\theta} \\
+            &= \frac12 + \frac12\frac{\cos n\theta - \cos(n+1)\theta}{1-\cos\theta}
+    \end{align*}
+    I was unable to complete the proof.
+    
+\end{enumerate}
+
+
+\section*{Exercise I.5.1}
+\begin{problem}
+    Calculate and plot $e^z$ for the following points $z$:
+\end{problem}
+
+\begin{enumerate}[label=(\alph*)]
+    \item $0$
+    
+    \[e^0 = 1.\]
+    \begin{drawing}
+        \draw[fill=black] (1,0) circle (2pt);
+        
+        
+        \tkzInit[xmax=2,ymax=2,xmin=-2,ymin=-2]
+        \tkzGrid
+        \tkzAxeXY
+    \end{drawing}
+    
+    
+    \item $\pi i + 1$
+    
+    \[e^{\pi i +1} = e^{i\pi}e^1 = -e.\]
+    \begin{drawing}
+        \draw[fill=black] (-2.718,0) circle (2pt);
+        
+        
+        \tkzInit[xmax=2,ymax=2,xmin=-3,ymin=-2]
+        \tkzGrid
+        \tkzAxeXY
+    \end{drawing}
+    
+    \item $\pi(i-1)/3$
+    
+    \[e^{\pi(i-1)/3} = e^{i\pi}e^{-\pi/3} = -e^{-\pi/3}.\]
+    \begin{drawing}
+        \draw[fill=black] (-0.350,0) circle (2pt);
+        
+        
+        \tkzInit[xmax=2,ymax=2,xmin=-2,ymin=-2]
+        \tkzGrid
+        \tkzAxeXY
+    \end{drawing}
+    
+    \item $37\pi i$
+    
+    \[e^{i37\pi} = e^{i\pi} = -1.\]
+    \begin{drawing}
+        \draw[fill=black] (-1,0) circle (2pt);
+        
+        
+        \tkzInit[xmax=2,ymax=2,xmin=-2,ymin=-2]
+        \tkzGrid
+        \tkzAxeXY
+    \end{drawing}
+    
+    \item $\pi i/m, \quad m=1,2,3,\dots$
+    
+    \[e^{i\pi/m}.\]
+    \begin{drawing}
+        \draw[fill=black] (-1,0) circle (2pt);
+        \draw[fill=black] (0,1) circle (2pt);
+         \draw[fill=black] (0.5,0.866) circle (2pt);
+         \draw[fill=black] (0.707,0.707) circle (2pt);
+         \draw[fill=black] (0.809,0.587) circle (2pt);
+         \draw[fill=black] (0.866,0.5) circle (2pt);
+         \draw[fill=black] (0.9,0.433) circle (2pt);
+         \draw[fill=black] (0.923,0.382) circle (2pt);
+        \draw[line width=4pt] (0.923,0.382) -- (1,0);
+        
+        \tkzInit[xmax=2,ymax=2,xmin=-2,ymin=-2]
+        \tkzGrid
+        \tkzAxeXY
+    \end{drawing}
+    
+    \item $m(i-1), \quad m=1,2,3,\dots$
+    
+    \begin{drawing}
+        \draw[fill=black] (0.198,0.309) circle (2pt);
+        \draw[fill=black] (-0.056,0.123) circle (2pt);
+        \draw[fill=black] (-0.049,0.007) circle (2pt);
+        
+        
+        \tkzInit[xmax=2,ymax=2,xmin=-2,ymin=-2]
+        \tkzGrid
+        \tkzAxeXY
+    \end{drawing}
+\end{enumerate}
+
+
+
+
+
+\end{document}

@@ -1,0 +1,334 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{amsmath, amsthm, amssymb}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{4pt}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem*{proposition*}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem*{claim*}{Claim}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\pfrac}[2]{\left(\frac{#1}{#2}\right)}
+
+% Extra Commands
+\newcommand{\f}{\mathbf{f}}
+\newcommand{\g}{\mathbf{g}}
+\renewcommand{\aa}{\mathbf{a}}
+\newcommand{\bb}{\mathbf{b}}
+
+\newcommand{\dv}[2]{\frac{\mathrm{d} #1}{\mathrm{d} #2}}
+\newcommand{\pdv}[2]{\frac{\partial #1}{\partial #2}}
+
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+\newcommand{\mdet}[1]{\begin{vmatrix}#1\end{vmatrix}}
+
+
+\newcommand{\dd}[1]{\,\mathrm{d}#1}
+\newcommand{\eval}[1]{\left[#1\right|}
+
+\DeclareMathOperator{\Res}{Res}
+
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH 118C Homework 3}
+    \fancyhead[C]{April 23, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+
+\begin{pbox}[Exercise 9.16]
+    Show that the continuity of $\f'$ at the point $\aa$ is needed in the inverse function theorem, even in the case $n = 1$: If
+    \[
+        f(t) = t + 2t^2\sin\left(\frac{1}{t}\right)
+    \]
+    for $t \ne 0$ and $f(0) = 0$, then $f'(0) = 1$, $f'$ is bounded in $(-1, 1)$, but $f$ is not one-to-one in any neighborhood of $0$.
+\end{pbox}
+
+For $h \ne 0$, we find
+\[
+    \frac{f(h) - f(0)}{h - 0}
+        = \frac{h + 2h^2\sin(1/h)}{h}
+        = 1 + 2h\sin(1/h).
+\]
+And since $|2h\sin(1/h)| \leq 2|h|$, then taking the limit as $h \to 0$ gives us $f'(0) = 1$. Additionally, for nonzero $t \in (-1, 1)$ we have
+\begin{align*}
+    |f'(t)| &= |1 - 2\cos(1/t)  + 4t\sin(1/t)| \\
+        &\leq 1 + 2 |\cos(1/t)| + 4|t||\sin(1/t)| \\
+        &\leq 1 + 2 + 4 \\
+        &= 7.
+\end{align*}
+
+However, $f$ is not injective in any neighborhood of $0$. Let $\eps > 0$ be given and choose $N = \min\{n \in \N : 1/(2\pi n) < \eps\}$. Then
+\[
+    f\left(\frac{1}{2\pi N}\right) = \frac{1}{2\pi N} + 2\pfrac{1}{2\pi N}^2 \sin(2\pi N) = \frac{1}{\pi N},
+\]
+and
+\[
+    f'\left(\frac{1}{2\pi N}\right) = 1 - 2\cos(2\pi N)  + 4(2\pi N)\sin(2\pi N) = -1.
+\]
+Since the derivative of $f$ at the point $1/(2\pi N)$ is continuous, then there is some open neighborhood of this point, on which $f$ is strictly decreasing. In particular, this means we can find some point $c \in (0, 1/(2\pi N))$ with $f(c) > 1/(\pi N) > 0$. Then, by the continuity of $f$ on $(0, c)$, there is some point $d \in (0, c)$ such that $f(d) = 1/(\pi N)$. So there are two distinct points, namely $1/(2\pi N)$ and $d$, inside $(-\eps, \eps)$ which have the same value under $f$. Therefore, $f$ is not injective on any neighborhood of $0$.
+
+
+
+\newpage
+\begin{pbox}[Exercise 9.17]
+    Let $\f = (f_1, f_2)$ be the mapping of $\R^2$ into $\R^2$ given by
+    \[
+        f_1(x, y) = e^x \cos y, \qquad f_2(x, y) = e^x \sin y.
+    \]
+\end{pbox}
+
+\begin{pbox}[(a)]
+    What is the range of $\f$?
+\end{pbox}
+
+\begin{claim*}
+    $f(\R^2) = \R^2 \setminus \{0\}$.
+\end{claim*}
+
+\begin{proof}
+    For each $(x, y) \in \R^2$, we always have $e^x > 0$. On the other hand, we never have $\cos y = 0$ and $\sin y = 0$, simultaneously. That is, $\f(x, y) \ne (0, 0)$ so $\f(\R^2) \subseteq \R^2 \setminus \{0\}$.
+
+    Any point $(x, y) \in \R^2 \setminus \{0\}$, has a polar representation in terms of magnitude $r > 0$ and angle $\theta \in (-\pi, \pi]$ to the positive $x$-axis, so that $(x, y) = r(\cos\theta, \sin\theta)$. Then $(\log r, \theta) \in \R^2$ and we find
+    \[
+        \f(\log r, \theta) = (e^{\log r}\cos \theta, e^{\log r}\sin \theta) = (r\cos \theta, r\sin \theta) = (x, y).
+    \]
+    Hence, the image of $\f$ is precisely $\R^2 \setminus \{0\}$.
+
+\end{proof}
+
+\begin{pbox}[(b)]
+    Show that the Jacobian of $\f$ is not zero at any point of $\R^2$. Thus every point of $\R^2$ has a neighborhood in which $\f$ is one-to-one. Nevertheless, $\f$ is not one-to-one on $\R^2$.
+\end{pbox}
+
+\begin{proof}
+    The Jacobian of $\f$ at $(x, y) \in \R^2$ is given by
+    \begin{align*}
+        [\f'(x, y)]
+            &= \mat{(D_1f_1)(x, y) & (D_2f_1)(x, y) \\ (D_1f_2)(x, y) & (D_2f_2)(x, y)} \\
+            &= \mat{e^x\cos y & -e^x\sin y \\ e^x\sin y & e^x\cos y} \\
+            &= e^x \mat{\cos y & -\sin y \\ \sin y & \cos y}.
+    \end{align*}
+    Then $\det [\f'(x, y)] = e^x(\cos^2 y + \sin^2 y) = e^x \ne 0$. So $\f'(x, y)$ is invertible, and the inverse function theorem implies the existence of an open neighborhood of $(x, y)$ on which $\f$ is injective. 
+
+    However, consider the points $(0, 0), (0, 2\pi) \in \R^2$. We have
+    \[
+        \f(0, 0) = (e^0\cos0, e^0\sin0) = (1, 0)
+    \]
+    and
+    \[
+        \f(0, 2\pi) = (e^0\cos 2\pi, e^0\sin 2\pi) = (1, 0).
+    \]
+    Hence, $\f$ is not injective.
+
+\end{proof}
+
+
+\newpage
+\begin{pbox}[(c)]
+    Put $\aa = (0, \pi/3)$, $\bb= \f(\aa)$, let $\g$ be the continuous inverse of $\f$, defined in a neighborhood of $\bb$, such that $\g(\bb) = \aa$, Find an explicit formula for $\g$, compute $\f'(\aa)$ and $\g'(\bb)$, and verify the formula (52).
+\end{pbox}
+
+We will consider the restriction of $\f$ to the open set $U = \R \times (0, \pi)$, which contains $\aa$. We show that $\f|_U$ is an injection. Suppose $(x_1, y_1), (x_2, y_2) \in U$ such that $\f(x_1, y_1) = \f(x_2, y_2)$. Then in particular $|\f(x_1, y_1)| = |\f(x_2, y_2)|$, so
+\begin{align*}
+    \sqrt{(e^{x_1}\cos y_1)^2 + (e^{x_1}\sin y_1)^2} &= \sqrt{(e^{x_2}\cos y_2)^2 + (e^{x_2}\sin y_2)^2} \\
+    \sqrt{e^{2x_1}(\cos^2 y_1 + \sin^2 y_1)} &= \sqrt{e^{2x_2}(\cos^2 y_2 + \sin^2 y_2)} \\
+    \sqrt{e^{2x_1}} &= \sqrt{e^{2x_2}} \\
+    e^{x_1} &= e^{x_2}.
+\end{align*}
+So $x_1 = x_2$, which gives us $\cos y_1 = \cos y_2$. And since $y_1, y_2 \in (0, \pi)$, then in fact $y_1 = y_2$. Then the inverse of $\f|_U$ is given by
+\[
+    \g(x, y) = (g_1, g_2)(x, y) = \left(\log \sqrt{x^2 + y^2},\; \arctan(y/x)\right).
+\]
+
+We now calculate the derivatives of $\f$ and $\g$ at $\aa$. First, using the expression for the Jacobian of $\f$ from (b), we find
+\[
+    [\f'(\aa)] 
+        = e^0 \mat{\cos(\pi/3) & -\sin(\pi/3) \\ \sin(\pi/3) & \cos(\pi/3)} \\
+        = \frac{1}{2}\mat{1 & -\sqrt{3}\\ \sqrt{3} & 1}.
+\]
+Next
+\begin{align*}
+    [\g'(x, y)]
+        &= \mat{(D_1g_1)(x, y) & (D_2g_1)(x, y) \\ (D_1g_2)(x, y) & (D_2g_2)(x, y)} \\
+        &= \mat{\frac{x}{x^2 + y^2} & \frac{y}{x^2 + y^2} \\ \frac{-y}{x^2 + y^2} & \frac{x}{x^2 + y^2}} \\
+        &= \frac{1}{x^2 + y^2}\mat{x & y\\ -y & x},
+\end{align*}
+so
+\begin{align*}
+    [\g'(\bb)]
+        &= [\g'(\f(\aa))] \\
+        &= [\g'(1/2, \sqrt{3}/2)] \\
+        &= \frac{1}{(1/2)^2 + (\sqrt{3}/2)^2}\mat{1/2 & \sqrt{3}/2\\ -\sqrt{3}/2 & 1/2} \\
+        &= \frac{1}{2}\mat{1 & \sqrt{3}\\ -\sqrt{3} & 1},
+\end{align*}
+which is precisely the inverse of $[\f'(\aa)] = [\f'(\g'(\bb))]$. 
+
+\begin{pbox}[(d)]
+    What are the images under $\f$ of lines parallel to the coordinate axes?
+\end{pbox}
+
+We write $\f(x, y) = e^x(\cos y, \sin y)$. A choice of $y \in \R$ gives a point $(\cos y, \sin y)$ on the unit circle in $\R^2$ centered at the origin. And a choice of $x \in \R$ gives a radius $e^x \in (0, + \infty)$. Which means that the point $(x, y)$ is the point with magnitude $e^x$ and angle $y$ to the positive $x$-axis. So for a fixed $x$, the line parallel to the $y$-axis has the image of a circle centered at the origin with radius $e^x$. And for a fixed $y \in \R$, the image of the line parallel to the $x$-axis has the image of a ray starting at (but not including) the origin with angle $y$.
+
+
+\newpage
+\begin{pbox}[Exercise 9.19]
+    Show that the system of equations
+    \begin{align*}
+        3x + y - z + u^2 &= 0 \\
+        x - y + 2z + u &= 0 \\
+        2x + 2y - 3z + 2u &= 0
+    \end{align*}
+    can be solved for $x, y, u$ in terms of $z$; for $x, z, u$ in terms of $y$; for $y, z, u$ in terms of $x$; but not for $x, y, z$ in terms of $u$.
+\end{pbox}
+
+Define the functions
+\begin{align*}
+    f_1(x, y, z, u) &= 3x + y - z + u^2, \\
+    f_2(x, y, z, u) &= x - y + 2z + u, \\
+    f_3(x, y, z, u) &= 2x + 2y - 3z + 2u,
+\end{align*}
+and $F = (f_1, f_2, f_3) : \R^{3 + 1} \to \R^3$. We see $F$ is continuously differentiable, as its partial derivatives exist and are continuous, and that $F(0) = 0$. In particular,
+\[
+    [F'(x, y, z, u)] = \mat{3 & 1 & -1 & 2u \\ 1 & -1 & 2 & 1 \\ 2 & 2 & -3 & 2}.
+\]
+Define the matrix $B_z$ to be the Jacobian of $F$ at $0$ excluding the `$z$' row, i.e.,
+\[
+    B_z = \mat{3 & 1 & 0 \\ 1 & -1 & 1 \\ 2 & 2 & 2}.
+\]
+Then
+\[
+    \det B_z 
+        = 3\mdet{-1 & 1 \\ 2 & 2} - \mdet{1 & 1 \\ 2 & 2}
+        = 3(-2 - 2) - (2 - 2)
+        = -12,
+\]
+so $B_z$ is invertible. Then by the implicit function theorem with $n = 3$ and $m = 1$, there exist open neighborhoods $0 \in V \subseteq \R^{3+1}$ and $0 \in W \subseteq \R^1$, such that to each $z \in W$ there corresponds a unique $(x, y, u) \in V$ such that $F(x, y, z, u) = 0$. The map $z \mapsto (x, y, u)$ is precisely the solving of the system of equations for $x, y, u$ in terms of $z$. Repeating this process for $y$ and $x$, we find
+\begin{align*}
+    \det B_y = \mdet{3 & -1 & 0 \\ 1 & 2 & 1 \\ 2 & -3 & 2} = 3\mdet{2 & 1 \\ -3 & 2} - (-1)\mdet{1 & 1 \\ 2 & 2} 
+        = 3(4 + 3) + (2 - 2) 
+        = 21
+\end{align*}
+and
+\begin{align*}
+    \det B_x = \mdet{1 & -1 & 0 \\ -1 & 2 & 1 \\ 2 & -3 & 2} = 1\mdet{2 & 1 \\ -3 & 2} - (-1)\mdet{-1 & 1 \\ 2 & 2} 
+        = 1(4 + 3) + (-2 - 2) 
+        = 3.
+\end{align*}
+Hence, we can use any one of $x, y, z$ to express the remaining values.
+
+Taking $u$ as as constant, we solve the linear system of equations.
+\[
+    \mat{3 & 1 & -1 & u^2 \\ 1 & -1 & 2 & u \\ 2 & 2 & -3 & 2u}
+        \sim \mat{0 & 4 & -7 & u^2 - 3u \\ 1 & -1 & 2 & u \\ 0 & 4 & -7 & 0}
+        \sim \mat{0 & 4 & -7 & u^2 - 3u \\ 1 & -1 & 2 & u \\ 0 & 0 & 0 & -u^2 + 3u}
+\]
+Therefore, $-u(u - 3) = 0$, so $u$ must be $0$ or $3$. hence, the possible solution space over is a 2-dimensional subspace of $\R^3$, meaning we cannot solve for $x, y, z$ as a function of $u$.
+
+
+
+
+
+\newpage
+\begin{pbox}[Exercise 9.20]
+    Take $n = m = 1$ in the implicit function theorem, and interpret the theorem (as well as its proof) graphically.
+\end{pbox}
+
+Suppose $U \subseteq \R^2$ is open and $f : U \to \R$ is a $C^1$ function. The graph of $f$ is the set of points $\{(x, y, f(x, y)) : (x, y) \in U\}$, which defines a 2-dimensional surface in $\R^3$. Suppose there is a point $(a, b) \in U$ such that $f(a, b) = 0$ and $\pdv{f}{x}(a, b) = (D_1f)(a, b) \ne 0$. These condition on $(a, b)$ ensure $f$ is not constantly zero around $(a, b)$, so that the set of zeros of $f$, which is the intersection of the graph of $f$ and the $xy$-plane, is locally a curve around the point $(a, b)$. Additionally, we can deduce that the tangent line to this curve at $(a, b)$ is not parallel to the $x$-axis, and we will be able to select a small neighborhood around $(a, b)$ where this curve can be injectively projected onto the $y$-axis.
+
+The implicit function theorem states that, in some neighborhood $V \subseteq U$ of $(a, b)$, this curve can be represented by a a $C^1$ function $g : W \to \R$, where the open set $W \subseteq \R$ is the projection $V$ onto the $y$-axis. The graph of $g$ is the set of points $\{(g(y), y) : y \in W\}$, which defines a curve in $\R^2$, and is precisely the set of zeros of $f$ inside $V$. Geometrically, we can think of $g$ as the local inverse of the projection from the set of zeros of $f$ to the $y$-axis.
+
+
+
+
+
+\newpage
+\begin{pbox}[Exercise 9.23]
+    Define $f$ in $\R^3$ by
+    \[
+        f(x, y_1, y_2) = x^2y_1 + e^x + y_2.
+    \]
+    Show that $f(0, 1, -1) - 0$, $(D_1f)(0, 1, -1) \ne 0$, and that there exists therefore a differentiable function $g$ in some neighborhood of $(1, -1)$ in $\R^2$, such that $g(1, -1) = 0$ and
+    \[
+        f(g(y_1, y_2), y_1, y_2) = 0.
+    \]
+    Find $(D_1g)(1, -1)$ and $(D_2g)(1, -1)$.
+\end{pbox}
+
+Evaluating $f$ at $(0, 1, -1)$, we find
+\[
+    f(0, 1, -1)
+        = (0)^2(1) + e^0 + (-1)
+        = 0 + 1 - 1
+        = 0.
+\]
+The first partial derivative of $f$ is given by $D_1f = 2xy_1 + e^x$, so
+\[
+    (D_1f)(0, 1, -1) = 2(0)(1) + e^0 = 0 + 1 = 1.
+\]
+Then the implicit function theorem tells us that such a function $g$ exists. The Jacobian of $f$ at $(0, 1, -1)$ is given by
+\[
+    [f'(0, 1, -1)] = \mat{A_{\mathbf{x}} & A_{\mathbf{y}}},
+\]
+where
+\[
+    A_{\mathbf{x}} = [D_1f(0, 1, -1)] = [1]
+\]
+and
+\[
+    A_{\mathbf{y}} = \mat{D_2f(0, 1, -1) & D_3f(0, 1, -1)}.
+\]
+We have $D_2f = x^2$ and $D_3f = 1$, so $A_{\mathbf{y}} = \mat{0 & 1}$. Then the implicit function theorem tells us that
+\[
+    [g'(1, -1)]
+        = -(A_{\mathbf{x}})^{-1}A_{\mathbf{y}}
+        = -[1]\mat{0 & 1}
+        = \mat{0 & -1}.
+\]
+So $(D_1g)(1, -1) = 0$ and $(D_2g)(1, -1) = -1$.
+
+
+
+
+
+\end{document}

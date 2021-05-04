@@ -1,0 +1,219 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage[margin=1in]{geometry} % proper margins
+\usepackage{enumitem} % custom numbering for lists
+\usepackage{amsmath} % align, cases, eqref, matrices, dots, roots, delimiters, math mode functions, mod
+\usepackage{amsthm,amssymb,wasysym,mathrsfs,mathtools,babel}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{\textwidth-10pt}}
+    {\end{minipage}\end{lrbox}\framebox[6.5in]{\usebox{\mybox}}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\seq}[2][n]{\left\{#2\right\}_{#1\in\N}}
+\newcommand{\clo}[1]{\overline{#1}}
+\newcommand{\conj}[1]{\overline{#1}}
+\newcommand{\eqc}[1]{\overline{#1}}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\newcommand{\<}{\left\langle}
+\renewcommand{\>}{\right\rangle}
+
+% Blackboard Characters
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\renewcommand{\P}{\mathbb{P}}
+
+% Calligraphy Characters
+\newcommand{\FF}{\mathcal{F}}
+
+% Misc Characters
+\let\eps\varepsilon
+\let\emptyset\varnothing
+
+% Functions and Operators
+\newcommand{\id}[1]{\operatorname{id_{\mathnormal{#1}}}}
+\renewcommand{\Im}{\operatorname{Im}}
+\renewcommand{\Re}{\operatorname{Re}}
+\newcommand{\Arg}{\operatorname{Arg}}
+
+% Complex Analysis
+
+\newcommand{\pdv}[3][1]{\ifnum#1=1{\frac{\partial #2}{\partial#3}}\else{\frac{\partial^{#1}#2}{\partial#3^{#1}}}\fi}
+
+% Real Analysis
+\newcommand{\intr}[1]{\accentset{\circ}{#1}}
+
+% Notes
+% medskip for header-less paragraph
+% intertext{} for short text inside big display structure
+% dots is dynamic based on surroundings
+% dfrac and tfrac to force large or small fractions
+% operatorname for new operators instead of text
+
+\begin{document}
+ 
+\title{Homework\\
+    %\large MATH CS 121 Intro to Probability
+    %\large MATH 111A Intro to Abstract Algebra
+    %\large MATH CS 122A Complex Analysis I
+    \large MATH 118A Intro to Real Analysis
+    %\large MATH 104A Intro to Numerical Analysis
+}
+\author{Harry Coleman}
+\date{November 5, 2020}
+\maketitle
+
+\section*{Exercise 1}
+\begin{problem}
+    Let $(X,d)$ be a metric space, and let $\{z_n\}_{n \in\mathbb{N}}\subseteq X$ be a sequence. If $z_n \to z\in X$, prove that for all $x \in X$, 
+    \begin{equation*}
+        d(x,z_n) \to d(x,z).
+    \end{equation*}
+\end{problem}
+
+\begin{lemma}
+    (Reverse Triangle Inequality) For all $x,y,z\in X$, we have
+    \[|d(x,z) - d(y,z)| \leq d(x,y).\]
+\end{lemma}
+
+\begin{proof}
+    let $x,y,z\in X$. The usual triangle inequality gives us
+    \begin{align*}
+        d(x,z) &\leq d(x,y) + d(y,z), \\
+        d(y,z) &\leq d(x,y) + d(x,z),
+    \end{align*}
+    which we rearrange to obtain
+    \begin{align*}
+        d(x,z) - d(y,z) &\leq d(x,y), \\
+        -(d(x,z) - d(y,z)) = d(y,z) - d(x,z) &\leq d(x,y).
+    \end{align*}
+    Thus,
+    \[|d(x,z) - d(y,z)| \leq d(x,y).\]
+
+\end{proof}
+
+\begin{proposition}
+    If $z_n \to z\in X$, then for all $x \in X$, $d(x,z_n) \to d(x,z)$.
+\end{proposition}
+
+\begin{proof}
+    Suppose $z_n\to z\in X$ and let $x\in X$. Consider $\seq{d(x,z_n)}$ to be a sequence in $\R$. Let $\eps>0$ be given and, since $z_n\to z$, let $n_0\in\N$ such that
+    \[n\in\N, n\geq n_0 \implies d(z,z_n) < \eps.\]
+    Then the reverse triangle inequality gives us
+    \[n\in\N, n\geq n_0 \implies |d(x,z_n) - d(x,z)| \leq d(z, z_n) < \eps,\]
+    which is the condition for convergence of a sequence in $\R$. Thus, $d(x,z_N)\to d(x,z)$.
+
+\end{proof}
+
+\section*{Exercise 2}
+\begin{problem}
+    Prove that in a metric space $(X,d)$, a sequence $\{p_n\}_{n\in\mathbb{N}}$ converges to $p\in X$, if and only if every subsequence of $\{p_n\}_{n\in\mathbb{N}}$ has a subsequence that converges to $p$. 
+\end{problem}
+
+\begin{proof}
+    Suppose $p_n\to p\in X$. Then for any subsequence $\seq[m]{p_{n_m}}$, we have $p_{n_m} \to p$, and for any further subsequence $\seq[k]{p_{n_{m_k}}}$, we have $p_{n_{m_k}} \to p$.
+    
+    Now suppose every subsequence of $\{p_n\}_{n\in\mathbb{N}}$ has a subsequence that converges to $p$. Suppose, for contradiction, that $\seq{p_n}$, itself, does not converge to $p$. That is, there exists some $\eps>0$ such that for all $n_0\in\N$, there exists some $n\in\N$ with $n\geq n_0$ and $d(p_n, p) \geq \eps$. We now construct a subsequence $\seq[m]{p_{n_m}}$, recursively, as follows
+    \begin{align*}
+        n_0 &= 1, \\
+        n_m &\geq n_{m-1}+1 \isp{such that} d(p_{n_m}, p) \geq \eps.
+    \end{align*}
+    Other than $n_0$, which is not used in the subsequence itself, the existence of each $n_m$ is guaranteed by the assumption that $\seq{p_n}$ does not converge to $p$. However, our other assumption about the subsequences of $\seq{p_n}$ tells us that there exists some subsequence $\seq[k]{p_{n_{m_k}}}$ of our constructed sequence which does converge to $p$. So there exists some $k_0\in\N$ such that
+    \[k\in\N, k\geq k_0 \implies d(p_{n_{m_k}}, p) < \eps.\]
+    In particular, we have
+    \[d(p_{n_{m_{k_0}}}, p) < \eps,\]
+    which contradictions the construction of our subsequence such that
+    \[d(p_{n_{m_{k_0}}}, p) \geq \eps.\]
+    Therefore, $p_n\to p$.
+
+\end{proof}
+
+\newpage
+\section*{Exercise 3}
+\begin{problem}
+    Suppose $\{a_n\}_{n \in \mathbb{N}}$, $\{b_n\}_{n \in \mathbb{N}}$, and $\{c_n\}_{n \in \mathbb{N}}$ are sequences in $\mathbb{R}$ such that $a_n$ and $b_n$ converge to $A$, and 
+    \begin{equation*}
+    a_n \le c_n \le b_n\quad \forall n\in\mathbb{N}.
+    \end{equation*}
+    Prove that $c_n$ converges to $A$.
+\end{problem}
+
+\begin{proof}
+    Let $\eps>0$ be given. By the convergences $a_n,b_n\to A$, there exist $n_1,n_2\in\N$ such that
+    \[n\in\N, n\geq n_1 \implies d(a_n,A) < \eps/3,\]
+    \[n\in\N, n\geq n_2 \implies d(b_n,A) < \eps/3.\]
+    Define $n_0 = \max\{n_1,n_2\}$ and let $n\in\N$ with $n\geq n_0$. Then
+    \[a_n\leq c_n\leq b_n \implies 0\leq c_n - a_n = |c_n-a_n| \leq b_n-a_n = |b_n - a_n|.\]
+    Now the triangle inequality gives us and the fact that $n\geq n_0$, gives us
+    \begin{align*}
+        |c_n-A| 
+            &\leq |c_n - a_n| + |a_n - A| \\
+            &\leq |b_n - a_n| + \frac\eps3 \\
+            &\leq |b_n - A| + |a_n - A| + \frac\eps3 \\
+            &\leq \frac\eps3 + \frac\eps3 + \frac\eps3 \\
+            &= \eps,
+    \end{align*}
+    so $c_n \to A$.
+
+\end{proof}
+
+\newpage
+\section*{Exercise 4}
+\begin{problem}
+    Let $\{a_n\}_{n\in\mathbb{N}}\subseteq \mathbb{R}^k$ be a bounded sequence. Show that there exists a subsequence that converges.
+\end{problem}
+
+\begin{proof}
+    Because $\seq{a_n}$ is bounded, then there exists some $M>0$ which is an upper bound on the magnitude of $a_n$ for all $n\in\N$, i.e., $\seq{a_n}\subseteq B_M(0)$. Then if we define the $k$-cell
+    \[I = \{(x_1,\dots,x_k) \in \R^k : -M \leq x_i \leq M, i=1,\dots,k\},\]
+    then $\seq{a_n}\subseteq B_M(0) \subseteq I$. And since $\seq{a_n}$ is a sequence in the compact subset $I$, then there exists a convergent subsequence.
+
+\end{proof}
+
+\newpage
+\section*{Exercise 5}
+\begin{problem}
+    If $\{E_n\}_{n\in\mathbb{N}}$ is a sequence of closed nonempty and bounded sets in a {\it complete} metric space $X$, if $E_{n+1} \subset E_n$ for all $n\in \mathbb{N}$, and if 
+    \[
+    \lim_{n\to \infty} \text{diam } E_n = 0,
+    \]
+    then $\cap_{n=1}^\infty E_n$ consists of exactly one point.
+\end{problem}
+
+\begin{proof}
+    We construct a sequence $\seq{x_n}\subseteq X$ such that $x_n\in E_n$ for all $n\in\N$. Now for any $\eps>0$, there exists some $n_0\in\N$ such that
+    \[n\in\N, n\geq n_0 \implies \operatorname{diam} E_n < \eps.\]
+    And since for all $n,m\in\N$ with $n,m\geq n_0$, we have $x_n,x_m \in E_0$, then
+    \[d(x_n,x_m) \leq \operatorname{diam}E_{n_0} < \eps.\]
+    Therefore, $\seq{x_n}$ is Cauchy, and since $X$ is complete, we have $x_n\to x$ for some $x\in X$. We now claim that $x\in\cap_{n=1}^\infty E_n$. Suppose not, so for some $n\in\N$, we have $x\notin E_n$. Since $E_n$ is closed, there exists some $\eps>0$ such that $E_n\cap(B_\eps(x)\setminus\{x\}) = \emptyset$. However, since $x_m\in E_n$ for all $m\geq n$, then for all $m\geq n$, we have $d(x_m, x) \geq \eps$. This contradicts the convergence $x_n\to x$, so $x\in\cap_{n=1}^\infty E_n$.
+    
+    To show that $\cap_{n=1}^\infty E_n$ consists only of $x$, suppose, to the contrary, that $y\in\cap_{n=1}^\infty E_n$ with $y\ne x$. Then let $\eps = d(x,y) > 0$. So by the convergence of $\operatorname{diam} E_n\to 0$, there exists some $n\in\N$ such that $\operatorname{diam}E_n<\eps$. However, since we assumed that $x,y\in E_n$, then $\eps = d(x,y) \leq \operatorname{diam}E_n < \eps$, which is a contradiction. Therefore, $\cap_{n=1}^\infty E_n$ consists of exactly one point.
+
+\end{proof}
+
+\end{document}

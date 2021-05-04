@@ -1,0 +1,223 @@
+\documentclass[11pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{colortbl}
+\usepackage{verbatim}
+\usetikzlibrary{arrows, angles, quotes}
+\usepackage{framed}
+
+
+\lstset{basicstyle=\footnotesize}
+\usetikzlibrary{calc}
+
+ 
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{question}[2][Question]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+ 
+\begin{document}
+ 
+\title{Homework 5\\
+    \large CS128 Intro to Higher Mathematics}
+\author{Harry Coleman}
+\date{October 14, 2019}
+
+\maketitle
+
+\section*{Exercise 10 (Contradiction)}
+\fbox{
+    \parbox{\textwidth}{
+        Prove that the square show below cannot be completed to for a "magic square" whose rows, columns and diagonals all sum to the same number.
+    }
+}
+\\
+
+The square is show below, with unknown values assigned to variables.
+\begin{center}
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        $1$ & $2$ & $3$ & $A$ \\
+        \hline
+        $B$ & $4$ & $5$ & $6$ \\
+        \hline
+        $7$ & $C$ & $8$ & $D$ \\
+        \hline
+        $E$ & $9$ & $F$ & $10$ \\
+        \hline
+    \end{tabular}
+\end{center}
+
+If we assume that the magic square is possible, then each row, column, and diagonal must add up to the same value, we'll call $T$. Applying this, we will end up with the following formulas.
+\begin{alignat}{2}
+    T &= A + 6 + D + 10 &&= 16 + A + D \\
+    &= 1 + 2 + 3 + A &&= 6 + A \\
+    &= 7 + C + 8 + D &&= 15 + C + D \\
+    &= 2 + 4 + C + 9 &&= 15 + C
+\end{alignat}
+
+Subtracting equations (1) and (2), we get
+\[\begin{cases}
+    T &= 16 + A + D \\
+    T &= 6 + A \\
+    \hline
+\end{cases}\]
+\[0 = 10 + D\]
+\[D = -10\]
+
+And Subtracting equation (2) and (3), we get
+\[\begin{cases}
+    T &= 15 + C + D \\
+    T &= 15 + C \\
+    \hline
+\end{cases}\]
+\[0 = D\]
+
+So $D=0$ and $D=-10$, meaning $0 = -10$ which is a contradiction. Therefore, our assumption is false, so it is not possible to complete the magic square.
+
+
+\section*{Exercise 14 (Conditional)}
+\fbox{
+    \parbox{\textwidth}{
+        Write a careful proof of the following statement
+        "If $n$ is an integer, then $n^2$ is even if and only if $n$ is even."
+    }
+}
+\\
+
+We'll define some propositions so we can write the statement in a formal way. Let
+\begin{center}
+    \begin{tabular}{r l}
+        A &= $n$ is an integer \\
+        B &= $n^2$ is even \\
+        C &= $n$ is even
+    \end{tabular}
+\end{center}
+
+
+So our statement becomes
+\[A \implies (B \iff C)\]
+or
+\[A \implies ((B \implies C) \land (C \implies B))\]
+or
+\[A \implies ((\lnot C \implies \lnot B) \land (C \implies B))\]
+
+
+\begin{enumerate}
+    \begin{framed}
+        \item Assume A is true, so $n \in \mathbb{Z}$.
+        \begin{framed}
+            To prove $(\lnot C \implies \lnot B)$
+            \item Assume $\lnot C$ is true, so $n$ is odd.
+            \item $n = 2m + 1$ where $m \in \mathbb{Z}$ by definition of Odd.
+            \item $n^2 = (2m+1)^2$ by Substitution Property
+            \item $n^2 = (2m+1)(2m+1)$ by definition of Exponentiation.
+            \item $n^2 = 2m(2m+1) + 1(2m+1)$ by Distributive Property of Multiplication.
+            \item $n^2 = 4m^2 + 2m + 2m + 1$ by Distributive Property of Multiplication.
+            \item $n^2 = 4m^2 + 4m + 1$ by definition of Addition.
+            \item $n^2 = 2(2m^2 + 2m) + 1$ by Distributive Property of Multiplication.
+            \item $2m^2 + 2m = k \in \mathbb{Z}$ by the Closure of Integers over multiplication and addition.
+            \item $n^2 = 2k + 1$ by Substitution Property.
+            \item $n^2$ is odd by definition of Odd.
+            \item $\lnot B$ by Definition of $B$
+        \end{framed}
+        \item $(\lnot C \implies \lnot B)$ by Conditional Subproof lines 2-13.
+        \item $(B \implies C)$ by definition of Contrapositive 
+        \begin{framed}
+            To prove $(C \implies B)$
+            \item Assume $C$ is true, so $n$ is even.
+            \item $n = 2m$ where $m \in \mathbb{Z}$ by definition of Even.
+            \item $n^2 = (2m)^2$ by Substitution Property
+            \item $n^2 = (2m)(2m)$ by definition of Exponentiation.
+            \item $n^2 = 4m^2$ by definition Multiplication.
+            \item $n^2 = 2(2m^2)$ by Distributive Property of Multiplication.
+            \item $2m^2 = k \in \mathbb{Z}$ by the Closure of Integers over multiplication and addition.
+            \item $n^2 = 2k$ by Substitution Property.
+            \item $n^2$ is odd by definition of Even.
+            \item $B$ by Definition of $B$
+        \end{framed}
+        \item $(C \implies B)$ by Conditional Subproof lines 16-25.
+        \item $(B \implies C) \land (C \implies B)$ by Conjunction Introduction on lines 15, 26.
+        \item $(B \iff C)$ by definition of Biconditional on line 27.
+    \end{framed}
+\end{enumerate}
+
+By Conditional Proof lines 1-29
+\[A \implies (B \iff C)\]
+and by our propositional definitions, if $n$ is an integer, then $n^2$ is even if and only if $n$ is even.
+
+\newpage
+\section*{Exercise 18 (Contradiction)}
+\fbox{
+    \parbox{\textwidth}{
+        Prove by contradiction that a real number that is less than every positive real number cannot be positive.
+    }
+}
+\\
+
+To start our proof by contradiction, we'll assume that
+\[\exists (x \in \mathbb{R}^+)[\forall (y \in \mathbb{R}^+)[x < y]]\]
+
+If we take $c \in \mathbb{R}^+$ which is our value less than every positive real number, we can eliminate the existential quantifier to get
+\[\forall (y \in \mathbb{R}^+)[c < y]\]
+
+Since $c \in \mathbb{R}^+$, we can instantiate $c$ into our universal quantification to get
+\[c < c\]
+
+Since this is true for no real numbers, it is a contradiction. Therefore, a real number that is less than every positive real number cannot be positive.
+
+
+\section*{Exercise 13 (Conditional)}
+\fbox{
+    \parbox{\textwidth}{
+        Suppose a, b, and c are integers. Prove that if $a \mid b$ and $b \mid c$, then $a \mid c$.
+    }
+}
+\\
+
+We'll define some propositions to write the statement in a formal way. Let
+\begin{center}
+    \begin{tabular}{r l}
+        X &= $a \mid b$ \\
+        Y &= $b \mid c$ \\
+        Z &= $a \mid c$
+    \end{tabular}
+\end{center}
+
+So our statement becomes
+\[(X \land Y) \implies Z\]
+
+\begin{enumerate}
+    \begin{framed}
+        \item Assume $(X \land Y)$ is true, so $a \mid b$ and $b \mid c$.
+        \item $a \mid b$ by Simplification on line 1.
+        \item $b = an$ for some $n \in \mathbb{Z}$ by definition of Divides on line 2.
+        \item $b \mid c$ by Simplification on line 1.
+        \item $c = bm$ for some $m \in \mathbb{Z}$ by definition of Divides on line 4.
+        \item $c = anm$ by Substitution on lines 3, 5.
+        \item $k = nm$ for some $k \in \mathbb{Z}$ by the Closure of Integers over multiplication.
+        \item $c = ak$ for some $k \in \mathbb{Z}$ by Substitution on lines 6, 7.
+        \item $a \mid c$ by Definition of Divides on line 8.
+        \item $Z$ by Definition of $Z$ on line 9.
+    \end{framed}
+\end{enumerate}
+
+So by Proof lines 1-10, $(X \land Y) \implies Z$. Therefore, by our propositional definitions, if $a \mid b$ and $b \mid c$, then $a \mid c$.
+
+
+
+\end{document}
+

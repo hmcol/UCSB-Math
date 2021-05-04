@@ -1,0 +1,111 @@
+\documentclass[12pt]{article}
+ 
+ \usepackage[table,xcdraw]{xcolor}
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{colortbl}
+\usepackage{framed}
+
+\lstset{basicstyle=\footnotesize}
+\usetikzlibrary{calc}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+
+ 
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{question}[2][Question]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+ 
+\begin{document}
+ 
+\title{Problem Set 11\\
+    \large MATH CS 120FN Number Systems}
+\author{Harry Coleman}
+\date{November 14, 2019}
+
+\maketitle
+
+\section*{Problem 1}
+\fbox{
+    \parbox{\textwidth}{
+        Use the fact that $\cos(r)$ is irrational for any nonzero rational $r$ to conclude that $\sin(r)$ and $\tan(r)$ are also irrational for such $r$.
+    }
+}
+\\
+
+For this proof, we need to examine the properties of arithmetic operations on rational and irrational numbers. Let $x$ and $q$ be real numbers such that $x\in\I$ and $q \in\Q$. We want to show
+\begin{align*}
+    x + q &\in\I \\
+    x \cdot q &\in\I \\
+    x^{-1} &\in\I \text{ (for $x\ne0$)}\\
+    \sqrt{x} &\in\I \text{ (for $x>0$)}
+\end{align*}
+\begin{center}
+    \begin{tabular}{l|l}
+        Assume $x+q \notin\I$           & Assume $x\cdot q \notin\I$ \\
+        $x+q \in\Q$                     & $x \cdot q \in\Q$ \\
+        $x+q = p$ for some $p\in\Q$     & $x \cdot q = p$ for some $p\in\Q$ \\
+        $x = p-q$                       & $x = p \div q$ \\
+        $x\in\Q$ since $p-q \in\Q$      & $x\in\Q$ since $p\div q \in\Q$ \\
+        \hline
+        For $x\ne0$                     & For $x>0$ \\
+        Assume $x^{-1} \notin\I$        & Assume $\sqrt{x} \notin\I$ \\
+        $x^{-1} \in\Q$                  & $\sqrt{x} \in\Q$ \\
+        $x \cdot p=1$ for some $p\in\Q$ & $\sqrt{x} = p$ for some $p\in\Q$ \\
+        $x = 1\div p$                   & $x = p^2$ \\
+        $x \in\Q$ since $1\div p\in\Q$  & $x\in\Q$ since $p^2\in\Q$ \\
+    \end{tabular}
+\end{center}
+
+Each of these contradict that $x\in\I$, so we have shown all of the above properties. \newpage
+
+We'll let $r$ be some rational number. With the half-angle trig identity,
+\[\sin\left(\frac{x}{2}\right) = \sqrt{\frac{1-\cos(x)}{2}}\]
+\[\sin(x) = \sqrt{\frac{1-\cos(2x)}{2}}\]
+With this and the properties we showed at the beginning,
+\begin{align*}
+    2r &\in\Q \\
+    \cos(2r) &\in\I \\
+    1 - \cos(2r) &\in\I \\
+    \frac{1-\cos(2r)}{2} &\in\I \\
+    \sqrt{\frac{1-\cos(2r)}{2}} &\in\I \\
+    \sin(r) &\in\I
+\end{align*}
+
+With the Pythagorean identity and the half-angle trig identities,
+\[\tan^2(x) + 1 = \sec^2(x)\]
+\[\tan(x) = \sqrt{\frac{1}{\cos^2(x)} - 1}\]
+\[\tan(x) = \sqrt{\frac{2}{1 + \cos(2x)} - 1}\]
+With this and the properties we showed at the beginning,
+\begin{align*}
+    2r &\in\Q \\
+    \cos(2r) &\in\I \\
+    1 + \cos(2r) &\in\I \\
+    \frac{2}{1 + \cos(2r)} &\in\I \\
+    \frac{2}{1 + \cos(2r)} - 1 &\in\I \\
+    \sqrt{\frac{2}{1 + \cos(2r)} - 1} &\in\I \\
+    \tan(r) &\in\I
+\end{align*}
+
+
+
+
+        
+\end{document}

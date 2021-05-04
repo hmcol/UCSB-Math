@@ -1,0 +1,258 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amsthm, amssymb, physics}
+
+% Problem Box
+\newsavebox{\mybox}
+\newenvironment{pbox}{\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\mybox}}\end{center}}
+
+% Options
+%\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{1em}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+
+% Extra Commands
+\renewcommand{\mod}{\bmod}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+
+% Document Info
+\title{Homework 4\\
+    \large MATH 111B
+}
+\author{Harry Coleman}
+\date{February 5, 2021}
+
+% Begin Document
+\begin{document}
+\maketitle
+
+\section{Problem 7.6.5}
+\begin{pbox}
+    Let $n_1, n_2, \dots, n_k$ be integers which are relatively prime in pairs: $(n_i, n_j) = 1$ for all $i \ne j$.
+\end{pbox}
+
+
+\subsection{Problem 7.6.5(a)}
+\begin{pbox}
+    Show that the Chinese Remainder Theorem implies that for any $a_1, \dots, a_k \in \Z$ there is a solution $x \in \Z$ to the simultaneous congruences
+    \[
+        x \equiv a_1 \mod n_1, \quad x \equiv a_2 \mod n_2, \quad \dots, \quad x \equiv a_k \mod n_k
+    \]
+    and that the solution $x$ is unique mod $n = n_1 n_2 \cdots n_k$.
+\end{pbox}
+
+\begin{proof}
+    For all $i \ne j$, $(n_i, n_j) = 1$ implies that $n_i\Z$ and $n_j\Z$ are comaximal ideals in $\Z$. So the Chinese Remainder Theorem tells us that the ring homomorphism
+    \begin{align*}
+        \Z &\to \Z/n_1\Z \times \cdots \times \Z/n_k\Z \\
+        x &\mapsto (x \mod n_1, \dots, x \mod n_k)
+    \end{align*}
+    is surjective. So there exists $x \in \Z$ such that
+    \[
+        x \mapsto (a_1 \mod n_1, \dots, a_k \mod n_k).
+    \]
+    In other words, $x \equiv a_i \mod n_i$ for $i = 1, \dots, k$. Moreover, the kernel of this map is
+    \[
+        n_1\Z \cap \cdots \cap n_k\Z = n_1\Z \cdots n_k\Z = n\Z,
+    \]
+    which implies
+    \[
+        \Z/n\Z \isom \Z/n_1\Z \times \cdots \times \Z/n_k\Z.
+    \]
+    Then if $y \in \Z$ also satisfies the simultaneous congruences, $x \equiv y \mod n$.
+    
+\end{proof}
+
+\subsection{Problem 7.6.5(b)}
+\begin{pbox}
+    Let $n_i' = m/n_i$ be the quotient of $n$ by $n_i$, which is relatively prime to $n_i$ by assumption, Let $t_i$ be the inverse of $n_i' \mod n_i$. Prove that the solution $x$ in (a)  is given by
+    \[
+        x = a_1t_1n_1' + a_2t_2n_2' + \cdots + a_kt_kn_k' \mod n.
+    \]
+\end{pbox}
+
+\begin{proof}
+    Let $x = \sum_{i=1}^k a_it_in_i'$. Then for a fixed $j$ we find
+    \[
+        x \mod n_j
+            = \left(\sum_{i=1}^k a_it_in_i'\right) \mod n_j 
+            = \sum_{i=1}^k \left(a_it_in_i' \mod n_j\right).
+    \]
+    If $i \ne j$, then $n_j \mid n_i'$, which implies $n_i' \equiv 0 \mod n_j$, so
+    \[
+        x \mod n_j = a_jt_jn_j' \mod n_j = a_j \mod n_j.
+    \]
+    Hence, $x \equiv a_j \mod n_j$ for $j = 1, \dots, k$
+    
+\end{proof}
+
+\subsection{Problem 7.6.5(c)}
+\begin{pbox}
+    Solve the simultaneous system of congruences
+    \[
+        x \equiv 1 \mod 8, \quad x \equiv 2 \mod 25, \quad x \equiv 3 \mod 81
+    \]
+    and the simultaneous system
+    \[
+        y \equiv 5 \mod 8, \quad y \equiv 12 \mod 25, \quad y \equiv 47 \mod 81.
+    \]
+\end{pbox}
+
+A solution to the first system is given by $x = \sum_{i=1}^k a_it_in_i'$, where
+\begin{align*}
+    a_1 &= 1, & n_1' &= 25 \cdot 81, \\
+    a_2 &= 2, & n_2' &= 8 \cdot 81, \\
+    a_3 &= 3, & n_3' &= 8 \cdot 25.
+\end{align*}
+Moreover, $t_i$ is given by the inverse of $n_i' \mod n_i$, which we can find using the Euclidean Algorithm. So
+\[
+    t_1 = 1, \quad t_2 = 12, \quad t_3 = 32,
+\]
+and we obtain
+\[
+    x = 1 \cdot 1 \cdot 25 \cdot 81 + 2 \cdot 12 \cdot 8 \cdot 81 + 3 \cdot 32 \cdot 8 \cdot 25 = 36777.
+\]
+Since $36777 \equiv 4377 \mod n$, where $n = 8 \cdot 25 \cdot 81 = 16200$, then any solution $x$ to the system has
+\[
+    x \equiv 4377 \mod n.
+\]
+
+A solution to the second system is given by $y = \sum_{i=1}^k a_it_in_i'$, where
+\begin{align*}
+    a_1 &= 5, & n_1' &= 25 \cdot 81, \\
+    a_2 &= 12, & n_2' &= 8 \cdot 81, \\
+    a_3 &= 47, & n_3' &= 8 \cdot 25.
+\end{align*}
+Moreover, $t_i$ is given by the inverse of $n_i' \mod n_i$ and, again, we have
+\[
+    t_1 = 1, \quad t_2 = 12, \quad t_3 = 32.
+\]
+Hence,
+\[
+    y = 5 \cdot 1 \cdot 25 \cdot 81 + 12 \cdot 12 \cdot 8 \cdot 81 + 47 \cdot 32 \cdot 8 \cdot 25 \equiv 15437 \mod n.
+\]
+
+
+
+\section{}
+\begin{pbox}
+    Use the Chinese Remainder Theorem to prove that $\Z[x] / (x(x+1)) \isom \Z \times \Z$.
+\end{pbox}
+
+\begin{proof}
+    By definition, $(x)$ and $(x + 1)$ are ideals of $\Z[x]$. Moreover, if $p(x) \in \Z[x]$, then
+    \begin{align*}
+        p(x)
+            &= \sum_{k=0}^n a_k x^k \\
+            &= \sum_{k=2}^n a_k x^k + a_1x + a_0 \\
+            &= \sum_{k=2}^n a_k x^k + a_1x - a_0x + a_0x + a_0 \\
+            &= \left(\sum_{k=2}^n a_k x^{k-1} + a_1 - a_0\right) x + a_0(x + 1).
+    \end{align*}
+    That is, $p(x)$ can be written as an element of $(x) + (x + 1)$, so the two ideals are comaximal in $\Z[x]$. So, by the Chinese Remainder Theorem, we have
+    \[
+        \Z/(x(x+1)) \isom \Z/(x) \times \Z/(x + 1) \isom \Z \times \Z.
+    \]
+    
+\end{proof}
+
+\newpage
+\section{}
+\subsection{}
+\begin{pbox}
+    Show that $(x^2 - 2, x^4 - x + 2)$ is a principal ideal of $\Q[x]$.
+\end{pbox}
+
+\begin{proof}
+    Since $\Q$ is a field, then $\Q[x]$ is a principal ideal domain, so $(x^2 - 2, x^4 - x + 2)$ is a principal ideal of $\Q[x]$.
+    
+\end{proof}
+
+\subsection{}
+\begin{pbox}
+    Use the Euclidean Algorithm to show that $(x^2 - 2, x^4 - x + 2)$ is generated by some $a \in \Q^\times$.
+\end{pbox}
+
+\begin{proof}
+    Using the Euclidean Algorithm, we find
+    \begin{align*}
+        x^4 - x + 2 &= (x^2 - 2)(x^2 + 2) - x + 6, \\
+        x^2 - 2 &= (-x + 6)(-x - 6) + 34, \\
+        -x + 6 &= 34\left(\tfrac{-1}{34}x + \tfrac{6}{34}\right) + 0.
+    \end{align*}
+    Since $34 \in \Q^\times$ is the last nonzero remainder in the Euclidean Algorithm, then we have the principal ideal
+    \[
+        (x^2 - 2, x^4 - x + 2) = (34).
+    \]
+    In particular, $(x^2 - 2, x^4 - x + 2) = \Q[x]$ since $34$ is a unit of $\Q[x]$.
+    
+\end{proof}
+
+\subsection{}
+\begin{pbox}
+    Find the inverse of $\eqc{x^4 - x + 2}$ in $\Q[x]/(x^2 - 2)$
+\end{pbox}
+
+Using back substitution on the Euclidean on the above application of the Euclidean Algorithm, we find
+\begin{align*}
+    34
+        &= (x^2 - 2) - (-x + 6)(-x - 6), \\
+        &= (x^2 - 2) + ((x^4 - x + 2) - (x^2 - 2)(x^2 + 2))(x + 6), \\
+        &= (1 + (x^2 + 2)(x + 6))(x^2 - 2) + (x + 6)(x^4 - x + 2)
+\end{align*}
+Then in $\Q[x]/(x^2 - 2)$, we have
+\begin{align*}
+    \eqc{1}
+        &= \eqc{\tfrac{1}{34}(1 + (x^2 + 2)(x + 6))(x^2 - 2) + \tfrac{1}{34}(x + 6)(x^4 - x + 2)} \\
+        &= \eqc{\tfrac{1}{34}(1 + (x^2 + 2)(x + 6))} \cdot \eqc{x^2 - 2} + \eqc{\tfrac{1}{34}(x + 6)} \cdot \eqc{x^4 - x + 2} \\
+        &= \eqc{\tfrac{1}{34}(x + 6)} \cdot \eqc{x^4 - x + 2}.
+\end{align*}
+Thus, $\eqc{\tfrac{1}{34}(x + 6)}$ is the inverse of $\eqc{x^4 - x + 2}$ in $\Q[x]/(x^2 - 2)$.
+
+
+\section{}
+\begin{pbox}
+    Decide whether $(x^4 - 1, x^3 + 2x^2 - x - 2)$ is a maximal ideal of $\Q[x]$.
+\end{pbox}
+
+\begin{proposition}
+    $(x^4 - 1, x^3 + 2x^2 - x - 2)$ is not a maximal ideal of $\Q[x]$.
+\end{proposition}
+
+\begin{proof}
+    Using the Euclidean Algorithm, we find
+    \begin{align*}
+        x^4 - 1 &= (x^3 + 2x^2 - x - 2)(x - 2) + 5x^2 - 5 \\
+        x^3 + 2x^2 - x - 2 &= (5x^2 - 5)\left(\tfrac{1}{5} x + \tfrac{2}{5}\right) + 0.
+    \end{align*}
+    Then by back substitution,
+    \begin{align*}
+        5x^2 - 5 &= (x^4 - 1) - (x - 2)(x^3 + 2x^2 - x - 2) \\
+        x^2 - 1 &= \tfrac15(x^4 - 1) - \tfrac15(x - 2)(x^3 + 2x^2 - x - 2).
+    \end{align*}
+    Hence,
+    \[
+        (x^4 - 1, x^3 + 2x^2 - x - 2) = (x^2 - 1).
+    \]
+    But since $(x^2 - 1) = (x - 1)(x + 1)$, then it is not a prime ideal in $\Q[x]$ and, therefore, not a maximal ideal.
+    
+\end{proof}
+
+\end{document}

@@ -1,0 +1,91 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Set Names
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+
+% Misc Characters
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\newcommand{\eps}{\varepsilon}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ang}{\langle}{\rangle}
+
+% Homework Sections
+\setlength{\fboxsep}{4pt}
+\newcommand{\generic}[2]{\section*{#1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\ex}[2]{\generic{Exercise #1}{#2}}
+\newcommand{\prob}[2]{\generic{Problem #1}{#2}}
+\newcommand{\ques}[2]{\generic{Question #1}{#2}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+% MATH CS 117 Intro to Real Analysis
+\newcommand{\ds}{\displaystyle}
+\newcommand{\seq}[1]{\left\{#1\right\}_{n=1}^\infty}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+ 
+\begin{document}
+ 
+\ques{7}{
+    Prove directly using the definition of limit that  $\ds\lim_{x\to a}x^2=a^2$ for every $a\in\R$.
+}
+
+Let $a\in\R$ and $\eps>0$ be given. We now let $\delta$ be a root of the polynomial
+\[x^2 + 2ax - \eps=0,\]
+that is,
+\[\delta = \frac{-2a + \sqrt{4a^2+4\eps}}{2}.\]
+So now if $x\in D$ and $0<|x-a|<\delta$, then we have
+\[-\delta < x-a < \delta,\]
+which also implies that
+\[2a-\delta < x+a < 2a + \delta.\]
+And we now find
+\begin{align*}
+    |x^2-a^2|   &= |(x-a)(x+a)| \\
+                &< |\delta(2a + \delta)|\\
+                &= |\delta^2 + 2a\delta|.
+\end{align*}
+Now by definition, $\delta^2 +2a\delta = \eps$, so
+\[|x^2-a^2|<\eps.\]
+Thus, we have $\ds\lim_{x\to a}x^2 = a^2$, and is true for all $a\in\R$.
+
+\ques{8}{
+    Prove that if  $f:[0,1]\to\R, g:[0,1]\to\R$, $g$  is increasing, and  $f(x)\leq g(x)$  for all  $x\in[0,1]$,  then  $\sup\{f(t):0\le t<x\}\le g(x)$,  for all  $x\in(0,1)$.
+}
+
+Let $x\in(0,1)$ and let $t\in[0,x)$. Now since $f\leq g$ and $g$ is increasing,
+\[f(t) \leq g(t) \leq g(x).\]
+So $g(x)$ is an upper bound for the set $\{f(t): 0\leq t < x\}$, and therefore
+\[\sup\{f(t) : 0\leq t < x\} \leq g(x).\]
+
+\ques{9}{
+    Let $\seq{a_n}$ and $\seq{b_n}$ be sequences in $\R$. Prove that if $\seq{a_n}$ is increasing and $\seq{b_n}$ is decreasing, and $a_n<b_n$ for all $n\in\N$, then there exists $x\in\R$ such that $a_n\leq x \leq b_n$, for all $n\in\N$.
+}
+
+Suppose $\seq{a_n}$ is increasing and $\seq{b_n}$ is decreasing and $a_n<b_n$ for all $n\in\N$. Since $\seq{a_n}$ is increasing, $a_1\leq a_n$ for all $n\in\N$. And similarly since $\seq{b_n}$ is decreasing, $b_n\leq b_1$ for all $n\in\N$. So in fact,
+\[a_1 \leq a_n < b_n \leq b_1, \quad\text{for all } n\in\N.\]
+Now since $\seq{a_n}$ is increasing and bounded above by $b_1$, it converges to  $A=\sup\{a_n:n\in\N\}$. Similarly, since $\seq{b_n}$ is decreasing and bounded below by $a_1$, it converges to $B=\inf\{b_n:b\in\N\}$. Because $a_n\leq b_n$ for all $n\in\N$, we now have that $A\leq B$. So if we now take $x=A$, we have $x\in\R$ such that
+\[a_n\leq A=x \leq B \leq b_n, \quad\text{for all } n\in\N.\]
+
+
+
+\end{document}

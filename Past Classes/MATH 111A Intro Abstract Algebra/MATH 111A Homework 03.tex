@@ -1,0 +1,193 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow,enumitem}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools,babel}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{\textwidth-10pt}}
+    {\end{minipage}\end{lrbox}\framebox[6.5in]{\usebox{\mybox}}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\seq}[2]{\left\{#1\right\}_{#2=1}^\infty}
+\newcommand{\clo}[1]{\overline{#1}}
+\newcommand{\conj}[1]{\overline{#1}}
+\newcommand{\eqc}[1]{\overline{#1}}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ang}{\langle}{\rangle}
+
+% Sets
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+
+% Misc Characters
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\let\eps\varepsilon
+\let\emptyset\varnothing
+
+% Functions
+\newcommand{\id}[1]{\mathsf{id}_{#1}}
+
+% Babel Shorthands
+\useshorthands*{"}
+\defineshorthand{"-}{\setminus}
+\defineshorthand{"d}{\partial}
+
+% Probability
+\newcommand{\FF}{\mathcal{F}}
+\renewcommand{\P}{\mathbb{P}}
+
+% Complex Analysis
+\renewcommand{\Im}{\text{Im }}
+\renewcommand{\Re}{\text{Re }}
+\newcommand{\Arg}{\text{Arg }}
+\newcommand{\pd}[2]{\frac{"d#1}{"d#2}}
+\newcommand{\pdn}[3]{\frac{"d^{#3}#1}{"d#2^{#3}}}
+
+% Real Analysis
+\renewcommand{\int}[1]{\accentset{\circ}{#1}}
+
+\begin{document}
+ 
+\title{Homework 3\\
+    %\large MATH CS 121 Intro to Probability
+    %\large MATH CS 122A Complex Analysis I
+    %\large MATH 118A Intro to Real Analysis
+    \large MATH 111A Intro to Abstract Algebra
+    %\large MATH 104A Intro to Numerical Analysis
+}
+\author{Harry Coleman}
+\date{October 28, 2020}
+\maketitle
+
+\section*{Exercise 1.6.1}
+\begin{problem}
+    Let $G$ and $H$ be groups. Let $\phi:G\to H$ be a group homomorphism.
+\end{problem}
+
+\subsection*{Exercise 1.6.1(a)}
+\begin{problem}
+    Prove that $\phi(x^n) = \phi(x)^n$ for all $n\in\Z^+$.
+\end{problem}
+
+\begin{proof}
+    We prove the claim by induction on $n\in\Z^+$. For the base case, let $n=1$, then it is trivially true that
+    \[\phi(x^1) = \phi(x) = \phi(x)^1.\]
+    Now suppose the property holds for some $n\in\Z^+$. Then by the definition of a homomorphism and out inductive hypothesis, we find
+    \[\phi(x^{n+1}) = \phi(x^n\cdot x) = \phi(x^n)\cdot \phi(x) = \phi(x)^n\cdot \phi(x) = \phi(x)^{n+1}.\]
+    Therefore, it is true for all $n\in\Z^+$
+    
+\end{proof}
+
+\subsection*{Exercise 1.6.1(b)}
+\begin{problem}
+    Do part (a) for $n=-1$ and deduce that $\phi(x^n)=\phi(x)^n$ for all $n\in\Z$.
+\end{problem}
+
+\begin{proof}
+    By the definition of homomorphism we obtain the following:
+    \[1_H = \phi(1_G) = \phi(x\cdot x^{-1}) = \phi(x)\cdot\phi(x^{-1}).\]
+    Multiplying on the left by $\phi(x)^{-1}$ gives us $\phi(x)^{-1}=\phi(x^{-1})$. Then for any $n\in\Z^+$, we have
+    \[\phi(x^{-n}) = \phi((x^{-1})^n) = \phi(x^{-1})^n = (\phi(x)^{-1})^n = \phi(x)^{-n}.\]
+    Additionally, by definition of homomorphism, we have $\phi(x^0) = \phi(1_G) = 1_H = \phi(x)^0$. Thus, the property holds for all $n\in\Z$.
+    
+\end{proof}
+
+\section*{Exercise 1.6.13}
+\begin{problem}
+    Let $G$ and $H$ be groups and let $\phi:G\to H$ be a homomorphism. Prove that the image of $\phi$, $\phi(G)$, is a subgroup of $H$. Prove that if $\phi$ is injective then $G\cong \phi(G)$.
+\end{problem}
+
+\begin{proposition}
+    The image of $\phi$, $\phi(G)$, is a subgroup of $H$.
+\end{proposition}
+    
+\begin{proof}
+    Since $G$ is a group, we have $1_G\in G$. Therefore, $\phi(1_G)=1_H\in\phi(G)$, so $\phi(G)\ne\emptyset$. Now suppose $x,y\in\phi(G)$, that is, there exist some $a,b\in G$ such that $\phi(a)=x$ and $\phi(b)=y$. Then
+    \[xy^{-1} = \phi(a)\phi(b)^{-1}=\phi(a)\phi(b^{-1}) = \phi(ab^{-1}).\]
+    Now since $G$ is a group with $a,b\in G$, then $ab^{-1}\in G$. Therefore,
+    \[xy^{-1} = \phi(ab^{-1}) \in \phi(G),\]
+    so by the subgroup criterion, we have that $\phi(G)\leq H$.
+    
+\end{proof}
+
+\begin{proposition}
+    If $\phi$ is injective then $G\cong \phi(G)$.
+\end{proposition}
+
+\begin{proof}
+    Suppose $\phi$ is injective. Trivially, $\phi$ is surjective on its image. Therefore, $\phi$ is bijective and, since it is a homomorphism, it is an isomorphism. Now since there exists is an isomorphism from $G$ to $\phi(G)$, namely $\phi$, we conclude that $G\cong\phi(G)$.
+    
+\end{proof}
+
+\section*{Exercise 1.6.14}
+\begin{problem}
+    Let $G$ and $H$ be groups and let $\phi:G\to H$ be a homomorphism. Define the \emph{kernel} of $\phi$ to be $\{g\in G : \phi(g) = 1_H\}$. Prove that the kernel of $\phi$ is a subgroup of $G$. Prove that $\phi$ is injective if and only of the kernel of $\phi$ is the identity of subgroup $G$.
+\end{problem}
+
+\begin{proposition}
+    The kernel of $\phi$ is a subgroup of $G$.
+\end{proposition}
+
+\begin{proof}
+    Since $G$ being a group implies $1_G\in G$ and $\phi$ being a homomorphism implies $\phi(1_G)=1_H$, then we have $1\in\ker\phi$ so $\phi(G)\ne\emptyset$. Now suppose $x,y\in\ker\phi$. Then
+    \[\phi(xy^{-1}) = \phi(x)\phi(y)^{-1} = 1_H \cdot 1_H^{-1} = 1_H,\]
+    so $xy^{-1}\in\ker\phi$. Thus, by the subgroup criterion, $\ker\phi\leq G$.
+    
+\end{proof}
+
+\begin{proposition}
+    $\phi$ is injective if and only of the kernel of $\phi$ is the identity of subgroup $G$.
+\end{proposition}
+
+\begin{proof}
+    Suppose $\phi$ is injective. Let $x\in\ker\phi(G)$, so $\phi(x) = 1_H$. Now since $\phi(1_G)=1_H$ and $\phi$ is injective, we have that $x=1_G$ so $\ker\phi=\{1_G\}$. Now suppose $\ker\phi=\{1_G\}$ and let $x,y\in G$ such that $\phi(x)=\phi(y)$. Then
+    \[1_H = \phi(x)^{-1}\phi(x) = \phi(x)^{-1}\phi(y) = \phi(x^{-1}y).\]
+    This implies that $x^{-1}y\in\ker\phi=\{1_G\}$, so $x^{-1}y=1_G$. Multiplying both sides by $x$ on the left, we obtain $y=x$, so $\phi$ is injective.
+    
+\end{proof}
+
+\section*{Exercise 1.6.17}
+\begin{problem}
+    Let $G$ be any group. Prove that the map from $G$ to itself defined by $g\mapsto g^{-1}$ is a homomorphism if and only if $G$ is abelian.
+\end{problem}
+
+\begin{proof}
+    Let $\phi:G\to G$ denote the map $g\mapsto g^{-1}$. Suppose $\phi$ is a homomorphism. For any $x,y\in G$, we have
+    \[xy = (y^{-1}x^{-1})^{-1} = (\phi(y)\phi(x))^{-1} = (\phi(yx))^{-1} = ((yx)^{-1})^{-1} = yx,\]
+    therefore $G$ is abelian. Now suppose $G$ is abelian. For any $x,y\in G$, we have
+    \[\phi(xy) = (xy)^{-1} = y^{-1}x^{-1} = x^{-1}y^{-1} = \phi(x)\phi(y),\]
+    therefore $\phi$ is a homomorphism.
+    
+\end{proof}
+
+
+\end{document}

@@ -1,0 +1,263 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry} % proper margins
+\usepackage{enumitem} % custom numbering for lists
+\usepackage{amsmath} % align, cases, eqref, matrices, dots, roots, delimiters, math mode functions, mod, arrows
+\usepackage{amsthm} % theorems, proofs
+\usepackage{amssymb} % fancy letters, niche relations/negations
+\usepackage{mathrsfs} % much more loopy calligraphy font
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}
+    {\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\mybox}}}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+
+% Alternate Characters
+\let\eps\varepsilon % double curved, rather than single curve with midline
+\let\phi\varphi % single stroke loop, rather than vertical line through circle
+\let\emptyset\varnothing % circular, rather than tall
+
+% Named Sets
+\newcommand{\N}{\mathbb{N}} % natural numbers
+\newcommand{\Z}{\mathbb{Z}} % integers 
+\newcommand{\Q}{\mathbb{Q}} % rational numbers
+\newcommand{\R}{\mathbb{R}} % real numbers
+\newcommand{\C}{\mathbb{C}} % complex numbers
+
+% Fancy Characters
+\newcommand{\F}{\mathbb{F}} % arbitrary field
+\renewcommand{\P}{\mathbb{P}} % probability measure (apparently, sometimes prime numbers)
+\newcommand{\FF}{\mathcal{F}} % sigma algebra
+
+% Paired Delimiters
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil} % ceiling
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor} % floor
+\newcommand{\<}{\left\langle} % left angle bracket
+\renewcommand{\>}{\right\rangle} % right angle bracket
+
+% Functions
+\renewcommand{\Im}{\operatorname{Im}} % imaginary part of a complex number
+\renewcommand{\Re}{\operatorname{Re}} % real part of a complex number
+\newcommand{\Arg}{\operatorname{Arg}} % principal argument (angle) of complex number
+
+% Simplified Notation
+\newcommand{\id}[1]{\operatorname{id_{\mathnormal{#1}}}} % identity operator
+\newcommand{\seq}[2][n]{\left\{#2\right\}_{#1\in\N}} % sequence
+\newcommand{\pdv}[3][1]{\ifnum#1=1{\frac{\partial #2}{\partial#3}}\else{\frac{\partial^{#1}#2}{\partial#3^{#1}}}\fi} % partial derivative
+\newcommand{\intr}[1]{\accentset{\circ}{#1}} % interior of a set
+
+% Renaming
+\let\sm\setminus % set minus (difference)
+\let\clo\overline % closure of a set
+\let\conj\overline % conjugate of an object
+\let\eqc\overline % equivalence class of an object
+\let\teq\trianglelefteq % normal subgroup
+\let\iso\cong % isomorphic (groups)
+
+% Notes
+% medskip for header-less paragraph
+% intertext{} for short text inside big display structure
+% dots is dynamic based on surroundings
+% dfrac and tfrac to force large or small fractions
+% operatorname for new operators instead of text
+% consider using nath; it seems to break most formatting and is not compatible with many packages
+
+\begin{document}
+ 
+\title{Midterm 1\\
+    %\large MATH CS 121 Intro to Probability
+    %\large MATH 111A Intro to Abstract Algebra
+    %\large MATH CS 122A Complex Analysis I
+    %\large MATH 118A Intro to Real Analysis
+    %\large MATH 104A Intro to Numerical Analysis
+}
+\author{Harry Coleman}
+\date{November 12, 2020}
+\maketitle
+
+\section*{1}
+\begin{problem}
+    For a function $f = u + iv$ derive the polar Cauchy-Riemann equations, i.e. the Cauchy-Riemann equations in polar coordinates $(\rho, \theta)$.
+\end{problem}
+\medskip
+
+For any $z\in\C$, we have
+\[z = x+iy = \rho\cos\theta + i \rho\sin\theta.\]
+By the chain rule, we have
+\begin{align*}
+    \pdv{u}{\rho} &= \pdv{u}{x}\pdv{x}{\rho} = \pdv{u}{x}\cos\theta, & \pdv{v}{\rho} &= \pdv{v}{x}\pdv{x}{\rho} = \pdv{v}{x}\sin\theta, \\
+    \pdv{v}{\theta} &= \pdv{v}{y}\pdv{y}{\theta} = \pdv{v}{y}\rho\cos\theta, & \pdv{u}{\theta} &= \pdv{u}{y}\pdv{y}{\theta} = \pdv{u}{y}(-\rho\sin\theta).
+\end{align*}
+Assuming $f$ is analytic at $z$, then we have
+\[\pdv{u}{x} = \pdv{v}{y} \isp{and} \pdv{u}{y} = - \pdv{v}{x}.\]
+Then, we have
+\[\pdv{u}{\rho} = \pdv{u}{x}\cos\theta = \pdv{v}{y}\cos\theta = \frac{1}{\rho\cos\theta}\pdv{v}{\theta}\cos\theta = \frac1\rho\pdv{v}{\theta},\]
+and
+\[\pdv{v}{\rho} = \pdv{v}{x}\sin\theta = -\pdv{u}{y}\sin\theta = -\frac1{\rho\sin\theta}\pdv{u}{\theta}\sin\theta = -\frac1\rho \pdv{u}{\theta}.\]
+
+\newpage
+\section*{2}
+\begin{problem}
+    Let the function $f(z) = u(x, y) + iv(x, y): \C \to \C$ (where $z = x + iy$) be harmonic, i.e., both $u$ and $v$ are harmonic in $\C$. Show that if also $zf(z)$ is harmonic in $\C$, then $f$ is analytic in $\C$.
+\end{problem}
+
+\begin{proof}
+    Suppose $zf(z)$ is harmonic in $\C$. First note that
+    \begin{align*}
+        zf(z)
+            &= (x+iy)(u+iv) \\
+            &= xu + ixv + iyu - yv \\
+            &= xu-yv + i(xv + yu).
+    \end{align*}
+    Then letting $s=xu-yv$ and $t=xv+yu$, we have $zf(z)=s+it$, and its harmonicity gives us the Laplace equations
+    \[\pdv[2]{s}{x} + \pdv[2]{s}{y} = 0 \isp{and} \pdv[2]{t}{x} + \pdv[2]{t}{y} = 0.\]
+    Expanding the first of these, we obtain
+    \begin{align*}
+        0 &= \pdv[2]{s}{x} + \pdv[2]{s}{y} \\
+            &= \pdv[2]{}{x}(xu-yv) + \pdv[2]{}{y}(xu-yv) \\
+            &= \pdv{}{x}\left(x\pdv{u}{x} + u - y\pdv{v}{x}\right) + \pdv{}{y}\left(x\pdv{u}{y} - v - y\pdv{v}{y}\right) \\
+            &= \left(x\pdv[2]{u}{x} + 2\pdv{u}{x} - y\pdv[2]{v}{x}\right) + \left(x\pdv[2]{u}{y} - 2\pdv{v}{y} - y\pdv[2]{v}{y}\right) \\
+            &= x\left(\pdv[2]{u}{x} + \pdv[2]{u}{y}\right) - y\left(\pdv[2]{v}{x} + \pdv[2]{v}{y}\right) + 2\left(\pdv{u}{x} - \pdv{v}{y}\right) \\
+            &= x0 - y0 + 2\left(\pdv{u}{x} - \pdv{v}{y}\right) \\
+            &= \pdv{u}{x} - \pdv{v}{y}.
+    \end{align*}
+    From this follows the first Cauchy-Riemann condition for $f$:
+    \[\pdv{u}{v} = \pdv{v}{y}.\]
+    We now expand the Laplace equation of $t$ to find
+    \begin{align*}
+        0 &= \pdv[2]{t}{x} + \pdv[2]{t}{y} \\
+            &= \pdv[2]{}{x}(xv + yu) + \pdv[2]{}{y}(xv + yu) \\
+            &= \pdv{}{x}\left(x\pdv{v}{x} + v + y\pdv{u}{x}\right) + \pdv{}{y}\left(x\pdv{v}{y} + u + y\pdv{u}{y}\right) \\
+            &= \left(x\pdv[2]{v}{x} + 2\pdv{v}{x} + y\pdv[2]{u}{x}\right) + \left(x\pdv[2]{v}{y} + 2\pdv{u}{y} + y\pdv[2]{u}{y}\right) \\
+            &= x\left(\pdv[2]{v}{x} + \pdv[2]{v}{y}\right) + y\left(\pdv[2]{u}{x} + \pdv[2]{u}{y}\right) + 2\left(\pdv{v}{x} + \pdv{u}{y}\right) \\
+            &= x0 + y0 + 2\left(\pdv{v}{x} + \pdv{u}{y}\right) \\
+            &= \pdv{v}{x} + \pdv{u}{y}.
+    \end{align*}
+    From this follows the second Cauchy-Riemann condition for $f$:
+    \[\pdv{u}{y} = -\pdv{u}{x}.\]
+    Therefore, $f$ is analytic in $\C$.
+    
+\end{proof}
+
+\newpage
+\section*{3}
+\begin{problem}
+    Let $f(z) = u(z) + iv(z): D \to \C$ be a continuously differentiable complex function (with $u = \Re(f)$ and $v = \Im(z))$ defined in a domain $D \subset \C$ such that the Jacobian matrix of $f$ does not vanish at any point of $D$. Show that if $f$ maps orthogonal curves to orthogonal curves, then either $f$ or $\conj{f}$ is analytic in $D$ with a non-vanishing derivative.
+\end{problem}
+
+\begin{proof}
+    Suppose $f$ maps orthogonal curves to orthogonal curves, i.e., that it is conformal. For any $z\in D$, and any neighborhood of $z$ contained in $D$, $f$ is differentiable in that neighborhood. Additionally, $f$ is continuously differentiable at $z$. Then by the definition of analyticity, $f$ is analytic at all points $z\in D$. 
+    
+    Now since $f$ is analytic in $D$, then for any $z\in D$, we have
+    \[f'(z) = \pdv{u}{x} + i \pdv{v}{x} = \pdv{v}{y} - i \pdv{u}{x}.\]
+    And since the Jacobian does not vanish at $z\in D$, we must have $f'(z)\ne0$. Thus, $f$ is analytic in $D$ with non-vanishing derivative.
+    
+\end{proof}
+
+\newpage
+\section*{4}
+\begin{problem}
+    Show that any fractional-linear transformation can be represented in the form
+    \[f(z) = \frac{az+b}{cz+d}\]
+    where $|ad - bc| = 1$. Is this representation unique?
+\end{problem}
+
+\begin{proposition}
+    Any fractional-linear transformation can be represented in the form
+    \[f(z) = \frac{az+b}{cz+d}\]
+    where $ad - bc = 1$.
+\end{proposition}
+
+\begin{proof}
+    For a given fractional linear transformation
+    \[f(z) = \frac{az+b}{cz+d},\]
+    the condition that $ad - bc = 1$ is equivalent to 
+    \[\det\begin{bmatrix}a & b \\ c & d\end{bmatrix} = 1.\]
+    Let $A_f$ denote the corresponding matrix, as above, for the fractional linear transformation $f$, and the condition becomes $\det A_f = 1$. For any two fractional linear transformations
+    \[f(z) = \frac{a_1z+b_1}{c_1z+d_1} \isp{and} g(z) = \frac{a_2z+b_2}{c_2z+d_2}\]
+    such that $\det A_f = 1$ and $\det A_g = 1$, we have the composition
+    \[(f\circ g)(z) = \frac{(a_1a_2 + b_1c_2)z + a_1b_2 + b_1d_2}{(c_1a_2 + d_1c_2)z + c_1b_2 + d_1d_2}\]
+    and corresponding matrix $A_{f\circ g} = A_fA_g$. Then
+    \[\det A_{f\circ g} = \det A_fA_g = \det A_f \det A_g = \det A_f\cdot\det A_g = 1\cdot 1 = 1.\]
+    Therefore, it suffices to prove the existence of such a representation for simply dilations, translations, and inversions, because any fractional linear transformation can be expressed as a composition of these three, and the composition will preserve the desired condition.
+    
+    Consider the dilation $f(z)=az$, for $a\ne0$. We have the following representation:
+    \[f(z) = az = \sqrt{a}\sqrt{a}z = \frac{\sqrt{a}z}{\frac1{\sqrt{a}}} = \frac{\sqrt{a}z + 0}{0z + \frac1{\sqrt{a}}}.\]
+    And we can check that
+    \[(\sqrt{a})\left(\frac1{\sqrt{a}}\right) - (0)(0) = 1.\]
+    
+    Consider the translation $f(z) = z + b$. Trivially, we have the representation
+    \[f(z) = z + b = \frac{1z + b}{0z + 1},\]
+    and the condition
+    \[(1)(1) - (b)(0) = 1.\]
+    
+    Finally, consider the inversion $f(z) = \frac1z$. We have the representation
+    \[f(z) = \frac1z = \frac{i}{iz} = \frac{0z + i}{iz + 0},\]
+    and the condition
+    \[(0)(0) - (i)(i) = -(-1) = 1.\]
+    
+\end{proof}
+
+Note, however, that this representation is no unique. Suppose we have
+\[f(z) = \frac{az + b}{cz + d}\]
+such that $ad-bc=1$. Then we also have the representation
+\[f(z) = \frac{az + b}{cz + d}\cdot{-1}{-1} = \frac{-az - b}{-cz - d},\]
+and the condition
+\[(-a)(-d) - (-b)(-c) = ad - bc = 1.\]
+
+
+\newpage
+\section*{5}
+\begin{problem}
+    Show that all fractional-linear transformation that are real on the real line are precisely those that can be represented as
+    \[f(z) = \frac{az + b}{cz + d}\]
+    where all $a, b, c, d$ are real.
+\end{problem}
+
+\begin{proof}
+    In the context of fractional linear transformations, we consider the real line to be $\R\cup\{\infty\}$. Trivially, if
+    \[f(z) = \frac{az + b}{cz+d}\]
+    with $a,b,c,d\in\R$, then $f(z)\in\R\cup\{\infty\}$ for all $z\in\R\cup\{\infty\}$.
+    
+    Suppose that
+    \[f(z) = \frac{az + b}{cz + d}\]
+    is a fractional linear transformation such that $f(z)\in\R\cup\{\infty\}$ for all $z\in\R\cup\{\infty\}$. If $c=0$, then
+    \[f(z) = \frac{az + b}{d} = \frac{a}{d}z + \frac{b}{d}.\]
+    And we have that
+    \[f(0) = \frac{a}{d}0 + \frac{b}{d} = \frac{b}{d} \in \R\cup\{\infty\}.\]
+    Note, however, if $f(0) = \infty$, then $d=0$ and we have $f(z)=\infty$ for all $z$, which contradicts the fact that fractional linear transformations are bijective. So $f(0)\ne\infty$ and $d\ne0$, thus, $\frac{b}{d}\in\R$. We also have that
+    \[f(1) = \frac{a}{d}1 + \frac{b}{d} = \frac{a}{d} + \frac{b}{d} \in\R\cup\{\infty\},\]
+    and is not $\infty$ for the same reason: $d\ne 0$. So now, we may conclude that
+    \[\frac{a}{d} + \frac{b}{d} - \frac{b}{d} = \frac{a}{d} \in\R,\]
+    as the sum of two real numbers. Therefore, we have the representation
+    \[f(z) = \frac{\frac{a}{d}z + \frac{b}{d}}{0z + 1},\]
+    where are parameters are real.
+    
+    We may now assume, without loss of generality, that $c\ne0$ and, in particular, that $c=1$. Then
+    \[f(\infty) = \frac{a}{c} = \frac{a}{1} = a \in\R\cup\{\infty\},\]
+    so $a\in\R$. Now since $c\ne 0$, then
+    \[f\left(\frac{-d}{c}\right) = \infty.\]
+    And since $f$ is bijective on $\R\cup\{\infty\}$, we must have $\frac{-d}{c} = -d \in\R$. Finally, we have
+    \[f(0) = \frac{a(0) + b}{0 + d} = \frac{b}{d} \in \R\cup\{\infty\}.\]
+    And since $d\ne0$ and $d\in\R$, then we also have $c\in\R$. Therefore, we have the representation
+    \[f(z) = \frac{az + b}{cz + d}\]
+    where all $a,b,c,d\in\R$.
+    
+\end{proof}
+
+
+
+
+\end{document}

@@ -1,0 +1,382 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amsthm, amssymb, physics}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}
+    {\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\mybox}}\end{center}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{1em}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+%\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+
+% Extra Commands
+\newcommand{\RR}{\mathcal{R}}
+
+
+% Document Info
+\title{Homework 4\\
+    \large MATH 118B
+}
+\author{Harry Coleman}
+\date{February 4, 2021}
+
+% Begin Document
+\begin{document}
+\maketitle
+
+\section{}
+\begin{problem}
+    Use the Fundamental Theorem of Calculus to prove the following version of the change of variable theorem: Suppose that $\phi:[a,b]\to \R$ is differentiable and $\phi'$ is continuous on $[a,b]$. Assume also that $\phi([a,b]) = [c,d]$ and $f:[c,d]\to \R$ is continuous. Then,
+    \begin{equation}
+    \int_a^b f(\phi(x))\phi'(x)\,dx = \int_{\phi(a)}^{\phi(b)}f(t)\,dt.
+    \end{equation}
+\end{problem}
+
+\begin{proof}
+    In particular, $f$ is Riemann integrable on $[c, d]$. Define the function $F : [c, d] \to \R$ by
+    \[
+        F(x) = \int_c^x f(t) \dd{t}.
+    \]
+    Since $f$ is continuous on $[c, d]$, then $F$ is differentiable on $[c, d]$, with
+    \[
+        F'(x) = f(x).
+    \]
+    The composition $F(\phi(x))$ is, therefore, differentiable on $[a, b]$, and the chain rule gives us
+    \[
+        \dv{x} F(\phi(x)) = F'(\phi(x))\phi'(x) = f(\phi(x))\phi'(x).
+    \]
+    By the fundamental theorem of calculus, we now find
+    \[
+        \int_a^b f(\phi(x))\phi'(x) \dd{t} = F(\phi(b)) - F(\phi(a)) = \int_{\phi(a)}^{\phi(b)} f(t) \dd{t}.
+    \]
+    
+\end{proof}
+
+\newpage
+\section{}
+\begin{problem}
+    Let $f:[a,b]\to \R$ be a continuous function. Show that for any $c\ne d$ such that $[c,d] \subseteq [a,b]$, there exists $\xi \in [c,d]$ such that 
+    \begin{equation}
+    f(\xi) = \frac{1}{d-c} \int_c^d f(x)\,dx.
+    \end{equation}
+    Use this to prove that if 
+    \begin{equation}
+    F(x) = \int_a^x f(t)\,dt,
+    \end{equation}
+    then 
+    \begin{equation}
+    F'(x) = f(x),\quad \forall\, x\in [a,b].
+    \end{equation}
+\end{problem}
+
+\begin{proof}
+    In particular, $f$ is Riemann integrable on $[c, d]$. We consider the trivial partition $P = \{c, d\}$ of the interval $[c, d]$. Then the lower and upper Riemann sums of this partition are given by
+    \[
+        L(P, f) = m(d - c) \isp{and} U(P, f) = M(d - c),
+    \]
+    where
+    \[
+        m = \inf_{[c, d]} f(x) \isp{and} M = \sup_{[c, d]} f(x).
+    \]
+    Moreover,
+    \[
+         L(P, f) \leq \int_c^d f(x) \dd{x} \leq U(P, f),
+    \]
+    which implies
+    \[
+        m \leq \frac{1}{d - c}\int_c^d f(x) \dd{x} \leq M.
+    \]
+    Since $f$ is continuous on the compact interval $[c, d]$, then it attains its extrema. Suppose we have $x, y \in [c, d]$ such that $f(x) = m$ and $f(y) = M$. Then by the intermediate value theorem, there exists some $\xi \in [c, d]$ such that
+    \[
+        f(\xi) = \frac{1}{d - c}\int_c^d f(x) \dd{x}.
+    \]
+    
+    We now define the function $F : [a, b] \to \R$ by
+    \[
+        F(x) = \int_a^x f(t) \dd{t}.
+    \]
+    For a given $x_0 \in [a, b]$, we consider the limit
+    \begin{align*}
+        \lim_{x \to x_0} \frac{F(x) - F(x_0)}{x - x_0}
+            &= \lim_{x \to x_0} \frac{\int_a^x f(x) \dd{x} - \int_a^{x_0} f(x) \dd{x}}{x - x_0} \\
+            &= \lim_{x \to x_0} \frac{1}{x - x_0}\int_{x_0}^x f(x) \dd{x}.
+    \end{align*}
+    For each $x \in [a, b]$, let $\xi_x$ be between $x_0$ and $x$ such that
+    \[
+        f(\xi_x) = \frac{1}{x - x_0}\int_{x_0}^x f(x) \dd{x}.
+    \]
+    Then $|\xi_x - x_0| \leq |x - x_0|$, so $\ds\lim_{x \to x_0} \xi_x = x_0$. And since $f$ is continuous at $x_0$, we have
+    \[
+        \lim_{x \to x_0} \frac{F(x) - F(x_0)}{x - x_0}
+            = \lim_{x \to x_0} f(\xi_x)
+            = f(x_0).
+    \]
+    Since this limit exists for all $x \in [a, b]$, $F$ is differentiable on $[a, b]$, with
+    \[
+        F'(x) = f(x).
+    \]
+    
+    
+\end{proof}
+
+
+\newpage
+\section{}
+\begin{problem}
+    Given a partition $P=\{a=x_0\le x_1 \le x_2 \le \ldots \le x_{n-1}\le x_n=b\}$ of $[a,b]$, we define its \emph{diameter} by 
+    \begin{equation}
+    \mu(P) = \max \{ |x_i-x_{i-1}|:\ i=1,2,\ldots,n\}.
+    \end{equation}
+    This is a measure of how {\it fine} the partition is. 
+    Suppose $f:[a,b]\to \R$ is bounded. Given a partition $P$, and \emph{evaluation points} $t_i \in [x_{i-1},x_i]$, we define the \emph{Riemann Sum} 
+    \begin{equation}
+    S(P,f) = \sum_{i=1}^n f(t_i) \Delta x_i.
+    \end{equation}
+    Prove that $f\in \mathcal{R}([a,b])$ if and only if there exists $A\in \R$ such that for each sequence $\{P_n\}_{n\in \N}$ of partitions such that $\mu(P_n) \to 0$, the sequence $\{S(P_n,f)\}$ converges to $A$, for any choice of  evaluation points in each $P_n$. Show that in that case 
+    \begin{equation}
+    A = \int_a^bf(x)\,dx.
+    \end{equation}
+\end{problem}
+
+\begin{lemma}
+    Suppose $f : [a, b] \to \R$ is bounded with $m \leq f(x) \leq M$ for all $x \in [a, b]$. Then for any partition $P = \{x_0 < x_1 < \cdots < x_{n-1} < x_n\}$ of the interval $[x_0, x_n] \subset (a, b]$, we have
+    \[
+        U(P, f) - L(P, f) < (M - m)(b - a).
+    \]
+\end{lemma}
+
+\begin{proof}
+    For each $i = 1, \dots, n$, let $m_i$ and $M_i$ be the infimum and supremum, respectively, of $f$ on the interval $[x_{i-1}, x_i]$. Then $m \leq m_i \leq M_i \leq M$, and we find
+    \begin{align*}
+        U(P, f) - L(P, f) 
+            &= \sum_{i=1}^n (M_i - m_i)(x_i - x_{i - 1}) \\
+            &\leq \sum_{i=1}^n (M - m)(x_i - x_{i - 1}) \\
+            &= (M - m)(x_n - x_0) \\
+            &< (M - m)(b - a).
+    \end{align*}
+    
+\end{proof}
+
+\begin{definition}
+    Given a partition $P=\{a=x_0 < x_1 < x_2 < \cdots < x_{n-1} < x_n=b\}$ of $[a,b]$, we define the notation
+    \[
+        \eta(P) = \min \{ |x_i-x_{i-1}|:\ i=1,2,\ldots,n\}.
+    \]
+\end{definition}
+
+\newpage
+\begin{lemma}
+    Suppose $P = \{x_i\}_{i=0}^n$ and $Q = \{y_j\}_{j=0}^k$ are partitions of $[a, b]$ such that
+    \[
+        \mu(P) < \frac12\eta(Q).
+    \]
+    Define the collection $\{P_j\}_{j=0}^k$ of subsets of $P$ by $P_0 = \{x_0\}$ and
+    \[
+        P_j = P \cap (y_{j-1}, y_j], \quad j = 1, \dots k.
+    \]
+    Then $\{P_j\}_{j=0}^k$ is a partition of $P$, in which $P_j$ contains at least two points for $j = 1, \dots, k$.
+\end{lemma}
+
+\begin{proof}
+    Since $Q$ is a partition of the interval $[a, b]$, then $[a, b]$ can be written as the disjoint union
+     \[
+        [a, b] = \{a\} \cup (y_0, y_1] \cup \cdots \cup (y_{k-1}, y_k].
+    \]
+    Since all the points of $P$ are contained in $[a, b]$, then we have
+    \begin{align*}
+        P 
+            &= P \cap [a, b] \\
+            &= (P \cap \{a\}) \cup (P \cap (y_0, y_1]) \cup \cdots \cup (P \cap (y_{k-1}, y_k]) \\
+            &= P_0 \cup P_1 \cup \cdots \cup P_k.
+    \end{align*}
+    Hence, $\{P_j\}_{j=0}^k$ is a partition of $P$.
+
+    For a fixed index $j$, we consider the interval $(y_{j-1}, y_j]$. Take $i$ to be the minimum index of $P$ such that $y_{j-1} < x_i$, i.e.,
+    \[
+        i = \min\{\ell : y_{j - 1} < x_\ell,\; \ell = 1, \dots, n\}.
+    \]
+    This set is nonempty, as $x_n = b \geq y_{j-1}$, so it contains $n$. Moreover, it is finite so its minimum is well-defined. We will show that that interval $(y_{j-1}, y_j]$ contains the points $x_i$ and $x_{i+1}$. By definition of $i$, must have $x_{i-1} \leq y_{j-1}$, which implies
+    \[
+        x_i \leq x_{i-1} + \mu(P)  \leq y_{j-1} + \mu(P).
+    \]
+    By assumption, the diameter of $P$ is less than half the minimum width of the intervals of $Q$. In particular, we have
+    \[
+        2\mu(P) < y_j - y_{j-1},
+    \]
+    which implies
+    \[
+        x_{i+1} \leq x_i + \mu(P) \leq y_{j-1} + 2\mu(P) < y_j.
+    \]
+    Thus, we have $x_i, x_{i+1} \in (y_{j-1}, y_j]$. In other words, each interval $(y_{j-1}, y_j]$ contains at least two points of $P$.
+    
+\end{proof}
+
+\newpage
+\begin{lemma}
+    Suppose $f : [a, b] \to \R$ is bounded with $m \leq f(x) \leq M$ for all $x \in [a, b]$. If $P$ and $Q$ are partitions of $[a, b]$ such that $\mu(P) < \tfrac12\eta(Q)$ and $Q$ is indexed by $0, 1, \dots, k$, then
+    \[
+        U(P, f) - L(P, f) < U(Q, f) - L(Q, f) + k(M - m)\mu(P),
+    \]
+\end{lemma}
+
+\begin{proof}
+    For $i = 1, \dots, n$, we define
+    \[
+        m^P_i = \inf_{[x_{i-1}, x_i]} f(x) \isp{and} M^P_i = \sup_{[x_{i-1}, x_i]} f(x),
+    \]
+    then
+    \[
+        U(P, f) - L(P, f) = \sum_{i=1}^n \left(M^P_i - m^P_i\right) \Delta x_i.
+    \]
+    Let $\{P_j\}_{j=0}^k$ be a partition of $P$ as given in Lemma 2. For $j = 1, \dots, k$, let $P_j = \{x_{j,0}, \dots, x_{j, n_j}\}$ and we define
+    \[
+        m^P_{j,i} = \inf_{[x_{j,i-1}, x_{j,i}]} f(x) \isp{and} M^P_{j,i} = \sup_{[x_{j,i-1}, x_{j,i}]} f(x).
+    \]
+    Then we can split up the summation over $P$ into summations over $P_j$'s, and we obtain
+    \[
+        U(P, f) - L(P, f) = \sum_{j=1}^k \sum_{i=0}^{n_j} \left(M^P_{j,i} - m^P_{j,i}\right) \Delta x_{j,i}
+    \]
+    Considering each $P_j$ as a partition of the interval $[x_{j,0}, x_{j,n_j}]$, then we have
+    \[
+        U(P_j, f) - L(P_j, f) = \sum_{i=1}^{n_j} \left(M^P_{j,i} - m^P_{j,i}\right) \Delta x_{j,i}.
+    \]
+    And we find
+    \begin{align*}
+        U(P, f) - L(P, f) 
+            &= \sum_{j=1}^k \Big(U(P_j, f) - L(P_j, f) + \left(M^P_{j,0} - m^P_{j,0}\right)\Delta x_{j,0}\Big) \\
+            &\leq \sum_{j=1}^k \Big(U(P_j, f) - L(P_j, f) + (M - m)\mu(P)\Big).
+    \end{align*}
+    For $j = 1, \dots, k$, we define
+    \[
+        m^Q_j = \inf_{[y_{j-1}, y_j]} f(x) \isp{and} M^Q_j = \sup_{[y_{j-1}, y_j]} f(x).
+    \]
+    Then
+    \[
+        U(Q, f) - L(Q, f) = \sum_{j=1}^k \left(M^Q_j - m^Q_i\right) \Delta y_j
+    \]
+    Now since $[x_{j,0}, x_{j,n_j}] \subset (y_{j-1}, y_j]$ for $j = 1, \dots, k$, then Lemma 1 gives us
+    \[
+        U(P_j, f) - L(P_j, f) < \left(M^Q_j - m^Q_i\right) \Delta y_j.
+    \]
+    Thus,
+    \begin{align*}
+        U(P, f) - L(P, f)
+            &< \sum_{j=1}^k \left(\left(M^Q_j - m^Q_j\right)\Delta y_j + (M - m)\mu(P)\right)\\
+            &= U(Q, f) - L(Q, f) + k(M - m)\mu(P).
+    \end{align*}
+    
+\end{proof}
+
+\begin{proposition}
+    Suppose $f \in \mathcal{R}([a,b])$ and $\{P_n\}_{n\in \N}$ is a sequence of partitions of $[a, b]$ such that $\mu(P_n) \to 0$. Then $S(P_n,f) \to \int_a^b f(x) \dd{x}$, for any choice of  evaluation points in each $P_n$.
+\end{proposition}
+
+\begin{proof}
+    In particular, $f$ is bounded; suppose $m \leq f(x) \leq M$ for all $x \in [a, b]$. Let $\eps > 0$ be given. Let $Q = \{y_j\}_{j=0}^k$ be a partition of $[a, b]$ such that
+    \[
+        U(Q, f) - L(Q, f) < \eps.
+    \]
+    Choose $N \in \N$ such that $\mu(P_n) < \min\{\frac12\eta(Q), \frac{\eps}{k}\}$ for all $n \geq N$. Lemma 3 now tells us that if $n \geq N$, then
+    \begin{align*}
+        U(P_n, f) - L(P_n, f)
+            &< U(Q, f) - L(Q, f) + k(M - m)\mu(P_n) \\
+            &< \eps + k(M - m)\frac{\eps}{k} \\
+            &= (1 + M - m)\eps.
+    \end{align*}
+    Moreover, for any choice of evaluation points in the intervals of $P_n$, this implies
+    \[
+        \left|\int_a^b f(x) \dd{x} - S(P_n, f)\right| < (1 + M - m)\eps.
+    \]
+    Hence, $S(P_n, f) \to \int_a^b f(x) \dd{x}$.
+    
+\end{proof}
+
+\newpage
+\begin{lemma}
+    Suppose $f : [a, b] \to \R$ is bounded and $P = \{x_i\}_{i=0}^n$ is a partition of $[a, b]$. If
+    \[
+        U(P, f) - L(P, f) \geq c > 0,
+    \]
+    then there exist selections of evaluation points $s_i, t_i \in [x_{i-1}, x_i]$ such that
+    \[
+        S(P, f(t_i)) - S(P, f(s_i)) \geq \tfrac12 c.
+    \]
+    
+\end{lemma}
+
+\begin{proof}
+    Define
+    \[
+        m_i = \inf_{[x_{i-1}, x_i]} f(x) \isp{and} M_i = \sup_{[x_{i-1}, x_i]} f(x),
+    \]
+    then
+    \[
+        U(P, f) - L(P, f) = \sum_{i=1}^n (M_i - m_i) \Delta x_i \geq c.
+    \]
+    By definition of infimum and supremum, there must exist $s_i, t_i \in [x_{i-1}, x_i]$ such that
+    \[
+        m_i \leq f(s_i) < m_i + \tfrac{c}{4(b-a)} \isp{and} M_i - \tfrac{c}{4(b-a)} < f(t_i) \leq M_i.
+    \]
+    Therefore,
+    \begin{align*}
+        S(P, f(t_i)) - S(P, f(s_i))
+            &= \sum_{i=1}^n (f(t_i) - f(s_i)) \Delta x_i \\
+            &> \sum_{i=1}^n \left(\left(M_i - \tfrac{c}{4(b-a)}\right) - \left(m_i + \tfrac{c}{4(b-a)}\right)\right) \Delta x_i \\
+            &= \sum_{i=1}^n (M_i - m_i) \Delta x_i - \sum_{i=1}^n \tfrac{c}{2(b-a)} \Delta x_i \\
+            &= U(P, f) - L(P, f) - \tfrac12c \\
+            &\geq c - \tfrac12c \\
+            &= \tfrac12 c.
+    \end{align*}
+    
+\end{proof}
+
+\newpage
+\begin{proposition}
+    Suppose $f \notin \mathcal{R}([a,b])$ and $\{P_n\}_{n\in \N}$ is a sequence of partitions of $[a, b]$ such that $\mu(P_n) \to 0$. Then the sequence $\{S(P_n, f)\}$ does not converge to the same limit for all selections of evaluations points in $P_n$.
+\end{proposition}
+
+\begin{proof}
+    Since $f \notin \mathcal{R}([a,b])$, then there exists some $c > 0$ such that
+    \[
+        U(P, f) - L(P, f) \geq c
+    \]
+    for all partitions $P$ of $[a, b]$. In particular, for all $n \in \N$, we have
+    \[
+        U(P_n, f) - L(P_n f) \geq c.
+    \]
+    From Lemma 4, let $s_{n,i}, t_{n,i}$ be selections of of evaluations points in $P_n$ such that
+    \[
+        S(P_n, f(t_{n,i})) - S(P_n, f(s_{n,i})) \geq \tfrac12 c.
+    \]
+    Either one of these sequences does not converge, in which case we are done, or they both converge. If they both converge, then taking the limit, we find
+    \[
+        \lim_{n \to \infty} S(P_n, f(t_{n,i})) - \lim_{n \to \infty} S(P_n, f(s_{n,i})) \geq \tfrac12 c > 0.
+    \]
+    That is, these two sequences do not converge to the same limit.
+    
+\end{proof}
+
+\end{document}

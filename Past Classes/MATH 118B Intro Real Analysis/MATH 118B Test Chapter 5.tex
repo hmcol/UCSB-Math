@@ -1,0 +1,235 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amsthm, amssymb, physics, tikz}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}
+    {\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\mybox}}\end{center}}
+
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{1em}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+
+% Extra Commands
+\newcommand{\pfrac}[2]{\left(\frac{#1}{#2}\right)}
+
+
+
+% Document Info
+\title{Test Chapter 5\\
+    \large MATH 118B
+}
+\author{Harry Coleman}
+\date{January 31, 2021}
+
+% Begin Document
+\begin{document}
+\maketitle
+
+\section{}
+\begin{problem}
+    (5 points) Let $f:\R \to \R$ be differentiable at $a\in\R$. Evaluate the following limit:
+    \begin{equation}
+    \lim_{x\to a} \frac{a^nf(x)-x^nf(a)}{x-a},\quad n\in \N.
+    \end{equation}
+\end{problem}
+
+For any $x \in \R$ with $x \ne a$, we can rewrite the expression inside the limit as
+\begin{align*}
+    \frac{a^nf(x)-x^nf(a)}{x-a}
+        &= \frac{a^nf(x) - x^nf(x) + x^nf(x) - x^nf(a)}{x-a} \\
+        &= \frac{a^nf(x) - x^nf(x)}{x-a} + \frac{x^nf(x) - x^nf(a)}{x-a} \\
+        &= -f(x) \pfrac{x^n - a^n}{x-a} + x^n \pfrac{f(x) - f(a)}{x-a}.
+\end{align*}
+We can now see that this contains the expressions for the derivatives of $x^n$ and $f(x)$ at $a$. That is, we have
+\[
+    \lim_{x\to a} \frac{x^n - a^n}{x-a} = \left(\dv{x}x^n\right)(a) = na^{n-1}
+\]
+and
+\[
+    \lim_{x\to a} \pfrac{f(x) - f(a)}{x-a} = f'(a).
+\]
+And since both of these function are differentiable at $a$, then, in particular, they are continuous at $a$. Thus,
+\[
+    \lim_{x\to a} \left(-f(x) \pfrac{x^n - a^n}{x-a} + x^n \pfrac{f(x) - f(a)}{x-a}\right)
+        = -f(a)na^{n-1} + a^nf'(a).
+\]
+
+\newpage
+\section{}
+\begin{problem}
+    (10 points) Consider a function $f:[a,b] \to \mathbb{R}$, and assume it is differentiable in $(a,b)$. Consider the set $Z(f) = \{ x \in [a,b]:\ f(x) = 0\}$. Assume that there exists a limit point of $c\in (a,b)$ of  $Z(f)$. Prove that $f'(c) = 0$. 
+\end{problem}
+
+\begin{proof}
+    Let $\{z_n\}_{n\in\N}$ be a sequence in $Z(f)$ converging to $c$. Since $f$ is differentiable at $c$, then, in particular, it is continuous at $c$, so
+    \[
+        f(c) = \lim_{x \to c} f(x).
+    \]
+    Since this limit exists, then it holds for any sequence converging to $c$, so
+    \[
+        f(c) = \lim_{n \to \infty} f(z_n) = \lim_{n \to \infty} 0 = 0.
+    \]
+    Since $f$ is differentiable at $c$, then
+    \[
+        f'(c) = \lim_{x \to c} \frac{f(x) - f(c)}{x - c} = \lim_{x \to c} \frac{f(x)}{x - c}.
+    \]
+    Again, this holds for any sequence converging to $c$, so
+    \[
+        f'(c) = \lim_{n \to \infty} \frac{f(z_n)}{z_n - c} = \lim_{n \to \infty} 0 = 0.
+    \]
+    
+\end{proof}
+
+
+\newpage
+\section{}
+
+\subsection{}
+\begin{problem}
+     (5 points) Consider $f(x) = \tan x$, for $x \in \left ( -\frac{\pi}{2}, \frac{\pi}{2} \right )$. Prove that $f$ is strictly increasing.
+\end{problem}
+
+\begin{proof}
+    Using the quotient rule for derivatives, we find
+    \begin{align*}
+        f'(x)
+            &= \dv{x} \frac{\sin x}{\cos x}\\
+            &= \frac{\cos x \dv{x} \sin x - \sin x \dv{x} \cos x}{\cos^2 x} \\
+            &= \frac{\cos^2 x + \sin^2 x}{\cos^2 x} \\
+            &= \frac{1}{\cos^2 x} \\
+            &> 1.
+    \end{align*}
+    Since $f'(x) > 0$ for all $x \in \left ( -\frac{\pi}{2}, \frac{\pi}{2} \right )$, then $f$ is strictly increasing.
+    
+\end{proof}
+
+\subsection{}
+\begin{problem}
+     (5 points) Consider its inverse, $g(x) = \arctan x$, defined as a function $g:\R \to \left ( -\frac{\pi}{2},\frac{\pi}{2}\right )$. Prove that 
+    \begin{equation}
+    g'(x) = \frac{1}{1+x^2},\quad x\in \R.
+    \end{equation}
+\end{problem}
+
+\begin{proof}
+    Since $f$ and $g$ are differentiable inverses and $f'(x) = 1/\cos^2 x$, then
+    \[
+        g'(x) 
+            = \frac{1}{f'(g(x))}
+            = \frac{1}{\frac{1}{\cos^2g(x)}}
+            = \cos^2 g(x).
+            = \cos^2 \arctan x.
+    \]
+    The fact that $\theta = \arctan x$ can be geometrically interpreted as the following right triangle:
+    \begin{drawing}
+        \draw[] (0, 0) -- node[anchor=north]{$1$} (2, 0) -- node[anchor=west]{$x$} (2, 1) -- node[yshift=10pt, xshift = -10pt]{$\sqrt{1 + x^2}$} (0, 0);
+        \draw[] (1.75, 0) -- (1.75, 0.25) -- (2, 0.25);
+        \draw[] (0.75, 0) arc (0:26:0.75);
+        
+        \draw[] (1, 0.25) node[]{$\theta$};
+    \end{drawing}
+    Thus,
+    \[
+        g'(x) = \cos^2 \theta = \pfrac{1}{\sqrt{1 + x^2}}^2 = \frac{1}{1 + x^2}.
+    \]
+    
+\end{proof}
+
+\subsection{}
+\begin{problem}
+     (5 points) Prove that $\arctan$ is uniformly continuous in $\R$.
+\end{problem}
+
+\begin{proof}
+    For any $x \in \R$, we have
+    \[
+        0 < 1 \leq 1 + x^2,
+    \]
+    which implies
+    \[
+        0 < \frac{1}{1 + x^2} \leq 1.
+    \]
+    That is, $|g'(x)| \leq 1$ for all $x \in \R$. Since the derivative of $g$ is bounded on $\R$, then it is uniformly continuous on $\R$.
+    
+\end{proof}
+
+
+\section{}
+\begin{problem}
+    (10 points) If $f:[a,b]\to \R$ is three times differentiable in $[a,b]$ and if 
+    \begin{equation}
+     f(a) = f'(a) = f(b) = f'(b) = 0,
+    \end{equation}
+    prove that $f'''(c) = 0$ for some $c$ in $(a,b)$.
+\end{problem}
+
+\begin{proof}
+    Since $f$ is differentiable on $[a, b]$ and $f(a) = f(b)$, then by Rolle's theorem, there exists some $y \in (a, b)$ such that
+    \[
+        f'(y) = 0.
+    \]
+    Similarly, since $f'$ is differentiable on $[a, y]$ and $[y, b]$, and $f'(a) = f'(y) = f'(b)$, then there exist some $x \in (a, y)$ and $z \in (y, b)$ such that
+    \[
+        f''(x) = 0 \isp{and} f''(z) = 0.
+    \]
+    Once more, since $f''$ is differentiable on $[x, z]$, then there exists some $c \in (x, z) \subseteq (a, b)$ such that
+    \[
+        f'''(c) = 0.
+    \]
+    
+\end{proof}
+
+\newpage
+\section{}
+\begin{problem}
+     (10 points) Suppose $g:\R\to\R$ is differentiable, with bounded derivative (say $|g'|\le M$). Fix $\epsilon \in \R$, and define $f(x) = x  + \epsilon g(x)$ for $x\in \R$. Prove that $f$ is one-to-one if $|\epsilon|$ is small enough.
+\end{problem}
+
+\begin{proof}
+    Since the derivative of $g$ is bounded by $M$, then $g$ is Lipschitz continuous with 
+    \[
+        |g(x) - g(y)| \leq M|x - y|
+    \]
+    for all $x, y \in \R$. Assume $|\eps| < 1/M$ and suppose $x, y \in \R$ with $f(x) = g(x)$, then
+    \begin{align*}
+        x + \eps g(x) &= y + \eps g(y) \\
+        x - y &= \eps(g(y) - g(x)) \\
+        |x - y| &= |\eps| |g(x) - g(y)| \\
+        |x - y| &\leq |\eps| M |x - y|.
+    \end{align*}
+    If $x \ne y$, then $x - y \ne 0$ and we find
+    \[
+        |x - y| \leq |\eps| M |x - y| < |x - y|,
+    \]
+    which is a contradiction. Hence, $x = y$, so $f$ is injective.
+    
+\end{proof}
+
+
+
+
+\end{document}

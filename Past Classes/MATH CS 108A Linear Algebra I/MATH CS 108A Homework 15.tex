@@ -1,0 +1,226 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% custom commands
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\p}{^{\prime}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\setlength{\fboxsep}{4pt}
+\newcommand{\exercise}[2]{\section*{Exercise #1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\problem}[2]{\section*{Problem #1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\generic}[2]{\section*{#1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+
+ 
+\begin{document}
+ 
+\title{Homework 15\\
+    \large MATH CS 108A Linear Algebra I}
+\author{Harry Coleman}
+\date{February 21, 2020}
+\maketitle
+
+
+\exercise{1}{
+    Show that rotations are linear transformations.
+}
+
+Let $T$ be the function which rotates vectors in $\R^2$ counterclockwise by an angle $\theta$. We want to show that $T$ is linear. Let $(x,y)\in\R^2$ be the vector with angle $\alpha$ and magnitude $r$. This means that
+\begin{align*}
+    x &= r\cos(\alpha), \\
+    y &= r\sin(\alpha).
+\end{align*}
+Under $T$, we have
+\begin{align*}
+    T(x,y)  &= T(r\cos(\alpha), r\sin(\alpha)), \\
+            &= (r\cos(\alpha+\theta), r\sin(\alpha+\theta)), \\
+            &= (r\cos\alpha\cos\theta - r\sin\alpha\sin\theta), r\sin\alpha\cos\theta + r\cos\alpha\sin\theta), \\
+            &= (x\cos\theta - y\sin\theta, x\sin\theta + y\cos\theta).
+\end{align*}
+Which we can represent as the matrix multiplication
+\[T(x,y) = \begin{bmatrix}
+    \cos\theta & - \sin\theta \\
+    \sin\theta &  \cos\theta
+\end{bmatrix}
+\begin{bmatrix}
+    x \\
+    y
+\end{bmatrix}.
+\]
+Since multiplying the vector $(x,y)$ by a matrix is a linear transformation, $T$ is a linear transformation.
+
+
+\newpage
+\exercise{2}{
+    Let $T: V \rightarrow W$ be a function. Show that $T$ is linear if and only if $T(\alpha x + y) = \alpha T(x) + T(y)$.
+}
+
+Suppose $T$ is linear. Let $x,y\in V$, $\alpha\in\F$.  By the linearity of $T$,
+\begin{align*}
+    T(\alpha x + y)     &= T(\alpha x) + T(y), \\
+                        &= \alpha T(x) + T(y).
+\end{align*}
+This proves the rightward conditional.
+Now suppose that for all $x,y\in V$ and $\alpha\in\F$, $T(\alpha x + y) = \alpha T(x) + T(y)$. Let $\alpha=1$. Substituting, we find
+\begin{align*}
+    T(1 x + y) &= 1 T(x) + T(y), \\
+    T(x+y)      &= T(x) + T(y).
+\end{align*}
+Now let $y=0_V$. Substituting, we find
+\begin{align*}
+    T(\alpha x + 0_V) &= \alpha T(x) + T(0_V), \\
+    T(\alpha x) &= \alpha T(x) + 0_W, \\
+    T(\alpha x) &= \alpha T(x).
+\end{align*}
+So $T$ is linear, which completes the biconditional.
+
+\exercise{7}{
+    \begin{enumerate}
+        \item Show that the composition of linear transformations is linear.
+        \item Show that the inverse of a bijective linear transformation is a linear transformation.
+    \end{enumerate}
+}
+
+\subsection*{1. Composition of Linear Transformations}
+
+Let $X,Y,Z$ be $\F$-vector spaces, $F\in L(X,Y)$ and $G\in L(Y,Z)$. We want to show that $G\circ F$ is a linear transformation. Let $u,v\in X$ and $\alpha\in\F$. By the linearity of $F$ and $G$,
+\begin{align*}
+    (G\circ F)(u + v)   &= G(F(u+v)), \\
+                        &= G(F(u) + F(v)), \\
+                        &= G(F(u)) + G(F(v)), \\
+                        &= (G\circ F)(u) + (G \circ F)(v).
+\end{align*}
+Similarly,
+\begin{align*}
+    (G\circ F)(\alpha u)    &= G(F(\alpha u)), \\
+                            &= G(\alpha F(u)), \\
+                            &= \alpha G(F(u)), \\
+                            &= \alpha (G\circ F)(u).\\
+\end{align*}
+Therefore, $G\circ F$ is a linear transformation in $L(X,Z)$.
+
+
+
+\exercise{8}{
+    Let $V$ and $W$ be two $\F$-vector spaces.
+    \begin{enumerate}
+        \item Show that $L(V, W)$ is an $\F$-vector space on its own right when we consider the following operations:
+        \[(T + H)(v) = T(v) + H(v), T, H \in L(V, W), v \in V.\]
+        \[(\alpha T)(v) = \alpha T(v), T \in L(V, W), \alpha \in F, v \in V.\]
+        
+        \item Assume that $V$ and $W$ are finite-dimensional vector spaces. Show that $L(V, W)$ is also finite-dimensional. What is its dimension? Give a basis for $L(V, W)$.
+    \end{enumerate}
+}
+
+If $F, H \in L(V,W)$, we will say $F=H$ if and only if $F(v) = H(v)$ for all $v\in V$.
+
+\subsection*{1. $L(V, W)$ is an $\F$-vector space}
+
+Let $F,G,H \in L(V,W)$; $\alpha, \beta \in \F$; and $v\in V$. We will first show that $(L(V,W), +)$ is an abelian group (meaning it is associative, commutative, has an identity, and has inverses). By associativity of addition in $W$,
+\begin{align*}
+    [(F+G)+H](v)    &= (F+G)(v) + H(v), \\
+                    &= (F(v) + G(v)) + H(v), \\
+                    &= F(v) + (G(v) + H(v)), \\
+                    &= F(v) + (G+H)(v), \\
+                    &= [F+(G+H)](v).
+\end{align*}
+So $(F+G)+H = F+(G+H)$, therefore addition is associative. By commutativity of addition in $W$,
+\begin{align*}
+    (F+G)(v)    &= F(v) + G(v), \\
+                &=  G(v) + F(v), \\
+                &=  (G + F)(v).
+\end{align*}
+So $F+G=G+F$, therefore addition is commutative. We claim that the zero function $\textbf{0}\in L(V,W)$, which sends all vectors in $V$ to $0_W$, is the additive identity. By the properties of $0_W$,
+\begin{align*}
+    (F+\textbf{0})(v)   &= F(v) + \textbf{0}(v), \\
+                        &= F(v) + 0_W, \\
+                        &= F(v).
+\end{align*}
+So $F+\textbf{0}=F$, therefore \textbf{0} is the additive identity in $L(V,W)$. We claim that the additive inverse of $F$ is given by $(-F)(v) = -F(v)$. By this definition,
+\begin{align*}
+    [F + (-F)](v)   &= F(v) + (-F)(v), \\
+                    &= F(v) + (-F(v)), \\
+                    &= 0_W, \\
+                    &= \textbf{0}(v).
+\end{align*}
+So $F+(-F) = \textbf{0}$, therefore every element of $L(V,W)$ has an additive inverse. Since $(L(V,W),+)$ is associative, commutative, has an identity, and has inverses, $(L(V,W),+)$ is an abelian group. We now show the remaining properties necessary for a vector space. Where $1_\F$ is the multiplicative identity in $\F$, 
+\begin{align*}
+    (1_\F F)(v)     &= 1_\F F(v), \\
+                    &= F(v).
+\end{align*}
+So $1_\F F = F$. By distributivity with respect to vectors of $W$,
+\begin{align*}
+    [\alpha(F + G)](v)  &= \alpha(F+G)(v), \\
+                        &= \alpha(F(v) + G(v)), \\
+                        &= \alpha F(v) + \alpha G(v), \\
+                        &= (\alpha F)(v) + (\alpha G)(v), \\
+                        &= (\alpha F + \alpha G)(v).\\
+\end{align*}
+So $\alpha(F+G) \alpha F + \alpha G$, therefore scalar multiplication is distributive with respect to vectors. By distributivity with respect to scalars of $W$,
+\begin{align*}
+    [(\alpha + \beta)F](v)  &= (\alpha + \beta)F(v), \\
+                            &= \alpha F(v) + \beta F(v), \\
+                            &= (\alpha F)(v) + (\beta F)(v), \\
+                            &= (\alpha F + \beta F)(v).
+\end{align*}
+So $(\alpha + \beta)F = \alpha F + \beta F$ therefore scalar multiplication distributive with respect to scalars. By mixed associativity in $W$,
+\begin{align*}
+    [\alpha(\beta F)](v)    &= \alpha(\beta F)(v), \\
+                            &= \alpha(\beta F(v)), \\
+                            &= (\alpha \beta)F(v), \\
+                            &= [(\alpha\beta)F](v).
+\end{align*}
+So $\alpha(\beta F) = (\alpha\beta)F$, therefore scalar multiplication is mixed associative. Since the given definitions of addition and scalar multiplication on $L(V,W)$ satisfy those five properties, $L(V,W)$ is an $\F$-vector space.
+
+\subsection*{2. Finite Basis for $L(V,W)$}
+Let
+\[\beta_V = \{v_1, \dots, v_n\}\]
+be a finite basis for $V$ and
+\[\beta_W = \{w_1, \dots, w_m\}\]
+be a finite basis for $W$. Let $F\in L(V,W)$. Every function $V\rightarrow W$ is uniquely determined by the way it maps $\beta_V$ to vectors in $W$. For each $v_i\in\beta_V$, there is the unique representation as a linear combination of vectors in $\beta_W$,
+\[F(v_i) = \sum_{j=1}^m\alpha_{ij}w_j,\]
+for some $\alpha_{i1},\dots,\alpha_{im}\in\F$. In other words, a map $v_i\mapsto F(v_i)$ is uniquely determined by a corresponding map
+\[v_i\mapsto(\alpha_{i1},\dots,\alpha_{im}).\]
+Which tells us that the map $\beta_V\mapsto F(\beta_V)$ is uniquely determined by some map
+\[\{v_1, \dots, v_n\} \mapsto \{(\alpha_{11},\dots,\alpha_{1m}),\dots,(\alpha_{n1},\dots,\alpha_{nm})\}.\]
+This means that a choice of linear transformation $F:V\rightarrow W$ is equivalent to a choice of $\alpha_{ij}$ scalars in $\F$ for the matrix
+\[M_F = \begin{bmatrix}
+    \alpha_{11} & \cdots & \alpha_{1m} \\
+    \vdots & \ddots & \vdots \\
+    \alpha_{n1} & \cdots & \alpha_{nm}
+\end{bmatrix}.\]
+This means that there is a bijection between the vector spaces $L(V,W)$ and $\F^{n\times m}$. Explicitly, given a matrix $A\in\F^{n\times m}$, we find the linear transformation $F_A:V\rightarrow W$ which for all $v_i\in\beta_V$,
+\[F_A: v_i \mapsto \sum_{j=1}^mA_{ij}w_j.\]
+So taking a basis for $\F^{n\times m}$, say
+\[\beta_{\F^{n\times m}}=\{B(ij)\in\F^{n\times m}: \forall k,l[(k\ne i \land l\ne j) \implies B(ij)_{kl}=0] \land B(ij)_{ij}=1\}\]
+(the set of all $n\times m$ matrices where one element is 1 and the rest are 0), we can find a basis for $L(V,W)$ by
+\[\beta_{L(V,W)} = \{F_{B(ij)}: B(ij)\in\beta_{\F^{n\times m}}\}.\]
+This means that dim$(L(V,W))=$dim$(\F^{n\times m}))$=nm.
+
+
+
+
+
+
+
+
+\end{document}

@@ -1,0 +1,170 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% custom commands
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\p}{^{\prime}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\newcommand{\id}[1]{\text{id}_{#1}}
+
+\setlength{\fboxsep}{4pt}
+\newcommand{\ex}[2]{\section*{Exercise #1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\prob}[2]{\section*{Problem #1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\ques}[2]{\section*{Question #1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\generic}[2]{\section*{#1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+ 
+\begin{document}
+ 
+\title{Homework 18\\
+    \large MATH CS 108A Linear Algebra I}
+\author{Harry Coleman}
+\date{March 4, 2020}
+\maketitle
+
+\ex{2}{
+    Let $T \in L(V, W)$, where $V$ and $W$ are finite-dimensional.
+    \begin{enumerate}
+        \item Is it possible to determine if $T$ is invertible using a matrix representation of $T$? If so, how?
+        \item If $T$ is invertible and $\beta$ and $\gamma$ are ordered bases for $V$ and $W$, respectively, how are $[T]_\beta^\gamma$ and $[T^{-1}]_\gamma^\beta$ related?
+    \end{enumerate}
+}
+
+Let $\beta$ and $\gamma$ be ordered bases of $V$ and $W$, respectively. Consider the linear transformation
+\begin{align*}
+    \theta: \F^n &\rightarrow \F^m \\
+            x &\mapsto [T]_\beta^\gamma x.
+\end{align*}
+Suppose $[T]_\beta^\gamma$ is an invertible matrix (implicitly, $n=m$). In other words, there exists a matrix $A\in\F^{n\times n}$ such that 
+\[A[T]_\beta^\gamma = I_n = [T]_\beta^\gamma A.\]
+Consider now the linear transformation
+\begin{align*}
+    \L_A: \F^n &\rightarrow \F^n \\
+            x &\mapsto A x.
+\end{align*}
+For a given $x\in\F^n$, the composition
+\begin{align*}
+    (L_A \circ \theta)(x)
+        &= A[T]_\beta^\gamma x \\
+        &= I_n x \\
+        &= x,
+\end{align*}
+and the composition
+\begin{align*}
+    (\theta \circ L_A)(x)
+        &= [T]_\beta^\gamma A x \\
+        &= I_n x \\
+        &= x.
+\end{align*}
+So in fact,
+\[L_A\circ\theta = \id{\F^n} = \theta\circ L_A,\]
+thus $\theta$ is invertible, and therefore an isomorphism. And since $\phi_\beta$ and $\phi_\gamma$ are isomorphisms,
+\[T = \phi_\gamma^{-1}\circ\theta\circ\phi_\beta\]
+is also an isomorphism; $T$ is invertible. Therefore, if $[T]_\beta^\gamma$ is an invertible matrix, then $T$ is an invertible linear transformation. Suppose now that $T$ is an invertible linear transformation with inverse $T^{-1}$ (implicitly, $n=m$). Since $T,\phi_\beta,\phi_\gamma$ are all invertible, the composition
+\begin{align*}
+    \phi_\gamma \circ T \circ \phi_\beta^{-1}
+        &= \phi_\gamma \circ (\phi_\gamma^{-1}\circ \theta \circ \phi_\beta) \circ \phi_\beta^{-1} \\
+        &= \theta
+\end{align*} 
+is also invertible. Let $\theta^{-1}$ be the inverse of $\theta$, so 
+\[\theta\circ\theta^{-1}=\id{\F^n}=\theta^{-1}\circ\theta.\]
+Substituting for $\theta$ we find
+\begin{align*}
+    (\phi_\gamma^{-1}\circ T\circ \phi_\beta)\circ\theta^{-1} & =\id{\F^n}, \\
+    (\phi_\beta^{-1}\circ T^{-1} \circ \phi_\gamma)\circ(\phi_\gamma^{-1}\circ T\circ \phi_\beta)\circ\theta^{-1} &= \phi_\beta^{-1}\circ T^{-1} \circ \phi_\gamma, \\
+    \theta^{-1} &= \phi_\beta^{-1}\circ T^{-1} \circ \phi_\gamma.
+\end{align*}
+So $\theta^{-1}$ is the map
+\begin{align*}
+    \theta^{-1}: \F^n &\rightarrow \F^n \\
+            x &\mapsto [T^{-1}]_\gamma^\beta x.
+\end{align*}
+Since $\theta\circ\theta^{-1}=\id{\F^n}$, the unique matrix $A$ such that
+\[(\theta\circ\theta^{-1})(x) = (\theta^{-1}\circ\theta)(x) = Ax,\]
+is satisfied by $[T]_\beta^\gamma[T^{-1}]_\gamma^\beta$, and $[T^{-1}]_\gamma^\beta[T]_\beta^\gamma$, and $I_n$, therefore,
+\[[T]_\beta^\gamma[T^{-1}]_\gamma^\beta = [T^{-1}]_\gamma^\beta[T]_\beta^\gamma = I_n.\]
+Thus, $[T]_\beta^\gamma[T^{-1}]_\gamma^\beta$ and $[T^{-1}]_\gamma^\beta[T]_\beta^\gamma$ are inverses. In conclusion, $T$ is invertible (with inverse $T^{-1}$) if and only if $[T]_\beta^\gamma$ is invertible (with inverse $[T^{-1}]_\gamma^\beta$).
+
+
+\newpage
+\ex{3}{
+    Let $T \in L(V, W)$, where $V$ and $W$ are finite-dimensional. Let $\beta$ and $\gamma$ be ordered bases for $V$ and $W$, respectively. How are rank$(T)$ and rank$[T]_\beta^\gamma$ related? Prove your conjecture.
+}
+
+Let $\theta$ be the linear transformation
+\begin{align*}
+    \theta: \F^n &\rightarrow \F^m \\
+            x &\mapsto [T]_\beta^\gamma x,
+\end{align*}
+so rank$[T]_\beta^\gamma=$ rank$(\theta)$. We claim that $R(T)$ is isomorphic to $R(\theta)$ by $\phi_\gamma$, restricted to $R(T)$. Since $\phi_\gamma$ is already an isomorphism, we just need to show that the range of this restricted isomorphism is in fact $R(\theta)$. Suppose $T(v)\in R(T)$, so
+\[T(v) = \phi_\gamma^{-1}(\theta(\phi_\beta(v))),\]
+\[\phi_\gamma(T(v)) = \theta(\phi_\beta(v)).\]
+Therefore $\phi_\gamma(T(V))\in R(\theta)$, so $R(\phi_\gamma|_{R(T)})=R(\theta)$, giving us that $R(T)$ and $R(\theta)$ are isomorphic. Thus rank$(T)=$ rank$(\theta)$, and rank$(T)=$ rank$[T]_\beta^\gamma$.
+
+
+\ex{4}{
+    Use Exercise (3) to show that if $A$ is an $m \times n$ matrix, and $P$ and $Q$ are invertible matrices of size $m \times m$ and $n \times n$, respectively, then,
+    \begin{enumerate}
+        \item rank$(AQ) =$ rank$(A)$;
+        \item rank$(P A) =$ rank$(A)$;
+        \item rank$(P AQ) =$ rank$(A)$.
+    \end{enumerate}
+    Use these results to show that elementary row and column operations preserve the rank of a matrix.
+}
+
+Since $Q$ is invertible, $L_Q$ is an isomorphism. Therefore $R(L_Q)=\F^n$, so $R(L_A) = R(L_A\circ L_Q)$. And since $L_A\circ L_Q = L_{AQ}$, 
+\[\text{rank}(A) = \text{rank}(L_A) = \text{rank}(L_{AQ}) = \text{rank}(AQ).\]
+Similarly, $R(L_A)$ is isomorphic to $R(L_{PA})$ with the isomorphism $L_P|_{R(L_A)}$, for the same reasons as in exercise 3. So
+\[\text{rank}(A) = \text{rank}(L_A) = \text{rank}(L_{PA}) = \text{rank}(PA).\]
+Combining these two, we obtain
+\[\text{rank}(A) = \text{rank}(PAQ).\]
+Since multiplying by an invertible matrix is equivalent to applying a series of elementary row or column operations, these operations preserve the rank of a matrix.
+
+
+
+
+\ex{5}{
+    Let $T \in L(V, W)$, where $V$ and $W$ are finite-dimensional. Let $\beta$ and $\beta'$ be ordered bases for $V$ and let $\gamma$ and $\gamma'$ be ordered bases for $W$. How are the matrices $[T]_\beta^\gamma$ and $[T]_{\beta'}^{\gamma'}$ related? Prove your conjecture.
+}
+
+Let $\theta$ and $\theta'$ be the linear transformations
+\begin{align*}
+    \theta: \F^n &\rightarrow \F^m \\
+            x &\mapsto [T]_\beta^\gamma x,
+\end{align*}
+\begin{align*}
+    \theta': \F^n &\rightarrow \F^m \\
+            x &\mapsto [T]_{\beta'}^{\gamma'} x.
+\end{align*}
+So
+\[\phi_\gamma\circ\theta\circ\phi_\beta^{-1} = T = \phi_{\gamma'}\circ\theta'\circ\phi_{\beta'}^{-1},\]
+\[\theta\circ (\phi_{\beta'}\circ\phi_\beta^{-1}) = (\phi_\gamma^{-1}\circ\phi_{\gamma'})\circ \theta'.\]
+If we consider the isomorphisms $L_B=(\phi_{\beta'}\circ\phi_\beta^{-1})$ and $L_C=(\phi_\gamma^{-1}\circ\phi_{\gamma'})$, then $B$ and $C$ are invertible matrices such that
+\[[T]_\beta^\gamma B = C[T]_{\beta'}^{\gamma'},\]
+\[C^{-1}[T]_\beta^\gamma B = [T]_{\beta'}^{\gamma'}.\]
+So $[T]_\beta^\gamma$. and $[T]_{\beta'}^{\gamma'}$ are equivalent matrices. In other words, we can obtain $[T]_{\beta'}^{\gamma'}$ from a series of row and column operations on $[T]_\beta^\gamma$.
+
+
+
+
+\end{document}

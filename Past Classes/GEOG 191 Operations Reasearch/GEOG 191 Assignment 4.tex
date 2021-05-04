@@ -1,0 +1,293 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amsthm, amssymb, physics}
+\usepackage{multirow, hhline}
+\usepackage[table]{xcolor}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}
+    {\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\mybox}}\end{center}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{1em}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+
+% Extra Commands
+
+
+
+% Document Info
+\title{Assignment 4\\
+    \large GEOG 191
+}
+\author{Harry Coleman}
+\date{February 1, 2021}
+
+% Begin Document
+\begin{document}
+\maketitle
+
+\section*{Exercise 1}
+\begin{problem}
+    Solve using the Big $M$ method (in tableau form).
+    \[
+        \begin{array}{ll}
+            \textbf{Maximize} & z = 3x_1 + x_2 \\
+            \textbf{Subject to} & x_1 + x_2 \geq 3 \\
+                & 2x_1 + x_2 \leq 4 \\
+                & x_1 + x_2 = 3 \\
+                & x_1, x_2 \geq 0
+        \end{array}
+    \]
+\end{problem}
+
+We put this problem into tableau form, adding slack, excess, and artificial variables, as necessary.
+
+\[\begin{array}{*{12}{|c}|}
+    \hline
+    \text{Iteration} & \text{Row} & \text{BV} & z & x_1 & x_2 & e_1 & a_1 & s_2 & a_3 & \text{RHS} & \text{Ratio} \\\hline\hline
+    \multirow{4}*{0}
+    & 0 & z   & 1 & -3 & -1 & 0 & M & 0 & M  & 0 &\\\hhline{|~|*{11}{-}|}
+    & 1 & a_1 & 0 & 1  & 1  & -1 & 1 & 0 & 0 & 3 & \\\hhline{|~|*{11}{-}|}
+    & 2 & s_2 & 0 & 2  & 1  & 0 & 0 & 1 & 0 & 4 & \\\hhline{|~|*{11}{-}|}
+    & 3 & a_3 & 0 & 1  & 1  & 0 & 0 & 0 & 1 & 3 & \\\hline
+\end{array}\]
+
+ We will take $M = 100$, and our first step is to eliminate the coefficients of the artificial variables in the objective row.
+ 
+ \[\begin{array}{*{13}{|c}|}
+    \hline
+    \text{Iteration} & \text{Row} & \text{BV}
+        & z & x_1 & x_2 & e_1 & a_1 & s_2 & a_3
+        &\text{RHS} & \text{Ratio} & \text{Operation} \\\hline\hline
+    \multirow{4}*{0}
+    & 0 & z   & 1 & -3 & -1 & 0 & 100 & 0 & 100  & 0 & & \\\hhline{|~|*{12}{-}|}
+    & 1 & a_1 & 0 & 1  & 1  & -1 & 1 & 0 & 0 & 3 & & \\\hhline{|~|*{12}{-}|}
+    & 2 & s_2 & 0 & 2  & 1  & 0 & 0 & 1 & 0 & 4 & & \\\hhline{|~|*{12}{-}|}
+    & 3 & a_3 & 0 & 1  & 1  & 0 & 0 & 0 & 1 & 3 & & \\\hline
+    \hline
+    \multirow{4}*{0}
+    & 0 & z   & 1 & -103 & -101 & 100 & 0 & 0 & 100  & -300 & & -100R_1\\\hhline{|~|*{12}{-}|}
+    & 1 & a_1 & 0 & 1  & 1  & -1 & 1 & 0 & 0 & 3 & & \\\hhline{|~|*{12}{-}|}
+    & 2 & s_2 & 0 & 2  & 1  & 0 & 0 & 1 & 0 & 4 & & \\\hhline{|~|*{12}{-}|}
+    & 3 & a_3 & 0 & 1  & 1  & 0 & 0 & 0 & 1 & 3 & & \\\hline
+    \hline
+    \multirow{4}*{0}
+    & 0 & z   & 1 & -203 & -201 & 100 & 0 & 0 & 0  & -600 & & -100R_3\\\hhline{|~|*{12}{-}|}
+    & 1 & a_1 & 0 & 1  & 1  & -1 & 1 & 0 & 0 & 3 & & \\\hhline{|~|*{12}{-}|}
+    & 2 & s_2 & 0 & 2  & 1  & 0 & 0 & 1 & 0 & 4 & & \\\hhline{|~|*{12}{-}|}
+    & 3 & a_3 & 0 & 1  & 1  & 0 & 0 & 0 & 1 & 3 & & \\\hline
+\end{array}\]
+
+We now begin our first iteration. Taking $x_1$ to be the entering basic variable, we perform the ratio test to determine the outgoing basic variable. Followed by row operations to account for this choice.
+ \[\begin{array}{*{13}{|c}|}
+    \hline
+    \text{Iteration} & \text{Row} & \text{BV}
+        & z & \cellcolor{gray!25}x_1 & x_2 & e_1 & a_1 & s_2 & a_3
+        &\text{RHS} & \text{Ratio} & \text{Operation} \\\hline\hline
+    \multirow{4}*{0}
+    & 0 & z   & 1 & -203 & -201 & 100 & 0 & 0 & 0  & -600 & &\\\hhline{|~|*{12}{-}|}
+    & 1 & a_1 & 0 & 1  & 1  & -1 & 1 & 0 & 0 & 3 & 3 & \\\hhline{|~|*{12}{-}|}
+    & 2 & \cellcolor{gray!25}s_2 & 0 & 2  & 1  & 0 & 0 & 1 & 0 & 4 & 2 & \\\hhline{|~|*{12}{-}|}
+    & 3 & a_3 & 0 & 1  & 1  & 0 & 0 & 0 & 1 & 3 & 3 & \\\hline
+    \hline
+    \multirow{4}*{0}
+    & 0 & z   & 1 & -203 & -201 & 100 & 0 & 0 & 0  & -600 & &\\\hhline{|~|*{12}{-}|}
+    & 1 & a_1 & 0 & 1  & 1  & -1 & 1 & 0 & 0 & 3 &  & \\\hhline{|~|*{12}{-}|}
+    & 2 & x_1 & 0 & 1  & 0.5  & 0 & 0 & 0.5 & 0 & 2 & & *0.5 \\\hhline{|~|*{12}{-}|}
+    & 3 & a_3 & 0 & 1  & 1  & 0 & 0 & 0 & 1 & 3 &  & \\\hline
+    \hline
+    \multirow{4}*{1}
+    & 0 & z   & 1 & 0 & -99.5 & 100 & 0 & 101.5 & 0  & -194 & & +203R_2\\\hhline{|~|*{12}{-}|}
+    & 1 & a_1 & 0 & 0  & 0.5  & -1 & 1 & -0.5 & 0 & 1 &  & -R_2\\\hhline{|~|*{12}{-}|}
+    & 2 & x_1 & 0 & 1  & 0.5  & 0 & 0 & 0.5 & 0 & 2 & &  \\\hhline{|~|*{12}{-}|}
+    & 3 & a_3 & 0 & 0  & 0.5  & 0 & 0 & -0.5 & 1 & 1 &  & -R_2\\\hline
+\end{array}\]
+
+For our second iteration, we take $x_2$ to be the entering basic variable, and the ratio test to determine the outgoing basic variable. Followed by row operations to account for this choice.
+
+\[\begin{array}{*{13}{|c}|}
+    \hline
+    \text{Iteration} & \text{Row} & \text{BV}
+        & z & x_1 & \cellcolor{gray!25}x_2 & e_1 & a_1 & s_2 & a_3
+        &\text{RHS} & \text{Ratio} & \text{Operation} \\\hline\hline
+    \multirow{4}*{1}
+    & 0 & z   & 1 & 0 & -99.5 & 100 & 0 & 101.5 & 0  & -194 & & \\\hhline{|~|*{12}{-}|}
+    & 1 & \cellcolor{gray!25}a_1 & 0 & 0  & 0.5  & -1 & 1 & -0.5 & 0 & 1 & 2 & \\\hhline{|~|*{12}{-}|}
+    & 2 & x_1 & 0 & 1  & 0.5  & 0 & 0 & 0.5 & 0 & 2 & 4 &  \\\hhline{|~|*{12}{-}|}
+    & 3 & a_3 & 0 & 0  & 0.5  & 0 & 0 & -0.5 & 1 & 1 & 2 & \\\hline
+    \hline
+    \multirow{4}*{1}
+    & 0 & z   & 1 & 0 & -99.5 & 100 & 0 & 101.5 & 0  & -194 & & \\\hhline{|~|*{12}{-}|}
+    & 1 & x_2 & 0 & 0  & 1  & -2 & 2 & -1 & 0 & 2 &  & *2 \\\hhline{|~|*{12}{-}|}
+    & 2 & x_1 & 0 & 1  & 0.5  & 0 & 0 & 0.5 & 0 & 2 &  &  \\\hhline{|~|*{12}{-}|}
+    & 3 & a_3 & 0 & 0  & 0.5  & 0 & 0 & -0.5 & 1 & 1 &  & \\\hline
+    \hline
+    \multirow{4}*{2}
+    & 0 & z   & 1 & 0 & 0 & -99 & 199 & 2 & 0  & 5 & & +99.5R_1 \\\hhline{|~|*{12}{-}|}
+    & 1 & x_2 & 0 & 0  & 1  & -2 & 2 & -1 & 0 & 2 &  &  \\\hhline{|~|*{12}{-}|}
+    & 2 & x_1 & 0 & 1  & 0 & 1 & -1 & 1 & 0 & 1 &  & -0.5R_1 \\\hhline{|~|*{12}{-}|}
+    & 3 & a_3 & 0 & 0  & 0  & 1 & -1 & 0 & 1 & 0 & & -0.5R_1 \\\hline
+\end{array}\]
+
+ For the third iteration, our entering basic variable is $e_1$. We perform the ratio test to determine the outgoing basic variable, followed by row operations to account for this choice.
+ 
+ \[\begin{array}{*{13}{|c}|}
+    \hline
+    \text{Iteration} & \text{Row} & \text{BV}
+        & z & x_1 & x_2 & \cellcolor{gray!25}e_1 & a_1 & s_2 & a_3
+        &\text{RHS} & \text{Ratio} & \text{Operation} \\\hline\hline
+    \multirow{4}*{2}
+    & 0 & z   & 1 & 0 & 0 & -99 & 199 & 2 & 0  & 5 & &  \\\hhline{|~|*{12}{-}|}
+    & 1 & x_2 & 0 & 0  & 1  & -2 & 2 & -1 & 0 & 2 & - &  \\\hhline{|~|*{12}{-}|}
+    & 2 & x_1 & 0 & 1  & 0 & 1 & -1 & 1 & 0 & 1 & 1 &  \\\hhline{|~|*{12}{-}|}
+    & 3 & \cellcolor{gray!25}a_3 & 0 & 0  & 0  & 1 & -1 & 0 & 1 & 0 & 0 &  \\\hline
+    \hline
+    \multirow{4}*{3}
+    & 0 & z   & 1 & 0 & 0 & 0 & 100 & 2 & 99  & 5 & & +99R_3 \\\hhline{|~|*{12}{-}|}
+    & 1 & x_2 & 0 & 0  & 1  & 0 & 0 & -1 & 2 & 2 & & +2R_3 \\\hhline{|~|*{12}{-}|}
+    & 2 & x_1 & 0 & 1  & 0 & 0 & 0 & 1 & -1 & 1 & & -R_3 \\\hhline{|~|*{12}{-}|}
+    & 3 & e_1 & 0 & 0  & 0  & 1 & -1 & 0 & 1 & 0 & &  \\\hline
+\end{array}\]
+
+There are no negative coefficients in the objective row, so this solution is optimal. We have an objective value of $z = 5$ with basic variables $x_1 = 2$, $x_2 = 1$, $e_1 = 0$ and nonbasic variables $a_1 = s_2 = s_3 = 0$.
+
+\newpage
+\section*{Exercise 2}
+\begin{problem}
+    Solve using the Big $M$ method (in tableau form).
+    \[
+        \begin{array}{ll}
+            \textbf{Minimize} & z = 3x_1 \\
+            \textbf{Subject to} & 2x_1 + x_2 \geq 6 \\
+                & 3x_1 + 2x_2 = 4 \\
+                & x_1, x_2 \geq 0
+        \end{array}
+    \]
+\end{problem}
+
+We put this problem into tableau form, adding slack, excess, and artificial variables, as necessary. We take $M = 100$.
+
+ \[\begin{array}{*{12}{|c}|}
+    \hline
+    \text{Iteration} & \text{Row} & \text{BV}
+        & z & x_1 & x_2 & e_1 & a_1 & a_2
+        &\text{RHS} & \text{Ratio} & \text{Operation} \\\hline\hline
+    \multirow{3}*{0}
+    & 0 & -z  & 3 & 3 & 0 & 0 & 100 & 100 & 0  & & \\\hhline{|~|*{11}{-}|}
+    & 1 & a_1 & 0 & 2  & 1  & -1 & 1 & 0 & 6 &  & \\\hhline{|~|*{11}{-}|}
+    & 2 & a_2 & 0 & 3  & 2  & 0 & 0 & 1 & 4 &  & \\\hline
+    \hline
+    \multirow{3}*{0}
+    & 0 & -z  & 1 & -197 & -100 & 100 & 0 & 100 & -600  & & -100R_1 \\\hhline{|~|*{11}{-}|}
+    & 1 & a_1 & 0 & 2  & 1  & -1 & 1 & 0 & 6 &  & \\\hhline{|~|*{11}{-}|}
+    & 2 & a_2 & 0 & 3  & 2  & 0 & 0 & 1 & 4 &  & \\\hline
+    \hline
+    \multirow{3}*{0}
+    & 0 & -z  & 1 & -497 & -300 & 100 & 0 & 0 & -1000  & & -100R_2 \\\hhline{|~|*{11}{-}|}
+    & 1 & a_1 & 0 & 2  & 1  & -1 & 1 & 0 & 6 &  & \\\hhline{|~|*{11}{-}|}
+    & 2 & a_2 & 0 & 3  & 2  & 0 & 0 & 1 & 4 &  & \\\hline
+\end{array}\]
+
+Our first entering basic variable will be $x_1$.
+
+ \[\begin{array}{*{12}{|c}|}
+    \hline
+    \text{Iteration} & \text{Row} & \text{BV}
+        & z & \cellcolor{gray!25}x_1 & x_2 & e_1 & a_1 & a_2
+        &\text{RHS} & \text{Ratio} & \text{Operation} \\\hline\hline
+    \multirow{3}*{0}
+    & 0 & -z  & 1 & -497 & -300 & 100 & 0 & 0 & -1000  & & \\\hhline{|~|*{11}{-}|}
+    & 1 & a_1 & 0 & 2  & 1  & -1 & 1 & 0 & 6 & 3 & \\\hhline{|~|*{11}{-}|}
+    & 2 & \cellcolor{gray!25}a_2 & 0 & 3  & 2  & 0 & 0 & 1 & 4 & 1.3\dots & \\\hline
+    \hline
+    \multirow{3}*{0}
+    & 0 & -z  & 1 & -497 & -300 & 100 & 0 & 0 & -1000  & & \\\hhline{|~|*{11}{-}|}
+    & 1 & a_1 & 0 & 2  & 1  & -1 & 1 & 0 & 6 &  & \\\hhline{|~|*{11}{-}|}
+    & 2 & x_1 & 0 & 1  & 0.6\dots  & 0 & 0 & 0.3\dots & 1.3\dots &  & *0.3\dots \\\hline
+    \hline
+    \multirow{3}*{0}
+    & 0 & -z  & 1 & 0 & 31.3\dots & 100 & 0 & 165.6\dots & 337.3\dots & & +497R_2 \\\hhline{|~|*{11}{-}|}
+    & 1 & a_1 & 0 & 0  & -0.3\dots  & -1 & 1 & -0.6\dots & 3.3\dots &  & -2R_2 \\\hhline{|~|*{11}{-}|}
+    & 2 & x_1 & 0 & 1  & 0.6\dots  & 0 & 0 & 0.3\dots & 1.3\dots &  & \\\hline
+\end{array}\]
+
+There are no negative coefficients in the objective row, so this solution is optimal. We have an objective value of $z = -337.3\dots$ with basic variables $x_1 = 1.3\dots$, $a_1 = 3.3\dots$ and nonbasic variables $x_2 = e_1 = 0$. In other words, the original problem is infeasible since the solution to the augmented problem contains a nonzero artificial variable.
+
+\newpage
+\section*{Exercise 5}
+\begin{problem}
+    Find the dual.
+    \[
+        \begin{array}{ll}
+            \textbf{Maximize} & z = 2x_1 + x_2 \\
+            \textbf{Subject to} & -x_1 + x_2 \leq 1 \\
+                & x_1 + x_2 \leq 3 \\
+                & x_1 - 2x_2 \leq 4 \\
+                & x_1, x_2 \geq 0
+        \end{array}
+    \]
+\end{problem}
+
+To the constraints in the primal, we assign decision variables $y_1$, $y_2$, $y_3$ in the dual. For each less-than-or-equal primal constraint, we have a nonnegative decision variable in the dual. And for each nonnegative variable in the primal, we have a greater-than-or-equal constraint in the dual.
+
+\[
+    \begin{array}{ll}
+        \textbf{Maximize} & w = y_1 + 3y_2 + 4y_3 \\
+        \textbf{Subject to} & -y_1 + y_2 + y_3 \geq 2 \\
+            & y_1 + y_2 - 2y_3 \geq 1 \\
+            & y_1, y_2, y_3 \geq 0
+    \end{array}
+\]
+
+\section*{Exercise 6}
+\begin{problem}
+    Find the dual.
+    \[
+        \begin{array}{ll}
+            \textbf{Maximize} & z = 3x_1 + x_2 \\
+            \textbf{Subject to} & x_1 + x_2 \geq 3 \\
+                & 2x_1 + x_2 \leq 4 \\
+                & x_1 + x_2 = 3 \\
+                & x_1, x_2 \geq 0
+        \end{array}
+    \]
+\end{problem}
+
+As in Exercise 5, all primal decision variables are nonnegative so all dual constraints are greater-than-or-equal. However, for the greater-than-or-equal constraint in the primal, we have a nonpositve dual decision variable. And for the primal equality constraint, we have a dual variable with unrestricted sign.
+
+\[
+    \begin{array}{ll}
+        \textbf{Maximize} & w = 3y_1 + 4y_2 + 3y_3 \\
+        \textbf{Subject to} & y_1 + 2y_2 + y_3 \geq 3 \\
+            & y_1 + y_2 + y_3 \geq 1 \\
+            & y_1 \leq 0 \\
+            & y_2 \geq 0 \\
+            & y_3 \text{ urs}
+    \end{array}
+\]
+
+
+
+\end{document}

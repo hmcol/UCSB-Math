@@ -1,0 +1,323 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amsthm, amssymb, physics}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{pbox}
+    {\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}
+    {\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\mybox}}\end{center}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+%\addtolength{\jot}{1em}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+
+% Extra Commands
+
+
+
+% Document Info
+\title{Homework 2\\
+    \large MATH CS 120ML
+}
+\author{Harry Coleman}
+\date{February 5, 2021}
+
+% Begin Document
+\begin{document}
+\maketitle
+
+\section{}
+\begin{pbox}
+    Ordered pairs should satisfy $(x, y) = (z, u)$ iff $x = z$ and $y = u$. Show that, if we want, we can think of ordered pairs as ``living in the universe of sets'' by defining $(x, y) = \{\{x\}, \{x, y\}\}$.
+\end{pbox}
+
+\begin{proof}
+    First, suppose $x = z$ and $y = u$. In general, we have substitutions for functions, which tells us that if two elements are equal, then their corresponding images under any function are also equal.  Consider the functions $f$ and $g$ defined by
+    \[
+        f(a) = (a, y) \isp{and} g(b) = (z, b).
+    \]
+    Then $f(x) = f(z)$ and $g(y) = g(u)$, that is, $(x, y) = (z, y)$ and $(z, y) = (z, u)$. Thus, by transitivity, we have $(x, y) = (z, u)$.
+    
+    Suppose, now, that $(x, y) = (z, u)$, i.e.,
+    \[
+        \{\{x\}, \{x, y\}\} = \{\{z\}, \{z, u\}\}.
+    \]
+    We will first show that $x = z$. Consider the element $\{x\} \in \{\{x\}, \{x, y\}\}$. From the above equality, we deduce that
+    \[
+         \{x\} \in \{\{z\}, \{z, u\}\}.
+    \]
+    In other words, $\{x\} = \{z\}$ or $\{x\} = \{z, u\}$. In the first case, $x \in \{x\}$ implies $x \in \{z\}$, and we must have $x = z$. In the second case, $z \in \{z, u\}$ implies that $z \in \{x\}$ and, again, we must have $z = x$.
+    
+    It remains to prove that $y = u$. Because $\{x, y\} \in \{\{x\}, \{x, y\}\}$, we must have
+    \[
+        \{x, y\} \in \{\{z\}, \{z, u\}\}.
+    \]
+    That is, $\{x, y\} = \{z\}$ or $\{x, y\} = \{z, u\}$. In the first case, $y \in \{x, y\}$ if and only if $y \in \{z\}$, so we must have $y = z$. Since $x = z$, transitivity implies $x = y$, which means that
+    \[
+        \{\{x\}, \{x, y\}\} = \{\{y\}, \{y, y\}\} = \{\{y\}, \{y\}\} = \{\{y\}\}.
+    \]
+    Hence,
+    \[
+        \{\{y\}\} = \{\{z\}, \{z, u\}\}.
+    \]
+    Then $\{z, u\} \in \{\{z\}, \{z, u\}\}$ implies $\{z, u\} \in \{\{y\}\}$, so we must have $\{z, u\} = \{y\}$. Then since $u \in \{z, u\}$, we have $u \in \{y\}$, so $y = u$.
+    
+    We consider the second case, which is $\{x, y\} = \{z, u\}$. Because $y \in \{x, y\}$, then we either have $y = z$ or $y = u$. In the former case, we obtain $x = y$ by transitivity, and repeat the previous case. That is, we would, again, find
+    \[
+        \{\{y\}\} = \{\{z\}, \{z, u\}\},
+    \]
+    and derive $y = u$ in the same way.
+    
+\end{proof}
+
+\section{}
+\begin{pbox}
+    Write down subsets of the reals that have order-types $\omega + \omega + \omega$, $\omega^2$, and $\omega^3$.
+\end{pbox}
+
+\begin{itemize}
+    \item $\omega + \omega + \omega$
+    
+    For all natural numbers $k \in \N$, we define the set
+    \[
+        N(k) = \{k + \tfrac{n}{n+1} : n \in \N\} = \{k, k + \tfrac12, k + \tfrac23, \dots\} \subseteq \R,
+    \]
+    which is isomorphic to $\N$, i.e., has order-type $\omega$. Then the set
+    \[
+        N(0) \cup N(1) = \{0, \tfrac12, \tfrac23, \dots, 1, 1 + \tfrac12, 1 + \tfrac23, \dots\}
+    \]
+    has order-type $\omega + \omega$. By the synthetic definition of ordinal addition, $\omega + \omega$ is the order of $\omega \sqcup \omega$, where which everything in the second copy of $\omega$ is greater than everything in the first copy. Since $N(0)$ and $N(1)$ both have order-type $\omega$ with all elements of $N(1)$ greater than all elements of $N(0)$, then the order-type of their union is precisely $\omega + \omega$. Similarly, the set
+    \[
+        N(0) \cup N(1) \cup N(2)
+    \]
+    has order-type $\omega + \omega + \omega$.
+    
+    \item $\omega^2$
+    
+    For all natural numbers $n \in \N$, we define the set
+    \[
+        M(n) = N(0) \cup N(1) \cup \cdots \cup N(n) \subseteq \R,
+    \]
+    which has order-type $\omega n$. Then the supremum of these sets
+    \[
+        M = \sup_{n \in \N} M(n) = \bigcup_{k = 0}^\infty N(k)
+    \]
+    has order-type $\omega\omega = \omega^2$. By the recursive definition of ordinal multiplication, we have $\omega\omega = \sup\{\omega n : n < \omega\}$, which is precisely the ordinal type of $M$, by construction. More explicitly, we can write
+    \[
+        M = \{k + \tfrac{n}{n+1} : k, n \in \N\},
+    \]
+    which aligns with the synthetic definition of $\omega^2$, i.e., we can see that $M$ is isomorphic to $\N \times \N$ with the lexicographic ordering.
+    
+    \item $\omega^3$
+    
+    Consider the function $f : \R \to \R$ defined by
+    \[
+        f(x) = \frac{x}{x + 1}.
+    \]
+    This function is strictly increasing, i.e., order-preserving, on the real interval $[0, +\infty)$ with the image $f([0, +\infty)) = [0, 1)$. We can think of the set $N(0)$ in terms of this function, where
+    \[
+        N(0) = \{\tfrac{n}{n+1} : n \in \N\} = \{f(n) : n \in \N\} = f(\N).
+    \]
+    This gives a natural expression for $M$ in terms of this function, i.e.,
+    \[
+        M = \{k + \tfrac{n}{n+1} : k, n \in \N\} = \N + f(\N),
+    \]
+    using the notation $A + B = \{a + b : a \in A, b \in B\}$ for sets $A$ and $B$. Notice that $M \subset [0, +\infty)$, so we have the image $f(M) \subset [0, 1)$. Moreover, $f(M)$ still has order-type $\omega^2$, since $f$ is order-preserving. Then the set
+    \[
+        \N + f(M) = \{n + x : n \in \N, x \in f(M)\}
+    \]
+    has order-type $\omega^3$. Just as $M$ can be considered $\N \times \N$ with the lexicographic order, this set can be considered $\N \times M$ with the lexicographic ordering, since each copy of $M$ exists in a disjoint unit interval, which are `indexed' by $\N$. More generally, for each $k \in \N$, we can define the set $P_k$ recursively by
+    \begin{align*}
+        P_1 &= \N \\
+        P_k &= \N + f(P_{k - 1}).
+    \end{align*}
+    Then $P_k$ is a subset of $\R$ with order-type $\omega^k$.
+    
+    
+\end{itemize}
+
+\newpage
+\section{}
+\begin{pbox}
+    Let $\alpha$, $\beta$, and $\gamma$ be ordinals. If $\alpha \leq \beta$, must we have $\alpha + \gamma \leq \beta + \gamma$? If $\alpha < \beta$, must we have $\alpha + \gamma < \beta + \gamma$?
+\end{pbox}
+
+\begin{proposition}
+    If $\alpha \leq \beta$, then $\alpha + \gamma \leq \beta + \gamma$.
+\end{proposition}
+
+\begin{proof}
+    Let $A$, $B$, and $C$ be well-orders of type $\alpha$, $\beta$, and $\gamma$, respectively. By the syntehtic definition of ordinal addition, the well-order $A \sqcup C$, with $a < c$ for all $a \in A$ and $c \in C$, has order-type $\alpha + \gamma$. In the same way, $B \sqcup C$ has order-type $\beta + \gamma$.
+    
+    Since $\alpha \leq \beta$, then $A \leq B$, that is, $A$ is isomorphic to an initial segment of $B$. Let $f: A \to B$ be such an isomorphism. Then the map $f' : A \sqcup C \to B \sqcup C$ defined by
+    \[
+        f'(x) = \begin{cases}
+            f(x) &\text{if $x \in A$} \\
+            x &\text{if $x \in C$}
+        \end{cases}
+    \]
+    is an order-preserving injection. Suppose $x, y \in A \sqcup C$. If both $x$ and $y$ are in $A$, then
+    \[
+        f'(x) = f(x) < f(y) = f'(y).
+    \]
+    And if both $x$ and $y$ are in $C$, then
+    \[
+        f'(x) = x < y < f'(x).
+    \]
+    Lastly, if $x \in A$ and $y \in C$, then $f'(x) = f(x) \in B$ and $f'(y) = y \in C$, so $f'(x) < f'(y)$. Note that we cannot have $y \in A$ and $x \in C$, since that would imply $y < x$. Hence, $f'$ is an order-preserving injection, which means that it is an isomorphism from $A \sqcup C$ to its image $f'(A\sqcup C) \subseteq B \sqcup C$. By subset collapse, $f'(A\sqcup C)$ is isomorphic to some initial segment $I$ of $B \sqcup C$, let $g : f'(A \sqcup C) \to I$ be such an isomorphism. Then the composition
+    \[
+        g \circ f' : A \sqcup C \to I
+    \]
+    is an isomorphism. In other words, $A \sqcup C$ is isomorphic to an initial segment of $B \sqcup C$, so $A \sqcup C \leq B \sqcup C$. Thus, we have $\alpha + \gamma \leq \beta + \gamma$.
+    
+\end{proof}
+
+This need not be true for the strict case. For example $0 < 1$, but the recursive definition of ordinal addition gives us
+\[
+    0 + \omega = \sup\{0 + k : k < \omega\} = \sup\{k : k < \omega\} = \omega,
+\]
+and
+\[
+    1 + \omega = \sup\{1 + k : k < \omega\} = \sup\{k : k < \omega\} = \omega.
+\]
+
+\newpage
+\section{}
+\begin{pbox}
+    Show that the inductive and synthetic definitions of ordinal multiplication agree.
+\end{pbox}
+
+\begin{proof}
+    Fix some ordinal $\alpha$. We will prove by induction on an ordinal $\beta$, that $\alpha\beta = \alpha \times \beta$, where $\alpha\beta$ is the inductive definition and $\alpha \times \beta$ is the synthetic definition, i.e., Cartesian product with the reverse lexicographic ordering. If $\beta = 0$, then
+    \[
+        \alpha\beta = \alpha0 = 0 = \alpha \times 0.
+    \]
+    
+    Now, suppose the definitions coincide for all ordinals $\gamma \leq \beta$. From the synthetic definition of addition, $\beta^+ = \beta + 1 = \beta \sqcup 1$, then
+    \[
+        \alpha \times \beta^+ 
+            = \alpha \times (\beta \sqcup 1) 
+            = (\alpha \times \beta) \sqcup (\alpha \times 1).
+    \]
+    This works because the reverse lexicographic order on $\alpha \times (\beta \sqcup 1)$ has the last copy of $\alpha \times 1$ after all the preceding copies in $\alpha \times \beta$, which is precisely the order obtained by the disjoint union. By our inductive hypothesis, the inductive and synthetic definitions coincide for all ordinals $\gamma \leq \beta$, so we obtain
+    \[
+        \alpha \times \beta^+ = \alpha\beta + \alpha1 = \alpha\beta + \alpha.
+    \]
+    
+    For the final case, suppose the definitions coincide for all ordinals $\gamma < \beta$ and $\beta$ is a nonzero limit ordinal. Then
+    \[
+        \alpha\beta = \sup\{\alpha\gamma : \gamma < \beta\} = \sup\{\alpha \times \gamma : \gamma < \beta\}.
+    \]
+    Since $\alpha \times \gamma < \alpha \times \beta$ for all $\gamma < \beta$, then $\alpha \times \beta$ is an upper bound for this set, i.e., $\alpha\beta \leq \alpha \times \beta$. Moreover, if $\delta < \alpha \times \beta$, then $\delta$ is the order of a proper initial segment $I_{(a, b)}$ of $\alpha \times \beta$, where $a \leq \alpha$ and $b < \beta$. If we had $b = \beta$, then $I_{(a,b)}$ would equal $\alpha \times \beta$, rather than be a proper initial segment. Now since $\beta$ is a limit ordinal, then there is some ordinal $c < \beta$ with $b < c$. Then,
+    \[
+        \delta = I_{(a, b)} < \alpha \times c \leq \alpha\beta,
+    \]
+    so $\alpha \times \beta$ is the least upper bound, i.e., $\alpha\beta = \alpha \times \beta$.
+    
+\end{proof}
+
+\newpage
+\section{}
+\begin{pbox}
+    Is there a non-zero ordinal $\alpha$ with $\alpha\omega = \alpha$? What about $\omega\alpha = \alpha$?
+\end{pbox}
+
+\begin{proposition}
+    There is no non-zero ordinal $\alpha$ with $\alpha\omega = \alpha$.
+\end{proposition}
+
+\begin{proof}
+    For any ordinal $\alpha$, we have $\alpha < \alpha^+$. If we consider each ordinal to be the well-ordered set of ordinals less than itself, then $\alpha = \{\beta : \beta < \alpha\}$ and $\alpha^+ = \{\beta : \beta \leq \alpha\}$. Additionally, we consider $\alpha\omega$ under the synthetic multiplication, i.e., $\alpha\omega = \alpha \times \omega$. Then there is an obvious isomorphism from $\alpha^+$ to an initial segment of $\alpha\omega$, where $\beta \mapsto (\beta, 0)$ if $\beta < \alpha$ and $\alpha \mapsto (0, 1)$. That is, $\alpha^+ \leq \alpha\omega$, which implies $\alpha < \alpha\omega$.
+\end{proof}
+
+Let $\alpha = \omega^\omega$, which is the limit ordinal defined by
+\[
+    \omega^\omega = \sup\{\omega^k : k < \omega\}.
+\]
+Then
+\[
+    \omega\omega^\omega = \sup\{\omega\gamma : \gamma < \omega^\omega\}.
+\]
+Since $\omega^\omega$ is a limit ordinal, then $\gamma < \omega^\omega$ implies there exists some $k < \omega$ such that $\gamma < \omega^k$. So
+\[
+    \omega\omega^\omega 
+        =\sup\{\omega\gamma : \gamma < \omega^\omega\}
+        \leq \sup\{\omega\omega^k : k < \omega\}
+        = \sup\{\omega^{k+1} : k < \omega\}
+        = \omega^\omega.
+\]
+
+\section{}
+\begin{pbox}
+    Let $\alpha, \beta, \gamma$ be ordinals. Show that $(\alpha\beta)\gamma = \alpha(\beta\gamma)$.
+\end{pbox}
+
+\begin{proof}
+    From the synthetic definition of ordinal multiplication, there is a natural bijective relationship
+    \[
+        (\alpha\beta)\gamma 
+        = (\alpha \times \beta) \times \gamma 
+        \leftrightarrow \alpha \times (\beta \times \gamma)
+        = \alpha(\beta\gamma)
+    \]
+    which maps $((a, b), c) \leftrightarrow (a, (b, c))$. We must check that this bijection is order-preserving, i.e., an isomorphism. Since it is a bijection, it suffices to check one direction. Suppose $((a_1, b_1), c_1) < ((a_2, b_2), c_2)$. Then either $c_1 < c_2$ or $c_1 = c_2$ and $(a_1, b_1) < (a_1, b_2)$. In the first case,
+    \[
+        c_1 < c_2 \implies (b_1, c_1) < (b_2, c_2) \implies (a_1, (b_1, c_1)) < (a_2, (b_2, c_2)).
+    \]
+    In the second case, $(a_1, b_1) < (a_1, b_2)$ implies $b_1 < b_2$ or $b_1 = b_2$ and $a_1 < a_2$. Then
+    \[
+        b_1 < b_2 \implies (b_1, c_1) < (b_2, c_2) \implies (a_1, (b_1, c_1)) < (a_2, (b_2, c_2)),
+    \]
+    and $a_1 < a_1$ also implies $(a_1, (b_1, c_1)) < (a_2, (b_2, c_2))$.
+    
+\end{proof}
+
+\newpage
+\section{}
+\begin{pbox}
+    Let $\alpha, \beta, \gamma$ be ordinals. Must we have $(\alpha + \beta)\gamma = \alpha\gamma + \beta\gamma$? Must we have $\alpha(\beta + \gamma) = \alpha\beta + \alpha\gamma$?
+\end{pbox}
+
+\section{}
+\begin{pbox}
+    Let $\alpha$ and $\beta$ be ordinals with $\alpha \geq \beta$. Show that there is a unique ordinal $\gamma$ such that $\beta + \gamma = \alpha$. Must there exist an ordinal $\gamma$ with $\gamma + \beta = \alpha$?
+\end{pbox}
+
+\section{}
+\begin{pbox}
+    Show that, for every countable ordinal $\alpha$, there is a subset of $\Q$ or order-type $\alpha$. Why is there no subset $\R$ or order-type $\omega_1$?
+\end{pbox}
+
+\section{}
+\begin{pbox}
+    For well-ordered sets $X$ and $Y$ where $X$ has a least element $a$, let $X^{Y*}$ be the set of functions $f : Y \to X$ such that $f(y) = a$ for all but finitely many $y \in Y$. For $f, g \in X^{Y*}$ with $f \ne g$, define $f < g$ if $f(b) < g(b)$ where $b = \max\{y \in Y : f(y) \ne g(y)\}$. Show that $X^{Y*}$ is well-ordered by $<$. Show that for ordinals $\alpha$ and $\beta$, the order-type of $\alpha^{\beta*}$ is $\alpha^\beta$.
+\end{pbox}
+
+\section{}
+\begin{pbox}
+    What is the smallest fixed point of $\alpha \mapsto \omega^\alpha$? The next smallest? And the next smallest? Show that the fixed points are unbounded, and explain why this means that we may index the fixed points by the ordinals. Is there a countable ordinal $\alpha$ such that $\alpha$ is the $\alpha$-th fixed point?
+\end{pbox}
+
+
+
+\end{document}

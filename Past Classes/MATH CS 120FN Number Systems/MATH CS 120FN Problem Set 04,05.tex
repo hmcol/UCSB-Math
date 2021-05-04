@@ -1,0 +1,180 @@
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{colortbl}
+
+\lstset{basicstyle=\footnotesize}
+\usetikzlibrary{calc}
+
+ 
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{question}[2][Question]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+ 
+\begin{document}
+ 
+\title{Problem Sets 4 and 5\\
+    \large CS120FN Number Systems}
+\author{Harry Coleman}
+\date{October 15, 2019}
+
+\maketitle
+
+\section*{Problem Set 4 - Exercise 3}
+\fbox{
+    \parbox{\textwidth}{
+        (a) Find integers $x,y,z$ that satisfy $6x+15y+20z=1$.
+        
+        (b) Under what conditions is it true that the equation $$ax+by+cz=1$$  has a solution?
+    }
+}
+
+\subsection*{a}
+
+Solution
+\[(x, y, z) = (1, 1, -1)\]
+
+If we subsitutite into our equation
+\[6(1) + 15(1) + 20(-1) = 1\]
+\[6 + 15 - 20 = 1\]
+\[1 = 1\]
+
+Therefore
+\[(x, y, z) = (1, 1, -1)\]
+is a solution to our equation.
+
+
+\subsection*{b}
+
+The equation
+\[ax + by + cz = 1\]
+has a solution when $a, b, c$ are coprime.
+
+To prove this, we will take the greatest common divisor of $a, b, c$
+\[n = \text{gcd}(a, b, c)\]
+
+So we can write each as
+\begin{align*}
+    a &= An \\
+    b &= Bn \\
+    c &= Cn
+\end{align*}
+where $A, B, C \in \mathbb{Z}$. Substitution this into our original equation, we get
+\[Anx + Bny + Cnz = 1\]
+\[n(Ax + By + Cz) = 1\]
+
+We can see that $(Ax + By + Cz)$ is some integer because of the closure of integers over addition and multiplication. So $n$ is some integer factor of 1. The only factor of 1 is 1. Therefore,
+\[\text{gcd}(a, b, c) = 1\]
+
+Thus, $a, b, c$ must be coprime for the equation to have a solution.
+
+
+\section*{Problem Set 5 - Exercise 1}
+\fbox{
+    \parbox{\textwidth}{
+        Use the second proof of the infinitude of primes we talked about in class today to prove that for all $x\geq 1$, $$\pi(x)>\frac{\ln(x)}{2\ln(2)},$$ and also that $p_n\leq 4^n.$ (Hint: Choose $j$ wisely.) 
+    }
+}
+\\
+
+We'll define a set of the first $j$ primes.
+\[\{p_1, p_2, \cdots, p_j\}\]
+
+
+We'll also define $N(x)$ to be a function which returns the number of Natural numbers less than or equal to $x$ which have no prime divisors greater than the $j^\text{th}$ prime, $p_j$.
+
+Every number counted by $N(x)$ can be written as
+\[n^2 p_1^{a_1} p_2^{a_2} \cdots p_j^{a_j}\]
+where $n \in \mathbb{N}$ and each $a_i \in \{0,1\}$. For instance, if we take $j=3$ and some number with prime factorization
+\[p_1^3 p_2^4 p_3^1 = (p_1^2 p_2^4) p_1^1 p_2^0 p_3^1 = (p_1^1 p_2^2)^2 p_1^1 p_2^0 p_3^1\]
+
+We know that there are at most $\sqrt{x}$ perfect squares less than or equal to $x$. Since for any $n \leq \sqrt{x}$, we know $n^2 \leq x$. Giving us no more than $\sqrt{x}$ possibilities for $n^2$.
+
+And for each prime factor in $\{p_1, p_2, \cdots, p_j\}$ after the perfect square, the power can either be 0 or 1, giving each 2 possibilities. Which gives us $2^j$ possible values here. So we can say that
+\[N(x) \leq \sqrt{x}2^j\]
+
+At this point, we will define $j$ to be the number of primes less than to equal to $x$, so $j = \pi(x)$. Since out $N(x)$ now considers all prime numbers less than or equal to $x$, it counts all numbers less than or equal to $x$, so
+$N(x) = x$
+
+With this we can restate our inequality as
+\[x \leq \sqrt{x}2^{\pi(x)}\]
+
+To make this an exclusive inequality, we'll reconsider how we derived the right side. We want to show that our estimate for the upper bound for $x$ is strictly greater than $x$. We considered all possible numbers less than or equal to $x$ expressed as
+\[n^2 p_1^{a_1} p_2^{a_2} \cdots p_j^{a_j}\]
+where $n \in \mathbb{N}$ and each $a_i \in \{0,1\}$. This must consider the number where $n^2$ is the largest perfect square less than or equal to $x$ and each $a_i=1$. Ignoring $x=1$ for now, we'll just consider $x \geq 2$, which is $p_1$. So for any $x \geq 2$, our upper bound considers the number which is the product of the greatest perfect square less than or equal to $x$ and $p_1^1 = 2$.
+
+So we want to show that $x$ is always less than the product of the greatest perfect square less than or equal to $x$ and 2. The worst case for this would be when $x$ is 1 less than a perfect square. So we want to see for what $n \in \mathbb{N}$ values make the following true.
+\[2n^2 > (n+1)^2 - 1 = x\]
+\[2n^2 > n^2 + 2n + 1 -1\]
+\[n^2 - 2n > 0\]
+\[n(n - 2) > 0\]
+
+So for $n > 2$, or
+\[(n+1)^2 - 1 = x\]
+\[(n+1)^2 = x + 1\]
+\[n+1 = \sqrt{x + 1}\]
+\[n = \sqrt{x + 1} - 1 > 2\]
+\[\sqrt{x + 1} > 3\]
+\[x + 1 > 9\]
+\[x > 8\]
+we know that out upper bound for $N(x)$ considers values greater than $x$. So
+\[x < \sqrt{x}2^{\pi(x)}\]
+for $x>8$. Since we want this for $x \geq 1$, we'll show $x$ values 1 to 8, manually.
+
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        $x$ & $\pi(x)$ & $\sqrt{x}2^{\pi(x)}$ \\
+        \hline
+        1 & 0 & 2\\
+        2 & 1 & 2.8...\\
+        3 & 2 & 6.9...\\
+        4 & 2 & 8\\
+        5 & 3 & 17.8...\\
+        6 & 3 & 19.5...\\
+        7 & 4 & 42.3...\\
+        8 & 4 & 45.2...\\
+        \hline
+    \end{tabular}
+\end{center}
+
+So we know that for $x \geq 1$
+\[x < \sqrt{x}2^{\pi(x)}\]
+which we can rearrange
+\begin{align*}
+    \sqrt{x} &< 2^{\pi(x)} \\
+    \ln \sqrt{x} &< \ln 2^{\pi(x)} \\
+    \frac{\ln x}{2} &< \pi(x)\ln 2 \\
+    \pi(x) &> \frac{\ln x}{2\ln 2} \\
+\end{align*}
+
+For the second part, we'll take the $n^\text{th}$ prime $p_n = \pi^{-1}(n)$ so 
+
+\begin{align*}
+    n &> \frac{\ln p_n}{2\ln 2} \\
+    2n &> \frac{\ln p_n}{\ln 2} \\
+    2n &> \log_2 p_n \\
+    2^{2n} &> p_n \\
+    p_n &< 4^n
+\end{align*}
+which can be easily generalized to
+\[p_n \leq 4^n\]
+
+
+
+\end{document}
+

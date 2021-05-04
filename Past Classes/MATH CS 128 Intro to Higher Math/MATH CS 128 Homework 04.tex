@@ -1,0 +1,192 @@
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{colortbl}
+\usepackage{verbatim}
+\usetikzlibrary{arrows, angles, quotes}
+\usepackage{framed}
+\usepackage{indentfirst}
+
+\lstset{basicstyle=\footnotesize}
+\usetikzlibrary{calc}
+
+ 
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{question}[2][Question]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+ 
+\begin{document}
+ 
+\title{Homework 4\\
+    \large CS128 Intro to Higher Mathematics}
+\author{Harry Coleman}
+\date{October 10, 2019}
+
+\maketitle
+
+\section*{Exercise 3}
+\begin{framed}
+    Give a deduction of $p$ from the set $\{((\neg s) \lor r), (r \rightarrow p), s\}.$
+\end{framed}
+
+\begin{center}
+    \begin{tabular}{r l l}
+        1 & $\lnot s \lor r$ & Hypothesis \\
+        2 & $r \implies p$ & Hypothesis \\
+        3 & $s$ & Hypothesis \\
+        \hline
+        4 & $s \implies r$ & Definition of Implication on line 1 \\
+        5 & $s \implies p$ & Transitivity on lines 2, 4 \\
+        \hline
+        6 & p & Modus Ponens on lines 3, 5
+    \end{tabular}    
+\end{center}
+
+\newpage
+\section*{Exercise 4}
+\begin{framed}
+    Show that the conclusion follows from the premises of the following formal argument using a deduction.
+
+    \begin{enumerate}
+    \item $u \lor r$
+    \item $(r \rightarrow (\neg q)) \land t$
+    \item $(s \lor w) \rightarrow (\neg p)$
+    \item $u\rightarrow w$
+    \end{enumerate}
+    Conclusion: $(\neg p) \lor (\neg q)$.
+\end{framed}
+
+
+\begin{center}
+    \begin{tabular}{r l l}
+        1 & $u \lor r$ & Hypothesis \\
+        2 & $(r \rightarrow (\neg q)) \land t$ & Hypothesis \\
+        3 & $(s \lor w) \rightarrow (\neg p)$ & Hypothesis \\
+        4 & $u\rightarrow w$ & Hypotheis \\
+        \hline
+        5 & $\lnot(s \lor w) \lor (\lnot p)$ & Definition of Implication on line 3 \\
+        6 & $(\lnot s \land \lnot w) \lor (\lnot p)$ & De Morgan's Laws on line 5 \\
+        7 & $(\lnot p \lor \lnot s) \land (\lnot p \lor \lnot w)$ & Distribution on line 6 \\
+        8 & $\lnot p \lor \lnot w$ & Simplification on line 7 \\
+        9 & $p \implies \lnot w$ & Definition of Implication on line 8 \\
+        10 & $\lnot w \implies \lnot u$ & Contrapositive on line 4 \\
+        11 & $p \implies \lnot u$ & Transitivity on lines 9, 10 \\
+        12 & $\lnot u \implies r$ & Definition of Implication on line 1 \\
+        13 & $p \implies r$ & Transitivity on lines 11, 12 \\
+        14 & $r \implies \lnot q$ & Simplification on line 2 \\
+        15 & $p \implies \lnot q$ & Transitivity on lines 13, 14 \\
+        \hline
+        16 & $\lnot p \lor \lnot q$ & Definition of Implication on line 15
+    \end{tabular}    
+\end{center}
+
+
+\newpage
+\section*{Exercise 6}
+\begin{framed}
+    Show that 
+    \[((\sigma_1 \land \cdots \land \sigma_k) \rightarrow \tau) \equiv (\sigma_1 \rightarrow ( \sigma_2  \rightarrow (\cdots  \rightarrow (\sigma_k \rightarrow \tau)))).\]
+\end{framed}
+
+\begin{center}
+    \begin{tabular}{r l l}
+        $((\sigma_1 \land \cdots \land \sigma_k) \rightarrow \tau)$ & $\equiv (\lnot (\sigma_1 \land \cdots \land \sigma_k) \lor \tau)$ & Definition of Implication \\
+        &$\equiv ((\lnot \sigma_1 \lor \cdots \lor \lnot \sigma_k) \lor \tau)$ & De Morgan's Laws \\
+        &$\equiv (\lnot \sigma_1 \lor (\lnot \sigma_2 \lor ( \cdots (\lnot \sigma_k \lor \tau))))$ & Associativity of Disjunction \\
+        &$\equiv (\sigma_1 \implies (\sigma_2 \implies ( \cdots (\sigma_k \implies \tau))))$ & Definition of Implication 
+        
+    \end{tabular}
+\end{center}
+
+Therefore
+\[((\sigma_1 \land \cdots \land \sigma_k) \rightarrow \tau) \equiv (\sigma_1 \implies (\sigma_2 \implies ( \cdots (\sigma_k \implies \tau))))\]
+
+
+\section*{Exercise 7}
+\begin{framed}
+    Prove or refute each of the following assertions:
+    \begin{enumerate}
+        \item If either $\Sigma \models \alpha$ or $\Sigma \models \beta$, then $\Sigma \models (\alpha \lor \beta)$.
+        \item If $\Sigma \models (\alpha \lor \beta)$, then either $\Sigma \models \alpha$ or $\Sigma \models \beta$. 
+    \end{enumerate}
+\end{framed}
+
+Taking $\Sigma = \{\sigma_1, \sigma_2, \cdots, \sigma_n\}$
+
+\subsection*{Assertion 1}
+
+\begin{center}
+    \begin{tabular}{r l l}
+        1 & $((\sigma_1 \land \sigma_2 \land \cdots \land \sigma_n) \implies \alpha) \lor ((\sigma_1 \land \sigma_2 \land \cdots \land \sigma_n) \implies \beta)$ & Hypothesis \\
+        \hline
+        2 & $(\lnot(\sigma_1 \land \sigma_2 \land \cdots \land \sigma_n) \lor \alpha) \lor (\lnot(\sigma_1 \land \sigma_2 \land \cdots \land \sigma_n) \lor \beta)$ & Definition of Implication on line 1\\
+        3 & $\lnot(\sigma_1 \land \sigma_2 \land \cdots \land \sigma_n) \lor (\alpha \lor \beta)$ & Distribution on line 2 \\
+        \hline
+        4 & $(\sigma_1 \land \sigma_2 \land \cdots \land \sigma_n) \implies (\alpha \lor \beta)$ & Definition of Implication on line 3
+    \end{tabular}    
+\end{center}
+
+Therefore if $\Sigma \models \alpha$ or $\Sigma \models \beta$, then $\Sigma \vDash (\alpha \lor \beta)$.
+
+\subsection*{Assertion 2}
+
+\begin{center}
+    \begin{tabular}{r l l}
+        1 & $(\sigma_1 \land \sigma_2 \land \cdots \land \sigma_n) \implies (\alpha \lor \beta)$ & Hypothesis \\
+        \hline
+        2 & $\lnot(\sigma_1 \land \sigma_2 \land \cdots \land \sigma_n) \lor (\alpha \lor \beta)$ & Definition of Implication on line 1 \\
+        3 & $(\lnot(\sigma_1 \land \sigma_2 \land \cdots \land \sigma_n) \lor \alpha) \lor (\lnot(\sigma_1 \land \sigma_2 \land \cdots \land \sigma_n) \lor \beta)$ & Distribution on line 2\\
+        \hline
+        4 & $((\sigma_1 \land \sigma_2 \land \cdots \land \sigma_n) \implies \alpha) \lor ((\sigma_1 \land \sigma_2 \land \cdots \land \sigma_n) \implies \beta)$ & Definition of Implication on line 3
+    \end{tabular}    
+\end{center}
+
+Therefore if $\Sigma \vDash (\alpha \lor \beta)$, then $\Sigma \models \alpha$ or $\Sigma \models \beta$.
+
+
+\section*{Exercise 8}
+\begin{framed}
+    Let $\Sigma$ and $\tau$ be, respectively, a set of wffs and a wff. Show that, if 
+    $$\Sigma \cup \{\neg \tau\} \vdash F,$$
+    then 
+    $$\Sigma \vdash \tau.$$
+\end{framed}
+
+If we say $\Sigma = \{\sigma_1, \sigma_2, \cdots, \sigma_n\}$, then $\Sigma \cup \{\lnot \tau\} = \{\sigma_1, \sigma_2, \cdots, \sigma_n, \lnot \tau\}$. So
+
+\begin{center}
+    \begin{tabular}{r l l}
+        1 & $((\sigma_1 \land \sigma_2 \land \cdots \land \sigma_n \land \lnot \tau) \implies F)$ & Hypothesis \\
+        \hline
+        2 & $(\lnot (\sigma_1 \land \sigma_2 \land \cdots \land \sigma_n \land \lnot \tau) \lor F)$ & Definition of Implication on line 1 \\
+        3 & $\lnot (\sigma_1 \land \sigma_2 \land \cdots \land \sigma_n \land \lnot \tau)$ & Identity on line 2 \\
+        4 & $(\lnot \sigma_1 \lor \lnot \sigma_2 \lor \cdots \lor \lnot \sigma_n \lor \tau)$ & De Morgan's Laws on line 3 \\
+        5 & $(\lnot \sigma_1 \lor \lnot \sigma_2 \lor \cdots \lor \lnot \sigma_n) \lor \tau$ & Associativity of Disjunction on line 4 \\
+        6 & $\lnot(\sigma_1 \land \sigma_2 \land \cdots \land \sigma_n) \lor \tau$ & De Morgan's Laws on line 5 \\
+        \hline
+        7 & $(\sigma_1 \land \sigma_2 \land \cdots \land \sigma_n) \implies \tau$ & Definition of Implication on line 6 
+    \end{tabular}    
+\end{center}
+
+Therefore if $\Sigma \cup \{\lnot \tau\} \vdash F$, then $\Sigma \vdash \tau$.
+
+
+
+
+
+\end{document}
+

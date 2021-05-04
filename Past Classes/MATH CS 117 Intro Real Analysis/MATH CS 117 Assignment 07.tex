@@ -1,0 +1,189 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow,enumitem}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Set Names
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+
+% Misc Characters
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\newcommand{\eps}{\varepsilon}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ang}{\langle}{\rangle}
+
+% Homework Sections
+\setlength{\fboxsep}{4pt}
+\newcommand{\generic}[2]{\section*{#1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\ex}[2]{\generic{Exercise #1}{#2}}
+\newcommand{\prob}[2]{\generic{Problem #1}{#2}}
+\newcommand{\ques}[2]{\generic{Question #1}{#2}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+% MATH CS 117 Intro to Real Analysis
+\newcommand{\ds}{\displaystyle}
+\newcommand{\seq}[1]{\left\{#1\right\}_{n=1}^\infty}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+ 
+\begin{document}
+ 
+\title{Assignment 7\\
+    \large MATH CS 117 Intro to Real Analysis}
+\author{Harry Coleman}
+\date{May 25, 2020}
+\maketitle
+
+\ques{1}{
+    Suppose that $D,E\subset\R$, $g:D\to E$, $f:E\to D$, $g$ is continuous at $x_0\in D$, and $f$ is continuous at $g(x_0)\in E$.  Prove that $f\circ g:D\to\R $ is continuous at $x_0\in D$.
+}
+
+Let $\eps>0$ be given. Since $f$ is continuous at $g(x_0)$, we choose an $\eps'>0$ such that
+\[x\in E, |x-g(x_0)|<\eps' \implies |f(x)-g(x_0)|<\eps.\]
+And since $g$ is continuous at $x_0$, we choose a $\delta>0$ such that
+\[x\in D, |x-x_0|<\delta \implies |g(x)-g(x_0)|<\eps' \implies |f(g(x))-f(g(x_0))|<\eps.\]
+Thus, $f\circ g$ is continuous at $x_0$.
+
+\ques{2}{
+    Suppose that $f:[0,2]\to\R$ is continuous on $[0,2]$ and differentiable on $(0,2)$. If $f(0)=0$ and $f(1)=f(2)=2$, prove that there exist points $c_1,c_2,c_3\in(0,2)$ such that $f'(c_1)=0$, $f'(c_2)=1$, and $f'(c_3)=2$.  Can you say anything about the ordering of these points?
+}
+
+Since $f$ is continuous and differentiable on (1,2), then by the mean value theorem, there exists some $c_1\in(1,2)$ such that
+\[f'(c_1) = \frac{f(2)-f(1)}{2-1} = \frac{2-2}1 = 0.\]
+Since $f$ is continuous and differentiable on (0,2), then by the mean value theorem, there exists some $c_2\in(0,2)$ such that
+\[f'(c_2) = \frac{f(2)-f(0)}{2-0} = \frac{2-0}2 = 1.\]
+Since $f$ is continuous and differentiable on (0,1), then by the mean value theorem, there exists some $c_3\in(0,1)$ such that
+\[f'(c_3) = \frac{f(1)-f(0)}{1-0} = \frac{2-0}1 = 2.\]
+
+
+\ques{3}{
+    Let $n\in\N$ and $x,y\in\R$ with $0\le x<y$.  Use the mean value theorem to prove that
+    \[nx^{n-1}(y-x)\le y^n-x^n\le ny^{n-1}(y-x).\]
+}
+
+Define the function $f_n:\R\to\R$ by $f(x)=x^n$. $f$ is continuous and differentiable on $\R$ with $f'(x)=nx^{n-1}$. Applying the mean value theorem to the interval $(x,y)$, we know there is some point $c\in(x,y)$ such that
+\[f'(c)=\frac{f(y)-f(x)}{y-x}.\]
+That is,
+\[nc^{n-1} = \frac{y^n-x^n}{y-x}.\]
+Since $x<c<y$, we have
+\[nx^{n-1}\leq nc^{n-1} \leq ny^{n-1},\] 
+so
+\[nx^{n-1}\leq \frac{y^n-x^n}{y-x} \leq ny^{n-1}.\]
+This implies
+\[nx^{n-1}(y-x)\leq y^n-x^n \leq ny^{n-1}(y-x).\]
+
+\ques{4}{
+    Let $D\subset \R$ be connected. Suppose that $f:D\to\R$ is differentiable on $D$ and that there exists a constant $M>0$ such that  $|f'(x)|\le M$, for all $x\in D$.  Prove that $f$ is uniformly continuous on $D$. (Suggestion:  First prove that $f$ is Lipschitz continuous on $D$.)
+}
+
+Let $x,y\in D$ with $x<y$. Then because $D$ is connected, $[x,y]\subseteq D$. So $f$ is continuous and differentiable on $[x,y]$. Then by the mean value theorem, there exists some $c\in(x,y)$ such that
+\[f'(c) = \frac{f(y)-f(x)}{y-x}.\]
+And since $|f'(x)|\leq M$ for all $x\in D$,
+\[\left|\frac{f(y)-f(x)}{y-x}\right| =|f'(c)|\leq M.\]
+This implies
+\[|f(y)-f(x)|\leq M|y-x|,\]
+so $f$ is Lipschitz continuous, and therefore uniformly continuous on $D$.
+
+
+\ques{5}{
+    Suppose that $f:[a,b]\to\R$ is continuous on $[a,b]$ and differentiable on $(a,b)$. Prove that if $\ds\lim_{x\to a}f'(x)$ exists and equals $L$, then $f$ is differentiable at $x=a$ and $f'(a)=L$.
+}
+
+Suppose $\ds\lim_{x\to a}f'(x)=L$. To show that $f'(a)=L$, we consider
+\[\lim_{x\to a}\frac{f(x)-f(a)}{x-a}.\]
+Notice that in the above limit, $f(a)$ and $a$ are constants while $f(x)$ and $x$ are functions differentiable on $(a,b)$, so $f(x)-f(a)$ and $x-a$ are functions differentiable on $(a,b)$. Additionally, $x-a\ne0$ for all $x\in(a,b)$ and $f(a)-f(a)=a-a=0$. So by L'H\^opital's rule,
+\[\lim_{x\to a}\frac{f(x)-f(a)}{x-a} = \lim_{x\to a}\frac{f'(x)}{1} = L.\]
+Thus, $f$ is differentiable at $a$ and $f'(a)=L$.
+
+\ques{6}{
+    Let $f(x)=2x^3-3x^2-12x+1$.
+    \begin{enumerate}[label=(\alph*)]
+        \item Find the maximum and minimum values of $f$ on the interval $[-2,3]$.
+        \item Prove that $f$ has 3 distinct real roots.
+    \end{enumerate}
+}
+
+Since $f$ is continuous and differentiable on $[-2,3]$, we first find the set of points for which $f'(x)=0$.
+\begin{align*}
+    f'(x)
+        &= 6x^2 - 6x - 12 \\
+        &= 6(x-2)(x+1).
+\end{align*}
+So $f'(2)=0$ and $f'(-1)=0$. Then we know that $f$ might attain its extrema at the points in the set $\{-2,-1,2,3\}$. Solving for $f$ at these points, we find
+\[f(-2) = -3, \quad f(-1) = 8, \quad f(2) = -19, \quad f(3) = -8.\]
+Thus,
+\begin{align*}
+    \max\{f(x) : x\in[-2,3]\} &= 8, \\
+    \min\{f(x) : x\in[-2,3]\} &= -19.
+\end{align*}
+
+To prove that $f$ has 3 distinct real roots, we first calculate an $f$ at one more point, $f(4)=33$. Taking the intervals $(-2,-1),(-1,2),(3,4)$, we see that $0$ is an element of each of their images under $f$. So by the intermediate value theorem, there exist $c_1\in(-2,-1),c_2\in(-1,2),c_3\in(3,4)$, (which are distinct since the intervals are disjoint) such that $f(c_1)=f(c_2)=f(c_3)=0$.
+
+\newpage
+\ques{7}{
+    Define the function $g:[-1,1]\to\R$ by
+    \[g(x)=
+        \begin{cases}
+            0,&-1\le x\le0\\
+            1, & 0< x\le1.
+        \end{cases}
+    \]
+    Does there exist a differentiable function $f:[-1,1]\to\R$ such that $f'(x)=g(x)$, for all $x\in[-1,1]$?
+}
+
+Suppose $f$ were such a function. Consider the derivative of $f$ at 0 as observed from the left:
+\[\lim_{x\to0^-}\frac{f(x)-f(0)}{x-0}.\]
+For any $x\in(-1,0)$, $f$ is continuous and differentiable on $(x,0)$, so by the mean value theorem, there exists some $c\in(x,0)$ such that
+\[\frac{f(x)-f(0)}{x-0} = f'(c) = g(c) = 0.\]
+Since this is true for all $x\in(-1,0)$, we now have that
+\[\lim_{x\to0^-}\frac{f(x)-f(0)}{x-0} = \lim_{x\to0^-}0 = 0.\]
+Consider now the same limit, but from the right:
+\[\lim_{x\to0^+}\frac{f(x)-f(0)}{x-0}.\]
+For any $x\in(0,1)$, $f$ is continuous and differentiable on $(0,x)$, so by the mean value theorem, there exist some $c\in(0,x)$ such that
+\[\frac{f(x)-f(0)}{x-0} = f'(c) = g(c) = 1.\]
+Since this is true for all $x\in(0,1)$, we now have that
+\[\lim_{x\to0^+}\frac{f(x)-f(0)}{x-0} = \lim_{x\to0^+}1 = 1.\]
+This means that
+\[f'(0) = \lim_{x\to0} \frac{f(x)-f(0)}{x-0}\]
+does not exist, so $f$ is not differentiable at $0\in[-1,1]$. This is a contradiction with he assumption that $f$ is differentiable on $[-1,1]$. Therefore, there does not exists such a function.
+
+\ques{8}{
+    Suppose that $f:[a,b]\to\R$ is differentiable on $[a,b]$ and that $f'$ is continuous on $[a,b]$. Prove that for every $\eps>0$, there exists $\delta>0$ such that
+    \[x,y\in[a,b],\;0<|x-y|<\delta\implies\left|\frac{f(y)-f(x)}{y-x}-f'(x)\right|<\eps.\]
+    (The choice of $\delta$ is uniform with respect to $x\in[a,b]$.)
+}
+
+Let $\eps>0$ be given. Since $f'$ is continuous on $[a,b]$, which is a compact interval, $f'$ is uniformly continuous on $[a,b]$. So there exists some $\delta>0$ such that
+\[x,y\in[a,b], 0<|x-y|<\delta \implies |f'(x)-f'(y)|<\eps.\]
+Now let $x,y\in[a,b]$ such that $0<|x-y|<\delta$. Since $f$ is continuous and differentiable on $(x,y)$, there exists some $c\in(x,y)$ such that
+\[f'(c) = \frac{f(y)-f(x)}{y-x}.\]
+Now since $x<c<y$, we have $0<c-x<y-x$, which implies
+\[0<|c-x|<|y-x|<\delta.\]
+So
+\[\left|\frac{f(y)-f(x)}{y-x}-f'(x)\right| = |f'(c)-f'(x)|<\eps.\]
+Therefore, for every $\eps>0$, there exists $\delta>0$ such that
+\[x,y\in[a,b],0<|x-y|<\delta \implies \left|\frac{f(y)-f(x)}{y-x}-f'(x)\right|<\eps.\]
+
+
+
+
+
+\end{document}

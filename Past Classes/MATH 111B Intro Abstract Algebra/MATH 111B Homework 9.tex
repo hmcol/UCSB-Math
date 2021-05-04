@@ -1,0 +1,340 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{amsmath, amsthm, amssymb, physics}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{4pt}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\pfrac}[2]{\left(\frac{#1}{#2}\right)}
+
+% Extra Commands
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\Mat}[1]{\operatorname{M}_{#1, #1}}
+\newcommand{\dsum}{\oplus}
+\newcommand{\Dsum}{\bigoplus}
+\DeclareMathOperator{\Tor}{Tor}
+\newcommand{\Hom}{\operatorname{Hom}}
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH 111B Homework 9}
+    \fancyhead[C]{March 12, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+
+
+
+\begin{lemma}
+    Let $R$ be an integral domain and $a, b \in R$ nonzero. Then $a(R/(b)) = (a, b)/(b)$ as $R$-modules, i.e., the identity map is an $R$-module isomorphism between the two. 
+\end{lemma}
+
+\begin{proof}
+    First, $a(R/(b))$ is an $R$-submodule of $R/(b)$. It is nonempty since $a0 = 0 \in a(R/(b))$. And for any $r \in R$ and $a\eqc{x}, a\eqc{y} \in a(R/(b))$, we have $r(a\eqc{x}) + a\eqc{y} = a\eqc{rx + y} \in a(R/(b))$. Second, $(a)$ and $(b)$ are $R$-submodules of $R$, so $(a, b)$ is an $R$-submodule of $R$. Hence, $(a, b)/(b)$ is an $R$-submodule of $R/(b)$.
+    
+    We will now show that $a(R/(b)) = (a, b)/(b)$ as sets. Let $a\eqc{x} \in a(R/(b))$, then $ax + b0 \in (a, b)$, so
+    \[
+        a\eqc{x} = \eqc{ax} + \eqc{b0} = \eqc{ax + b0} \in (a, b)/(b).
+    \]
+    Let $\eqc{ax + by} \in (a, b)/(b)$, then
+    \[
+        \eqc{ax + by} = \eqc{ax} + \eqc{by} = a\eqc{x} \in a(R/(b)).
+    \]
+    Hence, the identity map is a bijection between the $R$-modules. Since the identity map is trivially an $R$-module homomorphism, then it is in fact an isomorphism.
+    
+\end{proof}
+
+\begin{lemma}(Problem 11)
+    Let $R$ be a PID, let $a$ be a nonzero element of $R$ and let $M = R/(a)$. For any prime $p$ of $R$,
+    \[
+        p^{k-1}M/p^kM \isom \begin{cases}
+            R/(p) &\text{if } k \leq n \\
+            0 &\text{if } k > n,
+        \end{cases}
+    \]
+    where $n$ is the power of $p$ dividing $a$ in $R$.
+\end{lemma}
+
+\begin{proof}
+    By Lemma 1 and the third isomorphism theorem for $R$-modules, we have
+    \[
+        p^{k-1}M/p^kM 
+            = ((p^{k-1}, a)/(a))/((p^k, a)/(a))
+            \isom (p^{k-1}, a)/(p^k, a).
+    \]
+    Let $b \in R$ such that $a = p^nb$ and $p \nmid b$. If $k \leq n$, then
+    \[
+        (a) = (p^nb) \subseteq (p^n) \subseteq (p^k) \subseteq (p^{k-1}).
+    \]
+    This implies $(p^{k-1}, a) = (p^{k-1})$ and $(p^k, a) = (p^k)$, so
+    \[
+        p^{k-1}M/p^kM  \isom (p^{k-1})/(p^k).
+    \]
+    The map $\phi : R \to (p^{k-1})$ defined by $\phi(x) = p^{k-1}x$ is a surjective $R$-module homomorphism, since $R$ is commutative. The natural projection $\pi : (p^{k-1}) \to (p^{k-1})/(p^k)$ is also a surjective $R$-module homomorphism and, therefore, so is the composition $\psi = \pi \circ \phi$. We now examine the kernel of $\psi$. $x \in \ker \psi$ if and only if $p^{k-1}x = \phi(x) \in \ker\pi = (p^k)$, which is equivalent to $x \in (p)$. Thus, the first isomorphism theorem gives us $R/(p) \isom p^{k-1}M/p^kM$.
+    
+    Now suppose $k > n$, so $p^n \mid p^{k-1} \mid p^k$. Assume $d \in R$ is not a unit with $d \mid p^{k-1}$ and $d \mid a$. Since $p$ is prime, then the first condition implies $d$ is a power of $p$, and the second condition implies that it is no more than $p^n$, so $p^n \mid d$. And since $p^n$ divides both $p^{k-1}$ and $a$, then $p^n$ is a greatest common divisor of $p^{k-1}$ and $a$. Since $R$ is a principal ideal domain, then in fact $(p^{k-1}, a) = (p^n)$. For the same reasons, we have $(p^k, a) = (p^n)$. Thus,
+    \[
+          p^{k-1}M/p^kM 
+            \isom (p^{k-1}, a)/(p^k, a)
+            = (p^n)/(p^n)
+            = 0.
+    \]
+    
+\end{proof}
+
+
+\begin{lemma}(Problem 7)
+    If $A_1, \dots, A_m$ are $R$-modules and $B_i$ is an $R$-submodule of $A_i$, then
+    \[
+        (A_1 \dsum \cdots \dsum A_m)/(B_1 \dsum \cdots \dsum B_m) \isom (A_1/B_1) \dsum \cdots \dsum (A_m/B_m).
+    \]
+\end{lemma}
+
+\begin{proof}
+    Let $\pi_i : A_i \to A_i/B_i$ be the natural projection and define the map $\pi = \pi_1 \times \cdots \times \pi_m$, implicitly using the isomorphism between the direct product and direct sum, by
+    \begin{align*}
+        \pi : A_1 \dsum \cdots \dsum A_m &\to (A_1/B_1) \dsum \cdots \dsum (A_m/B_m) \\
+            (x_1, \dots, x_m) &\mapsto (\pi_i(x_1), \dots, \pi_m(x_m)).
+    \end{align*}
+    Since each component $\pi_i$ is a surjective $R$-module homomorphism with $\ker\pi_i = B_i$, then it follows that $\pi$ is also a surjective $R$-module homomorphism with
+    \[
+        \ker\pi
+            = \ker\pi_1 \times \cdots \times \ker\pi_m
+            \isom B_1 \dsum \cdots \dsum B_m.
+    \]
+    Hence, the first isomorphism theorem implies the result.
+
+\end{proof}
+
+
+\begin{pbox}[Q1 Problem 12.1.12]
+    Let $R$ be a PID and let $p$ be a prime in $R$.
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Let $M$ be a finitely generated torsion $R$-module. Use the previous exercise to prove that $p^{k-1}M/p^kM \isom F^{n_k}$ where $F$ is the field $R/(p)$ and $n_k$ is the number of elementary divisors of $M$ which are powers $p^\alpha$ with $\alpha \geq k$.
+\end{pbox}
+
+\begin{proof}
+    We first see that the free rank of $M$ is zero. Suppose $M$ has the invariant factor form
+    \[
+        M \isom R^r \dsum R/(a_1) \dsum \cdots \dsum R/(a_m).
+    \]
+    Since $M$ is a torsion $R$-module and $R$ is an integral domain, then
+    \[
+        M = \Tor_R(M) \isom R/(a_1) \dsum \cdots \dsum R/(a_m),
+    \]
+    so we must have $r = 0$. We now consider the elementary divisor form of $M$ given by
+    \[
+        M \isom \Dsum_{i=1}^{n_k} R/(p^{\alpha_i}) \dsum \Dsum_{j=1}^{m} R/(p_j^{\beta_j}).
+    \]
+    where $\alpha_i \geq k$ for $i = 1, \dots, n_k$, and either $p_j$ is not associate to $p$ or $\beta_j < k$, for $j = 1, \dots, m$, i.e., $(p^{\alpha_i}) \subseteq (p^k)$ but $(p_j^{\beta_j}) \not\subseteq (p^k)$. In particular, the power of $p$ dividing each $p_j^{\beta_j}$ is less than $k$. Define $M_i = R/(p^{\alpha_i})$ and $N_j = R/(p_j^{\beta_j})$. Then, as instances of exercise 11, we have the $R$-module isomorphisms
+    \[
+        p^{k-1}M_i/p^kM_i \isom R/(p) = F
+        \isp{and}
+        p^{k-1}N_j/p^kN_j \isom 0.
+    \]
+    By Lemma 3 (Problem 12.1.7), we have
+    \[
+        p^{k-1}M/p^kM \isom \Dsum_{i=1}^{n_k} p^{k-1}M_i/p^kM_i \dsum \Dsum_{j=1}^{m} p^{k-1}N_j/p^kN_j,
+    \]
+    and by Lemma 2 (Problem 12.1.11),
+    \[
+        p^{k-1}M/p^kM
+            \isom \Dsum_{i=1}^{n_k} F \dsum \Dsum_{j=1}^{m} 0
+            \isom F^{n_k}.
+    \].
+    
+\end{proof}
+
+\newpage
+\begin{pbox}[(b)]
+    Suppose $M_1$ and $M_2$ are isomorphic finitely generated torsion $R$-modules. Use (a) to prove that, for every $k \geq 0$, $M_1$ and $M_2$ have the same number of elementary divisors $p^\alpha$ with $\alpha \geq k$. Prove that this implies $M_1$ and $M_2$ have the same set of elementary divisors.
+\end{pbox}
+
+\begin{proof}
+    For a fixed $k \geq 0$, let $n$ be the number of elementary divisors of $M_1$ which are powers $p^\alpha$ with $\alpha \geq k$, and let $m$ be the same for $M_2$. Then by part (a), we have
+    \[
+        F^n \isom p^{k-1}M_1/p^kM_2 \isom p^{k-1}M_2/p^kM_2 \isom F^m,
+    \]
+    as $R$-modules. We equip $F^n$ with the $F$-action defined by
+    \[
+        \eqc{r}(\eqc{x_1}, \dots, \eqc{x_n}) = r(\eqc{x_1}, \dots, \eqc{x_n}),
+    \]
+    where the right-hand side is the natural $R$-action on $F^n = (R/(p))^n$, i.e.,
+    \[
+        r(\eqc{x_1}, \dots, \eqc{x_n})
+            = (r\eqc{x_1}, \dots, r\eqc{x_n})
+            = (\eqc{rx_1}, \dots, \eqc{rx_n}).
+    \]
+    We check that this $F$-action is well-defined. Suppose $\eqc{a}, \eqc{b} \in F$ with $\eqc{a} = \eqc{b}$, then
+    \begin{align*}
+        \eqc{a}(\eqc{x_1}, \dots, \eqc{x_n})
+            &= a(\eqc{x_1}, \dots, \eqc{x_n}) \\
+            &= (\eqc{ax_1}, \dots, \eqc{ax_n}) \\
+            &= (\eqc{bx_1}, \dots, \eqc{bx_n}) \\
+            &= b(\eqc{x_1}, \dots, \eqc{x_n}) \\
+            &= \eqc{b}(\eqc{ax_1}, \dots, \eqc{ax_n}).
+    \end{align*}
+    We equip $F^m$ with the same sort of $F$-action. Let $\phi : F^n \to F^m$ be an $R$-module isomorphism, we will show that it is also an $F$-module isomorphism. Since we already know $\phi$ to be a bijection, it suffices to show that it is an $F$-module homomorphism. Let $\eqc{r} \in F$ and $x, y \in F^n$, the
+    \begin{align*}
+        \phi(\eqc{r}x + y)
+            &= \phi(rx + y) \\
+            &= r\phi(x) + y \\
+            &= \eqc{r}\phi(x) + \phi(y).
+    \end{align*}
+    Hence $\phi$ is an $F$-module homomorphism and, therefore, an $F$-module isomorphism. This tells use $F^n \isom F^m$ as free $F$-modules, implying that $n = m$.
+    
+    Define $n_k$ to be the number of elementary divisors of $M_1$ of the form $p^\alpha$ with $\alpha \geq n$, and define $m_k$ to be the same for $M_2$. Then by the above result, $n_k - n_{k+1} = m_k - m_{k+1}$ is the number of elementary divisors of both $M_1$ and $M_2$ of the form $p^k$.
+    
+    Hence, for all primes $q \in F$ and integers $k \geq 0$, we know that $M_1$ and $M_2$ have the same number of elementary divisors of the form $q^k$. 
+    
+    
+\end{proof}
+
+
+\newpage
+\begin{pbox}[Q2 Problem 12.3.10]
+    Find all Jordan canonical forms of $2 \times 2$, $3 \times 3$, and $4 \times 4$ matrices over $\C$.
+\end{pbox}
+
+Jordan canonical forms are defined up to the order of Jordan blocks. So the possible shapes of $n \times n$ Jordan canonical forms correspond bijectively to the additive partitions of the number $n$. 
+
+For $n = 2$, we have the partitions $2$ and $1 + 1$, which correspond to the $2 \times 2$ Jordan canonical forms
+\[
+    \mqty[\lambda_1 & 1 \\ & \lambda_1]
+    \isp{and}
+    \mqty[\lambda_1 \\ & \lambda_2].
+\]
+For $n = 3$, we have the partitions $3$, $2 + 1$, and $1 + 1 + 1$, corresponding to
+\[
+    \mqty[\lambda_1 & 1 \\ & \lambda_1 & 1 \\ & & \lambda_1],
+    \quad
+    \mqty[\lambda_1 & 1 \\ & \lambda_1 \\ & & \lambda_2],
+    \quad
+    \mqty[\lambda_1 \\ & \lambda_2 \\ & & \lambda_3].
+\]
+For $n = 4$, we have the partitions
+\[
+    4, \quad 3 + 1, \quad 2 + 2, \quad 2 + 1 + 1, \quad 1 + 1 + 1 + 1,
+\]
+corresponding to
+\[
+    \mqty[\lambda_1 & 1 \\ & \lambda_1 & 1 \\ & & \lambda_1 & 1 \\ & & & \lambda_1],
+    \quad
+    \mqty[\lambda_1 & 1 \\ & \lambda_1 & 1 \\ & & \lambda_1 \\ & & & \lambda_2],
+    \quad
+    \mqty[\lambda_1 & 1 \\ & \lambda_1 \\ & & \lambda_2 & 1 \\ & & & \lambda_2],
+\]
+\[
+    \mqty[\lambda_1 & 1 \\ & \lambda_1 \\ & & \lambda_2 \\ & & & \lambda_3],
+    \quad
+    \mqty[\lambda_1 \\ & \lambda_2 \\ & & \lambda_3 \\ & & & \lambda_4].
+\]
+Note that the eigenvalues $\lambda_1, \lambda_2, \lambda_3, \lambda_4 \in \C$ need not be distinct.
+
+
+\newpage
+\begin{pbox}[Q3]
+    Find the Jordan canonical form of $\mqty(1 & 0 & 0 \\ 0 & 0 & 5 \\ 0 & 1 & 3) \in \Mat{3}(\Z/7\Z)$.
+\end{pbox}
+
+Implicitly, integers will represent their equivalence class mod $7$. Let
+\[
+    A
+        = \mqty[1 & 0 & 0 \\ 0 & 0 & 5 \\ 0 & 1 & 3]
+        = \mqty[1 & 0 & 0 \\ 0 & 0 & -2 \\ 0 & 1 & 3].
+\]
+First, we find the characteristic polynomial of $A$.
+\begin{align*}
+    c_A(x) 
+        &= \det(xI_3 - A) \\
+        &= \det\mqty[x - 1 & 0 & 0 \\ 0 & x & 2 \\ 0 & -1 & x - 3] \\
+        &= (x - 1)\det\mqty[x & 2 \\ -1 & x - 3] \\
+        &= (x - 1)(x^2 - 3x + 2) \\
+        &= (x - 1)(x - 1)(x - 2).
+\end{align*}
+Then there are two possible cases for the elementary divisors of $A$. In the first case, the elementary divisors are $(x - 1)^2$ and $x - 2$, and the minimal polynomial is $(x - 1)^2(x - 2)$. In the second case, the elementary divisors are $x - 1$, $x - 1$, and $x - 2$, and the minimal polynomial is $(x - 1)(x - 2)$. Since the latter divides the former, it suffices to check whether the latter evaluates to zero at $A$. If so, it is the minimal polynomial and, if not, then the former is the minimal polynomial.
+\begin{align*}
+    (A - 1)(A - 2)
+        &= \mqty[0 & 0 & 0 \\ 0 & -1 & 5 \\ 0 & 1 & 2]\mqty[-1 & 0 & 0 \\ 0 & -2 & 5 \\ 0 & 1 & 1] \\
+        &= \mqty[0 \\ 0 \\ 0]\mqty[-1 & 0 & 0]
+            + \mqty[0 \\ -1 \\ 1]\mqty[0 & -2 & 5]
+            + \mqty[0 \\ 5 \\ 2]\mqty[0 & 1 & 1] \\
+        &= 0 + \mqty[0 & 0 & 0 \\ 0 & 2 & -5 \\ 0 & -2 & 5] 
+            + \mqty[0 & 0 & 0 \\ 0 & 5 & 5 \\ 0 & 2 & 2] \\
+        &= \mqty[0 & 0 & 0 \\ 0 & 7 & 0 \\ 0 & 0 & 7] \\
+        &= 0.
+\end{align*}
+Hence, $m_A(x) = (x - 1)(x - 2)$. So the elementary divisors are $x - 1$, $x - 1$, and $x - 2$, and $A$ has the Jordan canonical form (i.e., is similar to)
+\[
+    \mqty[\dmat[0]{1, 1, 2}].
+\]
+
+
+\newpage
+\begin{pbox}[Q4]
+    Find the Jordan canonical form of $\mqty(2 & -2 & 0 \\ 1 & -2 & 1 \\ -1 & 1 & 0) \in \Mat{3}(\C)$.
+\end{pbox}
+
+Let
+\[
+    A = \mqty[2 & -2 & 0 \\ 1 & -2 & 1 \\ -1 & 1 & 0].
+\]
+First, we find the characteristic polynomial of $A$.
+\begin{align*}
+    c_A(x) 
+        &= \det(xI_3 - A) \\
+        &= \det\mqty[x - 2 & 2 & 0 \\ -1 & x + 2 & -1 \\ 1 & -1 & x] \\
+        &= (x - 2)\det\mqty[x + 2 & -1 \\ -1 & x] - 2\det\mqty[-1 & -1 \\ 1 & x] \\
+        &= (x - 2)(x^2 + 2x - 1) - 2(-x + 1) \\
+        &= x(x^2 - 3) \\
+        &= x(x - \sqrt{3})(x + \sqrt{3}).
+\end{align*}
+So the elementary divisors of $A$ are $x$, $x - \sqrt{3}$, and $x + \sqrt{3}$. Thus, the Jordan canonical form of $A$ is
+\[
+    \mqty[\dmat[0]{\sqrt{3}, -\sqrt{3}, 0}].
+\]
+
+\end{document}

@@ -1,0 +1,489 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage[margin=1in]{geometry} % proper margins
+\usepackage{enumitem} % custom numbering for lists
+\usepackage{amsmath} % align, cases, eqref, matrices, dots, roots, delimiters, math mode functions, mod
+\usepackage{amsthm,amssymb,wasysym,mathrsfs,mathtools,babel}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{\textwidth-10pt}}
+    {\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\mybox}}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\seq}[2]{\left\{#1\right\}_{#2=1}^\infty}
+\newcommand{\clo}[1]{\overline{#1}}
+\newcommand{\conj}[1]{\overline{#1}}
+\newcommand{\eqc}[1]{\overline{#1}}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ang}{\langle}{\rangle}
+
+% Sets
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+
+% Misc Characters
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\let\eps\varepsilon
+\let\emptyset\varnothing
+
+% Functions
+\newcommand{\id}[1]{\mathsf{id}_{#1}}
+
+
+% Probability
+\newcommand{\FF}{\mathcal{F}}
+\renewcommand{\P}{\mathbb{P}}
+
+% Complex Analysis
+\renewcommand{\Im}{\text{Im }}
+\renewcommand{\Re}{\text{Re }}
+\newcommand{\Arg}{\text{Arg }}
+\newcommand{\pdv}[3][1]{\ifnum#1=1{\frac{\partial #2}{\partial#3}}\else{\frac{\partial^{#1}#2}{\partial#3^{#1}}}\fi}
+
+% Real Analysis
+\newcommand{\intr}[1]{\accentset{\circ}{#1}}
+
+% Notes
+% medskip for header-less paragraph
+% intertext{} for short text inside big display structure
+% dots is dynamic based on surroundings
+% dfrac and tfrac to force large or small fractions
+% operatorname for new operators instead of text
+
+\begin{document}
+ 
+\title{Homework 3\\
+    \large MATH CS 121 Intro to Probability
+    %\large MATH 111A Intro to Abstract Algebra
+    %\large MATH CS 122A Complex Analysis I
+    %\large MATH 118A Intro to Real Analysis
+    %\large MATH 104A Intro to Numerical Analysis
+}
+\author{Harry Coleman}
+\date{November 8, 2020}
+\maketitle
+
+\section*{Exercise 1}
+\begin{problem}
+    Let $A, B$ events,
+\end{problem}
+
+\subsection*{Exercise 1(a)}
+\begin{problem}
+    Show that if $A$ and $B$ are independent, then $\P(B\setminus A) = \P(B)(1-\P(A))$.
+\end{problem}
+
+\begin{proof}
+    Suppose $A$ and $B$ are independent, then $A^C$ and $B$ are independent. So
+    \[\P(B\setminus A) = \P(B\cap A^C) = \P(B)\cdot \P(A^C) = \P(B)(1-\P(A)).\]
+    
+\end{proof}
+
+\subsection*{Exercise 1(b)}
+\begin{problem}
+    Show that if $A\cap B = \emptyset$ and $A$ and $B$ are independent, then either $\P(A) = 0$ or $\P(B) = 0$.
+\end{problem}
+
+\begin{proof}
+    Suppose $A\cap B = \emptyset$ and $A$ and $B$ are independent. Then
+    \[0 = \P(\emptyset) = \P(A\cap B) = \P(A) \cdot \P(B).\]
+    Thus, $\P(A)=0$ or $\P(B) = 0$.
+    
+    
+\end{proof}
+
+\newpage
+\section*{Exercise 2}
+\begin{problem}
+    We chose a number from the set $\{1,2,3,\dots,100\}$ uniformly at random and denote this number by $A$. For each of the following choices, decide whether the two events in question are independent or not.
+\end{problem}
+
+\subsection*{Exercise 2(a)}
+\begin{problem}
+    $A=\{\text{$X$ is even}\}, B = \{\text{$X$ is divisible by $5$}\}$
+\end{problem}
+\medskip
+
+In this case, we use the Laplace measure, so the probability for a given event is its cardinality divided by $100$. There are $50$ even numbers in $\{1,\dots,100\}$, so $|A|=50$. There are $20$ numbers divisible by $5$ in $\{1,\dots,100\}$, so $|B| = 20$. The even multiples of $5$ are the multiples of $10$, of which we have $10$ in $\{1,\dots,100\}$, so $|A\cap B|=10$. Then
+\[\P(A\cap B) = \frac{|A\cap B|}{100} = \frac{10}{100} = \frac{50}{100}\cdot\frac{20}{100} = \frac{|A|}{100}\cdot \frac{|B|}{100} = \P(A) \cdot \P(B).\]
+So $A$ and $B$ are independent.
+
+\subsection*{Exercise 2(b)}
+\begin{problem}
+    $C=\{\text{$X$ has two digits}\}, D = \{\text{$X$ is divisible by $3$}\}$
+\end{problem}
+\medskip
+
+We consider $C^C=\{X \text{ has one or three digits}\} = \{1,\dots,9,100\}$, so
+\[\P(C^C) = \frac{|C^C|}{100} = \frac{10}{100} = \frac1{10}.\]
+There are $33$ multiples of $3$ in $\{1,\dots,100\}$, so
+\[\P(D) = \frac{|D|}{100} = \frac{33}{100}.\]
+There are three multiples of three with one or three digits in $\{1,\dots,100\}$, namely $3$, $6$, and $9$. So
+\[\P(C^C\cap D) = \frac{|C^C\cap D|}{100} = \frac{3}{100} \ne \frac{33}{1000} = \P(C^C) \cdot \P(D).\]
+So $C^C$ and $D$ are not independent, which implies that $C$ and $D$ are not independent.
+
+\subsection*{Exercise 2(c)}
+\begin{problem}
+    $E=\{\text{$X$ is prime}\}, F = \{\text{$X$ has a digit $5$}\}$. Note that $1$ is not considered a prime number.
+\end{problem}
+\medskip
+
+There are $25$ primes in $\{1,\dots,100\}$, so $\P(E) = 25/100$. In $\{1,\dots,\}$, there are $9$ numbers with a $5$ in the ones digit and $10$ numbers with a $5$ in the tens digit. $55$ has both, so there are $18$ numbers with a digit of $5$ in $\{1,\dots,100\}$, and $\P(F) = 18/100$. The primes with digit of $5$ in $\{1,\dots,100\}$ are $5$, $51$, and $59$. Then \[\P(E\cap F) = \frac3{100} \ne \frac{450}{10000} = \P(E)\cdot \P(F),\]
+so $E$ and $F$ are not independent.
+
+\section*{Exercise 3}
+\begin{problem}
+    Let $(\Omega_1, 2^{\Omega_1}, \P_1),\dots,(\Omega_n, 2^{\Omega_n}, \P_n)$ discrete probability spaces equipped with the Laplace measure and define the product space $(\Omega,2^{\Omega},\P)$ as we did in the lecture.
+\end{problem}
+
+\subsection*{Exercise 3(a)}
+\begin{problem}
+    Show that $(\Omega,2^{\Omega},\P)$ is a Laplace space.
+\end{problem}
+
+\begin{proof}
+    Let $A\subseteq\Omega$. To show that $(\Omega,2^{\Omega},\P)$ is a Laplace space, we must show that
+    \[\P(A) = \frac{|A|}{|\Omega|}.\]
+    First note that since $\Omega_1,\dots,\Omega_n$ are finite, then their Cartesian product $\Omega$, which has cardinality equal to the product of the cardinalities of $\Omega_1,\dots,\Omega_n$, is also finite. So the subset $A\subseteq \Omega$ is finite. Then by definition of the product measure,
+    \begin{align*}
+        \P(A)
+            &= \sum_{\omega \in A}\P(\{\omega\}) \\
+            &= \sum_{\omega \in A}\P_1(\{\omega_1\})\cdots\P_n(\{\omega_n\}) \\
+            &= \sum_{\omega \in A}\frac1{|\Omega_1|} \cdots \frac1{|\Omega_n|} \\
+            &= \sum_{\omega \in A}\frac1{|\Omega_1| \cdots |\Omega_n|} \\
+            &= \sum_{\omega \in A}\frac1{|\Omega|} \\
+            &= \frac{|A|}{|\Omega|}.
+    \end{align*}
+    Thus, $(\Omega,2^{\Omega},\P)$ is a Laplace space.
+
+\end{proof}
+
+\newpage
+\subsection*{Exercise 3(b)}
+\begin{problem}
+    Explain in what sense the space $(\Omega,2^{\Omega},\P)$ models performing experiments $(\Omega_1, 2^{\Omega_1}, \P_1),\dots,(\Omega_n, 2^{\Omega_n}, \P_n)$ in a sequential, and independent way. Give explicit examples for the spaces and example calculations showing the independence.
+\end{problem}
+\medskip
+
+For $i=1,\dots,n$, we consider the projection map from $\Omega$ to $\Omega_i$, defined on singletons as follows:
+\begin{align*}
+    \pi_i : \Omega &\to \Omega_i \\
+    \{(\omega_1,\dots,\omega_n)\} &\mapsto \{\omega_i\}.
+\end{align*}
+Then for an event $A \subseteq \Omega$, we define $\pi_i(A) = \{\pi_i(\omega) : \omega\in A\}$. Given some event $A_i\subseteq \Omega_i$, we can regard this event as an event in the product space by considering the preimage of $A_i$ under the projection:
+\[\pi_i^{-1}(A_i) = \{A_i\in\Omega : \pi_i(A) = A_i\} = \Omega_1 \times \cdots \times \Omega_{i-1} \times A_i \times \Omega_{i+1} \times \cdots \times \Omega_n.\]
+Then for two events $A_i\subseteq\Omega_i$ and $B_j\subseteq\Omega_j$ with $i\ne j$, we consider each as events in the product space by their preimages, $A = \pi_i^{-1}(A_i)$ and $B = \pi_j^{-1}(B_j)$, respectively. Then $A$ and $B$ are independent if $\P(A\cap B) = \P(A)\cdot \P(B)$. We first note that because the product space is a Laplace space, then we can derive
+\begin{align*}
+    \P(A)
+        &= \frac{|A|}{|\Omega|} \\
+        &= \frac{|\Omega_1 \times \cdots \times \Omega_{i-1} \times A_i \times \Omega_{i+1} \times \cdots \times \Omega_n|}{|\Omega_1 \times \cdots \times \Omega_n|} \\
+        &= \frac{|\Omega_1| \cdots |\Omega_{i-1}| \cdot |A_i| \cdot |\Omega_{i+1}| \cdots |\Omega_n|}{|\Omega_1| \cdots |\Omega_n|} \\
+        &= \frac{|A_i|}{|\Omega_i|} \\
+        &= \P_i(A_i),
+\end{align*}
+and in the same way, $\P(B) = \P_j(B_j)$. Using this fact, we derive
+\begin{align*}
+    \P(A\cap B)
+        &= \frac{|A\cap B|}{|\Omega|} \\
+        &= \frac{|\Omega_1 \times \cdots \times \Omega_{i-1} \times A_i \times \Omega_{i+1} \times \cdots \times \Omega_{j-1} \times B_j \times \Omega_{j+1} \times \cdots \times \Omega_n|}{|\Omega_1 \times \cdots \times \Omega_n|} \\
+        &= \frac{|\Omega_1| \cdots |\Omega_{i-1}| \cdot |A_i| \cdot |\Omega_{i+1}| \cdots |\Omega_{j-1}| \cdot |B_j| \cdot |\Omega_{j+1}| \cdots |\Omega_n|}{|\Omega_1| \cdots |\Omega_n|} \\
+        &= \frac{|A_i|\cdot |B_j|}{|\Omega_i|\cdot |\Omega_j|} \\
+        &= \frac{|A_i|}{|\Omega_i|} \cdot \frac{|B_j|}{|\Omega_j|} \\
+        &= \P_i(A_i) \cdot \P_j(B_j) \\
+        &= \P(A) \cdot \P(B).
+\end{align*}
+So any pair of events $A_i,B_j$, which are in different base spaces, are always independent when considered as events in the product space. It is in this sense that the product space $(\Omega,2^{\Omega},\P)$ can model preforming experiments $(\Omega_1, 2^{\Omega_1}, \P_1),\dots,(\Omega_n, 2^{\Omega_n}, \P_n)$ in an independent way. The sequentiality simply comes from the fact that the individual experiments are indexed by $1,\dots,n$.
+
+For example, suppose we want to flip a coin and roll a six-sided die. For flipping a coin, we define
+\[\Omega_1 = \{H,T\},\]
+and for rolling a die, we define
+\[\Omega_2 = \{1,2,3,4,5,6\}.\]
+Then
+\[\Omega = \{(H,1),(H,2),(H,3),(H,4),(H,5),(H,6),(T,1),(T,2),(T,3),(T,4),(T,5),(T,6)\}.\]
+Suppose we want to consider the probability of flipping heads, $A_1=\{H\}$, and rolling a $1$ or a $2$, $B_2=\{1,2\}$. In their respective probability spaces, we have $\P_1(A_1) = 1/2$ and $\P_2(B_2) = 1/3$. In the product space, we consider
+\[A = \pi_1^{-1}(A_1) = \{(H,1),(H,2),(H,3),(H,4),(H,5),(H,6)\}\]
+and
+\[B = \pi_2^{-1}(B_2) = \{(H,1),(T,1),(H,2),(T,2)\}.\]
+As previously shown, we have $\P(A)=\P_1(A_1) = 1/2$ and $\P(B)=\P_2(B_2) = 1/3$. Then
+\[\P(A\cap B) = \frac{|A\cap B|}{|\Omega|} = \frac{|\{(H,1),(H,2)\}|}{|\Omega|} = \frac2{12} = \frac16,\]
+which indeed gives us $\P(A\cap B) = \P(A)\cdot \P(B)$.
+
+\newpage
+\section*{Exercise 4}
+\begin{problem}
+    A couple has three kids. But, we do not know whether they are boys or girls. Suppose that each gender is equally likely and that their occurrence is independent of each other.
+    
+    Consider the following events:
+    \begin{itemize}[label=]
+        \item $C$: All kids are either $3$ girls or $3$ boys.
+        \item $D$: There is at most one boy.
+        \item $E$: There are at least one girl and at least one boy.
+    \end{itemize}
+\end{problem}
+
+\subsection*{Exercise 4(a)}
+\begin{problem}
+    Describe the setup with a proper probability space $(\Omega, \FF, \P)$. 
+\end{problem}
+\medskip
+
+For $i=1,2,3$, we define the Laplace space $(\Omega_i,2^{\Omega_i},\P_i)$, where
+\[\Omega_i = \{B,G\}.\]
+Then take the product space $(\Omega, \FF, \P)$, where
+\[\Omega = \Omega_1 \times \Omega_2 \times \Omega_3.\]
+As we have seen, the product space is a Laplace space.
+
+\subsection*{Exercise 4(b)}
+\begin{problem}
+    Compute the probability of the events $C$, $D$ and $E$.
+\end{problem}
+\medskip
+
+Taking $C = \{(B,B,B),(G,G,G)\}$, then
+\[\P(C) = \frac{|C|}{|\Omega|}  = \frac{2}{8} = \frac14.\]
+
+Taking $D = \{(G,G,G),(B,G,G),(G,B,G),(G,G,B)\}$, then
+\[\P(D) = \frac{|D|}{|\Omega|} = \frac{4}{8} = \frac12.\]
+
+Taking $E = \{(B,B,G),(B,G,B),(G,B,B),(B,G,G),(G,B,G),(G,G,B)\}$, then
+\[\P(E) = \frac{|E|}{|\Omega|}  = \frac{6}{8} = \frac34.\]
+
+\subsection*{Exercise 4(c)}
+\begin{problem}
+    Show that $C$ and $D$ as well as $D$ and $E$ are independent, but not $C$ and $E$.
+\end{problem}
+\medskip
+
+$C\cap D = \{(G,G,G)\}$, so
+\[\P(C\cap D) = \frac{|C\cap D|}{|\Omega|} = \frac18 = \frac14 \cdot \frac12 = \P(C)\cdot\P(D).\]
+$D\cap E = \{(B,G,G),(G,B,G),(G,G,B)\}$, so
+\[\P(D\cap E) = \frac{|D\cap E|}{|\Omega|} = \frac38 = \frac12 \cdot \frac34 = \P(D)\cdot\P(E).\]
+$C\cap E = \emptyset$, so
+\[\P(C\cap D) = 0 \ne \frac14\cdot \frac34 = \P(C) \cdot \P(E).\] 
+
+\newpage
+\section*{Exercise 5}
+\begin{problem}
+    Describe the $\sigma$-algebra $\FF$ of subsets of $\R$ generated by the singleton sets (i.e., sets of the form $\{a\}$ where $a$ is any real number).
+\end{problem}
+
+\begin{proposition}
+    $\FF$ is the set of subsets $A\subseteq\R$ such that $A$ is countable or $A^C$ is countable.
+\end{proposition}
+
+\begin{proof}
+    By definition, $\FF$ is the smallest $\sigma$-algebra on $\R$ containing the singletons. Let $\FF'$ be the subsets of which are countable or whose complements' are countable. We will prove that $\FF'$ is a $\sigma$-algebra on $\R$ containing the singletons by showing that the $\sigma$-algebra axioms are satisfied.
+    
+    Since every singleton is countable, we have that $\FF'$ contains all the singletons. Since $\R^C = \emptyset$ is countable, then $\R\in\FF'$. Suppose $A\in\FF$, so either $A$ is countable or $A^C$ is countable. And since $(A^C)^C=A$, this is precisely the condition giving us $A^C\in\FF'$. Now suppose that $A_i\in\FF'$ for $i\in\N$, and consider the union
+    \[A = \bigcup_{i\in\N}A_i.\]
+    If $A_i$ is countable for all $i\in\N$, then the countable union of countable sets is also countable, in which case $A\in\FF'$. Otherwise, we have some $A_j$ which is not countable, and since $A_j\in\FF'$, we must have $A_j^C$ countable. Then
+    \[A_j \subseteq A \implies A^C \subseteq A_j^C,\]
+    which implies that $A^C$ is countable, so $A\in\FF'$. Thus, $\FF'$ is a $\sigma$-algebra on $\R$ containing all the singletons. By definition of $\FF$, this tells us that $\FF\subseteq\FF'$. We now must show that the opposite inclusion holds.
+    
+    Let $A\in\FF'$ then we either have that $A$ is countable or that $A^C$ is countable. In the first case, $A$ is countable, so there is a bijection $a:\N\to A$ mapping $n\mapsto a_n$. Because this is a bijection, then the image is precisely $A$, i.e.
+    \[A = \{a_n : n\in\N\} = \bigcup_{n\in\N}\{a_n\}.\]
+    Now since $\{a_n\}\in\FF$ for all $n\in\N$, then $A$ is a countable union of elements of $\FF$, so $A\in\FF$. In the second case, $A^C$ is countable. Since $A\in\FF'$ and $\FF'$ is a $\sigma$-algebra, then $A^C\in\FF'$. It is now equivalent to the first case to show that $A^C\in\FF$. Then because $\FF$ is a $\sigma$-algebra, we have $A\in\FF$. Thus, both inclusions hold, and we have $\FF' = \FF$.
+    
+\end{proof}
+
+\subsection*{Exercise 5(a)}
+\begin{problem}
+    Does $\FF$ contain intervals of the form $(a,b)$ for $a<b$?
+\end{problem}
+\medskip
+
+No, because neither $(a,b)$ nor $(a,b)^C = (-\infty,a]\cup[b,\infty)$ is countable, so by proposition 1, $(a,b)\notin\FF$.
+
+\subsection*{Exercise 5(b)}
+\begin{problem}
+    Define a probability measure on $\FF$.
+\end{problem}
+\medskip
+
+\begin{proposition}
+    The function $\P:\FF\to[0,1]$ is defined for each $A\in\FF$ as follows:
+    \[\P(A) = 
+        \begin{cases}
+            0 &\text{if $A$ is countable,} \\
+            1 &\text{if $A^C$ is countable.}
+        \end{cases}
+    \]
+    This $\P$ is a probability measure on $\FF$.
+\end{proposition}
+
+\begin{proof}
+    We first check that $\P$ is well-defined on $\FF$. By proposition 1, any set in $\FF$ must be countable or have a countable complement, so $\P$ maps each element of $\FF$ to some value of $[0,1]$. Additionally, any subset of $\R$ cannot both be countable and have a countable complement, so $\P$ maps each element of $\FF$ to exactly one value in $[0,1]$.
+    
+    We now prove that $\P$ satisfies both axioms of a probability measure. Since $\Omega^C = \emptyset$ is countable, then $\P(\Omega) = 1$. Before proving that $\P$ satisfies the second axiom, we note that any pair of sets $A,B\in\FF$ with countable complements are not disjoint. Suppose $A,B\in\FF$ such that $A^C$ and $B^C$ are countable. Since $A^C$ is countable and $B$ is uncountable, then $B\not\subseteq A^C$. This implies that there exists some $x\in B$ such that $x\notin A^C$, or equivalently, $x\in A$. Therefore, $x\in A\cap B \ne \emptyset$.
+    
+    Suppose $\{A_i\}_{i\in\N} \subseteq \FF$ is a set of disjoint sets in $\FF$. It is either the case that all of these sets are countable or there is some set whose complement is countable. If $A_i$ is countable for all $i\in\N$, then
+    \[\sum_{i\in\N}\P(A_i) = \sum_{i\in\N}0 = 0.\]
+    And since the countable union of countable sets is still countable, we find that
+    \[\P\left(\bigcup_{i\in\N}A_i\right) = 0 = \sum_{i\in\N}\P(A_i).\]
+    On the other hand, if $A_j^C$ is countable for some $j\in\N$, then, because no pair of sets in $\FF$ with countable complements are disjoint, $A_i$ is countable for all $i\in\N$, $i\ne j$. In this case,
+    \[\sum_{i\in\N}\P(A_i) = \P(A_j) + \sum_{i\in\N\setminus\{j\}}\P(A_i) = 1 + \sum_{i\in\N\setminus\{j\}}0 = 1.\]
+    And since
+    \[A_j \subseteq \bigcup_{i\in\N}A_i \implies \left(\bigcup_{i\in\N}A_i\right)^C \subseteq A_j^C,\]
+    and $A_j^C$ is countable, then
+    \[\P\left(\bigcup_{i\in\N}A_i\right) = 1 = \sum_{i\in\N}\P(A_i).\]
+    
+    
+\end{proof}
+
+\subsection*{Exercise 5(c)}
+\begin{problem}
+    Describe the random variable that can be defined on the space $(\R, \FF)$.
+\end{problem}
+\medskip
+
+Suppose $X:\R\to\R$ is a random variable on $(\R,\FF)$. Then for all $\alpha\in\R$,
+\[X^{-1}((-\infty,\alpha]) \in \FF.\]
+In other words, $X^{-1}((-\infty,\alpha])$ is countable or $X^{-1}((-\infty,\alpha])^C$ is countable. In the case that $X^{-1}((-\infty,\alpha])$ is countable, then $X$ maps only countably many values of $\R$ to $\alpha$ or a value below $\alpha$. In the case that $X^{-1}((-\infty,\alpha])^C$ is countable, then $X$ maps only countably many values of $\R$ to a value above $\alpha$. In fact, we will prove that it must be the case that there exists a particular $r\in\R$ such that $X^{-1}(\{r\})^C$ is countable. This would mean that $X$ maps all but countably many values of $\R$ to $r$. In which case, our probability measure would give us $\P(X=r) = 1$ and $\P(X\ne r) = 0$.
+
+We claim that a function $X:\R\to\R$ is measurable (a random variable) on $(\R,\FF)$ if and only if there exists some $r\in\R$ such that $X^{-1}(\{r\})^C$. In the following sections, we will prove that this condition is both necessary and sufficient 
+
+\begin{lemma}
+    If $X:\R\to\R$ is measurable (a random variable) on $(\R,\FF)$, then there exist some $\alpha,\beta\in\R$ such that $X^{-1}((-\infty,\alpha])$ is countable and $X^{-1}((-\infty,\beta])^C$ is countable.
+\end{lemma}
+
+\begin{proof}
+    By definition of $\FF$, each preimage $X^{-1}((\infty,\alpha])$ is either countable or has a countable complement. We want to show that we can find one of each, which is to say that we don't have every preimage countable or every preimage having a countable complement.
+    
+    Suppose, for contradiction, that $X^{-1}((-\infty,\alpha])$ is countable for all $\alpha\in \R$ or $X^{-1}((-\infty,\alpha])^C$ is countable for all $\alpha\in \R$. In the first case, $X^{-1}((-\infty,\alpha])$ is countable for all $\alpha\in \R$ implies that the following countable union is countable:
+    \[\bigcup_{n\in\N}X^{-1}((-\infty,n]).\]
+    Since $X(a)\in\R$ for all $a\in\R$, and there exists some $n\in\N$ with $n\geq X(a)$ for all $a\in\R$, then for all $a\in\R$, we have $X(a)\in (-\infty,n]$ for some $n\in\N$. Therefore,
+    \[\R\subseteq \bigcup_{n\in\N}X^{-1}((-\infty,n]),\]
+    which is a contradiction because $\R$ is not countable. In the second case, we, similarly, have that
+    \[\bigcup_{n\in\N}X^{-1}((-\infty,-n])^C = \bigcup_{n\in\N}X^{-1}((-n,\infty)) \]
+    is countable. And again, for every $a\in\R$, there exists some $n\in\N$ such that $n\geq -X(a)$, or, equivalently, $-n\leq X(a)$. Therefore, for every $a\in\R$, we have $X(a) \in (-n,\infty)$ for some $n\in\N$. Therefore,
+    \[\R \subseteq \bigcup_{n\in\N}X^{-1}((-n,\infty)),\]
+    which is, again, a contradiction because $\R$ is not countable.
+    
+\end{proof}
+
+\begin{proposition}
+    (Necessity) If $X:\R\to\R$ is measurable (a random variable) on $(\R,\FF)$, then there exists some $r\in\R$ such that $X^{-1}(\{r\})^C$ is countable.
+\end{proposition}
+
+\begin{proof}
+    By lemma 1, let $\alpha_0,\beta_0\in\R$ such that $X^{-1}((-\infty,\alpha_0])$ is countable and $X^{-1}((-\infty,\beta_0])^C$ is countable. We now define the following values:
+    \begin{align*}
+        \alpha' &= \sup\{\alpha\in\R : X^{-1}((-\infty,\alpha]) \text{ is countable}\}, \\
+        \beta' &= \inf\{\beta\in\R : X^{-1}((-\infty,\beta])^C \text{ is countable}\}.
+    \end{align*}
+    We will show that both of these values exist because $\beta_0$ provides an upper bound for the first set, and $\alpha_0$ provides a lower bound for the second set. If $\alpha\in\R$ with $\beta_0\leq \alpha$, then
+    \[X^{-1}((-\infty,\beta_0]) \subseteq X^{-1}((-\infty,\alpha]) \implies X^{-1}((-\infty,\alpha])^C \subseteq X^{-1}((-\infty,\beta_0])^C.\]
+    Then $X^{-1}((-\infty,\alpha])^C$ is countable, which implies that $X^{-1}((-\infty,\alpha])$ is not countable. If $\beta\in\R$ with $\beta\leq \alpha_0$, then
+    \[X^{-1}((-\infty,\beta]) \subseteq X^{-1}((-\infty,\alpha_0]).\]
+    Then $X^{-1}((-\infty,\beta])$ is countable, which implies that $X^{-1}((-\infty,\beta])^C$ is not countable. So, $\alpha'$ and $\beta'$ exist, and we now claim that $\alpha'=\beta'$.
+    
+    First, $\alpha'\leq \beta'$, as otherwise, for any $\gamma\in(\beta',\alpha')$, we would have both $X^{-1}((-\infty,\gamma])$ and $X^{-1}((-\infty,\gamma])^C$ to be countable, which is not true for any subset of $\R$. To show $\beta'\leq\alpha'$, we suppose, for contradiction, that $\alpha'<\beta'$. Then if $\gamma\in(\alpha',\beta')$, then neither $X^{-1}((-\infty,\gamma])$ nor $X^{-1}((-\infty,\gamma])^C$ is countable. However, since $X$ is a random variable with respect to $(\R,\FF)$, then $X^{-1}((-\infty,\gamma])\in\FF$, which is a contradiction.
+    
+    We now define $r=\alpha'=\beta'$. It remains to be proven that $X^{-1}(\{r\})^C$ is countable. To see this, we derive the following:
+    \begin{align*}
+        X^{-1}(\{r\})^C 
+            &= X^{-1}((-\infty,r)\cup(r,\infty)) \\
+            &= X^{-1}((-\infty,r)\cup(-\infty,r]^C) \\
+            &= X^{-1}((-\infty,r))\cup X^{-1}((-\infty,r]^C) \\
+            &= X^{-1}\left(\bigcup_{n\in\N}\left(-\infty,r-\frac1n\right]\right) \cup X^{-1}\left(\bigcup_{n\in\N}\left(-\infty, r+\frac1n\right]^C\right) \\
+            &= \bigcup_{n\in\N}X^{-1}\left(\left(-\infty,r-\frac1n\right]\right)\cup \bigcup_{n\in\N}X^{-1}\left(\left(-\infty, r+\frac1n\right]\right)^C.
+    \end{align*}
+    By definition of $r$, for every $n\in\N$, we have both
+    \[X^{-1}\left(\left(-\infty,r-\frac1n\right]\right) \isp{and} X^{-1}\left(\left(-\infty, r+\frac1n\right]\right)^C\]
+    to be countable. Therefore, as the countable union of countable sets, $X^{-1}(\{r\})^C$ is countable.
+
+\end{proof}
+
+\begin{proposition}
+    (Sufficiency) If $X:\R\to\R$ and there exists some $r\in\R$ such that $X^{-1}(\{r\})^C$ is countable, then $X$ is measurable (a random variable) on $(\R,\FF)$.
+\end{proposition}
+
+\begin{proof}
+    Let $X:\R\to\R$ and $r\in\R$ such that $X^{-1}(\{r\})^C$ is countable. Then for any $\alpha\in\R$, we either have $\alpha< r$ or $r\leq \alpha$. In the first case, $\alpha< r$, then
+    \[X^{-1}((-\infty,\alpha]) \subseteq X^{-1}(\{r\})^C,\]
+    which implies that $X^{-1}((-\infty,\alpha])\subseteq\R$ is countable, and therefore in $\FF$. In the second case, $r\leq \alpha$, then
+    \[X^{-1}((-\infty,\alpha])^C = X^{-1}((\alpha,\infty))\subseteq X^{-1}(\{r\})^C,\]
+     which implies that $X^{-1}((-\infty,\alpha])^C\subseteq\R$ is countable, so $X^{-1}((-\infty,\alpha])\in\FF$. In conclusion, $X^{-1}((-\infty,\alpha])\in\FF$ for all $\alpha\in\R$, meaning that $X$ is a random variable on $(\R,\FF)$.
+    
+\end{proof}
+
+
+\newpage
+\section*{Exercise 6}
+\begin{problem}
+    Let $\Omega = \{a,b,c\}$, $\FF=\{\{a,b,c\}, \{a,b\}, \{c\}, \emptyset\}$. Define three random variables $X$, $Y$, $Z$ on $\Omega$ as follows:
+    \[\begin{array}{c|ccc}
+        \omega & X & Y & Z \\
+        \hline
+        a & 1 & 1 & 1 \\
+        b & 1 & 2 & 7 \\
+        c & 2 & 2 & 4
+    \end{array}\]
+\end{problem}
+
+\subsection*{Exercise 6(a)}
+\begin{problem}
+    Show that $X$ is $\FF$-measurable while $Y$ and $Z$ are not.
+\end{problem}
+
+\begin{proof}
+    For some $\alpha\in\R$, we have
+    \[X^{-1}((-\infty,\alpha]) =
+        \begin{cases}
+            \emptyset &\text{if $\alpha < 1$,} \\
+            \{a,b\} &\text{if $1\leq \alpha < 2$,} \\
+            \Omega &\text{if $2\leq \alpha$.}
+        \end{cases}
+    \]
+    In all cases, $X^{-1}((-\infty,\alpha])\in\FF$, so $X$ is measurable.
+    
+    If $\alpha=1$, then $Y^{-1}((-\infty,\alpha]) = \{a\}\notin\FF$, so $Y$ is not measurable. If $\alpha=1$, then $Z^{-1}((-\infty,\alpha]) = \{a\}\notin\FF$, so $Z$ is not measurable.
+        
+\end{proof}
+
+\subsection*{Exercise 6(b)}
+\begin{problem}
+    Write all elements of $\sigma(Y)$ and $\sigma(Z)$.
+\end{problem}
+\medskip
+
+We first take all $Y^{-1}((-\infty,\alpha])$, then add sets to ensure it is closed under complement and union.
+\[\sigma(Y) = \{\emptyset, \{a\}, \{a,b,c\}, \{b,c\}\}\]
+
+We first take all $Z^{-1}((-\infty,\alpha])$, then add sets to ensure it is closed under complement and union.
+\[\sigma(Z) = \{\emptyset, \{a\}, \{a,c\}, \{a,b,c\}, \{b,c\}, \{b\}, \{a,b\}, \{c\}\} = 2^\Omega.\]
+
+\subsection*{Exercise 6(c)}
+\begin{problem}
+    Is $X\in\sigma(Y)$? Is $Y\in\sigma(Z)$?
+\end{problem}
+\medskip
+
+As noted in 6(a), $X^{-1}((-\infty,\alpha]) = \{a,b\} \notin \sigma(Y)$ for some $\alpha$, so $X\notin\sigma(Y)$. Since $\sigma(Z) = 2^\Omega$, then every subset of $\Omega$ is in $\sigma(Z)$, which means that any random variable would be measurable with respect to $\sigma(Z)$, in particular, $Y$.
+
+\end{document}

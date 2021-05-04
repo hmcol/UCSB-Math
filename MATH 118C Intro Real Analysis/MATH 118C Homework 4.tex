@@ -1,0 +1,369 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Options
+\theoremstyle{definition}
+\allowdisplaybreaks
+\addtolength{\jot}{4pt}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\pfrac}[2]{\left(\frac{#1}{#2}\right)}
+
+% Extra Commands
+\DeclareMathOperator{\Vol}{Vol}
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+\newcommand{\mdet}[1]{\begin{vmatrix}#1\end{vmatrix}}
+
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH 118C Homework 4}
+    \fancyhead[C]{April 30, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+
+
+
+\begin{pbox}[Exercise 9.24]
+    For $(x, y) \ne (0, 0)$, define $F = (f_1, f_2)$ by 
+    \[
+        f_1(x, y) = \frac{x^2 - y^2}{x^2 + y^2}, \quad f_2(x, y) = \frac{xy}{x^2 + y^2}.
+    \]
+    Compute the rank of $F'(x, y)$, and find the range of $F$.
+\end{pbox}
+
+For $(x, y) \ne (0, 0)$,
+\[
+    [F'(x, y)] 
+        = \mat{D_1f_1(x, y) & D_2f_2(x, y) \\ D_1f_2(x, y) & D_2f_2(x, y)}
+        = \frac{1}{(x^2 + y^2)^2}\mat{4xy^2 & -4x^2y \\ x(x^2 - y^2) & y(x^2 - y^2)}.
+\]
+We can see that this matrix is nonzero, unless $x = y = 0$. Therefore, the rank of $F'(x, y)$ is at least $1$. To see that it is exactly $1$, we compute the Jacobian of $F$ at $(x, y)$:
+\[
+    J_F(x, y)
+        = \det F'(x, y)
+        = \frac{1}{(x^2 + y^2)^2}\left(4x^2y^2(x^2 - y^2) - 4x^2y^2(x^2 - y^2)\right)
+        = 0.
+\]
+Hence, the rank of $F'(x, y)$ is less than $2$, so it must be $1$.
+
+Let $a = f_1(x, y)$ and $b = f_2(x, y)$, so $(a, b) = F(x, y)$. Then
+\[
+    a^2 + 4b^2
+        = \frac{x^4 -2x^2y^2 + y^4}{(x^2 + y^2)^2} + \frac{4x^2y^2}{(x^2 + y^2)^2}
+        = \frac{x^4 + 2x^2y^2 + y^4}{(x^2 + y^2)^2}
+        = 1.
+\]
+The set of points $(a, b)$ in $\R^2$ such that $a^2 + 4b^2 = 1$ is an ellipse. This implies that the image of $F$ is at least a subset of this ellipse. Then the ellipse can be found in the image of $F$ by considering the parameterization $\{F(\cos t, \sin t) : 0 \leq t \leq 2\pi\}$. Hence, the image of $F$ is precisely this ellipse as a subset of $\R^2$.
+
+
+
+\begin{pbox}[Exercise 9.26]
+    Show that the existence (and even the continuity) of $D_{12}f$ does not imply the existence of $D_1f$. For example, let $f(x, y) = g(x)$, where $g$ is nowhere differentiable.
+\end{pbox}
+
+Define the function
+\[
+    f(x, y) = \begin{cases}
+        1 &\text{if $x$ rational}, \\
+        0 &\text{otherwise}.
+    \end{cases}
+\]
+Then $D_2f = 0$, so $D_{12}f = D_1 0 = 0$ is continuous. However, $D_1f$ does not exist since $f(x, y)$ is not continuous with respect to $x$, in particular not differentiable.
+
+
+
+\newpage
+\begin{pbox}[Exercise 9.27]
+    Put $f(0, 0) = 0$, and
+    \[
+        f(x, y) = \frac{xy(x^2 - y^2)}{x^2 + y^2}
+    \]
+    if $(x, y) \ne (0, 0)$. Prove that
+\end{pbox}
+
+\begin{pbox}[(a)]
+    $f$, $D_1f$, $D_2f$, are continuous in $\R^2$;
+\end{pbox}
+
+\begin{proof}
+    As a rational function, $f$ is continuously differentiable everywhere the denominator is nonzero, which is when $(x, y) \ne (0, 0)$. We now show $f$ is continuous at zero. Given $(x, y) \in \R^2$, denote by $r \geq 0$ the magnitude of $(x, y)$ under the Euclidean norm. In particular, we will use the fact that $|x| \leq r$ and $|y| \leq r$. For $(x, y) \ne 0$,
+    \[
+        |f(x, y)|
+            = \frac{|xy||x^2 - y^2|}{r^2}
+            \leq \frac{r^2(x^2 + y^2)}{r^2}
+            = r^2.
+    \]
+    Given $\eps > 0$, any point $(x, y)$ with $r < \sqrt{\eps}$ has
+    \[
+        |f(x, y)| \leq r^2 < \eps.
+    \]
+    That is, $|f(x, y)| \to 0 = f(0, 0)$ as $r \to 0$, proving the continuity of $f$ at zero.
+
+    As with $f$, the continuity of $D_1f$ and $D_2f$ at nonzero points follows from the fact that $f$ is a fraction of polynomials. Moreover, as $f(x, y) = -f(y, x)$, it will suffice to prove the continuity of $D_1f$ at zero. Fixing $y = 0$, we see that
+    \[
+        f(x, 0) = \frac{x(y)(x^2 - y^2)}{x^2 + y^2} = 0.
+    \]
+    So $f(x, 0) = 0$ for all $x$, implying that $(D_1f)(0, 0) = 0$. For $(x, y) \ne (0, 0)$, we compute
+    \[
+        (D_1f)(x, y) = \frac{y(x^4 + 4x^2y^2 - y^4)}{(x^2 + y^2)^2},
+    \]
+    then
+    \[
+        |(D_1f)(x, y)|
+            = \frac{|y||x^4 + 4x^2y^2 - y^4|}{r^4}
+            \leq \frac{r(r^4 + 4r^4 + r^4)}{r^4}
+            = 6r.
+    \]
+    Given $\eps > 0$, any point $(x, y)$ with $r < \eps/6$ has
+    \[
+        |(D_1f)(x, y)| \leq 6r < \eps.
+    \]
+    That is, $|(D_1f)(x, y)| \to 0 = (D_1f)(0, 0)$ as $r \to 0$, proving the continuity of $D_1f$ at zero.
+
+\end{proof}
+
+
+\newpage
+\begin{pbox}[(b)]
+    $D_{12}f$ and $D_{21}f$ exist at every point of $\R^2$, and are continuous except at $(0, 0)$;
+\end{pbox}
+
+
+\begin{proof}
+    As in part (a), the existence and continuity at nonzero points follows from the fact that $f$ is a fraction of polynomials. Moreover, $f$ is essentially symmetric with respect to $x$ and $y$, so it suffices to prove $D_{21}f$ is discontinuous at zero. For $(x, y) \ne (0, 0)$, we compute
+    \[
+        D_{21}f(x, y) = \frac{x^2 - y^2}{x^2 + y^2} + \frac{8x^2y^2(x^2 - y^2)}{(x^2 + y^2)^3}.
+    \]
+    We will show that there are multiple limit values at zero, depending on the direction of approach. Fix $x = 0$, then for nonzero $y$,
+    \[
+        D_{21}f(0, y)
+            = \frac{0^2 - y^2}{0^2 + y^2} + \frac{8(0)^2y^2(0^2 - y^2)}{(0^2 + y^2)^3}
+            = \frac{-y^2}{y^2}
+            = -1.
+    \]
+    In particular, $D_{21}f(0, y) \to -1$ as $y \to 0$. Fix $y = 0$, then for nonzero $x$,
+    \[
+        D_{21}f(x, 0)
+            = \frac{x^2 - 0^2}{x^2 + 0^2} + \frac{8x^2(0)^2(x^2 - 0^2)}{(x^2 + 0^2)^3}
+            = \frac{x^2}{x^2}
+            = 1.
+    \]
+    In particular, $D_{21}f(x, 0) \to 1$ as $x \to 0$. Therefore, the limit as $(x, y) \to (0, 0)$ does not exist, so $D_{21}f$ is not continuous at zero.
+
+\end{proof}
+
+\begin{pbox}[(c)]
+    $(D_{12}f)(0, 0) = 1$, and $(D_{21}f)(0, 0) = -1$.
+\end{pbox}
+
+For fixed $x = 0$ and nonzero $y$, we have
+\[
+    (D_1f)(0, y)
+        = \frac{y(0^4 + 4(0)^2y^2 - y^4)}{(0^2 + y^2)^2}
+        = \frac{-y^5}{y^4}
+        = -y.
+\]
+Note that this agrees with the calculation of $(D_1f)(0, 0) = 0$ in part (a). Differentiating with respect to $y$, we obtain $(D_{21}f)(0, y) = -1$ for all $y$, in particular $(D_{21}f)(0, 0) = -1$.
+
+For nonzero $(x, y)$, we compute
+\[
+    (D_2f)(x, y) = \frac{x(x^4 - 4x^2y^2 - y^4)}{(x^2 + y^2)^2}.
+\]
+Then for fixed $y = 0$ and nonzero $x$, we have
+\[
+    (D_2f)(x, 0)
+        = \frac{x(x^4 - 4x^2(0)^2 - 0^4)}{(x^2 + 0^2)^2}
+        = \frac{x^5}{x^4}
+        = x.
+\]
+So $(D_{12}f)(x, 0) = 1$ for all $x$, in particular $(D_{12}f)(0, 0) = 1$.
+
+
+
+\newpage
+\begin{pbox}[Exercise 9.29]
+    Let $E$ be an open set in $\R^n$. The classes $C^1(E)$ and $C''(E)$ are defined in the text. By induction, $C^k(E)$ can be defined as follows, for all positive integers $k$: To say that $f \in C^k(E)$ means that the partial derivatives $D_1f, \dots, D_nf$ belong to $C^{k-1}(E)$.
+
+    Assume $f \in C^k(E)$, and show (by repeated application of Theorem 9.41) that the $k$th-order derivative
+    \[
+        D_{i_1, i_2, \dots, i_k} f = D_{i_1}D_{i_2} \cdots D_{i_k} f
+    \]
+    is unchanged if the subscripts $i_1, \dots, i_k$ are permuted.
+\end{pbox}
+
+Any permutation on a finite set is the composition of finitely many transpositions, i.e., a permutation in which exactly two elements swap positions. Any transposition on a finite set is the composition of finitely many adjacent transpositions, i.e., a transposition in which the swapped elements are adjacent with respect to some fixed, external ordering. We first prove the case for adjacent transpositions.
+
+\begin{lemma}
+    If $\tau$ is an adjacent transposition on $\{1, \dots, k\}$, then $D_{i_1 \cdots i_k}f = D_{i_{\tau(1)} \cdots i_{\tau(k)}}f$.
+\end{lemma}
+
+\begin{proof}
+    Suppose $\tau$ transposes $n$ and $n+1$, i.e., $\tau$ is the identity except for $\tau(n) = n + 1$ and $\tau(n + 1) = n$. Then
+    \[
+        D_{i_{\tau(1)} \cdots i_{\tau(k)}} f = D_{i_1 \cdots i_{n-1}} D_{i_{n+1}i_n} D_{i_{n+2} \cdots i_k} f.
+    \]
+    Since $f \in C^k(E)$, we must have $f \in C^{k - n}(E)$, which means that $F = D_{i_{n+2} \cdots i_k} f \in C^{2}(E)$. Applying Theorem 9.41 to $F$, we obtain
+    \[
+        D_{i_ni_{n+1}} F = D_{i_{n+1}i_n} F,
+    \]
+    so
+    \begin{align*}
+        D_{i_1 \cdots i_k}f
+            &= D_{i_1 \cdots i_{n-1}} D_{i_ni_{n+1}} F \\
+            &= D_{i_1 \cdots i_{n-1}} D_{i_{n+1}i_n} F \\
+            &= D_{i_{\tau(1)} \cdots i_{\tau(k)}} f.
+    \end{align*}
+
+\end{proof}
+
+In the above lemma, we implicitly interpreted adjacency in terms of the usual ordering on the natural numbers. However, this is not the explicit ordering we want to consider. The order we will consider is the  order of the differential operators, as they are to be applied to $f$. For example, we might have the following sequence of adjacent transpositions:
+\[
+    i_1i_2i_3 \mapsto i_1i_3i_2 \mapsto i_3i_1i_2 \mapsto i_3i_2i_1.
+\]
+Though $1$ and $3$ are not adjacent with respect to the usual ordering on the natural numbers, they are indices of adjacent elements after the first adjacent transposition. This order changes with respect to the actual subindices, but is `fixed' in this external sense. It can be seen that this notion of adjacency is consistent with the claim that any permutation can be expressed as the composition of finitely many adjacent transpositions. Moreover, one can see that Lemma 1 does interpret adjacency in this sense. We now prove the actual result.
+
+\begin{proposition}
+    If $\sigma$ is a permutation on $\{1, \dots, k\}$, then $D_{i_1 \cdots i_k} f = D_{i_{\sigma(1)} \cdots i_{\sigma(k)}} f$.
+\end{proposition}
+
+\begin{proof}
+    We can write $\sigma$ as the composition of finitely many adjacent transposition, i.e.,
+    \[
+        \sigma = \tau_1 \circ \dots \circ \tau_n,
+    \]
+    where each $\tau_m$ is an adjacent transposition. We perform induction on $n$, where Lemma 1 provides the base case of $n = 1$. Suppose the result is true for any permutation which is the composition of at most $n - 1$ adjacent transpositions. Then by the inductive hypothesis,
+    \[
+        D_{i_1 \cdots i_k}f = D_{i_{(\tau_2 \circ \dots \circ \tau_n)(1)} \cdots i_{(\tau_2 \circ \dots \circ \tau_n)(k)}} f.
+    \]
+    Then applying Lemma 1, we obtain
+    \[
+        D_{i_1 \cdots i_k}f
+            = D_{i_{\tau_1((\tau_2 \circ \dots \circ \tau_n)(1))} \cdots i_{\tau_1((\tau_2 \circ \dots \circ \tau_n)(k))}} f
+            = D_{i_{\sigma(1)} \cdots i_{\sigma(k)}} f.
+    \]
+
+\end{proof}
+
+
+\newpage
+\begin{pbox}[Exercise 9.30]
+    Let $f \in C^m(E)$, where $E$ is an open subset of $\R^n$. ...etc.
+\end{pbox}
+
+\begin{pbox}[(a)]
+    ...
+\end{pbox}
+
+\begin{proof}
+    We perform induction on $k$. For the base case, we find
+    \begin{align*}
+        h'(t)
+            &= f'(p(t))p'(t) \\
+            &= \mat{(D_1f)(p(t)) & \cdots & (D_nf)(p(t))} \mat{x_1 \\ \vdots \\ x_n} \\
+            &= \sum_{i_1 = 1}^{n} (D_{i_1}f)(p(t))x_{i_1}.
+    \end{align*}
+    Then assuming the result holds up to $k-1$, we have
+    \[
+        h^{(k-1)}(t) = \sum (D_{i_1 \cdots i_{k-1}}f)(p(t)) x_{i_1} \cdots x_{i_{k-1}}.
+    \]
+    The derivative of each term is given by
+    \[
+        \sum_{i_k = 1}^{n} (D_{i_k}D_{i_1 \cdots i_{k-1}}f)(p(t)) x_{i_1} \cdots x_{i_{k-1}} x_{i_k}.
+    \]
+    Then summing over all terms, we obtain
+    \[
+        h^{k}(t) = \sum (D_{i_1 \cdots i_k}f)(p(t)) x_{i_1} \cdots x_{i_k},
+    \]
+    where $(i_1, \dots, i_k)$ ranges over all $k$-tuples in $\{1, \dots, n\}$. This can be seen, since the last $k-1$ elements of any $k$-tuple appears in the sum of $h^{(k-1)}(t)$, and the first term in obtained in the derivative of that term in $h^{(k)}(t)$.
+
+\end{proof}
+
+\begin{pbox}[(b)]
+    ...
+\end{pbox}
+
+\begin{proof}
+    Applying the previous result to Taylor's theorem, we obtain
+    \[
+        r(x) = \frac{1}{m!} \sum (D_{i_1 \cdots i_m}f)(a + tx) x_{i_1} \cdots x_{i_m},
+    \]
+    for some $t \in [0, 1]$. Since $f \in C^(m)(E)$, then the $m$th-order derivatives are bounded around $a$. Let $M > 0$ be an upper bound for all the $m$th order derivatives of $f$ at $a + tx$ for $t \in [0, 1]$ and $|x| < \delta$ for some $\delta > 0$. Then we have
+    \begin{align*}
+        \frac{r(x)}{|x|^{m - 1}}
+            &= \frac{|x|}{m!} \sum (D_{i_1 \cdots i_m}f)(a + tx) \frac{x_{i_1}}{|x|} \cdots \frac{x_{i_m}}{|x|} \\
+            &\leq \frac{|x|}{m!} \sum M \cdot 1\cdots 1 \\
+            &= |x|\frac{\sum M}{m!}.
+    \end{align*}
+    Given $\eps > 0$, we can assume $\delta < \eps m!/\sum M$, so that $|x| < \delta$ implies
+    \[
+        \frac{r(x)}{|x|^{m - 1}} < \eps.
+    \]
+    Hence, the limit is zero as $x \to 0$.
+
+\end{proof}
+
+
+\begin{pbox}[(c)]
+    ...
+\end{pbox}
+
+\newpage
+\begin{pbox}[Exercise 6]
+    Let $A$ be a $n \times n$ matrix, $P$ be the parallelogram in $\R^n$  formed by the column vectors of $A$. Show that $|\det A| = \Vol(P)$. ($\Vol(P)$ is the volume of $P$.)
+\end{pbox}
+
+Sketch.
+
+The determinant is a linear operator on $\R^n$ which can be defined in terms of a number of unique properties, namely those in Theorem 9.34. We check that these properties are satisfied by the volume of $P$. 
+
+If $A = I$ is the identity matrix, then $\det A = 1$ and $P$ is simply the positive unit box, which has a volume of $1$.
+
+Scaling a column of $A$ scales $\det A$ by the same factor. Also, this scales a corner of $P$, and therefore its volume, by the same factor.
+
+Adding one column of $A$ to another column does not change $\det A$. This corresponds to a shearing transformation on $P$, which does not change its volume.
+
+Alternating columns of $A$ obtained  $-\det A$, so $|\det A|$ remains the same. This corresponds to flipping one corner of $P$ (a rigid transformation), but volume is always positive, so it does not change.
+
+If any two columns of $A$ are equal, then $\det A = 0$. This corresponds to $P$ having no more than $(n- 1)$-dimensions, which means that its $n$-dimensional volume is zero.
+
+
+\end{document}

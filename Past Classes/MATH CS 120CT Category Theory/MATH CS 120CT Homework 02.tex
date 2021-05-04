@@ -1,0 +1,55 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage[margin=1in]{geometry}
+\usepackage{framed}
+\usepackage[table]{xcolor}
+\usepackage{colortbl, multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym}
+\usepackage{mathrsfs, mathtools}
+\usepackage{tikz,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\usepackage{graphicx}
+
+% custom commands
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\p}{^{\prime}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+ 
+\begin{document}
+ 
+\title{Homework 2\\
+    \large MATH CS 120CT Category Theory}
+\author{Harry Coleman}
+\date{January 10, 2020}
+
+\maketitle
+
+\section*{Exercise 1}
+\fbox{
+    \parbox{\textwidth} {
+         Let $f:\N\rightarrow\N$ be $f(x)=2x$. What is its left adjoint? What is its right adjoint?
+    }
+}
+\\
+
+In the natural numbers, with their typical ordering of $\leq$, $f$ is clearly a monotone map. Since for any two $x,y\in\N$ such that $x\leq y$, we find that $2x\leq2x$ so $f(x)\leq f(y)$. Now let
+\[g:\N\rightarrow\N \text{ with } g(x)=\floor{x/2}.\]
+This is also monotone, since for any two $x,y\in\N$ such that $x\leq y$, we have $\floor{x/2}\leq\floor{y/2}$, so $g(x)\leq g(y)$. We assert that $f$ and $g$ are the left and right adjoint, respectively, for a Galois connection. For $f$ and $g$ to be a Galois Connection, it must be the case that for all
+\[p,q\in\N,(f(p)\leq q \iff p\leq g(q)).\]
+
+We first show the conditional in one direction. Let $p,q\in\N$ such that $f(p)\leq q$. This gives us that $2p\leq q$ and $p\leq q/2$. Since the floor function is monotone, $\floor{p}\leq\floor{q/2}$. And since $p\in\N$, $p=\floor{p}$, so $p\leq\floor{q/2}$, which is $p\leq g(p)$, so the conditional to the right is true.
+
+We now show the conditional in the other direction. Let $p,q\in\N$ such that $p\leq g(q)$. So $p\leq\floor{q/2}\leq q/2$, and $2p\leq q$. This gives us $f(p)\leq q$, so the conditional to the right is true.
+
+So since $f$ and $g$ are monotone functions where for all $p,q\in\N,(f(p)\leq q \iff p\leq g(q))$, then $f$ and $g$ are the left and right adjoint, respectively, for a Galois connection.
+
+
+\end{document}

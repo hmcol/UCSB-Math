@@ -1,0 +1,428 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amsthm, amssymb, physics}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}
+    {\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\mybox}}\end{center}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{1em}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+
+% Extra Commands
+
+
+
+% Document Info
+\title{Homework 2\\
+    \large MATH 118B
+}
+\author{Harry Coleman}
+\date{January 21, 2021}
+
+% Begin Document
+\begin{document}
+\maketitle
+
+\section{}
+\begin{problem}
+    Suppose that $f:(a,b)\to \R$ is differentiable, and $f'(x)>0$ in $(a,b)$ (note that similar results hold if $f'<0$).
+\end{problem}
+
+\subsection{}
+\begin{problem}
+    Prove that the limits 
+    \begin{equation}
+    m = \lim_{x\to a^+} f(x)
+    \end{equation}
+    and
+    \begin{equation}
+    M = \lim_{x\to b^-} f(x)
+    \end{equation}
+    exist (allowing the possibilities $m=-\infty$, $M=+\infty$).
+\end{problem}
+
+\begin{lemma}
+    $f$ is strictly increasing on $(a, b)$.
+\end{lemma}
+
+\begin{proof}
+    Let $x, y \in (a, b)$ with $x < y$. Then $f$ is differentiable on $[x, y]$ with positive derivative. By Homework 1 Problem 1(c), $f$ is strictly increasing on $[x, y]$, so $f(x) < f(y)$.
+    
+\end{proof}
+
+\begin{proposition}
+    $M = \ds\lim_{x\to b^-} f(x)$ for some $M \in (-\infty, +\infty]$.
+\end{proposition}
+
+\begin{proof}
+    We claim $M = \sup f$, allowing the possibility that $M = +\infty$. Let $M_0 < M$ be given. By definition of supremum, there is some $x_0 \in (a, b)$ with $f(x_0) \in (M_0, M]$. Define $\delta = b - x_0$. Then for all $x \in (b - \delta, b)$ we have $x_0 < x$, implying $f(x_0) < f(x)$, so $f(x) \in (M_0, M]$.
+    
+\end{proof}
+
+\begin{proposition}
+    $m = \ds\lim_{x\to a^+} f(x)$ for some $m \in [-\infty, +\infty)$.
+\end{proposition}
+
+\begin{proof}
+    We claim $m = \inf f$, allowing the possibility that $m = -\infty$. Let $m_0 > m$ be given. By definition of infimum, there is some $x_0 \in (a, b)$ with $f(x_0) \in [m, m_0)$. Define $\delta = x_0 - a$. Then for all $x \in (a, a + \delta)$ we have $x < x_0$, implying $f(x) < f(x_0)$, so $f(x) \in [m, m_0)$.
+    
+\end{proof}
+
+\subsection{}
+\begin{problem}
+    Prove that $f((a,b)) = (m,M)$.
+\end{problem}
+
+\begin{proof}
+    Let $y \in (a, b)$ and choose $x \in (a, y)$ and $z \in (y, b)$. Since $f$ is strictly increasing, we must have $f(x) < f(y) < f(z)$. Since $m = \inf f$ and $M = \sup f$, then $m \leq f(x)$ and $f(z) \leq M$. Therefore, $f(y) \in (m, M)$, giving us $f((a, b)) \subseteq (m, M)$.
+    
+    Now let $y \in (m, M)$. Since $m = \inf f$ and $M = \sup f$, there exist $x, z \in (a, b)$ such that $m \leq f(x) < y$ and $y < f(z) \leq M$. Then the intermediate value theorem tells us that there is some $c \in (x, z)$ with $f(c) = y$. Therefore, $y \in f((a, b))$, giving us $(m, M) \subseteq f((a, b))$.
+    
+\end{proof}
+
+\subsection{}
+\begin{problem}
+    Prove that $f$ has an inverse, $g:(m,M)\to (a,b)$.
+\end{problem}
+
+\begin{proof}
+    Problem 1(b) tells us that $f : (a, b) \to (m, M)$ is surjective. Suppose $x, y \in (a, b)$ such that $x \ne y$. Without loss of generality, assume $x < y$. Because $f$ is strictly increasing, $f(x) < f(y)$, so $f(x) \ne f(y)$. Thus, $f$ is injective and, therefore, has an inverse.
+    
+\end{proof}
+
+\subsection{}
+\begin{problem}
+    Prove that $g$ is continuous.
+\end{problem}
+
+\begin{proof}
+    Since $f$ and $g$ are inverses, then $g$ is continuous if and only if $f$ is an open map, i.e., maps open sets to open sets. Since a subset of $\R$ is open if and only if it is an arbitrary union of open intervals (i.e., the open intervals are a base for the topology), it suffices to prove that $f$ maps open intervals to open intervals. Let $(a', b') \subseteq (a, b)$. Then $f$ is differentiable on $(a', b')$ and $f'(x) > 0$ for all $x \in (a', b')$. As an instance of 1(b), the image of this interval is $f((a', b')) = (m', M')$ (where $m'$ and $M'$ would be the infimum and supremum, respectively, of the restriction of $f$ to $(a', b')$).
+    
+\end{proof}
+
+\newpage
+\subsection{}
+\begin{problem}
+    Prove that $g$ is differentiable, and that 
+    \begin{equation}
+    g'(f(x)) = \frac{1}{f'(x)},\quad \forall\,x\in(a,b).
+    \end{equation}
+\end{problem}
+
+\begin{proof}
+    Let $y_0 \in (m, M)$, we want to show that
+    \[
+        \lim_{y \to y_0} \frac{g(y) - g(y_0)}{y - y_0} = \frac{1}{f'(g(y_0))}.
+    \]
+    To prove the limit, it suffices to prove for arbitrary sequences. Suppose $y_n \to y_0$ with $y_n \ne y_0$ for all $n \in \N$, and consider the sequence given by
+    \[
+        \frac{g(y_n) - g(y_0)}{y_n - y_0}
+            = \frac{g(y_n) - g(y_0)}{f(g(y_n)) - f(g(y_0))}
+            = \frac{1}{\dfrac{f(g(y_n)) - f(g(y_0))}{g(y_n) - g(y_0)}}.
+    \]
+    Since $g$ is continuous, then $g(y_n) \to g(y_0)$. Since $f$ is differentiable at $g(y_0)$, then the limit definition of the derivative of $f$ at $g(y_0)$ holds for arbitrary sequences converging to $g(y_0)$. Then with $f'(g(y_0)) > 0$, we have
+    \[
+        \frac{1}{f'(g(y_0))}
+            = \frac{1}{\ds\lim_{x \to g(y_0)} \frac{f(x) - f(g(y_0))}{x - g(y_0)}}
+            = \lim_{n \to \infty} \frac{1}{\dfrac{f(g(y_n)) - f(g(y_0))}{g(y_n) - g(y_0)}}.
+    \]
+    Thus, 
+    \[
+        g'(y) = \frac{1}{f'(g(y))}, \quad y \in (m, M),
+    \]
+    which is equivalent to equation (3) with the fact that $f$ and $g$ are inverses.
+    
+\end{proof}
+
+\subsection{}
+\begin{problem}
+    Show that the logarithm function $\log:(0,+\infty)\to \R$ is  differentiable and that 
+    \begin{equation}
+    \frac{d}{dx} \log x = \frac{1}{x},\quad \forall\,x \in (0,+\infty).
+    \end{equation}
+\end{problem}
+
+\begin{proof}
+    From Homework 1 Problem 2, the exponential is differentiable on $\R$, its derivative is always positive, and its inverse is the logarithm. As an instance of Problem 1(e), we have
+    \[
+        \dv{x}\log x = \frac{1}{e^{\log x}} = \frac{1}{x}, \quad x \in (0, +\infty).
+    \]
+    
+\end{proof}
+
+\newpage
+\section{}
+\begin{problem}
+    Evaluate the following limits:
+\end{problem}
+
+\subsection{}
+\begin{problem}
+    \begin{equation}
+    \lim_{x\to 0} \frac{\tan x - x}{x^3}.
+    \end{equation}
+\end{problem}
+
+L'H\^opital's rule gives us
+\[
+    \lim_{x\to 0} \frac{\tan x - x}{x^3} = \lim_{x\to 0} \frac{\dv{x}(\tan x - x)}{\dv{x}x^3}.
+\]
+We find the derivative of the numerator:
+\begin{align*}
+    \dv{x}\left(\frac{\sin x}{\cos x} - x\right)
+        &= \frac{\cos x \dv{x}\sin x - \sin x \dv{x}\cos x}{\cos^2 x} - 1 \\
+        &= \frac{\cos^2 x + \sin^2 x}{\cos^2 x} - 1 \\
+        &= \frac{1 - \cos^2 x}{\cos^2 x} \\
+        &= \frac{\sin^2 x}{\cos^2 x}.
+\end{align*}
+And $\dv{x}x^3 = 3x^2$. Thus,
+\begin{align*}
+     \lim_{x\to 0} \frac{\tan x - x}{x^3}
+        &= \lim_{x\to 0}\frac{\sin^2 x}{3x^2\cos^2 x} \\
+        &= \lim_{x\to 0} \left( \frac13 \left(\frac{\sin x}{x}\right)^2\left(\frac{1}{\cos x}\right)^2 \right) \\
+        &= \frac13 \cdot 1^2 \cdot \left(\frac11\right)^2 \\
+        &= \frac13.
+\end{align*}
+
+\newpage
+\subsection{}
+\begin{problem}
+    \begin{equation}
+    \lim_{x\to +\infty} \frac{x^3}{e^x}.
+    \end{equation}
+\end{problem}
+
+Applying L'H\^opital's rule thrice, we find
+\[
+    \lim_{x\to +\infty} \frac{x^3}{e^x}
+        = \lim_{x\to +\infty} \frac{\dv[3]{x} x^3}{\dv[3]{x} e^x}
+        = \lim_{x\to +\infty} \frac{\dv[2]{x} 3x^2}{\dv[2]{x} e^x}
+        = \lim_{x\to +\infty} \frac{\dv{x} 6x}{\dv{x} e^x}
+        = \lim_{x\to +\infty} \frac{6}{e^x}
+        = 0.
+\]
+
+\subsection{}
+\begin{problem}
+    \begin{equation}
+    \lim_{x\to +\infty} \left ( 1 + \frac{1}{x} \right )^x.
+    \end{equation}
+\end{problem}
+
+With L'H\^opital's rule and the derivative of the logarithm from Problem 1(f), we find the following limit:
+\begin{align*}
+    \lim_{x \to +\infty} x \log \left( 1 + \frac{1}{x} \right)
+        &= \lim_{x \to +\infty} \frac{\log \left( 1 + \frac{1}{x} \right)}{\frac1x} \\
+        &= \lim_{x \to +\infty} \frac{\dv{x} \log \left( 1 + \frac{1}{x} \right)}{\dv{x} \frac1x} \\
+        &= \lim_{x \to +\infty} \frac{\frac{1}{1 + \frac{1}{x}} \cdot \dv{x}\left(1 + \frac1x\right)}{\frac{-1}{x^2}} \\
+        &= \lim_{x \to +\infty} \frac{\frac{1}{1 + \frac{1}{x}} \cdot \frac{-1}{x^2}}{\frac{-1}{x^2}} \\
+        &= \lim_{x \to +\infty} \frac{1}{1 + \frac{1}{x}} \\
+        &= 1.
+\end{align*}
+Since the exponential function is continuous, we obtain
+\[
+    \lim_{x\to +\infty} \left ( 1 + \frac{1}{x} \right )^x
+        = \lim_{x\to +\infty} e^{x \log \left(1 + \frac{1}{x}\right)}
+        = e^1
+        = e.
+\]
+
+
+\newpage
+\section{}
+\begin{problem}
+    Consider the function $f(x) = \sin(x)$. Show that if $|x|\le M$, then 
+    \begin{equation}
+    \left | f(x) - T_n(x;0)\right | \le \frac{M^{n+1}}{(n+1)!},
+    \end{equation}
+    and use this to prove that 
+    \begin{equation}
+    \sin(x) = \sum_{n=0}^\infty (-1)^n \frac{x^{2n+1}}{(2n+1)!},\quad \forall\,x\in\R.
+    \end{equation}
+\end{problem}
+
+\begin{lemma}
+    \[
+        f^{(n)}(x)
+        = \begin{cases}
+            \sin x &\text{if $n \equiv 0 \pmod{4}$} \\
+            \cos x &\text{if $n \equiv 1 \pmod{4}$} \\
+            -\sin x &\text{if $n \equiv 2 \pmod{4}$} \\
+            -\cos x &\text{if $n \equiv 3 \pmod{4}$}
+        \end{cases}
+    \]
+\end{lemma}
+
+\begin{proof}
+    We find the first four derivatives:
+    \begin{align*}
+        f^{(1)}(x) &= \cos x, & f^{(2)}(x) &= -\sin x, & f^{(3)}(x) &=  -\cos x, & f^{(4)}(x) &= \sin x.
+    \end{align*}
+    Then assuming $f^{(4k)}(x) = \sin x$ for some $k \in \N$ we find
+    \[
+        f^{(4(k+1))} = \dv[4]{x} f^{(4k)}(x) = \dv[4]{x} \sin x = \sin x.
+    \]
+    By induction, $f^{(4k)}(x) = \sin x$ for all $k \in \N$. Suppose $n, m \in \N$ such that $n \equiv m \pmod{4}$. Without loss of generality, assume $n > m$ (if $n = m$, there is nothing to prove), so $n = 4k + m$ for some $k \in \N$. Therefore, we have
+    \[
+        f^{(n)}(x) = \dv[m]{x} f^{(4k)}(x) = \dv[m]{x} \sin x = f^{(m)}(x).
+    \]
+    This, with the values of the first four derivatives, is the desired result.
+    
+\end{proof}
+
+As an immediate corollary, we have $|f^{(n)}(x)| \leq 1$, since $\max|\sin x| = \max|\cos x| = 1$.
+
+\begin{proposition}
+    If $|x|\le M$, then 
+    \[
+        \left| f(x) - T_n(x; 0)\right| \leq \frac{M^{n+1}}{(n+1)!},
+    \]
+    and 
+    \[
+        \sin(x) = \sum_{n=0}^\infty (-1)^n \frac{x^{2n+1}}{(2n+1)!},\quad \forall\,x\in\R.
+    \]
+    
+\end{proposition}
+
+\begin{proof}
+    Suppose $x \in \R$ with $|x| \leq M$. Note that Lemma 3 implies $f(x)$ has derivatives of all orders. By Taylor's theorem, there exists some point $c$ between $0$ and $x$ such that
+    \[
+        f(x) = T_n(x; 0) + \frac{f^{(n+1)}(c)}{(n+1)!} x^{n+1}.
+    \]
+    Then we obtain the first result
+    \begin{align*}
+        |f(x) - T_n(x; 0)|
+            &= \left| \frac{f^{(n+1)}(c)}{(n+1)!} x^{n+1} \right| \\
+            &= \left|f^{(n+1)}(c)\right| \frac{|x|^{n+1}}{(n+1)!} \\
+            &\leq \frac{M^{n+1}}{(n+1)!}.
+    \end{align*}
+    
+    Now let $x \in \R$ be arbitrary and let
+    \[
+        a_n = \frac{|x|^{n+1}}{(n+1)!}, \quad n \in \N
+    \]
+    define a sequence, then
+    \[
+        |f(x) - T_n(x; 0)| \leq a_n.
+    \]
+    Let $N \in \N$ with $N \geq |x|$, then for all $n \geq N$, we have the recursive relation between terms
+    \[
+        a_n = \frac{|x|^{n+1}}{(n+1)!} = a_{n-1} \left(\frac{|x|}{n+1}\right) \leq a_{n-1} \left(\frac{N}{N+1}\right).
+    \]
+    Thus, for all $n \geq N$, we have
+    \[
+        |f(x) - T_n(x; 0)| \leq a_n \leq a_N \left(\frac{N}{N+1}\right)^{n - N}.
+    \]
+    Since $N/(N+1) < 1$, then the limit of the geometric sequence is zero. Thus,
+    \[
+        f(x) = \lim_{n \to \infty} T_n(x; 0) = \sum_{n=0}^\infty \frac{f^{(n)}(0)}{n!} x^n.
+    \]
+    From Lemma 3, $f^{(n)}(0) = \pm\sin 0 = 0$ for all even $n$, so
+    \[
+        \sin x = \sum_{n=0}^\infty f^{(2n+1)}(0) \frac{x^{2n+1}}{(2n+1)!}.
+    \]
+    Moreover, $f^{(2n+1)}(0) = \cos 0 = 1$ when $n$ is even and $f^{(2n+1)}(0) = -\cos 0 = -1$ when $n$ is odd. Hence,
+    \[
+        \sin x = \sum_{n=0}^\infty (-1)^n \frac{x^{2n+1}}{(2n+1)!}.
+    \]
+    
+\end{proof}
+
+\section{}
+\begin{problem}
+    Suppose $f$ is a real function on $(-\infty,\infty)$. We say that $x\in\mathbb{R}$ is a {\it fixed point} for $f$ if $f(x) = x$. 
+\end{problem}
+
+\subsection{}
+\begin{problem}
+    If $f$ is differentiable and $f'(t)\ne 1$ for every real $t$, prove that $f$ has at most one fixed point.
+\end{problem}
+
+\begin{proof}
+    Suppose, for contradiction, that $f$ has real, distinct fixed points $x$ and $y$. The mean value theorem tells us that there is some point $c$ between $x$ and $y$ such that
+    \[
+        f(x) - f(y) = f'(c)(x - y).
+    \]
+    However, $f(x) - f(y) = x - y \ne 0$ implies that $f'(c) = 1$, which is a contradiction.
+    
+\end{proof}
+
+\subsection{}
+\begin{problem}
+    Show that the function $f$ defined by 
+    \[
+    f(t) = t + \frac{1}{1+e^t}
+    \]
+    has no fixed point, although $0 < f'(t) < 1$ for all real $t$.
+\end{problem}
+
+\begin{proof}
+    Suppose, for contradiction, that $f$ has a real fixed point $x$. Then
+    \[
+        0 = f(x) - x = \frac{1}{1 + e^x}.
+    \]
+    However, zero is not the reciprocal of any real number, so this is a contradiction. The derivative of $f$ is
+    \begin{align*}
+        f'(t)
+            &= \dv{t}\left(t + \frac{1}{1+e^t}\right) \\
+            &= 1 + \frac{(1 + e^t)\dv{t}1 - 1\dv{t}(1 + e^t)}{(1 + e^t)^2} \\
+            &= 1 + \frac{-e^t}{(1 + e^t)^2} \\
+            &= \frac{1 + e^t + e^{2t}}{1 + 2e^t + e^{2t}}.
+    \end{align*}
+    Since the exponential function is always positive, we have
+    \[
+        0 < f'(t) < \frac{1 + 2e^t + e^{2t}}{1 + 2e^t + e^{2t}} = 1.
+    \]
+
+\end{proof}
+
+\subsection{}
+\begin{problem}
+    Prove that if there is a constant $0<A<1$ such that $|f'(t)|\le A$ for all $t \in \mathbb{R}$, then $f$ has a fixed point $x$. To do this, given $x_1 \in\mathbb{R}$ arbitrary, construct the sequence
+    \[
+    x_{n+1} = f(x_n)\ \ n \ge 1,
+    \]
+    and prove that the sequence converges to some point $x$. Then prove that $x$ is the fixed point.
+\end{problem}
+
+\begin{proof}
+    Suppose $0 < A < 1$ with $|f'(t)| \leq A$ for all $t \in \R$. Without loss of generality, assume $f(0) > 0$. If $f(0) = 0$, then $0$ is a fixed point. If $f(0) < 0$, then $g(t) = -f(-t)$ is differentiable and $|g'(t)| = |f'(-t)| \leq A$. Moreover, $g(0) = -f(0) > 0$ and if $g$ has a fixed point $x$, then $f(-x) = -g(x) = -x$, i.e., $f$ has the fixed point $-x$. Thus, it suffices to prove the case that $f(0) > 0$.
+    
+    By the mean value theorem, if $t > 0$ then there exists some $c \in (0, t)$ such that
+    \[
+      f(t) - f(0) = f'(c)(t - 0) \leq At,
+    \]
+    implying $f(t) \leq f(0) + At$. We define
+    \[
+        b = \frac{f(0)}{1 - A},
+    \]
+    which is positive since $f(0) > 0$ and $A < 1$, so $f(b) \leq f(0) + Ab = b$. If $f(b) = b$, then $b$ is a fixed point. Otherwise, $h(t) = t - f(t)$ is a continuous function with $h(0) < 0 < h(b)$. The intermediate value theorem gives us $x \in (0, b)$ with $h(x) = 0$, i.e., $f(x) = x$, so $x$ is a fixed point for $f$.
+    
+\end{proof}
+
+
+
+\end{document}

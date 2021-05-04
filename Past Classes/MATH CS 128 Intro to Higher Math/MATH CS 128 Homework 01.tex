@@ -1,0 +1,354 @@
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{listings}
+\usepackage{tikz}
+
+\lstset{basicstyle=\footnotesize}
+\usetikzlibrary{calc}
+
+ 
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+
+ 
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{question}[2][Question]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+ 
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+\title{CS128 Homework 1}
+\author{Harry Coleman}
+\date{September 30, 2019}
+
+\maketitle
+
+\section{F-U-N Question 6}
+\textit{Can you prove FNF or UUF? Explain.}
+\\
+
+In order to obtain FNF from FU, we would at some point need to add a second F. However, none of the given rules allow us to add any more F’s beyond what is given in our axiom.
+
+In order to obtain UUF from FU, (and because we know we cannot add any F’s beyond that in the axiom) we would need to add letters before the F in the axiom. However, none of our rules allow for this.
+
+We conclude that neither FNF nor UUF can be obtained in the FUN language.
+
+\section{F-U-N Question 7}
+\textit{THE FN PUZZLE. Show that FN is not a theorem in our language.}
+\\
+
+To see why we cannot obtain FN in our language, we will work backwards from FN. 
+
+If we can obtain an F followed by $3n$ U’s, we can use rule 3 to replace all the U’s with $n$ N’s. If $n$ is odd, we remove all but one N using rule 4. If $n$ is even, we use rule 1 to add an extra N before we convert the U’s to N’s. 
+
+To try and arrive at $3n$ U’s from FU, we have 2 operations we can perform. The first is using rule 2 to double the number of U’s. The second is by applying rule 1, then rule 3 on the last 3 U’s, the applying rule 4 on the NN at the end. The first operation multiplies the number of U’s by 2, the second subtracts 3. Both operations will only ever result in a number of U’s divisible by 3 if the original number is already divisible by 3. Thus, we are unable to obtain F followed by $3n$ U’s. Therefore, FN cannot be obtained.
+
+\newpage
+\section{F-U-N Question 8}
+\textit{Is FNF a theorem in the new language?}
+\\
+
+1. FN, Axiom
+
+2. FNN, Rule 2 on Line 1
+
+3. F, Rule 4 on Line 2
+
+4. FNF, Rule 5 on Lines 1 and 3
+
+\section{F-U-N Question 9}
+\textit{Is the new language complete in the sense that every possible word containing F, N, and U is a theorem in this system?}
+\\
+
+The new language can only contain words which start with F. Rules 1-4 only affect the end or middle letters of the word. Rule 5 would require one of the component words to already start with a letter other than F, in order to obtain a word not starting with F.
+
+\section{F-U-N Question 10}
+\subsection{Part I}
+\textit{Show that FNUNUNU is not a theorem in the F-U-N language.}
+\\
+Similarly to Question 7, we will work backwords from what we are trying to prove. FNUNUNU would require FUUUUUUUUUUUU, and F followed by 12 U’s. Because we already know we can’t obtain F followed by $3n$ U’s, F followed by 12 U’s is also impossible. Therefore, FNUNUNU cannot be proven.
+
+\subsection{Part II}
+\textit{Is it a theorem in the new language?}
+\\
+FNUNUNU would also not be a theorem in the new language. We know this because it is not a theorem in the original language and neither the new rule, nor new axiom will help us. FN on it’s own can only be altered by adding more N’s using Rule 2 or by removing N’s with Rule 4. Using Rule 5 is also ineffectual because we know that every word must start with an F, combining two words will always result in 2 or more F’s, and there is no way to remove F’s. And since FNUNUNU contains only one F, we must start with FU, and cannot use Rule 5. So it is impossible in the new language for the same reasons as it is impossible in the original language.
+
+
+\newpage
+\section{3-Point Geometry Excercise 2}
+\textit{Show that the 3-point geometry has exactly 3 lines.}
+\\
+
+We will call the 3 points in our Geometry A, B, and C. We draw 3 distinct lines, one through A and B, one through B and C, and one through C and A. There are now no two points without a drawn line between them, thus no lines other than the 3 drawn can exist.
+
+%\newpage
+\section{Euclidean Plane Geometry 7}
+\textit{To construct an equilateral triangle on a given finite straight line.}
+\\
+
+We are given a finite straight line. We’ll call the two points at the extremes of the line $A$ and $B$. And we can call the line $\overline{AB}$.
+
+\begin{center}
+\begin{tikzpicture}
+\draw [label=above:A] (0,0) -- (4,0);
+\filldraw[black] (0,0) circle (1pt) node[anchor=east] {A};
+\filldraw[black] (4,0) circle (1pt) node[anchor=west] {B};
+\end{tikzpicture}
+\end{center}
+
+From here, we will draw two circles, one centered at $A$, the other centered at $B$. For efficiency, we’ll call the distance from the center of a circle to each of the points on the boundary the radius. Both circles with have a radius equal to the length of $\overline{AB}$.
+
+\begin{center}
+\begin{tikzpicture}
+\draw [label=above:A] (0,0) -- (4,0);
+\filldraw[black] (0,0) circle (1pt) node[anchor=east] {A};
+\filldraw[black] (4,0) circle (1pt) node[anchor=west] {B};
+\draw[black, dashed] (0,0) circle (4cm);
+\draw[black, dashed] (4,0) circle (4cm);
+\filldraw[black] (2,3.464) circle (1pt) node[anchor=south] {C};
+\end{tikzpicture}
+\end{center}
+
+The two circles intersect at two points, above and below $\overline{AB}$. We will label the top point $C$. Because $C$ falls on the circle centered at $A$, length of the line from $A$ to $C$, or $\overline{AC}$, is equal to the length of $\overline{AB}$. Likewise for the circle centered at $B$ and the line fro $B$ to $C$, or $\overline{BC}$.
+
+\begin{center}
+\begin{tikzpicture}
+\draw (0,0) -- (4,0);
+\filldraw[black] (0,0) circle (1pt) node[anchor=east] {A};
+\filldraw[black] (4,0) circle (1pt) node[anchor=west] {B};
+\draw[black, dashed] (0,0) circle (4cm);
+\draw[black, dashed] (4,0) circle (4cm);
+\filldraw[black] (2,3.464) circle (1pt) node[anchor=south] {C};
+\draw (0,0) -- (2,3.464);
+\draw (4,0) -- (2,3.464);
+\end{tikzpicture}
+\end{center}
+
+Because the lengths of $\overline{AB}$ and $\overline{AC}$ are equal, and the lengths of $\overline{AB}$ and $\overline{BC}$ are equal, the lengths of $\overline{AC}$ and $\overline{BC}$ must be equal. Thus, all sides of the triangle are equal, so we have constructed an equilateral triangle.
+
+\newpage
+\section{Euclidean Plane Geometry 8}
+\textit{To place a straight line equal to another straight line with one end at a given point.}
+\\
+
+We are given a line, which we will call $\overline{AB}$, and a point, which we will call $C$. 
+
+\begin{center}
+\begin{tikzpicture}
+\coordinate (A) at (0,0);
+\coordinate (B) at (4,0);
+\coordinate (C) at (3, -3);
+
+\filldraw[black] (A) circle (1pt) node[anchor=east] {A};
+\filldraw[black] (B) circle (1pt) node[anchor=west] {B};
+\filldraw[black] (C) circle (1pt) node[anchor=north] {C};
+
+\draw[ultra thick] (A) -- (B);
+\end{tikzpicture}
+\end{center}
+
+First, we will use the construction from the previous section to create an equilateral triangle with $B$ and $C$ as two of the points, the third we will call $D$.
+
+\begin{center}
+\begin{tikzpicture}
+\coordinate (A) at (0,0);
+\coordinate (B) at (4,0);
+\coordinate (C) at (3, -3);
+\coordinate (D) at (6.1, -2.37);
+
+\filldraw[black] (A) circle (1pt) node[anchor=east] {A};
+\filldraw[black] (B) circle (1pt) node[anchor=west] {B};
+\filldraw[black] (C) circle (1pt) node[anchor=north] {C};
+\filldraw[black] (D) circle (1pt) node[anchor=west] {D};
+
+\draw[ultra thick] (A) -- (B);
+\draw (B) -- (C);
+\draw (B) -- (D);
+\draw (C) -- (D);
+
+\end{tikzpicture}
+\end{center}
+
+Next, we will draw a circle centered at point $B$ with a radius equal to the length of $\overline{AB}$. In additon to this, we will extend both $\overline{DB}$ and $\overline{DC}$ away from D.
+
+\begin{center}
+\begin{tikzpicture}
+\coordinate (A) at (0,0);
+\coordinate (B) at (4,0);
+\coordinate (C) at (3, -3);
+\coordinate (D) at (6.1, -2.37);
+\coordinate (E) at (1.35, 3);
+
+\filldraw[black] (A) circle (1pt) node[anchor=east] {A};
+\filldraw[black] (B) circle (1pt) node[anchor=west] {B};
+\filldraw[black] (C) circle (1pt) node[anchor=north] {C};
+\filldraw[black] (D) circle (1pt) node[anchor=west] {D};
+\filldraw[black] (E) circle (1pt) node[anchor=west] {E};
+
+\draw[ultra thick] (A) -- (B);
+\draw (B) -- (C);
+\draw (D) -- ($(D)!8cm!(B)$);
+\draw (D) -- ($(D)!8cm!(C)$);
+
+\draw (B) circle (4cm);
+
+\end{tikzpicture}
+\end{center}
+
+We can see that the circle and the extension of $\overline{DB}$ intersect at point $E$. Because both $\overline{BE}$ and $\overline{BA}$ are lines from the center of the circle to it’s boundary, the length of the two lines are equal.
+Finally, we will draw a circle centered at $D$ with a radius equal to the length of $\overline{DE}$.
+
+\begin{center}
+\begin{tikzpicture}
+\coordinate (A) at (0,0);
+\coordinate (B) at (4,0);
+\coordinate (C) at (3, -3);
+\coordinate (D) at (6.1, -2.37);
+\coordinate (E) at (1.35, 3);
+\coordinate (F) at (-.92, -3.8);
+
+\filldraw[black] (A) circle (1pt) node[anchor=east] {A};
+\filldraw[black] (B) circle (1pt) node[anchor=west] {B};
+\filldraw[black] (C) circle (1pt) node[anchor=north] {C};
+\filldraw[black] (D) circle (1pt) node[anchor=west] {D};
+\filldraw[black] (E) circle (1pt) node[anchor=west] {E};
+\filldraw[black] (F) circle (1pt) node[anchor=south west] {F};
+
+\draw[ultra thick] (A) -- (B);
+\draw (B) -- (C);
+\draw (D) -- ($(D)!8cm!(B)$);
+\draw (D) -- ($(D)!8cm!(C)$);
+\draw[ultra thick] (C) -- (F);
+
+\draw (B) circle (4cm);
+\draw (D) circle (7.16cm);
+
+\end{tikzpicture}
+\end{center}
+
+We see that this new circle intersects the extension of $\overline{DC}$ at point $F$. Because $\overline{DF}$ and $\overline{DE}$ are both lines from the center to the boundary of the circle, their lengths are equal. We also know that because $\overline{DB}$ and $\overline{DC}$ are two sides of an equilateral triangle, their lengths must be equal. To make things a little easier to follow, we’ll use $XY$ to represent the length of any line $\overline{XY}$. Therefore:
+
+\begin{equation}
+AB = BE
+\end{equation}
+\begin{equation}
+DE = DF
+\end{equation}
+\begin{equation}
+DB = DC
+\end{equation}
+
+Subtracting equations (2) and (3).
+
+\[
+    DE-DB=DF-DC
+\]
+
+Which, looking at our construction, is equivalent to:
+
+\begin{equation}
+    BE=CF
+\end{equation}
+
+Finally, substituting equation (1) into (2).
+
+\[
+AB=CF
+\]
+
+Therefore, we have constructed CF to be a line of equal width to $\overline{AB}$ and one endpoint at $C$.
+
+\section{Euclidean Geometry 9}
+\textit{To cut off from the greater of two given unequal straight lines a straight line equal to the lesser}
+\\
+
+We are given two lines, we will call then $\overline{AB}$ and $\overline{CD}$.
+
+\begin{center}
+\begin{tikzpicture}
+\coordinate (A) at (0,0);
+\coordinate (B) at (4,0);
+\coordinate (C) at (1, 3);
+\coordinate (D) at (3, 2);
+
+\filldraw[black] (A) circle (1pt) node[anchor=east] {A};
+\filldraw[black] (B) circle (1pt) node[anchor=west] {B};
+\filldraw[black] (C) circle (1pt) node[anchor=north] {C};
+\filldraw[black] (D) circle (1pt) node[anchor=north] {D};
+
+\draw (A) -- (B);
+\draw (C) -- (D);
+
+\end{tikzpicture}
+\end{center}
+
+First, we will use the process we used in the previous section to construct a line of equal length to $\overline{CD}$ with one end at $B$.
+
+\begin{center}
+\begin{tikzpicture}
+\coordinate (A) at (0,0);
+\coordinate (B) at (4,0);
+\coordinate (C) at (0, 3);
+\coordinate (D) at (3, 2);
+\coordinate (E) at (2.26, -2.64);
+
+\filldraw[black] (A) circle (1pt) node[anchor=east] {A};
+\filldraw[black] (B) circle (1pt) node[anchor=west] {B};
+\filldraw[black] (C) circle (1pt) node[anchor=north] {C};
+\filldraw[black] (D) circle (1pt) node[anchor=north] {D};
+\filldraw[black] (E) circle (1pt) node[anchor=north] {E};
+
+\draw (A) -- (B);
+\draw (C) -- (D);
+\draw (B) -- (E);
+
+\end{tikzpicture}
+\end{center}
+
+Lastly, we draw a circle centered at $B$ with a radius equal to $BE$.
+
+\begin{center}
+\begin{tikzpicture}
+\coordinate (A) at (0,0);
+\coordinate (B) at (4,0);
+\coordinate (C) at (0, 3);
+\coordinate (D) at (3, 2);
+\coordinate (E) at (2.26, -2.64);
+\coordinate (F) at (.84, 0);
+
+\filldraw[black] (A) circle (1pt) node[anchor=east] {A};
+\filldraw[black] (B) circle (1pt) node[anchor=west] {B};
+\filldraw[black] (C) circle (1pt) node[anchor=north] {C};
+\filldraw[black] (D) circle (1pt) node[anchor=north] {D};
+\filldraw[black] (E) circle (1pt) node[anchor=north] {E};
+\filldraw[black] (F) circle (1pt) node[anchor=south west] {F};
+
+\draw (A) -- (B);
+\draw (C) -- (D);
+\draw (B) -- (E);
+
+\draw (B) circle (3.16cm);
+
+\end{tikzpicture}
+\end{center}
+
+We know that $CD=BE$ from the previous section, and that $BE=BF$ because $\overline{BE}$ and $\overline{BF}$ are both lines from the center to the boundary of the circle. Therefore, $BF=CD$ and we have constructed the lesser of two given lines on the greater.
+
+\end{document}

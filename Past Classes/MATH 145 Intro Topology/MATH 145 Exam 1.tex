@@ -1,0 +1,239 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow,enumitem}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools,babel}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{\textwidth-10pt}}
+    {\end{minipage}\end{lrbox}\framebox[6.5in]{\usebox{\mybox}}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+\newenvironment{response}{\paragraph{}}{}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\seq}[2]{\left\{#1\right\}_{#2=1}^\infty}
+\newcommand{\clo}[1]{\overline{#1}}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ang}{\langle}{\rangle}
+
+% Sets
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+
+% Misc Characters
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\let\eps\varepsilon
+\let\emptyset\varnothing
+
+% Functions
+\newcommand{\id}[1]{\mathsf{id}_{#1}}
+
+% Babel Shorthands
+\useshorthands*{"}
+\defineshorthand{"-}{\setminus}
+\defineshorthand{"d}{\partial}
+
+% Topology
+\newcommand{\T}{\mathscr{T}}
+\renewcommand{\S}{\mathscr{S}}
+\newcommand{\B}{\mathscr{B}}
+\renewcommand{\int}{\text{int}}
+\newcommand{\diam}{\text{diam}}
+ 
+\begin{document}
+ 
+\title{Exam 1\\
+    \large MATH 145 Intro to Topology
+}
+\author{Harry Coleman}
+\date{July 17, 2020}
+\maketitle
+
+\section*{Problem 1(a)}
+\begin{problem}
+    State the definition of a topological space.
+\end{problem}
+
+\begin{response}
+    Given a set $X$, a topology $T$ on $X$ is a collection of subsets of $X$ such that:
+    \begin{enumerate}
+        \item $\emptyset, X \in T$,
+        \item If $\{U_\alpha : \alpha\in I\}\subseteq T$, then $\bigcup_{\alpha\in I}U_\alpha \in T$,
+        \item If $\{U_i : i=1,\dots,n\}\subseteq T$, then $\bigcap_{i=1}^nU_i \in T$.
+    \end{enumerate}
+    We say the pair $(X,T)$ is a topological space.
+\end{response}
+
+\section*{Problem 1(b)}
+\begin{problem}
+    Prove that every metric space is a topological space.
+\end{problem}
+
+\begin{proof}
+    Suppose $(X,d)$ is a metric space. We define the metric topology $T$ on $X$ the be the collection of subsets of $X$ which are open with respect to the metric $d$. The empty set is vacuously open in the metric, and therefore $\emptyset\in T$. Let $x\in X$, then for any $\eps>0$, the open ball $B(\eps, x)\subseteq X$. So $X$ is open in the metric, and therefore $X\in T$.
+    
+    Now suppose $\{U_\alpha : \alpha\in I\}\subseteq T$, i.e, that each $U_\alpha$ is open in the metric space. Then for any $x\in\bigcup_{\alpha\in I}U_\alpha$, there is a particular $U_\alpha$ such that $x\in U_\alpha$, and an open ball $B(\eps, x)\subseteq U_\alpha \subseteq \bigcup_{\alpha\in I}U_\alpha$. Therefore $\bigcup_{\alpha\in I}U_\alpha$ is open in the metric space and therefore in $T$.
+    
+    Now suppose $\{U_i : i=1,\dots,n\}\subseteq T$, i.e, that each $U_i$ is open in the metric space. The for any $x\in\bigcap_{i=1}^nU_i$, we define the open ball $B(\eps_i, x)$ for each $i=1,\dots,n$ such that $B(\eps_i, x)\subseteq U_i$. Then if $\eps = \min\{\eps_i : i=1,\dots,n\}$, then $B(\eps,x)\subseteq\bigcap_{i=1}^nU_i$. Therefore $\bigcap_{i=1}^nU_i$ is open in the metric space and therefore in $T$. Thus, $(X,T)$ is a topology.
+    
+\end{proof}
+
+\section*{Problem 1(c)}
+\begin{problem}
+    Is the converse of part (b) true? That is, is every topological space a metric space? Justify your answer.
+\end{problem}
+
+\begin{response}
+    No, not every topological space is a metric space. In particular, a topological space $X$ is metrizable if and only if for every $p,q\in X$ with $p\ne q$, there exist open subsets $U,v\subseteq X$ such that $p\in U$, $q\in V$, and $U\cap V=\emptyset$. For example, the cofinite topology on an infinite set does not satisfy this condition, and is therefore not metrizable.
+\end{response}
+
+\section*{Problem 2(a)}
+\begin{problem}
+    State the definition of a continuous map between two topological spaces.
+\end{problem}
+
+\begin{response}
+    Given topological spaces $X$ and $Y$, a function $f:X\to Y$ is continuous if $f^{-1}(U)$ is an open subset of $X$ for every open subset $U$ of $Y$.
+\end{response}
+
+\section*{Problem 2(b)}
+\begin{problem}
+    Suppose that $f : X \to Y$ is a continuous map, determine whether each of the following statements is true:
+\end{problem}
+
+\subsection*{Problem 2(b)(i)}
+\begin{problem}
+    If $Z\subset Y$ is a closed subset, then $f^{-1}(Z)$ is always closed in $X$.
+\end{problem}
+
+\begin{response}
+    True.
+\end{response}
+
+\subsection*{Problem 2(b)(ii)}
+\begin{problem}
+    If $Z\subset Y$ is a compact subset, then $f^{-1}(Z)$ is always compact.
+\end{problem}
+
+\begin{response}
+    False. Consider the constant function $f:\R\to\R$ which maps all points of $\R$ to $1$; $f$ is continuous. However, $\{1\}$ is a compact subset of $\R$ and $f^{-1}(\{1\})=\R$ is not compact.
+\end{response}
+
+\subsection*{Problem 2(b)(iii)}
+\begin{problem}
+    If $Z\subset X$ is a closed subset, then $f(Z)$ is always closed in $Y$.
+\end{problem}
+
+\begin{response}
+    False. Consider the function $f:\R\to \R$ given by $f(x)=2^x$; $f$ is continuous. However, $\R$ is closed and $f(\R)=(0,\infty)$ is not closed. 
+\end{response}
+
+\subsection*{Problem 2(b)(iv)}
+\begin{problem}
+    If $Z\subset X$ is a compact subset, then $f(Z)$ is always compact.
+\end{problem}
+
+\begin{response}
+    True.
+\end{response}
+
+\begin{proof}
+    Suppose $Z\subseteq X$ is compact and let $\{U_\alpha : \alpha\in I\}$ be an open cover of $f(Z)$. Then $\{f^{-1}(U_\alpha) : \alpha \in I\}$ is an open cover of $Z$ and has a finite subcover $\{f^{-1}(U_i) : i=1,\dots,n\}$. This gives us the finite cover $\{U_i : i=1,\dots,n\}$ of $Z$, which is a subcover of the original cover for $Z$. Therefore $Z$ is compact.
+    
+\end{proof}
+
+\section*{Problem 2(c)}
+\begin{problem}
+    Justify your answer for statement (i) in part (b).
+\end{problem}
+
+\begin{proof}
+    Let $Z\subseteq Y$ be closed. Then $Z^C$ is open, which implies $f^{-1}(Z^C)$ is open. Therefore $f^{-1}(Z^C)^C=f^{-1}(Z)$ is closed.
+    
+\end{proof}
+
+\newpage
+\section*{Problem 3}
+\begin{problem}
+    Let $X$ be a Hausdorff topological space, $E,F\subset X$ be two disjoint compact subsets, prove that there exists open subsets $U,V\subset X$ such that $E\subset U, F\subset V$, and $U\cap V=\emptyset$.
+\end{problem}
+
+\begin{proof}
+    For each $x\in E$ and $y\in F$, there exist disjoint open subsets $U_{x,y},V_{x,y}$ such that $x\in U_{x,y}$ and $y\in V_{x,y}$. For a fixed $x$, note that $\{V_{x,y} : y\in F\}$ is an open cover of $F$. And since $F$ is compact, there exists a finite subcover $\{V_{x,y_j} : j=1,\dots,m\}$. We now let
+    \[U_x = \bigcap_{j=1}^mU_{x,y_j} \isp{and} V_x = \bigcup_{j=1}^mV_{x,y_j},\]
+    which gives us open disjoint subsets $U_x,V_x$ such that $x\in U_x$ and $F\subseteq V_x$. Now we have the open cover $\{U_x : x\in E\}$ of $E$, which has a finite subcover $\{U_{x_i} : i=1,\dots n\}$. We now let
+    \[U = \bigcup_{i=1}^nU_{x_i} \isp{and} V = \bigcap_{i=1}^nV_{x_i},\]
+    which gives us open disjoint subsets $U,V$ such that $E\subseteq U$ and $F\subseteq V$.
+    
+\end{proof}
+
+\section*{Problem 4}
+\begin{problem}
+    Prove that a metric space $(X, d)$ is complete if and only if for any nested infinite sequence $E_1 \supset E_2 \supset E_3 \supset \dots$ of closed subsets with $\lim_{i\to\infty} \diam(E_i) = 0$, where $\diam(E_i) := \sup\{d(x, y) : x, y \in E_i\}$, the intersection of all the closed subsets $\cap_iE_i$ is nonempty.
+\end{problem}
+
+\begin{proof}
+    Suppose $(X,d)$ is a complete metric space. Let $E_1 \supset E_2 \supset E_3 \supset \dots$ be a nested infinite sequence of closed subsets with $\lim_{i\to\infty} \diam(E_i) = 0$. We construct the Cauchy sequence $\seq{x_n}{n}$ in $X$ such that $x_n\in E_n$ for all $n\in\N$. Then for each $k\in\N$, the sequence $\{x_n\}_{n=k}^\infty$ is a Cauchy sequence in $E_k$, which is complete as a closed subset of a complete metric space. Therefore $\seq{x_n}{n}$ converges to some $x\in E_i$ for all $i\in\N$. Therefore $x\in\cap_iE_i$.
+    
+    Now suppose any nested infinite sequence $E_1 \supset E_2 \supset E_3 \supset \dots$ of closed subsets with $\lim_{i\to\infty} \diam(E_i) = 0$, the intersection of all the closed subsets $\cap_iE_i$ is nonempty. Let $\seq{x_n}{n}$ be a Cauchy sequence in $X$ and let $E_i=\clo{\{x_n : n\geq i\}}$. Then $E_1 \supset E_2 \supset E_3 \supset \dots$ is a nested infinite sequence of closed subsets with $\lim_{i\to\infty} \diam(E_i) = 0$. Therefore $\cap_iE_i\ne\emptyset$ and for some $x\in\cap_iE_i$, the sequence $\seq{x_n}{n}$ converges to $x$. Therefore $(X,d)$ is complete.
+    
+\end{proof}
+
+\newpage
+\section*{Problem 5(a)}
+\begin{problem}
+    Prove that $\R$ has a countable base for its topology.
+\end{problem}
+
+\begin{proof}
+    Since $\{(a,b) : a,b\in\R\}$ is a base for $\R$, all open subsets of $\R$ are unions of real open intervals. We claim that the countable set $\{(p,q) : p,q\in\R_0\}$ is also a base for $\R$. Let $(a,b)$ be a real open interval. We claim that
+    \[(a,b) = \bigcup_{p,q\in(a,b)\cap\R_0}(p,q).\]
+    For any $c\in(a,b)$, there exists some $p,q\in\R_0$ such that $a<p<c<q<b$, that is, $c\in(p,q)\subseteq(a,b)$. So every real open interval is a union of rational open intervals, and therefore $\{(p,q) : p,q\in\R_0\}$ is a countable base for $\R$.
+    
+\end{proof}
+
+\section*{Problem 5(b)}
+\begin{problem}
+    Prove that every open cover of $\R$ has a countable subcover.
+\end{problem}
+
+\begin{proof}
+    Suppose $\{U_\alpha : \alpha \in I\}$ is an open cover of $\R$. Note that
+    \[\R= \bigcup_{n=1}^\infty[-n,n],\]
+    where each $[-n,n]$ is a compact subset of $\R$. Since $\{U_\alpha : \alpha\in I\}$ is also an open cover for $[-n,n]$, there exists a finite subcover $\{U^{(n)}_{\alpha_i} : i=1,\dots, k_n\}$. Then, since a union of countable many finite sets is countable,
+    \[\bigcup_{n=1}^\infty\{U^{(n)}_{\alpha_i} : i=1,\dots, k_n\},\]
+    is a countable subcover for $\R$.
+    
+\end{proof}
+
+
+
+
+\end{document}

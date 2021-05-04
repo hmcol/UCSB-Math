@@ -1,0 +1,69 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amsthm, amssymb, physics}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}
+    {\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\mybox}}\end{center}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{1em}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+
+% Extra Commands
+
+
+
+% Document Info
+\title{Quiz 1\\
+    \large GEOG 191
+}
+\author{Harry Coleman}
+\date{January 12, 2021}
+
+% Begin Document
+\begin{document}
+\maketitle
+
+\noindent
+To maximize the total number of items purchased, we use the following linear program:
+\begin{align*}
+    \textbf{maximize } & x_1 + x_2 + 2x_3 + 3x_4 + x_5 + x_6, \\
+    \textbf{subject to } & 4.50x_1 + 4.15x_2 + 8.20x_3 + 7.20x_4 + 8.19x_5 + 13.00x_6 \leq 20, \\
+                        & x_i \in \{0, 1\} \quad i = 1, \dots 6.
+\end{align*}
+In matrix notation, define
+\[
+    a = \mqty[4.50 \\ 4.15 \\ 8.20 \\ 7.20 \\ 8.19 \\ 13.00] \quad c = \mqty[1 \\ 1 \\ 2 \\ 3 \\ 1 \\ 1] \quad b = 20.
+\]
+Then the above program can be rewritten as
+\begin{align*}
+    \textbf{maximize } & c^TX, \\
+    \textbf{subject to } & a^TX \leq b, \\
+                        & X \in \{0, 1\}^6.
+\end{align*}
+
+
+
+\end{document}

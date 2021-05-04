@@ -1,0 +1,144 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% custom commands
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\p}{^{\prime}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\setlength{\fboxsep}{4pt}
+\newcommand{\exercise}[2]{\section*{Exercise #1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\problem}[2]{\section*{Problem #1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\generic}[2]{\section*{#1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+
+ 
+\begin{document}
+ 
+\title{Counting Principle\\
+    \large MATH CS 101B Problem Solving II}
+\author{Harry Coleman}
+\date{January 23, 2020}
+\maketitle
+
+\problem{7}{
+    Consider a set $S$ with exactly $n$ distinct elements. A permutation of S is any bijection from $S$ to $S$, i.e. a permutation is a linear arrangement (i.e. ordered list) of all $n$ elements of $S$. Let $r$ be a positive integer. An $r$-permutation of a set $S$ of $n$ elements is a linear arrangement of exactly $r$ distinct elements of $S$. We denote by $P(n, r)$ the number of $r$-permutations of an $n$-element set. Give a formula for $P(n,r)$.
+}
+
+Let $S$ be a set of $n$ elements. A particular $r$-permutation on $S$ has the form
+\[(x_1, x_2, x_3, \dots, x_r),\]
+where the $i$th element in the arrangement $x_i$ is an element in $S$, and each $x_i$ is distinct from all $x_j$ where $j<i$. We can describe the set of all possible $r$-permutations on $S$ by
+\[R = S \times S\setminus\{x_1\} \times S\setminus\{x_1, x_2\} \times S\setminus\{x_1, x_2, x_3\} \times \cdots \times S\setminus\{x_1,\dots,x_{r-1}\}.\]
+In other words, $x_1$ is some element in $S$ and $x_2$ in some element in $S$ other than$x_1$. In general, $x_i$ is some element in $S$ other than $x_1,\dots,x_{i-1}$. The total number of $r$-permutations on $S$, denoted by $P(n,r)$, is equal to the cardinality of $R$. By the multiplication principle, we find
+\[P(n,r) = |R| = |S| \cdot |S\setminus\{x_1\}| \cdot |S\setminus\{x_1, x_2\}| \cdot |S\setminus\{x_1, x_2, x_3\}| \cdots |S\setminus\{x_1,\dots,x_{r-1}\}|,\]
+\[P(n,r) = n \cdot (n-1) \cdot (n-2) \cdot (n-3) \cdots  (n-(r-1)).\]
+It can be seen that $P(n,r)$ is the product of the integers from $n$ to $n-(r-1)$, which is simplified with factorial as
+\[P(n,r) = \frac{n \cdot (n-1) \cdot (n-2) \cdot (n-3) \cdots  (n-(r-1)) \cdot (n-r)!}{(n-r)!},\]
+\[P(n,r) = \frac{n!}{(n-r)!}.\]
+We'll also define the number of $n$=permutations on $n$ objects as
+\[P(n) = P(n,n) = n!.\]
+
+
+\problem{8} {
+    Let $n, r$ be positive integers such that $r \leq n$. We call a circular $r$-permutation of a set $S$ of $n$ elements a circular arrangement of $r$ distinct elements of $S$. We denote by $C(n, r)$ the number of circular $r$-permutations of a set of $n$ elements.
+}
+
+Let $S$ be a set of $n$ elements. We might consider a particular circular $r$-permutation of $S$ to be ``cut'' at some point between two adjacent elements and written as a linear arrangement
+\[(x_1, x_2, x_3, \dots, x_r),\]
+where $x_1$ and $x_r$ are adjacent in the related circular arrangement. Alternately, we could cut the same circular arrangement at a different point to obtain a different linear arrangement
+\[(x_3, x_4, x_5 \dots, x_r, x_1, x_2).\]
+From the previous section, we know there to be $P(n,r)$ total possible linear arrangements ($r$-permutations on $S$). However, each circular arrangement is equivalently represented by multiple linear arrangements. Since each circular arrangement has $r$ elements, there are $r$ possible locations where we might cut to form a linear arrangement. If we take each set of $r$ linear arrangements which represent the same circular arrangement to be an equivalence class on the set of linear arrangements, and since a set of equivalence classes is a partition, then by the division principle, we find that there are
+\[\frac{P(n,r)}{r}\]
+equivalence classes. And since each equivalence class represents a circular $r$-permutation, we say that
+\[C(n,r) = \frac{P(n,r)}{r} = \frac{n!}{(n-r)!r}.\]
+We'll also define the number of circular $n$=permutations on $n$ objects as
+\[C(n) = C(n,n) = (n-1)!.\]
+
+
+\newpage
+\problem{11}{
+    What is the number of ways to order the 26 letters of the alphabet so that no two of the vowels a,e,i,o,u occur consecutively?
+}
+
+An arrangement of the alphabet satisfying the given condition takes the form
+\begin{center}
+    \newcolumntype{g}{>{\columncolor[gray]{0.9}}c}
+    \begin{tabular}{r g c g c g c g c g c g l}
+        ( & $s_1,$ & $v_1,c_1,$ & $s_2,$ & $v_2,c_2,$ & $s_3,$ & $v_3,c_3,$ & $s_4,$ & $v_4,c_4,$ & $s_5,$ & $v_5,$ & $s_6$ & ) \\
+    \end{tabular}
+\end{center}
+where each $v_i$ is the $i$th vowel that occurs in the arrangement, each $c_i$ is some consonant, and each $s_i$ is some sequence of consonants. We pair each $v_i$ and $c_i$ (except for $i=5$) since there is at least one consonant between each vowel. We cannot say precisely how any other individual consonants are arranged with respect to the vowels.
+
+We now consider $(v_1,c_1),(v_2,c_2),(v_3,c_3),(v_4,c_4),v_5$ to be objects which are arranged in some way with the consonants $c_5,\dots,c_{21}$.  So the form of our sequence can be considered as
+\[(x_1,x_2,x_3,\dots,x_{20},x_{21},x_{22}),\]
+where each $x_i$ is the $i$th \emph{object} in our sequence. Since we are considering some pairs of vowel and consonant to be an object, some objects in the above sequence are not necessarily individual letters. More specifically, if we define 
+\[S = \{(v_1,c_1),(v_2,c_2),(v_3,c_3),(v_4,c_4),v_5, c_5, \dots, c_{21}\},\]
+then we are looking for the number of 22-permutations of $S$, which has 22 elements. So we have $P(22)=22!$ possible arrangements of all elements of $S$. However, the set of these arrangements includes arrangements where the relative positions of consonants and separators are the same, but their orderings are different. Each arrangement of objects has the same relative positions of consonants and separators as any other set with only different orderings of the separators and consonants.
+
+We define an equivalence class on arrangements, where two arrangements are equivalent if they have the same relative positions of separators and consonants. There are $P(5)-5!$ ways of ordering separators and $P(17)=17!$ ways of ordering consonants, while keeping their relative positions the same. By the multiplication principle, the product of these two values is the size of each equivalence class. By the division principle, we find that there are
+\[\frac{22!}{17!5!}\]
+equivalence classes, which is the number of possible arrangements of vowels and consonants relative to each other. For each of these, there are $P(5)=5!$ ways to order the specific vowels, and $P(21)=21!$ ways to order the specific consonants within the positional arrangements. By the multiplication principle, we find that there are
+\[\frac{22!}{17!5!}\cdot 5!\cdot 21! = \frac{22!21!}{17!}\]
+possible ways to have a positional arrangement, a vowel ordering, and a consonant ordering. Which is the number of ways to arrange the letters of the alphabet such that no two vowels occur consecutively.
+
+
+
+\problem{12}{
+    How many orderings are there for a deck of 52 cards if all the cards of the same suit are together?
+}
+
+Let $S, D, H, C$ be the sets of cards in the suits spades, diamonds, hearts, and spades, respectively, and let $S',D',H',C'$ be the sets of linear 13-permutations of each set. Let $A$ be the set of suits and $A'$ be the set of linear 4-permutations of $A$. If we let
+\[T = A'\times S'\times D'\times H'\times C',\]
+then $T$ is the set of possibilities for selecting an ordering of suits, and selecting an ordering of cards within each suit. So $T$ is the set of possible arrangements of a deck of cards when all cards of the same suit are together. By the multiplication principle,
+\[|T| = |A'| \cdot |S'| \cdot |D'| \cdot |H'| \cdot |C'|,\]
+and by definition 1, we find
+\[|T| = P(4) \cdot P(13) \cdot P(13) \cdot P(13) \cdot P(13),\]
+\[|T| = 4! \cdot 13! \cdot 13! \cdot 13! \cdot 13!,\]
+\[|T| = 4!(13!)^4.\]
+So there are $4!(13!)^4$ possible arrangements for a deck of cards if all the cards of the same suit are together.
+
+
+
+
+\problem{16}{
+    Consider 23 different coloured beads in a necklace. In how many ways can the beads be placed in the necklace so that 3 specific beads always remain together?
+}
+
+Let 
+\begin{itemize}
+    \item $G$ be the set of 3 specific beads,
+    \item $G'$ be the set of linear $3$-permutations of elements in $G$,
+    \item $B = \{g, b_1, \dots, b_{20}\}$ where $g$ is an element of $G'$ and $b_i$ is the $i$th independent bead,
+    \item $B'$ be the set of circular $21$-permutations on the elements in $B$, and
+    \item $S=G'\times B'$.
+\end{itemize}
+
+Based on the above statements, $S$ represents the set of all possible pairings of an arrangement of the 3 specific beads and an arrangement of the independent beads and the group of 3 specific beads around the necklace. So $S$ is the set of all possible necklaces. By the multiplication principle, we find
+\[|S| = |G'| \cdot |B'|.\]
+By definitions 1 and 2, we find
+\[|S| = P(3) \cdot C(21),\]
+\[|S| = 3! \cdot (21-1)!,\]
+\[|S| = 3!20!.\]
+So there are $3!20!$ possible necklaces.
+
+
+
+
+\end{document}

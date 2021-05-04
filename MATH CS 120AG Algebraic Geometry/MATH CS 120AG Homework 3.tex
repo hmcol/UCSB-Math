@@ -1,0 +1,158 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{amsmath, amsthm, amssymb, physics, mathrsfs}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{4pt}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\pfrac}[2]{\left(\frac{#1}{#2}\right)}
+
+% Extra Commands
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\DeclareMathOperator{\codim}{codim}
+\renewcommand{\O}{\mathscr{O}}
+\newcommand{\F}{\mathscr{F}}
+\newcommand{\rad}{\sqrt}
+\newcommand{\clo}{\overline}
+\newcommand{\eqc}{\overline}
+
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH CS 120AG Homework 3}
+    \fancyhead[C]{April 19, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+
+\begin{pbox}[Exercise 3.12]
+    Show that Example 3.11 can be generalized as follows: Let $Y$ be a nonempty irreducible subvariety of an affine variety $X$, and set $U = X \setminus Y$.
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Assume that $A(X)$ is a unique factorization domain. Show that $\O_X(U) = A(X)$ if and only if $\codim Y \geq 2$.
+\end{pbox}
+
+\begin{proof}
+    Suppose $\codim Y \geq 2$. We have $Y = V(f_1, \dots, f_k)$ for some $f_1, \dots, f_k \in A(X)$ and $k \in \N$. Note that we must have $k \geq 2$, otherwise $Y = V(f_1)$ is irreducible and, therefore, has codimension $1$ in $X$. Then
+    \[
+        Y = V(f_1, \dots, f_k) = V(f_1) \cap \cdots \cap V(f_k),
+    \]
+    and assume that $k \geq 2$ is the smallest integer such that this is true. Additionally, we may assume that each pair $f_i, f_j$ is coprime for $i \ne j$. To see why, suppose that $f_i = hg_i$ and $f_j = hg_j$ for some $h \in A(X)$ and $i \ne j$. Then we have
+    \[
+        V(f_i) \cap V(f_j)
+            = (V(h) \cup V(g_i)) \cap (V(h) \cup V(g_j))
+            = V(h) \cup V(g_i, g_j).
+    \]
+    This gives us
+    \begin{align*}
+        Y &= (V(h) \cup V(g_i, g_j)) \cap V(\{f_\ell : \ell \ne i, j\}) \\
+            &=V(\{h\} \cup \{f_\ell : \ell \ne i, j\}) \cup V(\{g_i, g_j\} \cup \{f_\ell : \ell \ne i, j\}),
+    \end{align*}
+    which is an expression of $Y$ as the union of two closed sets. Since $Y$ is irreducible, we cannot have both of these be proper subsets, so one must equal $Y$. Since $k$ was chosen to be minimal, and the left term is the zero locus of only $k - 1$ polynomials, it cannot equal $Y$. Therefore, we can express $Y$ as the right term, which is the zero locus of the same polynomials, but $f_i, f_j$ replaced with $g_i, g_j$, the latter pair being coprime. Then we now have
+    \[
+        U = D(f_1) \cup \cdots \cup D(f_k).
+    \]
+
+    Let $\phi \in \O_X(U)$. For some $i \ne j$ and $n, m \in \N$, we have
+    \[
+        \phi|_{D(f_i)} = \frac{g_i}{f_i^n}
+        \isp{and}
+        \phi|_{D(f_j)} = \frac{g_j}{f_j^m}.
+    \]
+    for some $g_i, g_j \in A(X)$. We can assume that $f_i \nmid g_i$ and $f_j \nmid g_j$. Then in $D(f_i) \cap D(f_j)$, this means $g_if_j^{m} - g_jf_i^n = 0$. Therefore, $D(f_i) \cap D(f_j)$ is a subset of the closed set $V(g_if_j^{m} - g_jf_i^n)$. And since $X$ is irreducible, then the closure of $D(f_i) \cap D(f_j)$ is precisely $X$, implying that $V(g_if_j^{m} - g_jf_i^n) = X$. Thus, we have $g_if_j^{m} = g_jf_i^n$ as polynomials in $A(X)$.
+
+    We now claim that $n = m = 0$. Suppose, to the contrary, that $n \geq 1$, then $f_i$ divides $f_i^n$, which divides  $g_if_j^m$. However, since $f_i$ and $f_j$ are coprime, and $A(X)$ is a UFD, then $f_i \mid g_i$, which is a contradiction. Therefore, $n = 0$ and, by the same argument, $m = 0$.
+
+    This now gives us $g_i = g_j = \phi$ on the open set $D(f_i) \cap D(f_j)$. Since $X$ is irreducible, Remark 3.5 tells us, then, that this holds on all of $X$, so $\phi \in A(X)$. This proves the inclusion $\O_X(U) \subseteq A(X)$, and the opposite inclusion is obvious, giving us equality.
+
+    Now suppose $\codim Y < 2$, we will show that $\O_X(U) \ne A(X)$. If $Y = X$, then $\O_X(U) = \O_X(\emptyset) = \{0\}$, which cannot be $A(X)$ since $X$ is nonempty, and we have the constant polynomial $1 \in A(X)$.
+    
+    If $Y \ne X$, then we have the chain $Y = Y_0 \subsetneq Y_1 = X$, so th codimension of $Y$ in $X$ is at least $1$, so in fact $\codim Y = 1$. Then by Proposition 2.37, $A(X)$ being a UFD means that $Y = V(f)$ for some irreducible (particularly non-unit) $f \in A(X)$. Then we have $\O_X(U) = \O_X(D(f))$, which contains $\frac{1}{f}$. However, since $\frac{1}{f}$ is the multiplicative inverse of $f$ in the localization $A(X)_f$, but $f$ is not a unit in $A(X)$, then $\frac{1}{f} \notin A(X)$. Hence $\O_X(U) \ne A(X)$.
+
+\end{proof}
+
+
+
+
+\begin{pbox}[(b)]
+    Show by example that the equivalence of (a) is in general false if $A(X)$ is not assumed to be a unique factorization domain.
+\end{pbox}
+
+
+
+
+\newpage
+\begin{pbox}[Exercise 3.23]
+    Let $\F$ be a sheaf on a topological space $X$, and let $Y$ be a nonempty irreducible closed subset of $X$. We define the \textit{stalk of $\F$ at $Y$} to be
+    \[
+        \F_Y := \{(U, \phi) : U \text{ is an open subset of $X$ with $U \cap Y \ne \emptyset$, and $\phi \in \F(U)$} \} / \sim
+    \]
+    where $(U, \phi) \sim (U', \phi')$ if and only if there is a small open set $V \subseteq U \cap U'$ with $V \cap Y \ne \emptyset$ and $\phi|_V = \phi'|_V$. It therefore describes functions in an arbitrarily small neighborhood of an arbitrary dense open subset of $Y$.
+
+    If $Y$ is a nonempty irreducible subvariety of an affine variety $X$, prove that the stalk $\O_{X, Y}$ of $\O_X$ at $Y$ is a $K$-algebra isomorphic to the localization $A(X)_{I(Y)}$ (hence giving a geometric meaning to this algebraic localization).
+\end{pbox}
+
+\begin{proof}
+    We consider the map
+    \begin{align*}
+        A(X)_{I(Y)} &\to \O_{X, Y} \\
+        \tfrac{g}{f} &\mapsto \eqc{\qty(D(f), \tfrac{g}{f})}.
+    \end{align*}
+    We show that this map is well-defined. For each $\frac{g}{f} \in A(X)_{I(Y)}$, we have $f \in A(X) \setminus I(Y)$ so $f$ is not identically zero on $Y$, so $D(f) \cap Y \ne \emptyset$. And since $\frac{g}{f} \in \O_X(D(f))$, this map does in fact have $\O_{X, Y}$ as its codomain. Now suppose $\frac{g_1}{f_1} = \frac{g_2}{f_2}$ in $A(X)_{I(Y)}$, so there exists some $h \in A(X)$ such that $h(g_1f_2 - g_2f_1) = 0$. We consider the open set $U = D(f_1f_2h) \subseteq D(f_1) \cap D(f_2)$. We have $h$ nonzero everywhere in $U$, so $g_1f_2 - g_2f_1 = 0$ in $U$. This means that $\frac{g_1}{f_1} = \frac{g_2}{f_2}$ in $U$, implying that their images in the above map are the same.
+
+    This $K$-algebra homomorphism is surjective. An equivalence class in $\O_{X, Y}$ is represented by some $U \subseteq X$ with $U \cap Y \ne \emptyset$ and $\phi \in \O_X(U)$. Then for some $a \in U \cap Y$, we have $\phi= \frac{g}{f}$ on some open neighborhood $U_a$ of $a$ contained in $U$ and some $g, f \in A(X)$ with $f$ nowhere zero on $U_a$. In particular, $f$ is not identically zero on $Y$, since $a \in U_a \cap Y \ne \emptyset$, so $f \in A(X) \setminus I(Y)$. Then letting $V = U_a \cap D(f)$, we see that $V \cap Y \ne \emptyset$ and $\phi = \frac{g}{f}$ on $V$, so
+    \[
+        \tfrac{g}{f} \mapsto \eqc{\qty(D(f), \tfrac{g}{f})} = \eqc{\qty(U, \phi)}.
+    \]
+
+    Next we see that this homomorphism is injective, by showing its kernel is zero. Suppose we have
+    \[
+        \tfrac{g}{f} \mapsto \eqc{\qty(D(f), \tfrac{g}{f})} = \eqc{\qty(X, \tfrac{0}{1})},
+    \]
+    where the right hand side is precisely zero of $\O_{X, Y}$. Then for some open subset $V \subseteq D(f) \cap X$, we have $V \cap Y \ne \emptyset$ and $\frac{g}{f} = \frac{0}{1}$ on $V$. In particular, $g$ is identically zero on $V$. Since $V$ is open, it is the union of finitely many distinguished open sets; suppose $D(h) \subseteq V$ is one such distinguished open subset. Then $h$ is zero in the complement $X \setminus D(h)$, which contains $X \setminus V$. Therefore, $hg = 0$ on all of $X$, implying that $\frac{g}{f} = \frac{0}{1} = 0$ in the localization ring $A(X)_{I(Y)}$. Hence, the kernel of this map zero, and we conclude that it is an isomorphism of $K$-algebras.
+
+\end{proof}
+
+\end{document}

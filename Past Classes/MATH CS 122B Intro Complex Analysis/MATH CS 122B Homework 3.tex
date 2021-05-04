@@ -1,0 +1,615 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amsthm, amssymb, physics}
+\usepackage{tikz}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Options
+\allowdisplaybreaks
+\addtolength{\jot}{4pt}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+
+% Extra Commands
+\DeclareMathOperator{\Log}{Log}
+\newcommand{\bd}{\partial}
+\newcommand{\pfrac}[2]{\left(\frac{#1}{#2}\right)}
+\def\[#1\]{\begin{align*}#1\end{align*}}
+
+% Document Info
+\title{\vspace{-0.5in}Homework 3\\
+    \large MATH CS 122B
+}
+\author{Harry Coleman}
+\date{February 10, 2021}
+
+% Begin Document
+\begin{document}
+\maketitle
+
+
+\begin{pbox}[1 Exercise VII.1.1]
+    Evaluate the following residues.
+\end{pbox}
+
+\begin{pbox}[(a)]
+    \[
+        \Res[\frac{1}{z^2 + 4}, 2i]
+    \]
+\end{pbox}
+
+The analytic function
+\[
+    \frac{1}{z^2 + 4} = \frac{1}{(z - 2i)(z + 2i)}
+\]
+has a simple pole at $2i$. Then
+\[
+    \Res[\frac{1}{z^2 + 4}, 2i]
+        &= \lim_{z \to 2i} (z - 2i) \frac{1}{z^2 + 4} \\
+        &= \lim_{z \to 2i} \frac{1}{z + 2i} \\
+        &= \frac{-i}{4}.
+\]
+
+\begin{pbox}[(b)]
+    \[
+        \Res[\frac{1}{z^2 + 4}, -2i]
+    \]
+\end{pbox}
+
+The analytic function
+\[
+    \frac{1}{z^2 + 4} = \frac{1}{(z - 2i)(z + 2i)}
+\]
+has a simple pole at $-2i$. Then
+\[
+    \Res[\frac{1}{z^2 + 4}, -2i]
+        &= \lim_{z \to -2i} (z + 2i) \frac{1}{z^2 + 4} \\
+        &= \lim_{z \to -2i} \frac{1}{z - 2i} \\
+        &= \frac{i}{4}.
+\]
+
+\begin{pbox}[(c)]
+    \[
+        \Res[\frac{1}{z^5 - 1}, 1]
+    \]
+\end{pbox}
+
+The analytic function
+\[
+    \frac{1}{z^5 - 1} = \frac{1}{(z - 1)(z^4 + z^3 + z^2 + z + 1)}
+\]
+has a simple pole at $1$. Then
+\[
+    \Res[\frac{1}{z^5 - 1}, 1]
+        &= \lim_{z \to 1} (z - 1) \frac{1}{z^5 - 1} \\
+        &= \lim_{z \to 1} \frac{1}{z^4 + z^3 + z^2 + z + 1} \\
+        &= \frac{1}{1^4 + 1^3 + 1^2 + 1 + 1} \\
+        &= \frac{1}{5}.
+\]
+
+\begin{pbox}[(d)]
+    \[
+        \Res[\frac{\sin z}{z^2}, 0]
+    \]
+\end{pbox}
+
+The function
+\[
+    g(z) = \frac{\sin z}{z}
+\]
+has a removable singularity at $0$, and is made analytic there by defining $g(0) = 1$. Then the function
+\[
+    \frac{\sin z}{z^2} = \frac{g(z)}{z}
+\]
+is analytic with a simple pole at $0$. Then
+\[
+    \Res[\frac{\sin z}{z^2}, 0]
+        &= \lim_{z \to 0} z \frac{\sin z}{z^2} \\
+        &= \lim_{z \to 0} \frac{\sin z}{z} \\
+        &= 1.
+\]
+
+\newpage
+\begin{pbox}[(e)]
+    \[
+        \Res[\frac{\cos z}{z^2}, 0]
+    \]
+\end{pbox}
+
+Since $\cos z$ is analytic at zero with $\cos 0 = 1 \ne 0$, then the function
+\[
+    \frac{\cos z}{z^2}
+\]
+is analytic with a double pole at zero. Then
+\[
+    \Res[\frac{\sin z}{z^2}, 0]
+        &= \lim_{z \to 0} \dv{z} (z^2 \frac{\cos z}{z^2}) \\
+        &= \lim_{z \to 0} \dv{z} \cos z \\
+        &= \lim_{z \to 0} (-\sin z) \\
+        &= 0.
+\]
+
+\begin{pbox}[(f)]
+    \[
+        \Res[\cot z, 0]
+    \]
+\end{pbox}
+
+The analytic function
+\[
+    \tan z = \frac{\sin z}{\cos z} = z\left(\frac{\sin z}{z} \cdot \frac{1}{\cos z}\right)
+\]
+has a simple zero at $0$, so the analytic function
+\[
+    \cot z = \frac{1}{\tan z}
+\]
+has a simple pole at $0$. Then
+\[
+    \Res[\cot z, 0]
+        &= \lim_{z \to 0} z \cot z \\
+        &= \lim_{z \to 0} \left(\frac{z}{\sin z} \cdot \frac{\cos z}{1}\right) \\
+        &= 1.
+\]
+
+\newpage
+\begin{pbox}[(g)]
+    \[
+        \Res[\frac{z}{\Log z}, 1]
+    \]
+\end{pbox}
+
+The analytic function
+\[
+    g(z) = \frac{\Log z}{z}
+\]
+has a simple zero at $1$ with
+\[
+    g'(z)
+        = \frac{z \dv{z} \Log z - (\Log z) \dv{z} z}{z^2}
+        = \frac{1 - \Log z}{z^2}.
+\]
+Then the function
+\[
+    \frac{z}{\Log z} = \frac{1}{g(z)}
+\]
+is analytic with a simple pole at $1$, so
+\[
+    \Res[\frac{z}{\Log z}, 1]
+        &= \frac{1}{g'(1)} \\
+        &= \frac{1^2}{1 - \Log 1} \\
+        &= 1.
+\]
+
+
+\begin{pbox}[(h)]
+    \[
+        \Res[\frac{e^z}{z^5}, 0]
+    \]
+\end{pbox}
+
+We find the Laurent series expansion of this function around $0$ by the power series expansion of $e^z$ around $0$, i.e.,
+\[
+    \frac{e^z}{z^5}
+        = \frac{1}{z^5} \sum_{k=0}^{\infty} \frac{z^k}{k!} 
+        = \sum_{k=0}^{\infty} \frac{z^{k-5}}{k!}
+        = \sum_{k=-5}^{\infty} \frac{z^k}{(k+5)!}.
+\]
+Then
+\[
+    \Res[\frac{e^z}{z^5}, 0] = \frac{1}{(-1 + 5)!} = \frac{1}{24}.
+\]
+
+\newpage
+\begin{pbox}[(i)]
+    \[
+        \Res[\frac{z^n + 1}{z^n - 1}, e^{2\pi ki/n}]
+    \]
+\end{pbox}
+
+The analytic function
+\[
+    g(z) = z^n - 1
+\]
+has a simple zero at $e^{2\pi ki/n}$, with
+\[
+    g'(z) = nz^{n-1}.
+\]
+Moreover, $f(z) = z^n+1$ is analytic and
+\[
+    \frac{z^n + 1}{z^n - 1} = \frac{f(z)}{g(z)}.
+\]
+We find that
+\[
+    \frac{f(z)}{g'(z)}
+        &= \frac{z^n + 1}{nz^{n-1}} \\
+        &= \frac{z}{n}\pfrac{z^n + 1}{z^n} \\
+        &= \frac{z}{n}\left(1 + \frac{1}{z^n}\right).
+\]
+Then
+\[
+    \Res[\frac{z^n + 1}{z^n - 1}, e^{2\pi ki/n}]
+        &= \frac{f(e^{2\pi ki/n})}{g'(e^{2\pi ki/n})} \\
+        &= \frac{e^{2\pi ki/n}}{n}\left(1 + \frac{1}{\left(e^{2\pi ki/n}\right)^n}\right) \\
+        &= \frac{e^{2\pi ki/n}}{n}\left(1 + \frac{1}{e^{2\pi ki}}\right) \\
+        &= \frac{2e^{2\pi ki/n}}{n}.
+\]
+
+
+
+\newpage
+\begin{pbox}[2 Exercise VII.1.3]
+    Evaluate the following integrals using the residue theorem.
+\end{pbox}
+
+\begin{pbox}[(a)]
+    \[
+        \oint_{|z|=1} \frac{\sin z}{z^2} \dd{z}
+    \]
+\end{pbox}
+
+The function
+\[
+    f(z) = \frac{\sin z}{z^2}
+\]
+is meromorphic on $\{|z| \leq 0\}$ with only one isolated singularity at $0$. Using the result of 1(d), we find
+\[
+    \oint_{|z|=1} f(z) \dd{z}
+        &= 2\pi i \Res[f(z), 0] \\
+        &= 2\pi i.
+\]
+
+\begin{pbox}[(b)]
+    \[
+        \oint_{|z|=2} \frac{e^z}{z^2 - 1} \dd{z}
+    \]
+\end{pbox}
+
+The function
+\[
+    f(z)
+        = \frac{e^z}{z^2 - 1}
+        = \frac{e^z}{(z - 1)(z + 1)}
+\]
+is meromorphic on $\{|z| \leq 2\}$ with simple poles at $\pm1$. Then
+\[
+    \Res[f(z), 1]
+        &= \lim_{z \to 1} (z - 1)f(z) \\
+        &= \lim_{z \to 1} \frac{e^z}{z + 1} \\
+        &= \frac{e}{2},
+\]
+and
+\[
+    \Res[f(z), -1]
+        &= \lim_{z \to -1} (z + 1)f(z) \\
+        &= \lim_{z \to -1} \frac{e^z}{z - 1} \\
+        &= \frac{-1}{2e}.
+\]
+Hence,
+\[
+    \oint_{|z|=2} f(z) \dd{z}
+        &= 2\pi i\left(\Res[f(z), 1] + \Res[f(z), -1]\right) \\
+        &= 2\pi i\left(\frac{e}{2} + \frac{-1}{2e}\right) \\
+        &= \pi i\left(e - e^{-1}\right).
+\]
+
+\begin{pbox}[(c)]
+    \[
+        \oint_{|z|=2} \frac{z}{\cos z} \dd{z}
+    \]
+\end{pbox}
+
+The function $\cos z$ has simple zeros at $\pi/2 + \pi k$ for $k \in \Z$, so the function
+\[
+    f(z) = \frac{z}{\cos z}
+\]
+is meromorphic on $\{|z| \leq 2\}$ with simple poles at $\pm\pi/2$. Then
+\[
+    \Res[f(z), \frac{\pi}{2}]
+        = \frac{\pi/2}{-\sin \frac{\pi}{2}}
+        = \frac{-\pi}{2},
+\]
+and
+\[
+    \Res[f(z), \frac{-\pi}{2}]
+        = \frac{-\pi/2}{-\sin\frac{-\pi}{2}}
+        = \frac{\pi}{2}.
+\]
+Hence,
+\[
+    \oint_{|z|=2} f(z) \dd{z} 
+        &= 2\pi i\left(\Res[f(z), \frac{\pi}{2}] + \Res[f(z), \frac{-\pi}{2}]\right) \\
+        &= 2\pi i\left(\frac{-\pi}{2} + \frac{\pi}{2}\right) \\
+        &= 0.
+\]
+
+\newpage
+\begin{pbox}[(d)]
+    \[
+        \oint_{|z|=1} \frac{z^4}{\sin z} \dd{z}
+    \]
+\end{pbox}
+
+The function
+\[
+    g(z) = \frac{\sin z}{z}
+\]
+has a removable singularity at $0$, and is made analytic there by defining $g(0) = 1$. In which case, the zeros of $g(z)$ are $2\pi k$ for nonzero $k\in \Z$. Then the function
+\[
+    f(z) = \frac{z^4}{\sin z} = \frac{z^3}{g(z)}
+\]
+is analytic on $\{|z| \leq 1\}$ except for a removable singularity at $0$. Then
+\[
+    \oint_{|z|=1} f(z) \dd{z} = \Res[f(z), 0] = 0.
+\]
+
+\begin{pbox}[(e)]
+    \[
+        \oint_{|z-1|=1} \frac{1}{z^8 - 1} \dd{z}
+    \]
+\end{pbox}
+
+The function
+\[
+    g(z) = z^8 - 1
+\]
+is analytic with simple zeros at $e^{2\pi i k/8}$ for $k \in \Z$. So the function
+\[
+    f(z) = \frac{1}{z^8 - 1} = \frac{1}{g(z)}
+\]
+is meromorphic on $\{|z-1| \leq 1\}$ with simple poles at $1, e^{\pm \pi i/4}$. Since $g'(z) = 8z^7$. Then
+\[
+    \Res[f(z), 1] = \frac{1}{g'(1)} = \frac{1}{8(1)^7} = \frac{1}{8},
+\]
+\[
+    \Res[f(z), e^{\pi i/4}] = \frac{1}{g'(e^{\pi i/4})} = \frac{1}{8(e^{\pi i/4})^7} = \frac{e^{-7\pi i/4}}{8},
+\]
+\[
+    \Res[f(z), e^{-\pi i/4}] = \frac{1}{g'(e^{-\pi i/4})} = \frac{1}{8(e^{-\pi i/4})^7} = \frac{e^{7\pi i/4}}{8}.
+\]
+Hence,
+\[
+    \oint_{|z-1|=1} \frac{1}{z^8 - 1} \dd{z}
+        &= 2\pi i \left(\Res[f(z), 1] + \Res[f(z), e^{\pi i/4}] + \Res[f(z), e^{-\pi i/4}]\right) \\
+        &= 2\pi i \left(\frac{1}{8} + \frac{e^{-7\pi i/4}}{8} + \frac{e^{7\pi i/4}}{8}\right) \\
+        &= \frac{\pi i}{4} \left(1 + 2\frac{e^{-7\pi i/4} + e^{7\pi i/4}}{2}\right) \\
+        &= \frac{\pi i}{4} \left(1 + 2\cos\frac{7\pi}{4}\right) \\
+        &= \frac{\pi i}{4} \left(1 + \sqrt{2}\right).
+\]
+
+
+\begin{pbox}[(f)]
+    \[
+        \oint_{|z-1/2|=3/2} \frac{\tan z}{z} \dd{z}
+    \]
+\end{pbox}
+
+The function
+\[
+    f(z) = \frac{\tan z}{z} = \frac{(\sin z)/z}{\cos z}
+\]
+is meromorphic with a removable singularity at $0$ and simple poles at $\pi/2 + \pi k$ for $k \in \Z$. In particular, $f(z)$ is made analytic at $0$ by defining $f(0) = 1$. Then, the function is meromorphic on $\{|z - 1/2| \leq 3/2\}$ with only a simple pole at $\pi/2$. Now, we find
+\[
+    \Res[f(z), \frac{\pi}{2}]
+        = \frac{\left(\sin \frac{\pi}{2}\right)/\pfrac{\pi}{2}}{-\sin \frac{\pi}{2}}
+        = \frac{-2}{\pi}.
+\]
+Thus,
+\[
+    \oint_{|z-1/2|=3/2} f(z) \dd{z}
+        &= 2\pi i\Res[f(z), \frac{\pi}{2}] \\
+        &= 2\pi i \cdot \frac{-2}{\pi} \\
+        &= -4i.
+\]
+
+
+\newpage
+\begin{pbox}[3 Exercise VII.1.4]
+    Suppose $P(z)$ and $Q(z)$ are polynomials such that the zeros of $Q(z)$ are simple zeros at the points $z_1, \dots, z_m$, and $\deg P(z) < \deg Q(z)$. Show that the partial fractions decomposition of $P(z)/Q(z)$ is given by
+    \[
+        \frac{P(z)}{Q(z)} = \sum_{j=1}^{m} \frac{P(z_j)}{Q'(z_j)} \frac{1}{z-z_j}.
+    \]
+\end{pbox}
+
+\begin{proof}
+    Let $f(z) = P(z)/Q(z)$. Since $z_j$ is a simple pole of $f(z)$, then the principal part of $f(z)$ at $z_j$ has only a single term, which is the $k=-1$ term in the Laurent series expansion. The coefficient of this term is given by $\Res[f(z), z_j]$, so
+    \[
+        f_j(z) = \frac{\Res[f(z), z_j]}{z - z_j}
+    \]
+    is principal part of $f(z)$ at $z_j$ for $j = 1, \dots, m$. Since $\deg P(z) < \deg Q(z)$, then $f(z) \to 0$ as $z \to \infty$, i.e., $f(z)$ is analytic at $\infty$ and vanishes there. Therefore, the principal part of $f(z)$ at $\infty$ is zero, and we obtain
+    \[
+        f(z)
+            = \sum_{j=1}^{m} f_j(z).
+    \]
+    Since $P(z)$ and $Q(z)$ are analytic at $z_j$, which is a simple zero of $Q(z)$, then
+    \[
+        \Res[f(z), z_j]
+            = \Res[\frac{P(z)}{Q(z)}, z_j]
+            = \frac{P(z_j)}{Q'(z_j)}.
+    \]
+    Thus,
+    \[
+        \frac{P(z)}{Q(z)} = \sum_{j=1}^{m}\frac{P(z_j)}{Q'(z_j)} \frac{1}{z - z_j}.
+    \]
+    
+\end{proof}
+
+
+
+
+\newpage
+\begin{pbox}[4 Exercise VII.1.6]
+    Consider the integral
+    \[
+        \int_{\bd D_R} \frac{e^{\pi i(z-1/2)^2}}{1 - e^{-2\pi iz}} \dd{z}
+    \]
+    where $D_R$ is the parallelogram with vertices $\pm(\frac12) \pm (1 + i)R$.
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Use the residue theorem to show that the integral is $(1 + i)/\sqrt{2}$.
+\end{pbox}
+
+The functions
+\[
+    f(z) = e^{\pi i(z-1/2)^2} \isp{and} g(z) = 1 - e^{-2\pi iz}
+\]
+are entire, and $g(z)$ has simple zeros at $k \in \Z$. Since $D_R \cap \Z = \{0\}$, then we find
+\[
+    \int_{\bd D_R} \frac{f(z)}{g(z)} \dd{z}
+        &= 2\pi i \Res[\frac{f(z)}{g(z)}, 0] \\
+        &= 2\pi i \cdot \frac{f(0)}{g'(0)} \\
+        &= 2\pi i \cdot \frac{e^{\pi i (0 - 1/2)^2}}{2\pi i e^{-2\pi i 0}} \\
+        &= e^{i \pi/4} \\
+        &= \frac{1 + i}{\sqrt{2}}.
+\]
+
+\begin{pbox}[(b)]
+    By parameterizing the sides of the parallelogram, show that the integral tends to
+    \[
+        (1+i)\int_{-\infty}^{\infty} e^{-2\pi t^2} \dd{t}
+    \]
+    as $R \to \infty$.
+\end{pbox}
+
+\begin{pbox}[(c)]
+    Use (a) and (b) to show that
+    \[
+        \int_{-\infty}^{\infty} e^{-s^2} \dd{s} = \sqrt{\pi}.
+    \]
+\end{pbox}
+
+
+\newpage
+\begin{pbox}[5 Exercise VII.2.5]
+    Using residue theory, show that
+    \[
+        \int_{0}^{\infty} \frac{x^2}{x^4 + 1} \dd{x} = \frac{\pi}{2\sqrt{2}}.
+    \]
+\end{pbox}
+
+Let $P(z) = z^2$ and $Q(z) = z^4 + 1$. Then $Q(z)$ has simple zeros at $z_k = e^{i\pi(1/2 + k)/2}$ for $k = 0, 1, 2, 3$, none of which are on the real axis, and $\deg Q(z) \geq \deg P(z) + 2$. The zeros of $Q(z)$ in the upper half plane occur at $k = 0, 1$, so we now find
+\[
+    \int_{-\infty}^\infty \frac{P(x)}{Q(x)} \dd{x}
+        &= 2\pi i \sum_{k=0,1} \Res[\frac{P(z)}{Q(z)}, z_k] \\
+        &= 2\pi i \sum_{k=0,1} \frac{P(z_k)}{Q'(z_k)} \\
+        &= 2\pi i \sum_{k=0,1} \frac{z_k^2}{4z_k^3} \\
+        &= \frac{\pi i}{2} \sum_{k=0,1} z_k^{-1} \\
+        &= \frac{\pi i}{2} \left(e^{-i\pi/4} + e^{-i3\pi/4}\right) \\
+        &= \frac{\pi i}{2} \left(\frac{1 - i}{\sqrt{2}} + \frac{-1-i}{\sqrt{2}}\right) \\
+        &= \frac{\pi}{\sqrt{2}}.
+\]
+Since $P(x)/Q(x) = P(-x)/Q(-x)$ for all $x \in \R$, then we obtain
+\[
+    \int_{0}^{\infty} \frac{x^2}{x^4 + 1} \dd{x}
+        = \frac{1}{2} \int_{-\infty}^{\infty} \frac{x^2}{x^4 + 1} \dd{x}
+        = \frac{\pi}{2\sqrt{2}}.
+\]
+
+
+\newpage
+\begin{pbox}[6 Exercise VII.2.7]
+    Show that
+    \[
+        \int_{-\infty}^{\infty} \frac{\cos(ax)}{x^4 + 1} \dd{x}
+            = \frac{\pi}{\sqrt{2}} e^{-a/\sqrt{2}} \left(\cos\frac{a}{\sqrt{2}} + \sin\frac{a}{\sqrt{2}}\right),
+            \quad a > 0.
+    \]
+\end{pbox}
+
+The function has simple poles at $z_0 = e^{i\pi/4}$ and $z_1 = e^{i\pi3/4}$ in the upper half plane. Then
+\[
+    \int_{-\infty}^{\infty} \frac{\cos(ax)}{x^4 + 1} \dd{x}
+        &= \Re2\pi i \left(\Res[\frac{e^{iaz}}{z^4 + 1}, z_0] + \Res[\frac{e^{iaz}}{z^4 + 1}, z_1]\right) \\
+        &= \Re2\pi i \left(\frac{e^{iaz_0}}{4z_0^3} + \frac{e^{iaz_1}}{4z_1^3}\right) \\
+        &= \Re\frac{\pi i}{2} \left(\frac{e^{iaz_0}}{e^{i\pi3/4}} + \frac{e^{iaz_1}}{e^{i\pi9/4}}\right) \\
+        &= \Re\frac{\pi i}{2} \left(e^{i\pi5/4}e^{iaz_0} + e^{i\pi7/4}e^{iaz_1}\right) \\
+        &= \Re\frac{\pi i}{2} e^{i\pi5/4}\left(e^{iaz_0} + e^{i\pi/2}e^{iaz_1}\right) \\
+        &= \Re\frac{\pi i}{2} e^{i\pi5/4}\left(e^{iaz_0} + ie^{iaz_1}\right) \\
+        &= \Re\frac{\pi i}{2} e^{i\pi5/4}\left(e^{\frac{ia}{\sqrt{2}} - \frac{a}{\sqrt{2}}} + ie^{-\frac{ia}{\sqrt{2}} - \frac{a}{\sqrt{2}}}\right) \\
+        &= \Re\frac{\pi i}{2} e^{i\pi5/4}e^{-a/\sqrt{2}}\left(e^{ia/\sqrt{2}} + ie^{-ia/\sqrt{2}}\right) \\
+        &= \Re\frac{\pi i}{2} e^{-a/\sqrt{2}} e^{i\pi5/4}\left(\cos\frac{a}{\sqrt{2}} + i\sin\frac{a}{\sqrt{2}} + i\cos\frac{a}{\sqrt{2}} + \sin\frac{a}{\sqrt{2}}\right) \\
+        &= \Re\frac{\pi i}{2} e^{-a/\sqrt{2}} e^{i\pi5/4}(1 + i)\left(\cos\frac{a}{\sqrt{2}} + \sin\frac{a}{\sqrt{2}}\right) \\
+        &= \Re\frac{\pi i}{2} e^{-a/\sqrt{2}}\left(- e^{i\pi/4}\right)\left(1 + e^{i\pi/2}\right)\left(\cos\frac{a}{\sqrt{2}} + \sin\frac{a}{\sqrt{2}}\right) \\
+        &= \Re\frac{\pi i}{2} e^{-a/\sqrt{2}}\left(- e^{i\pi/4} - e^{i\pi3/4}\right)\left(\cos\frac{a}{\sqrt{2}} + \sin\frac{a}{\sqrt{2}}\right) \\
+        &= \Re\frac{\pi i}{2} e^{-a/\sqrt{2}} (-1) \left( \frac{1+i}{\sqrt{2}} + \frac{-1+i}{\sqrt{2}} \right) \left(\cos\frac{a}{\sqrt{2}} + \sin\frac{a}{\sqrt{2}}\right) \\
+        &= \Re\frac{\pi i}{2} e^{-a/\sqrt{2}} (-1) \pfrac{2i}{\sqrt{2}} \left(\cos\frac{a}{\sqrt{2}} + \sin\frac{a}{\sqrt{2}}\right) \\
+        &= \Re\frac{\pi }{\sqrt{2}} e^{-a/\sqrt{2}} \left(\cos\frac{a}{\sqrt{2}} + \sin\frac{a}{\sqrt{2}}\right) \\
+        &= \frac{\pi }{\sqrt{2}} e^{-a/\sqrt{2}} \left(\cos\frac{a}{\sqrt{2}} + \sin\frac{a}{\sqrt{2}}\right).
+\]
+
+
+
+\newpage
+\begin{pbox}[7 Exercise VII.2.11]
+    Evaluate
+    \[
+        \int_{-\infty}^{\infty} \frac{\cos x}{(x^2 + a^2)(x^2 + b^2)} \dd{x}.
+    \]
+    Indicate the range of the parameters $a$ and $b$.
+\end{pbox}
+
+The function
+\[
+    f(z) = \frac{e^{iz}}{(z^2 + a^2)(z^2 + b^2)} = \frac{e^{iz}}{(z-ia)(z+ia)(z-ib)(z+ib)}
+\]
+has poles at $\pm ia, \pm ib$. Assume $a, b > 0$, so it has poles $ia$ and $ib$ in the upper half plane. If $a \ne b$, then both are simple poles and
+\[
+     \int_{-\infty}^{\infty} \frac{\cos x}{(x^2 + a^2)(x^2 + b^2)} \dd{x}
+        &= \Re 2\pi i \left(\Res[f(z), ia] + \Res[f(z), ib]\right) \\
+        &= \Re 2\pi i \left(\frac{e^{-a}}{2ia(b^2 - a^2)} + \frac{e^{-b}}{2ib(a^2 - b^2)}\right) \\
+        &= \Re \frac{\pi}{a^2 - b^2} \left(\frac{e^{-a}}{a} + \frac{e^{-b}}{b}\right) \\
+        &= \frac{\pi}{a^2 - b^2} \left(\frac{e^{-a}}{a} + \frac{e^{-b}}{b}\right).
+\]
+If $a = b$, then
+\[
+    f(z) = \frac{e^{iz}}{(z - ia)^2(z + ia)^2},
+\]
+so $ia$ is a double pole. Then
+\[
+     \int_{-\infty}^{\infty} \frac{\cos x}{(x^2 + a^2)^2} \dd{x}
+        &= \Re 2\pi i \Res[f(z), ia]] \\
+        &= \Re 2\pi i \lim_{z\to ia} \dv{z} (z-ia)^2 f(z) \\
+        &= \Re 2\pi i \lim_{z\to ia} \dv{z} \frac{e^{iz}}{(z + ia)^2} \\
+        &= \Re 2\pi i \lim_{z\to ia} \frac{(z + ia)^2 \cdot i e^{iz} - e^{iz} \cdot 2(z + ia)}{(z + ia)^4} \\
+        &= \Re 2\pi i \lim_{z\to ia} \frac{(z + ia)ie^{iz} - 2e^{iz}}{(z + ia)^3} \\
+        &= \Re 2\pi i \lim_{z\to ia} \frac{e^{iz}(iz - a - 2)}{(z + ia)^3} \\
+        &= \Re 2\pi i \frac{e^{-a}(-2a - 2)}{(2ia)^3} \\
+        &= \Re 2\pi i \frac{-2e^{-a}(a + 1)}{-8ia^3} \\
+        &= \Re \frac{\pi e^{-a}(a + 1)}{2a^3} \\
+        &= \frac{\pi e^{-a}(a + 1)}{2a^3}.
+\]
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

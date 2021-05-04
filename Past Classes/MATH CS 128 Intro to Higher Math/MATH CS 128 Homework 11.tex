@@ -1,0 +1,173 @@
+\documentclass[11pt]{article}
+ 
+\usepackage[table]{xcolor}
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{colortbl}
+\usepackage{verbatim}
+\usetikzlibrary{arrows, angles, quotes}
+\usepackage{framed}
+
+
+\lstset{basicstyle=\footnotesize}
+\usetikzlibrary{calc}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+ 
+\begin{document}
+ 
+\title{Homework 11\\
+    \large CS128 Intro to Higher Mathematics}
+\author{Harry Coleman}
+\date{November 8, 2019}
+
+\maketitle
+
+\section*{Homework - Exercise 2}
+\fbox{
+    \parbox{\textwidth}{
+       Prove that for any sets $A$ and $B$ the following are true:
+       \begin{enumerate}
+            \item $(A \cup B) \setminus (A \cap B) = (A \setminus B) \cup (B \setminus A).$
+            \item $A \cap B$ and $A \setminus B$ are disjoint. 
+        \end{enumerate}
+    }
+}
+\\
+
+For number 1,
+\begin{center}
+    \rowcolors{1}{gray!10}{white}
+    \def\arraystretch{2}
+    \begin{tabular}{c l}
+        $(A \cup B) \setminus (A \cap B)$ & Given \\
+        $\{x: x\in(A \cup B) \land x\notin(A \cap B)\}$ & Definition of Set Difference \\
+        $\{x: (x\in A \lor x\in B) \land (x\notin A \lor x\notin B)\}$ & Definition of Union and Intersection \\
+        \shortstack{$\{x: ((x\in A \land x\notin A) \lor (x\in B \land x\notin A))$\\$\lor ((x\in A \land x\notin B) \lor (x\in B \land x\notin B))\}$} & Distributivity of Conjunction and Disjunction \\
+        $\{x: (x\in B \land x\notin A) \lor (x\in A \land x\notin B)\}$ & Disjunction Identity \\
+        $\{x: x\in(B\setminus A) \lor x\in(A\setminus B)\}$ & Definition of Set Difference \\
+        $(B\setminus A) \cup (A\setminus B)$ & Definition of Union \\
+    \end{tabular}
+\end{center}
+so
+\[(A \cup B) \setminus (A \cap B) = (A \setminus B) \cup (B \setminus A)\]
+
+For number 2, we'll use the definition of intersection,
+\[A\cap B = \{x\in A: x\in B\}\]
+and the definition of set difference,
+\[A\setminus B = \{x\in A: x\notin B\}\]
+
+To prove by contradiction that these are disjoint sets, we'll assume they are not disjoint. So there is some element, we'll call $c$, which is in the intersection. So
+\[c\in (A\cap B)\cap(A\setminus B)\]
+By the definition of intersection, we have
+\[(c \in A\cap B) \land (c \in A\setminus B)\]
+which, by our definitions above, tells us that
+\[c \in B \land c \notin B\]
+This is a contradiction, so $A \cap B$ and $A \setminus B$ are disjoint.
+
+
+\section*{Axioms of Set Theory - Exercise 12}
+\fbox{
+    \parbox{\textwidth}{
+       Let $C$ be a set, then
+       \[\bigcap_{X\in C} P(X) = P(\bigcap_{X\in C} X), \qquad \bigcup_{X\in C} P(X) \subset P(\bigcup_{X\in C} X)\]
+    }
+}
+\\
+
+For the first part,
+\begin{center}
+    \rowcolors{1}{gray!10}{white}
+    \def\arraystretch{2}
+    \begin{tabular}{c l}
+        $\displaystyle\bigcap_{X\in C} P(X)$ & Given \\
+        $\{A: \forall X\in C(A \in P(X))\}$ & Definition of Intersection \\
+        $\{A: \forall X\in C(A \subseteq X)\}$ & Definition of Powerset \\
+        $\{A: \forall X\in C(\forall a\in A (a \in X))\}$ & Definition of Subset \\
+        $\{A: \forall a\in A (\forall X\in C(a \in X))\}$ & Interchange Quantifiers \\
+        $\{A: \forall a\in A (a \in \displaystyle\bigcap_{X\in C} X)\}$ & Definition of Intersection \\
+        $\{A: A \subseteq \displaystyle\bigcap_{X\in C} X\}$ & Definition of Subset \\
+        $P(\displaystyle\bigcap_{X\in C} X)$ & Definition of Powerset \\
+    \end{tabular}
+\end{center}
+so
+\[\bigcap_{X\in C} P(X) = P(\bigcap_{X\in C} X)\]
+
+For the second part,
+\begin{center}
+    \rowcolors{1}{gray!10}{white}
+    \def\arraystretch{2}
+    \begin{tabular}{c l}
+        $\displaystyle\bigcup_{X\in C} P(X)$ & Given \\
+        $\{A: \exists X\in C(A \in P(X))\}$ & Definition of Union \\
+        $\{A: \exists X\in C(A \subseteq X)\}$ & Definition of Powerset \\
+    \end{tabular}
+\end{center}
+
+Now since all sets are subsets of the union of itself and any other set, we can say
+\[\{A: \exists X\in C(A \subseteq X)\} \subseteq \{A: A \subseteq \bigcup_{X\in C} X)\}\]
+So by the definition of powerset, we obtain
+\[\displaystyle\bigcup_{X\in C} P(X) \subseteq P(\bigcup_{X\in C} X)\]
+
+
+\section*{Induction - Exercise 6}
+\fbox{
+    \parbox{\textwidth}{
+        Show that for all $n\geq2$,
+        \[\prod_{i=2}^n\frac{i^2}{(i-1)(i+1)} = \frac{2n}{n+1}\]
+    }
+}
+\\
+
+We show the base case of $n=2$.
+\begin{align*}
+    \prod_{i=2}^2\frac{i^2}{(i-1)(i+1)} &= \frac{2(2)}{(2)+1} \\
+    \frac{(2)^2}{((2)-1)((2)+1)} &= \frac{4}{3} \\
+    \frac{4}{3} &= \frac{4}{3} \\
+\end{align*}
+
+For the inductive step we assume that for an arbitrary $n\in\N$ such that $n\geq2$,
+\[\prod_{i=2}^n\frac{i^2}{(i-1)(i+1)} = \frac{2n}{n+1}\]
+We'll multiply both sides by the same value, then simplify.
+\begin{align*}
+    \left(\prod_{i=2}^n\frac{i^2}{(i-1)(i+1)}\right)\cdot\frac{(n+1)^2}{((n+1)-1)((n+1)+1)} &= \frac{2n}{n+1}\cdot\frac{(n+1)^2}{((n+1)-1)((n+1)+1)} \\
+    \prod_{i=2}^{n+1}\frac{i^2}{(i-1)(i+1)}&= \frac{2n(n+1)^2}{(n+1)n((n+1)+1)} \\
+    \prod_{i=2}^{n+1}\frac{i^2}{(i-1)(i+1)}&= \frac{2(n+1)}{(n+1)+1} \\
+\end{align*}
+
+So for all $n\in\N$ such that $n\geq2$, if the equation is true for $n$, then it is true for $n+1$. By the inductive principle, we have that for all $n\in\N$ such that $n\geq2$,
+\[\prod_{i=2}^n\frac{i^2}{(i-1)(i+1)} = \frac{2n}{n+1}\]
+
+
+\section*{Induction - Exercise 8}
+\fbox{
+    \parbox{\textwidth}{
+       For which natural numbers $n$ is $2^n < n!$? Prove your answer
+    }
+}
+\\
+
+This is false for 1, 2, and 3. To show that it is true for all $n\in\N$ such that $n\geq 4$, we'll use induction. Our base case is $n=4$, which is trivially provable as
+\[2^4 = 16 < 24 = 4!\]
+
+For our inductive step, we'll assume that for an arbitrary $n\in\N$ such that $n\geq4$, we have that
+\[2^n < n!\]
+We can multiply both sides by 2.
+\[2\cdot2^n < 2\cdot n!\]
+Since $n\geq 4$, we have $n+1 > 2$ so
+\[2\cdot2^n < 2\cdot n! < (n+1)\cdot n!\]
+which gives us
+\[2^{n+1} < (n+1)!\]
+So for all $n\in\N$ and $n\geq4$,
+\[(2^n < n!) \implies (2^{n+1} < (n+1)!)\]
+
+So by the inductive principle, we have that for all $n\in\N$ such that $n\geq4$, $2^n < n!$.
+
+\end{document}
+

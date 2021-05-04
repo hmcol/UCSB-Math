@@ -1,0 +1,242 @@
+\documentclass[12pt]{article}
+ 
+ \usepackage[table,xcdraw]{xcolor}
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{colortbl}
+
+\lstset{basicstyle=\footnotesize}
+\usetikzlibrary{calc}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+
+ 
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{question}[2][Question]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+ 
+\begin{document}
+ 
+\title{Problem Set 7,8\\
+    \large CS120FN Number Systems}
+\author{Harry Coleman}
+\date{October 31, 2019}
+
+\maketitle
+
+\section*{Problem 7.1}
+\fbox{
+    \parbox{\textwidth}{
+        Let $p$ be an odd prime and let $g$ be a primitive root modulo $p$. Prove that $a$ has a square root modulo $p$ if and only if its discrete logarithm log$_g(a)$ modulo $(p - 1)$ is even.
+    }
+}
+\\
+
+Since we need to prove a biconditional, we must do this proof in two parts. We'll first assume that $a$ has a square root modulo $p$, and show that the second condition follows. So we have
+\[a \equiv n^2 \pmod{p}\]
+
+for some integers $a$ and $n$ and an odd prime $p$. Since $g$ is a primitive root, then for some integer $k \in \{1,2,\dots,p-1\}$, we can have
+\[n \equiv g^k \pmod{p}\]
+from which we can get
+\[a \equiv (g^k)^2 \equiv g^{2k} \pmod{p}\]
+and apply the discrete logarithm.
+
+\[\log_g a = 2k \pmod{p-1}\]
+
+Since $p-1$ is even, and $2k$ is even, then $2k$ modulo $(p-1)$ is even. This proves the conditional in one direction. For the other, we'll first assume that 
+\[\log_g a \equiv 2n \pmod{p-1}\]
+for some integers $a$ and $n$. By the definition of modulus,
+\[\log_g a = (p-1)x + 2n\]
+for some integer $x$. So
+\begin{align*}
+    a &= g^{(p-1)x + 2n} \\
+      &= g^{(p-1)x}g^{2n} \\
+      &= (g^{p-1})^x(g^n)^2
+\end{align*}
+
+If we look at this in modulo $p$, we get
+\[a \equiv (g^{p-1})^x(g^n)^2 \pmod{p}\]
+and since gcd$(p,g) = 1$, we can use Fermat's Little Theorem to get
+\begin{align*}
+    a &\equiv 1^x(g^n)^2 \pmod{p} \\
+    a &\equiv (g^n)^2 \pmod{p}
+\end{align*}
+So $a$ is a perfect square modulo $p$. This proves both directions of the biconditional.
+
+
+\section*{Problem 7.2}
+\fbox{
+    \parbox{\textwidth}{
+        Suppose that the message $m$ is encrypted using the RSA cryposystem using three public keys, (391, 3), (55, 3) and (87, 3). The resulting ciphertexts are 208, 38 and 32 respectively. Determine $m$ (without using the easy-to-find prime factors of 391, 55 and 87.)
+    }
+}
+\\
+
+We have
+\begin{align*}
+    m^3 &\equiv 208 \pmod{391} \\
+    m^3 &\equiv 38 \pmod{55} \\
+    m^3 &\equiv 32 \pmod{87}
+\end{align*}
+If we can find integers $a,b,c$ such that
+\begin{align*}
+    a &\equiv 208 & b &\equiv 0 & c &\equiv 0 & \pmod{391} \\
+    a &\equiv 0 & b &\equiv 38 & c &\equiv 0 & \pmod{55} \\ 
+    a &\equiv 0 & b &\equiv 0 & c &\equiv 32 & \pmod{87} 
+\end{align*}
+then we could have
+\begin{align*}
+    a+b+c &\equiv 208 \pmod{391} \\
+    a+b+c &\equiv 38 \pmod{55} \\
+    a+b+c &\equiv 32 \pmod{87}
+\end{align*}
+
+To find such values, we must find integer solutions to
+\begin{alignat*}{3}
+    a &= 55\cdot87 x_a &&= 391y_a + 208 \\
+    b &= 391\cdot87 x_b &&= 55y_b + 38 \\
+    c &= 391\cdot55 x_c &&= 87y_c + 32
+\end{alignat*}
+
+Using the Euclidean Algorithm, we can find
+\begin{align*}{3}
+    a = 775170 && b = 1156578 && c = 43010
+\end{align*}
+\[a+b+c = 1974758\]
+
+So we know that
+\[m^3 = 391\cdot55\cdot87z + 1974758\]
+for some integer $z$. Just guessing for integer solutions, we find $z=-1$ gives us $m=47$.
+
+
+
+
+\section*{Problem 7.3}
+\fbox{
+    \parbox{\textwidth}{
+        Suppose Alice wants to use the RSA cryptosystem to receive message $m$ from both Bob 1 and Bob 2. She picks a modulus $n$, and suppose she gives Bob 1 the encryption exponent $e_1$ and Bob 2 the encryption exponent $e_2$. Moreover, suppose gcd$(e_1, e_2) = 1$. If Bob 1 then sends Alice $c_1$ and Bob 2 sends Alice $c_2$, show how Eve can use the values of $c_1, c_2, e_1, e_2$ and $n$ to figure out $m$.
+    }
+}
+\\
+
+We have
+\begin{align*}
+    c_1 &\equiv m^{e_1} \pmod{n} \\
+    c_2 &\equiv m^{e_2} \pmod{n}
+\end{align*}
+
+Since gcd$(e_1, e_2)=1$, we can find integers $x,y$ such that
+\[e_1x + e_2y = 1\]
+using the Euclidean Algorithm and back substitution. With these values we can find
+\begin{alignat*}{3}
+    c_1^xc_2^y &\equiv (m^{e_1})^x(m^{e_2})^y &\pmod{n} \\
+               &\equiv m^{e_1x}m^{e_2y} &\pmod{n} \\
+               &\equiv m^{e_1x + e_2y} &\pmod{n} \\
+               &\equiv m^1 &\pmod{n} \\
+               &\equiv m &\pmod{n}
+\end{alignat*}
+
+Since $m \in \{1,2,3,\dots,n-1\}$, this value we find is the exact value for $m$.
+
+\newpage
+\section*{Problem 8.1}
+\fbox{
+    \parbox{\textwidth}{
+        Find an irreducible polynomial $p(x)$ of degree $3$ in $\mathbb{Z}_2[x]$ and use it to construct a finite field with $8$ elements. (That is, provide the addition and multiplication tables for this field).
+    }
+}
+\\
+
+
+We'll let
+\[g(x) = x^3 + x + 1\]
+and use it to construct the finite field
+\[\Z_2[x]/g(x)\]
+with elements
+\[\{(0),(1),(x),(x+1),(x^2),(x^2+1),(x^2+x),(x^2+x+1)\}.\]
+
+\begin{scriptsize}
+    \begin{center}
+        \begin{tabular}{
+            >{\columncolor[HTML]{D6D6D6}}c|c
+            >{\columncolor[HTML]{D6D6D6}}c c
+            >{\columncolor[HTML]{D6D6D6}}c c
+            >{\columncolor[HTML]{D6D6D6}}c c
+            >{\columncolor[HTML]{D6D6D6}}c }
+            addition                        & \cellcolor[HTML]{EFEFEF}$0$       & $1$                               & \cellcolor[HTML]{EFEFEF}$x$       & $x+1$                             & \cellcolor[HTML]{EFEFEF}$x^2$     & $x^2+1$                           & \cellcolor[HTML]{EFEFEF}$x^2+x$   & $x^2+x+1$                         \\
+            \hline
+            \cellcolor[HTML]{EFEFEF}$0$     & $0$                               & \cellcolor[HTML]{EFEFEF}$1$       & $x$                               & \cellcolor[HTML]{EFEFEF}$x+1$     & $x^2$                             & \cellcolor[HTML]{EFEFEF}$x^2+1$   & $x^2+x$                           & \cellcolor[HTML]{EFEFEF}$x^2+x+1$ \\
+            $1$                             & \cellcolor[HTML]{EFEFEF}$1$       & $0$                               & \cellcolor[HTML]{EFEFEF}$x+1$     & $x$                               & \cellcolor[HTML]{EFEFEF}$x^2+1$   & $x^2$                             & \cellcolor[HTML]{EFEFEF}$x^2+x+1$ & $x^2+x$                           \\
+            \cellcolor[HTML]{EFEFEF}$x$     & $x$                               & \cellcolor[HTML]{EFEFEF}$x+1$     & $0$                               & \cellcolor[HTML]{EFEFEF}$1$       & $x^2+x$                           & \cellcolor[HTML]{EFEFEF}$x^2+x+1$ & $x^2$                             & \cellcolor[HTML]{EFEFEF}$x^2+1$   \\
+            $x+1$                           & \cellcolor[HTML]{EFEFEF}$x+1$     & $x$                               & \cellcolor[HTML]{EFEFEF}$1$       & $0$                               & \cellcolor[HTML]{EFEFEF}$x^2+x+1$ & $x^2+x$                           & \cellcolor[HTML]{EFEFEF}$x^2+1$   & $x^2$                             \\
+            \cellcolor[HTML]{EFEFEF}$x^2$   & $x^2$                             & \cellcolor[HTML]{EFEFEF}$x^2+1$   & $x^2+x$                           & \cellcolor[HTML]{EFEFEF}$x^2+x+1$ & $0$                               & \cellcolor[HTML]{EFEFEF}$1$       & $x$                               & \cellcolor[HTML]{EFEFEF}$x+1$     \\
+            $x^2+1$                         & \cellcolor[HTML]{EFEFEF}$x^2+1$   & $x^2$                             & \cellcolor[HTML]{EFEFEF}$x^2+x+1$ & $x^2+x$                           & \cellcolor[HTML]{EFEFEF}$1$       & $0$                               & \cellcolor[HTML]{EFEFEF}$x+1$     & $x$                               \\
+            \cellcolor[HTML]{EFEFEF}$x^2+x$ & $x^2+x$                           & \cellcolor[HTML]{EFEFEF}$x^2+x+1$ & $x^2$                             & \cellcolor[HTML]{EFEFEF}$x^2+1$   & $x$                               & \cellcolor[HTML]{EFEFEF}$x+1$     & $0$                               & \cellcolor[HTML]{EFEFEF}$1$       \\
+            $x^2+x+1$                       & \cellcolor[HTML]{EFEFEF}$x^2+x+1$ & $x^2+x$                           & \cellcolor[HTML]{EFEFEF}$x^2+1$   & $x^2$                             & \cellcolor[HTML]{EFEFEF}$x+1$     & $x$                               & \cellcolor[HTML]{EFEFEF}$1$       & $0$                              
+        \end{tabular}
+    \end{center}
+\end{scriptsize}
+
+
+\begin{scriptsize}
+    \begin{center}
+        \begin{tabular}{
+            >{\columncolor[HTML]{D6D6D6}}c|c
+            >{\columncolor[HTML]{D6D6D6}}c c
+            >{\columncolor[HTML]{D6D6D6}}c c
+            >{\columncolor[HTML]{D6D6D6}}c c
+            >{\columncolor[HTML]{D6D6D6}}c }
+            multiplication                   & \cellcolor[HTML]{EFEFEF}$0$ & $1$                             & \cellcolor[HTML]{EFEFEF}$x$       & $x+1$                             & \cellcolor[HTML]{EFEFEF}$x^2$   & $x^2+1$                           & \cellcolor[HTML]{EFEFEF}$x^2+x$   & $x^2+x+1$                       \\
+            \hline
+            \cellcolor[HTML]{EFEFEF}$0$     & $0$                         & \cellcolor[HTML]{EFEFEF}$0$     & $0$                               & \cellcolor[HTML]{EFEFEF}$0$       & $0$                             & \cellcolor[HTML]{EFEFEF}$0$       & $0$                               & \cellcolor[HTML]{EFEFEF}$0$     \\
+            $1$                             & \cellcolor[HTML]{EFEFEF}$0$ & $1$                             & \cellcolor[HTML]{EFEFEF}$x$       & $x+1$                             & \cellcolor[HTML]{EFEFEF}$x^2$   & $x^2+1$                           & \cellcolor[HTML]{EFEFEF}$x^2+x$   & $x^2+x+1$                       \\
+            \cellcolor[HTML]{EFEFEF}$x$     & $0$                         & \cellcolor[HTML]{EFEFEF}$x$     & $x^2$                             & \cellcolor[HTML]{EFEFEF}$x^2+x$   & $x^2+1$                         & \cellcolor[HTML]{EFEFEF}$x^2+x+1$ & $1$                               & \cellcolor[HTML]{EFEFEF}$x+1$   \\
+            $x+1$                           & \cellcolor[HTML]{EFEFEF}$0$ & $x+1$                           & \cellcolor[HTML]{EFEFEF}$x^2+x$   & $x^2+1$                           & \cellcolor[HTML]{EFEFEF}$1$     & $x$                               & \cellcolor[HTML]{EFEFEF}$x^2+x+1$ & $x^2$                           \\
+            \cellcolor[HTML]{EFEFEF}$x^2$   & $0$                         & \cellcolor[HTML]{EFEFEF}$x^2$   & $x^2+1$                           & \cellcolor[HTML]{EFEFEF}$1$       & $x^2+x+1$                       & \cellcolor[HTML]{EFEFEF}$x+1$     & $x$                               & \cellcolor[HTML]{EFEFEF}$x^2+x$ \\
+            $x^2+1$                         & \cellcolor[HTML]{EFEFEF}$0$ & $x^2+1$                         & \cellcolor[HTML]{EFEFEF}$x^2+x+1$ & $x$                               & \cellcolor[HTML]{EFEFEF}$x+1$   & $x^2+x$                           & \cellcolor[HTML]{EFEFEF}$x^2$     & $1$                             \\
+            \cellcolor[HTML]{EFEFEF}$x^2+x$ & $0$                         & \cellcolor[HTML]{EFEFEF}$x^2+x$ & $1$                               & \cellcolor[HTML]{EFEFEF}$x^2+x+1$ & $x$                             & \cellcolor[HTML]{EFEFEF}$x^2$     & $x+1$                             & \cellcolor[HTML]{EFEFEF}$x^2+1$ \\
+            $x^2+x+1$                       & \cellcolor[HTML]{EFEFEF}$0$ & $x^2+x+1$                       & \cellcolor[HTML]{EFEFEF}$x+1$     & $x^2$                             & \cellcolor[HTML]{EFEFEF}$x^2+x$ & $1$                               & \cellcolor[HTML]{EFEFEF}$x^2+1$   & $x$                            
+            \end{tabular}
+    \end{center}
+\end{scriptsize}
+
+
+
+\section*{Problem 8.2}
+\fbox{
+    \parbox{\textwidth}{
+        For the field you constructed above, find an element $g$ such that $(g,g^2,g^3,\ldots,g^8)$ is a list of all elements in the field.
+    }
+}
+\\
+We cannot obtain 0 by any multiplication other than by 0, so we can find a value which obtains all elements but 0 through exponentiation.;
+\begin{align*}
+    x^1 &\equiv x \\
+    x^2 &\equiv x^2 \\
+    x^3 &\equiv x^2+1 \\
+    x^4 &\equiv x^2 + x + 1 \\
+    x^5 &\equiv x + 1 \\
+    x^6 &\equiv x^2 + x \\
+    x^7 &\equiv 1 \\
+\end{align*}
+
+
+\end{document}
+

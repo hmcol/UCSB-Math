@@ -1,0 +1,333 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow,enumitem}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools,babel}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{\textwidth-10pt}}
+    {\end{minipage}\end{lrbox}\framebox[6.5in]{\usebox{\mybox}}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+\newenvironment{response}{\paragraph{}}{}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\seq}[2]{\left\{#1\right\}_{#2=1}^\infty}
+\newcommand{\clo}[1]{\overline{#1}}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ang}{\langle}{\rangle}
+
+% Sets
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+
+% Misc Characters
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\let\eps\varepsilon
+\let\emptyset\varnothing
+
+% Functions
+\newcommand{\id}[1]{\mathsf{id}_{#1}}
+
+% Babel Shorthands
+\useshorthands*{"}
+\defineshorthand{"-}{\setminus}
+\defineshorthand{"d}{\partial}
+
+% Topology
+\newcommand{\T}{\mathscr{T}}
+\renewcommand{\S}{\mathscr{S}}
+\newcommand{\B}{\mathscr{B}}
+\renewcommand{\int}{\text{int}}
+\newcommand{\diam}{\text{diam}}
+ 
+\begin{document}
+ 
+\title{Homework 4\\
+    \large MATH 145 Intro to Topology
+}
+\author{Harry Coleman}
+\date{July 21, 2020}
+\maketitle
+
+\section*{Exercise 2.8.3}
+\begin{problem}
+    Consider the two tangent open discs $\{x^2 + y^2 < 1\}$ and $\{(x-2)^2 + y^2 < 1\}$ in $\R^2$. Is the union of the discs a connected subset of $\R^2$? Is the union of their closures a connected subset of $\R^2$? Is the union of one disc and the closure of the other a connected subset of $\R^2$.
+\end{problem}
+
+Let $D_1 = \{x^2 + y^2 < 1\}$ and $D_2 = \{(x-2)^2 + y^2 < 1\}$.
+
+\begin{proposition}
+    $D = D_1\cup D_2$ is disconnected.
+\end{proposition}
+
+\begin{proof}
+    Notice that $D_1$ and $D_2$ are disjoint open subsets. So $D"-D_1=D_2$ is closed and $D"-D_2 = D_1$ is closed. Therefore, $D=D_1\sqcup D_2$ where $D_1$ and $D_2$ are both open and closed.
+    
+\end{proof}
+
+\begin{proposition}
+    $D = \clo{D_1}\cup \clo{D_2}$ is connected.
+\end{proposition}
+
+\begin{proof}
+    Since both $\clo{D_1}$ and $\clo{D_2}$ are connected, with $\clo{D_1}\cap\clo{D_2} = \{(1,0)\} \ne\emptyset$, then $D = \clo{D_1}\cup\clo{D_2}$ is connected.
+    
+\end{proof}
+
+\begin{proposition}
+    $D = D_1\cup \clo{D_2}$ is connected.
+\end{proposition}
+
+\begin{proof}
+    Suppose $x,y\in D$. If $x,y\in D_1$ or $x,y\in \clo{D_2}$, then the function $f:[0,1]\to D$ defined by $f(\theta) = \theta x + (1-\theta)y$ for all $\theta\in[0,1]$ is the path given by the line segment between $x$ and $y$, which is contained within the same disc as $x$ and $y$. Otherwise, $x\in D_1$ and $y\in\clo{D_2}$ and the function $f:[0,1]\to D$ defined by
+    \[f(\theta) = \begin{cases}
+        \theta x + (1-\theta)(1,0) &\text{if } \theta\in[1/2,1], \\
+        \theta (1,0) + (1-\theta)y &\text{if } \theta\in[0,1/2],
+    \end{cases}\]
+    is a path between $x$ and $y$. And since $f((1/2,1])$ is the line segment from $x$ to $(1,0)$ which is closed at $x$ and open at $(1,0)$, we have $f((1/2,1])\subseteq D_1$. And $f([0,1/2])$ is the closed line segment between $(1,0)$ and $y$, which is contained in $\clo{D_2}$. Therefore, $f$ is a path in $D$ between $x$ and $y$. Thus, $D$ is path-connected, which implies that it is connected.
+    
+\end{proof}
+
+\section*{Exercise 2.8.4}
+\begin{problem}
+    A point $p$ of a topological space $X$ is a \emph{cut point} if $X"-\{p\}$ is disconnected. Show that the property of having a cut point is a topological property.
+\end{problem}
+
+\begin{proposition}
+    If $X\simeq Y$ and $X$ has a cut point, then $Y$ also has a cut point.
+\end{proposition}
+
+\begin{proof}
+    Let $f:X\to Y$ be a homeomorphism and let $p$ be a cut point of $X$. Then $X"-\{p\}$ is disconnected, and therefore $f(X"-\{p\})$ is disconnected. And since $f$ is a bijection, $f(X"-\{p\}) = f(X)"-f(\{p\}) = Y"-\{f(p)\}$ is disconnected. Therefore $f(p)$ is a cut point of $Y$.
+    
+\end{proof}
+
+\section*{Exercise 2.8.5}
+\begin{problem}
+    Show that no two of the intervals $[0,1]$, $(0,1)$, and $[0,1)$ are homeomorphic. 
+\end{problem}
+
+\begin{proof}
+    Since $[0,1]$ is compact, but neither $(0,1)$ nor $[0,1)$ is compact, so $[0,1]$ is not homeomorphic to either. Now suppose for contradiction that $(0,1)\simeq[0,1)$ with homeomorphism $f:[0,1)\to(0,1)$. Then $0$ is not a cut point of $[0,1)$, but any point in $(0,1)$, in particular $f(0)$, is a cut point of $(0,1)$, which is a contradiction. Therefore, no two of the intervals $[0,1]$, $(0,1)$, and $[0,1)$ are homeomorphic.
+    
+\end{proof}
+
+\section*{Exercise 2.8.12}
+\begin{problem}
+    Let $\T$ be the half-open interval topology defined for $\R$ in Exercise 4.6. What are the connected components of $(\R,\T)$?
+\end{problem}
+
+\begin{proposition}
+    The singletons of $\R$ are the connected components of $(\R,\T)$.
+\end{proposition}
+
+\begin{proof}
+    Note that singletons are connected in any topology, since the only way to split up a singleton into a disjoint pair of sets is the singleton itself and the empty set. Suppose $U\subset \R$ is any subset with more than one element, without loss of generality say $a,b\in U$ with $a<b$. Then there exist some $c\in(a,b)$ and the subsets $(-\infty,c)$ and $[c,\infty)$ are $\T$-open. And since $U=(U\cap(-\infty,c))\sqcup(U\cap[c,\infty))$, we have that $U$ is disconnected.
+    
+\end{proof}
+
+\newpage
+\section*{Exercise 2.8.13}
+\begin{problem}
+    What are the connected components of $(\R,\T)$ where $\T$ is the topology introduced in Exercise 5.9, that is Hausdorff but not regular?
+\end{problem}
+
+\begin{proposition}
+    $(\R,\T)$ is connected.
+\end{proposition}
+
+\begin{proof}
+    Suppose for contradiction that $(\R,\T)$ is disconnected, i.e, that there are two $\T$-open subsets $U,V\subseteq \R$ such that $U\sqcup V = \R$. Let $x\in U$. If $x\in\R_0$, then there exists some rational interval $(x-\eps,x+\eps)\cap\R_0 \subseteq U$. Now for any irrational $y\in(x-\eps,x+\eps)\cap(\R"-\R_0)$, any neighborhood of $y$ contains a real open interval $(y-\delta,y+\delta)$. And since $((x-\eps,x+\eps)\cap\R_0)\cap(y-\delta,y+\delta) \ne \emptyset$, then $y\notin V$. So $y\in U$ and in fact $(x-\eps,x+\eps)\subseteq U$. Therefore $U$ is open in the metric topology on $\R$, and by similar argument, so it $V$. Therefore, $U,v\subseteq\R$ are open subsets in the metric topology such that $\R=U\sqcup V$. However, since $\R$ is connected in the metric topology, this is a contradiction. So $\R$ is connected in $\T$, as well.
+    
+\end{proof}
+
+\section*{Exercise 2.9.4}
+\begin{problem}
+    A space $X$ is \emph{locally path-connected} if, for each open subset $V$ of $X$ and each $x\in V$, there is a neighborhood $U$ of $x$ such that $x$ can be joined to any point of $U$ by a path in $V$. Prove that the path components of a locally path-connected space coincide with the connected components.
+\end{problem}
+
+\begin{proof}
+    Let $X$ be a locally path-connected space. Each connected component of $X$ is a union of path-connected components, we aim to prove that each connected component is path-connected. Let $E$ be a connected component of $X$, then for each $p\in E$, there exists an open neighborhood $U_p$ of $p$ such that any point of $U_p$ is path-connected to $p$ by a path in $X$. Suppose for contradiction that $E$ is not path-connected, and let $x,y\in E$ such that no path connects $x$ and $y$. Consider the collection of open subsets $\{U_p : p\in E\}$ which is an open cover of $E$. Since path-connectedness is an equivalence relation and $x$ and $y$ are not path connected, then there exists a partition of $E$, $E=A\sqcup B$, such that no point in $A$ is path-connected to any point in $B$. Then 
+    \[\bigcup_{a\in A}U_a \isp{and} \bigcup_{b\in B}U_b\]
+    are disjoint open subsets whose union equals $E$, therefore $E$ is disconnected, which is a contradiction.
+    
+\end{proof}
+
+\section*{Exercise 2.9.5}
+\begin{problem}
+    Suppose $X$ is locally path-connected and locally connected.
+\end{problem}
+
+\subsection*{Exercise 2.9.5(a)}
+\begin{problem}
+    Show that each path component of $X$ is open and closed.
+\end{problem}
+
+\begin{proof}
+    Let $E\subseteq X$ be a path component. Since $X$ is locally path-connected, for each $x\in E$, there exists an open neighborhood $U$ of $x$ such that any point of $U$ can be connected to $x$ by a path in $X$. Since $E$ is the maximally path-connected subset containing $x$, then any point which is connected to $x$ by a path in $X$ is in $E$, in particular, $U\subseteq E$. So each element of $E$ has an open neighborhood contained in $E$. Therefore $E$ is open. Since $X$ is locally path connected, $E$ is also a connected component, and is therefore closed.
+
+\end{proof}
+
+\subsection*{Exercise 2.9.5(b)}
+\begin{problem}
+    Show that for each $x\in X$ and each neighborhood $V$ of $x$, there is an open path-connected neighborhood $U$ of $x$ such that $U\subset V$.
+\end{problem}
+
+\begin{proof}
+    Let $x\in X$ and let $V$ be a neighborhood of $x$. Since $X$ is locally connected, there exists some open connected neighborhood $U$ of $x$ such that $U\subseteq V$. Since $X$ is locally path-connected, the connected and path-connected components of $U$ coincide, so $U$ is also path-connected. Thus $U$ is an open path-connected neighborhood of $x$ such that $U\subseteq V$.
+    
+\end{proof}
+
+\section*{Exercise 2.9.7}
+\begin{problem}
+    Let $X$ be the compact subset of $\R^2$ consisting of the vertical interval
+    \[E=\{(0,y) : -1\leq y \leq 1\}\]
+    together with the portion of the graph of $\sin(1/x)$ given by
+    \[F = \{(x,\sin(1/x)) : 0 < x \leq 1\}.\]
+    Show that $X$ is connected but not path connected. What are the path components of $X$?
+\end{problem}
+
+\begin{proposition}
+    $X$ is connected but not path connected.
+\end{proposition}
+
+\begin{proof}
+    Note that the interval $[-1,1]\subset\R$ is connected and the map to $[-1,1]\to\R^2$ given by $y\mapsto (0,y)$ is continuous, so the image $E=\{(0,y) : -1\leq y \leq 1\}$ is also connected. Similarly, the interval $(0,1]\subset\R$ is connected and the map $(0,1]\to\R^2$ given by $x\mapsto(x,\sin(1/x))$ is continuous, so the image $F = \{(x,\sin(1/x)) : 0 < x \leq 1\}$ is connected. Therefore, $E$ and $F$ are each subsets of connected components of $X$.
+    
+    Consider the sequence $\seq{x_n}{n}$ where $x_n=1/(n\pi)$ for each $n\in\N$, and the related sequence $\seq{(x_n,\sin(1/x_n)}{n}$ in $F$. Note that for each $n\in\N$,
+    \[(x_n,\sin(1/x_n)) = (x_n, \sin(1/1/(n\pi))) = (x_n,\sin(n\pi)) = (x_n,0).\]
+    Since $x_n\to0$, we have $(x_n,0)\to F$. That is, for every open neighborhood $U$ of $(0,0)$, there exist infinitely many points in $U$ of the sequence, which are all points in $F$. And since $(0,0)\in E$, then any open set containing $E$ contains infinitely many points of $F$. So the connected component which contains $E$ must also contain $F$, so  the two are part of the same connected component, thus $X$ is connected.
+    
+    Also note that $E$ and $F$ are each path-connected. However, for any points $y\in E$ and $x\in F$, there does not exist a path from $x$ to $y$ in $X$. Supposing otherwise that $f:[0,1]\to X$ were such a path with $f(0)=y$ and $f(1)=x$, then for each $\theta\in(0,1]$, $f(\theta)\in F$. And since $f$ is continuous, then $f(\theta)\to y$ as $\theta\to 1$, however, $F$ diverges as $x\to 0$, so this is a contradiction, therefore $E$ and $F$ are not path-connected to each other. Thus $E$ and $F$ are the path-components of $X$.
+\end{proof}
+
+\section*{Exercise 2.9.8}
+\begin{problem}
+    Show that the path connected components of $X$ are not necessarily closed subsets of $X$, nor are they necessarily open.
+\end{problem}
+
+\begin{proof}
+    From Exercise 2.9.7, $F$ is a path component of $X$, however, $E$ contains limit points of $F$, so $F$ is not closed. Also from 2.9.7, $E$ is a path component of $X$, however, any open neighborhood of a point in $E$ contains points outside in $F$, therefore $E$ is not open.
+    
+\end{proof}
+
+\section*{Exercise 2.10.1}
+\begin{problem}
+     Show that if $E_j$ is a closed subset of $X_j$, $1\leq j\leq n$, then $E_1 \times \cdots \times E_n$ is a closed subset of $X_1\times \cdots \times X_n$.
+\end{problem}
+
+\begin{proof}
+    Suppose $E_j$ is a closed subset of $X_j$, $1\leq j\leq n$. Let $(x_1,\dots, x_n)\notin (E_1\times \cdots \times E_n)$, so for some $i\in\{1,\dots,n\}$, $x_i\notin E_i$. Then since $E_i$ is closed, there exist some open neighborhood $U_i$ of $x_i$ such that $U_i\cap E_i = \emptyset$. Then for all $j\in\{1,\dots,n\}"-\{i\}$, let $U_j$ be any open neighborhood of $U_j$. So $U_1\times \cdots \times U_n$ is an open neighborhood of $(x_1,\dots,x_n)$ with $(U_1\times \cdots \times U_n)\cap(E_1\times \cdots \times E_n) = \emptyset$, and we have $E_1\times \cdots \times E_n$ closed.
+    
+\end{proof}
+
+\section*{Exercise 2.10.4}
+\begin{problem}
+    Suppose $X=X_1\times \cdots \times X_n$, where each $X_j$ is nonempty. Establish the following assertions:
+\end{problem}
+
+\begin{response}
+    For each of the following, it suffices to prove the property for $X_1$ when $X=X_1\times X_2$.
+\end{response}
+
+\subsubsection*{Exercise 2.10.4(a)}
+\begin{problem}
+    If $X$ is Hausdorff, then each $X_j$ is Hausdorff.
+\end{problem}
+
+\begin{proof}
+    Suppose $X$ is Hausdorff. Let $x_1,y_1\in X_1$ such that $x_1\ne y_1$. Then let $x_2\in X_2$. Since $X$ is Hausdorff and $(x_1,x_2),(y_1,x_2)\in X$ such that $(x_1,x_2)\ne(y_1,x_2)$, then there exist open subsets $U,V\subseteq X$ such that $(x_1,x_2)\in U$, $(y_1,x_2)\in V$, and $U\cap V = \emptyset$. And since $\pi_1:X\to X_1$ is open, we have open subsets $\pi_1(U),\pi_1(V)$ such that $x_1\in\pi_1(U)$, $y_1\in\pi_1(V)$, and $\pi_1(U)\cap\pi_1(V) = \emptyset$. Therefore $X_1$ is Hausdorff.
+    
+\end{proof}
+
+\subsubsection*{Exercise 2.10.4(b)}
+\begin{problem}
+    If $X$ is regular, then each $X_j$ is regular.
+\end{problem}
+
+\begin{proof}
+    Suppose $X$ is regular. Let $x_1\in X_1$ and $E\subseteq X$ be closed such that $x_1\notin E$. Then let $x_2\in X_2$ and $F\subset X_2$ be closed. Since $X$ is regular and $E\times F\subset X$ is closed with $(x_1,x_2)\notin E\times F$, then there exist open subsets $U,V\subseteq X$ such that $(x_1,x_2)\in U$, $E\times F\subseteq V$, and $U\cap V = \emptyset$. And since $\pi_1:X\to X_1$ is open, we have open subsets $\pi_1(U),\pi_1(V)$ such that $x_1\in\pi_1(U)$, $E\subseteq\pi_1(V)$, and $\pi_1(U)\cap\pi_1(V) = \emptyset$. Therefore $X_1$ is regular.
+    
+\end{proof}
+
+\subsubsection*{Exercise 2.10.4(c)}
+\begin{problem}
+    If $X$ is normal, then each $X_j$ is normal.
+\end{problem}
+
+\begin{proof}
+    Suppose $X$ is normal. Let $E_1,F_1\subseteq X$ be closed such that $E_1\cap F_1 =\emptyset$. Then let $E_2,F_2\subset X_2$ be closed. Since $X$ is normal and $(E_1\times E_2),(F_1\times F_2)\subset X$ are closed with $(E_1\times F_1)\cap (E_2\times F_2) = \emptyset$, then there exist open subsets $U,V\subseteq X$ such that $E_1\times F_1 \subseteq U$, $E_2\times F_2\subseteq V$, and $U\cap V = \emptyset$. And since $\pi_1:X\to X_1$ is open, we have open subsets $\pi_1(U),\pi_1(V)$ such that $E_1\subseteq\pi_1(U)$, $F_1\subseteq\pi_1(V)$, and $\pi_1(U)\cap\pi_1(V) = \emptyset$. Therefore $X_1$ is normal.
+    
+\end{proof}
+
+\subsubsection*{Exercise 2.10.4(d)}
+\begin{problem}
+    If $X$ is connected, then each $X_j$ is connected.
+\end{problem}
+
+\begin{proof}
+    Suppose $X=X_1\times X_2$ is connected. The coordinate function $\pi_1:X\to X_1$ is continuous, so $\pi_1(X)=X_1$ is connected.
+\end{proof}
+
+\subsubsection*{Exercise 2.10.4(e)}
+\begin{problem}
+    If $X$ is path-connected, then each $X_j$ is path-connected.
+\end{problem}
+
+\begin{proof}
+    Suppose $X=X_1\times X_2$ is path-connected. The coordinate function $\pi_1:X\to X_1$ is continuous, so $\pi_1(X)=X_1$ is path-connected.
+    
+\end{proof}
+
+\subsubsection*{Exercise 2.10.4(f)}
+\begin{problem}
+    If $X$ is compact, then each $X_j$ is compact.
+\end{problem}
+
+\begin{proof}
+    Suppose $X=X_1\times X_2$ is compact. The coordinate function $\pi_1:X\to X_1$ is continuous, so $\pi_1(X)=X_1$ is compact.
+    
+\end{proof}
+
+\section*{Additional Exercise}
+\begin{problem}
+    Given a topological space $X$, define \emph{the diagonal} as $\Delta := \{(x,x)\in X\times X : x\in X\}$. Prove that $X$ is Hausdorff if and only if the diagonal $\Delta$ is closed in $X\times X$. 
+\end{problem}
+
+\begin{proof}
+    Suppose $X$ is Hausdorff. Let $(x,y)\in\Delta^C$, i.e, $x,y\in X$ with $x\ne y$. Then since $X$ is Hausdorff, there exist open subsets $U,v\subseteq X$ such that $x\in U$, $y\in V$, and $U\cap V = \emptyset$. The by definition of the product topology, $U\times V$ is an open subset of $X\times X$ with $(x,y)\in U\times V$, as well as $(U\times V)\cap\Delta = \emptyset$. Therefore $\Delta$ is closed in $X\times X$.
+    
+    Now suppose we have that $\Delta$ is closed in $X\times X$. Let $x,y\in X$ with $x\ne y$, i.e., $(x,y)\in\Delta^C$. Now since $\Delta^C$ is open, then from our base of the product topology, we have open subsets $U,V\subseteq X$ such that $(x,y)\in(U\times V)\subseteq \Delta^C$. That is, $x\in U$, $y\in V$, and $U\cap V = \emptyset$, so $X$ is Hausdorff.
+    
+\end{proof}
+
+
+
+\end{document}

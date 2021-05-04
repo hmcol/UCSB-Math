@@ -1,0 +1,449 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{amsmath, amsthm, amssymb, physics}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Options
+\allowdisplaybreaks
+\addtolength{\jot}{4pt}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\emptyset}{\varnothing}
+
+% Extra Commands
+\newcommand{\RR}{\mathcal{R}}
+\def\[#1\]{\begin{align*}#1\end{align*}}
+\newcommand{\tsum}{\textstyle\sum\limits}
+
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH 118B Homework 5}
+    \fancyhead[C]{February 16, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+
+\begin{pbox}[1]
+    We say that a function $\phi:\mathbb{R} \to \mathbb{R}$ is convex if
+    \begin{equation}
+     \phi(\lambda x + (1-\lambda)y) \le \lambda \phi(x) + (1-\lambda) \phi(y)\ \ \forall \lambda \in [0,1],\ \ \forall x, y \in \mathbb{R}.
+    \end{equation}
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Fix $a, b \in \R$. Show that $\exists\,M>0$ such that 
+    \begin{equation}
+    |\phi(x)| \le M,\quad \forall x \in [a,b].
+    \end{equation}
+\end{pbox}
+
+\begin{proof}
+    Let $M_0 = \max\{|\phi(a)|, |\phi(b)|\}$. Let $x \in [a, b]$ and define $\lambda = (x - b)/(a - b)$. Then $\lambda \in [0, 1]$ and $x = \lambda a + (1 - \lambda)b$. Using the fact that $\phi$ is convex, we find
+    \begin{align*}
+        \phi(x)
+            &\leq \lambda\phi(a) + (1-\lambda)\phi(b) \\
+            &\leq \lambda M_0 + (1-\lambda)M_0 \\
+            &= M_0.
+    \end{align*}
+    Hence, $\phi$ is bounded above on $[a, b]$. Define the point $c = (a+b)/2 \in [a, b]$. Let $x \in (c, b)$ and define $\lambda = (c - a)/(x - a)$. Then $\lambda \in (0, 1)$ and $c = \lambda x + (1-\lambda)a$, so convexity gives us
+    \begin{align*}
+        \phi(c) &\leq \lambda\phi(x) + (1-\lambda)\phi(a) \\
+        \phi(c) &\leq \lambda\phi(x) + M_0 \\
+        -\lambda\phi(x) &\leq M_0 - \phi(c) \\
+        -\phi(x) &\leq \frac{1}{\lambda}(M_0 - \phi(c)).
+    \end{align*}
+    Note that $\phi(c) \leq M_0$ so $M_0 - \phi(c) \geq 0$. Because $x \in (a, b)$ and $c = (a+b)/2$ and,
+    \[
+        \lambda
+            = \frac{c-a}{x-a}
+            \geq \frac{c-a}{b-a}
+            = \frac{1}{2}.
+    \]
+    So $1/\lambda \leq 2$, which gives us $-\phi(x) \leq 2(M_0 - \phi(c))$. We repeat this process for $x \in (a, c)$, defining $\lambda = (c-b)/(x-b)$. Then $\lambda \in (0, 1)$ and $c = \lambda x + (1 - \lambda)b$, so convexity gives us
+    \begin{align*}
+        \phi(c) &\leq \lambda(x) + (1-\lambda)\phi(b) \\
+        -\phi(x) &\leq \frac{1}{\lambda}(M_0 - \phi(c)).
+    \end{align*}
+    Once again, we have
+    \[
+        \lambda
+            = \frac{c-b}{x-b}
+            \geq \frac{c-b}{a-b}
+            = \frac{1}{2}.
+    \]
+    So $1/\lambda \leq 2$, which gives us $-\phi(x) \leq 2(M_0 - \phi(c))$. Defining
+    \[
+        M = \max\{M_0,\; |\phi(c)|,\; 2(M_0 - \phi(c))\},
+    \]
+    we have $|\phi(x)| \leq M$ for all $x \in [a, b]$.
+    
+    
+\end{proof}
+
+\begin{pbox}[(b)]
+    Given $a<b$, consider $c<d$ such that $[c,d] \subset (a,b)$.  Show that there exists $L>0$ such that 
+    \begin{equation}
+    |\phi(x)-\phi(y)|\le L |x-y|,\quad \forall\,x,y\in [c,d].
+    \end{equation}
+    Conclude that {\bf any} convex function is continuous.
+    {\it Hint: Note that if $x= (1-\lambda)y+\lambda w$, then 
+    \begin{equation}
+    \lambda = \frac{x-y}{w-y}.
+    \end{equation}
+    }
+\end{pbox}
+
+\begin{proof}
+    Take $M$ as in part (a), bounding $|\phi|$ on $[a,b]$. Let $x, y \in [c, d]$. Without loss of generality, assume $x < y$. Define $\lambda_1 = (x-y)/(a-y)$, then $\lambda_1 \in [0,1]$ and $x = \lambda_1 a + (1-\lambda_1)y$. Convexity gives us
+    \begin{align*}
+        \phi(x) &\leq \lambda_1\phi(a) + (1-\lambda_1)\phi(y) \\
+        \phi(x) - \phi(y) &\leq (\phi(a) - \phi(y))\lambda_1.
+    \end{align*}
+    Similarly, define $\lambda_2 = (y-x)/(b-x)$, then $\lambda_2 \in [0, 1]$ and $y = \lambda_2 b + (1-\lambda_2)x$. Convexity gives us
+    \begin{align*}
+        \phi(y) &\leq \lambda_2\phi(b) + (1-\lambda_2)\phi(x) \\
+        \phi(y) - \phi(x) &\leq (\phi(b) - \phi(x))\lambda_2.
+    \end{align*}
+    Therefore, we have
+    \[
+        |\phi(x) - \phi(y)| \leq \max\{|(\phi(a) - \phi(y))\lambda_1|, |(\phi(b) - \phi(x))\lambda_2|\}.
+    \]
+    Since $a < c < y$, then $|a-y| \geq |a-c|$, so
+    \[
+        |(\phi(a) - \phi(y))\lambda_1|
+            = \frac{|\phi(a) - \phi(y)|}{|a-y|} |x-y|
+            \leq \frac{2M}{|a-c|} |x-y|.
+    \]
+    Since $x < d < b$, then $|b-x| \geq |b-d|$, so
+    \[
+        |(\phi(b) - \phi(b))\lambda_2|
+            = \frac{|\phi(b) - \phi(x)|}{|b-x|} |x-y|
+            \leq \frac{2M}{|b-d|} |x-y|.
+    \]
+    Define
+    \[
+        L = \max\left\{\frac{2M}{|a-c|},\; \frac{2M}{|b-d|}\right\}.
+    \]
+    Then
+    \[
+        |\phi(x) - \phi(y)| \leq L|x-y|,
+    \]
+    which holds for all $x, y \in [c,d]$.
+    
+\end{proof}
+
+ In other words, $\phi$ is Lipschitz continuous, and therefore continuous, on the interval $[c,d]$. Then for any $x \in \R$, we can choose $a, b, c, d \in \R$ such that $a < c < x < d < b$. In which case $\phi$ is continuous on $[c,d]$, in particular, at $x$. So $\phi$ is continuous on $\R$.
+
+
+
+
+\newpage
+\begin{pbox}[(c)]
+    Prove that if $\lambda_i \in [0,1]$ for $i=1,2,\dots,n$ are such that $\sum_{i=1}^n \lambda_i = 1$ and $x_1,\dots,x_n \in \mathbb{R}$, then 
+    \begin{equation}
+     \phi(\lambda_1 x_1 + \dots + \lambda_n x_n) \le \lambda_1 \phi(x_1) + \dots + \lambda_n \phi(x_n).
+    \end{equation}
+\end{pbox}
+
+\begin{proof}
+    We prove this by induction on $n \in \N$. Trivially, if $\lambda = 1$ and $x \in \R$, then
+    \[
+        \phi(\lambda x) = \lambda \phi(x).
+    \]
+    Assume that the property holds for some $n \geq 1$. Suppose $\lambda_i \in [0,1]$ and $x_i \in \R$ for $i = 1, \dots, n+1$ such that $\sum_{i=1}^{n+1} \lambda_i = 1$. Without loss of generality, assume $\lambda_{n+1} \ne 1$ and define $\lambda_i' = \lambda_i/(1 - \lambda_{n+1})$ for $i = 1, \dots, n$. Then
+    \[
+        \lambda_1 + \cdots + \lambda_n + \lambda_{n+1} &= 1, \\[6pt]
+        \lambda_1 + \cdots + \lambda_n &= 1 - \lambda_{n+1}, \\[6pt]
+        \frac{\lambda_1 + \cdots + \lambda_n}{1 - \lambda_{n+1}} &= \frac{1 - \lambda_{n+1}}{1 - \lambda_{n+1}}, \\[6pt]
+        \lambda_1' + \cdots + \lambda_n' &= 1.
+    \]
+    We can now rewrite the summation to fulfill the necessary conditions to apply the convexity of $\phi$, i.e.,
+    \begin{align*}
+        \phi\!\left(\tsum_{i=1}^{n+1} \lambda_i x_i\right)
+            &= \phi\!\left(\lambda_{n+1}x_{n+1} + \tsum_{i=1}^{n} \lambda_i x_i\right) \\
+            &= \phi\!\left(\lambda_{n+1}x_{n+1} + (1 - \lambda_{n+1})\tsum_{i=1}^{n} \lambda_i' x_i\right) \\
+            &\leq \lambda_{n+1}\phi(x_{n+1}) + (1 - \lambda_{n+1})\phi\!\left(\tsum_{i=1}^{n} \lambda_i' x_i\right).
+    \end{align*}
+    And applying the inductive hypothesis to the second term gives us
+    \begin{align*}
+        \phi\!\left(\textstyle\sum\limits_{i=1}^{n+1} \lambda_i x_i\right)
+            &\leq \lambda_{n+1}\phi(x_{n+1}) + (1 - \lambda_{n+1})\sum_{i=1}^{n} \lambda_i'\phi(x_i) \\
+            &= \lambda_{n+1}\phi(x_{n+1}) + \sum_{i=1}^{n} \lambda_i\phi(x_i) \\
+            &= \sum_{i=1}^{n+1} \lambda_i\phi(x_i).
+    \end{align*}
+    
+\end{proof}
+
+
+\newpage
+\begin{pbox}[(d)]
+    Consider $f\in \mathcal{R}([a,b])$, and show that $\phi \circ f: [a,b] \to \mathbb{R}$ is also Riemann integrable. Prove that 
+    \begin{equation}
+     \phi \left ( \frac{1}{b-a} \int_a^b f(x)\,dx \right ) \le \frac{1}{b-a} \int_a^b \phi(f(x))\,dx.
+    \end{equation}
+\end{pbox}
+
+\begin{proof}
+    Since $f \in \RR([a,b])$ and $\phi$ is continuous on $\R$, in particular on the image $f([a,b])$ (which is a closed, bounded interval as $f$ is continuous), then the composition $\phi \circ f$ is also Riemann integrable on $[a, b]$. For a given $n \in \N$, we define a partition of $[a, b]$ by the equidistributed points $x_{n,k} = a + (b-a)k/n$ for $k = 0, 1, \dots, n$. Since the diameter of these partitions converges to zero (each interval has a width of $(b-a)/n$), then we can rewrite the integral as the limit of Riemann sums to obtain
+    \[
+        \frac{1}{b-a}\int_{a}^{b} f(x) \dd{x}
+            = \lim_{n \to \infty} \sum_{k=1}^{n} \frac{f(x_{n,k})}{n}.
+    \]
+    Since $\phi$ is continuous, then we can interchange it with the limit, i.e.,
+    \[
+        \phi\!\left(\lim_{n \to \infty} \sum_{k=1}^{n} \frac{f(x_{n,k})}{n}\right)
+         = \lim_{n \to \infty} \phi\!\left(\sum_{k=1}^{n} \frac{f(x_{n,k})}{n}\right).
+    \]
+    Similar to that of $f$, the integral of $\phi \circ f$ can be rewritten as the limit of Riemann sums
+    \[
+        \frac{1}{b-a} \int_{a}^{b} \phi(f(x)) \dd{x}
+            = \lim_{n \to \infty} \sum_{k=1}^{n} \frac{\phi(f(x_{n,k}))}{n}.
+    \]
+    A particular case of part (c) is having $n$ points, each with a weight of $1/n$. So the convexity of $\phi$ gives us
+    \[
+        \phi\!\left(\sum_{k=1}^{n} \frac{f(x_{n,k})}{n}\right)
+            \leq \sum_{k=1}^{n} \frac{\phi(f(x_{n,k}))}{n}.
+    \]
+    And since both limits converge, we obtain the inequality
+    \[
+        \lim_{n \to \infty} \phi\!\left(\sum_{k=1}^{n} \frac{f(x_{n,k})}{n}\right)
+            \leq \lim_{n \to \infty} \sum_{k=1}^{n} \frac{\phi(f(x_{n,k}))}{n}.
+    \]
+    Substituting both sides with the above expressions, we have
+    \[
+        \phi\!\left(\frac{1}{b-a}\int_{a}^{b} f(x) \dd{x}\right)
+            \leq \frac{1}{b-a} \int_{a}^{b} \phi(f(x)) \dd{x}.
+    \]
+    
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[2]
+    Find the following limits:
+\end{pbox}
+
+\begin{pbox}[(a)]
+    \begin{equation}
+    \lim _{n\to \infty} \left ( \frac{1}{n+1} +\frac{1}{n+2}+\ldots+\frac{1}{3n}\right ).
+    \end{equation}
+\end{pbox}
+
+If it exists, we want to find
+\[
+    \lim_{n \to \infty} \sum_{k=1}^{2n} \frac{1}{n + k}
+        = \lim_{n \to \infty} \frac{1}{n} \sum_{k=1}^{2n} \frac{1}{1 + \frac{k}{n}}.
+\]
+Consider the function
+\[
+    f(x) = \frac{1}{1 + x},
+\]
+which is continuous on $[0,2]$, so $f \in \RR([0, 2])$. The integral can be found as the limit of any sequence of Riemann sums with the diameters of the partitions converging to zero. In particular,
+\[
+    \int_{0}^{2} f(x) \dd{x}
+        = \lim_{n \to \infty} \frac{1}{n} \sum_{k=1}^{2n} f\!\left(\tfrac{k}{n}\right)
+        = \lim_{n \to \infty} \frac{1}{n} \sum_{k=1}^{2n} \frac{1}{1 + \frac{k}{n}}.
+\]
+Since the chain rule gives us
+\[
+    \dv{x} \log(x+1)
+        = \frac{1}{x+1}\dv{x}(x+1)
+        = f(x),
+\]
+then from the fundamental theorem of calculus we know that
+\[
+    \int_{0}^{2} f(x) \dd{x}
+        = \log(2 + 1) - \log(0 + 1)
+        = \log 3.
+\]
+Hence,
+\[
+     \lim_{n \to \infty} \sum_{k=1}^{2n} \frac{1}{n + k} = \log 3.
+\]
+
+
+\newpage
+\begin{pbox}[(b)]
+    \begin{equation}
+    \lim_{n\to \infty} n^4 \int_n^{n+1} \frac{x}{1+x^5} \dd{x}.
+    \end{equation}
+\end{pbox}
+
+For each $n \in \N$, the mean value theorem for integrals gives us $x_n \in [n, n+1]$ such that
+\[
+    \int_n^{n+1} \frac{x}{1+x^5} \dd{x}
+        = \frac{x_n}{1+x_n^5}.
+\]
+Then the limit can be rewritten as
+\[
+    \lim_{n\to \infty} n^4 \int_n^{n+1} \frac{x}{1+x^5} \dd{x}
+        = \lim_{n\to \infty} \frac{n^4x_n}{1+x_n^5}
+        = \lim_{n\to \infty} \frac{1}{\dfrac{1}{n^4x_n} + \dfrac{x_n^4}{n^4}}.
+\]
+Now since
+\[
+    1
+        = \frac{n^4}{n^4}
+        \leq \frac{x_n^4}{n^4}
+        \leq \frac{(n+1)^4}{n^4}
+        = \left(1 + \frac{1}{n}\right)^4,
+\]
+then the squeeze theorem tells us that
+\[
+    \lim_{n \to \infty} \frac{x_n^4}{n^4} = 1.
+\]
+Similarly, we have
+\[
+    0
+        \leq \frac{1}{n^4 x_n}
+        \leq \frac{1}{n^4},
+\]
+so
+\[
+    \lim_{n \to \infty} \frac{1}{n^4 x_n} = 0.
+\]
+Substituting these values into the original limit, we find
+\[
+    \lim_{n\to \infty} n^4 \int_n^{n+1} \frac{x}{1+x^5} \dd{x} = 1.
+\]
+
+
+
+
+\newpage
+\begin{pbox}[3]
+    Verify whether the following integrals converge or diverge:
+\end{pbox}
+
+\begin{pbox}[(a)]
+    \begin{equation}
+    \int_2^\infty \frac{\dd{x}}{x\log x}.
+    \end{equation}
+\end{pbox}
+
+If it exists, the improper integral is given by the limit
+\[
+    \int_2^\infty \frac{\dd{x}}{x\log x} = \lim_{b \to \infty} \int_{2}^{b} \frac{\dd{x}}{x\log x}.
+\]
+Assuming $b > 2$, the function
+\[
+    f(x) = \frac{1}{x \log x}
+\]
+is continuous on the bounded interval $[2, b]$, so $f \in \RR([2, b])$. Moreover,
+\[
+    \dv{x} \log(\log x) = \frac{1}{\log x} \dv{x} \log x = f(x),
+\]
+so the fundamental theorem of calculus tells gives us
+\[
+    \int_{2}^{b} \frac{1}{x \log x} = \log(\log b) - \log(\log 2).
+\]
+And since
+\[
+    \lim_{b \to \infty} \log b = \infty,
+\]
+then we find that
+\[
+    \lim_{b \to \infty} \int_{2}^{b} \frac{\dd{x}}{x\log x}
+        = \lim_{n \to \infty} \log(\log b) - \log(\log 2)
+        = \infty.
+\]
+Hence, the improper integral diverges to $\infty$.
+
+
+
+
+
+\newpage
+\begin{pbox}[(b)]
+    \begin{equation}
+    \int_0^\infty \frac{\cos x}{1+x^2} \dd{x}.
+    \end{equation}
+\end{pbox}
+
+The improper integral
+\[
+    \int_0^{\infty} \frac{\cos x}{1+x^2} \dd{x}
+\]
+converges if it is absolutely convergent, i.e., if the improper integral
+\[
+    \int_0^{\infty} \left|\frac{\cos x}{1+x^2}\right| \dd{x}
+\]
+converges. For $b > 0$, the functions
+\[
+    \frac{\cos x}{1 + x^2} \isp{and} \frac{1}{1 + x^2}
+\]
+are continuous, and therefore Riemann integrable, on the bounded interval $[0, b]$. And since
+\[
+    \left|\frac{\cos x}{1  + x^2}\right|
+        = \frac{|\cos x|}{1 + x^2}
+        \leq \frac{1}{1 + x^2},
+\]
+then
+\[
+    \int_0^b \left|\frac{\cos x}{1+x^2}\right| \dd{x}
+        \leq \int_0^b \frac{1}{1+x^2} \dd{x}.
+\]
+Moreover, we have that
+\[
+    \dv{x} \arctan x = \frac{1}{1 + x^2},
+\]
+so the fundamental theorem of calculus tells us
+\[
+    \int_0^b \frac{1}{1+x^2} \dd{x}
+        = \arctan b - \arctan 0
+        = \arctan b,
+\]
+so
+\[
+    \lim_{b \to \infty} \int_0^b \left|\frac{\cos x}{1+x^2}\right| \dd{x}
+        \leq \lim_{b \to \infty} \arctan b
+        = \frac{\pi}{2}.
+\]
+Since the limit is increasing and bounded above, it is convergent, i.e., the improper integral
+\[
+    \int_0^{\infty} \left|\frac{\cos x}{1+x^2}\right| \dd{x}
+        = \lim_{b \to \infty} \int_0^b \left|\frac{\cos x}{1+x^2}\right| \dd{x}
+\]
+converges.
+
+
+
+
+
+\end{document}

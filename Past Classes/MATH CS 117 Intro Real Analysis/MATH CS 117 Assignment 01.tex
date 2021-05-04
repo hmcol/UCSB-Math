@@ -1,0 +1,114 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% custom commands
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\p}{^{\prime}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\setlength{\fboxsep}{4pt}
+\newcommand{\generic}[2]{\section*{#1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\ex}[2]{\generic{Exercise #1}{#2}}
+\newcommand{\prob}[2]{\generic{Problem #1}{#2}}
+\newcommand{\ques}[2]{\generic{Question #1}{#2}}
+
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+\newcommand{\ds}{\displaystyle}
+\newcommand{\seq}[1]{\{#1\}_{n=1}^\infty}
+\newcommand{\eps}{\varepsilon}
+
+ 
+\begin{document}
+ 
+\title{Assignment 1\\
+    \large MATH CS 117 Intro to Real Analysis}
+\author{Harry Coleman}
+\date{April 4, 2020}
+\maketitle
+
+\ques{1a}{
+    Prove that $\N$ is not bounded above.
+}
+
+Suppose, to the contrary, that $\N$ is bounded above. Then by the least upper bound principle, there exists $x = \sup\N$. This means that for all $n\in\N$, $n<x$. Since $n+1\in\N$ for all $n\in\N$, it is also the case that $n+1<x$ for all $n\in\N$, which gives us $n<x-1$ for all $n\in\N$. Thus $x-1$ is a lesser upper bound of $\N$ than $x$ which is a contradiction. Therefore, $\N$ is not bounded above.
+
+\ques{1b}{
+    Let $x>0$.  Prove that there exists $n\in\N$ such that $\ds\frac1n<x$.
+}
+
+Since $x,1\in\R$ and $x>0$, then by the Archimedean property, there exists $n\in\N$ such that $nx > 1$. We know $n\ne0$, since otherwise we would have $0>1$. Therefore, we have $\ds x>\frac1n$.
+
+\ques{1c}{
+    Prove that $\ds\inf\left\{\frac1n:n\in\N\right\}=0$.
+}
+
+Since $\ds\frac1n$ is always positive, 0 is a lower bound of the set. To show 0 is the greatest upper bound, we suppose that there is some $\eps>0$ that is also a lower bound. Since $\N$ is not bounded above, there exists some $m\in\N$ such that $\ds\frac1\eps<m$. So $\ds\frac1m<\eps$, which contradicts $\eps$ being a lower bound. Therefore, 0 is the infimum.
+
+\ques{1d}{
+    Prove that $\ds\lim_{n\to\infty}\frac1n=0$.
+}
+
+Let $\eps>0$ and similar to question 1c, let $N\in\N$ such that $\ds\frac1\eps<N$. So $\ds\frac1N<\eps$. Since $n\geq N$ implies $\ds\frac1n \leq \frac1N$ for all $n\in\N$, then $n\geq N$ implies $\ds\frac1n <\eps$ for all $n\in\N$. Therefore, $0$ is the limit of the sequence.
+
+\ques{2}{
+    Let $S$ be a nonempty subset of $\R$ which is bounded above.  Prove that for every $\eps>0$, there exists $x\in S$ such that $\sup S-\eps<x\leq\sup S$.
+}
+
+Let $\eps>0$. Since $\sup S - \eps < \sup S$, then $\sup S - \eps$ is not an upper bound of $S$. So there exists some $x\in S$ (so necessarily $x\leq\sup S$) such that $\sup S - \eps < x \leq \sup S$.
+
+\ques{3}{
+    Let $x\in\R$.  Prove that if $|x|<\eps$, for every $\eps>0$, then $x=0$.
+}
+
+Suppose $x\ne0$, so $|x|>0$ and $0<|x/2|<|x|$. However, since $|x/2|>0$, then $|x|<|x/2|$. This is a contradiction, so $x=0$.
+
+\ques{4}{
+    Prove that every Cauchy sequence in $\R$ is bounded.
+}
+
+Let $\seq{a_n}$ be a Cauchy sequence. Let $\eps>0$ and $N\in\N$ such that for all $n,m\in\N$,
+\[n,m\geq N \implies |a_n-a_m| < \eps.\]
+Since for all $n,m \geq N$,
+\[|a_n| = |a_n - a_m + a_m| \leq |a_n - a_m| + |a_m| < \eps + |a_m|,\]
+take $m=N$ to obtain $|a_n| < \eps+|a_N|$ for all $n>N$. So $\seq{a_n}$ is bounded.
+
+
+\ques{5}{
+    Let $\seq{a_n}$  be a sequence in $\R$ which converges to $A$. Define
+    \[ b_n=\frac{a_n+a_{n+1}}2,\quad n\in\N.\]
+    Using the definition of the limit, prove that the sequence $\seq{b_n}$ converges to $A$.
+}
+
+Let $\eps>0$ and $N\in\N$ such that $n\geq N$ implies $|a_n-A|<\eps$. We want to show now that $|b_n - A|<\eps$. So
+\begin{align*}
+    |b_n - A|   &= \left| \frac{a_n+a_{n+1}}{2} - A \right| \\
+                &= \frac12 | (a_n-A) + (a_{n+1} - A) | \\
+                &\leq \frac12 (|a_n-A| + |a_{n+1} - A|) \\
+                &< \frac12 (\eps + \eps) \\
+                &= \eps.
+\end{align*}
+Therefore $|b_n-A| < \eps$, so $\seq{b_n}$ converges to $A$.
+
+
+
+
+\end{document}

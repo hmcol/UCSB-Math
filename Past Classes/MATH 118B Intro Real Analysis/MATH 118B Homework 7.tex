@@ -1,0 +1,391 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{amsmath, amsthm, amssymb, physics}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{4pt}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\pfrac}[2]{\left(\frac{#1}{#2}\right)}
+
+% Extra Commands
+\newcommand{\RR}{\mathcal{R}}
+\newcommand{\seq}[2]{\{#1\}_{#2\in\N}}
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH 118B Homework 7}
+    \fancyhead[C]{March 2, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+\noindent
+For a set $X$, we will denote the $X$-supremum norm on bounded functions $g : X \to \R$ by
+\[
+    \norm{g}_{\infty,X} = \sup_{x \in X}|g(x)|.
+\]
+
+\begin{pbox}[1]
+    Let  $A\subset E\subset \R$, with $A$ dense in $E$. Assume that $\{f_n\}_{n\in \N}$ is a sequence of functions continuous on $E$ that converge uniformly on $A$. Prove that $\{f_n\}_{n\in \N}$ converges uniformly on $E$.
+\end{pbox}
+
+
+
+\begin{proof}
+    Let $\eps > 0$ be given. Since $\seq{f_n}{n}$ converges uniformly on $A$, then it is a Cauchy sequence with respect to the supremum norm on $A$. That is, there exists $N \in \N$ such that
+    \[
+        \norm{f_n - f_m}_{\infty, A} < \frac{\eps}{3}, \qquad \forall n, m \geq N.
+    \]
+    For each $y \in E$ and $n \in \N$, using the continuity of $f_n$ on $E$, let $\delta_{y,n} > 0$ such that
+    \[
+        |f_n(x) - f_n(y)| < \frac{\eps}{3}, \qquad \forall x \in E \cap B_{\delta_{y,n}}(y).
+    \]
+    For each $y \in E$ and $n, m \geq N$, we define $\delta_{y, n, m} = \min\{\delta_{y, n}, \delta_{y, m}\}$. Since $A$ is dense in $E$, then we can choose a point $x_{y,n,m} \in A \cap B_{\delta_{y, n, m}}(y)$, and the above conditions imply
+    \begin{align*}
+        |f_n(y) - f_m(y)|
+            &\leq |f_n(y) - f_n(x_{y,n,m})| + |f_n(x_{y,n,m}) - f_m(x_{y,n,m})| + |f_m(x_{y,n,m}) - f_m(y)| \\
+            &< \frac{\eps}{3} + \frac{\eps}{3} + \frac{\eps}{3} \\
+            &= \eps.
+    \end{align*}
+    Since this bound is independent of $y \in E$ and $n, m \geq N$, then we have
+    \[
+        \norm{f_n - f_m}_{\infty,E} \leq \eps, \qquad \forall n, m \geq N.
+    \]
+    That is, $\seq{f_n}{n}$ is Cauchy, and therefore convergent, with respect to the $E$-supremum norm. Hence, the sequence of functions $\seq{f_n}{n}$ converges uniformly on $E$.
+    
+\end{proof}
+
+
+\newpage
+\begin{pbox}[2]
+    Let $R=[x_0-a,x_0+a]\times [y_0-b,y_0+b]$ and let $f:R\to \R$ be continuous, and such that $\exists\, L>0$ such that 
+    \begin{equation}\label{eqn:lipschitz}
+    |f(x,y)-f(x,z)|\le L|y-z|,\quad \forall\, x\in [x_0-a,x_0+a],\ \forall\, y, z\in [y_0-b,y_0+b]. 
+    \end{equation}
+    Consider the Initial Value Problem (IVP)
+    \begin{eqnarray}\label{eqn:IVP}
+    y' &=& f(x,y),\\
+    y(x_0) &=& y_0.
+    \end{eqnarray}
+    A (local) solution to the problem is a differentiable function $z:[x_0-\alpha,x_0+\alpha]\to \R$ such that $z(x_0) = y_0$ and 
+    \begin{equation}
+    z'(x) = f(x,z(x)),\quad \forall\, x\in [x_0-\alpha,x_0+\alpha].
+    \end{equation}
+    In this exercise we will prove that there exists a unique solution, defined for some $\alpha>0$. 
+\end{pbox}
+
+\noindent
+Throughout this problem, we use the notation $A = [x_0-\alpha,x_0+\alpha]$.
+
+\begin{lemma}
+    If $z : A \to  [y_0-b,y_0+b]$ is a continuous function, where $0 < \alpha \leq a$, then $f(x, z(x))$ is uniformly continuous on $A$.
+\end{lemma}
+
+\begin{proof}
+    Let $\eps > 0$ be given. Since $z$ is continuous on the compact set $A$, it is uniformly continuous, so there exists $\delta_1 > 0$ such that
+    \[
+        |s - t| < \delta_1 \implies |z(s) - z(t)| < \eps, \qquad \forall s, t \in A.
+    \]
+    Since $f$ is continuous on the compact set $R$, it is uniformly continuous, so there exists $\delta_2 > 0$ such that
+    \[
+        \norm{u - v}_2 < \delta_2 \implies |f(u) - f(v)| < \eps, \qquad \forall u, v \in R.
+    \]
+    Note that for $s, t \in A$, we have
+    \[
+        \norm{(s, z(t)) - (t, z(t))}_2
+            = \norm{(s - t, 0)}_2 
+            = |s - t|.
+    \]
+    So in particular,
+    \[
+        |s-t| < \delta_2 \implies |f(s, z(t)) - f(t, z(t))| < \eps, \qquad \forall s, t \in A.
+    \]
+    Now if $s, t \in A$ with $|s - t| < \min\{\delta_1, \delta_2\}$, then we find
+    \begin{align*}
+        |f(s, z(s)) - f(t, z(t))|
+            &\leq |f(s, z(s)) - f(s, z(t))| + |f(s, z(t)) - f(t, z(t))| \\
+            &< L|z(s) - z(t)| + \eps \\
+            &< L\eps + \eps \\
+            &= (L+1)\eps.
+    \end{align*}
+    And since $L+1$ is a constant, this gives us the uniform continuity of $f(x, z(x))$ on $A$.
+    
+\end{proof}
+
+\begin{pbox}[(a)]
+    Show that $z:[x_0-\alpha,x_0+\alpha]\to [y_0-b,y_0+b]$ continuous satisfies the IVP  (\ref{eqn:IVP}) if and only if 
+    \begin{equation}
+    z(x) = y_0 + \int_{x_0}^x f(t,z(t))\,dt,\quad \forall\, x \in [x_0-\alpha,x_0+\alpha].
+    \end{equation}
+\end{pbox}
+
+\begin{proof}
+    First, suppose that $z$ is a solution to the IVP. Then given $x \in A$, the fundamental theorem of calculus gives us
+    \[
+        \int_{x_0}^{x} f(t, z(t)) \dd{t}
+            = \int_{x_0}^{x} z'(t) \dd{t}
+            = z(x) - z(x_0).
+    \]
+    And since $z(x_0) = y_0$, we find
+    \[
+        z(x) = y_0 + \int_{x_0}^{x} f(t, z(t)) \dd{t}.
+    \]
+    
+    Now suppose that $z$ has the form
+    \[
+        z(x) = y_0 + \int_{x_0}^{x} f(t, z(t)) \dd{t}, \quad \forall x \in A,
+    \]
+    From Lemma 1, we know that $f(x, z(x))$ is continuous on $A$, implying that $z$ is differentiable on $A$ with $z'(x) = f(x, z(x))$. Now since $z$ is continuous on $A$, then we can find its value at $x_0$ by the limit
+    \[
+        z(x_0) = y_0 + \lim_{x \to x_0} \int_{x_0}^{x} f(t, z(t)) \dd{t}.
+    \]
+    Since $f$ is continuous on the compact set $R$, it is bounded by $M = \norm{f}_{\infty, R}$. Then we bound the integral by
+    \[
+        \abs{\int_{x_0}^{x} f(t, z(t)) \dd{t}}
+            \leq M|x - x_0|.
+    \]
+    And since $M|x - x_0| \to 0$ as $x \to x_0$, then the limit of the integral is also zero. Hence, $z(x_0) = y_0$.
+    
+    
+    
+\end{proof}
+
+
+
+
+\newpage
+\begin{pbox}[(b)]
+    Let $M = \sup_R |f|$ and define 
+    \begin{equation}
+    \alpha = \min \left \{ a, \frac{b}{M}\right \}.
+    \end{equation}
+    Construct a sequence of functions $z_n:[x_0-\alpha,x_0+\alpha]\to \R$, $n\ge 0$,  as follows: $z_0(x) = y_0$ for all $x \in [x_0-\alpha,x_0+\alpha]$, and for $n \ge 1$, 
+    \begin{equation}
+    z_n(x) = y_0 + \int_{x_0}^x f(t,z_{n-1}(t))\,dt,\quad x \in [x_0-\alpha,x_0+\alpha].
+    \end{equation}
+    Prove by induction that if $x \in [x_0-\alpha,x_0+\alpha]$, then $|z_n(x) - y_0|\le b$, and that $z_n$ is continuous. Conclude that the sequence is well defined. 
+\end{pbox}
+
+\begin{proof}
+    We prove by induction that $z_n : A \to [y_0 - b, y_0 + b]$ is a continuous function. For the base case, the constant function $z_0(x) = y_0$ is continuous and $|z_0 - y_0| = 0 \leq b$ for all $x \in A$.
+    
+    Given $n \in \N$, assume $z_{n-1}$ is continuous with $|z_{n-1}(x) - y_0| \leq b$ for all $x \in A$. That is, $z_{n-1} : A \to [y_0 - b, y_0 + b]$ is a continuous function, so Lemma 1 tells us that $f(x, z_{n-1}(x))$ is continuous on $A$. Therefore, the function defined by
+    \[
+        z_n(x) = y_0 + \int_{x_0}^x f(t,z_{n-1}(t)) \dd{t}, \quad x \in A,
+    \]
+    is differentiable on $A$ with $z_n'(x) = f(x, z_{n-1}(x))$. In particular, $z_n$ is continuous on $A$. And for any $x \in A$, we find
+    \begin{align*}
+        |z_n(x) - y_0|
+            &= \abs{\int_{x_0}^x f(t,z_{n-1}(t)) \dd{t}} \\
+            &\leq M|x - x_0| \\
+            & \leq M\alpha \\
+            &\leq M\frac{b}{M} \\
+            &= b.
+    \end{align*}
+    Hence, $z_n : A \to [y_0 - b, y_0 + b]$ is a continuous function. This completes the induction, implying that $\seq{z_n}{n}$ is a well-defined sequence of continuous functions.
+    
+    
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[(c)]
+    We are going to prove that $\{z_n\}_{n\in\N}$ is a Cauchy sequence of continuous functions. To do this, use (\ref{eqn:lipschitz}) to show by induction that for all $n\ge 1$, 
+    \begin{equation}
+    |z_n(x)-z_{n-1}(x)| \le ML^{n-1}\frac{|x-x_0|^n}{n!},\quad \forall\,x \in [x_0-\alpha,x_0+\alpha].
+    \end{equation}
+\end{pbox}
+
+\begin{proof}
+    For the base case, if $x \in A$, we find
+    \begin{align*}
+        |z_1(x) - z_0(x)|
+            &= \abs{\int_{x_0}^{x} f(t, z_0(t)) \dd{t}} \\
+            &\leq M|x - x_0| \\
+            &= ML^{1-1} \frac{|x - x_0|^1}{1!}.
+    \end{align*}
+    Now for a given $n \in \N$, assume
+    \[
+        |z_{n-1}(x) - z_{n-2}(x)| \leq ML^{n-2}\frac{|x - x_0|^{n-1}}{(n-1)!}, \quad \forall x \in A.
+    \]
+    Then for $x \in A$, we find
+    \begin{align*}
+        \abs{z_n(x) - z_{n-1}(x)}
+            &= \abs{\int_{x_0}^{x} \qty\Big(f(t, z_{n-1}(t)) - f(t, z_{n-2}(t))) \dd{t}} \\
+            &\leq \abs{\int_{x_0}^{x} \abs\Big{f(t, z_{n-1}(t)) - f(t, z_{n-2}(t))} \dd{t}} \\
+            &\leq \abs{\int_{x_0}^{x} L \abs\Big{z_{n-1}(t) - z_{n-2}(t)} \dd{t}} \\
+            &\leq L \abs{\int_{x_0}^{x} ML^{n-2} \frac{|t - x _0|^{n-1}}{(n-1)!} \dd{t}} \\
+            &= \frac{ML^{n-1}}{(n-1)!} \abs{\int_{x_0}^{x} |t - x _0|^{n-1} \dd{t}} \\
+            &= \frac{ML^{n-1}}{(n-1)!} \abs{\eval{\frac{|t - x _0|^n}{n}}_{x_0}^{x}} \\
+            &= \frac{ML^{n-1}}{n!} \abs\Big{|x - x_0|^n - |x_0 - x_0|^n} \\
+            &= ML^{n-1}\frac{|x - x_0|^n}{n!}.
+    \end{align*}
+    This completes the induction.
+    
+\end{proof}
+
+
+
+
+
+\newpage
+\begin{pbox}[(d)]
+    Use the previous part to show that $\{z_n\}_{n\in\N}$ is a Cauchy sequence, and therefore $\exists\, z:[x_0-\alpha,x_0+\alpha]\to \R$ continuous such that $z_n \to z$ uniformly.
+\end{pbox}
+
+\begin{proof}
+    As a corollary of (c), we have
+    \[
+        \norm{z_n - z_{n-1}}_{\infty, A} \leq ML^{n-1}\frac{\alpha^n}{n!}, \quad \forall n \in \N.
+    \]
+    If $n, m \in \N$, and assuming $n \geq m$, we find
+    \begin{align*}
+        \norm{z_n - z_m}_{\infty, A}
+            &\leq \sum_{k=m+1}^{n} \norm{z_k - z_{k-1}}_{\infty, A} \\
+            &\leq \sum_{k=m}^{n} ML^{k-1}\frac{\alpha^k}{k!} \\
+            &\leq \frac{M}{L} \sum_{k=m}^{n} \frac{(L\alpha)^k}{k!}.
+    \end{align*}
+    Let $\eps > 0$ be given. Note that we have the power series of the exponential function
+    \begin{align*}
+        e^{L\alpha} = \sum_{k=0}^{\infty} \frac{(L\alpha)^k}{k!},
+    \end{align*}
+    which is a convergent series. Therefore, its tail tends to zero, i.e., there exists some $N \in \N$ such that
+    \[
+        \sum_{k=N}^{\infty} \frac{(L\alpha)^k}{k!} < \frac{L}{M} \eps.
+    \]
+    Then for $n, m \geq N$, we have
+    \[
+        \norm{z_n - z_m}_{\infty, A}
+            \leq \frac{M}{L} \sum_{k=N}^{\infty} \frac{(L\alpha)^k}{k!}
+            < \eps.
+    \]
+    Thus, $\seq{z_n}{n}$ is Cauchy, and therefore convergent, with respect to the $A$-supremum norm. That is, the sequence of functions $\seq{z_n}{n}$ converges uniformly on $A$ to some function $z : A \to [y_0 - b, y_0+b]$.
+    
+    
+\end{proof}
+
+
+
+
+\newpage
+\begin{pbox}[(e)]
+    Prove that 
+    \begin{equation}
+    z(x) = y_0 + \int_{x_0}^x f(t,z(t))\,dt,\quad \forall\, x \in [x_0-\alpha,x_0+\alpha],
+    \end{equation}
+    and therefore $z$ is a solution to the IVP (\ref{eqn:IVP}).
+    {\it Hint: Show that $\{f(\cdot,z_n(\cdot))\}_{n\in\N}$ converges uniformly.}
+\end{pbox}
+
+\begin{proof}
+    For all $n \in \N$ and $x \in A$, we have
+    \[
+        |f(x, z_n(x)) - f(x, z(x))| \leq L|z_n(x) - z(x)|,
+    \]
+    which implies
+    \[
+        \norm{f(\cdot, z_n(\cdot)) - f(\cdot, z(\cdot))}_{\infty, A} \leq L\norm{z_n - z}_{\infty, A}.
+    \]
+    Then given $\eps > 0$, (d) implies that there exists some $N \in \N$ such that
+    \[
+        \norm{z_n - z}_{\infty, A} < \frac{\eps}{L}, \quad \forall n \geq N.
+    \]
+    Hence, if $n \geq N$, then $\norm{f(\cdot, z_n(\cdot)) - f(\cdot, z(\cdot))}_{\infty, A} < \eps$. Thus, $f(\cdot,z_n(\cdot)) \to f(\cdot, z(\cdot))$ with respect to the $A$-supremum norm, i.e., converges uniformly on $A$. Thus, for any $x \in A$, we have
+    \begin{align*}
+        z(x)
+            &= \lim_{n \to \infty} z_n(x) \\
+            &= y_0 + \lim_{n \to \infty} \int_{x_0}^{x} f(t, z_{n-1}(t)) \dd{t} \\
+            &= y_0 + \int_{x_0}^{x} f(t, z(t)) \dd{t}.
+    \end{align*}
+    Hence, $z$ is a solution to the IVP.
+    
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[(f)]
+    In this last part we prove the uniqueness of the solution: Suppose that $y:[x_0-\alpha,x_0+\alpha]\to \R$ and $z:[x_0-\alpha,x_0+\alpha]\to \R$ solve the IVP (\ref{eqn:IVP}). We will work only on $[x_0,x_0+\alpha]$, but the same could be done on $[x_0-\alpha,x_0]$: Show that 
+    \begin{equation}
+    |y(x)-z(x)|\le L\int_{x_0}^x |y(t)-z(t)|\,dt,\quad \forall\,x\in [x_0,x_0+\alpha].
+    \end{equation}
+    Now define 
+    \begin{equation}
+    w(x) = \int_{x_0}^x |y(t)-z(t)|\,dt,\quad \forall\,x\in [x_0,x_0+\alpha],
+    \end{equation}
+    and use the previous inequality to show that 
+    \begin{equation}
+    w'(x) \le Lw(x), \quad \forall\,x\in [x_0,x_0+\alpha].
+    \end{equation}
+    From this, show that 
+    \begin{equation}
+    \left (e^{-Lx} w(x)\right )' \le 0,\quad \forall\,x\in [x_0,x_0+\alpha].
+    \end{equation}
+    and conclude from this that $w(x) = 0$ for all $x \in [x_0,x_0+\alpha]$.
+\end{pbox}
+
+\begin{proof}
+    For any $x \in [x_0, x_0 + \alpha]$, the result of (a) gives us
+    \begin{align*}
+        \abs{y(x) - z(x)}
+            &= \abs{\int_{x_0}^{x} \qty\Big(f(t, y(t)) - f(t, z(t))) \dd{t}} \\
+            &\leq \int_{x_0}^{x} \abs\Big{(f(t, y(t)) - f(t, z(t))} \dd{t} \\
+            &\leq L\int_{x_0}^{x} \abs\big{y(t) - z(t)} \dd{t}
+    \end{align*}
+    Since both $y$ and $z$ are differentiable, they are continuous, so $|y - z|$ is a continuous function on $[x_0, x_0 + \alpha]$. Therefore, $w$ is differentiable on $[x_0, x_0 + \alpha]$ with $w' = |y - z|$. Hence, for all $x \in [x_0, x_0 + \alpha]$, we have $w'(x) \leq Lw(x)$. Now
+    \begin{align*}
+        \dv{x} e^{-Lx} w(x)
+            &= e^{-Lx} \dv{x}w(x) + w(x) \dv{x} e^{-Lx} \\
+            &= e^{-Lx} w'(x) + w(x)\qty(-Le^{-Lx}) \\
+            &\leq Lw(x)e^{-Lx} - Lw(x)e^{-Lx} \\
+            &= 0.
+    \end{align*}
+    Let $g(x) = e^{-Lx} w(x)$. Since $y(x_0) = y_0 = z(x_0)$, then $g(x_0) = 0$. Since $g$ is continuous, then for any $x \in [x_0, x_0 + \alpha]$, the mean value theorem tells us that there is some $c_x \in [x_0, x]$ such that
+    \[
+        g'(c_x)(x - x_0) = g(x) - g(x_0) = g(x).
+    \]
+    Since $x - x_0 \geq 0$ and $g'(c_x) \leq 0$, this implies we must have $0 \geq g(x) = e^{-Lx}w(x)$. And since the exponential function is positive, then we must have $w(x) \leq 0$. But because $w(x) = |y(x) - z(x)| \geq 0$, then we must have $w(x) = 0$.
+    
+\end{proof}
+
+\end{document}

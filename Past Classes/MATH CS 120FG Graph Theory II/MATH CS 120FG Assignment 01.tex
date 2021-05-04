@@ -1,0 +1,210 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% custom commands
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\p}{^{\prime}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\setlength{\fboxsep}{4pt}
+\newcommand{\generic}[2]{\section*{#1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\ex}[2]{\generic{Exercise #1}{#2}}
+\newcommand{\prob}[2]{\generic{Problem #1}{#2}}
+\newcommand{\ques}[2]{\generic{Question #1}{#2}}
+
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+ 
+\begin{document}
+ 
+\title{Assignment 1\\
+    \large MATH CS 120FG Graph Theory II}
+\author{Harry Coleman}
+\date{April 7, 2020}
+\maketitle
+
+\ex{1}{
+    Argue that there is a second monochromatic triangle in any red-blue coloring of $K_6$.
+}
+
+We'll label the vertices of our red-blue edge-coloring of $K_6$ using $x_1,x_2,x_3,y_1,y_2,y_3$, and without loss of generality, let $x_1,x_2,x_3$ form a blue triangle. We will suppose that there does not exist a second monochromatic triangle, and derive a contradiction. Since the vertices $y_1,y_2,y_3$ do not form a blue triangle, there must be at least one red edge between two of them, say $y_1$ and $y_2$. So we have the following where (blue is black and red is dashed):
+\begin{drawing}
+    \draw[fill=black] (0,1) circle (2pt) node[anchor=south]{$x_1$};
+    \draw[fill=black] (-0.5,0.5) circle (2pt) node[anchor=east]{$x_3$};
+    \draw[fill=black] (0,0) circle (2pt) node[anchor=north]{$x_2$};
+    
+    \draw (0,1)--(-0.5,0.5)--(0,0)--(0,1);
+    
+    \draw[fill=black] (2,1) circle (2pt) node[anchor=south]{$y_1$};
+    \draw[fill=black] (2.5,0.5) circle (2pt) node[anchor=west]{$y_3$};
+    \draw[fill=black] (2,0) circle (2pt) node[anchor=north]{$y_2$};
+    
+    \draw[dashed] (2,1)--(2,0);
+\end{drawing}
+
+Now each of $y_i$ vertex is adjacent to each $x_j$ vertex. However, no $y_i$ vertex is adjacent to two $x_j,x_k$ vertices by blue edges, since otherwise $y_i,x_j,x_k$ would form a blue triangle. So each $y_i$ is adjacent to at least two $x_j,x_k$ vertices by red edges. Without loss of generality, suppose $y_1$ is adjacent to $x_1$ and $x_2$ by red edges. Now $y_2$ might be adjacent to $x_3$ by a red edge, but then it must also be adjacent to either $x_1$ or $x_2$ by a red edge, forcing a red triangle:
+
+\begin{drawing}
+    \draw[fill=black] (0,1) circle (2pt) node[anchor=south]{$x_1$};
+    \draw[fill=black] (-0.5,0.5) circle (2pt) node[anchor=east]{$x_3$};
+    \draw[fill=black] (0,0) circle (2pt) node[anchor=north]{$x_2$};
+    
+    \draw (0,1)--(-0.5,0.5)--(0,0)--(0,1);
+    
+    \draw[fill=black] (2,1) circle (2pt) node[anchor=south]{$y_1$};
+    \draw[fill=black] (2.5,0.5) circle (2pt) node[anchor=west]{$y_3$};
+    \draw[fill=black] (2,0) circle (2pt) node[anchor=north]{$y_2$};
+    
+    \draw[dashed] (2,1)--(2,0);
+    \draw[dashed] (2,1)--(0,1);
+    \draw[dashed] (2,1)--(0,0);
+    
+    \draw[dashed] (2,0)--(-0.5,0.5);
+    \draw[dashed] (2,0)--(0,0);
+\end{drawing}
+or
+\begin{drawing}
+    \draw[fill=black] (0,1) circle (2pt) node[anchor=south]{$x_1$};
+    \draw[fill=black] (-0.5,0.5) circle (2pt) node[anchor=east]{$x_3$};
+    \draw[fill=black] (0,0) circle (2pt) node[anchor=north]{$x_2$};
+    
+    \draw (0,1)--(-0.5,0.5)--(0,0)--(0,1);
+    
+    \draw[fill=black] (2,1) circle (2pt) node[anchor=south]{$y_1$};
+    \draw[fill=black] (2.5,0.5) circle (2pt) node[anchor=west]{$y_3$};
+    \draw[fill=black] (2,0) circle (2pt) node[anchor=north]{$y_2$};
+    
+    \draw[dashed] (2,1)--(2,0);
+    \draw[dashed] (2,1)--(0,1);
+    \draw[dashed] (2,1)--(0,0);
+    
+    \draw[dashed] (2,0)--(-0.5,0.5);
+    \draw[dashed] (2,0)--(0,1);
+\end{drawing}
+
+\ex{2}{
+    Show that there exists a red-blue coloring of $K_5$ without a monochromatic triangle.
+}
+
+\begin{drawing}
+    \coordinate (A) at (0,0){};
+    \coordinate (B) at (-0.3,1){};
+    \coordinate (C) at (1,0){};
+    \coordinate (D) at (1.3,1){};
+    \coordinate (E) at (0.5,1.5){};
+    
+    \foreach \x in {A,B,C,D,E} {
+        \draw[fill=black] (\x) circle (2pt);
+    }
+    
+    \draw[] (A)--(C)--(D)--(E)--(B)--(A);
+    
+    \draw[dashed] (D)--(A)--(E);
+    \draw[dashed] (B)--(C)--(E);
+    \draw[dashed] (B)--(D);
+    
+\end{drawing}
+
+\ex{3}{
+    Prove that $R(m,n)=R(n,m)$.
+}
+
+Suppose $R(m,n)=N$ for some $m,n$. This means that every red-blue edge-coloring of $K_N$ contains a red $K_m$ or a blue $K_n$, and some coloring of $K_{N-1}$ contains neither. Let $C$ be a colorng of $K_N$, and we consider it's color-complement $C'$ where an edge $e$ is blue in $C'$ if $e$ is red in $C$, and similarly $e$ is red in $C'$ if $e$ is blue in $C$. Since $C'$ is a red-blue edge-coloring of $K_N$, then it contains either a red $K_m$ or a blue $K_n$. If $C'$ has a red $K_m$, then that $K_m$ is colored blue in $C$. Similarly, if $C'$ has a blue $K_n$, then that $K_n$ is colored red in $C$. So $C$ must contain a red $K_n$ or a blue $K_m$. So $R(n,m)\leq N$.
+
+Now let $D$ be a coloring of $K_{N-1}$ such that neither a red $K_m$ or blue $K_n$ is present. The color-complement $D'$ would therefore contain no blue $K_m$ nor red $K_n$. So $R(n,m)\geq N$. Thus, $R(n,m)=N$, that is, $R(m,n)=R(n,m)$.
+
+\ex{4}{
+    Find the exact values of $R(1,n)$ and $R(2,n)$ for all positive integers $n$.
+}
+
+Since a red $K_1$ would just be a single vertex, then any graph with a vertex would contain a red $K_1$, so trivially, $R(1,n)=1$ for all $n$.
+
+Since a red $K_2$ would be two vertices with a red edge between them, then any graph with a red edge contains a red $K_2$. So $R(2,n)=n$, since $K_n$ is either entirely blue or contains a red edge.
+
+\newpage
+\ex{5}{
+    Prove that $9\leq R(3,4) \leq 10$.
+}
+
+Consider the following coloring of $K_8$:
+
+\begin{drawing}
+    \coordinate (A) at (0,0);
+    \coordinate (B) at (1,0);
+    \coordinate (C) at (2,1);
+    \coordinate (D) at (2,2);
+    \coordinate (E) at (1,3);
+    \coordinate (F) at (0,3);
+    \coordinate (G) at (-1,2);
+    \coordinate (H) at (-1,1);
+    
+    \foreach \x in {A,B,C,D,E,F,G,H} {
+        \draw[fill=black] (\x) circle (2pt);
+    }
+    
+    
+    \draw[] (A)--(B)--(C)--(D)--(E)--(F)--(G)--(H)--(A);
+    \draw[] (A)--(E) (B)--(F) (C)--(G) (D)--(H);
+    
+    \draw[dashed] (A)--(C)--(E)--(G)--(A);
+    \draw[dashed] (B)--(D)--(F)--(H)--(B);
+    \draw[dashed] (A)--(D)--(G)--(B)--(E)--(H)--(C)--(F)--(A);
+\end{drawing}
+
+Where red is black and blue is dashed, the above graph has no red $K_3$'s and no blue $K_4$'s. So $9\leq R(3,4)$.
+
+Consider now the graph $K_{10}$ with some red-blue edge-coloring. Let $v$ be some vertex of $K_n$, so $v$ is adjacent to the nine other vertices by red and blue edges. It is either the case that $v$ has at least 4 red incident edges or 6 blue incident edges.
+
+If $v$ has 4 red incident edges, we will say $v$ is adjacent to vertices $x_1,x_2,x_3,x_4$ by red edges. It is either the case that the $x$ vertices form a blue $K_4$ or one edge between two $x$ vertices is red, thus forming a red $K_3$ with $v$.
+
+If $v$ has 6 blue incident edges, we will say $v$ is adjacent to vertices $y_1,\dots,y_6$ by blue edges. From Excercise 1, we know that the $K_6$ formed by the $y$ vertices must contain either a blue or red $K_3$. If there is a blue $K_3$ in the $y$ vertices, it would form a blue $K_4$ with $v$.
+
+Therefore, a red-blue edge-coloring of $K_{10}$ must contain either a red $K_3$ or a blue $k_4$. So, $R(3,4)\leq 10$, and thus $9\leq R(3,4)\leq 10$.
+
+\ex{6}{
+    Complete the proof of Theorem 1.4.
+}
+
+We want to show $R(m,n)\leq R(m-1,n) + R(m,n-1)$. First let $N=R(m-1,n)+R(m,n-1)$, and consider a red-blue edge-coloring of $K_N$, and pick some vertex $v$. It is either the case that $v$ has $R(m-1,n)$ red incident edges or $R(m,n-1)$ blue incident edges.
+
+If $v$ has $R(m-1,n)$ incident red edges, then take the subgraph $X$ of all vertices with a red edge to $v$. So $X$ has $R(m-1,n)$ vertices, and thus has a red $K_{m-1}$ or a blue $K_n$. If $X$ has a red $K_{m-1}$, then a red $K_m$ is formed with $v$.
+
+If $v$ has $R(m,n-1)$ incident blue edges, then take the subgraph $Y$ of all vertices with a blue edge to $v$. So $Y$ has $R(m,n-1)$ vertices, and thus has a red $K_m$ or a blue $K_{n-1}$. If $Y$ has a blue $K_{n-1}$, the a blue $K_n$ is formed with $v$.
+
+Therefore, $K_N$ must contain either a red $K_m$ or a blue $K_n$, so
+\[R(m,n) \leq R(m-1,n) + R(m,n-1).\]
+
+\ex{7}{
+    Prove that if both $R(m,n-1)$ and $R(m-1,n)$ are even numbers, then in fact
+    \[R(m,n) \leq R(m-1,n) + R(m,n-1) -1.\]
+}
+
+Suppose $R(m-1,n)$ and $R(m,n-1)$ are both even and let $N=R(m-1,n)+R(m,n-1)$. Now we suppose $R(m,n) > N-1$, so there exists a red-blue edge-coloring of $K_{N-1}$ with neither red $K_m$'s nor blue $K_n$'s. Let $C$ be such a coloring and let $v$ be a vertex of $K_{N-1}$. It is clear that $v$ has at most $R(m-1,n)-1$ incident red edges and at most $R(m,n-1)-1$ incident blue edges, since otherwise there would be a red $K_m$ or blue $K_n$ as in Exercise 6. Since $v$ is adjacent to $N-2$ other vertices, it is the case that $v$ has exactly $R(m-1,n)-1$ incident red edges and $R(m,n-1)-1$ incident blue edges.
+
+This means that each vertex of $K_{N-1}$ has exactly $R(m-1,n)-1$ incident red edges and $R(m,n-1)-1$ incident blue edges. Since there are $N-1$ vertices, this gives us
+\[\frac{(N-1)[R(m-1,n)-1]}{2}\]
+total red edges. However, since $N$ and $R(m-1,n)$ are even, the numerator in the above expression is odd. This gives us a non-integral number of red edges, which is a contradiction. Therefore
+\[R(m,n) \leq R(m-1,n) + R(m,n-1) -1.\]
+
+
+
+
+\end{document}

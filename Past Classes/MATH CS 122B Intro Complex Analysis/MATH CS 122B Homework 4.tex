@@ -1,0 +1,365 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{amsmath, amsthm, amssymb, physics}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}%
+    \renewcommand{\footrulewidth}{0pt}%
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{4pt}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+
+% Extra Commands
+\newcommand{\bd}{\partial}
+\newcommand{\pfrac}[2]{\left(\frac{#1}{#2}\right)}
+\def\[#1\]{\begin{align*}#1\end{align*}}
+\newcommand{\clo}{\overline}
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[C]{February 16, 2021}
+    \fancyhead[L]{MATH CS 122B Homework 4}
+    \fancyhead[R]{Harry Coleman}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+\begin{pbox}[1 Exercise VII.3.1]
+    Show using residue theory that
+    \[
+        \int_{0}^{2\pi} \frac{\cos\theta}{2 + \cos\theta} \dd{\theta} = 2\pi\left(1 - \frac{2}{\sqrt{3}}\right).
+    \]
+\end{pbox}
+
+Taking $z = e^{i\theta}$, we obtain the contour integral
+\[
+    \int_{0}^{2\pi} \frac{\cos\theta}{2 + \cos\theta} \dd{\theta}
+        &= \oint_{|z|=1} \frac{\frac{1}{2}(z + 1/z)}{2 + \frac{1}{2}(z + 1/z)} \frac{\dd{z}}{iz} \\
+        &= -i \oint_{|z|=1} \frac{z + 1/z}{z^2 + 4z + 1} \dd{z} \\
+        &= -i \oint_{|z|=1} \frac{z^2 + 1}{z(z^2 + 4z + 1)} \dd{z}.
+\]
+The function
+\[
+    f(z)
+        = \frac{z^2 + 1}{z(z^2 + 4z + 1)}
+        = \frac{z^2 + 1}{z(z + 2 - \sqrt{3})(z + 2 + \sqrt{3})}
+\]
+is meromorphic on the closed disc $\{|z| \leq 1\}$ with simple poles at $z_1 = 0$ and $z_2 = -2 + \sqrt{3}$. We calcuate the the residues of $f(z)$ at these points to be
+\[
+    \Res[f(z), z_1]
+        &= \lim_{z \to 0} \frac{z^2 + 1}{z^2 + 4z + 1} \\
+        &= \frac{0^2 + 1}{0^2 + 4(0) + 1} \\
+        &= 1
+\]
+and
+\[
+    \Res[f(z), z_2]
+        &= \lim_{z \to (-2 + \sqrt{3})} \frac{z^2 + 1}{z(z + 2 + \sqrt{3})} \\
+        &= \frac{(-2 + \sqrt{3})^2 + 1}{(-2 + \sqrt{3})\left((-2 + \sqrt{3}) + 2 + \sqrt{3}\right)} \\
+        &= \frac{-2}{\sqrt{3}}.
+\]
+Thus by the residue theorem
+\[
+    \int_{0}^{2\pi} \frac{\cos\theta}{2 + \cos\theta} \dd{\theta}
+        &= -i\oint_{|z|=1} f(z) \dd{z} \\
+        &= -i\cdot 2\pi i (\Res[f(z), z_1] + \Res[f(z), z_2]) \\
+        &= 2\pi\left(1 - \frac{2}{\sqrt{3}}\right).
+\]
+
+
+
+
+
+\begin{pbox}[2 Exercise VII.3.2]
+    Show using residue theory that
+    \[
+        \int_{0}^{2\pi} \frac{\dd{\theta}}{a + b\sin\theta} = \frac{2\pi}{\sqrt{a^2 - b^2}}, \quad a > b > 0.
+    \]
+\end{pbox}
+
+Taking $z = e^{i\theta}$, we obtain the contour integral
+\[
+    \int_{0}^{2\pi} \frac{\dd{\theta}}{a + b\sin\theta}
+        &= \oint_{|z|=1} \frac{1}{a + b\cdot\frac{1}{2i}(z - 1/z)} \frac{\dd{z}}{iz} \\
+        &= \oint_{|z|=1} \frac{2}{bz^2 + 2iaz - b} \dd{z}.
+\]
+The polynomial $f(z) = bz^2 + 2iaz - b$ is entire, with simple zeros at
+\[
+    \frac{-2ia \pm \sqrt{-4a^2 + 4b^2}}{2b}
+     = \frac{-ia}{b} \pm i\sqrt{\frac{a^2 - b^2}{b^2}}
+     = -i\left(\tfrac{a}{b} \pm \sqrt{\tfrac{a^2}{b^2} - 1}\right).
+\]
+Denote them by
+\[
+    z_1 = -i\left(\tfrac{a}{b} - \sqrt{\tfrac{a^2}{b^2} - 1}\right)
+    \isp{and}
+    z_2 = -i\left(\tfrac{a}{b} + \sqrt{\tfrac{a^2}{b^2} - 1}\right).
+\]
+Since $a > b > 0$, then $\frac{a}{b} > 1$, so
+\[
+    |z_2| = \tfrac{a}{b} + \sqrt{\tfrac{a^2}{b^2} - 1} > 1.
+\]
+On the other hand, $\frac{a}{b} > 1$ implies
+\[
+    \tfrac{a}{b} - 1 < \sqrt{\tfrac{a^2}{b^2} - 1} < \tfrac{a}{b},
+\]
+so $|z_1| < 1$. We calculate the residue of $2/f(z)$ at $z_1$ to be
+\[
+    \Res[\frac{2}{f(z)}, z_1]
+        &= \frac{2}{f'(z_1)} \\
+        &= \frac{2}{-2ib\left(\tfrac{a}{b} - \sqrt{\tfrac{a^2}{b^2} - 1}\right) + 2ia} \\
+        &= \frac{-i}{\sqrt{a^2 - b^2}}.
+\]
+Thus by the residue theorem
+\[
+    \int_{0}^{2\pi} \frac{\dd{\theta}}{a + b\sin\theta}
+        = \oint_{|z|=1} \frac{2}{f(z)} \dd{z}
+        = 2\pi i \Res[\frac{2}{f(z)}, z_1]
+        = \frac{2\pi}{\sqrt{a^2 - b^2}}.
+\]
+
+
+
+
+
+
+\begin{pbox}[3 Exercise VII.3.4]
+    Show using residue theory that
+    \[
+        \int_{-\pi}^{\pi} \frac{\dd{\theta}}{1 + \sin^2\theta} = \pi\sqrt{2}.
+    \]
+\end{pbox}
+
+Taking $z = e^{i\theta}$, we obtain the contour integral
+\[
+    \int_{-\pi}^{\pi} \frac{\dd{\theta}}{1 + \sin^2\theta}
+        &= \oint_{|z|=1} \frac{1}{1 + \left(\frac{1}{2i}(z - 1/z)\right)^2} \frac{\dd{z}}{iz} \\
+        &= 4i \oint_{|z|=1} \frac{1}{z^3 - 6z + 1/z} \dd{z} \\
+        &= 4i \oint_{|z|=1} \frac{z}{z^4 - 6z^2 + 1} \dd{z}.
+\]
+The polynomial
+\[
+    f(z) = z^4 - 6z^2 + 1 = \left((z^2 - (3 - 2\sqrt{2})\right)\left(z^2 - (3 + 2\sqrt{2})\right)
+\]
+is entire with simple zeros at $z_1 = \sqrt{3 - 2\sqrt{2}}$ and $z_2 = -\sqrt{3 - 2\sqrt{2}}$ inside the open disc $\{|z| < 1\}$. Note that
+\[
+    f'(z) = 4z^3 - 12z = 4z(z^2 - 3).
+\]
+We calculate the residues of $z/f(z)$ at these points to be
+\[
+    \Res[\frac{z}{f(z)}, z_1]
+        = \frac{z_1}{f'(z_1)}
+        = \frac{1}{4(z_1^2 - 3)}
+        = \frac{-1}{8\sqrt{2}}
+\]
+and
+\[
+    \Res[\frac{z}{f(z)}, z_2]
+        = \frac{z_2}{f'(z_2)}
+        = \frac{1}{4(z_2^2 - 3)}
+        = \frac{-1}{8\sqrt{2}}.
+\]
+Thus by the residue theorem
+\[
+    \int_{-\pi}^{\pi} \frac{\dd{\theta}}{1 + \sin^2\theta}
+        &= 4i \oint_{|z|=1} \frac{z}{f(z)} \dd{z} \\
+        &= 4i \cdot 2\pi i \left(\Res[\frac{z}{f(z)}, z_1] + \Res[\frac{z}{f(z)}, z_2]\right) \\
+        &= -8\pi\left(\frac{-1}{8\sqrt{2}} + \frac{-1}{8\sqrt{2}}\right) \\
+        &= \pi\sqrt{2}.
+\]
+
+
+
+
+\begin{pbox}[4 Exercise VII.3.6]
+    By expanding both sides of the identity
+    \[
+        \frac{1}{2\pi} \int_{0}^{2\pi} \frac{\dd{\theta}}{w + \cos\theta} = \frac{1}{\sqrt{w^2 - 1}}
+    \]
+    in a power series at $\infty$, show that
+    \[
+        \frac{1}{2\pi} \int_{0}^{2\pi} \cos^{2k}\theta \dd{\theta} = \frac{(2k)!}{2^{2k}(k!)^2}, \quad k \geq 0.
+    \]
+\end{pbox}
+
+We can rewrite the integrand as
+\[
+    \frac{1}{w + \cos\theta} = \frac{1}{w}\pfrac{1}{1 + \frac{\cos\theta}{w}}.
+\]
+For $|w| > 1$ and $\theta \in [0, 2\pi]$, we have $|(\cos\theta)/ w| < 1$. We expand the geometric series
+\[
+    \frac{1}{w}\pfrac{1}{1 + \frac{\cos\theta}{w}}
+        = \frac{1}{w} \sum_{k=0}^{\infty} \pfrac{\cos\theta}{w}^k
+        = \sum_{k=0}^{\infty} \frac{\cos^k\theta}{w^{k+1}}.
+\]
+Geometric series converge uniformly for common ratios with modulus less than $1$, so if $|w| > 1$, then the series converges uniformly for $\theta \in [0, 2\pi]$. Therefore, we may interchange the integration and summation to obtain
+\[
+    \frac{1}{2\pi} \int_{0}^{2\pi} \left(\sum_{k=0}^{\infty} \frac{\cos^k\theta}{w^{k+1}}\right) \dd{\theta}
+        = \sum_{k=0}^{\infty} \frac{1}{w^{k+1}} \left(\frac{1}{2\pi} \int_{0}^{2\pi} \cos^k\theta \dd{\theta}\right)
+\]
+Note that $\cos \theta = - \cos(\theta + \pi)$, so if $k$ is odd, then
+\[
+    \int_{0}^{\pi} \cos^k\theta \dd{\theta}
+        = \int_{0}^{\pi} -\cos^k(\theta + \pi) \dd{\theta}
+        = -\int_{\pi}^{2\pi} \cos^k\theta \dd{\theta},
+\]
+implying that the integral over $[0, 2\pi]$ is zero. Omitting the odd $k$ terms, we have
+\[
+    \frac{1}{2\pi} \int_{0}^{2\pi} \frac{\dd{\theta}}{w + \cos\theta}
+        = \sum_{k=0}^{\infty} \frac{1}{w^{2k+1}} \left(\frac{1}{2\pi} \int_{0}^{2\pi} \cos^{2k}\theta \dd{\theta}\right).
+\]
+
+We now consider the right hand side
+\[
+  \frac{1}{\sqrt{w^2 - 1}}
+    = (1 - w^2)^{-1/2}
+    = \frac{1}{w}\left(1 - \frac{1}{w^2}\right)^{-1/2}.
+\]
+For $|w| > 1$, we have $|-1/w^2| < 2$. We expand the principal branch binomial series
+\[
+    \frac{1}{w}\left(1 - \frac{1}{w^2}\right)^{-1/2}
+        = \frac{1}{w}\sum_{k=0}^{\infty} \binom{-1/2}{k} \pfrac{-1}{w^2}^k
+        = \sum_{k=0}^{\infty} (-1)^k\binom{-1/2}{k} \frac{1}{w^{2k + 1}}.
+\]
+We rewrite the complex binomial coefficients to be
+\[
+    \binom{-1/2}{k}
+        &= \frac{(-\tfrac12)(-\tfrac12 - 1)(-\tfrac12 - 2)(-\tfrac12 - 3) \cdots (-\tfrac12 - k + 1)}{k!} \\
+        &= \frac{(-\tfrac12)^k(1)(1 + 2)(1 + 4)(1 + 6) \cdots (1 + 2k - 2)}{k!} \\
+        &= \frac{(-1)^k}{2^k k!}(1 \cdot 3 \cdot 5 \cdot 7 \cdots (2k - 1)) \\
+        &= \frac{(-1)^k}{2^k k!} \frac{1 \cdot 2 \cdot 3 \cdot 4 \cdots 2k}{2 \cdot 4 \cdot 6 \cdots 2k} \\
+        &= \frac{(-1)^k}{2^k k!} \frac{(2k)!}{2^k(1 \cdot 2 \cdot 3 \cdots k)} \\
+        &= \frac{(-1)^k(2k)!}{2^{2k} (k!)^2}.
+\]
+Hence,
+\[
+    \frac{1}{\sqrt{w^2 - 1}}
+        = \sum_{k=0}^{\infty} (-1)^k \frac{(-1)^k(2k)!}{2^{2k} (k!)^2} \frac{1}{w^{2k + 1}}
+        = \sum_{k=0}^{\infty} \frac{(2k)!}{2^{2k} (k!)^2} \frac{1}{w^{2k + 1}}.
+\]
+In conclusion, we have power series expansions at $\infty$ given by
+\[
+    \sum_{k=0}^{\infty} \frac{1}{w^{2k+1}} \left(\frac{1}{2\pi} \int_{0}^{2\pi} \cos^{2k}\theta \dd{\theta}\right)
+        = \sum_{k=0}^{\infty} \frac{(2k)!}{2^{2k} (k!)^2} \frac{1}{w^{2k + 1}}.
+\]
+Since power series expansions are unique, then for all $k \geq 0$, we have
+\[
+    \frac{1}{2\pi} \int_{0}^{2\pi} \cos^{2k}\theta \dd{\theta}
+        = \frac{(2k)!}{2^{2k} (k!)^2}.
+\]
+
+
+
+\newpage
+\begin{pbox}[5 Exercise III.5.2]
+    Fix $n \geq 1$, $r > 0$, and $\lambda = \rho e^{i\phi}$. What is the maximum modulus of $z^n + \lambda$ over the disc $\{|z| \leq r\}$? Where does $z^n + \lambda$ attain its maximum modulus over the disc?
+\end{pbox}
+
+For $|z| \leq r$, we have
+\[
+    |z^n + \lambda|
+        = |z^n + \rho e^{i\phi}|
+        \leq |z|^n + \rho |e^{i\phi}|
+        \leq r^n + \rho.
+\]
+The function is nonconstant, so the strict maximum principle implies that the maximum modulus is not attained in the open disc $\{|z| < r\}$. Then for any point $z = re^{i\theta}$ on the boundary, we have
+\[
+    |z^n + \lambda|
+        = |e^{i\phi}| \cdot |r^ne^{i(\theta n - \phi)} + \rho|.
+\]
+So the maximum modulus is attained when $e^{i(\theta n - \phi)} = 1$. That is, when $\theta = (\phi + 2\pi k)/n$, for any $k \in \Z$. So $z^n + \lambda$ attains its maximum at the points
+\[
+    z = r e^{i(\phi + 2\pi k)/k}, \quad k = 0, 1, \dots, n-1.
+\]
+Each solution corresponds to a branch of of the multivalued $n$th root function, and we could alternately write this set as the points $z = r \sqrt[n]{\lambda/|\lambda|}$.
+
+\begin{pbox}[6 Exercise III.5.6]
+    Let $f(z)$ be a bounded analytic function on the right half-plane. Suppose that $\limsup |f(z)| \leq M$ as $z$ approaches  any point of the imaginary axis. Show that $|f(z)| \leq M$ for all $z$ in the half-plane.
+\end{pbox}
+
+\begin{proof}
+    Let the modulus of $f(z)$ be bounded by $C > 0$ in the right half-plane. For $R > 0$, we define the right half-disc $D_R = \{z \in B_R(0) : \Re z > 0\}$. For any $M' > M$ and $z_0 \in \bd D_R$ on the imaginary axis, we know $\limsup\limits_{z \to z_0} |f(z)| \leq M$, so there exists $\eps > 0$ such that
+    \[
+        |z - z_0| < \eps \implies |f(z)| < M'.
+    \]
+    We claim that there is some $r > 0$ such that $|f(z)| \leq M'$ for all $z \in D_R$ with $\Re z \leq r$, in other words, that the modulus of $f(z)$ is bounded by $M'$ for all points within a fixed distance of the imaginary axis. 
+    
+    Suppose not, then for each $n \in \N$ there is some $z_n \in D_R$ with $\Re z_n \leq 1/n$ and $|f(z)| > M'$. Since this sequence is bounded, then we can pick a convergent subsequence $z_{n_k} \to z_0$. In particular, we know that $z_0$ is on the imaginary axis since $\Re z_{n_k} \to 0$. However, this is a contradiction, since $\limsup_{z \to z_0} |f(z)| \leq M$, but the sequence gives points arbitrarily close to $z_0$ with $|f(z_{n_k})| > M'$, implying that the limit supremum is at least $M' > M$. Then for some $r > 0$, ensuring that $r < R$, we have $|f(z)| \leq M'$ for all $z \in D_R$ with $\Re z \leq r$.
+    
+    We now define the modified domain
+    \[
+        D_R' = \{z \in D_R : \Re z > r\},
+    \]
+    and partition of its boundary into the curves
+    \[
+        \Gamma_R = \{z \in \bd D_R' : \Re z = r\}
+        \isp{and}
+        \gamma_R = \{z \in \bd D_R' : \Re z > r\}.
+    \]
+    Then $f(z)$ is analytic on the closed set $\clo{D_R'}$ and $|f(z)| \leq M'$ for all $z \in \Gamma_R$. For $\eps > 0$ we consider the function $g(z) = (1 + z)^{-\eps}f(z)$, which is similarly analytic. By the maximum modulus principle,
+    \[
+        \sup_{z \in D_R'} |g(z)|
+            = \max_{z \in \bd D_R'} |g(z)|
+            = \max\{\max_{z \in \Gamma_R} |g(z)|, \max_{z \in \gamma_R} |g(z)|\}.
+    \]
+    For any $z \in \Gamma_R$, we have $\Re z \geq 0$, so $|1 + z|^\eps \geq 1$, then
+    \[
+        |g(z)|
+            = \frac{|f(z)|}{|1 + z|^\eps}
+            \leq |f(z)|
+            \leq M'.
+    \]
+    Now for any $z \in \gamma_R$, $|1 + z| \geq |z|-1 = R-1$, then
+    \[
+        |g(z)|
+            = \frac{|f(z)|}{|1 + z|^\eps}
+            \leq \frac{C}{(R - 1)^\eps}.
+    \]
+    Then for $R > 0$ large enough, we have $C/(R-1)^\eps \leq M'$, which implies $|g(z)| \leq M'$ for all $z \in D_R'$. Now for any $z$ in the right half-plane, we choose $R > 0$ large enough and $0 < r < R$ small enough such that $z \in D_R'$. Then $|g(z)| \leq M'$.
+    
+    Since $\eps > 0$ was chosen arbitrarily for $g(z)$, then for any fixed $z_0$ in the right half-plane and all $\eps > 0$, we have
+    \[
+        |1 + z_0|^{-\eps}|f(z_0)| \leq M'
+    \]
+    Letting $\eps \to 0$, we obtain $|f(z)| \leq M'$ whenever $\Re z > 0$. Similarly, $M' > M$ was chosen arbitrarily, so letting $M' \to M$, we obtain $|f(z)| \leq M$ for all $z$ in the right half-plane. 
+    
+\end{proof}
+
+
+
+\end{document}

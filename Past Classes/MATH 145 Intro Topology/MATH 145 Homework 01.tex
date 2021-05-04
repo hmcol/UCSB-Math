@@ -1,0 +1,572 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow,enumitem}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Set Names
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+
+% Misc Characters
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\newcommand{\eps}{\varepsilon}
+
+% Plaintext words
+\newcommand{\id}{\text{id}}
+\newcommand{\diam}{\text{diam}}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ang}{\langle}{\rangle}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{\textwidth-10pt}}
+    {\end{minipage}\end{lrbox}\framebox[6.5in]{\usebox{\mybox}}\\}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\seq}[1]{\left\{#1\right\}_{n=1}^\infty}
+ 
+\begin{document}
+ 
+\title{Homework 1\\
+    \large MATH 145 Intro to Topology
+}
+\author{Harry Coleman}
+\date{June 30, 2020}
+\maketitle
+
+\section*{Exercise 1.1.1}
+\begin{problem}
+    Let $U,V,$ and $W$ be subsets of some set. Recall that $U\setminus V$ consists of all points in $U$ that do not belong to $V$.
+\end{problem}
+
+\subsection*{Exercise 1.1.1(a)}
+\begin{problem}
+    Prove that $(U \cup V)\setminus W = (U\setminus W) \cup (V\setminus W)$.
+\end{problem}
+
+\begin{proof}
+    By definition,
+    \[(U\cup V)\setminus W = \{x : (x\in U \lor x\in V) \land x\notin W\}.\]
+    By distributivity of conjunction over disjunction,
+    \begin{align*}
+        (U\cup V)\setminus W
+            &= \{x : x\in U \land x\notin W\lor x\in V \land x\notin W\} \\
+            &= (U\setminus W) \cup (V\setminus W).
+    \end{align*}
+    
+\end{proof}
+
+\subsection*{Exercise 1.1.1(b)}
+\begin{problem}
+    Prove that $(U \cap V)\setminus W = (U\setminus W) \cap (V\setminus W)$.
+\end{problem}
+
+\begin{proof}
+    \begin{align*}
+        (U\cup V)\setminus W
+            &= \{x : (x\in U \land x\in V) \land x\notin W\} \\
+            &= \{x : x\in U \land x\notin W\land x\in V \land x\notin W\} \\
+            &= (U\setminus W) \cap (V\setminus W).
+    \end{align*}
+    
+\end{proof}
+
+\subsection*{Exercise 1.1.1(c)}
+\begin{problem}
+    Does $U\setminus(V\setminus W)$ coincide with $(U\setminus V)\setminus W$? Justify your answer by proof or counterexample.
+\end{problem}
+
+\begin{proposition}
+    The statement $U\setminus(V\setminus W) = (U\setminus V)\setminus W$ is not true in general.
+\end{proposition}
+
+\begin{proof}
+    Let $U=\{0\}, V=\emptyset, W=\{0\}$. We claim this to be a counterexample to the statement. Firstly,
+    \begin{align*}
+        U\setminus(V\setminus W)
+            &= \{0\}\setminus(\emptyset\setminus\{0\}) \\
+            &= \{0\}\setminus\emptyset \\
+            &= \{0\}.
+    \end{align*}
+    However,
+    \begin{align*}
+        (U\setminus V)\setminus W
+            &= (\{0\}\setminus\emptyset)\setminus\{0\} \\
+            &= \{0\}\setminus\{0\}  \\
+            &= \emptyset.
+    \end{align*}
+    
+\end{proof}
+
+\section*{Exercise 1.1.2}
+\begin{problem}
+    Show that (1.7) defines a metric on $X$. Show that every subset of the resulting metric space is both open and closed.
+\end{problem}
+    
+\begin{proposition}
+    $(X,d)$ is a metric space, where $d$ is defined as in (1.7):
+    \[d(x,y) = \begin{cases} 1, &x\ne y, \\ 0, &x=y.\end{cases}\]
+\end{proposition}
+
+\begin{proof}
+    For any $x,y\in X$, we have $d(x,y)$ equal to 0 or 1, in either case, $d(x,y)\geq 0$. By definition, if $x=y$, then $d(x,y)=0$ and if $x\ne y$, then $d(x,y)=1\ne0$. So $d(x,y)=0$ if and only if $x=y$. By the reflexivity of equality, we obtain $d(x,y)=d(y,x)$. 
+    
+    Now let $x,y,z\in X$. If $x=y$, then
+    \[d(x,z) = d(y,z) = 0 + d(y,z) = d(x,y) + d(y,z).\]
+    Otherwise, if $x\ne y$, then
+    \[d(x,z) \leq 1 = d(x,y) \leq d(x,y) + d(y,z).\]
+    In either case, we have $d(x,z)\leq d(x,y)+d(y,z)$.
+    
+\end{proof}
+
+\begin{proposition}
+    Every subset of $(X,d)$ is both open and closed.
+\end{proposition}
+
+\begin{proof}
+    Let $U\subseteq X$ and let $x\in U$. Then the open ball $B(\frac12, x) = \{x\} \subseteq U$, so $U$ is open. Then because $U^C\subseteq X$ is also open, $U$ is closed.
+    
+\end{proof}
+
+\section*{Exercise 1.1.3(c)}
+\begin{problem}
+    Using the Cauchy-Schwarz inequality show that the function defined by (1.5) satisfies the triangle inequality.
+\end{problem}
+
+
+\begin{proposition}
+    The function defined by (1.5),
+    \[d(x,y) = \left[\sum_{j=1}^n(x_j-y_j)^2\right]^{1/2}, \quad x,y\in\R^n,\]
+    satisfies the triangle inequality.
+\end{proposition}
+
+\begin{proof}
+    Let $x,y,z\in X$. Then
+    \begin{align*}
+        d(x,z)
+            &= \left[\sum_{j=1}^n(x_j-z_j)^2\right]^{1/2} \\
+            &= \left[\sum_{j=1}^n((x_j-y_j)-(z_j-y_j))^2\right]^{1/2} \\
+            &= \left[\sum_{j=1}^n(x_j-y_j)^2 + \sum_{j=1}^n(z_j-y_j)^2 - 2\sum_{j=1}^n(x_j-y_j)(z_j-y_j)\right]^{1/2} \\
+            &= \left[d(x,y)^2 + d(y,z)^2 + 2\sum_{j=1}^n(y_j-x_j)(z_j-y_j)\right]^{1/2}.
+    \end{align*}
+    By the Cauchy-Schwarz inequality,
+    \begin{align*}
+        d(x,z)
+            &\leq \left[d(x,y)^2 + d(y,z)^2 + 2\left(\sum_{j=1}^n(y_j-x_j)^2\right)^{1/2}\left(\sum_{j=1}^n(z_j-y_j)^2\right)^{1/2}\right]^{1/2} \\
+            &= \left[d(x,y)^2 + d(y,z)^2 + 2d(x,y)d(y,z)\right]^{1/2} \\
+            &= \left[(d(x,y) + d(y,z))^2\right]^{1/2} \\
+            &= d(x,y) + d(y,z).
+    \end{align*}
+    
+\end{proof}
+
+\newpage
+\section*{Exercise 1.1.5}
+\begin{problem}
+    Show that (1.6) defines a metric on the space $B(S)$ of bounded real-valued functions on a set $S$.
+\end{problem}
+
+\begin{proposition}
+    $(B(S), d)$ is a metric space where $d$ is defined as in (1.6):
+    \[d(f,g) = \sup\{|f(s)-g(s)| : s\in S\}.\]
+\end{proposition}
+
+
+\begin{proof}
+    Let $f,g\in B(S)$. Since $|f(s)-g(s)|\geq 0$ for all $s\in S$, we have $d(f,g)\geq0$. If $f=g$, then $|f(s)-g(s)|=0$ for all $s\in S$, so $d(f,g)=0$. Likewise if $d(f,g)=0$, then $|f(s)-g(s)|=0$ for all $s\in S$, which implies $f=g$. And since $|f(s)-g(s)| = |g(s)-f(s)|$ for all $s\in S$, we have $d(f,g) = d(g,f)$.
+    
+    Now let $f,g,h\in B(S)$. By the triangle inequality for absolute value, we have
+    \[|f(s)-g(s)| \leq |f(s)-h(s)| + |g(s)-h(s)|, \quad \text{for all } s\in\S.\]
+    Taking the supremum over $S$ of both sides, we obtain
+    \begin{align*}
+        d(f,g) 
+            &= \sup_{s\in S}|f(s)-g(s)| \\
+            &\leq \sup_{s\in S}(|f(s)-h(s)| + |g(s)-h(s)|) \\
+            &\leq \sup_{s\in S}|f(s)-h(s)| + \sup_{s\in S}|g(s)-h(s)| \\
+            &= d(f,h) + d(g,h).
+    \end{align*}
+    Thus, $(B(S),d)$ is a metric space.
+    
+\end{proof}
+
+\section*{Additional Exercise 1}
+\begin{problem}
+    Prove that an arbitrary intersection of closed subsets is closed
+\end{problem}
+
+\begin{proof}
+    Let $(U_\alpha)_{\alpha\in A}$ be an arbitrary collection of closed subsets. Consider the intersection of these subsets $\bigcap_{\alpha\in A}U_\alpha$, and its complement
+    \[\left(\bigcap_{\alpha\in A}U_\alpha\right)^C = \bigcup_{\alpha\in A}U_\alpha^C.\]
+    Since each $U_\alpha$ is closed, then each $U_\alpha^C$ is open. So as the union of arbitrary open sets, $\bigcup_{\alpha\in A}U_\alpha^C$ is open. Therefore its complement $\bigcap_{\alpha\in A}U_\alpha$ is closed. 
+    
+\end{proof}
+
+\newpage
+\section*{Additional Exercise 2}
+\begin{problem}
+    Prove that a finite union of closed subset is closed.
+\end{problem}
+
+\begin{proof}
+    Let $(U_\alpha)_{\alpha\in A}$ be a finite collection of closed subsets. Consider the union of these subsets $\bigcup_{\alpha\in A}U_\alpha$, and its complement
+    \[\left(\bigcup_{\alpha\in A}U_\alpha\right)^C = \bigcap_{\alpha\in A}U_\alpha^C.\]
+    Since each $U_\alpha$ is closed, then each $U_\alpha^C$ is open. So as the intersection of finitely many open sets, $\bigcap_{\alpha\in A}U_\alpha^C$ is open. Therefore its complement $\bigcup_{\alpha\in A}U_\alpha$ is closed. 
+    
+\end{proof}
+
+\section*{Exercise 1.1.10}
+\begin{problem}
+    A point $x\in X$ is a \textit{limit point} of a subset $S$ of $X$ if every ball $B(r,x)$ contains infinitely many points of $S$. Show that $x$ is a limit point of $S$ if and only if there is a sequence $\seq{x_n}$ in $S$ such that $x_n\to x$ and $x_n\ne x$ for all $n$. Show that the set of limit points of $S$ is closed.
+\end{problem}
+
+\begin{proposition}
+    $x$ is a limit point of $S$ if and only if there is a sequence $\seq{x_n}$ in $S$ such that $x_n\to x$ and $x_n\ne x$ for all $n$.
+\end{proposition}
+
+\begin{proof}
+    Suppose $x$ is a limit point of $S$, i.e. that every ball $B(r,x)$ contains infinitely many points of $S$. We construct the sequence $\{x_n\}$ such that each $x_n\in B(1/n, x)\setminus\{x\}$, which is possible by the assumption that $x$ is a limit point. Let $\eps>0$ be given and define $N>1/\eps$. Then
+    \[n\geq N \implies x_n\in B(1/n,x)\subseteq B(1/N,x) \subseteq B(1/\eps, x),\]
+    which implies that $d(x_n,x)<\eps$. Therefore, by definition of limit, $x_n\to x$ and, moreover, $x_n\ne x$ for all $n$.
+    
+    Now suppose that there is a sequence $\seq{x_n}$ in $S$ such that $x_n\to x$ and $x_n\ne x$ for all $n$. Let $B(r,x)$ be a ball centered at $x$. Since $x_n\to x$, then there exists some $N\in\N$ such that
+    \[n\geq N \implies d(x_n, x) < r.\]
+    That is, for all $n\geq N$, $x_n\in B(r,x)$. Since $x_n\ne x$ for all $n\in\N$, then there are infinitely many distinct points in the sequence, as otherwise the infimum of $|x_n-x|$ would be greater than $0$, which contradicts the fact that $x_n\to x$. Thus, the subset $\{x_n : n\geq N\}$ of $S$ is infinite and contains in $B(r,x)$.
+    
+\end{proof}
+
+\newpage
+\begin{proposition}
+    $S'$ is closed.
+\end{proposition}
+
+\begin{proof}
+     Let $S'$ denote the set of limit points of $S$. Let $x\notin S'$, we aim to prove there exists a ball whose intersection with $S'$ is empty. Now since $x$ is not a limit point of $S$, there exists a ball $B(r,x)$ such that $B(r,x)\cap S$ is finite. Now let $r'=\min\{d(x,y) : y\in B(r,x)\cap S\}$, which is well-defined as there are finitely many $y$'s. Then $B(r',x) \subseteq B(r',x)\cap S = \emptyset$, thus $S'$ is closed.
+    
+\end{proof}
+
+\section*{Exercise 1.6.3}
+\begin{problem}
+    Let $E$ be the subspace of $\R^2$ obtained from the circle centered at $(0,1/2)$ of radius $1/2$ by deleting the point $(0,1)$. Define a function $h$ from $\R$ to $E$ so that $h(s)$ is the point at which the line segment from $(s,0)$ to $(0,1)$ meets $E$.
+\end{problem}
+
+We first find an explicit form for $h$. The line segment between $(s,0)$ and $(0,1)$ is the set of all points $(st,1-t)$ with $t\in[0,1]$. The set $E$ is given by
+\begin{align*}
+    E &= \{(x,y)\in\R^2 : x^2 + (y-1/2)^2 = (1/2)^2\}\setminus\{(0,1)\} \\
+      &= \{(x,y)\in\R^2 : x^2 + y^2 = y\}\setminus\{(0,1)\} \\
+\end{align*}
+We find $h(s)$ by the intersection of $E$ and the line segment, that is,
+\begin{align*}
+    (st)^2 + (1-t)^2 &= 1-t\\
+    s^2t^2 + 1 -2t + t^2 &= 1-t \\
+    t^2(s^2+1) &= t \\
+    t &= \frac1{s^2+1}.
+\end{align*}
+Note that we may divide by $t$ above because a value of $t=0$ gives us $(st,1-t)=(0,1)$, which is not in $E$. This gives us
+\[h(s) = \left(\frac{s}{s^2+1}, 1 - \frac1{s^2+1}\right) = \left(\frac{s}{s^2+1}, \frac{s^2}{s^2+1}\right).\]
+
+\subsection*{Exercise 1.6.3(a)}
+\begin{problem}
+    Show that $h$ is a bicontinuous function from $\R$ to $E$.
+\end{problem}
+
+\begin{proof}
+    We define the function $h^{-1}:E\to\R$ is the following way
+    \[h^{-1}(x,y) = \begin{cases}\frac yx, &x\ne0, \\ 0, & x=0. \end{cases}\]
+    Let $s\in\R$ and consider $(h^{-1}\circ h)(s)$. If $s=0$, then $(h^{-1}\circ h)(s) = h^{-1}(0,0) = 0 = s$. Otherwise, if $s\ne0$, then
+    \begin{align*}
+        (h^{-1}\circ h)(s)
+            &= h^{-1}\left(\frac{s}{s^2+1}, \frac{s^2}{s^2+1}\right) \\
+            &= \frac{\frac{s^2}{s^2+1}}{\frac{s}{s^2+1}} \\
+            &= s.
+    \end{align*}
+    Thus $h^{-1}\circ h = \id_\R$. Now let $(x,y)\in E$ and consider $(h\circ h^{-1})(x,y)$. If $x=0$, then $(h\circ h^{-1})(x,y) = h(0) = (0,0)$. Note that indeed $(x,y)=(0,0)$ because the only point in $E$ for which $x=0$ is $(0,0)$. If $x\ne0$, then
+    \begin{align*}
+        (h\circ h^{-1})(x,y)
+            &= h(y/x) \\
+            &= \left(\frac{y/x}{(y/x)^2+1}, \frac{(y/x)^2}{(y/x)^2+1}\right) \\
+            &= \left(\frac{xy}{y^2+x^2}, \frac{y^2}{y^2+x^2}\right) \\
+            &= \left(\frac{xy}{y}, \frac{y^2}{y}\right) \\
+            &= (x,y).
+    \end{align*}
+    Thus $h\circ h^{-1} = \id_E$. So $h^{-1}$ is in fact the inverse of $h$, and both are bijective.
+    
+    Let $x\in\R$ and let $\seq{x_n}$ be a sequence in $\R$ converging to $x$. Consider the sequence $\seq{h(x_n)}$ where
+    \[h(x_n) = \left(\frac{x_n}{x_n^2+1}, \frac{x_n^2}{x_n^2+1}\right).\]
+    Since $x^2\geq0$, we have $x^2+1\ne0$. Therefore, we can take the limit to find
+    \[\lim_{x_n\to x}h(x_n) = \lim_{x_n\to x}\left(\frac{x_n}{x_n^2+1}, \frac{x_n^2}{x_n^2+1}\right) = \left(\frac{x}{x^2+1}, \frac{x^2}{x^2+1}\right) = h(x).\]
+    Thus $h$ is continuous. Now let $(x,y)\in E$ and let $\seq{(x_n,y_n)}$ be a sequence in $E$ converging to $(x,y)$, and consider the sequence $\seq{h^{-1}(x_n,y_n)}$. If $x\ne0$, then
+    \[\lim_{(x_n,y_n)\to(x,y)}h^{-1}(x_n,y_n) = \lim_{(x_n,y_n)\to(x,y)}\frac{y_n}{x_n} = \frac yx = h^{-1}(x,y).\]
+    Otherwise, if $x=0$ (so $y=0$), then
+    \begin{align*}
+        \lim_{(x_n,y_n)\to(x,y)}h^{-1}(x_n,y_n)^2 
+            &= \lim_{(x_n,y_n)\to(x,y)}\frac{y_n^2}{x_n^2} \\
+            &= \lim_{(x_n,y_n)\to(x,y)}\frac{y_n^2}{y_n-y_n^2} \\
+            &= \lim_{(x_n,y_n)\to(x,y)}\frac{y_n}{1-y_n} \\
+            &= \frac{y}{1-y} \\
+            &= 0.
+    \end{align*}
+    Therefore $\ds\lim_{(x_n,y_n)\to(x,y)}h^{-1}(x_n,y_n) = 0 = h^{-1}(x,y)$ so $h^{-1}$ is continuous. Thus, $h$ is a homeomorphism.
+     
+\end{proof}
+
+\subsection*{Exercise 1.6.3(b)}
+\begin{problem}
+    Show that
+    \[\rho(s,t) = \|h(s)-h(t)\|, \quad s,t\in\R,\]
+    defines a metric $\rho$ on $\R$ that is equivalent to the usual metric on $\R$.
+\end{problem}
+
+\begin{proof}
+    Let $d$ denote the usual metric on $\R$. To show $d$ and $\rho$ are equivalent metrics on $\R$, we must show that the identity on $\R$ is a homeomorphism with respect to the metrics. Immediately, we have that $\id_\R$ is bijective, so we need only show that it is continuous to and from each metric. Let $\eps>0$ be given. From Exercise 1.6.3(a), we have that $h$ is continuous, so there exist some $\delta>0$ such that
+    \[x,y\in\R, d(x,y)<\delta \implies \|h(x) - h(y)\|<\eps,\]
+    where $\|a-b\|$ is the usual metric on $\R^2$ induced by the Euclidean norm. And since $\|h(x)-h(y)\|$ is precisely $\rho(x,y)$, we have
+    \[x,y\in\R, d(x,y)<\delta \implies \rho(x,y)<\eps.\]
+    Thus $\id_\R:(\R,d)\to(\R,\rho)$ is continuous. Again let $\eps>0$ be given and because $h^{-1}$ is continuous, we have
+    \[x,y\in\R^2, \|x-y\|<\delta \implies d(h^{-1}(x),h^{-1}(y))<\eps,\]
+    or equivalently by the bijectivity of $h$,
+    \[x,y\in\R, \|h(x) - h(y)\|<\delta \implies d(x,y)<\eps.\]
+    Which gives us
+    \[x,y\in\R, \rho(x,y)<\delta \implies d(x,y)<\eps.\]
+    Thus $\id_\R:(\R,\rho)\to(\R,d)$ is continuous. Therefore, $\id_\R$ is a homeomorphim so the metrics $d$ and $\rho$ are equivalent.
+    
+\end{proof}
+
+\section*{Exercise 1.6.5}
+\begin{problem}
+    Let $X_0,X_1$, and $X_2$ be metric spaces, let $f$ be a function from $X_0$ to $X_1$, and let $g$ be a function from $X_1$ to $X_2$. Show that if $f$ is continuous at $x_0\in X_0$ and $g$ is continuous at $f(x_0)$, then the composition $g\circ f$ is continuous at $x_0$.
+\end{problem}
+
+\begin{proof}
+    Let $\eps>0$ be given. Since $g$ is continuous at $f(x_0)$, then there exists some $\eta>0$ such that
+    \[x\in X_1, d(x,f(x_0))< \eta \implies d(g(x), (g\circ f)(x_0))<\eps.\]
+    Then because $f$ is continuous at $x_0$, there exists some $\delta>0$ such that
+    \[x\in X_0, d(x,x_0)<\delta \implies d(f(x), f(x_0))<\eta.\]
+    Combining these two, we find
+    \[x\in X_0, d(x,x_0)<\delta \implies d((g\circ f)(x), (g \circ f)(x_0))<\eps.\]
+    So $g\circ f$ is indeed continuous at $x_0$.
+    
+\end{proof}
+
+\section*{Exercise 1.2.8}
+\begin{problem}
+    The \textit{diameter} of a nonempty subset $E$ of a metric space $(X,d)$ is defined to be
+    \[\diam(E) = \sup\{d(x,y):x,y\in E\}.\]
+    Show that if $\{E_k\}_{k=1}^\infty$ is a decreasing sequence of closed nonempty subsets of a complete metric space whose diameters tend to zero, then $\cap_{k=1}^\infty E_k$ consists of precisely one point. How much of the conclusion remains true if $X$ is not complete? Can this property be used to characterize complete metric spaces?
+\end{problem}
+
+\begin{proposition}
+    If $\{E_k\}_{k=1}^\infty$ is a decreasing sequence of closed nonempty subsets of a complete metric space whose diameters tend to zero, then $\cap_{k=1}^\infty E_k$ consists of precisely one point.
+\end{proposition}
+
+\begin{proof}
+    We first show that $\cap_{k=1}^\infty E_k\ne \emptyset$. For each $k\in\N$, we select a point $x_k\in E_k$ to construct the sequence $\{x_k\}_{k=1}^\infty$. Then for any $\eps>0$, since $\diam(E_k)\to0$, there exists some $N\in\R$ such that $n,m\geq N$ implies $d(x_n,x_m)\leq E_N<\eps$. Therefore $\{x_k\}_{k=1}^\infty$ is Cauchy, and $X$ is complete, so it converges to some $x\in X$. Moreover, for any $k\in\N$, the subsequence $\{x_j\}_{j=k}^\infty$ is also Cauchy. And since $E_k\subseteq X$ is closed and therefore complete, the sequence $\{x_j\}_{j=k}^\infty$ converges to a point in $E_k$, which is the unique limit of the sequence $x$. Therefore, $x\in E_k$ for all $k\in\N$, so $x\in\cap_{k=1}^\infty E_k \ne \emptyset$.
+    
+    Now suppose for contradiction that $x,y\in\cap_{k=1}^\infty E_k$ such that $x\ne y$, then $d(x,y)>0$. Now since $\diam(E_k)\to0$, there exists some $N\in\R$ such that $\diam(E_N) < d(x,y)$. This is a contradiction as $x,y\in E_N$ and $\diam(E_N) = \sup\{d(x,y) : x,y\in E_N\}$, therefore $\cap_{k=1}^\infty E_k$ contains only a single point.
+    
+\end{proof}
+
+If $X$ is not complete, then the sequence $\{x_k\}_{k=1}^\infty$ that we construct will not necessarily converge. In fact, if $X$ is not complete then we can always find a decreasing sequence of closed nonempty subsets of $X$ whose diameters tend to zero, but whose intersection is empty. This means that a metric space is complete if and only if every decreasing sequence of closed nonempty subsets of $X$ whose diameters tend to zero have a nonempty intersection. 
+
+\begin{lemma}
+    Given a subset $E\subseteq X$, $\diam(E) = \diam(\overline{E})$, where $\overline{E}$ is the closure of $E$.    
+\end{lemma}
+
+\begin{proof}
+    Immediately, since $E\subseteq \overline{E}$, we have $\diam(E)\leq\diam(\overline{E})$. Now let $x,y\in\overline{E}$ and let $\seq{x_n}$ and $\seq{y_n}$ be sequences in $E$ converging to $x$ and $y$, respectively. Then by the triangle inequality,
+    \begin{align*}
+        d(x,y) 
+            &\leq d(x,x_n) + d(x_n,y) \\
+            &\leq d(x,x_n) + d(x_n,y_n) + d(y_n,y) \\
+            &\leq \diam(E) + d(x,x_n) + d(y_n,y).
+    \end{align*}
+    Now as $n\to\infty$, we find
+    \[d(x,y) \leq \diam(E) + 0 + 0 = \diam(E).\]
+    And by the definition of $\diam(\overline{E})$, this gives us $\diam(\overline{E}) \leq \diam(E)$. Therefore $\diam(E) = \diam(\overline{E})$.
+    
+    
+\end{proof}
+
+\begin{proposition}
+    A metric space is complete if and only if every decreasing sequence of closed nonempty subsets of the metric space whose diameters tend to zero, have a nonempty intersection.
+\end{proposition}
+
+\begin{proof}
+    Thew previous proposition gives us one direction of the biconditonal; we prove the other by contrapositive. Suppose $X$ is not complete, then there exists a sequence $\seq{x_n}$ which is Cauchy but not convergent. Since the sequence is Cauchy, for each $k\in\N$, we can choose some $N_k\in\R$ such that $n,m\geq N_k$ implies $d(x_n,x_m)<1/k$. We then construct the sequence $\{E_k\}_{k=1}^\infty$ of subsets where
+    \[E_k = \overline{\{x_i : i \geq N_k\}}.\]
+    This means that $\{E_k\}_{k=1}^\infty$ is a decreasing sequence of closed nonempty subsets of $X$. Additionally, by construction, $\diam(E_k) = \diam\{x_i : i \geq N_k\}  < 1/k$, so the diameters tend to zero.
+    
+    Assume for contradiction that $\cap_{k=1}^\infty E_k \ne \emptyset$ and let $x\in\cap_{k=1}^\infty E_k$. Then for each $k\in\N$, we have
+    \[n\geq N_k \implies d(x,x_n) \leq \diam(E_k) < 1/k.\]
+    This tells us that $x_n\to x$, which is a contradiction with the fact that $\seq{x_n}$ does not converge. Therefore $\cap_{k=1}^\infty E_k = \emptyset$.
+    
+\end{proof}
+
+\section*{Exercise 1.3.1}
+\begin{problem}
+    Use the least upper bound axiom, together with the usual manipulations of algebraic identities and inequalities, to prove the following:
+\end{problem}
+
+\subsection*{Exercise 1.3.1(a)}
+\begin{problem}
+    The set $\Z$ of integers is not bounded above.
+\end{problem}
+
+\begin{proof}
+    Assume for contradiction that $\Z$ is bounded above. Then $\Z$ is a subset of $\R$ which is bounded above, so by the least upper bound axiom, $\Z$ has a least upper bound, $M\in\R$. In particular, we note that $M\in\Z$, since otherwise, we would have $\floor{M}<M$ still be an upper bound for $\Z$. Then, by the definition of $\Z$, we have $M<M+1\in\Z$, which contradicts the fact that $M$ is an upper bound for $\Z$.
+    
+\end{proof}
+
+\subsection*{Exercise 1.3.1(b)}
+\begin{problem}
+    For each $\eps>0$, there exists a rational number $r\in(0,\eps)$.
+\end{problem}
+
+\begin{proof}
+    Let $\eps>0$ be given. Then by the Archimedian property, there exists some $n\in\N$ such that $n\eps > 1$. Letting $r=1/n$, we see that $r\in\Q$ and $r\in(0,\eps)$.
+    
+\end{proof}
+
+\subsection*{Exercise 1.3.1(c)}
+\begin{problem}
+    If $a,b\in\R$ satisfy $a<b$, then there exists a rational number $s\in(a,b)$.
+\end{problem}
+
+\begin{proof}
+    Since $b-a>0$, then by the Archimedian property, there exists some $q\in\N$ such that $q(b-a)>1$. That is, $qa + 1 < qb$, which implies that there exists some $p\in\Z$ such that $qa<p<qb$. In particular, $p$ is the smallest integer which is strictly greater than $qa$, and if $p$ were not strictly less than $qb$, then $qa + 1 < qb$ would be false. Now letting $s=p/q$, we find that $s\in\Q$ and $s\in(a,b)$.
+    
+\end{proof}
+
+\subsection*{Exercise 1.3.1(d)}
+\begin{problem}
+    The set $\R_0$ of rational numbers is dense in $\R$.
+\end{problem}
+
+\begin{proof}
+    Let $U$ be an open subset of $\R$ and let $x\in U$. Then because $U$ is open, there exists an open ball $B(r,x)$ such that $B(r,x)\subseteq U$. Noting that $B(r,x)=(x-r,x+r)$, then by the previous exercise there exists some $s\in\Q$ such that $s\in(x-r,x+r)$. That is, $\Q\cap B(r,x)\subseteq \Q\cap U$ is nonempty.
+    
+\end{proof}
+
+\section*{Exercise 1.5.1}
+\begin{problem}
+    Give and example of a totally bounded metric space which is not compact.
+\end{problem}
+
+\begin{proposition}
+    The subspace $(0,1)\subseteq\R$ is totally bounded but not compact. 
+\end{proposition}
+
+\begin{proof}
+    The subset $(0,1)\subseteq\R$ is bounded and therefore totally bounded. However, it is not closed, so by the Heine-Borel Theorem, it is not compact.
+    
+\end{proof}
+
+\section*{Exercise 1.5.2}
+\begin{problem}
+    Give an example of a complete metric space which is not compact
+\end{problem}
+
+\begin{proposition}
+    The metric space $\R$ is complete but not compact.
+\end{proposition}
+
+\begin{proof}
+    We know $\R$ to be complete. However, by the Heine-Borel theorem, because $\R$ is unbounded, it is not compact.
+    
+\end{proof}
+
+\section*{Exercise 1.5.4}
+\begin{problem}
+    Let $\{U_\alpha\}_{\alpha\in A}$ be a finite open cover of a compact metric space $X$.
+\end{problem}
+
+\subsection*{Exercise 1.5.4(a)}
+\begin{problem}
+    Show that there exists $\eps>0$ such that for each $x\in X$, the open ball $B(\eps, x)$ is contained in one of the $U_\alpha$'s
+\end{problem}
+
+\begin{proof}
+    Assume for contradiction that for every $\eps>0$, there exists some $x\in X$ such that the open ball $B(\eps, x)$ is not contained in any of the $U_\alpha$'s. We construct the sequence $\seq{x_n}$ in $X$ such that the open ball $B(\frac1n, x_n)$ is not contained in any of the $U_\alpha$'s. Since $X$ is complete, we can choose a subsequence $\{x_{n_k}\}_{k=1}^\infty$ which converges to $x\in X$. Now since $\{U_\alpha\}_{\alpha\in A}$ is a finite cover of $X$, then $x$ is contained by a finite number of $U_\alpha$'s. Since each $U_\alpha$ is open, there exists an open ball $B(r,x)$ is contained by some $U_\alpha$.
+    
+    Now since $\{x_{n_k}\}_{k=1}^\infty$ converges to $x$, then there exists some $K\in\N$ such that
+    \[k\geq K \implies d(x_{n_k}, x) < r/2.\]
+    If we now pick $i \geq \max\{K, \frac2r\}$, then $x_i\in B(\frac r2, x)$ and $B(\frac1{n_i}, x_{n_i})$ is not contained by any $U_\alpha$. Since $i\geq \frac2r$ (which implies $n_i \geq \frac2r$), then  $B(\frac1{n_i}, x_{n_i}) \subseteq B(\frac r2, x_{n_i})$. This gives us that $B(\frac1{n_i}, x_{n_i}) \subseteq B(r,x)$, which is a contradiction as $B(r,x)$ is contained by every $U_\alpha$ which contains $x$.
+    
+\end{proof}
+
+\subsection*{Exercise 1.5.4(b)}
+\begin{problem}
+    Show that if at least one of the $U_\alpha$'s is a proper subset of $X$, then there is a largest Lebesgue number for the cover.
+\end{problem}
+
+\begin{proposition}
+    If every $U_\alpha$ is a proper subset of $X$, then there is a largest Lebesgue number for the cover.
+\end{proposition}
+
+\begin{proof}
+    Suppose every $U_\alpha$is a proper subset of $X$, i.e. there does not exist a $U_\alpha$ such that $U_\alpha = X$. Since $X$ is compact, it is totally bounded and therefore bounded. So there exists some open ball $B(r,x)$ which is equal to the whole metric space. Then, if $\eps$ is a Lebesgue number, then $\eps<r$ since the ball $B(r,x)=X$ is not contained in any $U_\alpha$. Therefore, the set
+    \[L = \{\eps\in\R : \eps \text{ is a Lebesgue number for the cover } \{U_\alpha\}_{\alpha\in A}\}\]
+    is bounded above, so by the least upper bound axiom, $\sup L$ is well-defined.
+    
+    We now construct the sequence $\seq{\eps_n}$ in $L$ such that $\sup L - \frac1n< \eps_n \leq \sup L$ for all $n$. Note that this construction gives $\eps_n \to \sup L$. Let $x$ be an arbitrary point in $X$, so for each $n\in\N$, the ball $B(\eps_n, x)$ is contained in some $U_\alpha$. In particular, we define the sequence $\seq{\alpha_n}$ in $A$ such that $B(\eps_n, x)\subseteq U_{\alpha_n}$. Because $A$ is finite, there is some $\alpha$ which occurs infinitely many times in the sequence $\seq{\alpha_n}$. So we can now choose a subsequence $\{\alpha_{n_k}\}_{k=1}^\infty$ such that $\alpha_{n_k}=\alpha$ for all $k$. We also take the subsequence $\{\eps_{n_k}\}_{k=1}^\infty$ using the same indices.
+    
+    We now show that
+    \[B(\sup L, x) \subseteq U_\alpha.\]
+    Let $y\in B(\sup L, x)$, so $d(x,y) < \sup L$. Then because $\eps_{n_k} \to \sup L$ and $\sup L - d(x,y)>0$, there exists some $K\in\N$ such that
+    \[k\geq K \implies \sup L - \eps_{n_k} < \sup L - d(x,y).\]
+    That is, $\eps_{n_K} > d(x,y)$, which implies that $y\in B(\eps_{n_K}, x)\subseteq U_\alpha$. Therefore, $B(\sup L, x)\subseteq U_\alpha$, so $\sup L$ is a Lebesgue number for the cover, and indeed, the largest. 
+    
+\end{proof}
+
+\newpage
+\section*{Exercise 1.5.8}
+\begin{problem}
+    Let $(X,d)$ be a bounded metric space and let $\mathscr{E}$ be the family of nonempty closed subsets of $X$. Show that
+    \[\rho(E,F) = \max\left(\sup_{x\in E}d(x,F),\sup_{y\in F}d(y,E)\right)\]
+    defines a metric on $\mathscr{E}$. Show that $\mathscr{E}$ is compact whenever $X$ is compact.
+\end{problem}
+
+\begin{proof}
+    Let $E,F\in\mathscr{E}$. Since $d(x,F)\geq0$ for all $x\in E$, we have $\ds\rho(E,F) \geq \sup_{x\in E}d(x,F) \geq 0$. If $E=F$, then for all $x\in E, y\in F$,
+    \[d(x,F) = 0 = d(y,E),\]
+    so $\rho(E,F) = 0$. If $\rho(E,F)=0$, then $d(x,F)=0=d(y,E)$ for all $x\in E, y\in F$. This implies that for each $x\in E$, and each open ball $B(r,x)$, there exists some point of $F$ contained in the open ball $B(r,x)$. Otherwise, $d(x,F)\geq r >0$, which is not true. Therefore, each $x\in E$ is adherent to $F$, and therefore contained in $F$ since $F$ is closed. Thus $E\subseteq F$. In the same way, we find $F\subseteq E$, giving us $E=F$. Therefore $\rho(E,F)=0$ if and only if $E=F$. Then
+    \[\rho(E,F) = \max\left(\sup_{x\in E}d(x,F),\sup_{y\in F}d(y,E)\right) = \max\left(\sup_{y\in F}d(x,E),\sup_{x\in E}d(y,F)\right) = \rho(F,E).\]
+    
+    We will use the characterization of $\rho(E,F)$ to be the smallest $\rho$ such that $E\subseteq \overline{B}(\rho, F)$ and $F\subseteq \overline{B}(\rho, E)$. Let $E,F,G\in\mathscr{E}$. Define $\rho_1=\rho(E,G), \rho_2=\rho(E,F), \rho_3=\rho(F,G)$. Consider $\overline{B}(\rho_2, E)$, by definition of $\rho_2$ we have $F\subseteq\overline{B}(\rho_2, E)$. Then $\overline{B}(\rho_3, F) \subseteq \overline{B}(\rho_3, \overline{B}(\rho_2, E))$. By definition of $\rho_3$, we have $G\subseteq\overline{B}(\rho_3, \overline{B}(\rho_2, E))$. Let $x\in\overline{B}(\rho_3, \overline{B}(\rho_2, E))$, so
+    \[d(x,\overline{B}(\rho_2, E)) \leq \rho_3.\]
+    So there exists $y\in \overline{B}(\rho_2, E)$ such that $d(x,y) \leq \rho_3$, and there exist some $z\in E$ such that $d(z,y)\leq \rho_2$. Therefore, $d(x,E) \leq d(x,y) + d(y,z) \leq \rho_2 + \rho_3$, so $x\in\overline{B}(\rho_2+\rho_3, E)$. Thus, 
+    \[G\subseteq\overline{B}(\rho_3, \overline{B}(\rho_2, E)) \subseteq \overline{B}(\rho_2+\rho_3, E).\]
+    So by definition of $\rho_1$, we have $\rho_1 \leq \rho_2+\rho_3$, giving us the triangle inequality
+    \[\rho(E,G) \leq \rho(E,F) + \rho(F,G).\]
+    
+\end{proof}
+
+
+\end{document}

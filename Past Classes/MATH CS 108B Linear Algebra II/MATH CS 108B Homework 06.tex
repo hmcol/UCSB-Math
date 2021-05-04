@@ -1,0 +1,174 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Set Names
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+
+% Misc Characters
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\newcommand{\eps}{\varepsilon}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ang}{\langle}{\rangle}
+
+% Homework Sections
+\setlength{\fboxsep}{4pt}
+\newcommand{\generic}[2]{\section*{#1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\ex}[2]{\generic{Exercise #1}{#2}}
+\newcommand{\prob}[2]{\generic{Problem #1}{#2}}
+\newcommand{\ques}[2]{\generic{Question #1}{#2}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+% MATH CS 117 Intro to Real Analysis
+\newcommand{\ds}{\displaystyle}
+\newcommand{\seq}[1]{\left\{#1\right\}_{n=1}^\infty}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+
+\newcommand{\proj}{\text{proj}}
+ 
+\begin{document}
+ 
+\title{Homework 6\\
+    \large MATH CS 108B Linear Algebra II}
+\author{Harry Coleman}
+\date{May 3, 2020}
+\maketitle
+
+\ex{7}{
+    Let $V = C[-1, 1]$ be the space of continuous functions on $[-1, 1]$. Let $W_e$ be the subspace of $V$ consisting of the even functions. Does the Projection Theorem hold for $W_e$? That is, is it true that
+    \[V = W_e \oplus W_e^\perp?\]
+}
+
+If we take $W_o$ to be the subspace of $V$ containing odd functions, we first show that $V = W_e\oplus W_o$. Let $h\in V$, and define
+\[h_e(x) = \frac12(h(x)+h(-x)) \quad\text{and}\quad h_o=\frac12(h(x)-h(-x)).\]
+Then
+\begin{align*}
+    h_e(-x)
+        &= \frac12(h(-x)+h(-(-x))) \\
+        &= \frac12(h(x)+h(-x)) \\
+        &= h_e(x),
+\end{align*}
+so $h_e\in W_e$ and
+\begin{align*}
+    -h_o(-x)
+        &= -\frac12(h(-x)-h(-(-x))) \\
+        &= \frac12(h(x)-h(-x)) \\
+        &= h_o(x),
+\end{align*}
+so $h_o\in W_o$. Thus, $V=W_e+W_o$. Additionally, $W_e\cap W_o = \{0\}$ since the zero function is the only function $f$ for which $f(x)=f(-x)=-f(x)$ for all $x\in[-1,1]$. So indeed $V=W_e\oplus W_o$. We now show that $W_e\perp W_o$. Let $f\in W_e$ and $g\in W_o$. Then
+\begin{align*}
+    \ang{f,g}
+        &= \int_{-1}^1f(x)g(x)dx \\
+        &= \int_{-1}^0f(x)g(x)dx + \int_0^1f(x)g(x)dx \\
+        &= \int_0^1f(-x)g(-x)dx + \int_0^1f(x)g(x)dx \\
+        &= -\int_0^1f(x)g(x)dx + \int_0^1f(x)g(x)dx \\
+        &= 0.
+\end{align*}
+Therefore, $W_e\perp W_o$. And since $V=W_e\oplus W_o$, then $W_e^\perp = W_o$. So indeed, $V=W_e\oplus W_e^\perp$.
+
+
+\ex{9}{
+    Let $V$ be the vector space of polynomials over the field of complex numbers, with the inner product
+    \[\ang{f,g} = \int_0^1f(t)\overline{g(t)}dt.\]
+    This inner product can also be defined algebraically. If $f=\sum a_kx^k$ and $g=\sum b_kx^k$, then
+    \[\ang{f,g} = \sum_{j,k}\frac1{j+k+1}a_k\overline{b_k}.\]
+    Let $z$ be a fixed complex number and let $L$ be the linear functional “evaluation at z”: $L(f) = f(z)$. Is there a polynomial $g$ such that $L(f) = \ang{f,g}$ for every $f$? That is, does the Riesz Representation Theorem hold in this example?
+}
+
+Suppose $g$ is such a polynomial. So for all $f$,
+\begin{align*}
+    L(f) &= \ang{f,g} \\
+    f(z) &= \sum_{j,k}\frac1{j+k+1}a_k\overline{b_k}.
+\end{align*}
+
+\ex{10}{
+    The following result is useful to construct examples in which the Projection Theorem does not hold: “Let $V$ be an inner product space and let $S$ be a subspace of $V$ such that $V = S \oplus S^\perp$. Then, $(S^\perp)^\perp = S$.” Prove this theorem.
+}
+
+Let $s\in S$ and $s'\in S^\perp$. By definition of $S^\perp$, we have $\ang{s,s'}=0$. Therefore $S\perp S^\perp$. And since $v=S\oplus S^\perp$, we have $V=S\odot S^\perp$. Therefore, $S=(S^\perp)^\perp$.
+
+\ex{11}{
+    Let $S = \{q_1,\dots, q_m\}$ be an orthonormal subset of an inner product space $V$ and let $U = \text{span}(S)$. Prove that the following are equivalent:
+    \begin{enumerate}
+        \item $S$ is an orthonormal (Hamel) basis for $V$.
+        \item $U^\perp = \{0\}$.
+        \item Every vector is equal to its Fourier expansion, that is, for all $v \in V$, $\proj_U(v) = v$.
+        \item Bessel’s identity holds for all $v \in V$, that is, $||\proj_U(v)|| = ||v||$.
+        \item Parseval’s identity holds for all $v, w \in V$ , that is,
+        \[\ang{v,w} = \sum_{i=1}^m\ang{v,q_i}\ang{q_i,w}.\]
+    \end{enumerate}
+}
+
+\subsection*{$1 \implies 2$}
+
+Suppose $S$ is an orthonormal basis for $V$. Let $u\in U^\perp$ and let $v\in V$. Then by the sesquilinearity of the inner product,
+\begin{align*}
+    \ang{u,v} 
+        &= \ang{u,\sum_{i=1}^m\ang{v,q_i}q_i} \\
+        &= \sum_{i=1}^m\overline{\ang{v,q_i}}\ang{u,q_i} \\
+        &= \sum_{i=1}^m\overline{\ang{v,q_i}}0\\
+        &= 0.
+\end{align*}
+So $\ang{u,v}=0$ for all $v\in V$, therefore $u=0$ so $U^\perp=\{0\}$.
+
+\subsection*{$2\implies3$}
+
+Suppose $U^\perp=\{0\}$. Let $v\in V$, so $v-\proj_Uv\in U^\perp$ implies $v-\proj_Uv=0$. Therefore $v=\proj_Uv$. 
+
+\subsection*{$3\implies4$}
+Suppose every vector is equal to its Fourier expansion, that is, for all $v \in V$, $\proj_U(v) = v$. Then we simply take the norm of each to obtain $||\proj_Uv||=||v||$.
+
+\subsection*{$4\implies 5$}
+
+Suppose Bessel’s identity holds for all $v \in V$, that is, $||\proj_U(v)|| = ||v||$. We first obtain (2) by letting $u\in U^T$ so
+\[\proj_U u = \sum_{i=1}^m\ang{u,q_i}q_i = 0,\]
+which tells us that
+\[||u|| = ||\proj_U u|| = ||0|| = 0.\]
+This implies $u=0$ so $U^T=\{0\}$. Having (2), we now have (3). Let $v,w\in V$. Then
+\begin{align*}
+    \ang{v,w}
+        &= \ang{\sum_{i=1}^m\ang{v,q_i}q_i,\sum_{j=1}^m\ang{w,q_j}q_j} \\
+        &= \sum_{i=1}^m\ang{v,q_i}\ang{q_i,\sum_{j=1}^m\ang{w,q_j}q_j} \\
+        &= \sum_{i=1}^m\ang{v,q_i}\sum_{j=1}^m\overline{\ang{w,q_j}}\ang{q_i,q_j} \\
+        &= \sum_{i=1}^m\ang{v,q_i}\sum_{j=1}^m\ang{q_j,w}\ang{q_i,q_j} \\
+        &= \sum_{i=1}^m\ang{v,q_i}\sum_{j=1}^m\ang{q_j,w}\delta_{ij} \\
+        &= \sum_{i=1}^m\ang{v,q_i}\ang{q_i,w}.
+\end{align*}
+
+\subsection*{$5\implies 1$}
+Suppose Parseval’s identity holds for all $v, w \in V$ , that is,
+\[\ang{v,w} = \sum_{i=1}^m\ang{v,q_i}\ang{q_i,w}.\]
+We first find (2) by letting $u\in U^\perp$. Then
+\begin{align*}
+    \ang{u,u}
+        &= \sum_{i=1}^m\ang{u,q_i}\ang{q_i,u} \\
+        &= 0,
+\end{align*}
+which implies $u=0$, so $U^\perp=\{0\}$. Since we have (2), we also have (3). Thus for any $v\in V$, we have
+\[v = \proj_Uv = \sum_{i=1}^m\ang{v,q_i}q_i.\]
+So $v\in \text{span}(S)$, therefore $S$ is an orthonormal basis for $V$.
+
+
+
+
+\end{document}

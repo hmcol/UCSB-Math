@@ -1,0 +1,118 @@
+MATH CS 128 \documentclass[11pt]{article}
+ 
+\usepackage[table]{xcolor}
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{mathtools}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{colortbl}
+\usepackage{verbatim}
+\usetikzlibrary{arrows, angles, quotes}
+\usepackage{framed}
+\usepackage{cancel}
+
+
+\lstset{basicstyle=\footnotesize}
+\usetikzlibrary{calc}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+ 
+\begin{document}
+ 
+\title{Homework 13\\
+    \large MATH CS128 Intro to Higher Mathematics}
+\author{Harry Coleman}
+\date{November 18, 2019}
+
+\maketitle
+
+\section*{Exercise 2}
+\fbox{
+    \parbox{\textwidth}{
+       Let $R = \{(x, y) \in \R \times \R : |x| + |y| = 1\}$. Is $R$ an equivalence relation? Explain.
+    }
+}
+\\
+
+No, since an equivalence relation must be reflexive, but if we look at 2,
+\[|2|+|2|=4\ne 1\]
+therefore $2\cancel{R}2$. So $R$ is not reflexive, and not an equivalence relation.
+
+\section*{Exercise 4}
+\fbox{
+    \parbox{\textwidth}{
+        Let $S = \N\times \N^+$, where $\N^+ = \N\setminus \{0\}$, and we define the relation $R$ in $S$ given by
+        \[(a, b)R(c, d) \iff ad = bc\]
+        \begin{itemize}
+            \item Prove that $R$ is an equivalence relation.
+            \item List four members of the equivalence class of (6, 8).
+            \item What are all the equivalence classes?
+        \end{itemize}
+    }
+}
+\\
+
+To show that $R$ is an equivalence relation, we first show that $R$ is reflexive. Let $(x,y)\in S$. $(x,y)R(x,y)$ is true if and only if
+\[xy = xy\]
+which is clearly true. So $R$ is reflexive. We next show that $R$ is symmetric. Let $(x_1,y_1)\in S$ and $(x_2,y_2)\in S$ such that $(x_1,y_1)R(x_2,y_2)$. So by our definition of $R$, we have
+\[x_1y_2 = x_2y_1\]
+and since "$=$" is symmetric,
+\[x_2y_1 = x_1y_2\]
+so by the definition of $R$, we have $(x_2,y_2)R(x_1,y_1)$. So $R$ is symmetric. Lastly, we show that $R$ is transitive. Let $(x_1,y_1)\in S$, $(x_2,y_2)\in S$, and $(x_1,y_1)\in S$ such that $(x_1,y_1)R(x_2,y_2)$ and $(x_2,y_2)R(x_3,y_3)$. So by the definition of $R$, we have
+\[x_1y_2 = x_2y_1\]
+\[x_2y_3 = x_3y_2\]
+and since $y_1, y_2, y_3$ are not zero,
+\[\frac{x_1}{y_1} = \frac{x_2}{y_2}\]
+\[\frac{x_2}{y_2} = \frac{x_3}{y_3}\]
+and by the transitivity of "$=$",
+\[\frac{x_1}{y_1} = \frac{x_3}{y_3}\]
+\[x_1y_3 = x_3y_1\]
+and by the definition of $R$, we have $(x_1,y_1)R(x_3,y_3)$. So $R$ is transitive. Since $R$ is a relation which is reflexive, symmetric, and transitive, $R$ is an equivalence relation.
+
+\section*{Exercise 5}
+\fbox{
+    \parbox{\textwidth}{
+        Let $A$ be a nonempty set and let $R$ be an equivalence relation on $A$. Show that the collection of equivalence classes form a partition of $A$.
+    }
+}
+\\
+
+For a collection of sets, $S$, is a partition of $A$ iff
+\[\bigcup S = A\]
+\[\forall x,y \in S(x\ne y \implies x \cap y = \emptyset)\]
+
+We'll let $S$ be the set of equivalence classes of $R$. The first property is true by the reflexive property of equivalence relations since for all $x\in A$, we know $xRx$ so $x\in\bigcup S$. And for all $x\in\bigcup S$, $xRx$, and since $R$ is a relation on $A$, $x\in A$. So $\bigcup S = A$.
+
+For the second property, we'll assume that it is not true. Meaning there exist two equivalence classes $x,y$, such that $x\ne y$ and $x\cap y\ne\emptyset$. So there exists an element, $c$, which is in both $x$ and $y$. So the equivalence class of $c$ would be $[c]$. Since $c$ is in both $x$ and $y$, which are themselves equivalence classes, then $[c]=x$ and $[c]=y$, so $x=y$. Which is a contradiction, so the second property is true. So our set of equivalence classes, $S$, is a partition.
+
+\section*{Exercise 8}
+\fbox{
+    \parbox{\textwidth}{
+       \begin{itemize}
+           \item Give an equivalence relation $\sim$ on $\R$ such that the equivalence class of any element has size 4.
+           \item Give an equivalence relation $\sim$ on $\R$ such that there are infinitely many equivalence classes of $\R$ under $\sim$, and each equivalence class has the same cardinality as $\R$.
+       \end{itemize}
+    }
+}
+\\
+
+For an equivalence relations where each equivalence has 4 elements, we'll define
+\[f(x) = \floor*{\frac{x}{4}} + x-\floor*{x}\]
+\[a\sim b \iff f(a)=f(b)\]
+So each equivalence class is the sets of 4 numbers which are between two multiples of 4 and have the same fractional part. We can define the set of equivalence classes as
+\[\{\{n, n+1, n+2, n+3\}: n=4k+a \text{ where } k\in\Z \land a\in[0,1)\}\]
+For the other equivalence relation, we simply need
+\[a\sim b \iff \floor*{a}=\floor*{b}\]
+So each equivalence class are all the real numbers between two integers. We can define the set of equivalence classes as
+\[\{[n,n+1): n\in\Z\}\]
+
+
+\end{document}

@@ -1,0 +1,517 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry} % proper margins
+\usepackage{enumitem} % custom numbering for lists
+\usepackage{amsmath} % align, cases, eqref, matrices, dots, roots, delimiters, math mode functions, mod, arrows
+\usepackage{amsthm} % theorems, proofs
+\usepackage{amssymb} % fancy letters, niche relations/negations
+\usepackage{mathrsfs} % much more loopy calligraphy font
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}
+    {\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\mybox}}}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+
+% Alternate Characters
+\let\eps\varepsilon % double curved, rather than single curve with midline
+\let\phi\varphi % single stroke loop, rather than vertical line through circle
+\let\emptyset\varnothing % circular, rather than tall
+
+% Named Sets
+\newcommand{\N}{\mathbb{N}} % natural numbers
+\newcommand{\Z}{\mathbb{Z}} % integers 
+\newcommand{\Q}{\mathbb{Q}} % rational numbers
+\newcommand{\R}{\mathbb{R}} % real numbers
+\newcommand{\C}{\mathbb{C}} % complex numbers
+
+% Fancy Characters
+\newcommand{\F}{\mathbb{F}} % arbitrary field
+\renewcommand{\P}{\mathbb{P}} % probability measure (apparently, sometimes prime numbers)
+\newcommand{\FF}{\mathcal{F}} % sigma algebra
+\newcommand{\BB}{\mathcal{B}} % Borel sigma algebra
+
+% Paired Delimiters
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil} % ceiling
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor} % floor
+\newcommand{\<}{\left\langle} % left angle bracket
+\renewcommand{\>}{\right\rangle} % right angle bracket
+
+% Functions
+\renewcommand{\Im}{\operatorname{Im}} % imaginary part of a complex number
+\renewcommand{\Re}{\operatorname{Re}} % real part of a complex number
+\newcommand{\Arg}{\operatorname{Arg}} % principal argument (angle) of complex number
+\newcommand{\Log}{\operatorname{Log}} % principal log of complex number
+
+% Simplified Notation
+\newcommand{\id}[1]{\operatorname{id_{\mathnormal{#1}}}} % identity operator
+\newcommand{\seq}[2][n]{\left\{#2\right\}_{#1\in\N}} % sequence
+\renewcommand{\d}[1]{\operatorname{d}\!#1} % differential operator
+%\renewcommand{\d}{\,d} % differential operator
+\newcommand{\od}[3][1]{\ifnum#1=1{\frac{\d #2}{\d #3}}\else{\frac{\d^{#1}#2}{\d #3^{#1}}}\fi} % ordinary derivative
+\newcommand{\pd}[3][1]{\ifnum#1=1{\frac{\partial #2}{\partial#3}}\else{\frac{\partial^{#1}#2}{\partial#3^{#1}}}\fi} % partial derivative
+\newcommand{\intr}[1]{\accentset{\circ}{#1}} % interior of a set
+
+% Renaming
+\let\sm\setminus % set minus (difference)
+\let\clo\overline % closure of a set
+\let\conj\overline % conjugate of an object
+\let\eqc\overline % equivalence class of an object
+\let\teq\trianglelefteq % normal subgroup
+\let\iso\cong % isomorphic (groups)
+
+% Notes
+% medskip for header-less paragraph
+% intertext{} for short text inside big display structure
+% dots is dynamic based on surroundings
+% dfrac and tfrac to force large or small fractions
+% operatorname for new operators instead of text
+% consider using nath; it seems to break most formatting and is not compatible with many packages
+
+\begin{document}
+ 
+\title{Homework 4\\
+    %\large MATH CS 121 Intro to Probability
+    %\large MATH 111A Intro to Abstract Algebra
+    \large MATH CS 122A Complex Analysis I
+    %\large MATH 118A Intro to Real Analysis
+    %\large MATH 104A Intro to Numerical Analysis
+}
+\author{Harry Coleman}
+\date{November 25, 2020}
+\maketitle
+
+\section*{1 Exercise 4.1.1}
+\begin{problem}
+    Let $\gamma$ be the boundary of the triangle $\{0<y<1-x, 0<x<1\}$, with the usual counterclockwise orientation. Evaluate the following integrals
+\end{problem}
+
+\subsection*{Exercise 4.1.1(a)}
+\begin{problem}
+    \[\int_\gamma\Re z \d{z}\]
+\end{problem}
+\medskip
+
+We first parameterize the three segments of $\gamma$ as follows:
+\begin{align*}
+    \gamma_1:[0,1] &\to \C & \gamma_2:[0,1] &\to \C & \gamma_3:[0,1] &\to \C\\
+        t &\mapsto t + i0, & t &\mapsto (1-t) + it, & t &\mapsto 0 + i(1-t).
+\end{align*}
+Then we evaluate the integral.
+\begin{align*}
+    \int_\gamma\Re z \d{z}
+        &= \int_{\gamma_1}\Re z \d{z} + \int_{\gamma_2}\Re z \d{z} + \int_{\gamma_3}\Re z \d{z} \\
+        &= \int_0^1\Re(\gamma_1(t))\gamma_1'(t) \d{t} + \int_0^1\Re(\gamma_2(t))\gamma_2'(t) \d{t} + \int_0^1\Re(\gamma_3(t))\gamma_3'(t) \d{t} \\
+        &= \int_0^1 t\cdot 1\d{t} + \int_0^1 (1-t)\cdot(-1+i)\d{t} + \int_0^1 0\cdot(-i)\d{t} \\
+        &= \int_0^1 t \d{t} + (-1+i)\int_0^1(1-t)\d{t} + \int_0^1 0 \d{t} \\
+        &= \frac12 + (-1+i)\frac12 + 0 \\
+        &= i\frac12.
+\end{align*}
+
+\newpage
+\subsection*{Exercise 4.1.1(b)}
+\begin{problem}
+    \[\int_\gamma\Im z \d{z}\]
+\end{problem}
+\medskip
+
+Using the same parameterization as in Exercise 4.1.1(a), we evaluate the integral.
+\begin{align*}
+    \int_\gamma\Im z \d{z}
+        &= \int_{\gamma_1}\Im z \d{z} + \int_{\gamma_2}\Im z \d{z} + \int_{\gamma_3}\Im z \d{z} \\
+        &= \int_0^1\Im(\gamma_1(t))\gamma_1'(t) \d{t} + \int_0^1\Im(\gamma_2(t))\gamma_2'(t) \d{t} + \int_0^1\Im(\gamma_3(t))\gamma_3'(t) \d{t} \\
+        &= \int_0^1 0\cdot1 \d{t} + \int_0^1 t\cdot(-1+i)\d{t} + \int_0^1 (1-t)\cdot(-i)\d{t} \\
+        &= \int_0^1 0 \d{t} + (-1+i)\int_0^1 t \d{t} + (-i)\int_0^1 (1-t) \d{t} \\
+        &= 0 + (-1+i)\frac12 + (-i)\frac12 \\
+        &= -\frac12.
+\end{align*}
+
+\subsection*{Exercise 4.1.1(c)}
+\begin{problem}
+    \[\int_\gamma z \d{z}\]
+\end{problem}
+\medskip
+
+Using the values solved for in Exercises 4.1.1(a) and (b),
+\[\int_\gamma z \d{z} = \int_\gamma (\Re z + i \Im z) \d{z} = \int_\gamma \Re z \d{z} + i\int_\gamma \Im z \d{z} = i\frac12 + i\left(-\frac12\right) = 0.\]
+This agrees with Cauchy's theorem on the triangle $\gamma$ and function $f(z)=z$, differentiable on domain $\C$.
+
+\newpage
+\section*{2 Exercise 4.1.2}
+\begin{problem}
+    Let $\gamma$ be the circle $\{|z| = R\}$, with the usual counterclockwise orientation. Evaluate the following integrals, for $m=0,\pm1,\pm2$,\dots.
+\end{problem}
+
+\subsection*{Exercise 4.1.2(a)}
+\begin{problem}
+    \[\int_\gamma z^m \d{z}\]
+\end{problem}
+\medskip
+
+We parameterize $\gamma$ as follows
+\begin{align*}
+    \gamma:[0,2\pi] &\to \C \\
+        \theta &\mapsto e^{i\theta}.
+\end{align*}
+Then the integral becomes
+\begin{align*}
+    \int_\gamma z^m \d{z}
+        &= \int_0^{2\pi}\gamma(\theta)^m\gamma'(\theta) \d{\theta} \\
+        &= \int_0^{2\pi} (e^{i\theta})^m\cdot ie^{i\theta} \d{\theta} \\
+        &= i\int_0^{2\pi} e^{i(m+1)\theta} \d{\theta}.
+\end{align*}
+Now if $m=-1$, then
+\begin{align*}
+    \int_\gamma z^m \d{z}
+        &= i\int_0^{2\pi} e^{i(-1+1)\theta} \d{\theta} \\
+        &= i\int_0^{2\pi} e^{0} \d{\theta}\\
+        &= i\int_0^{2\pi} 1 \d{\theta}\\
+        &= i2\pi.
+\end{align*}
+And if $m\ne-1$, then
+\begin{align*}
+    \int_\gamma z^m \d{z}
+        &= i\int_0^{2\pi} e^{i(m+1)\theta} \d{\theta} \\
+        &= i\left(\frac{e^{i(m+1)2\pi}}{m+1} -  \frac{e^{i(m+1)0}}{m+1}\right)\\
+        &= i\left(\frac{e^{i2\pi}}{m+1} -  \frac{e^{i0}}{m+1}\right)\\
+        &= 0.
+\end{align*}
+
+For $m\geq0$, this agrees with Cauchy's theorem on the closed curve $\gamma$ and function $f(z)=z^m$, which is is complex differentiable on $\C$. Note, however, that Cauchy's theorem does not tell us anything when $m<0$. If $m<0$, then $f(z)=z^m$ is only complex differentiable on $\C\setminus\{0\}$, which is not simply connected. Moreover, any domain $D\subseteq\C$ containing $\gamma$ will not be simply connected, since $0$ is in the interior of $\gamma$. In particular, when $m=-1$, we do not obtain the result of Cauchy's theorem.
+
+\subsection*{Exercise 4.1.2(b)}
+\begin{problem}
+    \[\int_\gamma\conj{z}^m \d{z}\]
+\end{problem}
+\medskip
+
+We parameterize $\gamma$ the same as in Exercise 4.1.2(a), then evaluate the integral.
+\begin{align*}
+    \int_\gamma \conj{z}^m \d{z}
+        &= \int_0^{2\pi}\left(\conj{\gamma(\theta)}\right)^m\gamma'(\theta) \d{\theta} \\
+        &= \int_0^{2\pi} \left(\conj{e^{i\theta}}\right)^m\cdot ie^{i\theta} \d{\theta} \\
+        &= i\int_0^{2\pi} \left(e^{\conj{i\theta}}\right)^m\cdot e^{i\theta} \d{\theta} \\
+        &= i\int_0^{2\pi} e^{-im\theta}\cdot e^{i\theta} \d{\theta} \\
+        &= i\int_0^{2\pi} e^{i(1-m)\theta} \d{\theta}.
+\end{align*}
+Now if $m=1$, then
+\begin{align*}
+    \int_\gamma \conj{z}^m \d{z}
+        &= i\int_0^{2\pi} e^{-i(1-1)\theta} \d{\theta} \\
+        &= i\int_0^{2\pi} e^{0} \d{\theta}\\
+        &= i\int_0^{2\pi} 1 \d{\theta}\\
+        &= i2\pi.
+\end{align*}
+And if $m\ne1$, then
+\begin{align*}
+    \int_\gamma \conj{z}^m \d{z}
+        &= i\int_0^{2\pi} e^{-i(1-m)\theta} \d{\theta} \\
+        &= i\left(\frac{e^{-i(1-m)2\pi}}{1-m} -  \frac{e^{-i(1-m)0}}{1-m}\right)\\
+        &= i\left(\frac{e^{i2\pi}}{1-m} -  \frac{e^{i0}}{1-m}\right)\\
+        &= 0.
+\end{align*}
+
+\subsection*{Exercise 4.1.2(c)}
+\begin{problem}
+    \[\int_\gamma\conj{z}^m|\d{z}|\]
+\end{problem}
+\medskip
+
+Note that we have the following equivalent representation of our parameterization of $\gamma$:
+\[\gamma(\theta) = e^{i\theta} = \cos\theta + i\sin\theta.\]
+Then the integral becomes
+\begin{align*}
+    \int_\gamma\conj{z}^m|\d{z}|
+        &= \int_0^{2\pi}\left(\conj{\gamma(\theta)}\right)^m\sqrt{\left(\od{}{\theta}\cos\theta\right)^2 + \left(\od{}{\theta}\sin\theta\right)^2}\d{\theta} \\
+        &= \int_0^{2\pi}\left(\conj{e^{i\theta}}\right)^m\sqrt{(-\sin\theta)^2 + (\cos\theta)^2}\d{\theta} \\
+        &= \int_0^{2\pi}\left(e^{\conj{i\theta}}\right)^m\sqrt{\sin^2\theta + \cos^2\theta}\d{\theta} \\
+        &= \int_0^{2\pi}\left(e^{-i\theta}\right)^m\sqrt{1}\d{\theta} \\
+        &= \int_0^{2\pi}e^{-im\theta}\d{\theta}.
+\end{align*}
+Now if $m=0$, then
+\begin{align*}
+    \int_\gamma\conj{z}^m|\d{z}|
+        &= \int_0^{2\pi} e^{-i0\theta} \d{\theta} \\
+        &= \int_0^{2\pi} e^0 \d{\theta} \\
+        &= \int_0^{2\pi} 1 \d{\theta}\\
+        &= 2\pi.
+\end{align*}
+And if $m\ne0$, then
+\begin{align*}
+    \int_\gamma\conj{z}^m|\d{z}|
+        &= \int_0^{2\pi} e^{-im\theta} \d{\theta} \\
+        &= \left(\frac{e^{-im2\pi}}{m} -  \frac{e^{-im0}}{m}\right)\\
+        &= \left(\frac{e^{i2\pi}}{m} -  \frac{e^{i0}}{m}\right)\\
+        &= 0.
+\end{align*}
+
+
+\newpage
+\section*{3 Exercise 4.1.4}
+\begin{problem}
+    Show that if $D$ is a bounded domain with smooth boundary, then
+    \[\int_{\partial D} \conj{z}\d{z} = 2i\operatorname{Area}(D).\]
+\end{problem}
+
+\begin{proof}
+    Splitting the integral into its components, where $z=x+iy$, and and applying Green's theorem to the smooth simple closed curve $\partial D$, we obtain
+    \begin{align*}
+        \int_{\partial D} \conj{z}\d{z}
+            &= \int_{\partial D} \conj{x + iy}(\d{x} + i \d{y}) \\e
+            &= \int_{\partial D} (x - iy)\d{x} + (x - iy)i\d{y} \\
+            &= \int_{\partial D} (x - iy)\d{x} + (y + ix)\d{y} \\
+            &= \iint_D \left(\pd{}{x}(y + ix) - \pd{}{y}(x - iy)\right)\d{x}\d{y} \\
+            &= \iint_D (i - (-i))\d{x}\d{y} \\
+            &= 2i\iint_D \d{x}\d{y} \\
+            &= 2i\operatorname{Area}(D).
+    \end{align*}
+    
+\end{proof}
+
+\newpage
+\section*{4 Exercise 4.1.5}
+\begin{problem}
+    Show that
+    \[\left|\oint_{|z-1|=1} \frac{e^z}{z+3}\d{z}\right| \leq 2\pi e^2.\]
+\end{problem}
+
+\begin{proof}
+    For any $z\in\C$ such that $|z-1|=1$, we have
+    \begin{align*}
+        |z+3|
+            &= |(z-1) - (-4)| \\
+            &\geq ||z-1| - |-4|| \\
+            &= |1-4| \\
+            &= |-3| \\
+            &= 3.
+    \end{align*}
+    Now for any $z\in\C$ with $z=x+iy$, we have
+    \begin{align*}
+        |e^z|
+            &= |e^xe^{iy}| \\
+            &= |e^x|\cdot|\cos y + i\sin y| \\
+            &= e^x\cdot\sqrt{\cos^2 y + i\sin^2 y} \\
+            &= e^x\cdot\sqrt{1} \\
+            &= e^x.
+    \end{align*}
+    Additionally, if $|z-1|=1$, then
+    \[|z-1| = \sqrt{(x-1)^2 + y^2} = 1 \quad\implies\quad 0\leq x \leq 2.\]
+    And since the exponential function is increasing, we have
+    \[e^x \leq e^2.\]
+    Thus, for all $z\in\C$ such that $|z-1|=1$, we have
+    \begin{align*}
+        \left|\frac{e^z}{z+3}\right|
+            &= \frac{|e^z|}{|z+3|} \\
+            &= \frac{e^x}{|z+3|} \\
+            &\leq \frac{e^x}{3} \\
+            &\leq e^x \\
+            &\leq e^2.
+    \end{align*}
+    And since the curve of $|z-1|=1$ is the unit circle centered at $1+i0$, its length is the circumference of a unit circle, which is $2\pi$. Now by the $ML$-inequality, we have
+    \[\left|\oint_{|z-1|=1} \frac{e^z}{z+3}\d{z}\right| \leq e^2\cdot 2\pi = 2\pi e^2.\]
+    
+\end{proof}
+
+\newpage
+\section*{5 Exercise 4.1.6}
+\begin{problem}
+    Show that
+    \[\left|\oint_{|z|=R} \frac{\Log z}{z^2}\d{z}\right| \leq 2\sqrt{2}\pi\frac{\log R}{R}, \qquad R > e^\pi.\]
+\end{problem}
+
+\begin{proof}
+    For any $z\in\C$ such that $|z|=R$, we have
+    \begin{align*}
+        \left|\frac{\Log z}{z^2}\right|
+            &= \frac{|\log|z| + i\Arg z|}{|z|^2} \\[1em]
+            &= \frac{|\log R + i\Arg z|}{R^2}.
+    \end{align*}
+    Note that $\log R \in\R$ and $\Arg z \in[-\pi,\pi]\subseteq\R$. Then
+    \begin{align*}
+        \left|\frac{\Log z}{z^2}\right|
+            &= \frac{\sqrt{(\log R)^2 + (\Arg z)^2}}{R^2} \\[1em]
+            &\leq \frac{\sqrt{(\log R)^2 + (\pi)^2}}{R^2} \\[1em]
+            &= \frac{\sqrt{(\log R)^2 + (\log e^\pi)^2}}{R^2} \\[1em]
+            &\leq \frac{\sqrt{(\log R)^2 + (\log R)^2}}{R^2} \\[1em]
+            &= \frac{\sqrt{2(\log R)^2}}{R^2} \\[1em]
+            &= \frac{\sqrt{2}\log R}{R^2}.
+    \end{align*}
+    And since the circumference of the circle $|z|=R$ is $2\pi R$, then by the $ML$-inequality, we have
+    \[\left|\oint_{|z|=R} \frac{\Log z}{z^2}\d{z}\right| \leq \frac{\sqrt{2}\log R}{R^2} \cdot 2\pi R = 2\sqrt{2}\pi\frac{\log R}{R}.\]
+    
+\end{proof}
+
+\newpage
+\section*{6 Exercise 4.1.8}
+\begin{problem}
+    Suppose the continuous function $f(e^{i\theta})$ on the unit circle satisfies $|f(e^{i\theta})| \leq M$ and $|\int_{|z|=1}f(z)\d{z}| = 2\pi M$. Show that $f(z)= c\conj{z}$ for some constant $c$ with modulus $|c| = M$.
+\end{problem}
+\medskip
+
+It can be shown that $|f(e^{i\theta})| = M$ for all $\theta \in [0, 2\pi]$. If we assume for contradiction that it is not true, then it is strictly less than $M$ for some $\theta$ and we obtain that
+\[\left|\int_{|z|=1}f(z)\d{z}\right| \leq \int_{|z|=1}|f(z)|\d{z} < 2\pi M,\]
+which is a contradiction. I was unable to complete the proof after this.
+
+\newpage
+\section*{7 Exercise 4.3.3}
+\begin{problem}
+    Let $f(z)= c_0 + c_1 z + \cdots + c_n z^n$ be a polynomial.
+\end{problem}
+
+\subsection*{Exercise 4.3.3(a)}
+\begin{problem}
+    If the $c_k$'s are real, show that
+    \[\int_{-1}^1 f(x)^2 dx \leq \pi \int_0^{2\pi}|f(e^{i\theta})|^2 \frac{d\theta}{2\pi} = \pi \sum_{k=0}^n c_k^2.\]
+    \emph{Hint.} For the first inequality, apply Cauchy's theorem to the function $f(z)^2$ separately on the top half and the bottom half of the unit disk.
+\end{problem}
+
+\begin{proof}
+    Suppose $c_k\in\R$ for $k = 0, \dots, n$. Then $f(x)$ is real for all $x \in \R$. Now because $f(x)^2 \geq 0$ for all $x \in \R$, then
+    \[\int_{-1}^1 f(x)^2 \d{x} = \left| \int_{-1}^1 f(x)^2 \d{x} \right|.\]
+    Denote by $\gamma_1$ the top half of the unit circle, i.e., the curve $e^{i\theta}$ for $\theta\in[0,\pi]$. Similarly, denote by $\gamma_2$ the bottom half of the unit circle, i.e., the curve $e^{i\theta}$ for $\theta\in[\pi,2\pi]$. Finally, denote by $\gamma_3$ the line segment from $-1$ to $1$, i.e., the curve $z = x + iy$ for $x \in [-1, 1]$ and $y = 0$. First, we see that the definition of $\gamma_3$ gives us
+    \[\int_{\gamma_3} f(z)^2 \d{z} = \int_{\gamma_3} f(x + iy)^2 (\d{x} + i \d{y}) = \int_{-1}^1 f(x)^2 \d{x}.\]
+    Now since $f^2$ is a polynomial, it is entire. So by Cauchy's theorem, we have
+    \[\int_{\gamma_1} f(z)^2 \d{z} +  \int_{\gamma_3} f(z)^2 \d{z} = \int_{\gamma_1 \cup \gamma_3} f(z)^2 \d{z} = 0,\]
+    \[- \int_{\gamma_3} f(z)^2 \d{z} + \int_{\gamma_2} f(z)^2 \d{z} = \int_{-\gamma_3 \cup \gamma_2} f(z)^2 = 0,\]
+    where $\gamma_1 \cup \gamma_3$ is the piecewise smooth boundary of the top half of the unit disk, and $-\gamma_3 \cup \gamma_2$ the bottom half. These two equalities now imply that
+    \[\int_{\gamma_3} f(z)^2 \d{z} = - \int_{\gamma_1} f(z)^2 \d{z} = \int_{\gamma_2} f(z)^2 \d{z},\]
+    and, moreover, that
+    \[\int_{\gamma_3} f(z)^2 \d{z} = - \frac12 \int_{\gamma_1} f(z)^2 \d{z} + \frac12 \int_{\gamma_2} f(z)^2 \d{z}.\]
+    We now apply the regular triangle inequality and the triangle inequality for integrals to obtain
+    \begin{align*}
+        \int_{-1}^1 f(x)^2 \d{x}
+            &= \left| - \frac12 \int_{\gamma_1} f(z)^2 \d{z} + \frac12 \int_{\gamma_2} f(z)^2 \d{z} \right| \\[1em]
+            &\leq \frac12 \left| \int_{\gamma_1} f(z)^2 \d{z} \right| + \frac12 \left| \int_{\gamma_2} f(z)^2 \d{z} \right| \\[1em]
+            &\leq \frac12 \int_{\gamma_1} |f(z)|^2 |\d{z}|  + \frac12  \int_{\gamma_2} |f(z)|^2 |\d{z}| \\[1em] 
+            &= \frac12 \int_{\gamma_1 \cup \gamma_2} |f(z)|^2 |\d{z}|.
+    \end{align*}
+    Note that $\gamma_1 \cup \gamma_2$ is precisely the unit circle, i.e., the curve $e^{i\theta}$ for $\theta \in [0, 2\pi]$. Thus, we obtain the desired inequality
+    \begin{align*}
+        \int_{-1}^1 f(x)^2 \d{x}
+            &\leq \frac12 \oint_{|z| = 1} |f(z)|^2 |\d{z}| \\[1em]
+            &= \pi \cdot \frac1{2\pi} \int_0^{2\pi} |f(e^{i\theta})|^2 \d{\theta} \\[1em]
+            &= \pi \int_0^{2\pi} |f(e^{i\theta})|^2 \frac{\d{\theta}}{2\pi}.
+    \end{align*}
+    We now begin solving for the desired equality:
+    \allowdisplaybreaks
+    \begin{align*}
+        \pi \int_0^{2\pi} |f(e^{i\theta})|^2 \frac{\d{\theta}}{2\pi}
+            &= \frac12 \int_0^{2\pi} |f(e^{i\theta})|^2 \d{\theta} \\[1em]
+            &= \frac12 \int_0^{2\pi} \left| \sum_{k=0}^n c_k e^{ik\theta} \right|^2 \d{\theta} \\[1em]
+            &= \frac12 \int_0^{2\pi} \left( \sum_{k=0}^n c_k e^{ik\theta} \right) \left(\conj{ \sum_{k=0}^n c_k e^{ik\theta} }\right) \d{\theta} \\[1em]
+            &= \frac12 \int_0^{2\pi} \left( \sum_{k=0}^n c_k e^{ik\theta} \right) \left(\sum_{k=0}^n \conj{c_k} e^{-ik\theta} \right) \d{\theta} \\[1em]
+            &= \frac12 \int_0^{2\pi} \left( \sum_{k=0}^n c_k e^{ik\theta} \right) \left(\sum_{k=0}^n c_k e^{-ik\theta} \right) \d{\theta} \\[1em]
+            &= \frac12 \int_0^{2\pi} \sum_{k=0}^n \sum_{\ell=0}^n c_k e^{ik\theta} c_\ell e^{-i\ell\theta} \d{\theta} \\[1em]
+            &= \frac12 \sum_{k=0}^n \sum_{\ell=0}^n c_kc_\ell \int_0^{2\pi} e^{i(k - \ell)\theta} \d{\theta}.
+    \end{align*}
+    If $k = \ell$, then
+    \begin{align*}
+        \int_0^{2\pi} e^{i(k - \ell)\theta} \d{\theta}
+            &= \int_0^{2\pi} e^{i(0)\theta} \d{\theta} \\[1em]
+            &= \int_0^{2\pi} 1 \d{\theta} \\[1em]
+            &= 2\pi.
+    \end{align*}
+    If $k \ne \ell$, then
+    \begin{align*}
+        \int_0^{2\pi} e^{i(k - \ell)\theta} \d{\theta}
+            &= \frac{-i}{k-\ell} \left[ e^{i(k - \ell)\theta} \right]_0^{2\pi} \\[1em]
+            &= \frac{-i}{k-\ell} \left( e^{i(k - \ell)2\pi} - e^{i(k - \ell)20} \right) \\[1em]
+            &= \frac{-i}{k-\ell} \left( 1 - 1 \right) \\[1em]
+            &= 0.
+    \end{align*}
+    Therefore, we have
+    \begin{align*}
+        \pi \int_0^{2\pi} |f(e^{i\theta})|^2 \frac{\d{\theta}}{2\pi}
+            &= \frac12 \sum_{k=0}^n \sum_{\ell=0}^n c_kc_\ell (2\pi \delta_{k\ell}) \\[1em]
+            &= \pi \sum_{k=0}^n \sum_{\ell=0}^n c_kc_\ell \delta_{k\ell},
+    \end{align*}
+    where $\delta_{k\ell}$ is the Kronecker delta function. Thus, we obtain the desire equality
+    \[\pi \int_0^{2\pi} |f(e^{i\theta})|^2 \frac{\d{\theta}}{2\pi}= \pi \sum_{k=0}^n c_k^2.\]
+    
+\end{proof}
+
+\newpage
+\subsection*{Exercise 4.3.3(b)}
+\begin{problem}
+    If the $c_k$'s are complex, show that
+    \[\int_{-1}^1 |f(x)|^2 \d{x}  \leq \pi \int_0^{2\pi}|f(e^{i\theta})|^2 \frac{\d{\theta}}{2\pi} = \pi \sum_{k=0}^n|c_k|^2.\]
+\end{problem}
+
+\begin{proof}
+    If each $c_k \in \C$, then we define $a_k = \Re c_k$ and $b_k = \Im c_k$ for $k = 0, \dots, n$. Now if $f = u + iv$ for real-valued functions $u$ and $v$, then for any $x \in \R$, we have
+    \begin{align*}
+        f(x)
+            &= \sum_{k=0}^n c_k x^k \\
+            &= \sum_{k=0}^n (a_k + ib_k) x^k \\
+            &= \sum_{k=0}^n a_kx^k + i\sum_{k=0}^n b_k x^k \\
+            &= u(x) + i v(x).
+    \end{align*}
+    Then
+    \begin{align*}
+        \int_{-1}^1 |f(x)|^2 \d{x} 
+            &= \int_{-1}^1 |u(x) + iv(x)|^2 \d{x}  \\
+            &= \int_{-1}^1 \sqrt{u(x)^2 + v(x)^2}^2 \d{x}  \\
+            &= \int_{-1}^1 u(x)^2 + v(x)^2 \d{x} \\
+            &= \int_{-1}^1 u(x)^2 \d{x}+ \int_{-1}^1 v(x)^2 dx \\
+    \end{align*}
+    Then by Exercise 4.3.3(a), we have
+    \allowdisplaybreaks
+    \begin{align*}
+        \int_{-1}^1 |f(x)|^2 \d{x} 
+            &\leq \pi \sum_{k=0}^n a_k^2 + \pi \sum_{k=0}^n b_k^2 \\
+            &= \pi \sum_{k=0}^n a_k^2 + b_k^2 \\
+            &= \pi \sum_{k=0}^n \sqrt{a_k^2 + b_k^2}^2 \\
+            &= \pi \sum_{k=0}^n |a_k + ib_k|^2 \\
+            &= \pi \sum_{k=0}^n |c_k|^2.
+    \end{align*}
+    The proof of the equality is the same as the proof of the equality from Exercise 4.3.3(a), but without the assumption that $\conj{c_k}$ is equal to $c_k$. In this case, the result is
+    \[\pi \int_0^{2\pi}|f(e^{i\theta})|^2 \frac{\d{\theta}}{2\pi} = \pi \sum_{k=0}^n c_k\conj{c_k}.\]
+    And since $c_k\conj{c_k} = |c_k|^2$, then the desired equality is obtained.
+    
+    
+\end{proof}
+
+\subsection*{Exercise 4.3.3(c)}
+\begin{problem}
+    Establish the following variant of \textbf{Hilbert's inequality}, that
+    \[\left|\sum_{j,k=0}^n \frac{c_jc_k}{j+k+1}\right| \leq \pi \sum_{k=0}^n|c_k|^2,\]
+    with strict inequality unless the complex numbers $c_0,\dots,c_n$ are all zero. \emph{Hint.} Start by evaluating $\int_0^1f(x)^2 dx$.
+\end{problem}
+
+\begin{proof}
+    If all the $c_k$'s are zero, then the inequality is trivial, as it is simply the equality $0 = 0$. Without loss of generality, we assume some of the $c_k$'s are nonzero. We first evaluate the following integral:
+    \begin{align*}
+        \int_0^1f(x)^2 \d{x}
+            &= \int_0^1 \left( \sum_{k=0}^n c_k x^k \right)^2 \d{x} \\
+            &= \int_0^1 \sum_{k,\ell = 0}^n c_k c_\ell x^{k + \ell}  \d{x} \\
+            &= \sum_{k,\ell = 0}^n c_k c_\ell \int_0^1 x^{k + \ell}  \d{x} \\
+            &= \sum_{k,\ell = 0}^n c_k c_\ell \frac{1}{k + \ell + 1} \\
+            &= \sum_{k,\ell = 0}^n \frac{c_k c_\ell }{k + \ell + 1}.
+    \end{align*}
+    Therefore, we have
+    \[\left| \sum_{k,\ell = 0}^n \frac{c_k c_\ell }{k + \ell + 1} \right| = \left| \int_0^1f(x)^2 \d{x} \right| \leq \int_0^1 |f(x)|^2 \d{x}.\]
+    Since we assumed that $f$ is not the zero polynomial, then it has at most finitely many zeros on the real interval $[-1, 0]$. Therefore,
+    \[0 < \int_{-1}^0 |f(x)|^2 \d{x},\]
+    and we have the strict inequality
+    \[\left| \sum_{k,\ell = 0}^n \frac{c_k c_\ell }{k + \ell + 1} \right| < \int_0^1 |f(x)|^2 \d{x} + \int_{-1}^0 |f(x)|^2 \d{x} = \int_{-1}^1 |f(x)|^2 \d{x}.\]
+    Exercise 4.3.3(b) now gives us that
+    \[\int_{-1}^1 |f(x)|^2 \d{x} \leq \pi \sum_{k=0}^n |c_k|^2,\]
+    and we obtain the desired inequality
+    \[\left| \sum_{k,\ell = 0}^n \frac{c_k c_\ell }{k + \ell + 1} \right| < \pi \sum_{k=0}^n |c_k|^2.\]
+    
+\end{proof}
+
+
+
+\end{document}

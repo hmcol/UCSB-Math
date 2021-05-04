@@ -1,0 +1,233 @@
+\documentclass[12pt]{article}
+ 
+\usepackage[table]{xcolor}
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{colortbl}
+\usepackage{verbatim}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing}
+\usepackage{framed}
+
+\lstset{basicstyle=\footnotesize}
+\usetikzlibrary{calc}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+ 
+\begin{document}
+ 
+\title{Invariant\\
+    \large CS101A Problem Solving I}
+\author{Harry Coleman}
+\date{October 29, 2019}
+
+\maketitle
+
+\section*{Problem 3}
+\fbox{
+    \parbox{\textwidth} {
+        Suppose the positive integer n is odd. First Kevin writes the numbers $\{1, 2, \dots , 2n\}$ on the blackboard. Then, he picks any two numbers $a$, $b$, erases them, and writes, instead, $|a - b|$. Prove that an odd number will remain at the end.
+    }
+}
+\\
+
+Given that we are starting with the natural numbers up to $2n$, there are $n$ even numbers and $n$ odd numbers. Since $n$, itself, is odd, we start with and odd number of both even and odd numbers. We have 4 cases for how $a$ and $b$ might be chosen for each iteration.
+\begin{center}
+    \rowcolors{1}{gray!10}{white}
+    \begin{tabular}{c l l}
+        1 & $a$ odd & $b$ odd \\
+        2 & $a$ even & $b$ even \\
+        3 & $a$ odd & $b$ even \\
+        4 & $a$ even & $b$ odd \\
+    \end{tabular}
+\end{center}
+
+However, since cases 3 and 4 are simply one odd and one even, we'll consider them to be the same case. For case 1, we remove two odd numbers from the set, take their absolute difference, which will always be even, and add it back to the set. For case 2, we remove two even numbers, take their absolute difference, which will always be even, and add it back to the set. For case 3 and 4, we remove one of each even and odd, take their absolute difference, which will always be odd, and add it back to the set. We amend the above chart to reflect these properties.
+\begin{center}
+    \rowcolors{1}{gray!10}{white}
+    \begin{tabular}{c l l|c c}
+        \multicolumn{3}{r}{Change in:}& \# of odd & \# of even \\
+        \hline
+        1 & $a$ odd & $b$ odd & $-2$ & $+1$\\
+        2 & $a$ even & $b$ even & $0$ & $-1$\\
+        3 & $a$ odd & $b$ even & $0$ & $-1$\\
+        4 & $a$ even & $b$ odd & $0$ & $-1$\\
+    \end{tabular}
+\end{center}
+
+So our invariant here is the parity in the quantity of odd numbers in our set; it starts at $n$ which is odd, and can only decrease by 2, and it remains odd. It is clear to see that this process would stop at one number left. If this number were even, it would mean that there were zero odd numbers. But this would contradict our invariant that the number of odd numbers is always odd, since zero is even. So the last remaining number must be odd.
+
+\section*{Problem 4}
+\fbox{
+    \parbox{\textwidth} {
+        A dragon has 100 heads. A strange knight can cut off 15, 17, 20 or 5 heads, respectively, with one blow of his sword. However, the dragon has mystical regenerative powers, and it will grow back 24, 2, 14 or 17 heads, respectively, in each cases. If all heads are blown off, the dragon dies. Will the dragon ever die?
+    }
+}
+\\
+
+Assuming that the dragon dies if and only if all the heads are cut off, we will show that the dragon cannot die. Every time some heads are cut off, some grow back, resulting in a net change in the number of heads the dragon has. We have 4 cases for this.
+\begin{center}
+    \rowcolors{1}{gray!10}{white}
+    \begin{tabular}{r r|r}
+        Cut Off & Grow Back & Net Change\\
+        \hline
+        15 & 24 & $+9$\\
+        17 & 2 & $-15$\\
+        20 & 14 & $-6$\\
+        5 & 17 & $+12$\\
+    \end{tabular}
+\end{center}
+
+We'll define $d$ to be the total change in the number of heads after an arbitrary series of cutting off and growing back of heads. We start with $d=0$ and can add any of the numbers from the column titled \emph{Net Change} in the above table to modify $d$. Since all of these numbers are multiples of 3, 
+\begin{align*}
+    +9 &= +3\cdot3 \\
+    -15 &= -3\cdot5 \\
+    -6 &= -3\cdot2 \\
+    +12 &= +3\cdot4
+\end{align*}
+we know that $d$ must always be a multiple of 3. The dragon starts with 100 heads, and the knight must bring this to 0 heads. Assuming this is possible, we must have
+\[100 + d = 0\]
+\[d = -100\]
+
+However, $-100$ is not a multiple of 3, which contradicts the statement that $d$ must always be a multiple of 3, so our assumption is false. So it is not possible for the knight to kill the dragon by bringing its number of heads to zero.
+
+
+\newpage
+\section*{Problem 5}
+\fbox{
+    \parbox{\textwidth} {
+         There is a heap of 1001 stones on a table. You are allowed to perform the following operation: you choose one of the heaps containing more than one stone, throw away a stone from the heap, then divide it into two smaller (not necessarily equal) heaps. Is it possible to reach a situation in which all the heaps on the table contain exactly 3 stones by performing the operation finitely many times?
+    }
+}
+\\
+
+
+The equivalent reverse of this process would be starting with a finite number of heaps of stones, then combining them. Each time two heaps are combined, 1 additional stone is added. We will focus on the reverse process.
+
+We will prove by induction that every heap formed from the reverse process, starting with heaps of 3 must have a number of stones equal to $4k-1$ for some integer $k$. The base case is trivial since $3=4k-1$ for $k=1$.
+
+For the inductive step, we'll take two arbitrary heaps that we assume to be of this form,
+\[\text{Heap 1: } 4a-1 \text{ for some integer } a\]
+\[\text{Heap 2: } 4b-1 \text{ for some integer } b\]
+If we combine these two heaps, adding 1 additional stone, we get
+\[(4a-1) + (4b-1) +1\]
+\[4a + 4b -1 -1 +1\]
+\[4(a+b) -1\]
+Since $a$ and $b$ are both integers, $(a+b)$ is an integer, so our new pile has $4k-1$ stones for some integer k. So by the principle of induction, we know that starting with a finite number of heaps of 3 stones, our reverse process will always produce heaps of the form $4k-1$ for some integer $k$.
+
+If we assume it is possible for the original process to start with 1001 stones and produce only heaps with 3 stones, it must also be possible for our equivalent, reverse process to start with only heaps of 3 stones, and obtain a heap of 1001 stones. By what we just proved, we must have
+\[1001 = 4k - 1 \text{ for some integer k}\]
+\[1002 = 4k\]
+\[k = 250.5\]
+
+This value for $k$ contradicts the statement that $k$ is an integer, so our assumption must be false. Therefore, it is not possible to separate a heap of 1001 stones in the described manner such that heaps of only 3 stones remain.
+
+
+\newpage
+\section*{Problem 6}
+\fbox{
+    \parbox{\textwidth} {
+         If 127 people play in a singles tennis tournament, prove that at the end of the tournament, the number of people who have played an odd number of games is even. Would this still be true if the number of participants in the tournament was even?
+    }
+}
+\\
+
+Each player in the tournament has played a number of games. Each person's number of played games is either even or odd, we'll refer to these as even and odd players, respectively. After each game a player plays, their number of games played increases by 1, switching its parity. There are 3 cases for when a game is played. 
+\begin{center}
+    \rowcolors{1}{gray!10}{white}
+    \begin{tabular}{c c c|c c}
+        & \multicolumn{2}{c}{Before Game} & \multicolumn{2}{c}{After Game} \\
+        & Player 1 & Player 2 & Player 1 & Player 2\\
+        \hline
+        1 & odd & odd & even & even \\
+        2 & even & even & odd & odd\\
+        3 & odd & even & even & odd\\
+    \end{tabular}
+\end{center}
+
+Note that for our purposes, case 3 covers Player 1 being even and Player 2 being odd. Looking at the above table, we can see how the overall numbers of even and odd players changes in each case.
+\begin{center}
+    \rowcolors{1}{gray!10}{white}
+    \begin{tabular}{c r r}
+        & \multicolumn{2}{c}{Change in \# of}\\
+        & odd players & even players\\
+        \hline
+        1 & $-2$ & $+2$\\
+        2 & $+2$ & $-2$\\
+        3 & 0 & 0\\
+    \end{tabular}
+\end{center}
+
+Since we start with 0 odd players, and it can only be changed by adding or subtracting 2, this number will always be even. So at the end of the tournament, regardless of the number of participants, the number of players who have played an odd number of games will be even. 
+
+
+
+\newpage
+\section*{Problem 11}
+\fbox{
+    \parbox{\textwidth} {
+         $2n$ ambassadors are invited to a banquet. Every ambassador has at most $n-1$ enemies. Prove that the ambassadors can be seated around a round table, so that nobody sits next to an enemy.
+    }
+}
+\\
+
+For any arrangement of ambassadors around a table, we have a non-negative integer number of adjacent enemies. Through a method of rearrangement, we will show that we can always bring this value down to zero, meaning no ambassador is seated next to their enemy.
+
+First, we arrange the ambassadors, arbitrarily. If there are no adjacent enemies, we are done. If there are more than zero adjacent enemies, we will select a pair of adjacent enemies $A$ and $B$. We'll let the following ordered set represent our initial arrangement.
+\[T_0 = \{A,x_1,\dots,x_{2n-2},B\}\]
+
+Note that all adjacent ambassadors at the table are also adjacent in the set, except for $A$ and $B$ which we will keep in mind. We'll partition $T$ into two parts
+\begin{align*}
+    T_1 &= \{A,x_1,\dots,x_i\} \\
+    T_2 &= \{x_{i+1},\dots,x_{2n-2},B\}
+\end{align*}
+where $x_i$ and $B$ are not enemies, and $x_{i+1}$ and $A$ are not enemies. (It will later be shown why this is possible, however, it will make more sense with our desired outcome in mind.) We'll then reverse $T_2$ and join the parts back together.
+
+\[T_3 = \{A,x_1,\dots,x_i,B,x_{2n-2},\dots,x_{i+1}\}\]
+
+Since $T_0$ had enemies $A$ and $B$ adjacent, and $T_3$ separates them, putting them instead next to ambassadors that are not their enemies, we must be decreasing the total number of adjacent enemies by at least 1. We could then repeat the process with any remaining adjacent enemies. Since the process is strictly decreasing, we will eventually reach a situation in which there are no adjacent enemies.
+
+However, this only works if we can separate $T_0$ into $T_1$ and $T_2$ such that $x_i$ and $B$ are not enemies, and $x_{i+1}$ and $A$ are not enemies. To show why this is possible, we'll assume it is not possible and produce a contradiction.
+
+\newpage
+To help with this proof, we'll refer to the following table.
+\begin{center}
+    \begin{tabular}{r|c c c c c c c}
+         & $x_1$ & $x_2$ & $x_3$ & $x_4$ & $\dots$ & $x_{2n-3}$ & $x_{2n-2}$  \\
+         \hline
+        Enemy of $A$ & $a_1$ & $a_2$ & $a_3$ & $a_4$ & \dots & $a_{2n-3}$ & $a_{2n-2}$ \\
+        Enemy of $B$ & $b_1$ & $b_2$ & $b_3$ & $b_4$ & \dots & $b_{2n-3}$ & $b_{2n-2}$ \\
+    \end{tabular}
+\end{center}
+
+For each ambassador $x_i$, each $a_i$ and $b_i$ is either 0 or 1. A value of $a_i=1$ tells us $x_i$ and $A$ are enemies, the opposite for $a_i=0$. The same applies for $b_i$ and $B$. If we let
+\[k = a_1 + b_1 + \cdots + a_{2n-2} + b_{2n-2}\]
+then $k$ will be the number of enemies of $A$ and $B$ in $\{x_1,\dots,x_{2n-2}\}$. Note that if an ambassador were an enemy of both $A$ and $B$, they would increase $k$ by two, this is fine. Since $A$ and $B$ are known to be enemies and each have at most $n-1$ total enemies, then each has at most $n-2$ enemies in $\{x_1,\dots,x_{2n-2}\}$. This tells us
+\[k \leq 2n-4\]
+
+Since we are assuming there is no way to split $T_0$ in the way necessary, we know that for all adjacent ambassadors $x_i$ and $x_{i+1}$, it must be the case that $x_i$ and $B$ are enemies, or $x_{i+1}$ and $A$ are enemies. Relating this to the table, we know that $b_1=1$ or $a_2=1$. Likewise for $b_2$ and $a_3$, and so on for all $b_i$ and $a_{i+1}$. From this, we can derive that
+\begin{align*}
+    b_1 + a_2 &\geq 1 \\
+    b_2 + a_3 &\geq 1 \\
+    \cdots \\
+    b_{2n-3} + a_{2n-2} & \geq 1
+\end{align*}
+and therefore
+\[b_1 + a_2 + b_2 + a_3 + \cdots + b_{2n-3} + a_{2n-2} \geq 2n-3\]
+
+We can see that the left side of this equation is just $k$ without $a_1$ and $b_{2n-2}$. And since those two values are non-negative, 
+\[k \geq b_1 + a_2 + b_2 + a_3 + \cdots + b_{2n-3} + a_{2n-2} \geq 2n-3\]
+\[k \geq 2n-3\]
+
+However, this contradicts the previous statement that 
+\[k \leq 2n-4\]
+So our assumption must be false. Therefore, it is always possible to split $T_0$ in the manner necessary for our operation.
+
+
+
+\end{document}

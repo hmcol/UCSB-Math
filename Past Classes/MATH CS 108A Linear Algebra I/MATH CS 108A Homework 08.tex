@@ -1,0 +1,106 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% custom commands
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\p}{^{\prime}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\setlength{\fboxsep}{4pt}
+\newcommand{\exercise}[2]{\section*{Exercise #1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\problem}[2]{\section*{Problem #1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\generic}[2]{\section*{#1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+
+ 
+\begin{document}
+ 
+\title{Homework 8\\
+    \large MATH CS 108A Linear Algebra I}
+\author{Harry Coleman}
+\date{January 27, 2020}
+\maketitle
+
+
+\exercise{8}{
+     Show that a square matrix with either a left or right inverse is invertible.
+}
+
+Let $A,B \in M_{n \times n}$ such that
+$AB = I_n.$
+That is, $A$ is the left inverse of $B$ and $B$ is the right inverse of $A$. Since
+\[\text{rank}(AB) = \text{rank}(I_n) = n,\]
+\[\text{rank}(AB) \leq \min(\text{rank}(A), \text{rank}(B)),\]
+we know that
+\[n \leq \text{rank}(A) \text{ and } n \leq \text{rank}(B).\]
+And since $A$ and $B$ are $n\times n$ matrices, then 
+\[n = \text{rank}(A) \text{ and } n = \text{rank}(B).\]
+This means that $A$ and $B$ are row-equivalent to reduced row echelon form matrices with rank $n$. The only $n\times n$ reduced row echelon form matrix with rank $n$ is $I_n$, so $A$ and $B$ are row equivalent to $I_n$, and are therefore both invertible. So any matrix with a left or right inverse is invertible.
+
+
+\exercise{10}{
+    Let $A = A_1\cdots A_k$, where $A_i \in M_{n\times n}(\F)$. Show that $A$ is invertible if and only if each $A_i$ is invertible.
+}
+
+Suppose $A$ is invertible, then $A$ is row equivalent to $I_n$ and rank$(A)=n$. So,
+\[n \leq \min(\text{rank}(A_1),\dots,\text{rank}(A_k)).\]
+Since each $A_i$ is an $n\times n$ matrix, then the rank of $A_i$ must be $n$ so each $A_i$ is row equivalent to $I_n$, and therefore invertible.
+
+Now suppose each $A_i$ is invertible. Then each $A_i$ is a product of elementary matrices, and $A$ is a product of elementary matrices. So $A$ is invertible. Therefore, $A$ is invertible if and only if each $A_i$ is invertible.
+
+
+
+\exercise{14}{
+    (This exercise is worth two problems) Let A be an $n\times n$ matrix. Show that there exists a permutation matrix $P$, a lower triangular matrix $L$ and an upper triangular matrix $U$ such that
+    \[P A = LU.\]
+    When is $P = I_n$? (Note: We say that P is a permutation matrix if it can be obtained from the identity matrix by the application of a series of interchanges of rows. )
+}
+
+We first note that a matrix in row echelon form is an upper triangular matrix. Since all the zero rows are below all the nonzero rows, and the pivot of each nonzero row is in a column strictly to the right of all those above it. So there are no nonzero elements below the main diagonal of a matrix in row echelon form, which satisfies the conditions for an upper triangular matrix.
+
+We now consider the $n\times n$ matrix $A$. With Gaussian elimination, we can find a sequence of elementary row operations from $A$ to a matrix $U$ in row echelon form (and, $U$ an upper triangular matrix). We take all the row interchange operations in that sequence and find the corresponding permutation matrix $P$. We now consider the matrix $PA$, and the sequence of elementary row operations $e_1,\dots,e_k$ such that
+\[(e_k \circ \cdots \circ e_1)(PA) = U.\]
+In other words, we first apply all the necessary row interchange operations to $A$, which gives us $PA$. In $PA$, every element which is to become a pivot for $U$ is already in its correct row. So all subsequent operations to obtain $U$ need only add multiples of rows to lower rows, so that all the elements below each pivot become zero. This tells us that each operation $e_l$ always adds a multiple of a row to a lower row.
+
+We now apply the inverse of all the operations to each side of the above equation to find
+\[(e_1^{-1}\circ\cdots\circ e_k^{-1})((e_k \circ \cdots \circ e_1)(PA)) = (e_1^{-1}\circ\cdots\circ e_k^{-1})(U),\]
+and all the operations on the left cancel with their inverses so
+\[PA = (e_1^{-1}\circ\cdots\circ e_k^{-1})(U).\]
+Now let $L=(e_1^{-1}\circ\cdots\circ e_k^{-1})(I_n)$, so
+\[PA = LU.\]
+Since $L$ is obtained from the identity matrix
+\[I_n = 
+        \begin{bmatrix}
+            1 & 0 & \cdots & \cdots & 0\\
+            0 & 1 & \ddots &   & \vdots \\
+            \vdots & \ddots & \ddots & \ddots & \vdots \\
+            \vdots &   & \ddots & 1 & 0 \\
+            0 & \cdots & \cdots & 0 & 1
+        \end{bmatrix}
+    \in M_{n\times n},
+\]
+
+and each $e_l$ only adds multiples of rows to lower rows, every element above the main diagonal will only ever be increased by a multiple of zero. So all the zeros above the main diagonal in $I_n$ remain zeros when we apply the operations to obtain $L$. So $L$ is a lower triangular matrix. Therefore, we have shown that there exists a permutation matrix $P$, a lower triangular matrix $L$, and an upper triangular matrix $U$ such that $PA = LU$.
+
+We now want to consider the case when $P=I_n$. Based on how we defined $P$, this would be when no row interchange operations are necessary to find a matrix in echelon form equivalent to $A$. That is, during Gaussian elimination, after each time a pivot is used to make all the elements below that pivot zero, we find the next pivot to be in the following row. As well, all elements which are both below and to the left of the pivot are be zero. If this is the case, $P=I_n$. Otherwise, a row interchange operation would be necessary to obtain a matrix in row echelon form, and $P$ would not equal the identity matrix.
+
+
+
+\end{document}

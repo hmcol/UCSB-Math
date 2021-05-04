@@ -1,0 +1,319 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry} % proper margins
+\usepackage{enumitem} % custom numbering for lists
+\usepackage{amsmath} % align, cases, eqref, matrices, dots, roots, delimiters, math mode functions, mod, arrows
+\usepackage{amsthm} % theorems, proofs
+\usepackage{amssymb} % fancy letters, niche relations/negations
+\usepackage{mathrsfs} % much more loopy calligraphy font
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}
+    {\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\mybox}}}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand*{\defeq}{\mathrel{\vcenter{\baselineskip0.5ex \lineskiplimit0pt\hbox{\scriptsize.}\hbox{\scriptsize.}}}=}
+
+% Alternate Characters
+\let\eps\varepsilon % double curved, rather than single curve with midline
+\let\phi\varphi % single stroke loop, rather than vertical line through circle
+\let\emptyset\varnothing % circular, rather than tall
+
+% Named Sets
+\newcommand{\N}{\mathbb{N}} % natural numbers
+\newcommand{\Z}{\mathbb{Z}} % integers 
+\newcommand{\Q}{\mathbb{Q}} % rational numbers
+\newcommand{\R}{\mathbb{R}} % real numbers
+\newcommand{\C}{\mathbb{C}} % complex numbers
+
+% Fancy Characters
+\newcommand{\F}{\mathbb{F}} % arbitrary field
+\renewcommand{\P}{\mathbb{P}} % probability measure (apparently, sometimes prime numbers)
+\newcommand{\FF}{\mathcal{F}} % sigma algebra
+\newcommand{\BB}{\mathcal{B}} % Borel sigma algebra
+
+% Paired Delimiters
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil} % ceiling
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor} % floor
+\newcommand{\<}{\left\langle} % left angle bracket
+\renewcommand{\>}{\right\rangle} % right angle bracket
+
+% Functions
+\renewcommand{\Im}{\operatorname{Im}} % imaginary part of a complex number
+\renewcommand{\Re}{\operatorname{Re}} % real part of a complex number
+\newcommand{\Arg}{\operatorname{Arg}} % principal argument (angle) of complex number
+
+% Simplified Notation
+\newcommand{\id}[1]{\operatorname{id_{\mathnormal{#1}}}} % identity operator
+\newcommand{\seq}[2][n]{\left\{#2\right\}_{#1\in\N}} % sequence
+\renewcommand{\d}[1]{\operatorname{d}\!#1} % differential operator
+\newcommand{\od}[3][1]{\ifnum#1=1{\frac{\d #2}{\d #3}}\else{\frac{\d^{#1}#2}{\d #3^{#1}}}\fi} % ordinary derivative
+\newcommand{\pd}[3][1]{\ifnum#1=1{\frac{\partial #2}{\partial#3}}\else{\frac{\partial^{#1}#2}{\partial#3^{#1}}}\fi} % partial derivative
+\newcommand{\intr}[1]{\accentset{\circ}{#1}} % interior of a set
+
+% Renaming
+\let\sm\setminus % set minus (difference)
+\let\clo\overline % closure of a set
+\let\conj\overline % conjugate of an object
+\let\eqc\overline % equivalence class of an object
+\let\teq\trianglelefteq % normal subgroup
+\let\iso\cong % isomorphic (groups)
+
+% Notes
+% medskip for header-less paragraph
+% intertext{} for short text inside big display structure
+% dots is dynamic based on surroundings
+% dfrac and tfrac to force large or small fractions
+% operatorname for new operators instead of text
+% consider using nath; it seems to break most formatting and is not compatible with many packages
+
+\begin{document}
+ 
+\title{Homework 8\\
+    %\large MATH CS 121 Intro to Probability
+    %\large MATH 111A Intro to Abstract Algebra
+    %\large MATH CS 122A Complex Analysis I
+    \large MATH 118A Intro to Real Analysis
+    %\large MATH 104A Intro to Numerical Analysis
+}
+\author{Harry Coleman}
+\date{December 1, 2020}
+\maketitle
+
+\section*{Exercise 1}
+\begin{problem}
+    Does the sequence 
+    \[
+     \left \{ \sum_{n=1}^k \left ( \frac{1}{\sqrt{k^2+n}} \right )\right \}_{k=1}^\infty
+    \]
+    converge or diverge? If the sequence converges, find the limit.
+    
+    \noindent {\it Hint: Use the squeeze theorem.}
+\end{problem}
+
+\begin{proposition}
+    The sequence converges and its limit is 1.
+\end{proposition}
+
+\begin{proof}
+    For a fixed $k \in \N$, we consider the term in the sequence
+    \[\sum_{n=1}^k \left( \frac{1}{\sqrt{k^2+n}} \right).\]
+    Now for every $n \in \{1, \dots, k\}$, we have
+    \begin{align*}
+        k^2 &\leq k^2 + n, \\
+        k &\leq \sqrt{k^2 + n}, \\
+        \frac1k &\geq \frac1{\sqrt{k^2 + n}}.
+    \end{align*}
+    Therefore, we find the following upper bound for the $k$th term in the sequence:
+    \[\sum_{n=1}^k \left( \frac{1}{\sqrt{k^2+n}} \right) \leq \sum_{n=1}^k \frac1k = k \cdot \frac1k = 1.\]
+    Now for every $n \in \{1, \dots, k\}$, we have
+    \begin{align*}
+        k^2 + n &\leq k^2 + k, \\
+        \sqrt{k^2 + n} &\leq \sqrt{k^2 + k} = k\sqrt{1 + \frac1k}, \\
+        \frac1{\sqrt{k^2 + n}} &\geq \frac1{k\sqrt{1 + \frac1k}}.
+    \end{align*}
+    Therefore, we find the following lower bound for the $k$th term in the sequence:
+    \[\sum_{n=1}^k \left( \frac{1}{\sqrt{k^2+n}} \right) \geq \sum_{n=1}^k \left( \frac1{k\sqrt{1 + \frac1k}} \right) = k \cdot \frac1{k\sqrt{1 + \frac1k}} = \frac1{\sqrt{1 + \frac1k}}.\]
+    In summary, we have shown that for all $k \in \N$,
+    \[\frac1{\sqrt{1 + \frac1k}} \leq \sum_{n=1}^k \left( \frac{1}{\sqrt{k^2+n}} \right) \leq 1.\]
+    And since
+    \[\lim_{k \to \infty} \frac1{\sqrt{1 + \frac1k}} = \frac1{\sqrt{1 + 0}} = 1,\]
+    then by the squeeze theorem, the sequence converges and
+    \[\lim_{k \to \infty} \sum_{n=1}^k \left( \frac{1}{\sqrt{k^2+n}} \right) = 1.\]
+    
+\end{proof}
+
+\newpage
+\section*{Exercise 2}
+\begin{problem}
+    Determine whether the following series converge absolutely, conditionally, or diverge:
+\end{problem}
+
+\subsection*{Exercise 2(a)}
+\begin{problem}
+    \begin{equation}
+        \sum_{n=1}^\infty (-1)^n (\sqrt{n+1}-\sqrt{n}).
+    \end{equation}
+\end{problem}
+
+\begin{proposition}
+    The series converges conditionally.
+\end{proposition}
+
+\begin{proof}
+    We first show that the series does not converge absolutely. For an arbitrary $n \in \N$, we consider the partial sum of absolute terms
+    \[S_n = \sum_{k=1}^n \left| (-1)^k (\sqrt{k+1} - \sqrt{k}) \right| = \sum_{k=1}^n \left| \sqrt{k+1} - \sqrt{k} \right|.\]
+    For each $k \in \{1, \dots, n\}$, we have
+    \begin{align*}
+        k &\leq k + 1, \\
+        \sqrt{k} &\leq \sqrt{k + 1}, \\
+        0 & \leq \sqrt{k + 1} - \sqrt{k}.
+    \end{align*}
+    Therefore,
+    \[\left| \sqrt{k+1} - \sqrt{k} \right| = \sqrt{k+1} - \sqrt{k},\]
+    and we have
+    \[S_n = \sum_{k=1}^n \left( \sqrt{k+1} - \sqrt{k} \right).\]
+    We derive the following expression of $S_n$ by telescoping the middle terms in the summation:
+    \begin{align*}
+        S_n
+            &= \sum_{k=1}^n \sqrt{k+1} - \sum_{k=1}^n \sqrt{k} \\
+            &= \sum_{k=2}^{n + 1} \sqrt{k} - \sum_{k=1}^n \sqrt{k} \\
+            &= \sqrt{n + 1} + \sum_{k=2}^n \sqrt{k} - \sum_{k=2}^n \sqrt{k} - \sqrt{1} \\
+            &= \sqrt{n + 1} - 1.
+    \end{align*}
+    It is now clear that $S_n$ diverges as $n \to \infty$, so the series is not absolutely convergent. Next, we will show that the alternating series (1), itself, converges by showing that
+    \[\lim_{n \to \infty} \left( \sqrt{n+1} - \sqrt{n} \right) = 0.\]
+    For an arbitrary $n \in \N$, we derive the following equivalent expression:
+    \begin{align*}
+        \left( \sqrt{n+1} - \sqrt{n} \right)
+            &= \left( \sqrt{n+1} - \sqrt{n} \right) \cdot \frac{\sqrt{n+1} + \sqrt{n}}{\sqrt{n+1} + \sqrt{n}} \\
+            &= \frac{n + 1 - n}{\sqrt{n+1} + \sqrt{n}} \\
+            &= \frac{1}{\sqrt{n+1} + \sqrt{n}}.
+    \end{align*}
+    Now since
+    \[\lim_{n \to \infty} \sqrt{n+1} + \sqrt{n} = \infty,\]
+    then
+    \[\lim_{n \to \infty} \left( \sqrt{n+1} - \sqrt{n} \right) = \lim_{n \to \infty} \frac{1}{\sqrt{n+1} + \sqrt{n}} = 0.\]
+    Thus, the series (1) converges, but not absolutely. 
+    
+\end{proof}
+
+\newpage
+\subsection*{Exercise 2(b)}
+\begin{problem}
+    \begin{equation}
+        \sum_{n=1}^\infty (-1)^n n \left( \sqrt{4 - \frac{1}{n}} - 2 \right)
+    \end{equation}
+\end{problem}
+
+\begin{proposition}
+    The series diverges.
+\end{proposition}
+
+\begin{proof}
+    We will show that the series (2) diverges by showing that the sequence of terms does not converge to zero. For an arbitrary $n \in \N$, we derive the following equivalent expression:
+    \begin{align*}
+        n \left( \sqrt{4 - \frac{1}{n}} - 2 \right)
+            &= n \left( \sqrt{4 - \frac{1}{n}} - 4 \right) \cdot \frac{\sqrt{4 - \frac{1}{n}} + 2}{\sqrt{4 - \frac{1}{n}} + 2} \\
+            &= n \frac{4 - \frac{1}{n} - 4}{\sqrt{4 - \frac{1}{n}} + 2} \\
+            &= \frac{-1}{\sqrt{4 - \frac{1}{n}} + 2}.
+    \end{align*}
+    Now since
+    \[\lim_{n \to \infty} \frac{1}{n} = 0,\]
+    then
+    \[\lim_{n \to \infty} n \left( \sqrt{4 - \frac{1}{n}} - 2 \right) = \lim_{n \to \infty} \frac{-1}{\sqrt{4 - \frac{1}{n}} + 2} = \frac{-1}{\sqrt{4 - 0} + 2} = \frac{-1}{4}.\]
+    Now since the limit of the absolute value of a convergent sequence is the absolute value of the limit,
+    \[\lim_{n \to \infty} \left| (-1)^n n \left( \sqrt{4 - \frac{1}{n}} - 2 \right) \right| = \lim_{n \to \infty} \left| n \left( \sqrt{4 - \frac{1}{n}} - 2 \right) \right| = \left| \frac{-1}{4} \right| = \frac{1}{4}.\]
+    Thus, the series (2) does not converge because the sequence of its terms does not converge to zero.
+    
+\end{proof}
+
+\newpage
+\subsection*{Exercise 2(c)}
+\begin{problem}
+    \begin{equation}
+        \sum_{n=1}^\infty (-1)^n n\left (\sqrt{4 - \frac{1}{n^2}} -2 \right)
+    \end{equation}
+\end{problem}
+
+\begin{proposition}
+    The series converges conditionally.
+\end{proposition}
+
+\begin{proof}
+    For an arbitrary $n \in \N$, we derive the following equivalent expression:
+    \begin{align*}
+        n \left( \sqrt{4 - \frac{1}{n^2}} - 2 \right)
+            &= n \left( \sqrt{4 - \frac{1}{n^2}} - 4 \right) \cdot \frac{\sqrt{4 - \frac{1}{n^2}} + 2}{\sqrt{4 - \frac{1}{n^2}} + 2} \\
+            &= n \frac{4 - \frac{1}{n^2} - 4}{\sqrt{4 - \frac{1}{n^2}} + 2} \\
+            &= \frac{1}{n} \cdot \frac{-1}{\sqrt{4 - \frac{1}{n^2}} + 2}.
+    \end{align*}
+    Now since
+    \[\lim_{n \to \infty} \frac{1}{n} = 0,\]
+    then
+    \begin{align*}
+        \lim_{n \to \infty} n \left( \sqrt{4 - \frac{1}{n}} - 2 \right) 
+            &= \lim_{n \to \infty} \frac{1}{n} \cdot \frac{-1}{\sqrt{4 - \frac{1}{n^2}} + 2} \\
+            &= 0 \cdot \frac{-1}{\sqrt{4 - 0} + 2} \\
+            &= 0 \cdot \frac{-1}{4} \\
+            &= 0.
+    \end{align*}
+    Thus, the alternating series (3) converges. However, for any $n \in \N$, we have
+    \begin{align*}
+        4 - \frac{1}{n^2} &\leq 4, \\
+        \sqrt{4 - \frac{1}{n^2}} &\leq 2, \\
+        \sqrt{4 - \frac{1}{n^2}} + 2 &\leq 4, \\
+        \frac{1}{\sqrt{4 - \frac{1}{n^2}} + 2} &\geq \frac{1}{4}.
+    \end{align*}
+    Then looking at the absolute value of the $n$th term in the series, we find
+    \begin{align*}
+        \left| (-1)^n n\left (\sqrt{4 - \frac{1}{n^2}} -2 \right) \right|
+            &= \left| n\left (\sqrt{4 - \frac{1}{n^2}} -2 \right) \right| \\
+            &= \left| \frac{1}{n} \cdot \frac{-1}{\sqrt{4 - \frac{1}{n^2}} + 2} \right| \\
+            &= \frac{1}{n} \cdot \frac{1}{\sqrt{4 - \frac{1}{n^2}} + 2} \\
+            &\geq \frac{1}{n} \cdot \frac{1}{4}.
+    \end{align*}
+    Therefore, 
+    \[\sum_{n=1}^\infty \left| (-1)^n n\left (\sqrt{4 - \frac{1}{n^2}} -2 \right) \right| \geq \sum_{n=1}^\infty \frac{1}{n} \cdot \frac{1}{4} = \frac{1}{4}\sum_{n=1}^\infty \frac{1}{n}.\]
+    And since the harmonic series diverges, then so does the series of the absolute values of the terms of the series (3). Thus, the series converges, but not absolutely.
+    
+\end{proof}
+
+\newpage
+\subsection*{Exercise 2(d)}
+\begin{problem}
+    \begin{equation}
+        \sum_{n=1}^\infty (-1)^n n\left (\sqrt{4 - \frac{1}{n^3}} -2 \right)
+    \end{equation}
+\end{problem}
+
+\begin{proposition}
+    The series converges absolutely.
+\end{proposition}
+
+\begin{proof}
+    For an arbitrary $n \in \N$, we derive the following equivalent expression:
+    \begin{align*}
+        n \left( \sqrt{4 - \frac{1}{n^2}} - 2 \right)
+            &= n \left( \sqrt{4 - \frac{1}{n^3}} - 4 \right) \cdot \frac{\sqrt{4 - \frac{1}{n^3}} + 2}{\sqrt{4 - \frac{1}{n^3}} + 2} \\
+            &= n \frac{4 - \frac{1}{n^3} - 4}{\sqrt{4 - \frac{1}{n^3}} + 2} \\
+            &= \frac{1}{n^2} \cdot \frac{-1}{\sqrt{4 - \frac{1}{n^3}} + 2}.
+    \end{align*}
+    We now derive the following inequality:
+    \begin{align*}
+        \frac{1}{n^3} &\leq 1, \\[1em]
+        4 - \frac{1}{n^2} &\geq 3, \\[1em]
+        \sqrt{4 - \frac{1}{n^2}} &\geq \sqrt{3}, \\[1em]
+        \sqrt{4 - \frac{1}{n^2}} + 2 &\geq \sqrt{3} + 2, \\[1em]
+        \frac{1}{\sqrt{4 - \frac{1}{n^2}} + 2} &\leq \frac{1}{\sqrt{3} + 2}.
+    \end{align*}
+    We now derive the following inequality:
+    \begin{align*}
+        \left| (-1)^n n\left (\sqrt{4 - \frac{1}{n^3}} -2 \right) \right|
+            &= \left| n\left (\sqrt{4 - \frac{1}{n^3}} -2 \right) \right| \\
+            &= \left| \frac{1}{n^2} \cdot \frac{-1}{\sqrt{4 - \frac{1}{n^3}} + 2} \right| \\
+            &= \frac{1}{n^2} \cdot \frac{1}{\sqrt{4 - \frac{1}{n^3}} + 2} \\
+            &\leq \frac{1}{n^2} \cdot \frac{1}{\sqrt{3} + 2}.
+    \end{align*}
+    Therefore,
+    \[\sum_{n=1}^\infty \left| (-1)^n n\left (\sqrt{4 - \frac{1}{n^3}} -2 \right) \right| \leq \sum_{n=1}^\infty \frac{1}{n^2} \cdot \frac{1}{\sqrt{3} + 2} = \frac{1}{\sqrt{3} + 2} \sum_{n=1}^\infty \frac{1}{n^2}.\]
+    Now, since the series
+    \[\sum_{n=1}^\infty \frac{1}{n^2}\]
+    converges, then so does the series of the absolute values of the terms of the series (4). Thus, the series is absolutely convergent.
+    
+\end{proof}
+
+
+
+\end{document}

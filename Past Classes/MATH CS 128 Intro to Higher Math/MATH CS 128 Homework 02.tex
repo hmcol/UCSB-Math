@@ -1,0 +1,371 @@
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{listings}
+\usepackage{tikz}
+
+\lstset{basicstyle=\footnotesize}
+\usetikzlibrary{calc}
+
+ 
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{question}[2][Question]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+ 
+\begin{document}
+ 
+\title{Homework 2\\
+    \large CS128 Intro to Higher Mathematics}
+\author{Harry Coleman}
+\date{October 4, 2019}
+
+\maketitle
+
+\section*{Exercise 1}
+\fbox{
+    \parbox{\textwidth}{
+        Let $P$ be the sentence ``$Q$ is true'' and $Q$ be the sentence ``$P$ is false''. Is $P$ the kind of  proposition that we want to symbolize in propositional logic? Explain.
+    }
+}
+\\
+
+$P$ is not the kind of proposition that we want to symbolize in propositional logic, because it cannot be assigned a truth value. To illustrate why this is the case, we will first take $P$ to be true then show the logical consequences. Second, we will take $P$ to be false, and do likewise.
+
+\begin{center}
+    \begin{tabular}{|r|c|l|}
+        \hline
+        1 & $P$ & Given\\
+        \hline
+        2 & $Q$ & Definition of $P$\\
+        \hline
+        3 & $\lnot P$ & Definition of $Q$\\
+        \hline
+        4 & $P\land \lnot P$ & $\land$-Introduction on lines 1 and 3\\
+        \hline
+    \end{tabular}
+\end{center}
+
+\begin{center}
+    \begin{tabular}{|r|c|l|}
+        \hline
+        1 & $\lnot P$ & Given\\
+        \hline
+        2 & $\lnot Q$ & Negation of Definition of $P$\\
+        \hline
+        3 & $P$ & Negation of Definition of $Q$\\
+        \hline
+        4 & $P\land \lnot P$ & $\land$-Introduction on lines 1 and 3\\
+        \hline
+    \end{tabular}
+\end{center}
+
+Whether we assume $P$ to be true or $P$ to be false, we end up with the same result that $P$ is both true and false. This is a contradiction under our system, because a proposition can be only true or false, and not both. Therefore, it does not make sense to consider $P$ a valid proposition.
+
+\newpage
+\section*{Exercise 2}
+\fbox{
+    \parbox{\textwidth}{
+        Rewrite each of the following sentences using the language of propositional logic. %Assume that each symbol $f$, $n$, $x$, $S$, $B$ represents some fixed object.
+
+    }
+}
+\\
+
+\begin{enumerate}
+    \item $(f_m \land f_d) \implies f_0$
+    \item $n_p \implies (n_2 \lor n_o)$
+    \item $x_\mathbb{I} \implies (x_\mathbb{R} \land (\lnot x_\mathbb{Q}))$
+    \item $(x_1 \lor x_{-1}) \implies x_{||}$
+    \item $f_c \iff (f_0 \lor (\lnot f_e))$
+    \item $S_c \iff (S_{d} \land S_b)$
+    \item $B_i \iff B_d$
+    \item $(n_4 \lor n_{10}) \implies n_6$
+    \item $x_y \implies x_c$
+\end{enumerate}
+
+\section*{Exercise 3}
+\fbox{
+    \parbox{\textwidth}{
+        Show that the following is a wff in the language of propositional logic:
+        \[(W \leftrightarrow (T \land ( L  \land (P \lor Q))))\]
+    }
+}
+\\
+
+\begin{center}
+    \begin{tabular}{|r|c|l|}
+        \hline
+        1 & $W$, $T$, $L$, $P$, $Q$ are wffs & Definition of wff (a)\\
+        \hline
+        2 & $(P \lor Q)$ is a wff & Definition of wff (c)\\
+        \hline
+        3 & $(L \land (P \lor Q))$ is a wff & Definition of wff (c)\\
+        \hline
+        4 & $(T \land (L \land (P \lor Q)))$ is a wff & Definition of wff (c)\\
+        \hline
+        5 & $(W \iff (T \land (L \land (P \lor Q))))$ is a wff & Definition of wff (c)\\
+        \hline
+    \end{tabular}
+\end{center}
+
+\newpage
+\section*{Exercise 4}
+\fbox{
+    \parbox{\textwidth}{
+        Given a conditional wff $(p\rightarrow q)$, we call $((\neg q) \rightarrow ( \neg p))$ the contrapositive of $(p \rightarrow q)$. We call $(q \rightarrow p)$ the converse of $(p \rightarrow q)$. Assume that $p$ and $q$ are sentence symbols. Give, if possible, a truth assignment $v$ for $p$ and $q$ such that $\overline{v}((p \rightarrow q))= T$ and 
+        \begin{enumerate}
+            \item $\overline{v}((q \rightarrow p)) = T$;
+            \item $\overline{v}((q \rightarrow p)) = F$;
+            \item $\overline{v}((\neg q) \rightarrow  (\neg p)) = T$;
+            \item $\overline{v}((\neg q) \rightarrow  (\neg p)) = F$. 
+        \end{enumerate}
+    }
+}
+\\
+
+\begin{center}
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        $p$ & $q$ & $\overline{v}((p \rightarrow q))$ & $\overline{v}((q \rightarrow p))$ & $\overline{v}((\neg q) \rightarrow  (\neg p))$ \\
+        \hline
+        $T$ & $T$ & $T$ & $T$ & $T$\\
+        \hline
+        $T$ & $F$ & $F$ & $T$ & $F$\\
+        \hline
+        $F$ & $T$ & $T$ & $F$ & $T$\\
+        \hline
+        $F$ & $F$ & $T$ & $T$ & $T$\\
+        \hline
+    \end{tabular}
+\end{center}
+
+\begin{enumerate}
+    \item $v(p) = T$ and $v(q) = T$
+    \item $v(p) = F$ and $v(q) = T$
+    \item $v(p) = T$ and $v(q) = T$
+    \item It is not possible to create a truth assignment for $p$ and $q$ such that $\overline{v}((p \rightarrow q)) = T$ and $\overline{v}((\neg q) \rightarrow  (\neg p)) = F$
+\end{enumerate}
+
+\newpage
+\section*{Exercise 5}
+\fbox{
+    \parbox{\textwidth}{
+        Use the inductive principle to show that any sequence of symbols of the propositional logic language with more left parentheses than right parentheses is not a wff. 
+    }
+}
+\\
+
+We will define $S$ as a set of wffs containing all the of the non-logical symbols (referred to here as atomic formulae) and closed under the five formula building operations. We know that all the elements in $S$ can be described in one of three ways. 
+
+\begin{enumerate}
+    \item Atomic Formula
+    \item Negation $(\lnot \alpha)$ where $\alpha \in S$
+    \item Binary Operation $\epsilon(\alpha, \beta)$ where $\alpha, \beta \in S$
+\end{enumerate}
+
+Given some $\gamma \in S$, we will define $R(\gamma)$ as a function which tells us how many right parentheses are in the formula for $\gamma$. Similarly, $L(\gamma)$ for the number of left parentheses. We will also define a third function $P(\gamma)$, which is the difference between the number of left parentheses and the number of right parentheses. We will define this equation in two ways, the second of which will be justified afterwards.
+
+\begin{equation}
+    P(\gamma) = R(\gamma) - L(\gamma)
+\end{equation}
+
+\begin{equation}\label{pdef}
+    P(\gamma) = \left\{
+        \begin{tabular}{r l}
+             0, & if $\gamma$ is an atomic formula \\
+             $P(\alpha)$, & if $\gamma$ is a negation $(\lnot \alpha)$ where $\alpha \in S$\\
+             $P(\alpha) + P(\beta)$, & if $\gamma$ is some binary operation $\epsilon(\alpha, \beta)$ where $\alpha, \beta \in S$
+        \end{tabular}
+    \right.
+\end{equation}
+\\
+
+It's hopefully clear why $P(\gamma)=0$, when $\gamma$ is an atomic formula. This is because atomic formulae have no parentheses, so $R(\gamma)=0$, $L(\gamma)=0$, and
+\[P(\gamma) = R(\gamma) - L(\gamma) = 0\]
+
+For negation we are starting with some formula $\alpha \in S$, which has some value for 
+\[P(\alpha)=R(\alpha)-L(\alpha)\]
+
+When we apply the negation, our new formula $\gamma = (\lnot \alpha)$. We see here that the number of right parentheses and left parentheses each increase by 1, so we can say
+\[R(\gamma) = R(\alpha) + 1\]
+\[L(\gamma) = L(\alpha) + 1\]
+
+We then use these equations to solve for
+
+\renewcommand{\arraystretch}{1.5}
+\begin{center}
+   \begin{tabular}{l}
+        $P(\gamma) = R(\gamma) - L(\gamma)$\\
+        $\phantom{P(\gamma)} = [R(\alpha) + 1] - [L(\alpha) + 1]$\\
+        $\phantom{P(\gamma)} = R(\alpha) - L(\alpha)$\\
+        $P(\gamma) = P(\alpha)$
+    \end{tabular} 
+\end{center}
+
+Similarly for any binary operation, we start with two formulae $\alpha, \beta \in S$. Each formula has associated function values 
+\[P(\alpha)=R(\alpha)-L(\alpha)\]
+\[P(\beta)=R(\beta)-L(\beta)\]
+
+When we apply the binary operation, our new formula $\gamma = \epsilon(\alpha, \beta)$. We see here that the number of right parentheses and left parentheses each increase by 1, so we can say
+\[R(\gamma) = R(\alpha) + R(\beta) + 1\]
+\[L(\gamma) = L(\alpha) + L(\beta) + 1\]
+
+We then use these equations to solve for
+\begin{align*}
+    P(\gamma)   &= R(\gamma) - L(\gamma)\\
+                &= [R(\alpha) + R(\beta) + 1] - [L(\alpha) + L(\beta) + 1]\\
+                &= R(\alpha) - L(\alpha) + R(\beta)-L(\beta)\\
+    P(\gamma)   &= P(\alpha) + P(\beta)
+\end{align*}
+
+Looking at equation \ref{pdef}, we see that every formula $\gamma$ which is built starting with atomic formulae and repeatedly applying the formula building operations will have $P(\gamma)=0$. Since every element of $S$ is either an atomic formula or a formula constructed by repeatedly applying the formula building operations, every element of $S$ must have a $P$ value of 0. Concisely,
+
+\begin{equation}
+    \forall (\gamma \in S) [P(\gamma)=0] 
+\end{equation}
+
+Given a formula $\delta$ with a greater number of left parentheses than right parentheses, we know that $R(\delta) < L(\delta)$. Because $a - b = 0$ only when $a = b$, then
+\[P(\delta) = R(\delta) - L(\delta) \ne 0\]
+
+Therefore, $\delta \notin S$ and $\delta$ is not a wff.
+
+
+\newpage
+\section*{Exercise 6}
+\fbox{
+    \parbox{\textwidth}{
+        Show that, if $\alpha$ is a wff, then its length  $L(\alpha) \in \mathbb{N} \setminus \{2, 3, 6\}$, that is, the length of $\alpha$ is a positive integer different from 2, 3, and 6. (Note: the length of a formula is the number of symbols in the string).
+    }
+}
+\\
+
+Given that $\alpha$ is a wff, we know that $L(\alpha)$ must be greater than 0. Since it doesn't make sense to have a negative length, and a length of zero would be no formula at all. It also only make sense for $L(\alpha) \in \mathbb{N}$ because we cannot have a portion of a symbol; Either we have the whole symbol, which increases the length by 1, or we do not have the symbol, which does not change the length. A length of 1 would just be a single, non-logical symbol representing an atomic formula. 
+
+To go up in length from an atomic formula $\alpha$ with $L(\alpha) = 1$, we can use any of the 5 formula building operations. We have two possibilities:
+
+\begin{itemize}
+    \item Negation of "$\alpha$" becomes "$(\lnot \alpha)$". An increase of symbols by 3.
+    \item A binary operation on "$\alpha$" becomes "$(\alpha \oplus \beta)$" where $\oplus$ is any binary operation, and $\beta$ is any other wff. This adds together $L(\alpha)$ and $L(\beta)$ and 3 more symbols.
+\end{itemize}
+
+So taking our base case of an atomic formula $\alpha$ with $L(\alpha) = 1$, we can do either of the above. Negation, "$(\lnot \alpha)$", results in a length of 4. A binary operation, "$(\alpha \oplus \alpha)$" results in a length of 5. Because performing the above operations only results in an increase in length, there can be no way to obtain a wff with a length of 2 or 3. 
+
+To simplify matters, we will now only refer to formulae by their $L$ value. So the possibilities for length we have so far are
+\[\{1, 4, 5\}\]
+We will now exhaust all possibilities for applying the formula building operations to the above $L$ values. 
+
+\begin{itemize}
+    \item $(\lnot 4) = 7$
+    \item $(\lnot 5) = 8$
+    \item $(1 \oplus 4) = 8$
+    \item $(1 \oplus 5) = 9$
+    \item $(4 \oplus 5) = 12$
+\end{itemize}
+
+Because every possible formula building combination of lengths below 6 were tried, and and an $L$ value of 6 was not obtained, there is no possible way to have a formula $\alpha$ where $L(\alpha)=6$. This brings our set of lengths that are not possible to $\{2, 3, 6\}$.
+
+So if $\alpha$ is a wff, then it's length $L(\alpha) \in \mathbb{N} \setminus \{2, 3, 6\}$.
+
+
+\newpage
+\section*{Exercise 7}
+\fbox{
+    \parbox{\textwidth}{
+        Show that, if $n\in \mathbb{N} \setminus \{2,3, 6\}$, then there exists a wff $\alpha$ whose length $L(\alpha)=n$.
+    }
+}
+\\
+
+We will take the set of known possible $L$ values from exercise 6.
+
+\[A = \{1, 4, 5, 7, 8, 9, 12\}\]
+
+If we start with a length of 1, we can apply a negation to increase it's length by 3 an arbitrary number of times. Reminder that we are referring to all formulas by their $L$ value. $(\lnot 1) = 4$, $(\lnot 4) = 7$, $(\lnot 7) = 10$, etc. If we repeatedly apply negation, starting at 1, $n$ times, we will have a length $3n+1$ where $n \in \mathbb{N}$. So we can now redefined set $A$ as
+
+\[A = \{1, 5, 8, 9, 12\} \cup \{3n+1 \mid n \in \mathbb{N}\}\]
+
+Similarly starting with 5, we can repeatedly apply negation to increase the length by 3. $(\lnot 5) = 8$, $(\lnot 8) = 11$, $(\lnot 11) = 14$, etc. Which can be expressed as $3n+2$ where $n \in \mathbb{N}$. SO again, we can redefine set $A$ as
+
+\[A = \{1, 9, 12\} \cup \{3n+1 \mid n \in \mathbb{N}\} \cup \{3n+2 \mid n \in \mathbb{N}\}\]
+
+Finally, we can do the same starting with 9. $(\lnot 9) = 12$, $(\lnot 12) = 15$, $(\lnot 15) = 18$, etc. Which can be represented by $3n$ where $n \in \mathbb{N}$ and $n \geq 3$. So our set can be redefined once more as
+\begin{align*}
+    A = \{1\} & \cup \{3n \mid n \in \mathbb{N}, n \geq 3\}\\
+            & \cup \{3n+1 \mid n \in \mathbb{N}\}\\
+            & \cup \{3n+2 \mid n \in \mathbb{N}\}
+\end{align*}
+
+or
+\[A = \{1, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, ...\}\]
+
+or
+\[A = \mathbb{N} \setminus \{2, 3, 6\}\]
+
+Because every value in $A$ is a possible length for a wff, we know that given any $n \in A$, there exists a wff $\alpha$ with $L(\alpha) = n$. Therefore
+
+\[\forall(n \in \mathbb{N} \setminus \{2, 3, 6\})[\exists \alpha \mid \alpha \text{ is a wff}, L(\alpha) = n]\]
+
+
+\newpage
+\section*{Exercise 8}
+\fbox{
+    \parbox{\textwidth}{
+        Prove the Rule of Substitution.
+    }
+}
+\\
+
+To show why the rule of substitution holds under the definition of a wff, we will refer back to exercise 3, in which we prove
+\[(W \leftrightarrow (T \land ( L  \land (P \lor Q))))\]
+is a wff. The proof is show here:
+
+\begin{center}
+    \begin{tabular}{|r|c|l|}
+        \hline
+        1 & $W$, $T$, $L$, $P$, $Q$ are wffs & Definition of wff (a)\\
+        \hline
+        2 & $(P \lor Q)$ is a wff & Definition of wff (c)\\
+        \hline
+        3 & $(L \land (P \lor Q))$ is a wff & Definition of wff (c)\\
+        \hline
+        4 & $(T \land (L \land (P \lor Q)))$ is a wff & Definition of wff (c)\\
+        \hline
+        5 & $(W \iff (T \land (L \land (P \lor Q))))$ is a wff & Definition of wff (c)\\
+        \hline
+    \end{tabular}
+\end{center}
+
+Every proof that a given formula is a wff is essentially of this form. Where you start at the fact that the atomic propositions that make up the formula are themselves wff, then go through the process of building up to the full formula through application of the formula building operations, each of which continue to hold as wffs. The above proof needs little change if, instead of $W$, $T$, $L$, $P$, and $Q$ being atomic propositions, they are given to be any wffs.
+
+\begin{center}
+    \begin{tabular}{|r|c|l|}
+        \hline
+        1 & $W$, $T$, $L$, $P$, $Q$ are wffs & Given\\
+        \hline
+        2 & $(P \lor Q)$ is a wff & Definition of wff (c)\\
+        \hline
+        3 & $(L \land (P \lor Q))$ is a wff & Definition of wff (c)\\
+        \hline
+        4 & $(T \land (L \land (P \lor Q)))$ is a wff & Definition of wff (c)\\
+        \hline
+        5 & $(W \iff (T \land (L \land (P \lor Q))))$ is a wff & Definition of wff (c)\\
+        \hline
+    \end{tabular}
+\end{center}
+
+Since every proof that a given formula is a wff is essentially of this form, we can replace any instance of an atomic proposition with any wff and the following steps would not change, since they only consider if it is a wff, not if it is atomic or not.
+
+\end{document}
+

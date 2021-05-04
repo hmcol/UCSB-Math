@@ -1,0 +1,474 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry} % proper margins
+\usepackage{enumitem} % custom numbering for lists
+\usepackage{amsmath} % align, cases, eqref, matrices, dots, roots, delimiters, math mode functions, mod, arrows
+\usepackage{amsthm} % theorems, proofs
+\usepackage{amssymb} % fancy letters, niche relations/negations
+\usepackage{mathrsfs} % much more loopy calligraphy font
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}
+    {\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\mybox}}}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand*{\defeq}{\mathrel{\vcenter{\baselineskip0.5ex \lineskiplimit0pt\hbox{\scriptsize.}\hbox{\scriptsize.}}}=}
+
+% Alternate Characters
+\let\eps\varepsilon % double curved, rather than single curve with midline
+\let\phi\varphi % single stroke loop, rather than vertical line through circle
+\let\emptyset\varnothing % circular, rather than tall
+
+% Named Sets
+\newcommand{\N}{\mathbb{N}} % natural numbers
+\newcommand{\Z}{\mathbb{Z}} % integers 
+\newcommand{\Q}{\mathbb{Q}} % rational numbers
+\newcommand{\R}{\mathbb{R}} % real numbers
+\newcommand{\C}{\mathbb{C}} % complex numbers
+
+% Fancy Characters
+\newcommand{\F}{\mathbb{F}} % arbitrary field
+\renewcommand{\P}{\mathbb{P}} % probability measure (apparently, sometimes prime numbers)
+\newcommand{\FF}{\mathcal{F}} % sigma algebra
+\newcommand{\BB}{\mathcal{B}} % Borel sigma algebra
+\newcommand{\E}{\mathbb{E}} % expected value of a random variable
+
+% Paired Delimiters
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil} % ceiling
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor} % floor
+\newcommand{\<}{\left\langle} % left angle bracket
+\renewcommand{\>}{\right\rangle} % right angle bracket
+
+% Functions
+\renewcommand{\Im}{\operatorname{Im}} % imaginary part of a complex number
+\renewcommand{\Re}{\operatorname{Re}} % real part of a complex number
+\newcommand{\Arg}{\operatorname{Arg}} % principal argument (angle) of complex number
+
+% Simplified Notation
+\newcommand{\id}[1]{\operatorname{id_{\mathnormal{#1}}}} % identity operator
+\newcommand{\seq}[2][n]{\left\{#2\right\}_{#1\in\N}} % sequence
+\renewcommand{\d}[1]{\operatorname{d}\!#1} % differential operator
+\newcommand{\od}[3][1]{\ifnum#1=1{\frac{\d #2}{\d #3}}\else{\frac{\d^{#1}#2}{\d #3^{#1}}}\fi} % ordinary derivative
+\newcommand{\pd}[3][1]{\ifnum#1=1{\frac{\partial #2}{\partial#3}}\else{\frac{\partial^{#1}#2}{\partial#3^{#1}}}\fi} % partial derivative
+\newcommand{\intr}[1]{\accentset{\circ}{#1}} % interior of a set
+
+% Renaming
+\let\sm\setminus % set minus (difference)
+\let\clo\overline % closure of a set
+\let\conj\overline % conjugate of an object
+\let\eqc\overline % equivalence class of an object
+\let\teq\trianglelefteq % normal subgroup
+\let\iso\cong % isomorphic (groups)
+
+% Notes
+% medskip for header-less paragraph
+% intertext{} for short text inside big display structure
+% dots is dynamic based on surroundings
+% dfrac and tfrac to force large or small fractions
+% operatorname for new operators instead of text
+% consider using nath; it seems to break most formatting and is not compatible with many packages
+
+\begin{document}
+ 
+\title{Homework 5\\
+    \large MATH CS 121 Intro to Probability
+    %\large MATH 111A Intro to Abstract Algebra
+    %\large MATH CS 122A Complex Analysis I
+    %\large MATH 118A Intro to Real Analysis
+    %\large MATH 104A Intro to Numerical Analysis
+}
+\author{Harry Coleman}
+\date{November 30, 2020}
+\maketitle
+
+\section*{Exercise 1}
+\begin{problem}
+    Let $X \overset{d}{=} \operatorname{Bin}(4, 1/3)$ and $Y \overset{d}{=} \operatorname{Geom}(1/2)$. For each choice of $Z$, find the range (image) $R \subset \R$ of $Z$ defined by
+    \[R \defeq \{x \in \R : \exists \omega \in \Omega \text{ s.t. } Z(\omega) = x\}\]
+    and calculate $\E[Z]$:
+\end{problem}
+
+\subsection*{Exercise 1(a)}
+\begin{problem}
+    $Z = Y - X$.
+\end{problem}
+
+\begin{proposition}
+    $Z(\Omega) = \{-3, -2, -1, 0\} \cup \N$.
+\end{proposition}
+
+\begin{proof}
+    We assume that $X$ and $Y$ are independent variables defined on the probability space $\Omega$. By definition, $X(\Omega) = \{0, 1, 2, 3, 4\}$ and $Y(\Omega) = \N$. Then the independence of $X$ and $Y$ imply that for any $a \in \{0, 1, 2, 3, 4\}$ and $b \in \N$, we can find some $\omega \in \Omega$ such that $X(\omega) = a$ and $Y(\omega) = b$. Thus,
+    \begin{align*}
+        Z(\Omega) 
+            &= \{Z(\omega) : \omega \in \Omega\} \\[1em]
+            &= \{Y(\omega) - X(\omega) : \omega \in \Omega\} \\[1em]
+            &= \{b - a : a \in \{0, 1, 2, 3, 4\},\, b \in \N\} \\[1em]
+            &= \{-3, -2, -1, 0\} \cup \N.
+    \end{align*}
+    
+\end{proof}
+
+\newpage
+
+I know it probably isn't necessary, and there's probably a much more concise ways of proving it, but I went ahead and proved the expected values for general binomial and geometric distributions.
+
+\begin{lemma}
+    If $X \overset{d}{=} \operatorname{Bin}(n, p)$ with $n\in\N$ and $p\in(0, 1)$, then $\E[X] = np$.
+\end{lemma}
+
+\begin{proof}
+    We define the following indicator for each $k \in \{0, \dots, n\}$ and $\omega \in \Omega$:
+    \[ I_{X=k}(\omega) = 
+        \begin{cases}
+            1 &\text{if $X(\omega) = k$,} \\
+            0 &\text{if $X(\omega) \ne k$.}
+        \end{cases}
+    \]
+    Then, $X$ has the representation
+    \[X = \sum_{k = 0}^n k \cdot I_{X=k}.\]
+    This implies that $X$ is a simple random variable and, therefore, its expected value is given by
+    \[\E[X] = \sum_{k = 0}^n k \cdot \P(X = k) = \sum_{k = 0}^n k \binom{n}{k} p^k (1-p)^{n-k}.\]
+    Notice that when $k = 0$, then the summand is zero. Therefore, we can start the indexing of the summation at $k = 1$, giving us
+    \[\E[X] = \sum_{k = 1}^n k \binom{n}{k} p^k (1-p)^{n-k}.\]
+    This is very similar to the binomial formula, but with an extra factor of $k$ in each summand. Our goal, now, is to simplify $\E[X]$ by getting it in terms of the binomial formula. First, for a fixed $k \in \{1, \dots, n\}$, we look at the first two factors of the summand and expand the binomial coefficient; we derive the following equality:
+    \begin{align*}
+        k \binom{n}{k}
+            &= k \frac{n!}{k!(n - k)!} \\[1em]
+            &= \frac{n!}{(k - 1)!(n - k)!} \\[1em]
+            &= (n - k + 1) \frac{n!}{(k - 1)!(n - k + 1)!} \\[1em]
+            &= (n - k + 1) \binom{n}{k - 1}.
+    \end{align*}
+    Then substituting this back into our equation for $\E[X]$ and obtain
+    \[\E[X] = \sum_{k = 1}^n (n - k + 1) \binom{n}{k - 1} p^k (1-p)^{n - k}.\]
+    We re-index the summation to be from $0$ to $n-1$ and replace $k$ with $k+1$ in the summand to obtain
+    \[\E[X] = \sum_{k = 0}^{n - 1} (n - k) \binom{n}{k} p^{k + 1} (1-p)^{n - k - 1}.\]
+    To make the exponents of $p$ and $(1 - p)$ more favorable, we pull a common factor from all of the summands, so that
+    \[\E[X] = \frac{p}{1 - p} \sum_{k = 0}^{n - 1} (n - k) \binom{n}{k} p^k (1-p)^{n - k}.\]
+    We now notice that if we were to have $k = n$, then the first factor of $n - k$ would make the who term zero. Therefore, we can increase the indexing of summation up to $n$ and not change its value, giving us
+    \[\E[X] = \frac{p}{1 - p} \sum_{k = 0}^n (n - k) \binom{n}{k} p^k (1-p)^{n - k}.\]
+    We now distribute over $(n - k)$ and split the summation into two recognizable expressions.
+    \begin{align*}
+        \E[X]
+            &= \frac{p}{1 - p} \left( n \sum_{k = 0}^n \binom{n}{k} p^k (1-p)^{n - k} - \sum_{k = 0}^n k \binom{n}{k} p^k (1-p)^{n - k} \right) \\[1em]
+            &= \frac{p}{1 - p} \left( n (p + 1 - p)^n - \E[X] \right) \\[1em]
+            &= \frac{p}{1 - p} (n - \E[X]).
+    \end{align*}
+    Finally, we solve for $\E[X]$ to complete the proof.
+    \begin{align*}
+        (1 - p) \E[X] &= np - p\E[X], \\[1em]
+        (1 - p + p) \E[X] &= np, \\[1em]
+        \E[X] &= np.
+    \end{align*}
+    
+\end{proof}
+
+\newpage
+\begin{lemma}
+    If $Y \overset{d}{=} \operatorname{Geom}(p)$ with $n\in\N$ and $p\in(0, 1]$, then $\E[Y] = \ds\frac1p$.
+\end{lemma}
+
+Unlike Lemma 1, the proof of Lemma 2 will involve defining, specifically, the probability space $\Omega$ for which $Y$ is a random variable. We do this under the assumption that the expected value of a geometric random variable is the same, regardless of the particular probability space.
+
+\begin{proof}
+    We begin by defining a probability space $(\Omega, \FF, \P)$. First, $\Omega$ will be the set of all infinite sequences in the set $\{0, 1\}$, i.e.,
+    \[\Omega \defeq \{\seq{\omega_n} : \omega_k \in \{0, 1\} \text{ for all } k \in \N\} = \{0, 1\}^\N.\]
+    We could define $\FF$ to be the power set of $\Omega$, but because $\Omega$ is uncountable, then the power set is not the most convenient $\sigma$-algebra to define. Instead, since we are chiefly concerned with the probabilities of $Y$ attaining certain values, it will be beneficial to have $\FF = \sigma(Y)$. If we can do this, it will be easier to define $\P : \FF \to [0, 1]$ in such a way that makes finding $\P(Y = k)$, for any $k \in \N$, more natural. 
+    
+    First, for each $k \in \N$, we define
+    \[A_k \defeq \{\seq{\omega_n} \in \Omega : \omega_1 = \cdots = \omega_{k-1} = 0,\, \omega_k = 1\}.\]
+    Taking a zero to mean a failure and a one to mean a success, then $A_k$ is precisely what we want $Y^{-1}(k)$ to be: the set of sequences of trials in which the first $k-1$ trials are failures and the $k$th trial is a success. Additionally, for reasons which will soon become clear, we define
+    \[A_\infty \defeq \{\seq{\omega_n} \in \Omega : \omega_k = 0 \text{ for all } k \in \N\} = \{\seq{0}\},\]
+    which is the singleton of the sequence in $\Omega$ of all zeros. Note that this definition of the $A_k$'s imply that they are all pairwise disjoint. Obviously, $A_\infty$ is disjoint from $A_k$ for all $k\in\N$. Now if $k, \ell \in \N$ with $k \ne \ell$, then without loss of generality we assume $k < \ell$. Then $\omega \in A_k$ implies that $\omega_k = 1$, so $\omega \notin A_\ell$. We now define $\FF$ to be closure of the set
+    \[\{A_k : k \in \N \cup \{\infty\}\}\]
+    under countable unions. In other words
+    \[\FF \defeq \left\{ \cup_{i \in I} A_i : I \subseteq \N \cup \{\infty\} \right\}.\]
+    By definition, $\FF$ is closed under countable unions, so to show that $\FF$ is a $\sigma$-algebra, we need only show that $\emptyset, \Omega \in \FF$ and that $\FF$ is closed under complements. We can either add $\emptyset$ to the definition of $\FF$ or consider it to be the result of an empty union; either way, we have $\emptyset \in \FF$. To show that $\Omega \in \FF$, we claim that
+    \[\Omega = \bigcup_{k \in \N\cup\{\infty\}} A_k,\]
+    which is clearly in $\FF$. The inclusion of the union in $\Omega$ is trivial, as each $A_k$ is defined to be a subset of $\Omega$. For the opposite inclusion, suppose $\omega = \seq{\omega_n} \in \Omega$. It is either the case that $\omega$ is a sequence of all zeros or has a one at at least one index. If $\omega$ is all zeros, then $\omega = \seq{0} \in A_\infty$. Otherwise, $\omega$ has some ones and we define $k = \min\{j \in \N : \omega_j = 1\}$. Then we have
+    \[\omega_1 = \cdots \omega_{k-1} = 0 \isp{and} \omega_k = 1,\]
+    which implies that $\omega \in A_k$. Thus, the equality is proven and we have $\Omega \in \FF$. Along with the fact that the $A_k$'s are disjoint, this implies that the set of $A_k$'s are a partition of $\Omega$. Now to show that $\FF$ is closed under complements, let $\cup_{i \in I} A_i \in \FF$ and consider the complement
+    \[\left( \bigcup_{i \in I} A_i \right)^C.\]
+    Since $\Omega$ is equal to the union of all $A_k$'s, then
+    \[\left( \bigcup_{i \in I} A_i \right)^C = \left( \bigcup_{k \in \N\cup\{\infty\}} A_k \right) \setminus \left( \bigcup_{i \in I} A_i \right) = \bigcup_{\substack{k \in \N\cup\{\infty\} \\ k \notin I}} A_k.\]
+    The second equality follows from the fact that the $A_k$'s are pairwise disjoint. Then if we define $J = (N \cup \{\infty\}) \setminus I \subseteq \N \cup \{\infty\}$, then
+    \[\left( \bigcup_{i \in I} A_i \right)^C = \bigcup_{i \in J} A_i \in \FF.\]
+    Thus, $\FF$ is closed under complements and is, therefore, a $\sigma$-algebra.
+    
+    We now define the probability measure $\P : \FF \to [0, 1]$ on each of the $A_k$'s by
+    \[\P(A_k) \defeq 
+        \begin{cases}
+            (1-p)^{k-1}p &\text{if $k \in \N$,} \\
+            0 &\text{if $k = \infty$.}
+        \end{cases}
+    \]
+    Then for each $\cup_{i \in I} A_i \in \FF$, we define
+    \[\P(\cup_{i \in I} A_i) \defeq \sum_{i \in I} \P(A_i).\]
+    This map is well-defined since each element of $\FF$ only has one representation as the union of $A_k$'s. Moreover, it is non-negative and for all $\cup_{i \in I} A_i \in \FF$, we have
+    \begin{align*}
+        \P(\cup_{i \in I} A_i) 
+            &= \sum_{i \in I} \P(A_i) \\
+            &\leq \sum_{k \in \N \cup \{\infty\}} \P(A_k) \\
+            &= \P(A_\infty) + \sum_{k \in \N} \P(A_k) \\
+            &= 0 + \sum_{k \in \N} (1-p)^{k-1}p \\
+            &= \sum_{k = 0}^\infty(1-p)^kp.
+    \end{align*}
+    This is a geometric series with common ratio $1-p$. And since $p \in (0, 1]$, then $1-p \in [0, 1)$, so 
+    \[\P(\cup_{i \in I} A_i) \leq \sum_{k = 0}^\infty(1-p)^kp = \frac{p}{1 - (1-p)} = \frac{p}{p} = 1.\]
+    Thus, $\P(\cup_{i \in I} A_i) \in [0, 1]$. This also shows that $\P(\Omega) = 1$ since
+    \[\P(\Omega) = \P\left(  \bigcup_{k\in \N \cup\{\infty\}} A_k \right) = \sum_{k \in \N \cup \{\infty\}} \P(A_k) = 1.\]
+    And by definition, the probability $\P$ of a union of disjoint sets in $\FF$ is the sum of the probabilities of the sets. Thus, $\P$ is a probability measure on $\FF$.
+    
+    We now define the random variable $Y : \Omega \to \N\cup\{\infty\}$ such that
+    \[Y(\omega) \defeq k, \quad \omega \in A_k, \quad k \in \N\cup\{\infty\}.\]
+    This is defined for all $\omega \in \Omega$ since the set of $A_k$'s is a partition of $\Omega$. Our definition of $\FF$ makes it clear that $Y$ is $\FF$-measurable, since $Y^{-1}(k) = A_k \in \FF$ for all $k\in \N\cup\{\infty\}$. Moreover, $\P(Y = k) = \P(Y^{-1}(k)) = \P(A_k)$ for all $k\in \N\cup\{\infty\}$. Now even though $\infty \notin \R$, we still consider $Y$ to be a function from $\Omega$ to $\R$ since $\P(Y = \infty) = \P(A_\infty) = 0$. This means that the range of $Y$ is, effectively, $\N \subseteq \R$, since the only thing $Y$ maps to $\infty$ is the all-zero sequence $\seq{0}$. And for all $k \in \N$, we have
+    \[\P(Y = k) = \P(A_k) = (1 - p)^{k-1}p.\]
+    Thus, we have that $Y \overset{d}{=} \operatorname{Geom}(p)$ is a random variable on the probability space $(\Omega, \FF, \P)$.
+    
+    We now construct a sequence of simple random variables $\seq{Y_n}$ converging to $Y$ in the following way:
+    \[Y_n = \sum_{k = 1}^n k I_{A_k}.\]
+    Each $Y_n$ is $\FF$-measurable since $Y_n^{-1}(k) = A_k \in \FF$ for each $k \in \{1, \dots, n\}$, where $\{1, \dots, n\}$ is the range of $Y_n$. One can see that $Y_n \to Y$ as $n \to \infty$, since for each $\omega \in \Omega$,
+    \[\lim_{n\to \infty} Y_n(\omega) = \sum_{k = 1}^\infty k I_{A_k}(\omega).\]
+    Recall that the set of $A_k$'s is a partition of $\Omega$, so $\omega$ is in some $A_\ell$, in which case
+    \[\lim_{n\to \infty} Y_n(\omega) = \ell I_{A_\ell}(\omega) = \ell = Y(\omega).\]
+    Now for some $n \in \N$, $Y_n$ is a simple random variable, so we have the expected value
+    \[\E[Y_n] = \sum_{k = 1}^n k \P(A_k) = \sum_{k = 1}^n k(1 - p)^{k-1}p = p\sum_{k = 1}^n k(1 - p)^{k-1}.\]
+    Now since $Y_n \to Y$, we have the
+    \[\E[Y] = \lim_{n\to \infty} p\sum_{k = 1}^n k(1 - p)^{k-1} = p\sum_{k = 1}^\infty k(1 - p)^{k-1}.\]
+    We now define the power series
+    \[F(z) = \sum_{k = 1}^\infty z^k.\]
+    Taking the derivative of $F$, we find
+    \[F'(z) = \od{}{z}\sum_{k = 1}^\infty z^k = \sum_{k = 1}^\infty \od{}{z}z^k = \sum_{k = 1}^\infty k z^{k-1}.\]
+    Therefore,
+    \[\E[Y] = p F'(1 - p).\]
+    Moreover, if $|z| < 1$, then $F(z)$ is a geometric series with common ratio $z$ and
+    \[F(z) = \frac1{1 - z}.\]
+    Taking the derivative, we find
+    \[F'(z) = \od{}{z} \frac1{1-z} = \frac{1}{(1 - z)^2}.\]
+    Now since $p \in (0, 1]$, then $1- p \in [0, 1)$, so $|1 - p| < 1$. Thus,
+    \[\E[Y] = p F'(1 - p) = p \cdot \frac1{(1 - (1 - p))^2} = \frac{p}{p^2} = \frac1p.\]
+    
+\end{proof}
+
+\begin{proposition}
+    For $X \overset{d}{=} \operatorname{Bin}(4, 1/3)$, $Y \overset{d}{=} \operatorname{Geom}(1/2)$, and $Z = Y - X$, $\E[Z] = 2/3$
+\end{proposition}
+
+\begin{proof}
+    By the linearity of $\E$ proved in Exercise 2, we have
+    \[\E[Z] = \E[Y - X] = \E[Y] - \E[X].\]
+    Using the expected values for $X$ and $Y$ found in Lemmas 1 and 2, respectively, we have
+    \[\E[Z] = \frac1{1/2} - 4\cdot\frac13 = \frac23.\]
+    
+\end{proof}
+
+\newpage
+\subsection*{Exercise 1(b)}
+\begin{problem}
+    $Z = X^2 + 3Y$.
+\end{problem}
+
+\begin{proposition}
+    $Z(\Omega) = \{3k : k \in \N\} \cup \P\{3k + 1 : k \in \N\}$.
+\end{proposition}
+
+\begin{proof}
+    Recall that $X(\Omega) = \{0, 1, 2, 3, 4\}$ and $Y(\Omega) = \N$. Then
+    \[X^2(\Omega) = \{k^2 : k\in X(\Omega)\} = \{0, 1, 4, 9, 16\},\]
+    and
+    \[3Y(\Omega) = \{3k : k\in Y(\Omega)\} = \{3k : k \in \N\}.\]
+    Now,
+    \begin{align*}
+        Z(\Omega)
+            &= \{Z(\omega) : \omega \in \Omega\} \\
+            &= \{X^2(\omega) + 3Y : \omega \in \Omega\} \\
+            &= \{a + b : a \in \{0, 1, 4, 9, 16\},\, b \in \{3k : k \in \N\}.
+    \end{align*}
+    Now since $0$ and $9$ are both multiples of 3 while $1$, $4$, and $16$ are all one more than a multiple of 3, this set can be equivalently written as
+    \[Z(\Omega) = \{a + b : a \in \{0, 1\},\, b \in \{3k : k \in \N\} = \{3k : k\in\N\}\cup\{3k + 1 : k\in\N\}.\]
+    
+\end{proof}
+
+\begin{proposition}
+    $\E[Z] = 26/3$.
+\end{proposition}
+
+\begin{proof}
+    We first calculate $\E[X^2]$. 
+    \begin{align*}
+        \E[X^2]
+            &= \sum_{k \in X^2(\Omega)} k \P(X^2 = k) \\
+            &= \sum_{k \in X(\Omega)} k^2 \P(X^2 = k^2) \\
+            &= \sum_{k = 0}^4 k^2 \P(X = k) \\
+            &= \sum_{k = 0}^4 k^2 \binom{4}{k}\left(\frac13\right)^k\left(\frac23\right)^{4-k} \\
+            &= \frac83.
+    \end{align*}
+    Then
+    \[\E[Z] = \E[X^2 + 3Y] = \E[X^2] + 3\E[Y] = \frac83 + 3\frac1{1/2} = \frac{26}3.\]
+    
+\end{proof}
+
+\newpage
+\section*{Exercise 2}
+\begin{problem}
+    Show that the integral we defined for simple random variables is linear, i.e., for simple random variables $X, Y$ we get that $\E[aX + bY] = a \E[X] + b\E[Y]$ (this of course extends to general random variables).
+\end{problem}
+
+\begin{proposition}
+    For simple random variables $X, Y$ we get that $\E[aX + bY] = a \E[X] + b\E[Y]$.
+\end{proposition}
+
+\begin{proof}
+    Suppose $X$ and $Y$ are simple random variables with
+    \[X = \sum_{i = 1}^n a_i I_{A_i} \isp{and} Y = \sum_{j = 1}^m b_j I_{B_j},\]
+    where $\{A_i\}$ and $\{B_j\}$ are partitions of $\Omega$. Now let $a, b \in \R$ and consider the random variable $aX + bY$. For $i = 1, \dots, n$ and $j = 1, \dots, m$, we define
+    \[C_{ij} \defeq A_i \cap B_j.\]
+    Now for any $\omega \in \Omega$, we have $\omega \in A_i$ and $\omega \in B_j$ for some $i,j$. This implies that
+    \[\omega \in A_i \cap B_j = C_{ij}.\]
+    Now if $ij \ne k\ell$, then
+    \[C_{ij} \cap C_{k\ell} = (A_i \cap B_j) \cap (A_k \cap B_k) = (A_i \cap A_k) \cap (B_j \cap B_ell).\]
+    Since $ij \ne k\ell$, then either $i\ne k$, in which case $A_i\cap A_k = \emptyset$, or $j \ne \ell$, in which case $B_j \cap B_\ell = \emptyset$. Either way, we have
+    \[C_{ij} \cap C_{k\ell} = (A_i \cap A_k) \cap (B_j \cap B_\ell) = \emptyset.\]
+    Thus, $\{C_{ij}\}$ is a partition of $\Omega$. Similarly, for a fixed $i$, $\{C_{ij}\}$ is a partition of $A_i$ and for a fixed $j$, $\{C_{ij}\}$ is a partition of $B_j$. Therefore,
+    \[I_{A_i} = \sum_{j=1}^m I_{C_{ij}} \isp{and} I_{B_j} = \sum_{i=1}^n I_{C_{ij}},\]
+    which gives us
+    \[X = \sum_{i = 1}^n a_i \sum_{j=1}^m I_{C_{ij}} = \sum_{i = 1}^n \sum_{j=1}^m a_i I_{C_{ij}}\]
+    and
+    \[Y = \sum_{j = 1}^m b_j \sum_{i=1}^n I_{C_{ij}} = \sum_{j = 1}^m \sum_{i=1}^n b_j I_{C_{ij}}.\]
+    Since the expected value of a simple random variable is independent of its representation, then
+    \[\E[X] = \sum_{i = 1}^n \sum_{j=1}^m a_i \P(C_{ij}) \isp{and} \E[Y] = \sum_{j = 1}^m \sum_{i=1}^n b_j \P(C_{ij}).\]
+    Now,
+    \begin{align*}
+        aX + bY
+            &= a\sum_{i = 1}^n \sum_{j=1}^m a_i I_{C_{ij}} + b\sum_{j = 1}^m \sum_{i=1}^n b_j I_{C_{ij}} \\
+            &= \sum_{i = 1}^n \sum_{j = 1}^m a a_i I_{C_{ij}} + \sum_{j = 1}^m \sum_{i = 1}^n b b_j I_{C_{ij}} \\
+            &= \sum_{i = 1}^n \sum_{j = 1}^m (a a_i + b b_j) I_{C_{ij}}.
+    \end{align*}
+    Thus, $aX + bY$ is a simple random variable, with the above representation. Then
+    \begin{align*}
+        \E[aX + bY]
+            &= \sum_{i = 1}^n \sum_{j = 1}^m (a a_i + b b_j) \P(C_{ij}) \\
+            &= \sum_{i = 1}^n \sum_{j = 1}^m a a_i \P(C_{ij}) + \sum_{j = 1}^m \sum_{i = 1}^n b b_j \P(C_{ij}) \\
+            &= a\sum_{i = 1}^n \sum_{j = 1}^m a_i \P(C_{ij}) + b\sum_{j = 1}^m \sum_{i = 1}^n b_j \P(C_{ij}) \\
+            &= a\E[X] + b\E[Y].
+    \end{align*}
+
+    
+\end{proof}
+
+\newpage
+\section*{Exercise 3}
+\begin{problem}
+    Suppose we play the following game based in tosses of a fair coin. You pay me \$10, and I agree to pay you \$$n^2$ if heads comes up first on the $n$th toss. If we play this game repeatedly, how much money do you expect to win or lose per game over the long run?
+\end{problem}
+
+\begin{proposition}
+    We expect to lose \$4.
+\end{proposition}
+
+\begin{proof}
+    Let $X \overset{d}{=} \operatorname{Geom}(1/2)$ be the random variable denoting the index of the first occurrence of heads after an arbitrary number of tosses of a fair coin. Then the random variable denoting the amount of money we win in this scenario is given by
+    \[X^2 - 10.\]
+    Then the amount of money we expect to win, in dollars, is given by
+    \[\E[X^2 - 10] = \E[X^2] - 10.\]
+    To find $\E[X^2]$, we use that fact that $X \overset{d}{=} \operatorname{Geom}(p)$ implies that
+    \[\operatorname{Var}(X) = \frac{1 - p}{p^2}.\]
+    Now using the definition of variance, we find
+    \begin{align*}
+        \operatorname{Var}(X)
+            &= \E[(X - \E[X])^2] \\[1em]
+            &= \E[X^2 - 2\E[X]X + \E[X]^2] \\[1em]
+            &= \E[X^2] - 2\E[X]\E[X] + \E[X]^2 \\[1em]
+            &= \E[X^2] - \E[X]^2.
+    \end{align*}
+    Therefore,
+    \begin{align*}
+        \E[X^2] 
+            &= \operatorname{Var}(X) + \E[X]^2 \\
+            &= \frac{1 - 1/2}{(1/2)^2} + \left(\frac1{1/2}\right)^2 \\
+            &= \frac{1 - 1/2}{(1/2)^2} + \left(\frac1{1/2}\right)^2 \\
+            &= \frac{1/2}{1/4} + 4 \\
+            &= 2 + 4 \\
+            &= 6.
+    \end{align*}
+    Thus,
+    \[\E[X^2 - 10] = 6 - 10 = -4,\]
+    meaning we expect to lose \$4 dollars.
+
+\end{proof}
+
+\newpage
+\section*{Exercise 4}
+\begin{problem}
+    If $\E[X] = 1$ and $\operatorname{Var}(X) = 5$, find
+\end{problem}
+
+\subsection*{Exercise 4(a)}
+\begin{problem}
+    $\E[(2 + X)^2]$,
+\end{problem}
+\medskip
+
+First, we use the linearity of expected value.
+\begin{align*}
+    \E[(2 + X)^2]
+        &= \E[4 + 4X + X^2] \\
+        &= 4 + 4\E[X] + \E[X^2] \\
+        &= 4 + 4\cdot 1 + \E[X^2] \\
+        &= 8 + \E[X^2].
+\end{align*}
+Now since $\operatorname{Var}(X) = \E[X^2] - \E[X]^2$, then
+\begin{align*}
+    \E[(2 + X)^2]
+        &= 8 + \operatorname{Var}(X) + \E[X]^2 \\
+        &= 8 + 5 + 1^2 \\
+        &= 14.
+\end{align*}
+
+
+\subsection*{Exercise 4(b)}
+\begin{problem}
+    $\operatorname{Var}(4 + 3X)$.
+\end{problem}
+\medskip
+
+We use the definition of variance and the linearity of expected value.
+\begin{align*}
+    \operatorname{Var}(4 + 3X)
+        &= \E[(4 + 3X - \E[4 + 3X])^2] \\
+        &= \E[(4 + 3X - 4 - 3\E[X])^2] \\
+        &= \E[(3X - 3\E[X])^2] \\
+        &= \E[9(X - \E[X])^2] \\
+        &= 9\E[(X - \E[X])^2] \\
+        &= 9\operatorname{Var}(X) \\
+        &= 9 \cdot 5 \\
+        &= 45.
+\end{align*}
+
+
+\newpage
+\section*{Exercise 5}
+\begin{problem}
+    Geno (the basketball coach for UConn) goes to the grocery store and finds that Wheaties is placing pictures of UConn basketball players inside its cereal boxes. A total of 6 players are featured, each appearing with equal probability. Find the expected number of boxes Geno needs to buy in order to obtain pictures of 3 different players.
+    
+    Hint: Let $X$ be the total number of cereal boxes that Geno buys and let $N_i$ be the number of boxes that Geno buys to get the $i$th player after obtaining the $(i-1)$th player. Then, $X = N_1 + N_2 + N_3$. What type of random variable is each $N_i$? Use the fact that the expected value is linear!
+\end{problem}
+\medskip
+
+Assuming that each box contains a picture of some player, then the first box Geno buys will have a picture of a player; $N_1 = 1$. Then $N_2$ is the number of boxes Geno must buy to obtain a picture of a player other than the first player. In other words, $N_2 \overset{d}{=} \operatorname{Geom}(5/6)$, since every box bought after the first has a probability of $5/6$ of having a picture different from that of the first box. After the box containing the second unique player picture has been purchased, $N_3$ is the number of boxes Geno must buy to obtain a picture of a player different from both the first and second player. That is, $N_3 \overset{d}{=} \operatorname{Geom}(4/6)$, since every box after the $(N_1 + N_2)$th box has a probability of $4/6$ of containing a picture of a player different from the first two. Then by the linearity of the expected value,
+\[\E[X] = \E[N_1 + N_2 + N_3] = \E[N_1] + \E[N_2] + \E[N_3] = 1 + \frac1{5/6} + \frac1{4/6} = \frac{37}{10}.\]
+
+
+
+\end{document}

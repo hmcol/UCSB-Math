@@ -1,0 +1,172 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% custom commands
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\p}{^{\prime}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\setlength{\fboxsep}{4pt}
+\newcommand{\exercise}[2]{\section*{Exercise #1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\problem}[2]{\section*{Problem #1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\generic}[2]{\section*{#1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+
+ 
+\begin{document}
+ 
+\title{Homework 15\\
+    \large MATH CS 108A Linear Algebra I}
+\author{Harry Coleman}
+\date{February 21, 2020}
+\maketitle
+
+
+\exercise{1}{
+    Show that rotations are linear transformations.
+}
+
+Let $T$ be the function which rotates vectors in $\R^2$ counterclockwise by an angle $\theta$. We want to show that $T$ is linear. Let $(x,y)\in\R^2$ be the vector with angle $\alpha$ and magnitude $r$. This means that
+\begin{align*}
+    x &= r\cos(\alpha), \\
+    y &= r\sin(\alpha).
+\end{align*}
+Under $T$, we have
+\begin{align*}
+    T(x,y)  &= T(r\cos(\alpha), r\sin(\alpha)), \\
+            &= (r\cos(\alpha+\theta), r\sin(\alpha+\theta)), \\
+            &= (r\cos\alpha\cos\theta - r\sin\alpha\sin\theta), r\sin\alpha\cos\theta + r\cos\alpha\sin\theta), \\
+            &= (x\cos\theta - y\sin\theta, x\sin\theta + y\cos\theta).
+\end{align*}
+Which we can represent as the matrix multiplication
+\[T(x,y) = \begin{bmatrix}
+    \cos\theta & - \sin\theta \\
+    \sin\theta &  \cos\theta
+\end{bmatrix}
+\begin{bmatrix}
+    x \\
+    y
+\end{bmatrix}.
+\]
+Since multiplying the vector $(x,y)$ by a matrix is a linear transformation, $T$ is a linear transformation.
+
+
+\newpage
+\exercise{2}{
+    Let $T: V \rightarrow W$ be a function. Show that $T$ is linear if and only if $T(\alpha x + y) = \alpha T(x) + T(y)$.
+}
+
+Suppose $T$ is linear. Let $x,y\in V$, $\alpha\in\F$.  By the linearity of $T$,
+\begin{align*}
+    T(\alpha x + y)     &= T(\alpha x) + T(y), \\
+                        &= \alpha T(x) + T(y).
+\end{align*}
+This proves the rightward conditional.
+Now suppose that for all $x,y\in V$ and $\alpha\in\F$, $T(\alpha x + y) = \alpha T(x) + T(y)$. Let $\alpha=1$. Substituting, we find
+\begin{align*}
+    T(1 x + y) &= 1 T(x) + T(y), \\
+    T(x+y)      &= T(x) + T(y).
+\end{align*}
+Now let $y=0_V$. Substituting, we find
+\begin{align*}
+    T(\alpha x + 0_V) &= \alpha T(x) + T(0_V), \\
+    T(\alpha x) &= \alpha T(x) + 0_W, \\
+    T(\alpha x) &= \alpha T(x).
+\end{align*}
+So $T$ is linear, which completes the biconditional.
+
+\exercise{7}{
+    \begin{enumerate}
+        \item Show that the composition of linear transformations is linear.
+        \item Show that the inverse of a bijective linear transformation is a linear transformation.
+    \end{enumerate}
+}
+
+\subsection*{1. Composition of Linear Transformations}
+
+Let $X,Y,Z$ be $\F$-vector spaces, $F\in L(X,Y)$ and $G\in L(Y,Z)$. We want to show that $G\circ F$ is a linear transformation. Let $u,v\in X$ and $\alpha\in\F$. By the linearity of $F$ and $G$,
+\begin{align*}
+    (G\circ F)(u + v)   &= G(F(u+v)), \\
+                        &= G(F(u) + F(v)), \\
+                        &= G(F(u)) + G(F(v)), \\
+                        &= (G\circ F)(u) + (G \circ F)(v).
+\end{align*}
+Similarly,
+\begin{align*}
+    (G\circ F)(\alpha u)    &= G(F(\alpha u)), \\
+                            &= G(\alpha F(u)), \\
+                            &= \alpha G(F(u)), \\
+                            &= \alpha (G\circ F)(u).\\
+\end{align*}
+Therefore, $G\circ F$ is a linear transformation in $L(X,Z)$.
+
+
+
+\exercise{8}{
+    Let $V$ and $W$ be two $\F$-vector spaces.
+    \begin{enumerate}
+        \item Show that $L(V, W)$ is an $\F$-vector space on its own right when we consider the following operations:
+        \[(T + H)(v) = T(v) + H(v), T, H \in L(V, W), v \in V.\]
+        \[(\alpha T)(v) = \alpha T(v), T \in L(V, W), \alpha \in F, v \in V.\]
+        
+        \item Assume that $V$ and $W$ are finite-dimensional vector spaces. Show that $L(V, W)$ is also finite-dimensional. What is its dimension? Give a basis for $L(V, W)$.
+    \end{enumerate}
+}
+
+If $F, H \in L(V,W)$, we will say $F=H$ if and only if $F(v) = H(v)$ for all $v\in V$.
+
+\subsection*{1. $L(V, W)$ is an $\F$-vector space}
+Let $W^V$ be the vector space of functions with domain $V$ and codomain $W$. Since $L(V, W)\subseteq W^V$, we will show that $L(V,W)$ is a subspace of $W^V$, and therefore an $\F$-vector space. First, consider the zero element of $W_V$,
+\begin{align*}
+    \textbf{0}:    & V\rightarrow W \\
+                & v \mapsto 0_W.
+\end{align*}
+To show that $\textbf{0}\in L(V,W)$, we must show \textbf{0} is a linear transformation. Let $x,y\in V$ and $\alpha\in\F$. We show that
+\begin{align*}
+    \textbf{0}(\alpha x+y)      &= 0_W \\
+                                &= \alpha 0_W + 0_W \\
+                                &= \alpha \textbf{0}(x) + \textbf{0}(y).
+\end{align*}
+So \textbf{0} is linear and therefore in $L(V,W)$. Now let
+\begin{align*}
+    x,y             &\in V, \\
+    T,H             &\in L(V,W), \\
+    \alpha, \beta   &\in\F.
+\end{align*}
+We use the given definitions of addition and scalar multiplication, with the linearity of $T$ and $H$ to show that $G=(\beta T + H)$ is linear\textemdash that is,
+\begin{align*}
+    G(\alpha x + y)     &= (\beta T + H)(\alpha x + y) \\
+                        &= \beta [T(\alpha x + y)] + H(\alpha x + y) \\
+                        &= \beta [\alpha T(x) + T(y)] + \alpha H(x) + H(y) \\
+                        &= \alpha [\beta T(x) + H(x)] + T(y) + H(y) \\
+                        &= \alpha (\beta T + H)(x) + (\beta T + H)(y) \\
+                        &= \alpha G(x) + G(y).
+\end{align*}
+So $G=(\beta T + H)\in L(V,W)$, therefore $L(V,W)$ is a vector space.
+
+
+\subsection*{2. Finite Basis for $L(V,W)$}
+
+
+
+
+
+\end{document}

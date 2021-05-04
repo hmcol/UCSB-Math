@@ -1,0 +1,308 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amsthm, amssymb}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}
+    {\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\mybox}}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{1em}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+
+% Extra Commands
+\newcommand{\pd}[3][1]{\ifx1#1{\frac{\partial #2}{\partial#3}}\else{\frac{\partial^{#1}#2}{\partial#3^{#1}}}\fi}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\dd}{\partial}
+
+\begin{document}
+ 
+\title{Final\\
+    %\large MATH CS 121 Intro to Probability
+    %\large MATH 111A Intro to Abstract Algebra
+    %\large MATH CS 122A Complex Analysis I
+    %\large MATH 118A Intro to Real Analysis
+    %\large MATH 104A Intro to Numerical Analysis
+}
+\author{Harry Coleman}
+\date{December 16, 2020}
+\maketitle
+
+\section{}
+\begin{problem}
+    Find the power series expansion at infinity of the function
+    \[
+        f(z) = \frac{1 + z^2}{1 + z^4}.
+    \]
+\end{problem}
+\medskip
+
+We consider the function
+\[
+    g(z) 
+        = f\!\left(\tfrac1z\right) 
+        = \frac{1 + \left(\frac1z\right)^2}{1 + \left(\frac1z\right)^4}
+        = \frac{z^4 + z^2}{z^4 + 1}.
+\]
+If $|z| < 1$, then $1 + z^4 \ne 0$, so $g$ is analytic on the open unit disc $\{|z| < 1\}$. The power series expansion of $f$ at infinity will be derived from the power series expansion of $g$ at zero. We rewrite $g$ as
+\[
+    g(z) = z^2 \left( \frac{1}{1 + z^4} + z^2 \frac{1}{1 + z^4} \right).
+\]
+Assuming $|z| < 1$, then we have the sum of a geometric series
+\[
+    \frac{1}{1 + z^4} = \sum_{k=0}^\infty (-z^4)^k = \sum_{k=0}^\infty (-1)^k z^{4k}.
+\]
+Then the value of $g(z)$ for $|z| < 1$ is given by
+\[
+    g(z) = z^2 \left( \sum_{k=0}^\infty (-1)^k z^{4k} + \sum_{k=0}^\infty (-1)^k z^{4k + 2} \right)
+\]
+We now consider the two power series
+\begin{align*}
+    \sum_{k=0}^\infty (-1)^k z^{4k} &= z^0 - z^4 + z^8 - z^{12} + z^{16} - z^{20} + \cdots, \\
+    \sum_{k=0}^\infty (-1)^k z^{4k + 2} &= z^2 - z^6 + z^{10} - z^{14} + z^{18} - z^{22} + \cdots.
+\end{align*}
+Both are alternating series. The first contains the even powers of $z$ which are multiples of $4$. The second contains the even powers of $z$ which are not multiples of $4$. Combining these, we obtain a series of all nonnegative even powers of $z$ and alternates sign in consecutive pairs of terms. That is, their sum is
+\[
+    \sum_{n=0}^\infty a_n z^{2n} = z^0 + z^2 - z^4 - z^6 + z^8 + z^{10} - z^{12} - z^{14} + \cdots,
+\]
+where $a_n$ can be defined by
+\[
+    a_n = \begin{cases}
+        \phantom{-}1 & \text{if $n \bmod 4 \in \{0,1\}$,} \\
+        -1 & \text{if $n \bmod 4 \in \{2,3\}$.} 
+    \end{cases}
+\]
+Substituting this back into the formula of $g$, we obtain the power series expansion of $g$ at zero
+\[
+    g(z) = z^2 \sum_{n=0}^\infty a_n z^{2n} = \sum_{n=0}^\infty a_n z^{2n + 2}.
+\]
+Note that $a_n$ are not precisely the coefficients given by the $n$th derivative of $g$ at zero, as the exponent of $z$ is $2n +2$. But one could redefine the series as $\sum b_k z^k$ where $b_{2n + 2} = a_n$, and zero otherwise. Thus, the power series expansion of $f$ at infinity is
+\[
+    f(z) = g\!\left(\tfrac1z\right) = \sum_{n=0}^\infty \frac{a_n}{z^{2n + 2}},
+\]
+where $a_n$ is defined above.
+
+\newpage
+\section{}
+\begin{problem}
+    Let $f(z) : \C \to \C$ be an entire function such that for any $z \in \C$ there exists a natural number $n$ such that $f^{(n)}(z) = 0$ (the value of $n$ may vary for different values of $z$). Prove that $f(z)$ is a polynomial in $z$.
+\end{problem}
+
+\begin{lemma}
+    If a subset of $\C$ is uncountable, then it must have a non-isolated point.
+\end{lemma}
+
+\begin{proof}
+    Suppose, for contradiction, that we have an uncountable subset $X \subseteq \C$ whose points are all isolated. That is, for each $z \in X$, there exists some $\delta > 0$ such that $|w - z| \geq \delta$ for all $w \in X$ with $w \ne z$. In particular, we define the distance
+    \[
+        \delta(z) = \inf_{w \in X \setminus \{z\}} |w - z| > 0,
+    \]
+    We will consider $\Q^2$ to be the set of rational complex numbers, i.e.,
+    \[
+        \Q^2 = \{p + iq : p, q \in \Q\}.
+    \]
+    Note that as $\Q$ is dense in $\R$, so too is $\Q^2$ dense in $\C$. So for each $z \in X$, there exist points in $\Q^2$ which are arbitrarily close to $z$. In particular, we choose some $q(z) \in \Q^2$ such that
+    \[
+        |z - q(z)| < \frac{\delta(z)}{2}.
+    \]
+    This defines a map $q : X \to \Q^2$. We now show that this map is injective. Suppose $z, w \in X$ such that $q(z) = q(w)$, then
+    \[
+        |w - z| = |w - q(w) + q(z) - z| \leq |w - q(w)| + |z - q(z)| < \frac{\delta(w)}{2} + \frac{\delta(z)}{2}.
+    \]
+    If $z \ne w$, then the definition of $\delta$ would imply
+    \[
+        |w - z| < \frac{|z - w|}{2} + \frac{|w - z|}{2} = |w - z|,
+    \]
+    so we must have $z = w$. Thus, $q : X \to \Q^2$ is an injection, which tells us that $|X| \leq |\Q^2|$. But, because $X$ is uncountable and $\Q^2$ is countable, this is a contradiction. 
+    
+\end{proof}
+
+\newpage
+\begin{proposition}
+    If $f(z) : \C \to \C$ is an entire function such that for any $z \in \C$ there exists a natural number $n$ such that $f^{(n)}(z) = 0$, then $f(z)$ is a polynomial in $z$.
+\end{proposition}
+
+\begin{proof}
+    For each $n \in \N$, we define a subset of the complex numbers
+    \[
+        X_n = \{z \in \C : f^{(n)}(z) = 0\}.
+    \]
+    For each $z \in \C$, since $f^{(n)}{z} = 0$ for some $n \in \N$, then we must have $z$ in at least one of these subsets, namely $X_n$. In other words, the collection $\{X_n\}_{n\in\N}$ covers $\C$, so
+    \[
+        \C = \bigcup_{n \in \N} X_n.
+    \]
+    Since the countable union of $X_n$'s is an uncountable set, i.e. $\C$, it follows that at least one subset in the collection, say $X_N$, is uncountable. By Lemma 1, we have that $X_N$ contains at least one non-isolated point. And since $f^{(N)}$ is an entire function which is zero at all points in $X_N$, then $f^{(N)}$ must be identically zero on its domain $\C$. Moreover, since the derivative of the zero function is zero, then for each $k \geq N$, we have $f^{(k)}$ to be identically zero on $\C$.
+    
+    We now consider the power series expansion of $f$ around zero. Since $f$ is entire,  we have its power series expansion on all of $\C$ given by
+    \[
+        f(z) = \sum_{k = 0}^\infty a_k z^k, \quad a_k = \frac{f^{(k)}(0)}{k!}.
+    \]
+    For all $k \geq N$, we have 
+    \[
+        a_k = \frac{f^{(k)}(0)}{k!} = \frac{0}{k!} = 0.
+    \]
+    Therefore, all terms for $k \geq N$ are zero, so we have $f$ to be the polynomial
+    \[
+        f(z) = \sum_{k = 0}^{N - 1} a_k z^k = a_0 + a_1 z^1 + \cdots + a_{N-1} z^{N-1}.
+    \]
+    
+    
+    
+\end{proof}
+
+\newpage
+\section{}
+\begin{problem}
+    Prove the following version of L'Hopital's rule. If $f(z)$ and $g(z)$ are analytic in $\C$, $z_0 \in \C$, and $f(z_0) = g(z_0) = 0$, and $g(z)$ is not identically zero, then
+    \[
+        \lim_{z \to z_0} \frac{f(z)}{g(z)} = \lim_{z \to z_0} \frac{f'(z)}{g'(z)}.
+    \]
+\end{problem}
+
+\begin{proof}
+    Since both $f$ and $g$ are entire functions, then they have power series expansions on $\C$ given by
+    \[
+        f(z) = \sum_{k=0}^\infty a_k (z - z_0)^k \isp{and} g(z) = \sum_{k=0}^\infty b_k (z - z_0)^k,
+    \]
+    where
+    \[
+        a_k = \frac{f^{(k)}(z_0)}{k!} \isp{and} b_k = \frac{g^{(k)}(z_0)}{k!}.
+    \]
+    Since $f(z_0) = g(z_0) = 0$, then we know that
+    \[
+        a_0 = f(z_0) = 0 \isp{and} b_0 = g(z_0) = 0.
+    \]
+    If $f$ is identically zero, then the equality of the limits holds, trivially. Assuming both $f$ and $g$ are not identically zero, there there exist some $n, m \in \N$ such that
+    \[
+        f^{(n)}(z_0) \ne 0 \isp{and} g^{(m)}(z_0) \ne 0.
+    \]
+    If such natural numbers did not exists, then the above power series expansions would be identically zero. In particular, we choose $n$ and $m$ to be the smallest such natural numbers. In other words, $z_0$ is a zero of order $n$ for $f$ and a zero of order $m$ for $g$. Then we can rewrite the power series expansions as
+    \[
+        f(z) = (z - z_0)^n \sum_{k=0}^\infty a_{n+k} (z - z_0)^k
+    \]
+    and
+    \[
+        g(z) = (z - z_0)^m \sum_{k=0}^\infty b_{m+k} (z - z_0)^k.
+    \]
+    Then the limit of their quotient becomes
+    \[
+        \frac{f(z)}{g(z)} 
+            = (z - z_0)^{n-m} 
+            \cdot \frac{a_n + \ds\sum_{k=1}^\infty a_{n+k} (z - z_0)^k}{b_m + \ds\sum_{k=1}^\infty b_{m+k} (z - z_0)^k}.
+    \]
+    Notice that all the terms in the summations go to zero as $z \to z_0$, so we have the limit
+    \[
+        \lim_{z \to z_0} \frac{a_n + \ds\sum_{k=1}^\infty a_{n+k} (z - z_0)^k}{b_m + \ds\sum_{k=1}^\infty b_{m+k} (z - z_0)^k} = \frac{a_n}{b_n}.
+    \]
+    Therefore, we have
+    \[
+        \lim_{z \to z_0} \frac{f(z)}{g(z)} = \frac{a_n}{b_m} \cdot \lim_{z \to z_0} (z - z_0)^{n-m}.
+    \]
+    Depending on the relation between $n$ and $m$, this limit can take on three different values, namely
+    \[\tag{1}
+        \lim_{z \to z_0} \frac{f(z)}{g(z)} = \begin{cases}
+            \frac{a_n}{b_m} & \text{if $n = m$}, \\
+            0 & \text{if $n > m$}, \\
+            \infty & \text{if $n < m$}.
+        \end{cases}
+    \]
+    We now return to the power series expansions of $f$ and $g$, and take their derivatives:
+    \[
+        f'(z) = \sum_{k=1}^\infty k a_k (z - z_0)^{k-1}
+    \]
+    and
+    \[
+        g'(z) = \sum_{k=1}^\infty k b_k (z - z_0)^{k-1}.
+    \]
+    Recall. that $z_0$ is a zero of order $n$ for $f$ and a zero of order $m$ for $g$. We factor these as
+    \[
+        f'(z) = (z - z_0)^{n-1} \sum_{k=0}^\infty (n+k) a_{n+k} (z - z_0)^k
+    \]
+    and
+    \[
+        g'(z) = (z - z_0)^{m-1} \sum_{k=0}^\infty (m+k) b_{m+k} (z - z_0)^k.
+    \]
+    Like before, we find their quotient to be
+    \[
+        \frac{f'(z)}{g'(z)} = (z - z_0)^{n-m} \cdot \frac{n a_n + \ds\sum_{k=1}^\infty (n+k) a_{n+k} (z - z_0)^k}{m b_m + \ds\sum_{k=1}^\infty (m+k) b_{m+k} (z - z_0)^k}.
+    \]
+    Also like before, the terms in the summation go to zero, and we have
+    \[
+        \lim_{z \to z_0} \frac{na_n + \ds\sum_{k=1}^\infty (n+k) a_{n+k} (z - z_0)^k}{mb_m + \ds\sum_{k=1}^\infty (m+k) b_{m+k} (z - z_0)^k} = \frac{n a_n}{m b_m}.
+    \]
+    Thus, we obtain the limit
+    \[
+        \lim_{z \to z_0} \frac{f'(z)}{g'(z)} = \frac{n a_n}{m b_m} \cdot \lim_{z \to z_0} (z - z_0)^{n-m}.
+    \]
+    Similar to (1), this limit is zero when $n > m$ and infinity when $n < m$. And when $n = m$, this limit simplifies to
+    \[
+        \frac{n a_n}{m b_m} = \frac{a_n}{b_m}.
+    \]
+    Thus, we obtain the equality
+    \[
+        \lim_{z \to z_0} \frac{f(z)}{g(z)} = \lim_{z \to z_0} \frac{f'(z)}{g'(z)}.
+    \]
+    
+
+\end{proof}
+
+\newpage
+\section{}
+\begin{problem}
+    Let $D \subset \R^2$ be a domain and let the function $u : D \to \R$ be a harmonic function that is infinitely many times differentiable in $D$. Let $(x_0, y_0) \in D$. Prove that if
+    \[
+        \pd[n]{u}{x}(x_0, y_0) = \pd[n]{u}{y}(x_0, y_0) = 0, \quad\text{for all $n = 1, 2, \dots$,}
+    \]
+    then $u$ is constant in $D$.
+\end{problem}
+
+\begin{proof}
+    Since $u$ is harmonic in $D$, then there exists a harmonic conjugate $v : D \to \R$ such that $f = u + iv : D \to \C$ is analytic in $D$. Then $f$ has a power series expansion around $z_0 = x_0 + iy_0$, given by
+    \[
+        f(z) = \sum_{k=0}^\infty a_k (z - z_0)^k,
+    \]
+    converging for $|z - z_0| < R$, where $R > 0$. For all $k \in \N$, we have
+    \[
+        a_k = \frac{f^{(k)}(z_0)}{k!}.
+    \]
+    Since $f$ is analytic, the $k$th derivative of $f$ is given by
+    \[
+        f^{(k)} = \pd[k]{u}{x} + i \pd[k]{v}{x},
+    \]
+    and the Cauchy-Riemann equations give us
+    \[
+        \pd[k]{v}{x} = \frac{\dd^k v}{\dd x^{k-1} \dd x} = - \frac{\dd^k u}{\dd x^{k-1} \dd y}.
+    \]
+    Now since all partial derivatives of $u$ are zero at $(x_0, y_0)$, then
+    \[
+        f^{(k)}(z_0) = \pd[k]{u}{x}(x_0, y_0) - i \frac{\dd^k u}{\dd x^{k-1} \dd y}(x_0, y_0) = 0.
+    \]
+    Thus, for all $z \in D$ with $|z - z_0| < R$, we have
+    \[
+        f(z) = a_0 = f(z_0).
+    \]
+    Since $f$ is constant on the disc $\{|z - z_0| < R\} \subseteq D$, which contains non-isolated points, then $f$ must be constant on $D$. Since $f$ is constant on $D$, then, in particular, $u = \operatorname{Re} f$ is constant on $D$.
+    
+\end{proof}
+
+
+\end{document}

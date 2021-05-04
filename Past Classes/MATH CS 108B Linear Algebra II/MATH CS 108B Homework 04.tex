@@ -1,0 +1,181 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Set Names
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+
+% Misc Characters
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\newcommand{\eps}{\varepsilon}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ang}{\langle}{\rangle}
+
+% Homework Sections
+\setlength{\fboxsep}{4pt}
+\newcommand{\generic}[2]{\section*{#1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\ex}[2]{\generic{Exercise #1}{#2}}
+\newcommand{\prob}[2]{\generic{Problem #1}{#2}}
+\newcommand{\ques}[2]{\generic{Question #1}{#2}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+% MATH CS 117 Intro to Real Analysis
+\newcommand{\ds}{\displaystyle}
+\newcommand{\seq}[1]{\left\{#1\right\}_{n=1}^\infty}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+
+ 
+\begin{document}
+ 
+\title{Homework 4\\
+    \large MATH CS 108B Linear Algebra II}
+\author{Harry Coleman}
+\date{April 20, 2020}
+\maketitle
+
+\ex{7}{
+    Show that the Frobenius inner product on the space of $n \times n$ matrices is an inner product.
+}
+
+The Frobenius inner product is defined as
+\[\ang{A,B} = \text{trace}(B^*A)\]
+for any two matrices $A,B\in M_{n\times n}(\F)$ where $\F=\R$ or $\F=\C$. We'll assume that $\F=\C$ and any instances of the conjugate can be taken to be the identity for $\R$. We first show that $\ang{-,-}$ is sesquilinear. Let $\alpha\in\C$ and $A_1,A_2,B\in M_{n\times n}(\C)$. By the linearity of trace, we find
+\begin{align*}
+    \ang{\alpha A_1 + A_2, B}
+        &= \text{trace}(B^*(\alpha A_1 + A_2)) \\
+        &= \text{trace}(\alpha B^*A_1 + B^*A_2) \\
+        &= \alpha\text{trace}(B^*A_1) + \text{trace}(B^*A_2) \\
+        &= \alpha\ang{A_1,B} + \ang{A_2,B}.
+\end{align*}
+So it is linear in the first argument. Let $\alpha\in\C$ and $A,B_1,B_2\in M_{n\times n}(\C)$. By the linearity of trace and the conjugate linearity of the conjugate transpose we find
+\begin{align*}
+    \ang{A, \alpha B_1 + B_2}
+        &= \text{trace}((\alpha B_1 + B_2)^*A) \\
+        &= \text{trace}(\overline{\alpha}B_1^*A + B_2^*A) \\
+        &= \overline{\alpha}\text{trace}(B_1^*A) + \text{trace}(B_2^*A) \\
+        &= \overline{\alpha}\ang{A,B_1} + \ang{A,B_2}.
+\end{align*}
+So it is conjugate linear in the second argument, therefore $\ang{-,-}$ is sesquilinear. Next we show that it is Hermitian. Let $A,B\in M_{n\times n}(\C)$ and consider their inner product
+\begin{align*}
+    \ang{A,B}
+        &= \text{trace}(B^*A) \\
+        &= \sum_{i=1}^n (B^*A)_{ii} \\
+        &= \sum_{i=1}^n ((A^*B)^*)_{ii} \\
+        &= \sum_{i=1}^n \overline{(A^*B)_{ii}} \\
+        &= \overline{\sum_{i=1}^n (A^*B)_{ii}} \\
+        &= \overline{\text{trace}(A^*B)} \\
+        &= \overline{\ang{B,A}}.
+\end{align*}
+Thus, $\ang{-,-}$ is Hermitian. We now must show that this map is positive definite. Let $A\in M_{n\times n}$ and consider its inner product with itself
+\begin{align*}
+    \ang{A,A}
+        &= \sum_{i=1}^n (A^*A)_{ii} \\
+        &= \sum_{i=1}^n \sum_{j=1}^n (A^*)_{ij}A_{ji} \\
+        &= \sum_{i=1}^n \sum_{j=1}^n \overline{A_{ji}}A_{ji}.
+\end{align*}
+Since each $A_{ji}$ is equal to $a_{ji} + ib_{ji}$ for some real numbers $a_{ji},b_{ji}$, we find that
+\begin{align*}
+    \overline{A_{ji}}A_{ji}
+        &= \overline{(a_{ji} + ib_{ji})}(a_{ji} + ib_{ji}) \\
+        &= (a_{ji} - ib_{ji})(a_{ji} + ib_{ji}) \\
+        &= a_{ji}^2 + b_{ji}^2\\
+        &\geq 0.
+\end{align*}
+So $\ang{A,A}$, being the sum of many nonnegative terms, must also be nonnegative. It can also be seen that the only way for $\ang{A,A}$ to equal zero is if each $a_{ji}$ and $b_{ji}$ are zero, which would imply that $A$ is the zero matrix. Thus, $\ang{-,-}$ is a positive definite. Since the Frobenius inner product is Hermitian sesquilinear and positive definite, it is, in fact, an inner product.
+
+
+\ex{8}{
+    What must happen for a matrix A to be the matrix representation of an inner product? Give its properties and look online how these matrices are called. Give several different characterizations of this type of matrices (also you can find them online).
+}
+
+
+\ex{9}{
+    Prove the parallelogram law: “Let $V$ be a inner product space. Then, for all $u, v \in V$
+    \[||u+v||^2 + ||u-v||^2 = 2||u||^2 + 2||v||^2,\] 
+    where $||-||$ denotes the norm induced by the inner product in $V$ .” Give a geometric interpretation of this property in $R^2$.
+}
+
+Let $u,v\in V$ where $V$ is a normed space with $||-||$ induced by the inner product on $V$. 
+\begin{align*}
+    ||u+v||^2 + ||u-v||^2
+        &= <u+v,u+v> + <u-v,u-v> \\
+        &= <u,u> + <u,v> + <v,u> + <v,v> + <u,u> - <u,v> - <v,u> + <v,v> \\
+        &= 2<u,u> + 2<v,v> \\
+        &= 2||u||^2 + 2||v||^2.
+\end{align*}
+
+for all $u,v\in V$. In $R^2$, this corresponds to the geometric property of parallelograms that the sum of the squares of the diagonal lengths is equal to the sum of the squares of the side lengths. Consider the parallelogram defined by the vectors $u,v\in\R^2$:
+\begin{drawing}
+    \draw[fill=black] (0,0) circle (2pt) node[anchor=north east]{$0$};
+    \draw[thick, ->] (0,0) -- (3,0) node[midway, anchor=north]{$u$};
+    \draw[thick, ->] (0,0) -- (1,2) node[midway, anchor=east]{$v$};
+    \draw[thick, ->] (1,2) -- (4,2) node[midway, anchor=south]{$u$};
+    \draw[thick, ->] (3,0) -- (4,2) node[midway, anchor=west]{$v$};
+    
+    \draw[dashed] (0,0)--(4,2) (1,2)--(3,0);
+\end{drawing}
+Taking the Euclidean norm on $\R^2$, we see that the sum of the sqaures of the diagonal lengths is given by
+\[||u+v||^2 + ||u-v||^2\]
+and the sum of the squares of the side lengths is given by
+\[2||u|| + 2||v||.\]
+
+
+\ex{10}{
+    Let $V$ be an inner product space. Prove that, for all $u, v \in V$,
+    \begin{enumerate}
+        \item $||u - v|| \leq ||u - x|| + ||x - v||$, and
+        \item $|||u|| - ||v||| \leq ||u-v||$.
+    \end{enumerate}
+}
+
+To prove the first, we let $u,v,x\in V$ and by the triangle inequality find
+\[||u-v|| = ||(u-x) + (x-v)|| \leq ||u-x|| + ||x-v||.\]
+
+To prove the second, we let $u,v\in V$ and consider
+\begin{align*}
+    ||u|| = ||u-v+v|| \leq ||u-v|| + ||v||, \\
+    ||v|| = ||v-u+u|| \leq ||v-u|| + ||u||.
+\end{align*}
+This gives us
+\begin{align*}
+    ||u||-||v|| &\leq ||u-v||, \\
+    ||v||-||u|| &\leq ||v-u||.
+\end{align*}
+And since
+\begin{align*}
+    ||u-v||
+        &= ||-(v-u)|| \\
+        &= |-1|\cdot||v-u|| \\
+        &= ||v-u||,
+\end{align*}
+we have that
+\begin{align*}
+    ||u||-||v|| &\leq ||u-v||, \\
+    -(||u||-||v||) &\leq ||u-v||.
+\end{align*}
+So in fact
+\[|||u|| - ||v||| \leq ||u-v||.\]
+
+
+
+\end{document}

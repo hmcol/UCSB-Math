@@ -1,0 +1,181 @@
+\documentclass[12pt]{article}
+ 
+ \usepackage[table,xcdraw]{xcolor}
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{colortbl}
+
+\lstset{basicstyle=\footnotesize}
+\usetikzlibrary{calc}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+
+ 
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{question}[2][Question]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+ 
+\begin{document}
+ 
+\title{Problem Set 9,10\\
+    \large CS120FN Number Systems}
+\author{Harry Coleman}
+\date{November 7, 2019}
+
+\maketitle
+
+\section*{Problem 9.1}
+\fbox{
+    \parbox{\textwidth}{
+        Prove that any rational number $q$ can be written in the form  $$q=a_0+\cfrac{1}{a_1+\cfrac{1}{a_2+\cfrac{1}{a_3+\cdots}}},$$
+
+        where $a_0$ is an integer, $a_i$ are positive integers, and this process terminates in a finite number of steps. For example, 
+
+        $$\frac{-60}{49}=-2+\cfrac{1}{1+\cfrac{1}{3+\cfrac{1}{2+\cfrac{1}{5}}}}$$
+    }
+}
+\\
+
+For any rational number, $q$, we can find integers, $q_0$ and $q_1$, such that
+\[q = \frac{q_0}{q_1}\]
+With Euclidean division, we can find integers, $a_0$ and $q_2$, such that
+\[q_0 = a_0q_1 + q_2\]
+and $0 \leq q_2 < q_1$. If $q$ is negative, we'll make $q_0$ and $a_0$ negative and all other integers nonegative. We can now rewrite $q$ as
+\begin{align*}
+    q  &= a_0 + \frac{q_2}{q_1} \\
+       &= a_0 +\frac{1}{\cfrac{q_1}{q_2}}
+\end{align*}
+
+We can now repeat this process with $\frac{q_1}{q_2}$. So we find nonegative integers $a_1$ and $q_3$ with Euclidean division such that
+\[q_1 = a_1q_2 + q_3\]
+and $0 \leq q_3 < q_2$. We then substitute for $q_1$ to get
+\[q = a_0 +\frac{1}{a_1 + \cfrac{1}{\cfrac{q_2}{q_3}}}\]
+
+In general, when we have a rational number
+\[\frac{q_i}{q_{i+1}}\]
+we find integers $a_i$ and $q_{i+2}$ such that
+\[q_i = a_iq_{i+1} + q_{i+2}\]
+and $0 \leq q_{i+2} < q_{i+1}$, and get
+\[\frac{q_i}{q_{i+1}} = a_i + \cfrac{1}{\cfrac{q_{i+1}}{q_{i+2}}}\]
+
+Since all $q_i$ are nonnegative integers, except $q_0$ if $q$ is negative, and the sequence of ($q_1, q_2, q_3,\dots)$ is strictly decreasing, then after a finite number of steps, we will eventually have a
+\[\frac{q_n}{q_{n+1}}\]
+such that for some integers $a_n$ and $q_{n+2}$,
+\[q_n = a_nq_{n+1} + q_{n+2}\]
+where $q_{n+2}=0$. In this case, we say
+\[\frac{q_n}{q_{n+1}} = a_n\]
+Since $a_n$ is an integer, we no longer have any rational numbers to simplify and we consider this the terminating case. So for any rational number $q$, we can find integers $(a_0,a_1,a_2,a_3,\dots,a_n)$ such that
+\[q = a_0 +\cfrac{1}{a_1 + \cfrac{1}{a_2 + \cfrac{1}{a_3 + \dots \cfrac{1}{a_{n-1} + \cfrac{1}{a_n}}}}}\]
+where $a_0$ is an integer and $(a_1,a_2,a_3,\dots,a_n)$ is a finite sequence of positive integers.
+
+
+\section*{Problem 10.2}
+\fbox{
+    \parbox{\textwidth}{
+        Prove that $\sqrt{3}(\sqrt{6}-3)$ is irrational.
+    }
+}
+\\
+
+We'll let
+\[x = \sqrt{3}(\sqrt{6}-3)\]
+so
+\begin{align*}
+    x^2 &= (\sqrt{3}(\sqrt{6}-3))^2 \\
+        &= 3(6 - 6\sqrt{6} + 9) \\
+        &= 45 - 18\sqrt{6} \\
+    x^2 - 45 &= -18\sqrt{6}
+\end{align*}
+and
+\begin{align*}
+    (x^2 - 45)^2 &=  (-18\sqrt{6})^2 \\
+    x^4 -90x^2 + 2025 &= 1944 \\
+    x^4 -90x^2 + 81 &= 0
+\end{align*}
+
+So $x$ is a root of the above polynomial, and is therefore either an integer or an irrational. If we assume $x$ is an integer, then it must be a divisor of our constant term, 81. So
+\[x \in \{\pm1, \pm3, \pm9, \pm27, \pm81\}\]
+however,
+\begin{center}
+    \begin{tabular}{r c r c l}
+        $(\pm1)^4 -90(\pm1)^2 + 81$ & = & -8 & $\ne$ & 0\\
+        $(\pm3)^4 -90(\pm3)^2 + 81$ & = & -648 & $\ne$ & 0\\
+        $(\pm9)^4 -90(\pm9)^2 + 81$ & = & -648 & $\ne$ & 0\\
+        $(\pm27)^4 -90(\pm27)^2 + 81$ & = & 465912 & $\ne$ & 0\\
+        $(\pm81)^4 -90(\pm81)^2 + 81$ & = & 42456312 & $\ne$ & 0\\
+    \end{tabular}
+\end{center}
+so $x$, $\sqrt{3}(\sqrt{6}-3)$, is irrational.
+
+\newpage
+\section*{Problem 10.4}
+\fbox{
+    \parbox{\textwidth}{
+        Prove that $\frac{1}{3}(2\sqrt[3]{6}+7)$ is irrational.
+    }
+}
+\\
+
+We'll let
+\[x = \frac{1}{3}(2\sqrt[3]{6}+7)\]
+\begin{align*}
+    3x &= 2\sqrt[3]{6} + 7 \\
+    3x - 7 &= 2\sqrt[3]{6} \\
+    (3x-7)^3 &= (2\sqrt[3]{6})^3 \\
+    27x^3 - 189x^2 + 441x - 343 &= 48 \\
+    27x^3 - 189x^2 + 441x - 391 &= 0
+\end{align*}
+
+So $x$ is a root of the above polynomial, and therefore is either rational or irrational. If we assume $x$ is rational and we have highest degree coefficient 27 and constant term 391, then
+\[x \in \{\pm\frac{1}{1}, \pm\frac{1}{3}, \pm\frac{1}{9}, \pm\frac{1}{27}, \pm\frac{17}{1}, \pm\frac{17}{3}, \pm\frac{17}{9}, \pm\frac{17}{27}, \pm\frac{23}{1}, \pm\frac{23}{3}, \pm\frac{23}{9}, \pm\frac{23}{27}\}\]
+However,
+\begin{center}
+    \begin{tabular}{r c r c l}
+         $27(\frac{1}{1})^3 - 189(\frac{1}{1})^2 + 441(\frac{1}{1}) - 391$ & = & -112.0000 & $\ne$ & 0 \\
+        $27(\frac{1}{3})^3 - 189(\frac{1}{3})^2 + 441(\frac{1}{3}) - 391$ & = & -264.0000 & $\ne$ & 0 \\
+        $27(\frac{1}{9})^3 - 189(\frac{1}{9})^2 + 441(\frac{1}{9}) - 391$ & = & -344.2963 & $\ne$ & 0 \\
+        $27(\frac{1}{27})^3 - 189(\frac{1}{27})^2 + 441(\frac{1}{27}) - 391$ & = & -374.9246 & $\ne$ & 0 \\
+        $27(\frac{-1}{1})^3 - 189(\frac{-1}{1})^2 + 441(\frac{-1}{1}) - 391$ & = & -1048.0000 & $\ne$ & 0 \\
+        $27(\frac{-1}{3})^3 - 189(\frac{-1}{3})^2 + 441(\frac{-1}{3}) - 391$ & = & -560.0000 & $\ne$ & 0 \\
+        $27(\frac{-1}{9})^3 - 189(\frac{-1}{9})^2 + 441(\frac{-1}{9}) - 391$ & = & -442.3704 & $\ne$ & 0 \\
+        $27(\frac{-1}{27})^3 - 189(\frac{-1}{27})^2 + 441(\frac{-1}{27}) - 391$ & = & -407.5940 & $\ne$ & 0 \\
+        $27(\frac{17}{1})^3 - 189(\frac{17}{1})^2 + 441(\frac{17}{1}) - 391$ & = & 85136.0000 & $\ne$ & 0 \\
+        $27(\frac{17}{3})^3 - 189(\frac{17}{3})^2 + 441(\frac{17}{3}) - 391$ & = & 952.0000 & $\ne$ & 0 \\
+        $27(\frac{17}{9})^3 - 189(\frac{17}{9})^2 + 441(\frac{17}{9}) - 391$ & = & -50.3704 & $\ne$ & 0 \\
+        $27(\frac{17}{27})^3 - 189(\frac{17}{27})^2 + 441(\frac{17}{27}) - 391$ & = & -181.5199 & $\ne$ & 0 \\
+        $27(\frac{-17}{1})^3 - 189(\frac{-17}{1})^2 + 441(\frac{-17}{1}) - 391$ & = & -195160.0000 & $\ne$ & 0 \\
+        $27(\frac{-17}{3})^3 - 189(\frac{-17}{3})^2 + 441(\frac{-17}{3}) - 391$ & = & -13872.0000 & $\ne$ & 0 \\
+        $27(\frac{-17}{9})^3 - 189(\frac{-17}{9})^2 + 441(\frac{-17}{9}) - 391$ & = & -2080.2963 & $\ne$ & 0 \\
+        $27(\frac{-17}{27})^3 - 189(\frac{-17}{27})^2 + 441(\frac{-17}{27}) - 391$ & = & -750.3320 & $\ne$ & 0 \\
+        $27(\frac{23}{1})^3 - 189(\frac{23}{1})^2 + 441(\frac{23}{1}) - 391$ & = & 238280.0000 & $\ne$ & 0 \\
+        $27(\frac{23}{3})^3 - 189(\frac{23}{3})^2 + 441(\frac{23}{3}) - 391$ & = & 4048.0000 & $\ne$ & 0 \\
+        $27(\frac{23}{9})^3 - 189(\frac{23}{9})^2 + 441(\frac{23}{9}) - 391$ & = & -47.7037 & $\ne$ & 0 \\
+        $27(\frac{23}{27})^3 - 189(\frac{23}{27})^2 + 441(\frac{23}{27}) - 391$ & = & -135.7915 & $\ne$ & 0 \\
+        $27(\frac{-23}{1})^3 - 189(\frac{-23}{1})^2 + 441(\frac{-23}{1}) - 391$ & = & -439024.0000 & $\ne$ & 0 \\
+        $27(\frac{-23}{3})^3 - 189(\frac{-23}{3})^2 + 441(\frac{-23}{3}) - 391$ & = & -27048.0000 & $\ne$ & 0 \\
+        $27(\frac{-23}{9})^3 - 189(\frac{-23}{9})^2 + 441(\frac{-23}{9}) - 391$ & = & -3202.9630 & $\ne$ & 0 \\
+        $27(\frac{-23}{27})^3 - 189(\frac{-23}{27})^2 + 441(\frac{-23}{27}) - 391$ & = & -920.5048 & $\ne$ & 0 \\
+    \end{tabular}
+\end{center}
+
+So $x$, $\frac{1}{3}(2\sqrt[3]{6}+7)$, is irrational.
+
+\end{document}
+

@@ -1,0 +1,391 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry} % proper margins
+\usepackage{enumitem} % custom numbering for lists
+\usepackage{amsmath} % align, cases, eqref, matrices, dots, roots, delimiters, math mode functions, mod, arrows
+\usepackage{amsthm} % theorems, proofs
+\usepackage{amssymb} % fancy letters, niche relations/negations
+\usepackage{mathrsfs} % much more loopy calligraphy font
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}
+    {\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\mybox}}}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+
+% Alternate Characters
+\let\eps\varepsilon % double curved, rather than single curve with midline
+\let\phi\varphi % single stroke loop, rather than vertical line through circle
+\let\emptyset\varnothing % circular, rather than tall
+
+% Named Sets
+\newcommand{\N}{\mathbb{N}} % natural numbers
+\newcommand{\Z}{\mathbb{Z}} % integers 
+\newcommand{\Q}{\mathbb{Q}} % rational numbers
+\newcommand{\R}{\mathbb{R}} % real numbers
+\newcommand{\C}{\mathbb{C}} % complex numbers
+
+% Fancy Characters
+\newcommand{\F}{\mathbb{F}} % arbitrary field
+\renewcommand{\P}{\mathbb{P}} % probability measure (apparently, sometimes prime numbers)
+\newcommand{\FF}{\mathcal{F}} % sigma algebra
+\newcommand{\BB}{\mathcal{B}} % Borel sigma algebra
+
+% Paired Delimiters
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil} % ceiling
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor} % floor
+\newcommand{\<}{\left\langle} % left angle bracket
+\renewcommand{\>}{\right\rangle} % right angle bracket
+
+% Functions
+\renewcommand{\Im}{\operatorname{Im}} % imaginary part of a complex number
+\renewcommand{\Re}{\operatorname{Re}} % real part of a complex number
+\newcommand{\Arg}{\operatorname{Arg}} % principal argument (angle) of complex number
+
+% Simplified Notation
+\newcommand{\id}[1]{\operatorname{id_{\mathnormal{#1}}}} % identity operator
+\newcommand{\seq}[2][n]{\left\{#2\right\}_{#1\in\N}} % sequence
+\newcommand{\pdv}[3][1]{\ifnum#1=1{\frac{\partial #2}{\partial#3}}\else{\frac{\partial^{#1}#2}{\partial#3^{#1}}}\fi} % partial derivative
+\newcommand{\intr}[1]{\accentset{\circ}{#1}} % interior of a set
+
+% Renaming
+\let\sm\setminus % set minus (difference)
+\let\clo\overline % closure of a set
+\let\conj\overline % conjugate of an object
+\let\eqc\overline % equivalence class of an object
+\let\teq\trianglelefteq % normal subgroup
+\let\iso\cong % isomorphic (groups)
+
+% Notes
+% medskip for header-less paragraph
+% intertext{} for short text inside big display structure
+% dots is dynamic based on surroundings
+% dfrac and tfrac to force large or small fractions
+% operatorname for new operators instead of text
+% consider using nath; it seems to break most formatting and is not compatible with many packages
+
+\begin{document}
+ 
+\title{Homework 7\\
+    %\large MATH CS 121 Intro to Probability
+    %\large MATH 111A Intro to Abstract Algebra
+    %\large MATH CS 122A Complex Analysis I
+    \large MATH 118A Intro to Real Analysis
+    %\large MATH 104A Intro to Numerical Analysis
+}
+\author{Harry Coleman}
+\date{November 19, 2020}
+\maketitle
+
+\section*{Exercise 1}
+\begin{problem}
+    Let $\{a_n\}_{n\in\N}$ and $\{b_n\}_{n\in\N}$ be sequences of nonnegative real numbers. Assume that $a_n \le b_n$ for all $n\in\N$. Prove the following statements:
+\end{problem}
+
+\subsection*{Exercise 1(a)}
+\begin{problem}
+    If $\sum_n b_n$ converges, then $\sum_n a_n$ converges.
+\end{problem}
+
+\begin{proof}
+    Suppose $\sum_n b_n$ converges and let $B = \ds\sum_{n=1}^\infty b_n$. Let $A_n$ and $B_n$ denote the partial sums of $\sum_n a_n$ and $\sum_n b_n$, respectively. First, note that for any $n\in\N$,
+    \[A_n = \sum_{j=1}^n a_j \leq \sum_{j=1}^n a_j + a_{n+1} = \sum_{j=1}^{n+1}a_j = A_{n+1},\]
+    so $\{A_n\}$ is a non-decreasing sequence. By the same argument, $\{B_n\}$ is non-decreasing, which implies $B_n\leq B$ for all $n\in\N$. Now, for any $n\in\N$,
+    \[A_n = \sum_{j=1}^n a_j \leq \sum_{j=1}^n b_j = B_n \leq B.\]
+    Thus, $\{A_n\}$ is a non-decreasing sequence which is bounded above, so it is convergent, implying that $\sum_n a_n$ converges.
+    
+\end{proof}
+
+\newpage
+\subsection*{Exercise 1(b)}
+\begin{problem}
+    If $\sum_n a_n$ diverges, then $\sum_n b_n$ diverges.
+\end{problem}
+\medskip
+
+Note: this is precisely the contrapositive of exercise 1(a), so they are equivalent.
+
+\begin{proof}
+    Suppose $\sum_n a_n$ diverges. Suppose, for contradiction, that $\sum_n b_n$ converges. By exercise 1(a), this implies that $\sum_n a_n$ converges, which is a contradiction. Therefore, $\sum_n b_n$ diverges.
+    
+\end{proof}
+
+\subsection*{Exercise 1(c)}
+\begin{problem}
+    Can we remove the nonnegativity condition? Explain.
+\end{problem}
+\medskip
+
+No. Suppose $a_n=-1$ for all $n\in\N$ and $\seq{b_n}$ were any nonnegative sequence such that $\sum_b b_n$ converges. Then $a_n \leq b_n$ for all $n\in\N$, however,
+\[A_n = \sum_{j=1}^n-1 = -n\]
+diverges to $-\infty$ as $n\to\infty$.
+
+\newpage
+\section*{Exercise 2}
+\begin{problem}
+    Suppose $\{a_n\}$ and $\{b_n\}$ are sequences of nonnegative real numbers such that 
+    \begin{equation}
+        \lim_{n\to\infty} \frac{a_n}{b_n} = L > 0.
+    \end{equation}
+    Prove that either $\sum_n a_n$ or $\sum_n b_n$ both converge or both diverge.
+\end{problem}
+
+\begin{proof}
+    Let $A_n$ and $B_n$ denote the partial sums of $\sum_n a_n$ and $\sum_n b_n$, respectively. Suppose $\sum_n a_n$ converges; then, $\seq{A_n}\subseteq\R$ is convergent and, therefore, Cauchy. Let $\eps>0$ be given and let $c\in\R$ such that $0<c<L$. Let $n_1\in\N$ such that
+    \[n\geq n_1 \implies \left|\frac{a_n}{b_n} - L\right| < c,\]
+    and let $n_2\in\N$ such that
+    \[n,m\geq n_2 \implies |A_m - A_n| < \eps.\]
+    First note that $n\geq n_1$ gives us
+    \begin{align*}
+        -c &< \frac{a_n}{b_n} - L < c, \\[1em]
+        L - c &< \frac{a_n}{b_n}, \\[1em]
+        b_n(L-c) &< a_n, \\[1em]
+        b_n &< \frac{a_n}{L-c}.
+    \end{align*}
+    Now define $n_0=\max\{n_1,n_2\}$. Let $n,m\geq n_0$ and, without loss of generality, assume $n\leq m$. Then
+    \allowdisplaybreaks
+    \begin{align*}
+        |B_m - B_n|
+            &= \left|\sum_{j=1}^m b_j - \sum_{j=1}^n b_j\right| \\
+            &= \left|\sum_{j=n+1}^m b_j\right| \\
+            &= \sum_{j=n+1}^m b_j \\
+            &\leq \sum_{j=n+1}^m \frac{a_j}{L-c} \\
+            &= \frac1{L-c} \sum_{j=n+1}^m a_j \\
+            &= \frac1{L-c} \left|\sum_{j=n+1}^m a_j\right| \\
+            &= \frac1{L-c}\left|\sum_{j=1}^m a_j - \sum_{j=1}^n a_j\right| \\
+            &= \frac1{L-c}|A_m - A_n| \\
+            &< \frac1{L-c}\eps.
+    \end{align*}
+    Since $c<L$, then $\frac1{L-c}$ is a positive constant with respect to $n,m$, and $\eps$. So the above implies that $\seq{B_n}\subseteq\R$ is Cauchy. Therefore $\seq{B_n}$ is convergent and so is $\sum_n b_n$.
+    
+    Suppose $\sum_n b_n$ converges; then, $\seq{A_n}\subseteq\R$ is convergent and, therefore, Cauchy. Let $\eps>0$ be given and let $c>0$ be arbitrary. Let $n_1\in\N$ such that
+    \[n\geq n_1 \implies \left|\frac{a_n}{b_n} - L\right| < c,\]
+    and let $n_2\in\N$ such that
+    \[n,m\geq n_2 \implies |B_m - B_n| < \eps.\]
+    First note that $n\geq n_1$ gives us
+    \begin{align*}
+        -c < \frac{a_n}{b_n} - L &< c, \\[1em]
+        \frac{a_n}{b_n} &< L+c, \\[1em]
+        a_n &< b_n(L+c).
+    \end{align*}
+    Now define $n_0=\max\{n_1,n_2\}$. Let $n,m\geq n_0$ and, without loss of generality, assume $n\leq m$. Then
+    \begin{align*}
+        |A_m - A_n|
+            &= \left|\sum_{j=1}^m a_j - \sum_{j=1}^n a_j\right| \\
+            &= \left|\sum_{j=n+1}^m a_j\right| \\
+            &= \sum_{j=n+1}^m a_j \\
+            &\leq \sum_{j=n+1}^m b_j(L+c) \\
+            &= (L+c) \sum_{j=n+1}^m b_j \\
+            &= (L+c)\left|\sum_{j=n+1}^m b_j\right| \\
+            &= (L+c)\left|\sum_{j=1}^m b_j - \sum_{j=1}^n b_j\right| \\
+            &= (L+c)|B_m - B_n| \\
+            &< (L+c)\eps.
+    \end{align*}
+    This implies $\seq{A_n}\subseteq\R$ is Cauchy. Therefore, $\seq{A_n}$ converges and so does $\sum_n a_n$.
+    
+    In conclusion, $\sum_n a_n$ converges if and only if $\sum_n b_n$ converges. In other words, either $\sum_n a_n$ or $\sum_n b_n$ both converge or both diverge.
+    
+\end{proof}
+
+\newpage
+\section*{Exercise 3}
+\begin{problem}
+    Study the convergence of the following series:
+\end{problem}
+
+\subsection*{Exercise 3(a)}
+\begin{problem}
+    \begin{equation}\label{118A-H07-3a}
+        \sum_{n=1}^\infty \frac{3n^2-n+1}{4n^3-n}.
+    \end{equation}
+\end{problem}
+
+\begin{proposition}
+    The series \eqref{118A-H07-3a} diverges.
+\end{proposition}
+
+\begin{proof}
+    For any $n\in\N$,
+    \begin{align*}
+        \frac{3n^2-n+1}{4n^3-n}
+            &\geq \frac{3n^2-n+1}{4n^3} \\[1em]
+            &\geq \frac{3n^2-n}{4n^3} \\[1em]
+            &\geq \frac{3n^2-n^2}{4n^3} \\[1em]
+            &= \frac{4n}{4n^2} \\[1em]
+            &= \frac{1}{n}.
+    \end{align*}
+    Thus, \eqref{118A-H07-3a} is term-wise larger than the harmonic series. Since the harmonic series diverges, so does \eqref{118A-H07-3a}.
+    
+\end{proof}
+
+\newpage
+\subsection*{Exercise 3(b)}
+\begin{problem}
+    \begin{equation}\label{118A-H07-3b}
+        \sum_{n=1}^\infty \frac{1}{\sqrt{n^3+n+5}}.
+    \end{equation}
+\end{problem}
+
+\begin{proposition}
+    The series \eqref{118A-H07-3b} converges.
+\end{proposition}
+
+\begin{proof}
+    For any $n\in\N$,
+    \[0\leq n^3 + n + 5 \implies 0\leq \frac{1}{\sqrt{n^3+n+5}},\]
+    so \eqref{118A-H07-3b} has nonnegative terms.
+    \begin{align*}
+        \frac{1}{\sqrt{n^3+n+5}}
+            &\leq \frac{1}{\sqrt{n^3}} \\
+            &= \frac1{n^{3/2}}.
+    \end{align*}
+    Now since $\frac32 > 1$, then the series
+    \[\sum_{n=1}^\infty \frac1{n^{3/2}}\]
+    converges to some $L\in\R$. Then the partial sums of \eqref{118A-H07-3b} are bounded above by $L$, since they are term-wise bounded by the partial sums of the series converging to $L$. Thus, \eqref{118A-H07-3b} is a series of nonnegative terms whose partial sums are bounded above; therefore, it converges.
+    
+\end{proof}
+
+\newpage
+\subsection*{Exercise 3(c)}
+\begin{problem}
+    \begin{equation}\label{118A-H07-3c}
+        \sum_{n=1}^\infty \frac{(-1)^{n-1} 10^n}{n!}.
+    \end{equation}
+\end{problem}
+
+\begin{proposition}
+    The series \eqref{118A-H07-3c} converges.
+\end{proposition}
+
+\begin{proof}
+    We will apply the ratio test. For any $n\in\N$,
+    \begin{align*}
+        \left|\frac{\dfrac{(-1)^{n+1-1} 10^{n+1}}{(n+1)!}}{\dfrac{(-1)^{n-1} 10^n}{n!}}\right|
+            &= \left|\frac{(-1)10}{n+1}\right| \\
+            &= \frac{10}{n+1}. 
+    \end{align*}
+    Then
+    \[\limsup_{n\to\infty} \frac{10}{n+1} = \lim_{n\to\infty} \frac{10}{n+1} = 0 < 1,\]
+    so \eqref{118A-H07-3c} converges.
+    
+\end{proof}
+
+\subsection*{Exercise 3(d)}
+\begin{problem}
+    \begin{equation}\label{118A-H07-3d}
+        \sum_{n=1}^\infty \frac{n!}{p^n},
+    \end{equation}
+    for any real, positive $p$.
+\end{problem}
+
+\begin{proposition}
+    The series \eqref{118A-H07-3d} diverges.
+\end{proposition}
+
+\begin{proof}
+    We will apply the ratio test. For any $n\in\N$,
+    \begin{align*}
+        \left|\frac{\dfrac{(n+1)!}{p^{n+1}}}{\dfrac{n!}{p^n}}\right|
+            &= \left|\frac{n+1}{p}\right| \\
+            &= \frac{n+1}{p}. 
+    \end{align*}
+    Let $n_0\in\N$ such that $n_0\geq p - 1$. Then for $n\geq n_0$,
+    \[\frac{n+1}{p} \geq \frac{p-1+1}{p} = \frac{p}{p} = 1,\]
+    so \eqref{118A-H07-3d} diverges.
+    
+\end{proof}
+
+\newpage
+\section*{Exercise 4}
+\begin{problem}
+    Determine the radius of convergence of 
+\end{problem}
+
+\subsection*{Exercise 4(a)}
+\begin{problem}
+    \begin{equation}\label{118A-H07-4a}
+        \sum_{n=1}^\infty (-1)^n z^n.
+    \end{equation}
+    Find the value of the series (for each $z$ within the radius of convergence).
+\end{problem}
+\medskip
+
+Since this is a power series with $a_n = (-1)^n$ for all $n\in\N$ and $z_0 = 0$, then we have the radius of convergence
+\begin{align*}
+    \frac1{\ds\limsup_{n\to\infty}\sqrt[n]{|(-1)^n|}}
+        &= \frac1{\ds\limsup_{n\to\infty}\sqrt[n]{|-1|^n}} \\
+        &= \frac1{\ds\limsup_{n\to\infty}\sqrt[n]{1^n}} \\
+        &= \frac1{\ds\limsup_{n\to\infty}1} \\
+        &= \frac11 \\
+        &= 1.
+\end{align*}
+
+Let $z\in\C$ such that $|z|<1$, then \eqref{118A-H07-4a} is a geometric series with $r=-z$, so
+\[\sum_{n=1}^\infty (-1)^n z^n. = \sum_{n=1}^\infty (-z)^n = \frac1{1-(-z)} = \frac1{1+z}.\]
+
+\newpage
+\subsection*{Exercise 4(b)}
+\begin{problem}
+    \begin{equation}\label{118A-H07-4b}
+        \sum_{n=1}^\infty  \frac{z^n}{2^n}.
+    \end{equation}
+    Find the value of the series (for each $z$ within the radius of convergence).
+\end{problem}
+\medskip
+
+Since this is a power series with $a_n = \frac1{2^n}$ for all $n\in\N$ and $z_0 = 0$, then we have the radius of convergence
+\begin{align*}
+    \frac1{\ds\limsup_{n\to\infty}\sqrt[n]{\left|\dfrac1{2^n}\right|}}
+        &= \frac1{\ds\limsup_{n\to\infty}\sqrt[n]{\dfrac1{2^n}}} \\
+        &= \frac1{\ds\limsup_{n\to\infty}\dfrac12} \\
+        &= \frac1{\dfrac12}\\
+        &= 2.
+\end{align*}
+Let $z\in\C$ such that $|z|<2$, then \eqref{118A-H07-4b} is a geometric series with $r=\frac{z}{2}$, so
+\[\sum_{n=1}^\infty  \frac{z^n}{2^n} = \sum_{n=1}^\infty \left(\frac{z}{2}\right)^n = \frac{\frac{z}{2}}{1-\frac{z}{2}} = \frac{z}{2-z}.\]
+
+\newpage
+\section*{Exercise 5}
+\begin{problem}
+    For any sequence of real numbers $\{a_n\}_{n\in\N}$, show that 
+    \begin{equation}
+        \limsup_n (-a_n) = - \liminf a_n.
+    \end{equation}
+\end{problem}
+
+\begin{proof}
+    Recall that for any set $A$, we have
+    \[\inf(-A) = -\sup A,\]
+    where $-A = \{-a : a\in A\}$. Then
+    \begin{align*}
+        \limsup_n (-a_n)
+            &= \inf_n\sup_{k\geq n} (-a_k) \\[1em]
+            %&= \inf_n\sup \{-a_k : k\geq n\} \\[1em]
+            %&= \inf_n(-\inf(- \{-a_k : k\geq n\})) \\[1em]
+            %&= \inf_n(-\inf\{a_k : k\geq n\}) \\[1em]
+            &= \inf_n(-\inf_{k\geq n} a_k) \\[1em]
+            %&= \inf\{-\inf_{k\geq n} a_k : n\in\N\} \\[1em]
+            %&= -\sup(-\{-\inf_{k\geq n} a_k : n\in\N\}) \\[1em]
+            %&= -\sup\{\inf_{k\geq n} a_k : n\in\N\} \\[1em]
+            &= -\sup_n\inf_{k\geq n} a_k \\[1em]
+            &= - \liminf_n a_n.
+    \end{align*}
+    
+\end{proof}
+
+
+
+
+
+\end{document}

@@ -1,0 +1,234 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Set Names
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+
+% Misc Characters
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\newcommand{\eps}{\varepsilon}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ang}{\langle}{\rangle}
+
+% Homework Sections
+\setlength{\fboxsep}{4pt}
+\newcommand{\generic}[2]{\section*{#1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\ex}[2]{\generic{Exercise #1}{#2}}
+\newcommand{\prob}[2]{\generic{Problem #1}{#2}}
+\newcommand{\ques}[2]{\generic{Question #1}{#2}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+% MATH CS 117 Intro to Real Analysis
+\newcommand{\ds}{\displaystyle}
+\newcommand{\seq}[1]{\left\{#1\right\}_{n=1}^\infty}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+ 
+\begin{document}
+ 
+\title{Assignment 4\\
+    \large MATH CS 117 Intro to Real Analysis}
+\author{Harry Coleman}
+\date{April 28, 2020}
+\maketitle
+
+\ques{1}{
+    Let $p(x)$ and $q(x)$ be polynomials.  Suppose that $q(x)$ has a root at $x=r$ of order $n\in\N$, that is, $q(x)$ has the factorization $q(x)=(x-r)^nQ(x)$, where $Q(x)$ is a polynomial such that $Q(r)\ne0$. Find necessary and sufficient conditions on $p(x)$ so that $\ds\lim_{x\to r}\frac{p(x)}{q(x)}$ exists.
+}
+
+We first provide a useful factorization of this limit. Suppose $p(x)$ has $m\in\N$ roots at $x=r$, then 
+\[p(x) = (x-r)^mP(x)\]
+for some polynomial $P(x)$ such that $P(r)\ne 0$. Note that if $m=0$, then $p(x)=P(x)$. Substituting these factorizations of $p(x)$ and $q(x)$ into the limit, we find that
+\[\lim_{x\to r}\frac{p(x)}{q(x)} = \lim_{x\to r}\frac{(x-r)^mP(x)}{(x-r)^nQ(x)} = \lim_{x\to r}(x-r)^{m-n} \cdot \lim_{x\to r}\frac{P(x)}{Q(x)}.\]
+Now since $Q(r)\ne 0$, we have
+\[\lim_{x\to r}\frac{p(x)}{q(x)} =  \lim_{x\to r}(x-r)^{m-n} \cdot \frac{\ds\lim_{x\to r}P(x)}{\ds\lim_{x\to r}Q(x)} = \lim_{x\to r}(x-r)^{m-n} \cdot\frac{P(r)}{Q(r)}.\]
+So $\ds\lim_{x\to r}\frac{p(x)}{q(x)}$ exists if and only if $\ds\lim_{x\to r}(x-r)^{m-n}$ exists.
+
+We now claim that $\ds\lim_{x\to r}\frac{p(x)}{q(x)}$ limit exists if and only if $m\geq n$. To prove this, we first suppose that $m\geq n$, so either $m>n$ or $m=n$. If $m>n$, then $m-n>0$ so
+\[\lim_{x\to r}(x-r)^{m-n} = (r-r)^{m-n} = 0^{m-n} = 0.\]
+So this limit exists, and therefore so does $\ds\lim_{x\to r}\frac{p(x)}{q(x)}$. If $m=n$, then going back to our original factorization, we find
+\[\lim_{x\to r}\frac{p(x)}{q(x)} = \lim_{x\to r}\frac{(x-r)^nP(x)}{(x-r)^nQ(x)} = \lim_{x\to r}\frac{P(x)}{Q(x)} = \frac{P(r)}{Q(r)}.\]
+Thus, $m\geq n$ implies that $\ds\lim_{x\to r}\frac{p(x)}{q(x)}$ exists. To prove that this condition is necessary for the limit to converge, we use the contrapositive. We assume that $m<n$ and we aim to prove that $\ds\lim_{x\to r}\frac{p(x)}{q(x)}$ does not exist. Let $k=n-m$. Since the limit of a product of functions is the product of the limits of those functions, we find
+\[\lim_{x\to r}(x-r)^{m-n} = \lim_{x\to r}\frac 1{(x-r)^k} = \left( \lim_{x\to r}\frac1{x-r}\right)^k.\]
+Now assume for the purpose of contradiction that $\ds\lim_{x\to r}\frac1{x-r}$ exists and equals $L$. So picking $\eps=1$, there exists some $\delta>0$ such that
+\[0<|x-r|<\delta \implies \left|\frac1{x-r} - L\right| < 1.\]
+We also not that if $x < \ds\frac1{L+1} + r$, then
+\[\frac1{x-r} - L> 1.\]
+So if we now pick some $x<r$ such that $|x-r|<\delta$, then we in fact have $\ds x<\frac1{L+1} + r$. So
+\[\left|\frac1{x-r} - L\right| > |1| = 1.\]
+This is a contradiction since this should be less than 1 since $|x-r|<\delta$. Therefore $\ds\lim_{x\to r}\frac1{x-r}$ does not exist, and thus $\ds\lim_{x\to r}\frac{p(x)}{q(x)}$ does not exist. 
+
+\ques{2}{
+    \begin{enumerate}
+        \item Given $D\subset\R$, $f:D\to\R$, and $a\in D'$, formulate a definition of
+        \[\lim_{x\to a}f(x)=+\infty.\]
+        \item Let $D=(0,\infty)$ and define $f:D\to\R$ by $f(x)=1/x$.  Use your definition to prove that $\ds\lim_{x\to 0}f(x)=+\infty$.
+        \item Let $D=\R\setminus\{0\}$ and define $g:D\to\R$ by $g(x)=1/x$. Use your definition to prove that $\ds\lim_{x\to0}g(x)\ne+\infty$.
+    \end{enumerate}
+}
+
+\subsection*{2.1}
+We define
+\[\lim_{x\to a}f(x)=+\infty\]
+if and only if for all $K\in\R$, there exists some $\delta > 0$ such that for all $x\in D$,
+\[0<|x-a|<\delta \implies f(x)>K.\]
+
+\subsection*{2.2}
+Let $K\in\R$ be given.  If $K=0$, then for all $x\in D=(0,\infty)$,
+\[f(x)=\frac1x > 0 = K.\]
+So any choice of $\delta>0$ would yield
+\[0<|x|<\delta \implies f(x) > K.\]
+If $K\ne0$, we define $\delta=\ds\frac1{|K|}$. So for all $x\in D=(0,\infty)$,
+\[0<|x|<\delta \implies f(x)=\frac1x =\frac1{|x|}> \frac1\delta = |K| \geq K.\]
+Thus, $\ds\lim_{x\to0}\frac1x = +\infty$.
+
+\subsection*{2.3}
+By our definition, in order to show that $\ds\lim_{x\to0}g(x)\ne+\infty$, we must show that there exists some $K\in\R$ such that for all $\delta >0$, there exists some $x\in D$ where
+\[0<|x|<\delta \text{ and } f(x) \leq K.\]
+We pick $K=0$, and let $\delta>0$ be arbitrary. Then we can pick some $x\in D=\R\setminus\{0\}$ such that
+\[-\delta < x < 0.\]
+In which case we in fact have
+\[0<|x|<\delta,\]
+but
+\[f(x)=\frac1x < 0 = K.\]
+Thus, $\ds\lim_{x\to0}g(x)\ne+\infty$.
+
+\ques{3}{
+    Give an example of a domain $D\subset\R$ with $a\in D'$ and function $f:D\to\R$ with $f(x)>0$ for all $x\in D$ such that $\ds\lim_{x\to a}f(x)$ exists and equals $0$.
+}
+
+Take $D=\R$ and let $a\in\R'=\R$ be given. We define for all $x\in\R$,
+\[f(x) = 
+    \begin{cases}
+        a - x &\text{if } x<a, \\
+        1 &\text{if } x=a,\\
+        x-a &\text{if } x>a.
+    \end{cases}
+\]
+Clearly, $f(x)>0$ for all $x\in\R$. To prove the limit, we let $\eps>0$ be given and define $\delta=\eps$. Now let $x\in\R$, such that
+\[0<|x-a|<\delta.\]
+This implies $x\ne a$, so either $x<a$ or $x>a$. If $x<a$, then
+\[|f(x)| = |a-x| = |x-a| < \delta = \eps.\]
+If $x>a$, then
+\[|f(x)| = |x-a| < \delta = \eps.\]
+Thus, $\ds\lim_{x\to a}f(x) = 0$.
+
+\ques{4}{
+    \begin{enumerate}
+        \item Let $D\subset\R$, $f:D\to\R$, $a\in D'$, and $L\in\R$. Prove that if $\ds\lim_{x\to a}f(x)$ exists and equals $L$, then $\ds\lim_{x\to a}|f(x)|$ exists and equals $|L|$.
+        \item Provide a counterexample to the converse statement.
+    \end{enumerate}
+}
+
+\subsection*{4.1}
+Suppose $\ds\lim_{x\to a}f(x)=L$. Let $\eps>0$ be given. Then by the definition of the limit, there is some $\delta>0$ such that
+\[0<|x-a|<\delta \implies |f(x)-L|<\eps.\]
+From the triangle inequality, 
+\[0<|x-a|<\delta \implies ||f(x)|-|L||\leq|f(x)-L|<\eps.\]
+Thus, $\ds\lim_{x\to a}|f(x)|=|L|$.
+
+\subsection*{4.2}
+Take $D=\R$ and for some $a\in\R'=\R$, we define
+\[f(x) =
+    \begin{cases}
+        -1 &\text{if } x<a, \\
+        1 &\text{if } x>=a.
+    \end{cases}
+\]
+Now since $|f(x)|=1$ for all $x\in\R$, then clearly $\ds\lim_{x\to a}|f(x)| = 1$. However, $\ds\lim_{x\to a}f(x)$ does not exits. To prove this, we suppose to the contrary that the limit does exist and equals $L$. Then taking $\eps=1$, there exists some $\delta>0$ such that
+\[0<|x-a|<\delta \implies |f(x)-L|<1.\]
+Now take $x,y\in\R$ such that
+\[-\delta < x < 0 \quad\text{and}\quad 0 < y < \delta,\]
+so
+\[|f(x)-L| = |-1-L| < 1,\]
+\[|f(y)-L| = |1-L| < 1.\]
+This first inequality tells us that
+\[-1 < -1-L < 1 \implies -2 < L < 0.\]
+The second gives us
+\[-1 < 1- L < 1 \implies 0< L < 2.\]
+However, $L$ cannot be both strictly less than and strictly greater than 0, so this is a contradiction. Therefore, $\ds\lim_{x\to a}f(x)$ does not exist.
+
+
+
+\ques{5}{
+    Suppose that $f:[a,b]\to\R$ is monotone.  Prove that $\ds\lim_{x\to a}f(x)$ exists.
+}
+
+We assume $f$ is increasing, since the proof for $f$ decreasing is identical but with the opposite ordering. Since $a$ is on the boundary of the domain, then
+\[\lim_{x\to a}f(x) = \lim_{x\to a^+}f(x) = f(a^+) = U(a) = \inf\{f(t) : a < t \leq b\}.\]
+Since this set is ordered and bounded below, then by the dual of the least upper bound principle, this set has an infimum. So the limit exists.
+
+
+
+
+\ques{6}{
+    Suppose that $f:\R\to\R$ is monotone.  Prove that $\ds\lim_{y\to x}f(y)$ exists for all but at most countably many $x\in\R$.
+}
+
+We will assume $f$ is increasing, since the proof for $f$ decreasing is identical but with the opposite ordering. Let $S=\{x\in\R : \ds\lim_{y\to x}f(y) \text{ doesn't exist}\}$. For each $x\in S$,
+\[\sup\{f(t) : t < x\} = L(x) \ne U(x) = \inf\{f(t) : x < t\}.\]
+So we map each $x\in S$ to a rational number $q(x)$ where
+\[L(x) < q(x) < U(x).\]
+And since for all $x<y\in S$, we have $U(x)\leq L(y)$, then this rational number $q(x)$ is mapped to by at most of $x\in S$. Thus, we have an injection $q:S\to\Q$, which tells us that $|S|\leq|\Q|$. So $\ds\lim_{y\to x}f(y)$ doesn't exist for at most countably many elements in $\R$.
+
+\ques{7}{
+    Suppose that $f:[a,b]\to\R$ and that $f$ is bounded above, i.e. there exists $M\in\R$ such that $f(x)\le M$, for all $x\in[a,b]$. For $x\in(a,b)$, define
+    \[g(x)=\sup\{f(t):a\le t< x\}.\]
+    \begin{enumerate}
+        \item Explain why $g$ is well-defined.
+        \item Prove that $g$ is monotone.
+        \item Find $g(x)$, if $f(x)=\frac13x^3-x$ on the interval $[-3,3]$.
+    \end{enumerate}
+}
+
+\subsection*{7.1}
+
+For any $x\in(a,b)$, the set
+\[\{f(t) : a\leq t < x\}\]
+is bounded above since for any $f(t)$ in the set, $t\in[a,x)\subseteq[a,b]$. And because $f$ is bounded above, this implies $f(t)\leq M$. So by the least upper bound principle, the set has a supremum. For each $x\in(a,b)$, we define $g(x)$ to be this supremum, therefore $g$ is well-defined. 
+
+\subsection*{7.2}
+
+Let $x,y\in(a,b)$ such that $x<y$. We consider the values
+\[g(x) = \sup\{f(t):a\le t< x\},\]
+\[g(y) = \sup\{f(t):a\le t< y\}.\]
+Let $f(t)\in\{f(t):a\leq t < x\}$, so
+\[a \leq t < x < y.\]
+Therefore $f(t)\in\{f(t):a\leq t < y\}$, so $f(t)\leq g(y)$. This tells us that $g(y)$ is an upper bound of the set of which $g(x)$ is the least upper bound. Thus, $g(x)\leq g(y)$, so $g$ is monotone increasing.
+
+\subsection*{7.3}
+
+Given $f(x)=\ds\frac13 x^2 - x$, we first note that $f$ is differentiable on its domain [-3,3]. From its derivative
+\[f'(x) = x^2-1 = (x+1)(x-1),\]
+we see that $f$ is increasing on the intervals $[-3,-1)$ and $(1,3]$ and decreasing on the interval $(-1,1)$. For each $x\in(-3,-1)$, the value of $g(x)$ is given by $\ds\lim_{t\to x^-}f(t) = f(x)$ since $f$ is increasing on $(-3,-1)$ and continuous at $x$. A maxima is attained at $f(-1)=\ds\frac23$ and $f$ decreases on $(-1,1)$, so $f(t)<\ds\frac23$ for $t\in(-1,1)$. And since $f$ is increasing on $(1,3]$ and $f(2)=\ds\frac23$, then $f(t)<\ds\frac23$ for $t\in(-1,2)$. Then on the the interval $(2,3)$, $g(x)$ is again given by $\ds\lim_{t\to x^-}f(t)=f(x)$. So in particular, for any $x\in(-3,3)$,
+\[g(x) =
+    \begin{cases}
+        \frac13x^3-x &\text{if } x \leq -1, \\[1em]
+        \frac23      &\text{if } -1< x< 2, \\[1em]
+        \frac13x^3-x &\text{if } 2 \leq x.
+    \end{cases}
+\]
+
+
+
+\end{document}

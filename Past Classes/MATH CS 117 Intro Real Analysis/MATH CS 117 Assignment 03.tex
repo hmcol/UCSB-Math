@@ -1,0 +1,182 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Set Names
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+
+% Misc Characters
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\newcommand{\eps}{\varepsilon}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+% Homework Sections
+\setlength{\fboxsep}{4pt}
+\newcommand{\generic}[2]{\section*{#1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\ex}[2]{\generic{Exercise #1}{#2}}
+\newcommand{\prob}[2]{\generic{Problem #1}{#2}}
+\newcommand{\ques}[2]{\generic{Question #1}{#2}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+% MATH CS 117 Intro to Real Analysis
+\newcommand{\ds}{\displaystyle}
+\newcommand{\seq}[1]{\left\{#1\right\}_{n=1}^\infty}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+ 
+\begin{document}
+ 
+\title{Assignment 3\\
+    \large MATH CS 117 Intro to Real Analysis}
+\author{Harry Coleman}
+\date{April 20, 2020}
+\maketitle
+
+\ques{1}{
+    Let $\seq{a_n}$ be a sequence in $\N$ such that
+    \[a_n < a_{n+1}, \quad\text{for all } n \in \N.\]
+    Prove by induction that
+    \[a_n \geq n, \quad\text{for all } n \in \N.\]
+}
+
+For the base case, since $a_1\in\N$, then $a_1\geq 1$. Now suppose that for some $n\in\N$, it holds that $a_n\geq n$. By definition of the sequence, $a_{n+1} > a_n$. Since there is no natural number between $a_n$ and $a_n+1$, this implies that $a_{n+1} \geq a_n +1 \geq n+1$. Thus, $a_n\geq n$ for all $n\in\N$.
+
+\ques{2}{
+     Prove that if a sequence has a divergent subsequence, the sequence also diverges.
+}
+
+We have that a sequence converges if and only if each of its subsequences converges. So if a sequence has a divergent subsequence, then the sequence also diverges.
+
+
+\newpage
+\ques{3}{
+    Prove that if a sequence $\seq{a_n}$ sastifies
+    \[\lim_{k\to\infty}a_{2k} = \lim_{k\to\infty}a_{2k-1} = L,\]
+    then
+    \[\lim_{n\to\infty}a_n = L.\]
+}
+
+Suppose $\seq{a_n}$ is a sequence in $\R$ such that
+\[\lim_{k\to\infty}a_{2k} = \lim_{k\to\infty}a_{2k-1} = L.\]
+Let $\eps>0$ be given and choose $N_1,N_2\in\N$ such that
+\[k\geq N_1 \implies |a_{2k}-L| < \eps,\]
+\[k\geq N_2 \implies |a_{2k-1}-L| < \eps.\]
+Define $N=\max\{2N_1,2N_2-1\}$ and suppose $n\geq N$. Either $n$ is even and $n=2k$ for some $k\in\N$ or $n$ is odd and $n=2k-1$ for some $k\in\N$. If $n$ is even, then
+\[\frac n2 \geq N_1 \implies |a_{n}-L|=|a_{2\frac n2}-L|<\eps.\]
+If $n$ is odd, then
+\[\frac {n+1}2 \geq N_2 \implies |a_{n}-L|=|a_{2\frac {n+1}2-1}-L|<\eps.\]
+Therefore,
+\[n\geq N \implies |a_n-L| <\eps \quad\text{for all } n\in\N,\]
+so $\ds\lim_{n\to\infty}a_n=L$.
+
+
+\newpage
+\ques{4}{
+    Let $\seq{q_n}$ be an enumeration of $\Q$, That is, the sequence $\seq{q_n}$ is a bijection from $\N$ to $\Q$. Define a new sequence $\seq{p_n}$ as follows
+    \[ q_1, q_2, q_1, q_2, q_3, q_1, q_2, q_3, q_4, q_1,\ldots.\]
+    In other words, for each $n\in\N$, define
+    \[p_n=q_{n+1-\frac{(m+1)m}{2}},\]
+    where $m\in\N$ satisfies 
+    \[\frac{(m+1)m}2\leq n<\frac{(m+2)(m+1)}2.\]
+    Prove that for every $x\in\R$, there is a subsequence $\{p_{n_k}\}_{k=1}^\infty$ converging to $x$. 
+}
+
+We first show that $\{p_n:n\in\N\}=\Q$. Since we already know $\seq{p_n}$ to be a sequence in $\Q$, we need only show $\Q\subseteq\{p_n:n\in\N\}$. Let $q_k\in\Q$ be given. We now must show that there exists some $n\in\N$ such that $p_n=q_k$. Let
+\[n = \frac{(k+1)k}2 - 1.\]
+We claim that $p_n=q_k$. That is,
+\[k=n+1-\frac{(m+1)m}2.\]
+To see why this is, we find the value of $m\in\N$ such that
+\[\frac{(m+1)m}2\leq \frac{(k+1)k}2 - 1<\frac{(m+2)(m+1)}2.\]
+This gives us $m=k-1$. Using these values for $n$ and $m$, we find
+\[n+1-\frac{(m+1)m}2 = \frac{(k+1)k}2 - 1 +1 - \frac{(k-1+1)(k-1)}2 = k.\]
+So in fact, $p_n=q_k$. Therefore, $\{p_n:n\in\N\}=\Q$, which implies $\{p_n:n\in\N\}'=\Q'=\R$. So for any $x\in\R$, there is a sequence $\{p_{n_k}\}_{k=1}^{\infty}$ in $\{p_n : n\in\N\}\setminus\{x\}$ converging to $x$. To ensure this is a subsequence of $\seq{p_n}$, we want the sequence of indices $\{n_k\}_{k=1}^\infty$ to be strictly increasing. Firstly, we note that this sequence of indices is unbounded, since otherwise some term  $b$ occurs infinitely many times in $\{p_{n_k}\}_{k=1}^{\infty}$. But since no terms are equal to $x$, this implies that the sequence wouldn't converge to $x$, since we could pick $0<\eps<|b-x|$ such that infinitely many terms are further than $\eps$ from $x$. Therefore, we can find a strictly increasing  of indices $\{n_{k_{m}}\}_{m=1}^{\infty}$, giving us the sequence $\{p_{n_{k_m}}\}_{m=1}^{\infty}$ which is a subsequence of $\seq{p_n}$ and converges to $x$.
+
+
+\newpage
+\ques{5}{
+    Let $0 < \mu < 1$. Define a sequence $\seq{x_n}$ recursively by
+    \[x_1 = 1/2 \quad\text{and}\quad x_{n+1} = \mu x_n(1 - x_n), \quad n\in\N.\]
+    Prove that $x_1 > x_2 > \cdots > 0$ and $\ds\lim_{n\to\infty}x_n = 0$.
+}
+
+To prove $\seq{x_n}$ is strictly decreasing, we first prove that $0<x_n<1$ for all $n\in\N$ by induction on $n$. The base case is given by $\ds x_1=\frac12$, since $\ds 0<\frac12<1$. For the inductive step, suppose we have $0<x_n<1$ for some $n\in\N$. From this, we find
+\[0>-x_n>-1,\]
+\[1>1-x_n>0.\]
+Multiplying by $\mu x_n$ gives us
+\[0<\mu x_n(1-x_n)<\mu x_n < 1.\]
+So $0<x_{n+1}<1$, completing the induction. We now show that $\seq{x_n}$ is strictly decreasing. Let $x_n$ be given for some $n\in\N$. So since
+\[0<x_n<1,\]
+and therefore
+\[0<1-x_n<1,\]
+we find
+\[x_{n+1} = \mu x_n(1-x_n)<x_n.\]
+Thus, $\seq{x_n}$ is strictly decreasing and bounded below by 0. Next we will show that for all $n\in\N$, $x_n<\mu^{n-1}$ by induction on $n$. The base case is satisfied by
+\[x_1=\ds\frac12<1=\mu^{1-1}.\]
+Now assuming that for some $n\in\N$, it holds that $x_n<\mu^{n-1}$. It can be seen that
+\[x_{n+1} = \mu x_n (1-x_n) < \mu \cdot \mu^{n-1} = \mu^n,\]
+which completes the induction. Thus for all $n\in\N$, $x_n<\mu^{n-1}$. And since $0<\mu<1$, the sequence $\seq{\mu^{n-1}}$ converges to 0, which implies that $\seq{x_n}$ also converges to 0.
+
+
+\newpage
+\ques{6}{
+    Let $D \subset \R$, $f : D \to \R$, $a \in D'$, and $L_i \in \R, i = 1, 2$. Prove that if $\ds\lim_{x\to a}f(x) = L_i, i = 1, 2$, then $L_1 = L_2$.
+}
+
+Suppose to the contrary, that $L_1\ne L_2$, so $|L_1-L_2|>0$. If we let $0<\eps<\frac{|L_1-L_2|}2$, then we can choose $\delta_1,\delta_2>0$ such that
+\[0<|x-a|<\delta_1 \implies |f(x)-L_1|<\eps,\]
+\[0<|x-a|<\delta_2 \implies |f(x)-L_2|<\eps.\]
+If we now let $x\in\R$ such that $0<|x-a|<\max\{\delta_1,\delta_2\}$,then
+\[|f(x)-L_1|+|f(x)-L_2| < 2\eps.\]
+However, by the triangle inequality, we find
+\[|f(x)-L_1|+|f(x)-L_2| \geq |(f(x)-L_1)-(f(x)-L_2)| = |L_1-L_2| > 2\eps.\]
+This is a contradiction, so $L_1=L_2$.
+
+
+\ques{7}{
+    Let $D\subset\R$, $f:D\to\R$, and $a\in D'$.  Prove that if for every $\eps>0$ there exists $\delta>0$ such that $x_i\in D$, $0<|x_i-a|<\delta$, $i=1,2$ implies $|f(x_1)-f(x_2)|<\eps$, then $\ds\lim_{x\to a}f(x)$ exists.  (Suggestion:  Use a theorem rather than the definition of limit.)
+}
+
+Suppose that for every $\eps>0$ there exists $\delta>0$ such that $x_i\in D$, $0<|x_i-a|<\delta$, $i=1,2$ implies $|f(x_1)-f(x_2)|<\eps$. Let $\seq{a_n}$ be a sequence in $D\setminus\{a\}$ which converges to $a$. To show $\ds\lim_{x\to a}f(x)$ exists, it is sufficient to show $\seq{f(a_n)}$ is Cauchy. To prove this, let $\eps>0$ be given. By assumption, there exists some $\delta>0$ such that
+\[x_i\in D, 0<|x_i-a|<\delta, i=1,2 \implies |f(x_1)-f(x_2)|<\eps.\]
+Now since $\seq{a_n}$ is convergent there exists some $N\in\N$ such that
+\[n\geq\N \implies |a_n-a|<\delta.\]
+If we let $n,m>N$, then
+\[0<|a_n-a|<\delta \quad\text{and}\quad 0<|a_m-a|<\delta,\]
+which implies
+\[|f(a_n)-f(a_m)|<\eps.\]
+Thus, $\seq{f(a_n)}$ is Cauchy so $\ds\lim_{x\to a}f(x)$ exists.
+
+
+\ques{8}{
+    Let $A, L\in\R$, and suppose $f:(A,\infty)\to\R$.  We say that $\ds\lim_{x\to\infty}f(x)=L$ if for
+    every $\eps>0$ there is an $M>A$ such that $x>M$ implies $|f(x)-L|<\eps$.
+
+    Prove that according to this definition $\ds\lim_{x\to\infty} (1/x)=0$.
+}
+
+We consider the function $f:(0,\infty)\to\R$ defined by
+\[f(x) = \frac1x, x\in(0,\infty).\]
+Let $\eps>0$ be given. We define $M=\frac1\eps$. So if $x>M$, then
+\[\left|\frac1x\right| < \left|\frac1M\right| = \left|\frac1{\frac1\eps}\right| = \eps.\]
+Thus, $\ds\lim_{x\to\infty}\frac1x = 0$.
+
+\end{document}

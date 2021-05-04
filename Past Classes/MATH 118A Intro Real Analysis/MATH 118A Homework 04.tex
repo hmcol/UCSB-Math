@@ -1,0 +1,248 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage[margin=1in]{geometry} 
+\usepackage{enumitem} 
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools,babel}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{\textwidth-10pt}}
+    {\end{minipage}\end{lrbox}\framebox[6.5in]{\usebox{\mybox}}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\seq}[2][n]{\left\{#2\right\}_{#1\in\N}}
+\newcommand{\clo}[1]{\overline{#1}}
+\newcommand{\conj}[1]{\overline{#1}}
+\newcommand{\eqc}[1]{\overline{#1}}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ang}{\langle}{\rangle}
+
+% Sets
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+
+% Misc Characters
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\let\eps\varepsilon
+\let\emptyset\varnothing
+
+% Functions
+\newcommand{\id}[1]{\mathsf{id}_{#1}}
+
+% Babel Shorthands
+\useshorthands*{"}
+\defineshorthand{"-}{\setminus}
+\defineshorthand{"d}{\partial}
+
+% Probability
+\newcommand{\FF}{\mathcal{F}}
+\renewcommand{\P}{\mathbb{P}}
+
+% Complex Analysis
+\renewcommand{\Im}{\text{Im }}
+\renewcommand{\Re}{\text{Re }}
+\newcommand{\Arg}{\text{Arg }}
+\newcommand{\pd}[2]{\frac{"d#1}{"d#2}}
+\newcommand{\pdn}[3]{\frac{"d^{#3}#1}{"d#2^{#3}}}
+
+% Real Analysis
+\renewcommand{\int}[1]{\accentset{\circ}{#1}}
+
+\begin{document}
+ 
+\title{Homework 4\\
+    %\large MATH CS 121 Intro to Probability
+    %\large MATH CS 122A Complex Analysis I
+    \large MATH 118A Intro to Real Analysis
+    %\large MATH 111A Intro to Abstract Algebra
+    %\large MATH 104A Intro to Numerical Analysis
+}
+\author{Harry Coleman}
+\date{October 29, 2020}
+\maketitle
+
+\section*{Exercise 1}
+\begin{problem}
+    Let $(X,d)$ be a metric space, and $K\subseteq X$ a compact set. Given any $x \in X$, show that $\exists \,z\in K$ such that $d(x,z) = d(x,K)$.
+
+    \noindent
+    {\it Hint: Construct a sequence $\{z_n\}_{n \in \mathbb{N}} \subseteq K$ such that $d(x,z_n) \le d(x,K)+1/n$.}
+\end{problem}
+
+\begin{proof}
+    Let $x\in X$ and consider the distance
+    \[d(x,K) = \inf\{d(x,z) : z\in K\}.\]
+    By the definition of infimum, for any $\eps>0$, there exists some $z\in K$ such that
+    \[d(x,K)\leq d(x,z) < d(x,K) + \eps,\]
+    or equivalently,
+    \[0 \leq d(x,z) - d(x,K) < \eps.\]
+    Now for any $n\in\N$, we let $z_n\in K$ such that
+    \[0\leq d(x,z_n) - d(x, K) < \frac1n.\]
+    We now have a sequence $\seq{z_n}$ in $K$, and a corresponding set $Z=\{z_n : n\in\N\}\subseteq K$. The set $Z$ is either infinite or finite. In the case that $Z$ is infinite, then because it is a subset of the compact set $K$, it must have a limit point $z\in K$. By the definition of limit point, we have that for every $r>0$,
+    \[Z\cap(B_r(z)"-\{z\}) \ne \emptyset.\]
+    Moreover, we know that this intersection must be infinite, as otherwise, we could pick a radius smaller than the minimum of the distances from $z$ to the points in a given ball and obtain an empty intersection. So in particular, there exists $z\in K$ such that for every $\eps>0$ and every $m\in\N$, there exists some $n\in\N$ such that $n\geq m$ and $d(z,z_n)<\eps$.
+    
+    In the case that $Z$ is finite, we will show that the same is still true. Since $Z$ is finite, there there must be some $z\in K$ such that $z=z_n$ for infinitely many $n\in\N$. Then for any $\eps>0$ and $m\in\N$, there is some $n\in\N$ such that $n\geq m$ and $z_n=z$. In which case, we trivially have that $d(z,z_n) = d(z,z) = 0 < \eps$. Thus, the property holds when $Z$ is finite.
+    
+    Let $z\in K$ such that for any $\eps>0$ and $m\in\N$, there exists some $n\in\N$ with $n\geq m$ and $d(z,z_n)<\eps$. We now let $\eps>0$ be given. By the Archimedean property, we let $m\in\N$ such that
+    \[\frac1m<\frac\eps2.\]
+    We now let $n\in\N$ such that $n\geq m$ and
+    \[d(z,z_n)<\frac\eps2.\]
+    Now, by the triangle inequality and the construction of the sequence $\seq{z_n}$, we have
+    \[d(x,z) - d(x,K) \leq d(z,z_n) + d(x,z_n) - d(x,K) < \frac\eps2 + \frac\eps2 = \eps.\]
+    Thus, we have
+    \[d(x,K) \leq d(x,z) < d(x,K) + \eps\]
+    for all $\eps>0$. This implies that $d(x,K)=d(x,z)$, as otherwise, a small enough $\eps$ would give us a contradiction.
+    
+
+\end{proof}
+
+\section*{Exercise 2}
+\begin{problem}
+    Give an example of an open cover of $(0,1)$ which has no finite subcover. Can you do this with $[0,1]$?
+\end{problem}
+\medskip
+
+Consider the open cover $\{U_n=(\frac1n, 2)\}_{n\in\N}$ of $(0,1)$. Note that this definition gives us $U_n \subseteq U_{n+1}$. If we assume that there does exist some finite subcover $\{U_n\}_{n\in A}$ where $A\subseteq\N$ is finite, then taking $N=\max A$ gives us $U_n\subseteq U_N$ for all $n\in A$. However, this means that
+\[\bigcup_{n\in A} U_n = U_N = \left(\frac1N,2\right),\]
+which contradicts the assumption that $\{U_n\}_{n\in A}$ is a finite subcover.
+
+The particular choice of cover for $(0,1)$ would not be a cover for $[0,1]$, since it is only constructed to include values arbitrarily close to zero, but not zero itself. And choosing the limit of the left bounds of the sequence of intervals $U_n$ to be anything less than zero, so that it would be a cover, would force one of the intervals to include zero, giving us a finite subcover. In fact, we know that no open cover of $[0,1]$ can be constructed such that it has no finite subcover, as the Heine-Borel theorem for $\R$ tells us that the closed and bounded interval $[0,1]$ is compact.
+
+\newpage
+\section*{Exercise 3}
+\begin{problem}
+    Regard $\mathbb{Q}$, the set of all rational numbers, as a metric space, with $d(p,q) = |p-q|$. Let $E$ be the set of all $p\in \mathbb{Q}$ such that $2<p^2<3$. Show that $E$ is closed and bounded in $\mathbb{Q}$, but $E$ is not compact. Is $E$ open in $\mathbb{Q}$?
+\end{problem}
+
+\begin{proposition}
+    $E=F\cap\Q$ where
+    \[F = (-\sqrt{3},-\sqrt{2})\cup(\sqrt{2},\sqrt{3}) \subseteq\R.\]
+\end{proposition}
+
+\begin{proof}
+    If $p\in F\cap\Q$, then $p\in\Q$ and
+    \[p\in F \quad\iff\quad \sqrt{2} < |p| < \sqrt{3} \quad\iff\quad 2<p^2<3,\]
+    so $p\in E$. And if $p\in E$, then $p\in F$ by the same equivalence, and $p\in\Q$ implies $p\in F\cap\Q$.
+    
+\end{proof}
+
+\begin{proposition}
+    $E$ is closed, open, and bounded in $\mathbb{Q}$.
+\end{proposition}
+
+\begin{proof}
+    Note that the metric topology on $\Q$ is the same as the relative topology of $\Q$ when regarded as a subspace of the metric topology on $\R$. That is, for any subset $U\subseteq\R$ which is open in $\R$, the intersection $U\cap\Q$ is open in $\Q$. In particular, if we consider the open subset
+    \[(-\infty,-\sqrt{3})\cup(-\sqrt{2},\sqrt{2})\cup(\sqrt{3}, \infty)\subseteq\R,\]
+    then the intersection
+    \[\left((-\infty,-\sqrt{3})\cup(-\sqrt{2},\sqrt{2})\cup(\sqrt{3}, \infty)\right)\cap\Q\]
+    is open in $\Q$ and its complement, which we define as
+    \[G = \left([-\sqrt{3},-\sqrt{2}]\cup[\sqrt{2},\sqrt{3}]\right)\cap\Q,\]
+    is closed in $\Q$. Since $\pm\sqrt{2},\pm\sqrt{3}\notin\Q$, then the choice of open or closed intervals is irrelevant for the definition of $G$. So in fact, 
+    \[G = \left((-\sqrt{3},-\sqrt{2})\cup(\sqrt{2},\sqrt{3})\right)\cap\Q = F\cap\Q = E.\]
+    As we have shown, $G=E$ is closed in $\Q$ and since $F$ is open in $\R$, then $\F\cap\Q=E$ is also open in $\Q$.
+    
+    If we now pick the center $0\in\Q$ and the radius $\sqrt{3}+1$, then
+    \[E \subseteq F\cap\Q \subseteq (-\sqrt{3}-1,\sqrt{3}+1)\cap\Q = B_{\sqrt{3}+1}(0),\]
+    so $E$ is bounded in $\Q$.
+    
+\end{proof}
+
+\newpage
+\begin{proposition}
+    $E$ is not compact.
+\end{proposition}
+
+\begin{proof}
+    Consider the open cover $\{U_n = (-3,-\sqrt{2}-\frac1n)\cup(\sqrt{2}+\frac1n, 3)\}_{n\in\N}$ of $E$. Note that definition gives us $U_n\subseteq U_{n+1}$. For any finite subset $A\subseteq\N$, we have
+    \[\bigcup_{n\in A}U_n = U_N = (-3,-\sqrt{2}-\frac1N)\cup(\sqrt{2}+\frac1N, 3) \not\supseteq E,\]
+    where $N=\max A$. This does not cover $E$, since the density of $\Q$ in $\R$ tells us that there exist some $p\in\Q$ such that $\sqrt{2} < p < \sqrt{2}+\frac1N$. This implies
+    \[2 < p^2 < (\sqrt{2}+\frac1N)^2 < 3,\]
+    so $p\in E$ but $p\notin U_N$. Therefore, the open cover does not have a finite subcover, so $E$ is not compact.
+
+\end{proof}
+
+\newpage
+\section*{Exercise 4}
+
+\subsection*{Exercise 4(a)}
+\begin{problem}
+    If $A$ and $B$ are disjoint closed sets in some metric space $X$, prove that they are separated. 
+\end{problem}
+
+\begin{proof}
+    Since $A$ and $B$ are closed, then $A=\clo{A}$ and $B=\clo{B}$. And since $A$ and $B$ are disjoint, then
+    \[\clo{A}\cap B = A\cap B = \emptyset \isp{and} A\cap\clo{B} = A\cap B = \emptyset.\]
+    Therefore, $A$ and $B$ are separated.
+
+\end{proof}
+
+\subsection*{Exercise 4(b)}
+\begin{problem}
+    Prove the same for open sets.
+\end{problem}
+
+\begin{proof}
+    Let $A,B\subseteq X$ be disjoint open sets. Suppose, for contradiction, that $A$ and $B$ are not separated and let $x\in\clo{A}\cap B$. Since $x\in\clo{A}$, then for all $r>0$, $A\cap B_r(x) \ne\emptyset$. And since $x\in B$, then there exists some $R>0$ such that $B_R(x)\subseteq B$. However,  $\emptyset \ne A\cap B_R(x)\subseteq A\cap B$. This implies that $A$ and $B$ are not disjoint, which is a contradiction.
+    
+
+\end{proof}
+
+\section*{Exercise 5}
+\begin{problem}
+    Let $(X,d)$ be a metric space. We say that a family of subsets $\{C_i\}_{i\in I}$ of $X$ has the finite intersection property if 
+    \[\bigcap_{i\in F} C_i \ne \emptyset\ \ \ \ \ \forall F \in {\cal P}_{F}(I),\]
+    where ${\cal P}_{F}(I)$ denotes the family of finite subsets of $I$. Prove that $X$ is compact if and only if any family of closed subsets of $X$, $\{C_i\}_{i\in I}$, with the finite intersection property satisfies that
+    \[\bigcap_{i \in I} C_i \ne \emptyset.\]
+\end{problem}
+
+\begin{proof}
+    Suppose $X$ is compact and the family of subsets $\{C_i\}_{i\in I}$ of $X$ has the finite intersection property. Assume, for contradiction, that
+    \[\bigcap_{i\in I}C_i = \emptyset.\]
+    Then
+    \[\bigcup_{i\in I}C_i^C = \left(\bigcap_{i\in I}C_i\right)^C = \emptyset^C = X,\]
+    and since $C_i$ is closed if and only if $C_i^C$ is open, $\{C_i^C\}_{i\in I}$ is an open cover for $X$. Since $X$ is compact, there exists a finite subcover $\{C_i^C\}_{i\in F}$, for some $F\in{\cal P}_{F}(I)$. Then
+    \[\bigcap_{i\in F}C_i = \left(\bigcup_{i\in F}C_i^C\right)^C = X^C = \emptyset,\]
+    which is a contradiction with the finite intersection property of $\{C_i\}_{i\in I}$.
+    
+    Now suppose that any family of closed subsets of $X$, $\{C_i\}_{i\in I}$, with the finite intersection property satisfies that
+    \[\bigcap_{i \in I} C_i \ne \emptyset.\]
+    Assume, for contradiction, that $X$ is not compact, i.e., there exists an open cover $\{C_i\}_{i\in I}$ such that no finite subcover exists. Since $\{C_i\}_{i\in I}$ covers $X$, we have
+    \[\bigcup_{i\in I} C_i = X.\]
+    For some $F\in{\cal P}_{F}(I)$, we know $\{C_i\}_{i\in F}$ is not a cover for $X$, that is,
+    \[\bigcup_{i\in F} C_i \ne X.\]
+    Then
+    \[\bigcap_{i\in F} C_i^C = \left(\bigcup_{i\in F} C_i\right)^C \ne X^C = \emptyset,\]
+    which is the finite intersection property. Now since $\{C_i^C\}_{i\in I}$ has the finite intersection property, we have
+    \[\bigcap_{i\in I}C_i^C \ne \emptyset.\]
+    Then
+    \[\bigcup_{i\in I} C_i = \left(\bigcup_{i\in I} C_i^C\right)^C \ne \emptyset^C = X,\]
+    which contradicts our supposition.
+
+\end{proof}
+
+\end{document}

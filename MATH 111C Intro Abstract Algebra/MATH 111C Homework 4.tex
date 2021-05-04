@@ -1,0 +1,222 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{amsmath, amsthm, amssymb}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{4pt}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\pfrac}[2]{\left(\frac{#1}{#2}\right)}
+
+% Extra Commands
+\DeclareMathOperator{\id}{id}
+\newcommand{\isom}{\cong}
+\newcommand{\clo}{\overline}
+\newcommand{\eqc}{\overline}
+\newcommand{\divides}{\bigm|}
+\newcommand{\ndivides}{%
+  \mathrel{\mkern.5mu % small adjustment
+    % superimpose \nmid to \big|
+    \ooalign{\hidewidth$\big|$\hidewidth\cr$\nmid$\cr}%
+  }%
+}
+\newcommand{\F}{\mathbb{F}}
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH 111C Homework 4}
+    \fancyhead[C]{April 30, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+
+\begin{pbox}[Q1 Problem 13.5.4]
+    Let $a > 1$ be an integer. Prove for any positive integers $n, d$ that $d$ divides $n$ if and only if $a^d - 1$ divides $a^n - 1$. 
+\end{pbox}
+
+\begin{proof}
+    If $d$ divides $n$, i.e. $n = dq$ for some positive integer $q$, then
+    \[
+        a^n - 1 = a^{dq} - 1 = (a^d - 1)\left((a^d)^{q - 1} + (a^d)^{q - 2} + \cdots + a^{d} + 1\right).
+    \]
+    Evidently, $a^d - 1$ divides $a^n - 1$.
+
+    Now assume $a^d - 1$ divides $a^n - 1$. Since $a > 1$ and $n, d$ are positive, then $a^d \leq a^n$ implies $d \leq n$. Euclidean division gives us $n = dq + r$ for some nonnegative integers $q, r$, with $r < d$. We write
+    \begin{align*}
+        a^n - 1
+            &= a^{dq + r} - 1 \\
+            &= (a^{dq + r} - a^r) + (a^r - 1) \\
+            &= a^r(a^{dq} - 1) + (a^r - 1) \\
+            &= a^r(a^d - 1)\left((a^d)^{q - 1} + (a^d)^{q - 2} + \cdots a^{d} + 1\right) + (a^r - 1).
+    \end{align*}
+    Therefore, $a^d - 1$ divides
+    \[
+        (a^n - 1) - a^r(a^d - 1)\left((a^d)^{q - 1} + (a^d)^{q - 2} + \cdots a^{d} + 1\right) = a^r - 1,
+    \]
+    implying that either $a^d - 1 \leq a^r - 1$ or $a^r - 1 = 0$. The former cannot be true, as it would imply $d \leq r$, but we know $r < d$. Therefore, we must have $a^r - 1 = 0$, so $r = 0$. Hence, $n = dq$, meaning $d$ divides $n$.
+
+\end{proof}
+
+\begin{pbox}[]
+    Conclude in particular that $\F_{p^d} \subseteq \F_{p^n}$ if and only if $d$ divides $n$.
+\end{pbox}
+
+\begin{proof}
+    If $\F_{p^d} \subseteq \F_{p^n}$, then $\F_{p^d}^\times$ is a subgroup of $\F_{p^n}^\times$ under multiplication. By Lagrange's theorem, $|\F_{p^d}^\times| = p^d - 1$ divides $|\F_{p^n}^\times| = p^n - 1$, and the previous result implies $d$ divides $n$.
+
+    If $d$ divides $n$, then $p^d - 1$ divides $p^n - 1$, by the previous result. Moreover, it is essentially the same proof to show $x^{p^d - 1} - 1$ divides $x^{p^n - 1} - 1$ in any polynomial field. We deduce that $x^{p^d} - x$ divides $x^{p^n} - x$, telling us that $x^{p^d} - x$ splits completely in $\F_{p^n}$, the splitting field for $x^{p^n} - x$. Since $\F_{p^d}$ is the unique splitting field of $x^{p^d} - x$ contained in $\clo{\F_p}$, then we must, therefore, have $\F_{p^d} \subseteq \F_{p^n}$.
+
+\end{proof}
+
+
+\newpage
+\begin{pbox}[Q2 Problem 13.5.6]
+    Prove that $x^{p^n - 1} - 1 = \prod_{\alpha \in \F_{p^n}^\times} (x - \alpha)$. 
+\end{pbox}
+
+\begin{proof}
+    We have seen that $\F_{p^n} \subseteq \clo{\F_p}$ is precisely the set of $p^n$ distinct roots of
+    \[
+        x^{p^n} - x = x(x^{p^n - 1} - 1)
+    \]
+    in $\clo{\F_p}$. So $\F_{p^n}^\times$ is a set of $p^n - 1$ distinct roots of $x^{p^n - 1} - 1$ in $\clo{\F_p}$. Since $x^{p^n - 1} - 1$ has at most $p^n - 1$ roots in $\clo{\F_p}$, counting multiplicity, and we know of at least $p^n - 1$ distinct roots, then all roots must be simple. Since $\F_{p^n}^\times$ is precisely the set of $p^n - 1$ distinct simple roots, then $x^{p^n - 1} - 1$ is separable with decomposition
+    \[
+        x^{p^n - 1} - 1 = \prod_{\alpha \in \F_{p^n}^\times} (x - \alpha).
+    \]
+
+\end{proof}
+
+\begin{pbox}[]
+    Conclude that $\prod_{\alpha \in \F_{p^n}^\times} \alpha = (-1)^{p^n}$ so the product of nonzero elements of finite fields is $+1$ if $p = 2 $ and $-1$ if $p$ is odd. 
+\end{pbox}
+
+We evaluate the previous result at $x = 0$.
+\begin{align*}
+    0^{p^n - 1} - 1 &= \prod_{\alpha \in \F_{p^n}^\times} (0 - \alpha) \\
+    -1 &= \prod_{\alpha \in \F_{p^n}^\times} (-1)\alpha \\
+    -1 &= (-1)^{p^n-1}\prod_{\alpha \in \F_{p^n}^\times} \alpha \\
+    (-1)^{p^n} &= (-1)^{2(p^n-1)}\prod_{\alpha \in \F_{p^n}^\times} \alpha \\
+    (-1)^{p^n} &= \prod_{\alpha \in \F_{p^n}^\times} \alpha
+\end{align*}
+This value of the left-hand side is $+1$ if $p = 2$, and $-1$ if $p$ is odd.
+
+\begin{pbox}[]
+    For $p$ odd and $n = 1$ derive \textit{Wilson's theorem}: $(p - 1)! \equiv -1 \pmod{p}$.
+\end{pbox}
+
+In this case, the above result is $\prod_{\alpha \in \F_p} \alpha = -1$. Since the elements of $\F_p = \Z/p\Z$ are the integers $0, 1, \dots, p - 1$, then $(p - 1)! = \prod_{\alpha \in \F_p} \alpha = -1$ in $\F_p$. And equality in $\F_p$ is precisely equivalence of integers modulo $p$, so this means $(p - 1)! \equiv -1 \pmod{p}$.
+
+
+
+\newpage
+\begin{pbox}[Q3]
+    Let $F$ be a field and $K$ be a splitting field of $f(x) \in F[x]$. Show that if $f(x)$ is separable then $K/F$ is separable.
+\end{pbox}
+
+\begin{proof}
+    Since $f(x)$ splits completely in $K[x]$, then $f(x) = a(x - \alpha_1) \cdots (x - \alpha_n)$ for some $a \in F^\times$ and $\alpha_1, \dots, \alpha_n \in K$. Let $S = \{\alpha_1, \dots, \alpha_n\}$ be the set of roots of $f(x)$ (ignoring multiplicity, i.e., not a multiset), then $f(x)$ splits completely over $F(S) \subseteq K$. And since $K$ is a splitting field for $f(x)$, then in fact $F(S) = K$. For each $\alpha \in S$, $f(\alpha) = 0$, so its minimal polynomial $m_{\alpha, F}(x) \in F[x]$ divides $f(x)$. Since $f(x)$ is separable, then $m_{\alpha, F}(x)$ must also be separable, otherwise $m_{\alpha, F}(x)$ would have some multiple roots. Therefore, $\alpha$ is separable over $F$, implying every element of $S$ is separable over $F$. And since $K = F(S)$, we conclude that $K/F$ is separable.
+
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[Q4]
+    Show that $\F_2[x]/(x^3 + x + 1) \isom \F_2[y]/(y^3 + y^2 + 1)$ and find an explicit isomorphism.
+\end{pbox}
+
+\begin{proof}
+    We define a ring homomorphism
+    \begin{align*}
+        \phi : \F_2[x] &\to \F_2[y] \\
+            p(x) &\mapsto p(y + 1)
+    \end{align*}
+    which is the evaluation of $p(x)$ at $y + 1 \in \F_2[y]$. We can see that $\phi$ is a ring isomorphism, with inverse given by the evaluation map $p(y) \mapsto p(x + 1)$. Let $I = (x^3 + x + 1)$ and $J = (y^3 + y^2 + 1)$ denote the ideals in their respective polynomial rings. Composition of $\phi$ with the natural projection
+    \begin{align*}
+        \pi : \F_2[y] &\to \F_2[y]/J \\
+            p(y) &\mapsto \eqc{p(y)}
+    \end{align*}
+    yields a surjective ring homomorphism
+    \[
+        \sigma = \pi \circ \phi : \F_2[x] \to \F_2[y]/J.
+    \]
+    From the first isomorphism theorem, we have
+    \[
+        \F_2[x]/\ker \sigma \isom \F_2[y]/J.
+    \]
+    It remains to prove that $\ker \sigma = I$. By definition, $\ker \sigma$ is the set of elements $p(x) \in \F_2[x]$ such that $\phi(p(x)) \in \ker \pi = J$. We compute
+    \begin{align*}
+        \phi(x^3 + x + 1)
+            &= (y + 1)^3 + (y + 1) + 1 \\
+            &= (y + 1)(y^2 + 1) + y \\
+            &= (y^3 + y + y^2 + 1) + y \\
+            &= y^3 + y^2 + 1.
+    \end{align*}
+    For any $p(x) \in I$, there is some $q(x) \in \F_2[x]$ such that $p(x) = q(x)(x^3 + x + 1)$, so
+    \[
+        \phi(p(x)) 
+            = \phi(q(x))\phi(x^3 + x + 1)
+            = q(y + 1)(y^3 + y^2 + 1)
+            \in J.
+    \]
+    Hence, $\phi(I) \subseteq J$, so $I \subseteq \phi^{-1}(J)$. And since $\phi^{-1}(y^3 + y^2 + 1) = x^3 + x + 1$, then by the same argument, $\phi^{-1}(J) \subseteq I$. Therefore, we obtain the equality $\ker \sigma = \phi^{-1}(J) = I$.
+
+\end{proof}
+
+
+\newpage
+\begin{pbox}[Q5]
+    Let $F$ be a field of characteristic $p$. Show that if $F$ is perfect, then $F = F^p$.
+\end{pbox}
+
+\begin{proof}
+    We will prove the contrapositive. Suppose $F \ne F^p$, and let $a \in F$ such that $a$ is not a $p$th power in $F$. Consider the polynomial $x^p - a \in F[x]$. If $\alpha \in \clo{F}$ is a root of $x^p - a$, then $\alpha \notin F$ and $\alpha^p = a$. So in $\clo{F}[x]$,
+    \[
+        x^p - a = x^p - \alpha^p = (x - \alpha)^p.
+    \]
+    Therefore, $\alpha$ is the unique root of $x^p - a$ in $\clo{F}$ (equivalent to saying the Frobenius endomorphism on $\clo{F}$ is injective). Since $\alpha$ is a root of $x^p - a$, then $m_{\alpha, F}(x) \divides (x - \alpha)^p$, so $m_{\alpha, F}(x) = (x - \alpha)^n$ for some $n \geq 1$. Since $\alpha \notin F$, then we must have $n \geq 2$, implying that $\alpha$ is a multiple root of $m_{\alpha, F}(x)$. In particular, $m_{\alpha, F}(x)$ is not separable, so $\alpha$ is algebraic but not separable over $F$. Therefore, $F(\alpha)/F$ is a finite field extension which is not separable, i.e., $F$ is not perfect.
+
+
+\end{proof}
+
+
+\end{document}

@@ -1,0 +1,327 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Set Names
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+
+% Misc Characters
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\newcommand{\eps}{\varepsilon}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+% Homework Sections
+\setlength{\fboxsep}{4pt}
+\newcommand{\generic}[2]{\section*{#1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\ex}[2]{\generic{Exercise #1}{#2}}
+\newcommand{\prob}[2]{\generic{Problem #1}{#2}}
+\newcommand{\ques}[2]{\generic{Question #1}{#2}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+% MATH CS 117 Intro to Real Analysis
+\newcommand{\ds}{\displaystyle}
+\newcommand{\seq}[1]{\left\{#1\right\}_{n=1}^\infty}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+ 
+\begin{document}
+ 
+\title{Assignment 2\\
+    \large MATH CS 120FG Graph Theory II}
+\author{Harry Coleman}
+\date{April 16, 2020}
+\maketitle
+
+\ex{1}{
+    Prove that $R(m, n) \leq {m+n-2 \choose m-1}$ using Pascal’s Identity and a theorem from the last notes.
+    Conclude that $R(n, n) \leq 2^{2n-2}.$
+}
+
+We will prove by induction on $m$ and $n$. For the first base case, we consider $m=2$ and any $n$.
+\[R(2,n) = n \leq n = {n \choose 1}.\]
+And since $R(2,n)=R(n,2)$, this gives us the second base case for $n=2$ and any $m$. 
+
+For the inductive step, we will assume that the following hold for some $m$ and $n$:
+\[R(m-1,n) \leq {m+n-3 \choose m-2} \quad R(m,n-1) \leq {m+n-3 \choose m-1}.\]
+We now find by a previous theorem and Pascal's identity that
+\[R(m,n) \leq R(m-1,n) + R(m,n-1) \leq {m+n-3 \choose m-2} + {m+n-3 \choose m-1} = {m+n-2 \choose m-1}.\]
+Therefore, for any $n,m \geq 2$,
+\[R(m, n) \leq {m+n-2 \choose m-1}.\]
+
+Now substituting for $m=n$, we find
+\[R(n,n) \leq {2n-2 \choose n-1}.\]
+And since
+\[{2n-2 \choose n-1} \leq \sum_{k=1}^{2n-2}{2n-2 \choose k} = 2^{2n-2},\]
+we have that
+\[R(n,n) \leq 2^{2n-2}.\]
+
+
+\ex{2}{
+    Prove that for all $n \geq 3$, $R(n, n) > 2^{\frac n2}$.
+}
+
+To show $R(n,n) > 2^{\frac n2}$ for $n\geq3$, we must verify that
+\[{2^{\frac n2} \choose n}2^{1-{n\choose2}} <1.\]
+We first find that
+\begin{align*}
+    {2^{\frac n2} \choose n}2^{1-{n\choose2}} 
+        &= \frac{2^{\frac n2}!}{n!\left(2^{\frac n2}-n\right)!} \cdot \frac2{2^{\frac{n(n-1)}2}} \\
+        &= \frac{\left(2^{\frac n2}\right)\left(2^{\frac n2}-1\right)\cdots\left(2^{\frac n2}-(n-1)\right)}{n!} \cdot \frac2{\left(2^{\frac n2}\right)^{n-1}} \\
+        &= \frac{\left(2^{\frac n2}-1\right)\cdots\left(2^{\frac n2}-(n-1)\right)}{\left(2^{\frac n2}\right)^{n-1}} \cdot \frac{2\cdot\left(2^{\frac n2}\right)}{n!} \\
+        &< \frac{\left(2^{\frac n2}\right)^{n-1}}{\left(2^{\frac n2}\right)^{n-1}} \cdot \frac{2\cdot\left(2^{\frac n2}\right)}{n!} \\
+        &= \frac{2^{\frac n2+1}}{n!}.
+\end{align*}
+We now show that this new expression is less than 1 for all $n\geq3$ by induction on $n$. For the base case, we set $n=3$ and see that
+\[\frac{2^{\frac32+1}}{3!} \approx 0.9428 < 1.\]
+For the inductive step, suppose we have that for some $n\geq3$,
+\[\frac{2^{\frac n2+1}}{n!} < 1.\]
+By the inductive hypothesis,
+\[\frac{2^{\frac{n+1}2+1}}{(n+1)!} = \frac{2^{\frac n2+1}}{n!} \cdot \frac{2^{\frac12}}{n+1} < \frac{2^{\frac12}}{n+1}.\]
+And since $n\geq3$,
+\[\frac{2^{\frac{n+1}2+1}}{(n+1)!} < \frac{2^{\frac12}}{3+1} \approx 0.3536 < 1.\]
+Thus for all $n\geq3$, we have
+\[{2^{\frac n2} \choose n}2^{1-{n\choose2}} < \frac{2^{\frac n2+1}}{n!} < 1,\]
+so $R(n,n)>2^{\frac n2}$.
+
+
+\ex{3}{
+    Prove that $R(3, 3, 3) \leq 17$. (For the upper bound, you can use the fact that $R(3, 3) = 6$.) If you want an extra challenge, you can try proving that $R(3, 3, 3) > 16$.
+}
+
+Consider a coloring of $K_{17}$ using the colors red, green, and blue. Let $v$ be a vertex of $K_{17}$. There are 16 edges incident to $v$, each of which is one of the 3 colors. There must be 6 edges incident to $v$ which are the same color, otherwise if $v$ had less than 6 incident edges of each color, then it would have less than 16 incident edges. Suppose, without loss of generality, that $v$ has 6 red incident edges, $vx_1,\dots,vx_6$.
+
+Consider now the subgraph $X$ which is the $K_6$ composed of the vertices $x_1,\dots,x_6$. It is either the case that some edge in $X$ is red, or all the edges in $X$ are either blue or green. If some edge $x_ix_j$ is red, then the vertices $v, x_i, x_j$ form a red $K_3$. If all the edges in $X$ are either blue or green, then $X$ is a $K_6$ whose edges are colored using only blue and green. And since $R(3,3)=6$, then $X$ must contain either a blue $K_3$ or a green $K_3$.
+
+Therefore, $K_{17}$ must contain a red, green, or blue $K_3$. Thus, $R(3,3,3)\leq 17$.
+
+
+\ex{4}{
+    Let $C_4$ be the cycle with 4 edges. Prove that $R(C_4, C_4) = 6$.
+}
+
+Consider a red-blue edge-coloring of $K_6$ and label the vertices $a,\dots,f$. At least 3 of the incident edges to $a$ must be the same color, without loss of generality, suppose the edges $ab, ac, ad$ are red.
+
+\begin{drawing}
+    \coordinate (A) at (0,0);
+    \coordinate (B) at (1,0);
+    \coordinate (C) at (2,1);
+    \coordinate (D) at (1,2);
+    \coordinate (E) at (0,2);
+    \coordinate (F) at (-1,1);
+    
+    \draw[fill=black] (A) circle (2pt) node[anchor=north]{$a$};
+    \draw[fill=black] (B) circle (2pt) node[anchor=north]{$b$};
+    \draw[fill=black] (C) circle (2pt) node[anchor=west]{$c$};
+    \draw[fill=black] (D) circle (2pt) node[anchor=south]{$d$};
+    \draw[fill=black] (E) circle (2pt) node[anchor=south]{$e$};
+    \draw[fill=black] (F) circle (2pt) node[anchor=east]{$f$};
+    
+    \draw[] (A)--(B) (A)--(C) (A)--(D);
+\end{drawing}
+
+If any two edges between $b,c,d$ are red, then a red $C_4$ is formed. Otherwise, at least two of the edges between $b,c,d$ are blue. Without loss of generality, suppose $bc$ and $cd$ are blue.
+
+\begin{drawing}
+    \coordinate (A) at (0,0);
+    \coordinate (B) at (1,0);
+    \coordinate (C) at (2,1);
+    \coordinate (D) at (1,2);
+    \coordinate (E) at (0,2);
+    \coordinate (F) at (-1,1);
+    
+    \draw[fill=black] (A) circle (2pt) node[anchor=north]{$a$};
+    \draw[fill=black] (B) circle (2pt) node[anchor=north]{$b$};
+    \draw[fill=black] (C) circle (2pt) node[anchor=west]{$c$};
+    \draw[fill=black] (D) circle (2pt) node[anchor=south]{$d$};
+    \draw[fill=black] (E) circle (2pt) node[anchor=south]{$e$};
+    \draw[fill=black] (F) circle (2pt) node[anchor=east]{$f$};
+    
+    \draw[] (A)--(B) (A)--(C) (A)--(D);
+    \draw[dashed] (B)--(C) (C)--(D);
+\end{drawing}
+
+Consider the edges $be$ and $de$. If both are red, then a red $C_4$ is formed with $a$. If both are blue, then a blue $C_4$ is formed with $c$. Otherwise, one is red and one is blue. Without loss of generality, suppose $be$ is red and $de$ is blue.
+
+\begin{drawing}
+    \coordinate (A) at (0,0);
+    \coordinate (B) at (1,0);
+    \coordinate (C) at (2,1);
+    \coordinate (D) at (1,2);
+    \coordinate (E) at (0,2);
+    \coordinate (F) at (-1,1);
+    
+    \draw[fill=black] (A) circle (2pt) node[anchor=north]{$a$};
+    \draw[fill=black] (B) circle (2pt) node[anchor=north]{$b$};
+    \draw[fill=black] (C) circle (2pt) node[anchor=west]{$c$};
+    \draw[fill=black] (D) circle (2pt) node[anchor=south]{$d$};
+    \draw[fill=black] (E) circle (2pt) node[anchor=south]{$e$};
+    \draw[fill=black] (F) circle (2pt) node[anchor=east]{$f$};
+    
+    \draw[] (A)--(B) (A)--(C) (A)--(D);
+    \draw[dashed] (B)--(C) (C)--(D);
+    \draw[] (B)--(E);
+    \draw[dashed] (D)--(E);
+\end{drawing}
+
+We continue in this manner, coloring edges to avoid monochromatic $C_4$.
+
+\begin{drawing}
+    \coordinate (A) at (0,0);
+    \coordinate (B) at (1,0);
+    \coordinate (C) at (2,1);
+    \coordinate (D) at (1,2);
+    \coordinate (E) at (0,2);
+    \coordinate (F) at (-1,1);
+    
+    \draw[fill=black] (A) circle (2pt) node[anchor=north]{$a$};
+    \draw[fill=black] (B) circle (2pt) node[anchor=north]{$b$};
+    \draw[fill=black] (C) circle (2pt) node[anchor=west]{$c$};
+    \draw[fill=black] (D) circle (2pt) node[anchor=south]{$d$};
+    \draw[fill=black] (E) circle (2pt) node[anchor=south]{$e$};
+    \draw[fill=black] (F) circle (2pt) node[anchor=east]{$f$};
+    
+    \draw[] (A)--(B) (A)--(C) (A)--(D);
+    \draw[dashed] (B)--(C) (C)--(D);
+    \draw[] (B)--(E);
+    \draw[dashed] (D)--(E);
+    \draw[dashed] (C)--(E);
+    \draw[] (B)--(D);
+    \draw[dashed] (A)--(E);
+\end{drawing}
+
+Consider now the edges $cf$ and $ef$. If both are blue, then a blue $C_4$ is formed with $d$. Since our coloring so far is symmetric (that is, swapping $c$ with $e$ and $b$ with $a$ produces an identical coloring), then we may assume without loss of generality that $ef$ is red.
+
+\begin{drawing}
+    \coordinate (A) at (0,0);
+    \coordinate (B) at (1,0);
+    \coordinate (C) at (2,1);
+    \coordinate (D) at (1,2);
+    \coordinate (E) at (0,2);
+    \coordinate (F) at (-1,1);
+    
+    \draw[fill=black] (A) circle (2pt) node[anchor=north]{$a$};
+    \draw[fill=black] (B) circle (2pt) node[anchor=north]{$b$};
+    \draw[fill=black] (C) circle (2pt) node[anchor=west]{$c$};
+    \draw[fill=black] (D) circle (2pt) node[anchor=south]{$d$};
+    \draw[fill=black] (E) circle (2pt) node[anchor=south]{$e$};
+    \draw[fill=black] (F) circle (2pt) node[anchor=east]{$f$};
+    
+    \draw[] (A)--(B) (A)--(C) (A)--(D);
+    \draw[dashed] (B)--(C) (C)--(D);
+    \draw[] (B)--(E);
+    \draw[dashed] (D)--(E);
+    \draw[dashed] (C)--(E);
+    \draw[] (B)--(D);
+    \draw[dashed] (A)--(E);
+    \draw[] (E)--(F);
+\end{drawing}
+
+Now $af$ must be blue, since otherwise $a,b,e,f$ would form a red $C_4$. 
+
+\begin{drawing}
+    \coordinate (A) at (0,0);
+    \coordinate (B) at (1,0);
+    \coordinate (C) at (2,1);
+    \coordinate (D) at (1,2);
+    \coordinate (E) at (0,2);
+    \coordinate (F) at (-1,1);
+    
+    \draw[fill=black] (A) circle (2pt) node[anchor=north]{$a$};
+    \draw[fill=black] (B) circle (2pt) node[anchor=north]{$b$};
+    \draw[fill=black] (C) circle (2pt) node[anchor=west]{$c$};
+    \draw[fill=black] (D) circle (2pt) node[anchor=south]{$d$};
+    \draw[fill=black] (E) circle (2pt) node[anchor=south]{$e$};
+    \draw[fill=black] (F) circle (2pt) node[anchor=east]{$f$};
+    
+    \draw[] (A)--(B) (A)--(C) (A)--(D);
+    \draw[dashed] (B)--(C) (C)--(D);
+    \draw[] (B)--(E);
+    \draw[dashed] (D)--(E);
+    \draw[dashed] (C)--(E);
+    \draw[] (B)--(D);
+    \draw[dashed] (A)--(E);
+    \draw[] (E)--(F);
+    \draw[dashed] (A)--(F);
+\end{drawing}
+
+Now consider the edge $fd$. If it is red, then $f,d,b,e$ is a red cycle. If it is blue, then $f,a,e,d$ is a blue cycle. Thus, a red-blue edge-coloring of $K_6$ must contain a monochromatic $C_4$. Thus, $R(C_4,C_4)\leq 6$. Now consider the following coloring of $K_5$:
+
+\begin{drawing}
+    \coordinate (A) at (0,0){};
+    \coordinate (B) at (-0.3,1){};
+    \coordinate (C) at (1,0){};
+    \coordinate (D) at (1.3,1){};
+    \coordinate (E) at (0.5,1.5){};
+    
+    \foreach \x in {A,B,C,D,E} {
+        \draw[fill=black] (\x) circle (2pt);
+    }
+    
+    \draw[] (A)--(C)--(D)--(E)--(B)--(A);
+    
+    \draw[dashed] (D)--(A)--(E);
+    \draw[dashed] (B)--(C)--(E);
+    \draw[dashed] (B)--(D);
+    
+\end{drawing}
+
+Therefore $R(C_4, C_4) >5$, so $R(C_4,C_4)=6$.
+
+
+\newpage
+\ex{5}{
+    Let $mK_2$ be the graph consisting of $m$ independent edges (i.e., no two edges share a vertex). Prove that $R(mK_2, mK_2) = 3m - 1$.
+}
+
+The case of $m=1$ is trivial since a graph on one vertex has no edges, and a graph on two vertices has one edge that must be red or blue. Therefore $R(1K_2,1K_2)=2=3(1)-1$.
+
+We first show that $R(mK_2, mK_2) \leq 3m-1$ for all $m$ by induction on $m$. For the base case, we consider $m=2$ and label the vertices of $K_5$ by $v, x_1, x_2, y_1, y_2$. Suppose $x_1x_2$ is red, then if $y_1y_2$ is also red, we have a red $2K_2$. Otherwise, $y_1y_2$ is blue and we consider the edges $vx_1$ and $vy_1$. If $vx_1$ is blue or $vy_1$ is red, then we have a blue or red $2K_2$. Otherwise, $vx_1$ is red and $vy_1$ is blue. We then consider the color of $x_2y_2$; if it is red, then we have a red $2K_2$ and if it is blue, then we have a blue $2K_2$. Thus $R(2K_2, 2K_2) \leq 3(2)-1$.
+
+For the inductive step, we assume that $R(mK_2, mK_2) \leq 3m-1$ for some $m\geq 2$ and consider a coloring of the graph $K_{3m+2}$. We pick a vertex $v$ and let $G=K_{3m+2}\setminus\{v\}$. Since $G$ is a fully connected graph on more than $3m-1$ vertices, it must contain either a red or blue $mK_2$. Without loss of generality assume there is a red $mK_2$ and pick two vertices $x_1,x_2$ such that $x_1x_2$ is a red edge.
+
+Since $G\setminus\{x_1,x_2\}$ has $3m-1$ vertices, it contains either a red or blue $mK_2$. If that $mK_2$ is red, then with $x_1x_2$, we have a red $(m+1)K_2$. If it is blue, we pick two points $y_1,y_2$ such that $y_1y_2$ is a blue edge. Additionally, $y_1,y_2$ are chosen such that the red $mK_2$ found in $G$ does not use either vertex. This is possible since only $2m$ vertices are required to form $mK_2$ and $G$ has $3m+1$ vertices. 
+
+We now let $H=G\setminus\{x_1,x_2,y_1,y_2\}$. Because of how we chose $y_1$ and $y_2$, we know $H$ contains both a red and a blue $(m-1)K_2$. Since $v,x_1,x_2,y_1,y_2$ is a $K_5$, it contains either a red or blue $2K_2$. Whichever color $2K_2$ it is, combining it with the similarly-colored $(m-1)K_2$ in $H$ gives us a monochromatic $(m+1)K_2$. Therefore, $R(mK_2, mK_2) \leq 3m-1$ for all $m$.
+
+Next we show by example that $R(mK_2,mK_2)>3m-2$, which will prove that in fact $R(mK_2,mK_2)=3m-1$. Consider the graph $K_{3m-2}$ and partition it into two subgraphs $X$ and $Y$ such that $X$ has $2m-1$ vertices and $Y$ has $m-1$ vertices. We color all the edges of $X$ red and all the edges of $Y$ blue, additionally, all the edges between $X$ and $Y$ are colored blue. We claim that this coloring of $K_{3m-2}$ contains neither a red or blue $mK_2$. Suppose we wanted to find a red $mK_2$. Since all the red edges are in $X$, this is equivalent to finding an $m$-matching in $X$. However, $X$ only has $2m-1$ vertices, but $2m$ are required for an $m$-matching. Suppose we wanted to find a blue $mK_2$, then each blue edge we choose must be adjacent to some vertex of $Y$. However, since $Y$ has only $m-1$ vertices and we can only choose one edge adjacent to each vertex, we cannot find a blue $m$-matching. Thus, this coloring of $K_{3m-2}$ does not contain a red or blue $mK_2$. Therefore, $R(mK_2,mK_2)=3m-1$.
+
+
+\ex{6}{
+    Let Tm be any tree with $m \geq 2$ vertices. Then
+    \[R(K_n, T_m) = (n - 1)(m - 1) + 1).\]
+    
+    Verify the equality $m = 2$ or $n = 2$.
+}
+
+Since the lower bound is given by $R(K_n,T_m) > (\chi(K_n)-1)(m-1) = (n-1)(m-1)$, we need only verify the upper bounds:
+\begin{enumerate}
+    \item $R(K_2,T_m) \leq (2-1)(m-1) +1 = m,$
+    \item $R(K_n,T_2) \leq (n-1)(2-1) +1 = n.$
+\end{enumerate}
+
+Consider a red-blue edge-coloring of $K_m$. It is either the case that all edges are blue or at least one edge is red. If all edges are blue, then we can easily find a blue $T_m$ as a subgraph of $K_m$. Otherwise, if there is at least one red edge, then this is in fact a red $K_2$. Therefore, $R(K_2,T_m) \leq m$, giving us equality when $n=2$.
+
+Consider now a red-blue edge-coloring of $K_n$. It is either the case that all edges are red or at least one edge is blue. If all edges are red, then of course we have a red $K_n$. Otherwise, if at least one edge is blue, then that blue edge is a blue $T_2$. Therefore, $R(K_n,T_2) \leq n$, giving us equality when $m=2$.
+
+
+\end{document}
+

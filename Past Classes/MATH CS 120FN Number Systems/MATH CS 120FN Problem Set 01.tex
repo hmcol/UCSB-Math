@@ -1,0 +1,195 @@
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{listings}
+
+\lstset{basicstyle=\footnotesize}
+
+ 
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+
+ 
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{question}[2][Question]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+ 
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+\title{CS120FN Problem Set 1}
+\author{Harry Coleman}
+\date{October 1, 2019}
+
+\maketitle
+
+\section{Set of Pythagorean Triples with the Same $c$ Value}
+
+\begin{lstlisting}[language=Python, frame=single, basicstyle=\footnotesize]
+import math
+
+HIGH = 10000
+triples_dict = {}
+
+for s in range(1, HIGH, 2):
+	for t in range(1, s, 2):
+		if math.gcd(s, t) == 1:
+			a = s*t
+			b = int((s**2 - t**2)/2)
+			c = int((t**2 + s**2)/2)
+
+			if c in triples_dict:
+				triples_dict[c].append((a, b, c))
+			else:
+				triples_dict[c] = [(a, b, c)]
+
+triples = list(triples_dict.values())
+best = sorted(triples, key=lambda k: len(k), reverse=True)[0]
+
+print(len(best))
+for triple in best:
+	print(triple)
+\end{lstlisting}
+
+The above program iterates through all odd, coprime values for $s$ and $t$ to generate primitive Pythagorean triples(PPT) of the form:
+
+\begin{equation}
+    (a, b, c) = \left(st, \frac{s^2 - t^2}{2}, \frac{s^2 + t^2}{2}\right)
+\end{equation}
+
+Every triple generated is added to a dictionary, indexed by the value of $c$. After all triples are generated, the largest collection of triples with the same $c$ value is displayed. Running the above program yields the following collection of 32 PPT's, all with $c = 48612265$.
+\newline\newline
+$
+(1547863, 48587616, 48612265),
+(4206377, 48429936, 48612265),
+(5031817, 48351144, 48612265),\\
+(6365833, 48193656, 48612265),
+(10400983, 47486544, 48612265),
+(14399273, 46430736, 48612265),\\
+(15368407, 46119024, 48612265),
+(16162697, 45846696, 48612265),
+(19412183, 44568144, 48612265),\\
+(21173033, 43759056, 48612265),
+(24544343, 41961024, 48612265),
+(26394487, 40822584, 48612265),\\
+(28590473, 39315864, 48612265),
+(29737897, 38455296, 48612265),
+(32898647, 35788704, 48612265),\\
+(33410167, 35311656, 48612265),
+(33640873, 35091936, 48612265),
+(37350007, 31114776, 48612265),\\
+(37875287, 30473184, 48612265),
+(39487273, 28353264, 48612265),
+(39859337, 27827784, 48612265),\\
+(42674807, 23281176, 48612265),
+(43107703, 22469496, 48612265),
+(43568777, 21561864, 48612265),\\
+(45314953, 17598504, 48612265),
+(46580137, 13908384, 48612265),
+(47077513, 12118584, 48612265),\\
+(47826007, 8707776, 48612265),
+(47937143, 8073576, 48612265),
+(48048343, 7383024, 48612265),\\
+(48577417, 1840344, 48612265),
+(48605303, 822696, 48612265)
+$
+
+\section{Patterns in $a$, $b$, and $c$}
+\subsection{Which odd numbers $a$ can appear in a PPT}
+
+Using the same PPT formula as the previous section, we know that a valid value for $a$ can be found using the equation $a=st$ where $s$ and $t$ are both odd, coprime integers. If we take $s$ to be one, then $t$ can be any odd integer, since no number will share any factors with 1, other than 1 itself. Since $t$ can be any odd integer when $s=1$, $a=st$ can be any odd integer.
+
+\subsection{Which even numbers $b$ can appear in a PPT}
+From observation, $b$ is always a multiple of 4, and covers all multiples of 4.
+
+\subsection{Which numbers $c$ can appear in a PPT}
+From observation, $c$ is always 1 more than a perfect square, and covers all such numbers.
+
+\section{PPT's for which $c=a+2$}
+In order to generalize all PT in which $c=a+2$, we first substitute into the Pythagorean equation:
+\[
+    a^2+b^2=(a+2)^2
+\]
+We solve this equation for $a$.
+\begin{equation}
+a = \frac{b^2 - 4}{4}
+\end{equation}
+Keeping this equation in mind, we can show for the specific instance pf $c=a+2$ that $b$ must be a multiple of 4. First we will assume that b is some even integer that is not divisible by 4.
+\begin{equation}
+    b=4h+2
+\end{equation}
+We will substitute this into the previous equation solved for $a$.
+\[
+    a=\frac{(4h+2)^2-4}{4}
+\]
+Simplified.
+\begin{equation}
+    a=4(h^2+h)
+\end{equation}
+Equation (4) here shows that $a$ is a multiple of 4, and therefore even. However, this contradicts 2.1, in which $a$ is shown to be an odd integer. Therefore, our initial assumption that $b$ is an even integer not divisible by 4 is false, and $b$ must be divisible by 4.
+\begin{equation}
+    b=4h
+\end{equation}
+Where $h$ is some positive integer. We rewrite equation (2) using this substitution.
+\[
+    a = \frac{(4h)^2 - 4}{4}
+\]
+Simplified.
+\begin{equation}
+a = 4h^2 - 1
+\end{equation}
+We substitute equation (6) into $c=a+2$ to solve for $c$:
+\[
+c=(4h^2 - 1) +2
+\]
+\begin{equation}
+    c=4h^2+1
+\end{equation}
+Taking equations (3), (6), and (6) we know that all PT‘s such that $c=a+2$ are of the form:
+\[
+(4h^2-1, 4h, 4h^2+1)
+\]
+
+\section{$2c - 2a$ for values of $a$ and $c$ from PPT's}
+
+Given that the values for $a$ and $c$ are from a PPT, we can use the following:
+
+\begin{equation}
+a = st
+\end{equation}
+
+\begin{equation}
+c = \frac{s^2 + t^2}{2}
+\end{equation}
+We substitute these into $2c - 2a$:
+\begin{equation}
+    2\left(\frac{s^2 + t^2}{2}\right) - 2(st)
+\end{equation}
+\[
+s^2 + t^2 - 2st
+\]
+\[
+s^2 - 2st + t^2
+\]
+\[
+(s - t)^2
+\] 
+
+Because we know $s$ and $t$ are integers, the difference must also be an integer. This value is squared, resulting in a perfect square. Thus, for any given PPT, the quantity $2c-2a$ is a perfect square. 
+
+\end{document}

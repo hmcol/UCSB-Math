@@ -1,0 +1,302 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{amsmath, amsthm, amssymb, physics}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{4pt}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\pfrac}[2]{\left(\frac{#1}{#2}\right)}
+
+% Extra Commands
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\End}{\operatorname{End}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Ann}{\operatorname{Ann}}
+\newcommand{\tsum}{\textstyle\sum\limits}
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH 111B Homework 8}
+    \fancyhead[C]{March 5, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+
+\begin{pbox}[Q1]
+    Let $F$ be a field. Let $V = F^n$ viewed as an $F[x]$-module with respect to the linear transformation $T : V \to V$, $T = \ds\mqty(x_1 \\ \vdots \\ x_{n-1} \\ x_n) = \mqty(x_2 \\ \vdots \\ x_n \\ 0)$. View the quotient ring $F[x]/(x^n)$ as an $F[x]$-module by
+    \[
+        F[x] \times \qty\big(F[x]/(x^n)) \to F[x]/(x^n), \qquad \qty\big(a(x), \eqc{p(x)}) \to \eqc{a(x)p(x)}.
+    \]
+    Show that $V \isom F[x]/(x^n)$ as $F[x]$-modules.
+\end{pbox}
+
+\begin{proof}
+    Note that the equivalence classes of $F[x]/(x^n)$ are the polynomials of $F[x]$ with degree at most $n-1$. We define the map
+    \begin{align*}
+        \phi : F[x]/(x^n) &\to V \\
+            \tsum_{k=0}^{n-1} a_k x^k &\mapsto \tsum_{k=0}^{n-1} a_k e_{n-k},
+    \end{align*}
+    where $\{e_1, \dots, e_n\}$ is the standard basis for $V = F^n$. We will show that $\phi$ is an $F[x]$-module isomorphism. First, for any $p(x), q(x) \in F[x]/(x^n)$, with coefficients $a_0, \dots, a_{n-1} \in F$ and $b_0, \dots, b_{n-1} \in F$, we find
+    \begin{align*}
+        \phi\qty(p(x) + q(x))
+            &= \phi\qty(\tsum_{k=0}^{n-1} a_k x^k + \tsum_{k=0}^{n-1} b_k x^k) \\
+            &= \phi\qty(\tsum_{k=0}^{n-1} (a_k + b_k) x^k) \\
+            &= \sum_{k=0}^{n-1} (a_k + b_k) e_{n-k} \\
+            &= \sum_{k=0}^{n-1} a_k e_{n-k} + \sum_{k=0}^{n-1} b_k e_{n-k} \\
+            &= \phi\qty(\sum_{k=0}^{n-1} a_k x^k) + \phi\qty(\sum_{k=0}^{n-1} b_k x^k) \\
+            &= \phi(p(x)) + \phi(q(x)).
+    \end{align*}
+    To show that $\phi$ respects the actions of all elements in $F[x]$, we first consider $r \in F$. For elements in both $F[x]$-modules, $r$ acts simply by multiplication. Then
+    \begin{align*}
+        \phi(rp(x))
+            &= \phi\qty(\tsum_{k=0}^{n-1} ra_k x^k) \\
+            &= \sum_{k=0}^{n-1} ra_k e_{n-k} \\
+            &= r\sum_{k=0}^{n-1} a_k e_{n-k} \\
+            &= r \phi(p(x)). 
+    \end{align*}
+    Next, we consider $x \in F[x]$. For $p(x) = a_0 + a_1 x + \cdots a_{n-1}x^{n-1} \in F[x]/(x^n)$, we have
+    \begin{align*}
+        xp(x)
+            &= \eqc{xp(x)} \\
+            &= \eqc{\tsum_{k=0}^{n-1} a_k x^{k+1}} \\
+            &= \sum_{k=1}^{n-1} a_{k-1} x^k
+    \end{align*}
+    For $v = \mqty[v_1 & \cdots & v_n]^T \in V$, we have
+    \begin{align*}
+        xv
+            &= T\qty(\tsum_{k=1}^{n} v_k e_k) \\
+            &= \sum_{k=1}^{n} v_kT(e_k) \\
+            &= \sum_{k=2}^{n} v_k e_{k-1}.
+    \end{align*}
+    Now,
+    \begin{align*}
+        \phi(xp(x))
+            &= \phi\qty(\tsum_{k=1}^{n-1} a_{k-1} x^k) \\
+            &= \sum_{k=1}^{n-1} a_{k-1} e_{n-k} \\
+            &= \sum_{k=1}^{n-1} a_{k-1} T(e_{n-k+1}) \\
+            &= \sum_{k=0}^{n-1} a_k T(e_{n-k}) \\
+            &= T\qty(\sum_{k=0}^{n-1} a_k e_{n-k}) \\
+            &= x\phi(p(x)).
+    \end{align*}
+    Then for any $r(x) = r_0 + r_1x + \cdots r_{n-1}x^{n-1} + \cdot \in F[x]$, we find
+    \begin{align*}
+        \phi(r(x)p(x))
+            &= \phi\qty(\sum_{k=0}^{n-1} r_k x^k p(x)) \\
+            &= \sum_{k=0}^{n-1} r_k x^k \phi(p(x)) \\
+            &= r(x) \phi(p(x)).
+    \end{align*}
+    Thus, $\phi$ is an $F[x]$-module homomorphism. Then for any $p(x) \in \ker\phi$, we have
+    \begin{align*}
+        0
+            &= \phi(p(x)) \\
+            &= \sum_{k=0}^{n-1} a_k e_{n-k},
+    \end{align*}
+    which implies $a_0 = \cdots = a_n = 0$, so $p(x) = 0$. Therefore, $\ker\phi = \{0\}$, implying $\phi$ is injective. For any $v = \mqty[v_1 & \cdots & v_n]^T \in V$, we can choose $p(x) \in F[x]/(x^n)$ by
+    \[
+        p(x) = \sum_{k=0}^{n-1} v_{k+1} x^k.
+    \]
+    Then $\phi(p(x)) = v$, so $\phi$ is surjective. Hence, $\phi$ is an $F[x]$-module isomorphism, so $F[x]/(x^n) \isom V$.
+    
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[Q2 Problem 10.2.4]
+    Let $A$ be any $\Z$-module, let $a$ be any element of $A$ and let $n$ be a positive integer. Prove that the map $\phi_a : \Z/n\Z \to A$ given by $\phi_a(\eqc{k}) = ka$ is a well-defined $\Z$-module homomorphism if and only if $na = 0$. Prove that $\Hom_\Z(\Z/n\Z, A) \isom A_n$, where $A_n = \{a \in A \mid na = 0\}$ (so $A_n$ is the annihilator in $A$ of the ideal $(n)$ of $\Z$).
+\end{pbox}
+
+\begin{proof}
+    Suppose $\phi_a$ is a well-defined $\Z$-module homomorphism. For $k \in \Z$, we have $\eqc{k} = \eqc{k + n}$ in $\Z/n\Z$. Then
+    \begin{align*}
+        \phi_a(\eqc{k}) &= \phi_a(\eqc{k + n}) \\
+        ka &= (k + n)a \\
+        ka &= ka + na \\
+        0 &= na.
+    \end{align*}
+    
+    Now suppose $na = 0$. Then for $k, \ell \in \Z$ with $\eqc{k} = \eqc{\ell}$ in $\Z/n\Z$, then $\ell = k + mn$ for some $m \in \Z$. So
+    \[
+        \phi_a(\eqc{\ell})
+            = (k + mn)a \\
+            = ka \\
+            = \phi_a(\eqc{k}),
+    \]
+    implying $\phi_a$ is well-defined. Suppose $\eqc{k}, \eqc{\ell} \in \Z/n\Z$ and $r \in \Z$, then
+    \begin{align*}
+        \phi_a(r\eqc{k} + \eqc{\ell})
+            &= \phi_a(\eqc{rk + \ell}) \\
+            &= (rk + \ell)a \\
+            &= rka + \ell a \\
+            &= r\phi_a(\eqc{k}) + \phi_a(\eqc{\ell}).
+    \end{align*}
+    Hence, $\phi_a$ is a $Z$-module homomorphism. Define the map
+    \begin{align*}
+        F : A_n &\to \Hom_\Z(\Z/n\Z, A) \\
+            a &\mapsto \phi_a,
+    \end{align*}
+    where $\phi_a(\eqc{k}) = ka$. Since $na = 0$ for all $a \in A_n$, then $F$ is well-defined, we will show that is is a $\Z$-module isomorphism. For any $r \in \Z$ and $a, b \in A_n$, we have $F(ra + b) = \phi_{ra + b}$ and $rF(a) + F(b) = r\phi_a + \phi_b$. Then for any $\eqc{k} \in \Z/n\Z$, we find
+    \begin{align*}
+        \phi_{ra+b}(\eqc{k})
+            &= k(ra + b) \\
+            &= rka + kb \\
+            &= r\phi_a(\eqc{k}) + \phi_b(\eqc{k}) \\
+            &= (r\phi_a + \phi_b)(\eqc{k}).
+    \end{align*}
+    Hence, $F(ra + b) = rF(a) + F(b)$, so $F$ is a $\Z$-module homomorphism. Given $\phi \in \Hom_\Z(\Z/n\Z, A)$, define $a = \phi(\eqc{1})$. First, we see that
+    \[
+        na
+            = n\phi(\eqc{1})
+            = \phi(n\eqc{1})
+            = \phi(\eqc{n})
+            = \phi(\eqc{0})
+            = 0.
+    \]
+    Therefore, $a \in A_n$ and $F(a) = \phi_a \in \Hom_\Z(\Z/n\Z, A)$. Moreover, for any $\eqc{k} \in \Z/n\Z$, we find
+    \[
+        \phi_a(\eqc{k})
+            = ka
+            = k\phi(\eqc{1}) \\
+            = \phi(k\eqc{1}) \\
+            = \phi(\eqc{k}).
+    \]
+    So $F(a) = \phi$, implying $F$ is surjective. Suppose $a \in \ker F$, then $F(a) = \phi_a$ is the zero $\Z$-module homomorphism. So $\phi_a(\eqc{k}) = 0$ for all $\eqc{k} \in \Z/n\Z$. In particular, $0 = \phi_a(\eqc{1}) = 1a = a$, so $\ker F = \{0\}$, implying $F$ is injective. Thus, $F$ is a $\Z$-module isomorphism.
+    
+\end{proof}
+
+
+\newpage
+\begin{pbox}[Q3]
+    View $R[x]$ as an $R$-module with the action of $R$ given by
+    \[
+        R \times R[x] \to R[x], \qquad (r, p(x)) \mapsto rp(x).
+    \]
+    Show that $R[x]$ is not a finitely generated $R$-module.
+\end{pbox}
+
+\begin{proof}
+    Suppose, for contradiction, that for some finite subset of polynomials
+    \[
+        A = (p_1(x), \dots, p_m(x)) \subset R[x],
+    \]
+    we have
+    \[
+        R[x] = RA = \{r_1p(x) + \cdots r_mp_m(x) \mid r_1, \dots, r_m \in R\}.
+    \]
+    However, if $n = \max\{\deg p_1(x), \dots, \deg p_m(x)\}$, then for any $q(x) \in RA$, we must have $\deg q(x) \leq n$. But since $x^{n+1} \in R[x]$ and $\deg x^{n+1} = n+1 > n$, this is a contradiction.
+    
+    
+\end{proof}
+
+
+\begin{pbox}[Q4 Problem 10.3.7]
+    Let $N$ be a submodule of $M$, Prove that if both $M/N$ and $N$ are finitely generated then so is $M$.
+\end{pbox}
+
+\begin{proof}
+    Suppose $N = RA$ for some finite subset $A = \{a_1, \dots, a_n\} \subset R$ and $M/N = RB$ for some finite subset $B = \{\eqc{b_1}, \dots, \eqc{b_m}\} \subset M/N$, where $\eqc{b_j} = b_j + N$ for $j = 1, \dots m$. If $C = A \cup \{b_1, \dots, b_m\}$, then we claim that $M = RC$. For any $x \in M$, we have $\eqc{x} \in M/n = RB$, so
+    \[
+        \eqc{x}
+            = r_1\eqc{b_1} + \cdots r_m\eqc{b_m}
+            = \eqc{r_1b_1 + \cdots + r_mb_m}
+    \]
+    for some $r_1, \dots, r_m \in R$. Therefore, we have
+    \[
+        x - (r_1b_1 + \cdots + r_mb_m) \in N,
+    \]
+    implying that
+    \[
+        x - (r_1b_1 + \cdots + r_mb_m) = s_1a_1 + \cdots + s_na_n
+    \]
+    for some $s_1, \dots, s_n \in R$. Thus,
+    \[
+        x = r_1b_1 + \cdots r_mb_m + s_1a_1 + \cdots + s_na_n \in RC.
+    \]
+    Hence, $M$ is finitely generated, in particular $M = RC$.
+    
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[Q5 Problem 10.3.14]
+    Let $R$ be a commutative ring and let $F$ be the free $R$-module of rank $n$. Prove that $\Hom_R(F, M) \isom M \times \cdots \times M$ ($n$ times).
+\end{pbox}
+
+\begin{proof}
+    Since $F$ is the free $R$-module of rank $n$, then it has a basis $A = \{a_1, \dots, a_n\} \subset F$.
+    Define the map
+    \begin{align*}
+        \Phi : \Hom_R(F, M) &\to M \times \cdots \times M \\
+            \phi &\mapsto (\phi(a_1), \dots, \phi(a_n)),
+    \end{align*}
+    which we claim to the an $R$-module isomorphism. Let $r \in R$ and $\phi, \psi \in \Hom_R(F, M)$, then
+    \begin{align*}
+        \Phi(r\phi + \psi)
+            &= ((r\phi + \psi)(a_1), \dots, (r\phi + \psi)(a_n)) \\
+            &= (r\phi(a_1) + \psi(a_1), \dots, r\phi(a_n) + \psi(a_n)) \\
+            &= r(\phi(a_1), \dots, \phi(a_n)) + (\psi(a_1), \dots, \psi(a_n)) \\
+            &= r\Phi(\phi) + \Phi(\psi).
+    \end{align*}
+    So $\Phi$ is an $R$-module homomorphism. Then for any $(x_1, \dots, x_n) \in M \times \cdots \times M$, since $F$ is the free module generated by $A$, then there is a unique $\phi \in \Hom_R(F, M)$ such that $\phi(a_j) = x_j$ for $j = 1, \dots, n$. In which case, $\Phi(\phi) = (x_1, \dots, x_n)$, so $\Phi$ is surjective. Now suppose $\phi \in \ker\Phi$, so
+    \[
+        (\phi(a_1), \dots, \phi(a_n)) = (0, \dots, 0).
+    \]
+    Then for any $x \in F$, there is some $r_1, \dots, r_n \in R$ such that
+    \[
+        x = r_1a_1 + \cdots + r_na_n.
+    \]
+    Then
+    \[
+        \phi(x)
+            = r_1\phi(a_1) + \cdots + r_n\phi(a_n)
+            = 0,
+    \]
+    which implies that $\phi$ is the zero homomorphism. Hence, $\Phi$ is injective and, therefore, an $R$-module isomorphism.
+    
+\end{proof}
+
+
+\end{document}

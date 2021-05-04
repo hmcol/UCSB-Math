@@ -1,0 +1,207 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow,enumitem}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools,babel}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{\textwidth-10pt}}
+    {\end{minipage}\end{lrbox}\framebox[6.5in]{\usebox{\mybox}}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+\newenvironment{response}{\paragraph{}}{}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\seq}[2]{\left\{#1\right\}_{#2=1}^\infty}
+\newcommand{\clo}[1]{\overline{#1}}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ang}{\langle}{\rangle}
+
+% Sets
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+
+% Misc Characters
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\let\eps\varepsilon
+\let\emptyset\varnothing
+
+% Functions
+\newcommand{\id}[1]{\mathsf{id}_{#1}}
+
+% Babel Shorthands
+\useshorthands*{"}
+\defineshorthand{"-}{\setminus}
+\defineshorthand{"d}{\partial}
+
+% Probability
+\newcommand{\FF}{\mathcal{F}}
+\renewcommand{\P}{\mathbb{P}}
+ 
+\begin{document}
+ 
+\title{Homework 1\\
+    \large MATH 111A Intro to Abstract Algebra
+}
+\author{Harry Coleman}
+\date{October 14, 2020}
+\maketitle
+
+\section*{Exercise 1.1.6}
+\begin{problem}
+    Determine which of the following sets are groups under addition:
+\end{problem}
+
+\subsection*{Exercise 1.1.6(a)}
+\begin{problem}
+    the set of rational numbers (including $0=0/1$) in lowest terms whose denominators are odd
+\end{problem}
+
+Let $\ds G=\left\{\frac{a}{b} \in\Q: \gcd\{a,b\}=1, b \text{ odd}\right\}$. Then for any $\ds\frac{a}{b},\frac{c}{d}\in G$, we can define addition as
+\[\frac ab + \frac cd = \frac{(ad+bc)/e}{bd/e} \isp{where} e = \gcd\{ad+bc, bd\}.\]
+This produces the rational sum in lowest terms, and if $b$ and $d$ are odd, then $bd/e$ is odd. Therefore, the resulting rational number is an element of $G$. Additionally, the additive inverse of any element of the set has the same denominator and is therefore also in the set. So $G$ is closed under addition and inverses, so it is a group.
+
+\subsection*{Exercise 1.1.6(b)}
+\begin{problem}
+    the set of rational numbers (including $0=0/1$) in lowest terms whose denominators are even
+\end{problem}
+
+Consider the even-denominator rational number $\ds\frac16$. Summing this value with itself gives us
+\[\frac16 + \frac16 = \frac13,\]
+which is not in the set, so it is not closed under addition.
+
+\newpage
+\subsection*{Exercise 1.1.6(c)}
+\begin{problem}
+    the set of rational numbers of absolute value $<1$
+\end{problem}
+
+This set is not closed under addition since $\ds\frac12$ would be an element but
+\[\frac12 + \frac12 = 1\]
+would not be.
+
+\subsection*{Exercise 1.1.6(d)}
+\begin{problem}
+    the set of rational numbers of absolute value $\geq1$ together with $0$
+\end{problem}
+
+This set is not closed under addition since $\ds\frac32$ and $-1$ would be in the set but
+\[\frac32 - 1 = \frac12\]
+would not be.
+
+\subsection*{Exercise 1.1.6(e)}
+\begin{problem}
+    the set of rational numbers with denominators equal to $1$ or $2$
+\end{problem}
+
+For any two rational numbers with the same denominator, their sum would have that same denominator, so we need only check that addition is closed for elements with different denominators. Consider $\ds\frac a1,\frac b2$ in this set. We find that their sum
+\[\frac a1 + \frac b2 = \frac{2a+b}2\]
+has a denominator of 2, so the set is closed under addition. Additionally, the additive inverse of any element of the set has the same denominator and is therefore also in the set. This set is closed under addition and inverses, so it is a group.
+
+\subsection*{Exercise 1.1.6(f)}
+\begin{problem}
+    the set of rational numbers with denominators equal to $1$, $2$ or $3$.
+\end{problem}
+
+This set is not closed under addition since $\ds\frac12$ and $\ds\frac{-1}3$ would be in the group but
+\[\frac12 - \frac{-1}3 = \frac16\]
+would not be.
+
+\section*{Exercise 1.1.9}
+\begin{problem}
+    Let $G=\{z\in\C : z^n=1 \text{ for some } n\in\Z^+\}$.
+\end{problem}
+
+\subsection*{Exercise 1.1.9(a)}
+\begin{problem}
+    Prove that $G$ is a group under multiplication (called the group of \emph{roots of unity} in $\C$).
+\end{problem}
+
+\begin{proof}
+    Since $G\subseteq \C$, to show it is a group, we will show that it is closed under addition and inverses. Suppose $z_1,z_2\in G$ and $n_1,n_2\in\Z^+$ such that $z_1^{n_1}=z_2^{n_2}=1$. Then $n_1n_2\in\Z^+$ with
+    \[(z_1z_2)^{n_1n_2} = (z_1^{n_1})^{n_2}(z_2^{n_2})^{n_1} = 1^{n_2}1^{n_1} = 1,\]
+    so $z_1z_2\in G$. Now suppose $z\in G$, $n\in\Z^+$ such that $z^n=1$, and $z^{-1}$ is the multiplicative inverse of $z$ in $\C$. Then
+    \[(z^{-1})^n = 1\cdot z^{-n} = z^nz^{-n} = z^{n-n} = z^0 = 1,\]
+    so $z^{-1}\in G$. 
+    
+\end{proof}
+
+\subsection*{Exercise 1.1.9(b)}
+\begin{problem}
+    Prove that $G$ is not a group under addition.
+\end{problem}
+
+\begin{proof}
+    Clearly $1\in G$. However, $1+1=2$, and there does not exist a positive integer $n$ such that $2^n=1$, so $G$ is not closed under addition.
+    
+\end{proof}
+
+\section*{Exercise 1.1.22}
+\begin{problem}
+    If $x$ and $g$ are elements of the group $G$, prove that $|x|=|g^{-1}xg|$. Deduce that $|ab|=|ba|$ for all $a,b\in G$.
+\end{problem}
+
+\begin{proof}
+    Suppose $|x|=n$. Then
+    \[(g^{-1}xg)^n = \underbrace {g^{-1}xg \cdot g^{-1}xg \cdots g^{-1}xg \cdot g^{-1}xg}_{n \text{ times}} = g^{-1}x^ng = g^{-1}g = 1.\]
+    So $|g^{-1}xg|\leq |x|$. Now suppose $|g^{-1}xg|=m$. Similar to the above, we find
+    \[1 = (g^{-1}xg)^m = g^{-1}x^mg,\]
+    which implies
+    \[x^m = gg^{-1} = 1.\]
+    So $|x|\leq|g^{-1}xg|$, and therefore $|x|=|g^{-1}xg|$. In particular, if $x=ab$ and $g=b^{-1}$, then
+    \[|ab| = |(b^{-1})^{-1}abb^{-1}| = |ba|.\]
+\end{proof}
+
+\section*{Exercise 1.2.5}
+\begin{problem}
+    If $n$ is odd and $n\geq 3$, show that the identity is the only element of $D_{2n}$ which commutes with all elements of $D_{2n}$.
+\end{problem}
+
+\begin{proof}
+    Suppose $s^\ell r^m\in D_{2n}$, where $\ell\in\{0,1\}$ and $m\in\{0,\dots,n-1\}$, is an element which commutes with all elements of $D_{2n}$. By the commutativity of $s^\ell r^m$ and the properties of $D_{2n}$, we have
+    \[ss^\ell r = s^\ell r^m s = s^\ell sr^{-m}.\]
+    Note that if $\ell=0$, then $ss^\ell = s = s^\ell s$, and if $\ell=1$, then $ss^\ell = ss = s^\ell s$. In either case, cancellation gives us
+    \[r^m = r^{-m},\]
+    which implies that
+    \begin{align*}
+        m+m &\equiv m-m, \\
+        2m &\equiv 0 \pmod{n}.
+    \end{align*}
+    Since $n$ is odd, then we must have $m=0$. Therefore, $s^\ell r^m = s^\ell$. However, the commutative element $r^ms^\ell$ cannot be $s$ alone, as $s$ does not commute with all elements of $D_{2n}$ when $n\geq 3$. For instance, consider the element $r^1\in D_{2n}$, then
+    \[sr^1(1) = s(1+1) = n+2-2 \mod n = 0,\]
+    and
+    \[r^1s(1) = r^1(n+2-1 \mod n) = 1+1 = 2.\]
+    And since $n\geq 3$, we know $0\not\equiv 2\pmod n$. Therefore, we must have $\ell=0$, so $s^\ell r^m = 1$.
+    
+\end{proof}
+
+
+
+
+\end{document}

@@ -1,0 +1,168 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow,enumitem}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools,babel}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{\textwidth-10pt}}
+    {\end{minipage}\end{lrbox}\framebox[6.5in]{\usebox{\mybox}}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+\newenvironment{response}{\paragraph{}}{}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\seq}[2]{\left\{#1\right\}_{#2=1}^\infty}
+\newcommand{\clo}[1]{\overline{#1}}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ang}{\langle}{\rangle}
+
+% Sets
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+
+% Misc Characters
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\let\eps\varepsilon
+\let\emptyset\varnothing
+
+% Functions
+\newcommand{\id}[1]{\mathsf{id}_{#1}}
+
+% Babel Shorthands
+\useshorthands*{"}
+\defineshorthand{"-}{\setminus}
+\defineshorthand{"d}{\partial}
+
+% Topology
+\newcommand{\T}{\mathscr{T}}
+\renewcommand{\S}{\mathscr{S}}
+\newcommand{\B}{\mathscr{B}}
+\renewcommand{\int}{\text{int}}
+\newcommand{\diam}{\text{diam}}
+ 
+\begin{document}
+ 
+\title{Homework 1\\
+    \large MATH 118A Intro to Real Analysis
+}
+\author{Harry Coleman}
+\date{October 8, 2020}
+\maketitle
+
+\section*{Exercise 1}
+\begin{problem}
+    Prove that $\sqrt{2} + \sqrt{3}$ is irrational.
+\end{problem}
+
+\begin{proof}
+    Suppose, for contradiction, that $\sqrt{2} + \sqrt{3} = p \in\Q$. Now consider
+    \begin{align*}
+        p^2 &= (\sqrt{2} + \sqrt{3})^2, \\
+        p^2 &= 5 + 2\sqrt{6}, \\
+        \frac{p^2-5}2 &= \sqrt{6},
+    \end{align*}
+    which implies that $\sqrt{6}\in\Q$. Let $r,s\in\Z$ such that $(r,s)=1$ and $\ds\frac{r}{s} = \sqrt6$. Then
+    \begin{align*}
+        \frac{r^2}{s^2} &= 6, \\
+        r^2 &= 6s^2,
+    \end{align*}
+    which implies that $2|r$. Let $t\in\Z$ such that $r=2t$. Then
+    \begin{align*}
+        (2t)^2 &= 6s^2, \\
+        2t &= 3s^2,
+    \end{align*}
+    which implies that $2|s$. However, $(r,s)=1$, which is a contradiction.
+     
+\end{proof}
+
+\newpage
+\section*{Exercise 2}
+\begin{problem}
+    Given nonempty subsets $A$ and $B$ of $\mathbb{R}$, let $C$ denote the set
+    \[
+     C = \{ x+y:\ x \in A,\ y\in B\}.
+    \]
+    If each $A$ and $B$ has a supremum, then prove that $C$ has a supremum and 
+    \[
+     \sup C = \sup A + \sup B.
+    \]
+\end{problem}
+
+\begin{proof}
+    Suppose both $A$ and $B$ have suprema. Let $x+y\in C$ with $x\in A$ and $y\in B$. Then by the definition of supremum,
+    \[x+y \leq \sup A + \sup B.\]
+    Therefore, $C$ is bounded above by $\sup A + \sup B$. Now suppose that $c<\sup A + \sup B$. By definition of supremum, there exists $x\in A$ such that
+    \[c-\sup B < x \leq \sup A,\]
+    and there exists some $y\in B$ such that
+    \[c-x < y \leq \sup B,\]
+    which gives us
+    \[c < x + y \leq \sup A + \sup B.\]
+    And since $x+y\in C$, we know that $c$ is not an upper bound for $C$. Therefore, $\sup A + \sup B$ is the supremum of $C$.
+    
+\end{proof}
+
+\section*{Exercise 3}
+\begin{problem}
+    Given nonempty subsets $S$ and $T$ of $\mathbb{R}$ such that $S \subseteq T$ and $T$ has a supremum. Prove that $S$ has a supremum and $\sup S \le \sup T$. Give an example of two sets $S$ and $T$ in the real line such that $S \subset T$ (strict content), and $\sup S = \sup T$. 
+\end{problem}
+
+\begin{proposition}
+    $S$ has a supremum and $\sup S \le \sup T$.
+\end{proposition}
+
+\begin{proof}
+    Since $\sup T$ is an upper bound for $T$, then for any $s\in S\subseteq T$, we have that $s\leq \sup T$, so $\sup T$ is an upper bound for $S$. Since $S$ is bounded above, then by the least upper bound property of $\R$, $\sup S$ exists. Since $\sup T$ is an upper bound for $S$, then by definition of supremum, $\sup S \leq \sup T$.
+    
+\end{proof}
+
+If $S=[0,1)$ and $T=[0,1]$, then $S\subset T\subseteq\R$ and $\sup S = \sup T=1$.
+
+
+\section*{Exercise 4}
+\begin{problem}
+    Let $A$ be a nonempty set of real numbers which is bounded below. Let $-A$ be the set of all numbers $-x$, where $x\in A$. Prove that 
+    \[
+     \inf A = - \sup (-A).
+    \]
+\end{problem}
+
+\begin{proof}
+    Since $A\subseteq \R$ is bounded below, then by the least upper bound property, $\inf A$ exists. Let $-x\in-A$, that is, $x\in A$. By the definition of infimum, $\inf A \leq x$, equivalently, $-x\leq -\inf A$. Therefore, $-\inf A$ is an upper bound for $-A$. Now suppose $-c< -\inf A$, that is, $\inf A < c$. By definition of infimum, there exists some $x\in A$ such that
+    \[\inf A \leq x < c,\]
+    which implies that
+    \[-c < -x \leq -\inf A.\]
+    And since $x\in A$, then $-x\in-A$, so $-c$ is not an upper bound for $-A$. Therefore, $-\inf(A) = \sup(-A)$.
+    
+\end{proof}
+
+
+
+
+\end{document}

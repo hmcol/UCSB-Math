@@ -1,0 +1,94 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% custom commands
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\p}{^{\prime}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\setlength{\fboxsep}{4pt}
+\newcommand{\ex}[2]{\section*{Exercise #1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\prob}[2]{\section*{Problem #1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\ques}[2]{\section*{Question #1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+ 
+\begin{document}
+ 
+\title{Assignment 5\\
+    \large MATH CS 120FG Graph Theory I}
+\author{Harry Coleman}
+\date{March 3, 2020}
+\maketitle
+
+\ques{1}{
+    Prove that the hypercube $Q_n$ and complete bipartite graph $K_{m,n}$ are Type 1 for all $m,n$ ($m\leq n$) by explicitly describing a proper edge $n$-coloring.
+}
+
+The graph $Q_n$ is the vertices of an $n$-dimensional hypercube. Color the parallel edges in each dimension the same color. This gives a proper edge $n$-coloring.
+
+In $K_{m,n}$, there are subsets $\{x_1,\dots,x_m\}$ and $\{y_1,\dots,y_n\}$. Color the edge between the vertices $x_i$ and $y_j$ with $c_k$ where $k=(i+j)\mod n$. This is a proper coloring since the edges from each $x_i$ take on exactly the colors $c_1,\dots,c_n$ and the edges from each $y_i$ take on $m$ different colors in $c_1,\dots,c_n$. If this were not the case, then two vertices would have indices with a difference of $n$, but  none do.
+
+\ques{2}{
+    Suppose $G$ is $k$-regular and connected but not $2$-connected (i.e., $G$ has a cut vertex). Show that $\chi^\prime (G)> k$. 
+}
+
+Suppose, to the contrary that $G$ is colored with $k$. Let $v$ be a cut vertex of $G$, and $x$ and $y$ be vertices adjacent to $v$ in $G$, but in different components of $G-v$. Call $A$ and $B$ the colors of edges $vx$ and $vy$. Since $x$ and $y$ are in different components of $G-v$, there is no cycle of $G$ which contains both vertices; otherwise, they would be connected in $G-v$.
+
+Consider now the subgraph $G'$ with all vertices of $G$, but only the edges colored $A$ or $B$. Since $G$ is $k$-regular, each vertex of $G$ has exactly one incident edge of each color. So each vertex of $G'$ has an $A$ incident edge and a $B$ incident edge. In other words, $G'$ is 2 regular with $AB$-alternating cycles. This means that since $xv$ and $yv$ are adjacent edges of colors $A$ and $B$, they must lie on an $AB$ alternating cycle. This, however, is a contradiction with the previous statement that $x$ and $y$ do not lie on a cycle in $G$.
+
+Therefore, $\chi'(G)\ne k=\Delta(G)$, so $\chi'(G)=\Delta(G)+1=k+1>k$.
+
+\ques{4}{
+    Determine whether or not the following graph has a perfect matching by either finding a perfect matching or finding a subset $S$ of one side's vertices that violates the condition of Hall's Theorem. 
+    
+    \begin{drawing}{rotate=90}
+        \foreach \x/\y in {0/1,0/3,3/1,3/5,4/3,4/5,5/3,1/1,1/2,1/5,2/3,2/4,2/3,2/4,1/0,6/6,6/5} {
+            \draw (0,\x)node[xshift=-15pt]{$l_\x$} -- (3,\y)node[xshift=15pt]{$r_\y$} ;
+            \draw[color=white,line width=4pt,fill=black] (0,\x)circle(5pt) (3,\y)circle(5pt);
+        }
+    \end{drawing}
+}
+
+Consider the subset on the right $S=\{r_0,r_2\}$, with $N(S)=\{l_1\}$. This violates halls condition that for all subsets, $|S|\leq|N(S)|$. Therefore, there does not exist a perfect matching.
+
+
+\ques{5}{
+    Determine whether or not the following graph has a perfect matching by either finding a perfect matching or finding a subset $S$ of one side's vertices that violates the condition of Hall's Theorem. 
+    
+    \begin{drawing}
+        \foreach \x/\y in {0/3,1/6,2/2,3/5,4/0,5/1,6/4,6/6,6/2,5/4,4/1,3/3,2/3,2/0,2/6,1/1,1/5,0/1}{
+            \draw (0,\x)node[xshift=-15pt]{$l_\x$} -- (3,\y)node[xshift=15pt]{$r_\y$} ;
+            \draw[color=white,line width=4pt,fill=black] (0,\x)circle(5pt) (3,\y)circle(5pt);
+        }
+    \end{drawing}
+}
+
+There does exists a perfect matching, namely $\{l_0r_3, l_1r_1, l_2r_2, l_3r_5, l_4r_0, l_5r_4, l_6r_6\}$.
+
+\ques{6}{
+    Let $G$ be a graph, and for a subset $S$ of vertices, let $o(G-S)$ be the number of components of $G$ that contain an odd number of vertices. Show that if $G$ has a perfect matching, then $o(G-S)\leq |S|$ for all subsets $S$ of $V(G)$. \emph{Note: The converse is also true, but you do not need to prove this!}
+}
+
+Let $M$ be a perfect matching of $G$. Suppose $G-S$ has $o(G-S)=k$ odd components $C_1,\dots,C_k$. For each odd component, there is at least one vertex $v_i\in C_i$ whose matched vertex $v_i'$ under $M$ is not in $C_i$; otherwise, $C_i$ would be an even component. This $v_i'$ must be in $S$. So $S$ has at least $k$ vertices\textemdash that is, $o(G-S) = k\leq |S|$.
+
+\end{document}

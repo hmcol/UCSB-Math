@@ -1,0 +1,253 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{amsmath, amsthm, amssymb, physics, comment}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{4pt}
+\theoremstyle{definition}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\pfrac}[2]{\left(\frac{#1}{#2}\right)}
+
+% Extra Commands
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\teq}{\trianglelefteq}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\rad}{\sqrt}
+\renewcommand{\forall}{\text{ for all }}
+\newcommand{\eqc}{\overline}
+\newcommand{\isom}{\cong}
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH CS 120AG Homework 1}
+    \fancyhead[C]{April 12, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+\begin{pbox}[Exercise 2.33]
+    Let $X$ be the set of all $2 \times 3$ matrices over a field $K$ that have rank at most $1$, considered as a subset of $\A^6 = \operatorname{Mat}(2 \times 3, K)$.
+    
+    \vspace{6pt}
+
+    Show that $X$ is an irreducible affine variety. What is its dimension.
+\end{pbox}
+
+\begin{proof}
+    Consider a $2 \times 3$ matrix with entries in $K$:
+    \[
+        B = \mqty[x_1 & x_2 & x_3 \\ x_4 & x_5 & x_6].
+    \]
+    Then $\rank B \leq 1$ if and only if the dimension of the column space of $B$ is at most $1$, which is the case if and only if each pair of columns in $B$ are linearly dependent. If each pair of columns is linearly dependent, then two of the columns each must be a scalar multiple of the third, implying that the dimension of the column space is $1$. On the other hand, if some pair of columns of $B$ is linearly independent, then the dimension of the column space must be at least $2$, since it contains at least two linearly independent vectors. A given pair of columns of $B$ is linearly independent if and only if the $2 \times 2$ minor of $B$ containing those two columns has determinant equal to zero.
+    
+    We define the following polynomials:
+    \begin{align*}
+        f_1 &= \mqty|x_2 & x_3 \\ x_5 & x_6| = x_2x_6 - x_3x_5, \\
+        f_2 &= \mqty|x_1 & x_3 \\ x_4 & x_6| = x_1x_6 - x_3x_4, \\
+        f_3 &= \mqty|x_1 & x_2 \\ x_4 & x_5| = x_1x_5 - x_2x_4.
+    \end{align*}
+    Then $X$ is the affine variety $V(f_1, f_2, f_3)$. 
+
+\end{proof}
+
+Ran out of time. Not sure if the right way to go is trying to show that $I(X)$ is a prime ideal, maybe by showing $K[x_1, \dots, x_6]/I(X)$ is an integral domain, but I wasn't able to work out either. Im pretty confident that the dimension is $4$, though.
+
+
+
+\newpage
+\begin{pbox}[Exercise 2.40]
+    Let $R = K[x_1, x_2, x_3, x_4]/\<x_1x_4 - x_2x_3\>$. Show:
+\end{pbox}
+
+\begin{pbox}[(a)]
+    $R$ is an integral domain of dimension $3$.
+\end{pbox}
+
+\begin{proof}
+    First, we see that $f = x_1x_4 - x_2x_3$ is irreducible in the ring $K[x_1, x_2, x_3, x_4]$. Suppose, to the contrary, that $f = pq$ for some non-units $p, q \in K[x_1, x_2, x_3, x_4]$. Since $\deg f = 2$, then it must be the case that $\deg p = \deg q = 1$. Let $a_0, \dots, a_4, b_0, \dots, b_4 \in K$, be the coefficients of $p$ and $q$, respectively, so
+    \[
+        f = (a_0 + a_1x_1 + \cdots + a_4x_4)(b_0 + b_1x_1 + \cdots + b_4x_4).
+    \]
+    Since $f$ has no constant term then either $a_0$ or $b_0$ is zero; without loss of generality, assume $b_0 = 0$. Then $a_0q$ provides all the terms of degree $1$. Since $f$ has no degree $1$ terms, then we must also have $a_0 = 0$, so
+    \[
+        f = (a_1x_1 + \cdots + a_4x_4)(b_1x_1 + b_2x_2 + b_3x_3 + b_4x_4).
+    \]
+    Since $f$ has a nonzero term containing $x_1$, then either $a_1$ or $b_1$ is nonzero. Without loss of generality, assume $a_1 \ne 0$. Then $f$ has no terms containing $x_1^2$, so we must have $b_1 = 0$. Since $f$ has no terms containing $x_1x_2$ or $x_1x_3$, and $q$ does not contain $x_1$, then we must also have $b_2 = b_3 = 0$, so
+    \[
+        x_1x_4 - x_2x_3 = f = (a_1x_1 + a_2x_2 + a_3x_3 + a_4x_4)(b_4x_4).
+    \]
+    However, the right-hand side now lacks the term $x_2x_3$, which is a contradiction. Therefore $f$ is irreducible in the unique factorization domain $K[x_1, x_2, x_3, x_4]$, implying that $f$ is prime. Then $\<f\>$ is a prime ideal, so the quotient ring $R = K[x_1, x_2, x_3, x_4]/\<f\>$ is an integral domain.
+    
+    Now since $\<f\>$ is a prime ideal in the coordinate ring of the affine space $\A^4$, then Remark 2.9 tells is that its zero locus $V(f)$ is an irreducible affine subvariety of $\A^4$. That is, $V(f)$ is an irreducible component of itself, in fact the only one. By Proposition 2.28(c),
+    \[
+        \dim V(f) = \dim \A^4 - 1 = 3.
+    \]
+    And by Lemma 2.27, the dimension of $V(f)$ is precisely the Krull dimension of its coordinate ring,
+    \[
+        A(V(f)) = K[x_1, x_2, x_3, x_4]/I(V(f)).
+    \]
+    Because $f$ is prime,
+    \[
+        I(V(f)) = \sqrt{\<f\>} = \<f\>,
+    \]
+    so in fact
+    \[
+        A(V(f)) = K[x_1, x_2, x_3, x_4]/\<f\> = R.
+    \]
+    Hence, the Krull dimension of $R$ is $3$.
+
+\end{proof}
+
+
+
+\begin{pbox}[(b)]
+    $x_1, \dots, x_4$ are irreducible, but not prime in $R$. In particular, $R$ is not a unique factorization domain.
+\end{pbox}
+
+\begin{proof}
+    Let $f = x_1x_4 - x_2x_3$, so $R = K[x_1, x_2, x_3, x_4]/\<f\>$. Note that the quotient is symmetric with respect to the indeterminates, so the proof for each is identical. We first show that $x_1$ is irreducible in $R$. Suppose that $r, s \in R$ such that $x_1 + \<f\> = rs$. 
+
+    Any nonempty subset $S \subseteq K[x_1, x_2, x_3, x_4]$ of polynomials contains at least one polynomial whose degree is the minimum degree over all polynomials in $S$. This is because the set of degrees $\{\deg g \mid g \in S\}$ is a nonempty subset of nonnegative integers, meaning that the minimum degree is attained by some polynomial in $S$.
+
+    Suppose we have a polynomial $g \in K[x_1, x_2, x_3, x_4]$ of degree $n \geq 1$. For $j = 0, 1, \dots, n$, define the polynomial $g_j$ as the sum of the degree $j$ terms of $g$ (i.e., $g_j$ is the degree $j$ homogeneous component of $g$), then $g = g_0 + g_1 + \cdots + g_n$. If there is a polynomial $h \in K[x_1, x_2, x_3, x_4]$ such that $g_n = hf$, then the coset of $g$ is given by
+    \begin{align*}
+        g + \<f\> 
+            &= (g_0 + g_1 + \cdots + g_{n-1} + hf) + \<f\> \\
+            &= (g_0 + g_1 + \cdots + g_{n-1}) + \<f\>.
+    \end{align*}
+    In other words, $g_0 + g_1 + \cdots + g_{n-1}$ is a representative from the coset $g + \<f\>$ with lesser degree than $g$. Importantly, this means that a minimum degree representative from a coset in $R$ must have a leading homogeneous component not divisible by $f$.
+    
+    We choose minimum degree representatives $p \in \pi^{-1}(r)$ and $q \in \pi^{-1}(s)$, so
+    \[
+        x_1 + \<f\> = (p + \<f\>)(q + \<f\>) = pq + \<f\>.
+    \]
+    Equivalently, $pq - x_1 \in \<f\>$, meaning there is some polynomial $h \in K[x_1, x_2, x_3, x_4]$ such that in $K[x_1, x_2, x_3, x_4]$ we have
+    \[
+        pq - x_1 = hf = h(x_1x_4 - x_2x_3).
+    \]
+    Since $f$ only contains terms of degree $2$ (i.e., $f$ is homogeneous of degree $2$), then the nonzero terms of $hf$ must be of degree at least $2$. In particular, $hf$ does not have $x_1$ as a term, so $pq$ must have $x_1$ as a term. Without loss of generality, assume $p$ has $x_1$ as a term and $q$ has $1$ as a term (It may be the case that one has $ax_1$ and the other has $a^{-1}$ for some unit $a \in K$, but factoring out $a$ from the former and multiplying the latter by $a$ gives us $x_1$ and $1$). Since $hf$ contains no terms of degree $0$ or $1$, and $q$ contains $1$ as a term, then $p$ contains no terms of degree $0$ or $1$, other than $x_1$. 
+    
+    Let $n = \deg p$, $m = \deg q$. $p_j$, $k = \deg h$. Assume, for contradiction, that $n \geq 2$, $m \geq 1$ and $h \ne 0$. Then $x_1$ is not a leading term of $p$ and $1$ is not a leading term of $q$, so we have leading terms
+    \[
+        p_nq_m = h_kf,
+    \]
+    where $n + m = k + 2$. Since $f$ is irreducible in $K[x_1, x_2, x_3, x_4]$, then $f$ must be a factor of either $p_n$ or $q_m$. However, this is a contradiction as both $p$ and $q$ were chosen to be minimum degree representatives, meaning neither of their leading homogeneous components is divisible by $f$. 
+
+    Then either $n = 1$, $m = 0$, or $h = 0$. In the first case, $p = x_1$, implying that $q + \<f\> = 1 + \<f\>$ is a unit in $R$. In the second case, $q = 1$, whose coset is the unit in $R$ . And in the third case, $pq = x_1$, implying that either $p$ or $q$ is a unit in $K$, which is a unit in the quotient $R$. Hence, $x_1$ is irreducible in $R$.
+
+    We now show that $x_1$ is not prime in $R$, by showing that $R/\<x_1 + \<f\>\>$ is not an integral domain. Simplifying the quotient, in particular using the third isomorphism theorem for rings, we find
+    \begin{align*}
+        R/\<x_1 + \<f\>\>
+            &\isom K[x_1, x_2, x_3, x_4]/\<x_1,\; x_1x_4 - x_2x_3\> \\
+            &= K[x_1, x_2, x_3, x_4]/\<x_1,\; x_2x_3\> \\
+            &\isom (K[x_1, x_2, x_3, x_4]/\<x_1\>) / (\<x_1,\; x_2x_3\>/\<x_1\>) \\
+            &\isom K[x_2, x_3, x_4] / \<x_2x_3\>.
+    \end{align*}
+    In the last quotient ring, the cosets of $x_2$ and $x_3$ are both nonzero elements, but their product is zero. Thus, this is not an integral domain, so $x_1$ is not prime in $R$.
+
+    We conclude that $R$ is not a unique factorization domain, since the elements $x_1, x_2, x_3, x_4$ are irreducible but not prime.
+
+
+
+\end{proof}
+
+
+
+\begin{pbox}[(c)]
+    $x_1x_4$ and $x_2x_3$ are two decompositions of the same element of $R$ into irreducible elements that do not agree up to units.
+\end{pbox}
+
+\begin{proof}
+    We have $x_1x_4 - x_2x_3 \in \<f\>$, which translates in $R$ to
+    \begin{align*}
+        x_1x_4 + \<f\> &= x_2x_3 + \<f\> \\
+        (x_1 + \<f\>)(x_4 + \<f\>) &= (x_2 + \<f\>)(x_3 + \<f\>).
+    \end{align*}
+    We know that the indeterminates are irreducible, so these are both irreducible decompositions.
+
+\end{proof}
+
+Ran out of time to show indeterminates non-associate in $R$, but I'm pretty sure you could just pull the associate from $R$ back into the polynomial ring to get a contradiction.
+
+
+\newpage
+\begin{pbox}[(d)]
+    $\<x_1, x_2\>$ is a prime ideal of codimension $1$ in $R$ that is not principal.
+\end{pbox}
+
+\begin{proof}
+    We find
+    \begin{align*}
+        R/\<x_1, x_2\>
+            &\isom K[x_1, x_2, x_3, x_4]/\<x_1, x_2,\; x_1x_4 - x_2x_3\> \\
+            &= K[x_1, x_2, x_3, x_4]/\<x_1, x_2\> \\
+            &\isom K[x_3, x_4].
+    \end{align*}
+    This is an integral domain so $\<x_1, x_2\>$ is a prime ideal of $R$. Then $V(x_1, x_2)$ is an irreducible affine subvariety of $V(R)$ with coordinate ring
+    \[
+        A(V(x_1, x_2))
+            = R/\<x_1, x_2\>
+            \isom K[x_3, x_4]
+            \isom K[x_1, x_2]
+            = A(\A^2).
+    \]
+    Then the codimension of the prime ideal $\<x_1, x_2\>$ is given by
+    \begin{align*}
+        \operatorname{codim}_R \<x_1, x_2\>
+            &= \operatorname{codim}_{V(R)} V(x_1, x_2) \\
+            &= \dim V(R) - \dim V(x_1, x_2) \\
+            &= \dim R - \dim \A^2 \\
+            &= 3 - 2 \\
+            &= 1.
+    \end{align*}
+
+\end{proof}
+
+I'm not confident this shows that the ideal isn't principal, since I didn't really finish (c):
+
+Suppose $\<p\> = \<x_1, x_2\>$, then $p$ contains no nonzero terms of degree less than $1$. Since both $x_1$ and $x_2$ are degree $1$, then we would have $x_1 = ap$ and $x_2 = bp$ a for some nonzero $a, b \in K$. But then $x_1 = ab^{-1}x_2$, which is a contradiction.
+    
+
+
+\end{document}

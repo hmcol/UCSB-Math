@@ -1,0 +1,254 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage[margin=1in]{geometry} % proper margins
+\usepackage{enumitem} % custom numbering for lists
+\usepackage{amsmath} % align, cases, eqref, matrices, dots, roots, delimiters, math mode functions, mod
+\usepackage{amsthm,amssymb,wasysym,mathrsfs,mathtools,babel}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{\textwidth-10pt}}
+    {\end{minipage}\end{lrbox}\framebox[6.5in]{\usebox{\mybox}}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\seq}[2][n]{\left\{#2\right\}_{#1\in\N}}
+\newcommand{\clo}[1]{\overline{#1}}
+\newcommand{\conj}[1]{\overline{#1}}
+\newcommand{\eqc}[1]{\overline{#1}}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\newcommand{\<}{\left\langle}
+\renewcommand{\>}{\right\rangle}
+
+% Blackboard Characters
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\renewcommand{\P}{\mathbb{P}}
+
+% Calligraphy Characters
+\newcommand{\FF}{\mathcal{F}}
+
+% Misc Characters
+\let\eps\varepsilon
+\let\emptyset\varnothing
+
+% Functions and Operators
+\newcommand{\id}[1]{\operatorname{id_{\mathnormal{#1}}}}
+\renewcommand{\Im}{\operatorname{Im}}
+\renewcommand{\Re}{\operatorname{Re}}
+\newcommand{\Arg}{\operatorname{Arg}}
+
+% Complex Analysis
+
+\newcommand{\pdv}[3][1]{\ifnum#1=1{\frac{\partial #2}{\partial#3}}\else{\frac{\partial^{#1}#2}{\partial#3^{#1}}}\fi}
+
+% Real Analysis
+\newcommand{\intr}[1]{\accentset{\circ}{#1}}
+
+% Notes
+% medskip for header-less paragraph
+% intertext{} for short text inside big display structure
+% dots is dynamic based on surroundings
+% dfrac and tfrac to force large or small fractions
+% operatorname for new operators instead of text
+
+\begin{document}
+ 
+\title{Test 2\\
+    %\large MATH CS 121 Intro to Probability
+    %\large MATH 111A Intro to Abstract Algebra
+    %\large MATH CS 122A Complex Analysis I
+    \large MATH 118A Intro to Real Analysis
+    %\large MATH 104A Intro to Numerical Analysis
+}
+\author{Harry Coleman}
+\date{November 7, 2020}
+\maketitle
+
+\section*{Problem 1}
+\begin{problem}
+    Let $X = [1,+\infty)$ and define the function $d:X\times X\to \R$ as follows:
+    \begin{equation}
+    d(x,y) = \left \{ \begin{array}{lr}
+    0,& x=y,\\
+    1+\frac{1}{xy},& x\ne y.
+    \end{array}\right .
+    \end{equation}
+    Prove that $d$ is a metric, and determine whether the set $[4,5)$ is open or closed.  
+\end{problem}
+
+\begin{proof}
+    Let $x,y,z\in X = [1,+\infty)$. First note that since $x,y,z\geq 1$ then
+    \[0 < \frac1{xz},\frac1{xy},\frac1{yz} \leq 1.\]
+    Trivially, we see that $d(x,y)\geq 0$.
+    
+    By definition, if $x=y$ then $d(x,y) = 0$. If $d(x,y)=0$, then we must have $x=y$, because $1+\frac1{xy}>1$, implying that $1+\frac1{xy}\ne 0$.
+    
+    Next, we have symmetry because
+    \[d(x,y) = 1+ \frac1{xy} = 1 + \frac1{yx} = d(y,x).\]
+    
+    Lastly, we prove the triangle inequality. Without loss of generality, assume $x\ne z$, $x\ne y$, and $y\ne z$, because if any pair has equality, then the triangle inequality is simply equality. Then
+    \[d(x,z) = 1 + \frac1{xz} \leq 1 + 1 \leq 1 + \frac1{xy} + 1 + \frac1{yz} = d(x,y) + d(y,z).\]
+    So $d$ is, indeed, a metric. Because we have $d(x,y)\geq 1$ when $x\ne y$, then we have $B_\frac12(x) = \{x\}$. This means that the metric topology on $X$ defined by $d$ is the discrete topology, i.e., every subset of $X$ is open. In particular, for any $x\in[4,5)$, we have $B_\frac12(x) = \{x\} \subseteq [4,5)$.
+    
+\end{proof}
+
+
+\newpage
+\section*{Problem 2}
+\begin{problem}
+    Prove that the set of irrational numbers is dense in $\R$.
+\end{problem}
+
+\begin{proof}
+    Let $x,y\in\R$ with $x<y$. We want to show that there exists some rational number between the two. If $x<0<y$, then $0\in\Q$ is the desired value. If $x<y<0$, then $0<-y<-x$. If there exists a rational $p\in\Q$ such that $0<-y<p<-x$, then $x<-p<y<0$ and $-p\in\Q$ is the desired value. Thus, it suffices to prove the density for $0<x<y$.
+    
+    Since $y-x > 0$, then by the Archimedean property, there exists some $n\in\N$ such that
+    \[1 < n(y-x) \implies nx + 1< ny.\]
+    The set $\{m\in\N : m \leq nx\}$ is a bounded subset of $\R$, so there must exist some least upper bound $m$. Since the set is finite, $m$ is the maximum. We now have $m\leq nx < m+1$, because $m<m+1$ and $m$ is an upper bound for the set. Then
+    \[m \leq nx \implies m+1 \leq nx + 1 < ny,\]
+    so $nx< m+1 < ny$. Therefore,
+    \[x < \frac{m+1}{n} < y,\]
+    and $(m+1)/n\in\Q$ is the desired value.
+    
+    
+\end{proof}
+
+\newpage
+\section*{Problem 3}
+
+\subsection*{Problem 3(a)}
+\begin{problem}
+    Show that in a general metric space the intersection of any finite collection of open sets is open.
+\end{problem}
+
+\begin{proof}
+    Let $(X,d)$ be a metric space and let $\{U_1,\dots,U_n\}$ be a finite collection of open subsets of $X$, with respect to the metric topology. Let 
+    \[U = \bigcap_{i=1}^nU_i.\]
+    We either have $U = \emptyset$, which is open, or we let $x\in U$. For all $i=1,\dots,n$, because $x\in U_i$ and $U_i$ is open, there exists some ball $B_{\eps_i}(x) \subseteq U_i$. We now define $\eps = \min\{\eps_1,\dots,\eps_n\}$, giving us $B_\eps(x) \subseteq B_{\eps_i}(x) \subseteq U_i$ for all $i=1,\dots,n$. Therefore, $B_\eps(x)\subseteq U$, giving us that $U$ is open in the metric topology.
+     
+\end{proof}
+
+\subsection*{Problem 3(b)}
+\begin{problem}
+    Consider $\R^k$ with the Euclidean metric. Prove that for any $r>0$, and any $x \in \R^k$ the closed ball $\overline{B}_r(x)$ is a closed set.
+\end{problem}
+
+\begin{proof}
+    Let $r>0$ and $x\in\R^k$. Let $y\in (\clo{B}_r(x))^C$, which means that $\|x - y\| > r$. We now define $\eps = \|x-y\| - r > 0$. Suppose, for contradiction that $B_\eps(y) \not\subseteq (\clo{B}_r(x))^C$, that is, $B_\eps(y)\cap \clo{B}_r(x) \ne \emptyset$. Now let $z\in B_\eps(y)\cap \clo{B}_r(x)$, then triangle inequality gives us
+    \[\|x - y\| \leq \|x - z\| + \|z - y\| \leq r + \|z - y\| < r + \eps.\]
+    However, this implies that $\eps > \|x-y\| - r$, which contradicts the definition of $\eps$. Therefore, $B_\eps(y) \subseteq (\clo{B}_r(x))^C$, giving us that $(\clo{B}_r(x))^C$ is open and its complement, $\clo{B}_r(x)$, is closed.
+    
+\end{proof}
+
+\subsection*{Problem 3(c)}
+\begin{problem}
+    Consider $\R^k$ with the Euclidean metric. Find an infinite collection of open sets $\{A_n\}_{n\in\N}$ such that $\cap_{n\in\N}A_n$ is the closed ball $\overline{B}_1(0)$.
+\end{problem}
+
+\begin{proof}
+    For all $n\in\N$, we define $r_n = 1 + \frac1n$ and $A_n = B_{r_n}(0)$. Then let $A = \bigcap_{n\in\N}A_n$. If $x\in \clo{B}_1(0)$, then $\|x\| \leq 1 < 1+\frac1n$ for all $n\in\N$. Then $x\in A_n$ for all $n\in\N$, so $x\in A$.
+    
+    Now let $x\in A$, and suppose, for contradiction, that $x\notin\clo{B}_1(0)$. Because $x\in A$, then $\|x\| < 1 + \frac1n$ for all $n\in\N$. Because $x\in\clo{B}_1(0)$, then $\|x\|> 1$. Because $\frac1n\to 0$ as $n\to \infty$, there exists some $N\in\N$ such that $\frac1N < \|x\| - 1$. However, this implies that $x\notin A_N$. so $x\notin A$, which is a contradiction, so $A=\clo{B}_1(0)$.
+    
+\end{proof}
+
+\newpage
+\section*{Problem 4}
+\begin{problem}
+    Let $(X,d)$ be a general metric space.
+\end{problem}
+
+\subsection*{Problem 4(a)}
+\begin{problem}
+    Show that any compact set is closed and bounded.
+\end{problem}
+
+\begin{proof}
+    Let $E\subseteq X$ be compact. Since $\{B_1(x)\}_{x\in E}$ is an open cover of $E$, then there is a finite subcover $\{B_1(x_1),\dots,B_1(x_n)\}$. Define $R = \ds\max_{i\in\{2,\dots,n\}}d(x_1,x_i)$. Then for any $x\in E$, we have $x\in B_1(x_i)$ for some $i\in\{1,\dots,m\}$. The triangle inequality gives us
+    \[d(x,x_1) \leq d(x,x_i) + d(x_i,x) \leq 1 + R.\]
+    So $x\in B_{R+1}(x_1)$ for all $x\in E$, implying that $E\subseteq B_{R+1}(x_1)$ and $E$ is bounded.
+    
+    Now suppose $y\in E^C$. Then for each $x\in E$, define $r_x = \frac12d(x,y) > 0$.  Then $\{B_{r_x}(x)\}_{x\in E}$ is an open cover of $E$, so there is a finite subcover $\{B_{r_1}(x_1),\dots,B_{r_n}(x_n)\}$. Now define $r=\min\{r_1,\dots,r_n\}$, and consider the ball $B_r(y)$. Let $i\in\{1,\dots,n\}$ and assume, for contradiction, that $B_r(y)\cap B_{r_i}(x_i) \ne \emptyset$. Let $z\in B_r(y)\cap B_{r_i}(x_i)$, then the triangle inequality gives us
+    \[d(x_i, y) \leq d(x_i,z) + d(z,y) < r_i + r \leq r_i + r_i = d(x_i,y).\]
+    This is a contradiction, so $B_r(y)\cap B_{r_i}(x_i) = \emptyset$ for all $i=1,\dots,n$. Then
+    \[B_r(y) \cap E \subseteq B_r(y) \cap \bigcup_{i=1}^nB_{r_i}(x_i) = \emptyset.\]
+    So $B_r(y)\subseteq E^C$, implying that $E^C$ is open and $E$ is closed.
+    
+\end{proof}
+
+\newpage
+\subsection*{Problem 4(b)}
+\begin{problem}
+    Show that the intersection of any number of compact sets is compact.
+\end{problem}
+
+\begin{proof}
+    Let $\{E_\alpha\}_{\alpha\in I}$ be a collection of compact subsets of $X$ and let
+    \[E = \bigcap_{\alpha\in I}E_\alpha.\]
+    Each $E_\alpha$ is closed, so each $E_\alpha^C$ is open. Now since the union of arbitrarily many open subsets is open, then
+    \[E^C = \left(\bigcap_{\alpha\in I}E_\alpha\right)^C = \bigcup_{\alpha\in I}E_\alpha^C\]
+    is open. Let $\{U_\beta\}_{\beta\in J}$ be an open cover of $E$. Then for any $\alpha\in I$,
+    \[E_\alpha \subseteq X = E^C \cup E \subseteq E^C \cup \bigcup_{\beta\in J}U_\beta,\]
+    so $\{U_\beta\}_{\beta\in J}$ with $E^C$ is an open cover of $E_\alpha$. Because $E_\alpha$ is compact, we can take a finite subcover $\{U_1,\dots,U_n\}\cup\{E^C\}$, which may or may not include $E^C$, but including $E^C$ is a finite subcover in either case. Now
+    \[E \subseteq E_\alpha \subseteq E^C\cup\bigcup_{i=1}^nU_i,\]
+    and since $E\cap E^C = \emptyset$, we have
+    \[E \subseteq \bigcup_{i=1}^nU_i.\]
+    Therefore, $\{U_1,\dots,U_n\}$ is a finite open cover of $E$, which is a subcover of $\{U_\beta\}_{\beta\in J}$, so $E$ is compact.
+    
+\end{proof}
+
+\newpage
+\subsection*{Problem 4(c)}
+\begin{problem}
+    Show that the union of a finite number of compact sets is compact.
+\end{problem}
+
+\begin{proof}
+    Suppose $E_1,\dots,E_n \subseteq X$ are compact, and let
+    \[E = \bigcup_{i=1}^n E_i.\]
+    Let $\{U_\alpha\}_{\alpha\in I}$ be an open cover of $E$. And since $E_i\subseteq E$, then $\{U_\alpha\}_{\alpha\in I}$ is also an open cover for all $i=1,\dots n$. For each $i=1,\dots,n$, let $J_i\subseteq I$ be a finite subset of the index set such that $\{U_j\}_{j\in J_i}$ is a finite subcover of $E_i$. Since the finite union of finite sets is finite, then
+    \[J = \bigcup_{i=1}^n J_i\]
+    is finite. Moreover, $\{U_j\}_{j\in J_i} \subseteq \{U_j\}_{j\in J}$ for all $i=1,\dots,n$, which implies that
+    \[E = \bigcup_{i=1}^n E_i \subseteq \bigcup_{i=1}^n\bigcup_{j\in J_i} U_j \subseteq \bigcup_{i=1}^n\bigcup_{j\in J} U_j = \bigcup_{j\in J} U_j.\]
+    In other words, $\{U_j\}_{j\in J}$ is a finite open cover of $E$, which is a subcover of $\{U_\alpha\}_{\alpha\in I}$, giving us that $E$ is compact.
+    
+    
+    
+\end{proof}
+
+\subsection*{Problem 4(d)}
+\begin{problem}
+    Show that the union of an arbitrary collection of compact sets might not be compact.
+\end{problem}
+\medskip
+
+Consider the Euclidean topology on $\R$. For each $n\in \N$, define $E_n = [-n,n]$. Then $\{E_n\}_{n\in\N}$ is a collection of compact subsets of $\R$. However, for all $x\in\R$, there exists some $n\in\N$ with $x\leq n$, implying that $x\in E_n$. So
+\[\bigcup_{n\in\N} E_n = \R.\]
+But $\R$ is unbounded, so it is not compact.
+
+
+\end{document}

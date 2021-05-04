@@ -1,0 +1,246 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow,enumitem}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% custom commands
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\p}{^{\prime}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\setlength{\fboxsep}{4pt}
+\newcommand{\generic}[2]{\section*{#1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\ex}[2]{\generic{Exercise #1}{#2}}
+\newcommand{\prob}[2]{\generic{Problem #1}{#2}}
+\newcommand{\ques}[2]{\generic{Question #1}{#2}}
+
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+ 
+\begin{document}
+ 
+\title{Homework 1\\
+    \large MATH CS 108B Linear Algebra II}
+\author{Harry Coleman}
+\date{April 6, 2020}
+\maketitle
+
+\ex{3 (textbook)}{
+    For each of the following vector spaces $V$ and bases $\beta$, find explicit formulas for vectors of the dual basis $\beta^*$ for $V^*$.
+    \begin{enumerate}[label=(\alph*)]
+        \item $V=\R^3; \beta=\{(1,0,1),(1,2,1),(0,0,1)\}$
+        \item $V=P_2(\R); \beta=\{1,x,x^2\}$
+    \end{enumerate}
+}
+
+\subsection*{(a)}
+We want to find
+\[\beta^* = \{v_1^*, v_2^*, v_3^*\},\]
+where $v_i^*$ gives the $i$th coordinate of a vector is the basis $\beta$. So given some vector $(x,y,z)\in V$,
+\[(x,y,z) = v_1^*(x,y,z)v_1 + v_2^*(x,y,z)v_2 + v_3^*(x,y,z)v_3,\]
+that is, 
+\[
+    \begin{bmatrix}
+        x \\
+        y \\
+        z 
+    \end{bmatrix}
+    =
+    v_1^*(x,y,z)
+    \begin{bmatrix}
+        1 \\
+        0 \\
+        1 
+    \end{bmatrix}
+    +
+    v_2^*(x,y,z)
+    \begin{bmatrix}
+        1 \\
+        2 \\
+        1 
+    \end{bmatrix}
+    +
+    v_3^*(x,y,zf)
+    \begin{bmatrix}
+        0 \\
+        0 \\
+        1 
+    \end{bmatrix}.
+\]
+We solve this using the augmented matrix
+\[
+    \begin{bmatrix}
+        1 & 1 & 0 & | & x\\
+        0 & 2 & 0 & | & y\\
+        1 & 1 & 1 & | & z
+    \end{bmatrix}
+    \sim
+    \begin{bmatrix}
+        1 & 0 & 0 & | & x - \frac{1}{2}y \\
+        0 & 1 & 0 & | & \frac{1}{2}y \\
+        0 & 0 & 1 & | & z - x
+    \end{bmatrix}.
+\]
+So
+\[\beta^* = \{x - \frac{1}{2}y,\quad \frac{1}{2}y,\quad z - x\}.\]
+
+\subsection*{(b)}
+Let $p(x) = a_0 + a_1x + a_2x^2 \in P_2(\R)$ and $\beta^*=\{v_1^*, v_2^*, v_3^*\}$, so
+\[a_0 + a_1x + a_2x^2 = v_1^*(p(x)) + v_2^*(p(x))x + v_3^*(p(x))x^2.\]
+So, $\beta^*=\{a_0, a_1, a_2\}$. This makes sense since $\beta$ is the standard basis for $V$, and the value of $v_i^*$ for any polynomial $p(x)$ is the $i$th coordinate of $p(x)$ in the basis $\beta$, which is simply the $i$th coefficient of the polynomial.
+
+
+\ex{5 (textbook)}{
+    Let $V=P_1(\R)$, and, for $p(x)\in V$, define $f_1,f_2\in V^*$ by
+    \[f_1(p(x)) = \int_0^1p(t)dt \quad\text{and}\quad f_2(p(x)) = \int_0^2p(t)dt.\]
+    Prove that $\{f_1,f_2\}$ is a basis for $V^*$, and then find a basis for $V$ for which it is the dual basis.
+}
+
+We will first find a basis $\beta$ for $V$ which is based on $\{f_1,f_2\}$. Let $a_0 + a_1x \in P_1(\R)$, so
+\begin{align*}
+    f_1(a_0 + a_1x) &= \int_0^1(a_0 + a_1x)dt \\
+                    &= (a_0(1) + \frac{1}{2}a_1(1)^2) - (a_0(0) + \frac{1}{2}a_1(0)^2) \\
+                    &= a_0 + \frac{1}{2}a_1,
+\end{align*}
+and
+\begin{align*}
+    f_2(a_0 + a_1x) &= \int_0^2(a_0 + a_1x)dt \\
+                    &= (a_0(2) + \frac{1}{2}a_1(2)^2) - (a_0(0) + \frac{1}{2}a_1(0)^2) \\
+                    &= 2a_0 + 2a_1.
+\end{align*}
+Since we want $f_1, f_2$ to give the coordinates of $a_0+a_1x$ in $\beta$, we let
+\[\beta = \{v_1, v_2\},\]
+so
+\begin{align*}
+    a_0 + a_1x  &= (a_0 + \frac{1}{2}a_1)v_1 + (2a_0 + 2a_1)v_2 \\
+                &= a_0(v_1 + 2v_2) + a_1(\frac{1}{2}v_1 + 2v_2).
+\end{align*}
+So
+\begin{align*}
+    v_1 + 2v_2 &= 1, \\
+    \frac{1}{2}v_1 + 2v_2 &= x, \\
+\end{align*}
+which gives us $v_1=2-2x$ and $v_2=-\frac{1}{2} + x$. Since these two vectors are linearly independent, $\beta$ is a basis for $V$. And since this basis was constructed such that $f_1, f_2$ give the coordinates of a vector in $\beta$, then $\{f_1,f_2\}$ is a basis for $V^*$.
+
+
+\ex{3}{
+     Let $V$ be a finite-dimensional vector space. We call the double dual $V^{**}$ of $V$ the dual of $V^*$. We show next that $V$ can be identified in a natural way with its double dual. There is, in fact, an isomorphism between $V$ and $V^{*}$ that does not depend on any choice of basis for $V$ . Define $\psi_V: V \rightarrow V^{**}$ by 
+     \[\psi_V(v) = \overline{v},\]
+     where 
+     \[\overline{v}(f) = f(v),\]
+     that is, $\overline{v}(f)$ is the evaluation of $f$ at $v$.
+     \begin{enumerate}
+        \item Show that $\overline{v}$ is in $V^{**}$.
+        \item Show that $\psi_V$ is an isomorphism from $V$ to $V^{**}$.
+        \item Let $T \in L(V,W)$. Define $T^{\times\times} := (T^\times)^\times$. Show that $T^{\times\times}(\overline{v}) = \overline{T(v)}$, that is, $T^{\times\times}$ is essentially $T$.
+        \item What does the previous observation imply for the matrix representations of $T$ and $T^{\times\times}$ when appropriate bases are chosen.
+     \end{enumerate}
+}
+
+\subsection*{1}
+Let $\overline{v}\in v^{**}$ and $f,g\in V^*$ and $\alpha\in\F$. By the linearity of $f$ and $g$,
+\begin{align*}
+    \overline{v}(\alpha f + g)  &= (\alpha f + g)(v) \\
+                                &= \alpha f(v) + g(v) \\
+                                &= \alpha \overline{v}(f) + \overline{v}(g).
+\end{align*}
+Therefore, $\overline{v}$ is a linear functional $V^*\rightarrow \F$, so it is in $V^{**}$.
+
+\subsection*{2}
+Let $v, w \in V$ and$f\in V^*$ and $\alpha\in\F$. Consider
+\begin{align*}
+    \psi_V(\alpha v + w)(f) &= \overline{(\alpha v + w)}(f) \\
+                            &= f(\alpha v + w).
+\end{align*}
+By the linearity of $f$,
+\begin{align*}
+    \psi_V(\alpha v + w)(f) &= \alpha f(v) + f(w) \\
+                            &= \alpha \overline{v}(f) + \overline{w}(f) \\
+                            &= (\alpha \overline{v} + \overline{w})(f) \\
+                            &= (\alpha \psi_V(v) + \psi_V(w))(f).
+\end{align*}
+Thus,
+\[\psi_V(\alpha v + w) = \alpha \psi_V(v) + \psi_V(w),\]
+so $\psi_V$ is linear. Since dim$V =$ dim$V^* =$ dim$V^{**}$, we need only show $\psi_V$ is monomorphism to show it is an isomorphism. Let $v\in$ker$\psi_V$ so 
+\[\psi_V(v)(f) = \overline{v}(f) = f(v) = 0_\F\]
+for all linear functionals $f:V\rightarrow\F$. The only vector in $V$ which maps to $0_\F$ under every linear functional is $0_V$, so $v=0_V$. Therefore, ker$\psi_V = \{0_V\}$ and $\psi_V$ is a monomorphism, thus an isomorphism.
+
+\subsection*{3}
+Let $T\in L(V,W)$ and $v\in V$ and $f\in V^*$. Consider
+\begin{align*}
+    T^{\times\times}(\overline{v})(f) &= \overline{v}(T^\times(f)) \\
+                            &= \overline{v}(f \circ T) \\
+                            &= (f \circ T)(v) \\
+                            &= f(T(v)) \\
+                            &= \overline{T(v)}(f).
+\end{align*}
+So $T^{\times\times}(\overline{v}) = \overline{T(v)}$
+
+\newpage
+\subsection*{4}
+Let
+\begin{align*}
+    \beta   &= \{v_1, \dots, v_n\}, \\
+    \gamma  &= \{w_1, \dots, w_m\}
+\end{align*}
+be bases for $V,W$, respectively. Since $\psi_V, \psi_W$ are isomorphisms, the images
+\begin{align*}
+    \overline{\beta}    &= \{\overline{v_1}, \dots, \overline{v_n}\}, \\
+    \overline{\gamma}   &= \{\overline{w_1}, \dots, \overline{w_m}\}
+\end{align*}
+are bases for $V^{**},W^{**}$, respectively. Consider the vectors $x\in V$ and $y\in W$ with
+\begin{align*}
+    x &= x_1v_1 + \cdots + x_nv_n,
+    y &= y_1w_1 + \cdots + y_my_m.
+\end{align*}
+Since $\psi_V, \psi_W$ are linear,
+\begin{align*}
+    \psi_V(x)   &= \psi_V(x_1v_1 + \cdots + x_nv_n) \\
+                &= x_1\psi_V(v_1) + \cdots + x_n\psi_V(v_n) \\
+                &= x_1\overline{v_1} + \cdots + x_n\overline{v_n},
+\end{align*}
+\begin{align*}
+    \psi_W(y)   &= \psi_W(y_1w_1 + \cdots + y_mw_m) \\
+                &= y_1\psi_W(w_1) + \cdots + y_m\psi_W(w_n) \\
+                &= y_1\overline{w_1} + \cdots + y_m\overline{w_m}.
+\end{align*}
+So
+\begin{align*}
+    [x]_\beta &= [\overline{x}]_{\overline{\beta}} \\
+    [y]_\gamma &= [\overline{y}]_{\overline{\gamma}}
+\end{align*}
+thus
+\begin{align*}
+    [\psi_V]_\beta^{\overline{\beta}} = I_n, \\
+    [\psi_W]_\gamma^{\overline{\gamma}} = I_m.
+\end{align*}
+
+From (3), we have
+\[T^{\times\times}(\overline{v}) = \overline{T(v)}.\]
+In other words,
+\[T^{\times\times} \circ \psi_V = \psi_W \circ T,\]
+\[T^{\times\times}  = \psi_W \circ T \circ \psi_V^{-1}.\]
+
+Therefore,
+\[[T^{\times\times}]_{\overline{\beta}}^{\overline{\gamma}} = [\psi_W]_{\overline{\gamma}}^\gamma [T]_\beta^\gamma [\psi_V^{-1}]_{\overline{\beta}}^\beta.\]
+So 
+\[[T^{\times\times}]_{\overline{\beta}}^{\overline{\gamma}} = I_m[T]_\beta^\gamma I_n = [T]_\beta^\gamma.\]
+
+
+\end{document}

@@ -1,0 +1,188 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage{subcaption}
+\usepackage{framed}
+\usepackage[table]{xcolor}
+\usepackage{colortbl, multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym}
+\usepackage{mathrsfs, mathtools}
+\usepackage{tikz,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\usepackage{graphicx}
+
+% custom commands
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\p}{^{\prime}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+ 
+\begin{document}
+ 
+\title{Homework 5\\
+    \large MATH CS 108A Linear Algebra I}
+\author{Harry Coleman}
+\date{January 17, 2020}
+
+\maketitle
+
+\section*{Exercise 4 }
+\fbox{
+    \parbox{\textwidth} {
+        Assume that $A, B, and A+B$ are $p \times p$ nonsingular matrices. Show that $A^{-1} + B^{-1}$ is also invertible by giving its inverse.
+    }
+}
+\\
+
+By reflexivity, we have
+\[A+B = A+B.\]
+By definition of the identity,
+\[IA + BI = A+B.\]
+Since we are given that $A$ and $B$ have inverses, then by the definition of inverse, we have
+\[(BB^{-1})A + B(A^{-1}A) = A+B.\]
+By associativity and distributivity of multiplication over addition, we find
+\[B(B^{-1}A) + B(A^{-1}A) = A+B,\]
+\[B(B^{-1}A + A^{-1}A) = A+B,\]
+\[B((B^{-1} + A^{-1})A) = A+B.\]
+Multiplying by the inverse of $A$ on the right, and the inverse of $B$ on the left, we obtain
+\[B^{-1}((B((B^{-1} + A^{-1})A))A^{-1}) = B^{-1}((A+B)A^{-1}).\]
+By associativity, we find
+\[(B^{-1}B)((B^{-1} + A^{-1})(AA^{-1})) = B^{-1}((A+B)A^{-1}).\]
+By definition of inverse and identity, we have
+\[I((B^{-1} + A^{-1})I) = B^{-1}((A+B)A^{-1}),\]
+\[(B^{-1} + A^{-1}) = B^{-1}((A+B)A^{-1}).\]
+By commutativity of matrix addition, we have
+\[(A^{-1} + B^{-1}) = B^{-1}((A+B)A^{-1}).\]
+Since $A$ and $B$ are invertible, so are their inverses. And, with $A+B$ also invertible, we know that the right hand side is invertible, since the product of invertible matrices is invertible. Therefore, so is the left hand side is invertible. Taking the inverse of both sides, we find
+\[(A^{-1} + B^{-1})^{-1} = (B^{-1}((A+B)A^{-1}))^{-1},\]
+\[(A^{-1} + B^{-1})^{-1} = (A(A+B)^{-1})B.\]
+
+
+\section*{Exercise 5}
+\fbox{
+    \parbox{\textwidth} {
+        Show that $r(AB) = (rA)B = A(rB)$, where $r \in \F, A\in \F^{m\times n}$ and $B \in \F^{n\times p}$.
+    }
+}
+\\
+
+By definition of scalar multiplication, we find that
+\[[r(AB)]_{ij} = r(AB)_{ij}.\]
+By definition of matrix multiplication, we have
+\[[r(AB)]_{ij} = r\sum_{k=1}^n A_{ik}B_{kj}.\]
+Since multiplication distributes over addition in $\F$,
+\[[r(AB)]_{ij} = \sum_{k=1}^n r(A_{ik}B_{kj}).\]
+By associativity and commutativity of multiplication in $\F$,
+\[[r(AB)]_{ij} = \sum_{k=1}^n (rA_{ik})B_{kj} = \sum_{k=1}^n A_{ik}(rB_{kj}).\]
+By definition of scalar multiplication,
+\[[r(AB)]_{ij} = \sum_{k=1}^n (rA)_{ik}B_{kj} = \sum_{k=1}^n A_{ik}(rB)_{kj}.\]
+\[[r(AB)]_{ij} = [(rA)B]_{ij} = [A(rB)]_{ij}.\]
+Since scalar multiplication does not change the size of a matrix, we have that all three matrices are equal,
+\[r(AB) = (rA)B = A(rB).\]
+
+\newpage
+\section*{Exercise 6}
+\fbox{
+    \parbox{\textwidth} {
+        Prove that if $A \in M_{p\times q}(\F)$ and $B \in M_{q\times r}(\F)$, then $(AB)^*=B^*A^*$.
+    }
+}
+\\
+
+Let $A \in M_{p\times q}(\F)$ and $B \in M_{q\times r}(\F)$. By definition of conjugate transpose, we have
+\[[(AB)^*]_{ij} = \overline{(AB)_{ji}}.\]
+By definition of matrix multiplication, we find
+\[[(AB)^*]_{ij} = \overline{\sum_{k=1}^q A_{jk}B_{ki}}.\]
+For complex numbers, we have that the conjugate of a sum is the sum of the conjugates of the terms of the sum. So,
+\[[(AB)^*]_{ij} = \sum_{k=1}^q \overline{A_{jk}B_{ki}}.\]
+Similarly, the conjugate of a product is the product of the conjugates of the terms of the product. So,
+\[[(AB)^*]_{ij} = \sum_{k=1}^q (\overline{A_{jk}}) (\overline{B_{ki}}).\]
+By the definition of conjugate transpose, we have
+\[[(AB)^*]_{ij} = \sum_{k=1}^q A^*_{kj} B^*_{ik}.\]
+Since multiplication commutes in the field $\F$,
+\[[(AB)^*]_{ij} = \sum_{k=1}^q B^*_{ik}A^*_{kj}.\]
+By definition of matrix multiplication, we have
+\[[(AB)^*]_{ij} = (B^*A^*)_{ij}.\]
+Since $AB$ is a $p\times r$ matrix, $AB^*$ is an $r\times p$ matrix. $B^*$ is a $r\times q$ matrix and $A^*$ is a $q\times p$ matrix, so $(B^*A^*)$ is a $r\times p$ matrix. So we have
+\[(AB)^* = B^*A^*.\]
+
+
+\newpage
+\section*{Exercise 7}
+\fbox{
+    \parbox{\textwidth} {
+        Suppose that $A$ is a nonsingular matrix. Prove that $A$ is symmetric (Hermitian) if and only if $A^{-1}$ is symmetric (Hermitian).
+    }
+}
+\\
+
+In order to show that $A$ is symmetric if and only if $A^{-1}$ is symmetric, we first assume that $A$ is symmetric. Since $A$ is nonsingular, we can find its inverse $A^{-1}$ with
+\[AA^{-1} = I.\]
+Taking the transpose of both sides we have
+\[(AA^{-1})^T = I^T\]
+Since the identity matrix is symmetric, $I=I^T$. And, since both $A$ and $A^{-1}$ are nonsingular, we have that
+\[(A^{-1})^TA^T = I.\]
+Since $A$ is symmetric, $A=A^T$, so
+\[(A^{-1})^TA = I.\]
+Multiplying both sides by the inverse of $A$ on the right, we obtain
+\[((A^{-1})^TA)A^{-1} = IA^{-1}.\]
+By associativity, definition of inverses, and the identity for matrix multiplication,
+\begin{align*}
+    (A^{-1})^T(AA^{-1}) &= A^{-1}, \\
+    (A^{-1})^TI &= A^{-1}, \\
+    (A^{-1})^T &= A^{-1}.
+\end{align*}
+So $A^{-1}$ is symmetric. We now assume that $A^{-1}$ is symmetric, and show that $A$ is symmetric. We find, again, that
+\[(A^{-1})^TA^T = I.\]
+Now, since $A^{-1}$ is symmetric, $A^{-1} = (A^{-1})^T$, so
+\[A^{-1}A^T = I.\]
+Multiplying by $A$ on the left, we obtain
+\[A(A^{-1}A^T) = AI.\]
+By associativity, definition of inverses, and the identity for matrix multiplication,
+\begin{align*}
+    (AA^{-1})A^T &= A, \\
+    IA^T &= A, \\
+    A^T &= A. \\
+\end{align*}
+So $A$ is symmetric. Therefore, $A$ is symmetric if and only if $A^{-1}$ is symmetric.
+
+Similarly, to show that $A$ is Hermitian if and only if $A^{-1}$ is Hermitian, we first assume that $A$ is Hermitian. Since $A$ is nonsingular, we have
+\[AA^{-1} = I.\]
+Taking the conjugate transpose of both sides,
+\[(AA^{-1})^* = I^*.\]
+Since the identity matrix is symmetric and has all real elements, $I=I^*$. And, since both $A$ and $A^{-1}$ are nonsingular,
+\[(A^{-1})^*A^* = I.\]
+Since $A$ is Hermitian, $A=A^*$, so
+\[(A^{-1})^*A = I.\]
+Multiplying by the inverse of $A$ on the left, we obtain
+\[((A^{-1})^*A)A^{-1} = IA^{-1}.\]
+By associativity, definition of inverses, and the identity for matrix multiplication,
+\begin{align*}
+    (A^{-1})^*(AA^{-1}) &= A^{-1}, \\
+    (A^{-1})^*I &= A^{-1}, \\
+    (A^{-1})^* &= A^{-1}.
+\end{align*}
+So $A^{-1}$ is Hermitian. We now assume that $A^{-1}$ is Hermitian, and show that $A$ is Hemritian. We find, again, that
+\[(A^{-1})^*A^* = I.\]
+Since $A^{-1}$ is Heermitian, $A^{-1} = (A^{-1})^*$, so
+\[A^{-1}A^* = I.\]
+Multiplying by $A$ on the left,
+\[A(A^{-1}A^*) = AI\]
+By associativity, definition of inverses, and the identity for matrix multiplication,
+\begin{align*}
+    (AA^{-1})A^* &= A, \\
+    IA^* &= A, \\
+    A^* &= A.
+\end{align*}
+So $A$ is Hermitian. Therefore, $A$ is Hermitian if and only if $A^{-1}$ is Hermitian
+
+\end{document}

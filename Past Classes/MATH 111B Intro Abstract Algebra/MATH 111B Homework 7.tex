@@ -1,0 +1,204 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{amsmath, amsthm, amssymb, physics}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{4pt}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\pfrac}[2]{\left(\frac{#1}{#2}\right)}
+
+% Extra Commands
+\newcommand{\txtsum}{\operatornamewithlimits{{\textstyle\sum}}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\eqc}{\overline}
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH 111B Homework 7}
+    \fancyhead[C]{February 26, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+
+\begin{pbox}[Q1 Problem 9.4.2]
+    Prove that the following polynomials are irreducible in $\Z[x]$:
+\end{pbox}
+
+\begin{pbox}[(b)]
+    $x^6 +30x^5 - 15x^3 + 6x -120$
+\end{pbox}
+
+Since $3$ is a prime which divides $30$, $15$, $6$, and $120$, but $3^2 = 9$ does not divides $120$, then by Eisenstein's criterion, the polynomial is irreducible in $\Z[x]$.
+
+\begin{pbox}[(c)]
+    $x^4 + 4x^3 + 6x^2 + 2x + 1$ [Substitute $x-1$ for $x$.]
+\end{pbox}
+
+Let $p(x) = x^4 + 4x^3 + 6x^2 + 2x + 1$. Then $p(x)$ is irreducible in $\Z[x]$ if an only if $p(x-1)$ is (where $p(x-1)$ is polynomial obtained from $p(x)$ by substituting $x-1$ for $x$). This is because any factorization of one can be turned into a factorization of the other by replacing $x$ with $x+1$ or $x-1$. We have
+\[
+    p(x-1) = x^2 - 2x + 2,
+\]
+and Eisenstein's criterion tells us that $p(x-1)$ is irreducible in $\Z[x]$. Hence, $p(x)$ is irreducible in $\Z[x]$.
+
+
+
+
+\begin{pbox}[Q2 Problem 10.1.5]
+    (We didn't define left ideals. You can simply assume that I is an ideal.) For any (left) ideal $I$ of $R$ define
+    \[
+        IM = \{\sum_{\text{finite}} a_i m_i \mid a_i \in I,\; m_i \in M\}
+    \]
+    to be the collection of all finite sums of elements of the form $am$ where $a \in I$ and $m \in M$. Prove that $IM$ is a submodule of $M$.
+\end{pbox}
+
+\begin{proof}
+    We know that both $I$ and $M$ are nonempty, by the definitions of ideals and $R$-modules, respectively, so $IM$ must also be nonempty. Since $M$ is an $R$-module, then $am \in M$ for all $a \in I$ and $m \in M$. And any finite sum $\sum_{i=1}^{n} m_i \in M$ if all $m_i \in M$, since $M$ is a group under addition. Hence, $IM \subseteq M$.
+    
+    For any $x, y \in IM$, without loss of generality, we have $x = \sum_{j=1}^{n} a_j m_j$ and $y = \sum_{j=1}^{n} b_j m_j$ where $m_j \in M$ and $a_j, b_j \in I$. Then by the distributivity in the $R$-module,
+    \[
+        x - y = \sum_{j=1}^{n} (a_j - b_j) m_j,
+    \]
+    and since $a_j, b_j \in I$ and $I$ is an ideal of $R$, in particular a subgroup for addition, then $a_j - b_j \in I$, implying that $x - y \in IM$. This proves that $IM$ is a subgroup of $M$ for addition.
+    
+    Now for any $x = \sum_{j=1}^{n} a_j m_j \in IM$ and $r \in R$, the distributivity in the $R$-module implies
+    \[
+        rx = \sum_{j=1}^{n} (ra_j) m_j.
+    \]
+    Since $r \in I$ and $a_j \in I$, where $I$ is an ideal of $R$, then $ra_j \in I$, implying that $rx \in IM$. Hence, $IM$ is an $R$-submodule of $M$, by the definition of submodule.
+    
+\end{proof}
+
+
+
+
+\begin{pbox}[Q3 Problem 10.1.8]
+    An element $m$ of the $R$-submodule $M$ is called a \textit{torsion element} if $rm = 0$ for some nonzero element $r \in R$. The set of torsion elements is denoted
+    \[
+        \Tor(M) = \{m \in M \mid rm = 0 \text{ for some nonzero } r \in R\}.
+    \]
+\end{pbox}
+
+
+\begin{pbox}[(a)]
+    Prove that if $R$ is an integral domain then $\Tor(M)$ is a submodule of $M$ (called the \textit{torsion} submodule of $M$).
+\end{pbox}
+
+\begin{proof}
+    Since $R$ is an integral domain, it is commutative with nonzero identity, so we will use the submodule criterion. First, it is clear by its definition that $\Tor(M) \subseteq M$. Second, $\Tor(M) \ne \emptyset$ since $0 \in M$, $1 \in R$ with $1 \ne 0$, and $1 \cdot 0 = 0$, so $0 \in \Tor(M)$. Lastly suppose $x, y \in \Tor(M)$ and $r \in R$, so there exist $a, b \in R$ nonzero such that $ax = by = 0$. Then using the distributivity of the $R$-module and the commutativity of the ring $R$, we find
+    \[
+        ab(x + ry)
+            = bax + raby
+            = b0 + ra0
+            = 0 + 0
+            = 0.
+    \]
+    Since $R$ is an integral domain and $a, b$ nonzero, then $ab \ne 0$, implying that $x + ry \in \Tor(M)$. By the submodule criterion, $\Tor(M)$ is an $R$-submodule of $M$.
+    
+\end{proof}
+
+\begin{pbox}[(b)]
+    Give an example of a ring $R$ and an $R$-module $M$ such that $\Tor(M)$ is not a submodule. [Consider the torsion elements in the $R$-module $R$.]
+\end{pbox}
+
+Let $R = \Z/6\Z$ and consider $R$ itself as an $R$-module, with the $R$-action $(a, b) \mapsto ab$, i.e., multiplication in the ring $R$. Then we have $\eqc{2}, \eqc{3} \in \Tor(R)$, since $\eqc{2}\cdot\eqc{3} = \eqc{0}$. However, $\eqc{3} - \eqc{2} = \eqc{1}$, and $\eqc{1}x = x$ for any $x \in R$. In particular, for nonzero $x \in R$, $\eqc{1}x = x$ is nonzero, so $\eqc{1} \notin \Tor(R)$. Hence, $\Tor(R)$ is not a subgroup under addition and, therefore, not an $R$-submodule.
+
+
+\begin{pbox}[(c)]
+    If $R$ has zero divisors show that every nonzero $R$-module has nonzero torsion elements.
+\end{pbox}
+
+\begin{proof}
+    Suppose $a, b \in R$ nonzero such that $ab = 0$. Let $M$ be a nonzero $R$-module and let $m \in M$ nonzero. If $bm = 0$, then $m \in \Tor(M)$. Otherwise, $bm \in M$ nonzero and $a(bm) = (ab)m = 0m = 0$, so $bm \in \Tor(M)$. In either case, $\Tor(M)$ contains nonzero elements of $M$.
+    
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[Q4 Problem 10.1.19]
+    Let $F = \R$, let $V = \R^2$ and let $T$ be the linear transformation from $V$ to $V$ which is projection onto the $y$-axis. Show that $V$, $0$, the $x$-axis, and the $y$-axis are the only $F[x]$-submodules for this $T$.
+\end{pbox}
+
+\begin{proof}
+    First note that $T\circ T = T$, as $T(T(x,y)) = T(0,y) = (0,y) = T(x, y)$. So the $F[x]$-action on $V$ is given by
+    \[
+        (ax + b)v
+            = (aT + b)(v)
+            = aT(v) + bv
+    \]
+    for $ax + b \in F[x]$ and $v \in V$. We know that $V$ and $0$ are $F[x]$-modules under the action induced by $T$.
+    
+    Let $X = \{(x, 0) : x \in \R\} \subseteq V$ be the $x$-axis, which is nonempty. Then for $(x_1, 0), (x_2, 0) \in X$ and $ax + b \in F[x]$, we have
+    \begin{align*}
+        (x_1, 0) + (ax + b)(x_2, 0)
+            &= (x_1, 0) + (aT + b)((x_2, 0)) \\
+            &= (x_1, 0) + aT((x_2, 0)) + b(x_2, 0) \\
+            &= (x_1, 0) + a(0, 0) + (bx_2, 0) \\
+            &= (x_1 + bx_2, 0) \\
+            &\in X.
+    \end{align*}
+    By the submodule criterion, $X$ is an $F[x]$-submodule of $V$.
+    
+    Let $Y = \{(0, y) : y \in \R\} \subseteq V$ be the $x$-axis, which is nonempty. Then for $(0, y_1), (0, y_2) \in X$ and $ax + b \in F[x]$, we have
+    \begin{align*}
+        (0, y_1) + (ax + b)(0, y_2)
+            &= (0, y_1) + (aT + b)((0, y_2)) \\
+            &= (0, y_1) + aT((0, y_2)) + b(0, y_2) \\
+            &= (0, y_1) + a(0, y_2) + (0, by_2) \\
+            &= (0, y_1 + (a+b)y_2) \\
+            &\in Y.
+    \end{align*}
+    By the submodule criterion, $Y$ is an $F[x]$-submodule of $V$.
+    
+    The subgroups of $V$ for addition are the subspaces. Let $(x, y) \in V$ and let $U = \{a(x, y) : a \in \R\}$ be the subspace of $V$ generated by $(x, y)$. If $U$ is an $F[x]$-submodule of $V$, then we must have $T((x, y)) = (0, y) \in U$. That is, for some $a \in \R$, we have $(0, y) = a(x, y)$. Then either $x = 0$, in which case $U = Y$ or $U = 0$, or $a = 0$, in which case $a(x, y) = (0, 0)$, so $y = 0$ and $U = X$ or $U = 0$. Any subspace with two or more linearly independent vectors is $V$. Hence, no other $F[x]$-submodules exists.
+    
+\end{proof}
+
+
+
+
+
+
+
+
+\end{document}

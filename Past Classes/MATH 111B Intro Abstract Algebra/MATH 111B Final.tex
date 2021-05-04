@@ -1,0 +1,206 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{amsmath, amsthm, amssymb, physics}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{4pt}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\pfrac}[2]{\left(\frac{#1}{#2}\right)}
+
+% Extra Commands
+\DeclareMathOperator{\Hom}{Hom}
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH 111B Final}
+    \fancyhead[C]{March 15, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+
+\section*{1(a)}
+
+Yes. Suppose $(x, y), (u, v) \in M \times M$. Then
+\begin{align*}
+    \phi((x,y) + (u,v)) 
+        &= \phi(x+u, y+v) \\
+        &= (x+u) - (y+v) \\
+        &= x + u - y - v \\
+        &= x - y + u - v \\
+        &= \phi(x, y) + \phi(u, v).
+\end{align*}
+And for $r \in R$ and $(x, y) \in M \times M$, we find
+\begin{align*}
+    \phi(r(x, y))
+        &= \phi(rx, ry) \\
+        &= rx - ry \\
+        &= r(x - y) \\
+        &= r\phi(x, y).
+\end{align*}
+
+\section*{1(b)}
+
+No. Consider $1, x \in \Q[x]$. First, we have
+\[
+    \phi(x1)
+        = \phi(x)
+        = \dv{x} x
+        = 1.
+\]
+However,
+\[
+    x\phi(1)
+        = x\dv{x}1
+        = x0
+        = 0.
+\]
+Thus, $\phi(x1) \ne x\phi(1)$, so $\phi$ is not a $\Q[x]$-module homomorphism.
+
+
+\section*{2}
+
+Yes. It is a field if and only if the ideal is maximal in $\Q[x]$. Since $\Q[x]$ is a UFD, ideals are maximal if and only if prime, and elements are prime if and only if irreducible. The polynomial has integer coefficients with GCD 1, so it is irreducible in $\Q[x]$ if and only if it is irreducible in $\Z[x]$. Since it is monic and $3$ divide all but the leading coefficient, but $3^2$ does not divide the constant term, then by Eisenstein's criterion, the polynomial is irreducible in $\Z[x]$. Hence, the quotient ring is a field.
+
+
+\newpage
+\section*{3}
+
+Here, all integers implicitly represent their equivalence class mod $11$. First, we find the characteristic polynomial.
+\begin{align*}
+    c_A(x)
+        &= \det(xI_3 - A) \\
+        &= \det\mqty[x - 1 & -2 & 0 \\ -3 & x - 4 & -5 \\ -2 & 0  & x + 1] \\
+        &= (x-1)\det\mqty[x - 4 & -5 \\ 0 & x + 1] - (-2)\det\mqty[-3 & -5 \\ -2 & x + 1] \\
+        &= (x-1)((x-4)(x+1) - (-5)0) + 2(-3(x+1) - (-5)(-2)) \\
+        &= (x-1)(x-4)(x+1) + 2(-3x - 13) \\
+        &= (x^2 - 1)(x - 4) - 6x - 26 \\
+        &= x^3 - 4x^2 - 7x + 11 \\
+        &= x(x^2 - 4x - 7) \\
+        &= x(x^2 - 4x + 4) \\
+        &= x(x - 2)^2.
+\end{align*}
+The possibilities for the minimal polynomial are therefore $x(x - 2)^2$ or $x(x - 2)$. We check if the latter evaluates to zero at $A$.
+\[
+    A(A - 2I_3)
+        = \mqty[1 & 2 & 0 \\ 3 & 4 & 5 \\ 2 & 0 & -1]\mqty[-1 & 2 & 0 \\ 3 & 2 & 5 \\ 2 & 0 & -3] \\
+        = \mqty[5 & * & * \\ * & * & * \\ * & * & *] \\
+        \ne 0.
+\]
+Therefore, the minimal polynomial is $m_A(x) = x(x - 2)^2$.
+
+\section*{3(a)}
+
+The invariant factor is $x(x - 2)^2$.
+
+
+\section*{3(b)}
+
+The elementary divisors are $x$ and $(x - 2)^2$.
+
+\section*{3(c)}
+
+The Jordan canonical form is $\mqty[2 & 1 & 0\\ 0 & 2 & 0 \\ 0 & 0 & 0]$.
+
+
+
+\newpage
+\section*{4(a)}
+
+Let $s \in R$ and $x, y \in M$. Then
+\begin{align*}
+    \phi_r(sx + y)
+        &= r(sx + y) \\
+        &= rsx + ry \\
+        &= srx + ry \\
+        &= s\phi_r(x) + \phi_r(y).
+\end{align*}
+Since $1 \in R$, this proves $\phi_r$ is an $R$-module homomorphism.
+
+\section*{4(b)}
+
+Let $r, s, t \in R$. We want to show that $f(rs + t) = rf(s) + f(t)$, i.e., that
+\[
+    \phi_{rs + t} = r\phi_s + \phi_t.
+\]
+Let $x \in M$, then
+\begin{align*}
+    \phi_{rs + t}(x)
+        &= (rs + t)(x) \\
+        &= rsx + tx \\
+        &= r\phi_s(x) + \phi_t(x) \\
+        &= (r\phi_s + \phi_t)(x).
+\end{align*}
+Hence, $f$ is an $R$-module homomorphism.
+
+\section*{4(c)}
+
+Let $x \in M$ such that $M = Rx$ and $\phi \in \Hom_R(M, M)$. Since $M$ is cyclic, then for some $r \in R$ we have $rx = \phi(x)$. We claim that $f(r) = \phi_r = \phi$. Let $sx \in M$ (arbitrary element since $M = Rx$), then
+\begin{align*}
+    \phi_r(sx)
+        &= rsx \\
+        &= srx \\
+        &= s\phi(x) \\
+        &= \phi(sx).
+\end{align*}
+Hence, $f(r) = \phi$, so $f$ is surjective.
+
+
+\newpage
+\section*{5}
+
+Let $I \subseteq R$ be an ideal. Since $I$ is a free $R$-module, then there exists a basis $\{x_1, \dots, x_n\}$ for $I$, with $x_1, \dots, x_n \in R$ nonzero. Suppose for contradiction that $n > 1$, so $x_1, x_2 \in R$ nonzero. Then we have the $R$-linear combination of basis elements
+\[
+    (x_2)x_1 + (-x_1)x_2 + 0x_3 + \cdots + 0x_n = x_1x_2 - x_1x_2 = 0.
+\]
+This implies that all the coefficients are zero, so $x_2 = -x_1 = 0$. This is a contradiction, since all basis elements are assumed nonzero. Therefore, $\{x_1\}$ is a basis for $I$, meaning that $I = Rx_1 = (x_1)$. Hence, all ideals of $R$ are principal, so $R$ is a PID.
+
+\section*{6(a)}
+
+Since $\phi$ is an $R$-module homomorphism, its image $\phi(M) \subseteq M$ is an $R$-submodule of $M$. Since $M$ is irreducible, this implies that $\phi(M) = 0$ or $\phi(M) = M$. Since $\phi$ is nonzero, then we must have $\phi(M) = M$, i.e., $\phi$ is surjective. Now, $\ker\phi \subseteq M$ is also an $R$-submodule of $M$, so we must have $\ker\phi = 0$ or $\ker\phi = M$. Since $\phi$ is nonzero, then we cannot have $\ker\phi = M$, as that would imply $\phi(M) = 0$. Therefore, $\ker\phi = 0$, so $\phi$ is injective. Thus, $\phi$ is a bijective $R$-module homomorphism, so it is an $R$-module isomorphism.
+
+\section*{6(b)}
+
+Since $V$ is irreducible it has only itself and $0$ as $\C[x]$-submodules. The $\C[x]$-submodules correspond bijectively to the $T_A$-stable subspaces. That is, the only $T_a$-stable subspaces are $0$ and $V$, so must have $A = 0$? If $A = \lambda I_n$ with $\lambda$ nonzero, then the span of any basis vector would be $T_A$-stable, so maybe I'm missing something.
+
+
+\end{document}

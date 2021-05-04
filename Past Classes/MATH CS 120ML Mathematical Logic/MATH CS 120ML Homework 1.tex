@@ -1,0 +1,274 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amsthm, amssymb, physics}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}
+    {\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\mybox}}\end{center}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\roman{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{1em}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+
+% Extra Commands
+\renewcommand{\implies}{\Rightarrow}
+\renewcommand{\models}{\vDash}
+\newcommand{\proves}{\vdash}
+\newcommand{\clo}{\overline}
+
+
+% Document Info
+\title{Homework 1\\
+    \large MATH CS 120ML
+}
+\author{Harry Coleman}
+\date{January 22, 2021}
+
+% Begin Document
+\begin{document}
+\maketitle
+
+\section{}
+\begin{problem}
+    Which of the following propositions are tautologies?
+\end{problem}
+
+\subsection{}
+\begin{problem}
+    $(p_1 \implies (p_2 \implies p_3)) \implies (p_2 \implies (p_1 \implies p_3))$
+\end{problem}
+
+\subsection{}
+\begin{problem}
+    $((p_1 \lor p_2) \land (p_1 \lor p_3)) \implies (p_2 \lor p_3)$
+\end{problem}
+
+\subsection{}
+\begin{problem}
+    $(p_1 \implies (\lnot p_2)) \implies (p_2 \implies (\lnot p_1))$
+\end{problem}
+
+\newpage
+\section{}
+\begin{problem}
+    Use the Deduction Theorem to show that $p \proves \lnot \lnot p$.
+\end{problem}
+
+\begin{proof}
+    By definition of negation, we have
+    \[
+        (\lnot \lnot p) = ((p \implies \bot) \implies \bot).
+    \]
+    The deduction theorem tells us that it suffices to provide a proof of $\{p, p \implies \bot\} \proves \bot$. 
+    \begin{center}
+        \begin{tabular}{r l l}
+            1. & $p$ & Hypothesis \\
+            2. & $p \implies \bot$ & Hypothesis \\
+            3. & $\bot$ & 1, 2, MP
+        \end{tabular}
+    \end{center}
+    
+\end{proof}
+
+\newpage
+\section{}
+\begin{problem}
+    Show that $\{p, q\} \proves p \land q$ in three different ways: by writing down a proof, by using the Deduction Theorem, and by using the Completeness Theorem.
+\end{problem}
+
+\begin{proof} (Proof)
+    By definition, $(p \land q) = \lnot(p \implies \lnot q)$. We take the result of Problem 2 as a theorem schema and refer to the theorem $\proves (q \implies \lnot \lnot q)$ in the proof. Let Axiom 2' be the schema
+    \[
+        ((p \implies \lnot q) \implies ((p \implies q) \implies \lnot p)),
+    \]
+    which is precisely Axiom 2 with $r = \bot$. The application of modus ponens is abbreviated in an effort to make the proof more readable. Let $\{p, q\}$ be hypotheses.
+    \begin{center}
+        \begin{tabular}{r l l}
+            1. & $\lnot \lnot q$ & Hypothesis, Theorem, MP \\
+            2. & $p \implies \lnot \lnot q$ & 1, Axiom 1, MP \\
+            3. & $(p \implies \lnot q) \implies \lnot p$ & 2, Axiom 2', MP \\
+            4. & $((p \implies \lnot q) \implies p) \implies \lnot(p \implies \lnot q)$ & 3, Axiom 2', MP \\
+            5. & $(p \implies \lnot q) \implies p$ & Hypothesis, Axiom 1, MP \\
+            6. & $\lnot(p \implies \lnot q)$ & 4, 5, MP
+        \end{tabular}
+    \end{center}
+    
+\end{proof}
+
+\begin{proof}(Deduction Theorem)
+    By definition, $(p \land q) = ((p \implies (q \implies \bot)) \implies \bot)$. The deduction theorem tells us that the following are equivalent
+    \begin{align*}
+        \{p, q\} &\proves ((p \implies (q \implies \bot)) \implies \bot) \\
+        \{p, q, p \implies (q \implies \bot)\} &\proves \bot \\
+        \{p, p \implies (q \implies \bot)\} &\proves (q \implies \bot) \\
+        \{p \implies (q \implies \bot)\} &\proves (p \implies (q \implies \bot)) \\
+        &\proves (p \implies (q \implies \bot)) \implies (p \implies (q \implies \bot))
+    \end{align*}
+    The last line is true, since it is an instance of the theorem schema $\proves (p \implies p)$.
+    
+\end{proof}
+
+\begin{proof}(Completeness Theorem)
+    The completeness theorem tells us that $\{p, q\} \proves p \land q$ if and only if $\{p, q\} \models p \land q$. By definition, $(p \land q) = ((p \implies (q \implies \bot)) \implies \bot)$. Suppose $v$ is a valuation such that $v(p) = 1$ and $v(q) = 1$. Then
+    \begin{align*}
+        v(q \implies \bot) &= 0 \\
+        v(p \implies (q \implies \bot)) &= 0 \\
+        v((p \implies (q \implies \bot)) \implies \bot) &= 1.
+    \end{align*}
+    
+\end{proof}
+
+\section{}
+\begin{problem}
+    Give propositions $p$ and $q$ for which $(p \implies q) \implies \lnot (q \implies p)$ is a tautology.
+\end{problem}
+
+Let $p$ be primitive and let $q = \lnot p$, then we have two possible valuations:
+\[
+    \begin{array}{c|*{10}{c}}
+        p & (p & \implies & \lnot &  p) & \implies & \lnot & (\lnot & p  & \implies & p) \\
+        \hline
+        0 & 0 & 1 & 1 & 0 & \textbf{1} & 1 & 1 & 0 & 0 & 0 \\
+        1 & 1 & 0 & 0 & 1 & \textbf{1} & 0 & 0 & 1 & 1 & 1
+    \end{array}
+\]
+
+\section{}
+\begin{problem}
+    An alternative version of the Compactness Theorem says that if $S \models p$ p then there is some finite subset $T \subset S$ with $T \models p$. Give two proofs of this: (i) by deducing it from the Compactness Theorem; and (ii) directly from the Completeness Theorem.
+\end{problem}
+
+
+\newpage
+\section{}
+\begin{problem}
+    Three people each have a set of beliefs: a consistent deductively closed set. Show that the set of propositions that they all believe is also consistent and deductively closed. Must the set of propositions that a majority believe be consistent? Must it be deductively closed?
+\end{problem}
+
+\begin{proposition}
+    Let $S_1, S_2, S_3$ be consistent, deductively closed sets. Then $S = S_1 \cap S_2 \cap S_3$ is also consistent and deductively closed.
+\end{proposition}
+
+\begin{proof}
+    We first show that $S$ is deductively closed. Suppose $S \proves p$ and let $t_1, \dots, t_n$ be a proof of $p$ from $S$. We show $S_1 \proves t_n$ by induction on $n$. For the base case, $t_1$ is either an axiom or a member of $S$. Then $S_1 \proves t_1$, trivially if $t_1$ is an axiom, and following from $S \subseteq S_1$ if $t_1 \in S$.
+    
+    Now suppose $S_1 \proves t_1, \dots, t_{n-1}$. Then $t_n$ is either an axiom, a member of $S$, or the result of modus ponens, i.e., there exist $i, j < n$ with $t_j = (t_i \implies t_n)$. In the first two cases, we have $S \proves t_n$ similar to the base case. In the third case, the deduction theorem tells us that $S_1 \proves (t_i \implies t_n)$ if and only if $S_1 \cup \{t_i\} \proves t_n$. Since $S_1 \proves t_j = (t_i \implies t_n)$, then we have $S_1 \cup \{t_i\} \proves t_n$. Now since $S_1$ is deductively closed and $S_1 \proves t_i$, then $t_i \in S_1$. Therefore, $S_1 \cup \{t_i\} = S_1 \proves t_n$.
+    
+    Because $S_1$ is deductively closed, we have $p = t_n \in S_1$. The proof that $p \in S_2$ and $p \in S_3$ are identical. Thus, we have $p \in S$, so $S$ is deductively closed.
+    
+    In proving $S$ is deductively closed, we showed that $S \proves p$ implies $S_1 \proves p$. The contrapositive being $S_1 \not\proves p$ implies $S \not\proves p$. Since $S_1$ is consistent, i.e. $S_1 \not\proves \bot$, then $S \not\proves \bot$, i.e., $S$ is consistent.
+    
+\end{proof}
+
+The set of propositions that a majority believe need not be deductively closed nor consistent. For example, let $p$, $q$, and $r$ be distinct primitive propositions and consider the sets
+\[
+    S_1 = \{p, q \implies r\}, \quad S_2 = \{p, p \implies q\}, \quad S_3 = \{p \implies q, q \implies r\}.
+\]
+They are consistent, since the valuation which assigns $1$ to $p$, $q$, and $r$ is a model of all three, i.e., $S_1, S_2, S_3 \not\models \bot$ and the completeness theorem gives us $S_1, S_2, S_3 \not\proves \bot$. Then their deductive closures, $\clo{S_1}, \clo{S_2}, \clo{S_3}$, would also be consistent and, of course, deductively closed. However, if we take $S$ to be the set of propositions which are members of a majority of $\clo{S_1}$, $\clo{S_2}$, and $\clo{S_3}$, then
+\[
+    \{p, p \implies q, q \implies r\} \subseteq S.
+\]
+Evidently, we have $S \proves r$. However, neither $S_1$, $S_2$, nor $S_3$ syntactically imply $r$ (therefore, neither do their deductive closures). This can be seen by finding a model for each where $r$ is false: For $S_1$, take $p$ to be true  and $q$ and $r$ to be false; for $S_2$, take $p$ and $q$ to be true and $r$ to be false; for $S_3$, take $p$, $q$, and $r$ to be false. Since none of the three sets semantically imply $r$, then completeness tells us that none of them syntactically imply $r$, so none of their deductive closures contain $r$. Therefore, $S$ does not contain $r$ and it is not deductively closed.
+
+As a particular case of the above, take $r = \bot$, and we have $S \proves \bot$, yet $S_1, S_2, S_3 \not\proves \bot$. That is, $S$ is inconsistent while $\clo{S_1}$, $\clo{S_2}$, and $\clo{S_3}$ are consistent.
+
+\newpage
+\section{}
+\begin{problem}
+     Show that the third axiom cannot be deduced from the first two. In other words, show that (for some $p$) there is no proof of $(\lnot \lnot p) \implies p$ that uses only the first two axioms and modus ponens.
+\end{problem}
+
+\begin{proof}
+    First, note that the definition of $\lnot$ tells us that
+    \[
+        ((\lnot \lnot p) \implies p) = (((p \implies \bot) \implies \bot) \implies p).
+    \]
+    Since neither of the first two axioms contain $\bot$ by default, a proof from only these two axioms of a proposition containing $\bot$ would have to introduce $\bot$ as part of an axiom or theorem schema on arbitrary propositions (that is, a theorem with respect to only the first two axioms). In other words, If $t_1, \dots, t_n$ is a proof of a proposition involving $\bot$ from only the first two axioms, we should be able to construct a similar proof but with $\bot$ replaced by an arbitrary proposition $q$. 
+    
+    We show this by induction on $n$. For the base case, $t_1$ must be an instance of one of the first two axioms. If $t_1$ contains instances of $\bot$, then we take $t_1'$ to be an instance of the same axiom applied to propositions of the same structure, but with all instances of $\bot$ replaced by $q$.
+    
+    Suppose now that, from the first two axioms, we have constructed a proof $t_1', \dots, t_{n-1}'$ where each $t_i'$ is the result of replacing all instances of $\bot$ in $t_i$ by $p$. Then $t_n$ is either an instance of one of the first two axioms or the result of modus ponens. If it is the former, this is the same as the base case. If it is the latter, then that means there exist $i, j < n$ with $t_j = (t_i \implies t_n)$. By our inductive hypothesis, we have propositions $t_i'$ and $t_j'$ in our proof and $t_j'$ is precisely $t_i' \implies t_n'$, where $t_n'$ is the result of replacing all instances of $\bot$ in $t_n$ by $q$. Then by modus ponens, we extend our proof to $t_1', \dots, t_n'$.
+    
+    Therefore, assuming that the third axiom is provable from only the first two gives us the theorem schema
+    \[
+        ((p \implies q) \implies q) \implies p.
+    \]
+    However, this is not a theorem, equivalently not a tautology, as it is false for $v(p) = 0$ and $v(q) = 1$.
+    
+    
+    
+\end{proof}
+
+\newpage
+\section{}
+\begin{problem}
+    Let $t_1, t_2, \dots$ be propositions such that, for every valuation $v$, there exists $n$ with $v(t_n) = 1$. Show that there is some $n$ for which $\proves t_1 \lor t_2 \lor \cdots \lor t_n$.
+\end{problem}
+
+\begin{proof}
+    Let $T = \{\lnot t_n : n \in \N\}$. Then for every valuation $v$, there exists some $n \in \N$ with $v(t_n) = 1$. This implies that $v(\lnot t_n) = 0$, so $v$ is not a model of $T$ and, therefore, $T$ has no model. That is, $T \models \bot$ and the compactness theorem implies that there is some finite subset $T' \subseteq T$ such that $T' \models \bot$. Without loss of generality, assume $T' = \{\lnot t_1, \dots, \lnot t_n\}$. Then to say $T' \models \bot$ is to say that for every valuation $v$, we have $v(\lnot t_k) = 0$ for some $k \in \{1, \dots, n\}$; equivalently, $v(t_k) = 1$. And since $v(t_1 \lor \cdots \lor t_n) = 1$ precisely when $v(t_k) = 1$ for at least one $k \in \{1, \dots k\}$, then the disjunction is true for all valuations. That is, $\models t_1 \lor \cdots \lor t_n$ and  completeness gives us $\proves t_1 \lor \cdots \lor t_n$.
+    
+\end{proof}
+
+\section{}
+\begin{problem}
+    Taking on trust for now that the informal method used to prove the Completeness Theorem when the set of primitive propositions is allowed to be uncountable both makes sense and works, prove similarly that every vector space over $\R$ has a basis.
+\end{problem}
+
+\newpage
+\section{}
+\begin{problem}
+    Let $a$ and $c$ be propositions such that $a \proves c$. Show that there is a proposition $b$, in which the only primitive propositions appearing are those that appear in both $a$ and $c$, such that $a \proves b$ and $b \proves c$
+\end{problem}
+
+\begin{proof}
+    By the completeness theorem, $a \models c$. If $a$ and $c$ share no primitives, then either $a \proves \bot$ or $a \not\proves \bot$. In the first case, $\bot$ contains no primitives one can show that $\bot \proves c$ by a proof
+    \begin{center}
+        \begin{tabular}{r l l}
+            1. & $\bot$ & Hypothesis \\
+            2. & $\bot \implies ((c \implies \bot) \implies \bot)$ & Axiom 1 \\
+            3. & $(c \implies \bot) \implies \bot$ & 1, 2, MP \\
+            4. & $\lnot\lnot c$ & 3, Definition of $\lnot$ \\
+            5. & $\lnot\lnot c \implies c$ & Axiom 3 \\
+            6. & $c$ & 4, 5, MP
+        \end{tabular}
+    \end{center}
+    In the case that $a \not\proves \bot$, then, by completeness, for a particular valuation $v$ such that $v(a) = 1$, then we can cycle though all possible valuations on $c$, since the two propositions are independent. Therefore, $c$ must be a theorem and $\lnot \bot \proves c$ and $a \proves \lnot \bot$.
+    
+    In the case that $a$ and $c$ to share some primitives, let $p_1, \dots, p_n$ be those primitives. By completeness, $a \models c$ so for every valuation $v(a) = 1$ implies $v(c) = 1$. For each valuation $v$ with $v(a) = 1$, implying $v(c) = 1$, we can vary the primitives in the symmetric difference of their primitives however we want and both remain true. We define a proposition $t_v$ which is the conjunction of all $p_i$ for which $v(p_i) = 1$ and all $\lnot p_i$ for which $v(p_i) = 0$. Then this proposition is true exactly when a valuation $v'$ agrees with $v$ on $p_1, \dots, p_n$. Then we form the proposition $b$ which is the disjunction of all $t_v$ for all valuations on $p_1, \dots, p_n$. This is the desired proposition $b$ with $a \proves b$ and $b \proves c$ by completeness.
+    
+\end{proof}
+
+\section{}
+\begin{problem}
+    Two sets $S, T$ of propositions are \textit{equivalent} if $S \proves t$ for every $t \in T$ and $T \proves s$ for every $s \in S$. A set $S$ of propositions is \textit{independent} if for every $s \in S$ we have $S - \{s\} \not\proves s$. Show that every finite set of propositions has an independent subset equivalent to it. Give an infinite set of propositions that has no independent subset equivalent to it. Show, however, that for every countable set of propositions there exists an independent set equivalent to it.
+\end{problem}
+
+\section{}
+\begin{problem}
+    Let $p$ be a tautology not involving the symbol $\bot$. Must it be possible to prove $p$ without using the third axiom?
+\end{problem}
+
+
+
+\end{document}

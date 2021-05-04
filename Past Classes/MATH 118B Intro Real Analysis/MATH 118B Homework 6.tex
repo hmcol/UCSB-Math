@@ -1,0 +1,355 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{amsmath, amsthm, amssymb, physics}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{4pt}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\pfrac}[2]{\left(\frac{#1}{#2}\right)}
+
+% Extra Commands
+
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH 118B Homework 6}
+    \fancyhead[C]{February 23, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+
+\begin{pbox}[1]
+    Suppose $\{f_n\}_{n\in\N}$ and $f$ are continuous on $[a,b]$ and $f_n \to f$ uniformly. Define $M_n = \max_{[a,b]} f_n$ and $M = \max_{[a,b]} f$. Show that $M_n\to M$. What can you say about the sequence of minima?
+\end{pbox}
+
+\begin{proof}
+    Let $\eps > 0$ be given and choose $N \in \N$ such that $|f_n(x) - f(x)| < \eps$ for all $n \geq N$ and $x \in [a, b]$. In particular for a fixed $n \geq N$ we have
+    \[
+        f_n(x) < f(x) + \eps \leq M + \eps
+    \]
+    for all $x \in [a, b]$, which implies that $M_n \leq M + \eps$, or equivalently, $M_n - M < \eps$. Similarly,
+    \[
+        f(x) < f_n(x) + \eps \leq M_n + \eps.
+    \]
+    for all $x \in [a, b]$, which implies that $M \leq M_n + \eps$, or equivalently, $M - M_n < \eps$. Combining these two results, we find $|M_n - M| < \eps$ for all $n \geq N$, implying that $M_n \to M$.
+    
+    
+    
+    
+    
+\end{proof}
+
+
+\newpage
+\begin{pbox}[2]
+    Determine the limit of the following sequences and whether or not the convergence is uniform on $I$:
+\end{pbox}
+
+\begin{pbox}[(a)]
+    \begin{equation}
+    f_n(x) = \frac{\cos (nx)}{\sqrt{n}},\quad x\in I = \R.
+    \end{equation}
+\end{pbox}
+
+For a fixed $x \in \R$ and any $n \in \N$, we have
+\[
+    \left|f_n(x)\right|
+        = \left|\frac{\cos (nx)}{\sqrt{n}}\right|
+        \leq \frac{1}{\sqrt{n}}.
+\]
+That is, $|f_n(x)| \to 0$ as $n \to \infty$ for all $x \in \R$. So the limit of this sequence of functions is the zero function. Moreover, it can be seen that this convergence is independent of $x$. Given $\eps > 0$, take $N \in \N$ such that $N > 1/\eps^2$. Then if $n \geq N$ and $x \in \R$, we have
+\[
+    |f_n(x)|
+        \leq \frac{1}{\sqrt{n}}
+        < \frac{1}{\sqrt{1/\eps^2}}
+        = \eps.
+\]
+Hence, $f_n \to 0$ uniformly on $I$.
+
+
+
+
+\begin{pbox}[(b)]
+    \begin{equation}
+    f_n(x) = nxe^{-nx^2},\quad x\in I=[0,1].
+    \end{equation}
+\end{pbox}
+
+Note that $f_n(0) = 0$ for all $n \in \N$ so $f_n(0) \to 0$. For a fixed $x \in (0, 1]$ and any $n \in \N$ we have
+\[
+    f_n(x)
+        = xe^{\log n}e^{- nx^2}
+        = xe^{n\left(\frac{\log n}{n} - x^2\right)}
+\]
+Taking the limit to the continuous case and applying L'H\^opital's, we find
+\[
+    \lim_{n\to \infty} \frac{\log n}{n}
+        = \lim_{y \to \infty} \frac{\log y}{y}
+        = \lim_{y \to \infty} \frac{1}{y}
+        = 0,
+\]
+which tells us
+\[
+    \lim_{n\to \infty} n\left(\frac{\log n}{n} - x^2\right) = -\infty.
+\]
+Since $e^y \to 0$ as $y \to -\infty$ and $x > 0$, we conclude that
+\[
+    \lim_{n\to \infty} f_n(x)
+        = xe^{n\left(\frac{\log n}{n} - x^2\right)}
+        = 0.
+\]
+However, this convergence is not uniform on $I$. For each $n \in \N$, consider the point $x_n = 1/\sqrt{2n} \in [0,1]$. Then
+\[
+    f_n(x_n)
+        = n\frac{1}{\sqrt{2n}}e^{-n(1/\sqrt{2n})^2}
+        = \frac{\sqrt{n}}{\sqrt{2} e^{1/2}}.
+\]
+Since $f_n(x_n) \leq \max_I f_n$, then $\max_I f_n \to \infty$ as $n \to \infty$. From Problem 1, this means that the convergence $f_n \to f$ is not uniform, as otherwise we would have $\max_I f_n \to \max_I f < \infty$. Hence $f_n \to 0$ pointwise, but not uniformly, on $I$.
+
+
+
+
+\newpage
+\begin{pbox}[(c)]
+    \begin{equation}
+    f_n(x) = nxe^{-nx^2},\quad x\in I=[1,+\infty).
+    \end{equation}
+\end{pbox}
+
+As in (b), we have $f_n \to 0$ pointwise on $I$, since the argument only requires that $x > 0$. To show that this convergence is uniform on $I$, we write
+\[
+    f_n(x)
+        = ne^{\log x}e^{-nx^2}
+        = ne^{x^2\left(\frac{\log x}{x^2} - n\right)}
+\]
+Using L'H\^opital's rule, we have
+\[
+    \lim_{x \to \infty} \frac{\log x}{x^2}
+        = \lim_{x \to \infty} \frac{1/x}{2x}
+        = \lim_{x \to \infty} \frac{1}{2x^2}
+        = 0.
+\]
+Let $R \in \R$ such that
+\[
+    \frac{\log x}{x^2} < 1
+\]
+for all $x \geq R$. If $R > 1$, we consider the function $g(x) = x^{-2} \log x$, which is differentiable on the compact interval $[1, R]$. Therefore, $g$ attains its maximum at a point $x_0 \in [1, R]$. If $x_0 = 1$, then $g(x_0) = 0$. If $x_0 = R$, then the above implies $g(x_0) < 1$. Otherwise, $x_0 \in (1, R)$ and we know that $g'(x_0) = 0$. Applying the quotient rule, we find
+\[
+    g'(x)
+        = \frac{x^2 \dv{x} \log x - \log x \dv{x} x^2}{x^4}
+        = \frac{1 - 2\log x}{x^3}.
+\]
+Then $g'(x_0) = 0$ implies that $x_0 = e^{1/2}$. In which case,
+\[
+    g(x_0)
+        = \frac{\log e^{1/2}}{(e^{1/2})^2}
+        = \frac{1}{2e}
+        < 1.
+\]
+So $g(x) < 1$ for all $x \in [1, R]$, and we conclude that
+\[
+    \frac{\log x}{x^2} = g(x) < 1
+\]
+for all $x \geq 1$. So for all $n \in \N$ and $x \in I$, because the exponential function is increasing on $\R$, we have
+\[
+    f_n(x)
+        = ne^{x^2\left(g(x) - n\right)}
+        \leq ne^{x^2(1 - n)}
+        = \frac{n}{e^{x^2(n-1)}}.
+\]
+Since $x \geq 1$, then $x^2(n-1) \geq n-1$, so
+\[
+    f_n(x)
+        \leq \frac{n}{e^{n-1}}
+        = \frac{n}{e^n}e.
+\]
+Taking the limit to the continuous case and applying L'H\^opital's, we find
+\[
+    \lim_{n \to \infty} \frac{n}{e^n}
+        = \lim_{y \to \infty} \frac{y}{e^y}
+        = \lim_{y \to \infty} \frac{1}{e^y}
+        = 0.
+\]
+Then for a given $\eps > 0$, we choose $N \in \N$ such that $n/e^n < \eps/e$ for all $n \geq N$. This gives us
+\[
+    f_n(x) < \frac{\eps}{e} e = \eps
+\]
+for all $n \geq N$ and $x \in I$. Hence, $f_n \to 0$ uniformly on $I$.
+
+
+
+\begin{pbox}[(d)]
+    \begin{equation}
+    f_n(x) = \frac{nx^2}{1+nx},\quad x\in I=[0,2].
+    \end{equation}
+\end{pbox}
+
+Note that $f_n(0) = 0$. For a fixed $x \in (0, 2]$, we have
+\[
+    \lim_{n \to \infty} f_n(x)
+        = \lim_{n \to \infty} \frac{nx^2}{1+nx}
+        = \lim_{n \to \infty} \frac{x^2}{\frac{1}{n}+x}
+        = \frac{x^2}{0 + x}
+        = x.
+\]
+Hence, $f_n(x) \to x$ pointwise on $I$. Now for a fixed $n \in \N$, we have $|f_n(0) - 0| = 0$, so it remains to show that $f_n(x) \to x$ uniformly on $(0, 2]$. Assuming $x \in (0, 2]$, we find that
+\begin{align*}
+    |f_n(x) - x|
+        &= \left|\frac{nx^2}{1 + nx} - x\right| \\
+        &= \left|\frac{nx^2 - x - nx^2}{1 + nx}\right| \\
+        &= \frac{1}{\frac{1}{x} + n} \\
+        &\leq \frac{1}{n}.
+\end{align*}
+So for a given $\eps > 0$, we choose $N \in \N$ such that $N > 1/\eps$. Then for all $n \geq N$ and $x \in (0, 2]$, we have
+\[
+    |f_n(x) - x| \leq \frac{1}{n} < \frac{1}{1/\eps} = \eps.
+\]
+Hence, $f_n(x) \to x$ uniformly on $(0, 2]$, implying that the convergence is uniform on $I$.
+
+
+
+\newpage
+\begin{pbox}[3]
+    Give an example of sequences of function $\{f_n\}_{n\in\N}$ and $\{g_n\}_{n\in\N}$ that converge uniformly but such that $\{f_ng_n\}_{n\in\N}$ does not converge uniformly.
+\end{pbox}
+
+For each $n \in \N$, define the function
+\[
+    f_n(x) = x + \frac{1}{n}, \quad x \in \R.
+\]
+Then for all $x \in \R$, we have
+\[
+    |f_n(x) - x| = \frac{1}{n},
+\]
+so $f_n(x) \to x$ uniformly on $\R$. However, consider the product sequence
+\[
+    f_n^2(x)
+        = \left(x + \frac{1}{n}\right)^2
+        = x^2 + \frac{2x}{n} + \frac{1}{n^2}.
+\]
+For a fixed $x \in \R$, we have
+\[
+    |f_n^2(x) - x^2|
+        = \left|\frac{2x}{n} + \frac{1}{n^2}\right|,
+\]
+so $f_n^2(x) \to x^2$ pointwise on $\R$. However, for any $n \in \N$, we can pick some point $x \geq n$, then
+\[
+    |f_n^2(x) - x^2|
+        = \frac{2x}{n} + \frac{1}{n^2}
+        \geq 2.
+\]
+Hence, this convergence is not uniform on $\R$.
+
+
+
+
+\newpage
+\begin{pbox}[4]
+    Prove that the series 
+    \begin{equation}
+    \sum_{n=1}^\infty (-1)^n \frac{x^2+n}{n^2}
+    \end{equation}
+    converges uniformly in every bounded interval, but does not converge absolutely for any values of $x$. 
+\end{pbox}
+
+\begin{proof}
+    Consider the sequence of partial sum functions, defined on $\R$ by
+    \begin{align*}
+        f_n(x)
+            &= \sum_{k=1}^{n} (-1)^k \frac{x^2+k}{k^2} \\
+            &= \sum_{k=1}^{n} (-1)^k \left(\frac{x^2}{k^2} + \frac{1}{k}\right) \\
+            &= x^2\sum_{k=1}^{n} \frac{(-1)^k}{k^2} + \sum_{k=1}^{n}\frac{(-1)^k}{k}.
+    \end{align*}
+    Since $1/k^2 \to 0$ and $1/k \to 0$ as $k \to \infty$, then we have convergence of the alternating series. Let
+    \[
+        A_n = \sum_{k=1}^{n} \frac{(-1)^k}{k^2}
+        \isp{and}
+        B_n = \sum_{k=1}^{n}\frac{(-1)^k}{k},
+    \]
+    and let their infinite sums be $A_n \to A$ and $B_n \to B$. Then we have $f_n(x) = A_n x^2 + B_n$, which converges $f(x) = Ax^2 + B$ pointwise on $\R$. For any point $x$ in a bounded interval $[-M, M]$, we find
+    \begin{align*}
+        |f_n(x) - f(x)|
+            &= |A_nx^2 + B_n - (Ax^2 + B)| \\
+            &\leq |A_nx^2 - Ax^2| + |B_n - B| \\
+            &= |x|^2|A_n - A| + |B_n - B| \\
+            &\leq M^2|A_n - A| + |B_n - B|.
+    \end{align*}
+    For a given $\eps > 0$, we choose $N \in \N$ such that $n \geq N$ implies $|B_n - B| < \eps$ and $|A_n - A| < \eps/M^2$. Then for all $n \geq N$ and $x \in [-M, M]$, we have
+    \[
+        |f_n(x) - f(x)|
+            < M^2\frac{\eps}{M^2} + \eps
+            = 2\eps.
+    \]
+    Hence, $f_n \to f$ uniformly on $[-M, M]$. However, for a fixed $x \in \R$, we have
+    \begin{align*}
+        \sum_{n=1}^\infty \left|(-1)^n \frac{x^2+n}{n^2}\right|
+            = \sum_{n=1}^\infty \frac{x^2+n}{n^2}
+            \geq \sum_{n=1}^{\infty} \frac{1}{n}.
+    \end{align*}
+    And since the harmonic series diverges, then the above series does not converge absolutely.
+    
+\end{proof}
+
+
+\begin{pbox}[5]
+    Consider the power series 
+    \begin{equation}
+    f(x) = \sum_{n=0}^\infty x^n,\quad x\in (-1,1).
+    \end{equation}
+    Show that it converges uniformly on $[-a,a]$ for any $0\le a <1$. {\it Hint: What are the partial sums?}
+\end{pbox}
+
+\begin{proof}
+    For each $n \in \N$ and $x \in [-a, a]$, we have $|x^n| = |x|^n \leq a^n$. And since $a \in [0, 1)$, then we have convergence of the geometric series
+    \[
+        \sum_{n=1}^{\infty} a^n = \frac{a}{1 - a}.
+    \]
+    Therefore, by the Weierstrass $M$-test, the power series
+    \[
+        f(x) = \sum_{n=1}^\infty x^n
+    \]
+    converges uniformly on $[-a, a]$.
+    
+\end{proof}
+
+\end{document}

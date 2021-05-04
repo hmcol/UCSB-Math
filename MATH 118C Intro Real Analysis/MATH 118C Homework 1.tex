@@ -1,0 +1,655 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{amsmath, amsthm, amssymb, physics}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{4pt}
+\theoremstyle{definition}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\pfrac}[2]{\left(\frac{#1}{#2}\right)}
+
+% Extra Commands
+\newcommand{\RR}{\mathcal{R}}
+\newcommand{\conj}{\overline}
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH 118C Homework 1}
+    \fancyhead[C]{April 9, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+\begin{pbox}[Exercise 8.7]
+    If $0 < x < \dfrac{\pi}{2}$, prove that
+    \[
+        \frac{2}{\pi} < \frac{\sin x}{x} < 1.
+    \]
+\end{pbox}
+
+\begin{proof}
+    We have that $\sin x > 0$ on $(0, \pi/2)$, so $\dv[2]{x} \sin x = -\sin x < 0$ on the same interval. Hence, $\sin x$ is strictly concave on $(0, \pi/2)$, so
+    \[
+        t = (1-t)\sin 0 + t\sin\frac{\pi}{2}
+            < \sin((1-t)0 + t\frac{\pi}{2})
+            = \sin(t\frac{\pi}{2}),
+    \]
+    for $t \in (0, 1)$. Take $x = t\pi/2$, we rewrite this as
+    \[
+        \frac{2}{\pi}x < \sin x \iff \frac{2}{\pi} < \frac{\sin x}{x},
+    \]
+    for $x \in (0, \pi/2)$.
+
+    Since $\sin x$ is differentiable on $[0, \pi/2]$, then the mean value theorem tells us that for every $x \in (0, \pi/2)$, there is some $c_x \in (0, x)$ such that
+    \[
+        \sin x = \sin x - \sin 0 = (x - 0)\cos c_x = x \cos c_x.
+    \]
+    Since both sine and cosine are positive on $(0, \pi/2)$ and cosine is strictly decreasing, then $x\cos c_x < x$. So we obtain the remaining inequality
+    \[
+        \sin x < x \iff \frac{\sin x}{x} < 1.
+    \]
+    
+
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[Exercise 8.12]
+    Suppose $0 < \delta < \pi$, $f(x) = 1$ if $|x| \leq \delta$, $f(x) = 0$ if $\delta < |x| \leq \pi$, and $f(x + 2\pi) = f(x)$ for all $x$.
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Compute the Fourier coefficients of $f$.
+\end{pbox}
+
+First, we find
+\begin{align*}
+    c_0 &= \frac{1}{2\pi} \int_{-\pi}^{\pi} f(x)e^{-i0x} \dd{x} \\
+        &= \frac{1}{2\pi} \int_{-\delta}^{\delta} \dd{x} \\
+        &= \frac{1}{2\pi} \cdot 2\delta \\
+        &= \frac{\delta}{\pi}.
+\end{align*}
+
+
+Then for each nonzero $n \in \Z$, we find
+
+\begin{align*}
+    c_n &= \frac{1}{2\pi} \int_{-\pi}^{\pi} f(x)e^{-inx} \dd{x} \\
+        &= \frac{1}{2\pi} \int_{-\delta}^{\delta} e^{-inx} \dd{x} \\
+        &= \frac{1}{2\pi} \eval[\frac{-e^{-inx}}{ i n}|_{-\delta}^{\delta} \\
+        &= \frac{e^{in\delta} - e^{-in\delta}}{2\pi in} \\
+        &= \frac{\sin(n\delta)}{\pi n}.
+\end{align*}
+
+Note that for nonzero $n \in \Z$, we have
+\[
+    c_{-n}
+        = \frac{\sin(-\delta)}{-\pi n}
+        = \frac{\sin(\delta)}{\pi n}
+        = c_n.
+\]
+
+
+\begin{pbox}[(b)]
+    Conclude that
+    \[
+        \sum_{n=1}^{\infty} \frac{\sin(n\delta)}{n} = \frac{\pi - \delta}{2}, \quad (0 < \delta < \pi).
+    \]
+\end{pbox}
+
+The above coefficients tell us that
+\[
+    s_N(f; 0)
+        = \sum_{n=-N}^{N} c_n e^{in0}
+        = \frac{\delta}{\pi} + 2\sum_{n=1}^{N} \frac{\sin(n\delta)}{\pi n}.
+\]
+
+
+Taking constants $\delta > 0$ and $M = 0$, then for all $t \in (-\delta, \delta)$ we have
+\[
+    |f(0 + t) - f(0)| = 0 \leq M|t|,
+\]
+so $s_N(f; 0) \to f(0) = 1$ as $N \to \infty$. Then
+
+\begin{align*}
+    1 &= \frac{\delta}{\pi} + 2\sum_{n=1}^{\infty} \frac{\sin(n\delta)}{\pi n} \\
+    \pi &= \delta + 2\sum_{n=1}^{N} \frac{\sin(n\delta)}{n} \\
+    \frac{\pi - \delta}{2} &= \sum_{n=1}^{\infty} \frac{\sin(n\delta)}{n}.
+\end{align*}
+
+
+
+
+\begin{pbox}[(c)]
+    Deduce from Parseval's theorem that
+    \[
+        \sum_{n=1}^{\infty} \frac{\sin^2(n\delta)}{n^2\delta} = \frac{\pi - \delta}{2}.
+    \]
+\end{pbox}
+
+Parseval's theorem gives us
+
+\begin{align*}
+    \frac{1}{2\pi} \int_{-\pi}^{\pi} |f(x)|^2 \dd{x} &= \sum_{n=-\infty}^{\infty} |c_n|^2 \\
+    \frac{1}{2\pi} \int_{-\delta}^{\delta} \dd{x} &= \frac{\delta^2}{\pi^2} + 2\sum_{n=1}^{\infty} \frac{\sin^2(n\delta)}{\pi^2 n^2} \\  
+    \frac{\pi}{2} \cdot 2\delta &= \delta^2 + 2\sum_{n=1}^{\infty} \frac{\sin^2(n\delta)}{n^2} \\  
+    \pi &= \delta + 2\sum_{n=1}^{\infty} \frac{\sin^2(n\delta)}{n^2\delta} \\  
+    \frac{\pi - \delta}{2} &= \sum_{n=1}^{\infty} \frac{\sin^2(n\delta)}{n^2\delta}.
+\end{align*}
+
+
+\newpage
+\begin{pbox}[(d)]
+    Let $\delta \to 0$ and prove that
+    \[
+        \int_{0}^{\infty} \pfrac{\sin x}{x}^2 \dd{x} = \frac{\pi}{2}.
+    \]
+\end{pbox}
+
+\begin{proof}
+    Note that
+    \[
+        \lim_{x \to 0} \frac{\sin x}{x} = 1,
+    \]
+    so the function is integrable on $[0, b]$, for any $b > 0$. In particular, the integral over $[0, 1]$ converges, so we will show that the integral over $[1, +\infty)$ converges. If it exists, the improper integral is given by
+    \[
+        \int_{1}^{\infty} \pfrac{\sin x}{x}^2 \dd{x} = \lim_{b \to \infty} \int_{1}^{b} \pfrac{\sin x}{x}^2 \dd{x}.
+    \]
+    First, we bound the improper integral
+    \[
+        \int_{1}^{\infty} \frac{\dd{x}}{x^2} \leq \sum_{n=1}^{\infty} \frac{1}{n^2}. 
+    \]
+    The series on the right converges since the power of $n$ is greater than $1$, implying that the integral converges. Then for any $b > 1$, we have
+    \[
+        0 < \int_{1}^{b} \pfrac{\sin x}{x}^2 \dd{x} \leq \int_{1}^{b} \frac{\dd{x}}{x^2} < \int_{1}^{\infty} \frac{\dd{x}}{x^2}. 
+    \]
+    The right side is a finite constant, so letting $b \to \infty$ gives us convergence of the integral over $[1, +\infty)$. Hence, the improper integral
+    \[
+        \int_{0}^{\infty} \pfrac{\sin x}{x}^2 \dd{x} 
+    \]
+    converges. Then for any sequence of partitions with diameter tending to zero, the sequence of Riemann sums converges to the integral. In particular, for $k \in \N$, let $\delta_k = 1/k$. Define the partition of $[0, +\infty)$ by $x_n = n\delta_k$. Then
+
+    \begin{align*}
+        \int_{0}^{\infty} \pfrac{\sin x}{x}^2 \dd{x}
+            &= \lim_{k \to \infty} \sum_{n=1}^{\infty} \pfrac{\sin x_n}{x_n}^2 \delta_k \\
+            &= \lim_{k \to \infty} \sum_{n=1}^{\infty} \frac{\sin^2(n\delta_k)}{n^2\delta_k} \\
+            &= \lim_{k \to \infty} \frac{\pi - \delta_k}{2} \\
+            &= \frac{\pi}{2}.
+    \end{align*}
+
+
+\end{proof}
+
+\begin{pbox}[(e)]
+    Put $\delta = \pi/2$ in (c). What do you get?
+\end{pbox}
+
+\begin{align*}
+    \sum_{n=1}^{\infty} \frac{\sin^2(n\pi/2)}{n^2\pi/2} &= \frac{\pi - \pi/2}{2} \\
+    \sum_{n=1}^{\infty} \frac{\sin^2(n\pi/2)}{n^2} &= \frac{1}{2}.
+\end{align*}
+
+Note that $\sin(\pi k) = 0$ for all $k \in \N$, so the even terms in the above series are all zero, giving us
+
+\[
+    \sum_{n=0}^{\infty} \frac{\sin^2((2n + 1)\pi/2)}{(2n + 1)^2} = \frac{1}{2}.
+\]
+
+Then $\sin((2n + 1)\pi/2) = \pm1$, so its square is $1$, and we obtain
+
+\[
+    \sum_{n=0}^{\infty} \frac{1}{(2n + 1)^2} = \frac{1}{2}.
+\]
+
+
+
+\newpage
+\begin{pbox}[Exercise 8.13]
+    Put $f(x) = x$ if $0 \leq x <2\pi$, and apply Parseval's theorem to conclude that
+    \[
+        \sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6}.
+    \]
+\end{pbox}
+
+For this problem, we will integrate over $[0, 2\pi]$ instead of $[-\pi, \pi]$, so that $f(x) = x$. First,
+\begin{align*}
+    c_0 
+        &= \frac{1}{2\pi} \int_{0}^{2\pi} f(x)e^{-i0x} \dd{x} \\
+        &= \frac{1}{2\pi} \int_{0}^{2\pi} x \dd{x} \\
+        &= \frac{1}{2\pi} \cdot \frac{4\pi^2}{2} \\
+        &= \pi.
+\end{align*}
+
+Then for nonzero $n \in \Z$, we compute
+\[
+    c_n = \frac{1}{2\pi} \int_{0}^{2\pi} xe^{-inx} \dd{x}.
+\]
+For integration by parts, take
+\[
+    u(x) = x \isp{and} v(x) = \frac{-1}{in}e^{-inx},
+\]
+so $u'(x) = 1$ and $v'(x) = e^{-inx}$. Then
+\begin{align*}
+    \int_{0}^{2\pi} xe^{-inx} \dd{x}
+        &= \eval[\frac{-xe^{-inx}}{in}|_{0}^{2\pi} - \int_{0}^{2\pi} e^{-inx} \dd{x} \\ 
+        &= \frac{-2\pi e^{-2\pi in}}{in} + \frac{0 e^{-in0}}{in} - 0 \\ 
+        &= \frac{2\pi i}{n}.
+\end{align*}
+So $c_n = i/n$. Then by Parseval's theorem,
+\begin{align*}
+    \sum_{n=-\infty}^{\infty} |c_n|^2 &= \frac{1}{2\pi} \int_{0}^{2\pi} |f(x)|^2 \dd{x} \\
+    \pi^2 + 2\sum_{n=1}^{\infty} \frac{1}{n^2} &= \frac{1}{2\pi} \int_{0}^{2\pi} x^2 \dd{x} \\
+    \sum_{n=1}^{\infty} \frac{1}{n^2} &= \frac{1}{4\pi} \cdot \frac{8\pi^3}{3} - \frac{\pi^2}{2} \\
+    \sum_{n=1}^{\infty} \frac{1}{n^2} &= \frac{\pi^2}{6}.
+\end{align*}
+
+
+
+
+
+
+\begin{pbox}[Exercise 8.14]
+    If $f(x) = (\pi - |x|)^2$ on $[-\pi, \pi]$, prove that
+    \[
+        f(x) = \frac{\pi^2}{3} + \sum_{n=1}^{\infty} \frac{4}{n^2} \cos nx
+    \]
+    and deduce that
+    \[
+        \sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6}, \quad \sum_{n=1}^{\infty} \frac{1}{n^4} = \frac{\pi^4}{90}.
+    \]
+\end{pbox}
+
+First,
+\begin{align*}
+    c_0 
+        &= \frac{1}{2\pi} \int_{-\pi}^{\pi} f(x)e^{-i0x} \dd{x} \\
+        &= \frac{1}{2\pi} \int_{-\pi}^{\pi} (\pi - |x|)^2 \dd{x} \\
+        &= \frac{1}{\pi} \int_{0}^{\pi} (\pi - x)^2 \dd{x}.
+\end{align*}
+For change of variables, take $t = \pi - x$, so
+\[
+    c_0 = \frac{1}{\pi} \int_{0}^{\pi} t^2 \dd{t}
+        = \frac{1}{\pi} \cdot \frac{\pi^3}{3}
+        = \frac{\pi^2}{3}.
+\]
+
+Now for nonzero $n \in \Z$, we find
+\begin{align*}
+    c_n 
+        &= \frac{1}{2\pi} \int_{-\pi}^{\pi} (\pi - |x|)^2e^{-inx} \dd{x} \\ 
+        &= \frac{1}{2\pi} \qty(\int_{-\pi}^{0} (\pi + x)^2e^{-inx} \dd{x} + \int_{0}^{\pi} (\pi - x)^2e^{-inx} \dd{x}) \\ 
+        &= \frac{1}{2\pi} \qty(\int_{0}^{\pi} (\pi - x)^2e^{inx} \dd{x} + \int_{0}^{\pi} (\pi - x)^2e^{-inx} \dd{x}) \\ 
+        &= \frac{1}{2\pi} \int_{0}^{\pi} (\pi - x)^2\qty(e^{inx} + e^{-inx}) \dd{x} \\ 
+        &= \frac{1}{\pi} \int_{0}^{\pi} (\pi - x)^2 \cos(nx) \dd{x} \\ 
+        &= \pi\int_{0}^{\pi} \cos(nx) \dd{x} - 2\int_{0}^{\pi} x\cos(nx) \dd{x} + \frac{1}{\pi}\int_{0}^{\pi} x^2\cos(nx) \dd{x} \\
+        &= 0 - 2\int_{0}^{\pi} x\cos(nx) \dd{x} + \frac{1}{\pi}\int_{0}^{\pi} x^2\cos(nx) \dd{x}.
+\end{align*}
+For integration by parts, take
+\[
+    u(x) = x \isp{and} v(x) = \frac{\sin(nx)}{n},
+\]
+so $u'(x) = 1$ and $v'(x) = \cos(nx)$. Then
+\begin{align*}
+    \int_{0}^{\pi} x\cos(nx) \dd{x}
+        &= \eval[\frac{x\sin(nx)}{n}|_{0}^{\pi} - \frac{1}{n} \int_{0}^{\pi} \sin(nx) \dd{x} \\
+        &= \frac{\pi \sin(n\pi)}{n} - \frac{1}{n} \eval[\frac{-\cos(nx)}{n}|_{0}^{\pi} \\
+        &= 0 + \frac{\cos(n\pi) - \cos(n0)}{n^2} \\
+        &= \frac{\cos(n\pi) - 1}{n^2}.
+\end{align*}
+
+For integration by parts, take
+\[
+    u(x) = x^2 \isp{and} v(x) = \frac{\sin(nx)}{n},
+\]
+so $u'(x) = 2x$ and $v'(x) = \cos(nx)$. Then
+\begin{align*}
+    \int_{0}^{\pi} x^2\cos(nx) \dd{x}
+        &= \eval[\frac{x^2\sin(nx)}{n}|_{0}^{\pi} - \frac{2}{n} \int_{0}^{\pi} x\sin(nx) \dd{x} \\
+        &= \frac{\pi^2\sin(n\pi)}{n} - \frac{2}{n} \int_{0}^{\pi} x\sin(nx) \dd{x} \\ 
+        &= 0 - \frac{2}{n} \int_{0}^{\pi} x\sin(nx) \dd{x}.
+\end{align*}
+
+For integration by parts, take
+\[
+    u(x) = x \isp{and} v(x) = \frac{-\cos(nx)}{n},
+\]
+so $u'(x) = 1$ and $v'(x) = \sin(nx)$. Then
+\begin{align*}
+    \int_{0}^{\pi} x^2\cos(nx) \dd{x}
+        &= \frac{-2}{n} \qty(\eval[\frac{-x\cos(nx)}{n}|_{0}^{\pi} + \frac{1}{n}\int_{0}^{\pi} \cos(nx) \dd{x}) \\
+        &= \frac{-2}{n} \qty(\frac{-\pi\cos(n\pi)}{n} + 0) \\
+        &= \frac{2\pi\cos(nx)}{n^2}.
+\end{align*}
+
+Now, we have
+\[
+    c_n
+        = -2 \cdot \frac{\cos(n\pi) - 1}{n^2} + \frac{1}{\pi} \cdot \frac{2\pi\cos(nx)}{n^2}
+        = \frac{2}{n^2}.
+\]
+In particular, we can see that $c_n = c_{-n}$. So we have the Fourier expansion
+\[
+    \sum_{n = - \infty}^{\infty} c_n e^{inx} 
+        = \frac{\pi^2}{3} + \sum_{n=1}^{\infty}\frac{2}{n^2}\qty(e^{inx} + e^{-inx})
+        = \frac{\pi^2}{3} + \sum_{n=1}^{\infty}\frac{4}{n^2}\cos(nx).
+\]
+
+
+
+We now show that $f(x)$ is equal to its Fourier expansion on $[-\pi, \pi]$. First, $f$ is differentiable for $0 < |x| < \pi$, with $|f'(x)| \leq 2\pi$. Therefore, $f$ is Lipschitz on both $(-\pi, 0)$ and $(0, \pi)$,  implying that $f(x)$ equals its Fourier expansion at these points. It remains to show that the conditions of Theorem 8.14 are satisfied at the points $0, \pm\pi$. Note that $f$ is at least continuous at these points, but not necessarily differentiable. For $0$ and any nonzero $t \in (-\pi, \pi)$, the interval from $0$ to $t$ is contained in either $[-\pi, 0]$ or $[0, \pi]$. In either case, we use the continuity of $f$ on these intervals and the differentiability on the open subintervals to select a point $c$ between $0$ and $t$ such that
+\[
+    f(t) - f(0) = f'(c)(t - 0).
+\]
+Taking the absolute value, we obtain
+\[
+    |f(0 + t) - f(0)| = |f'(c)||t| \leq 2\pi|t|.
+\]
+Hence, $f(0)$ is equal to its Fourier expansion. By similar argument, $f$ is continuous at $\pm\pi$, and differentiable in a radius of $\pi$ around each point, with derivative bounded by $2\pi$. Thus,
+\[
+    f(x) = \frac{\pi^2}{3} + \sum_{n=1}^{\infty}\frac{4}{n^2}\cos(nx), \qquad x \in [-\pi, \pi].
+\]
+
+Evaluating at $x = 0$, we find
+\begin{align*}
+    f(0) &= \frac{\pi^2}{3} + \sum_{n=1}^{\infty}\frac{4}{n^2}\cos(n0) \\
+    \pi^2 &= \frac{\pi^2}{3} + 4\sum_{n=1}^{\infty}\frac{1}{n^2} \\
+    \frac{\pi^2}{6} &= \sum_{n=1}^{\infty}\frac{1}{n^2}.
+\end{align*}
+
+
+Applying Parseval's theorem, we find
+\begin{align*}
+    \frac{1}{2\pi} \int_{-\pi}^{\pi} |f(x)|^2 \dd{x} &= \sum_{n=-\infty}^{\infty} |c_n|^2 \\
+    \frac{1}{\pi} \int_{0}^{\pi} (\pi - x)^4 \dd{x} &= \frac{\pi^4}{9} + 2\sum_{n=1}^{\infty} \frac{2^2}{n^4} \\
+    \frac{1}{\pi} \eval[\frac{-(\pi - x)^5}{5}|_{0}^{\pi} - \frac{\pi^4}{9} &= 8\sum_{n=1}^{\infty} \frac{1}{n^4} \\
+    \frac{1}{\pi} \cdot \frac{\pi^5}{5} - \frac{\pi^4}{9} &= 8\sum_{n=1}^{\infty} \frac{1}{n^4} \\
+    \frac{\pi^4}{90} &= \sum_{n=1}^{\infty} \frac{1}{n^4}.
+\end{align*}
+
+
+
+
+
+\newpage
+\begin{pbox}[Exercise 8.15]
+    With $D_n$ as defined in (77), put
+    \[
+        K_N(x) = \frac{1}{N + 1} \sum_{n=0}^{N} D_n(x).
+    \]
+    Prove that
+    \[
+        K_N(x) = \frac{1}{N + 1} \cdot \frac{1 - \cos(N + 1)x}{1 - \cos x}
+    \]
+    and that
+\end{pbox}
+
+Let $z = e^{ix}$, then the Dirichlet kernel is given by
+\[
+    D_n(x)
+        = \frac{\sin(n + 1/2)x}{\sin(x/2)}
+        = \frac{z^{n+1/2} - z^{-n - 1/2}}{z^{1/2} - z^{-1/2}}
+        = \frac{z^{-n} - z^{n + 1}}{1 - z}.
+\]
+Then
+\begin{align*}
+    (N+1)K_N(x)
+        &= \sum_{n=0}^{N} \frac{z^{-n} - z^{n + 1}}{1 - z} \\
+        &= \frac{1}{1 - z} \qty(\sum_{n=0}^{N} z^{-n} - z\sum_{n=0}^{N} z^n) \\
+        &= \frac{1}{1 - z} \qty(\frac{1 - z^{-(N + 1)}}{1 - z^{-1}} - z \cdot \frac{1 - z^{N + 1}}{1 - z}) \\
+        &= \frac{-z}{1 - z} \qty(\frac{1 - z^{-(N + 1)}}{1 - z} + \frac{1 - z^{N + 1}}{1 - z}) \\
+        &= \frac{1}{1 - z^{-1}} \cdot \frac{2 - \qty(z^{N+1} + z^{-(N+1)})}{1 - z} \\
+        &= \frac{2 - 2\cos(N + 1)x}{2 - \qty(z + z^{-1})} \\
+        &= \frac{1 - \cos(N + 1)x}{1 - \cos x}.
+\end{align*}
+Hence,
+\[
+    K_N(x) = \frac{1}{N + 1} \cdot \frac{1 - \cos(N + 1)x}{1 - \cos x}.
+\]
+
+
+
+\begin{pbox}[(a)]
+    $K_N \geq 0$
+\end{pbox}
+
+Since $\cos x \leq 1$ for all $x \in \R$, then we must also have $1 - \cos x \geq 0$. So in fact
+\[
+    K_N(x) = \frac{1}{N + 1} \cdot \frac{1 - \cos(N + 1)x}{1 - \cos x} \geq 0.
+\]
+
+
+\newpage
+\begin{pbox}[(b)]
+    \[
+        \frac{1}{2\pi} \int_{-\pi}^{\pi} K_N(x) \dd{x} = 1,
+    \]
+\end{pbox}
+
+First, we see that
+\[
+    \frac{1}{2\pi} \int_{-\pi}^{\pi} D_n(x) \dd{x} 
+        = \sum_{k=-n}^{n} \frac{1}{2\pi} \int_{-\pi}^{\pi} e^{ikx} \dd{x}
+        = 1.
+\]
+So
+\begin{align*}
+    \frac{1}{2\pi} \int_{-\pi}^{\pi} K_N(x) \dd{x}
+        = \frac{1}{N+1} \sum_{n=0}^{N} \frac{1}{2\pi} \int_{-\pi}^{\pi} D_n(x) \dd{x}
+        = \frac{1}{N+1} \sum_{n=0}^{N} 1 
+        = 1.
+\end{align*}
+
+
+\begin{pbox}[(c)]
+    \[
+        K_N(x) \leq \frac{1}{N + 1} \cdot \frac{2}{1 - \cos \delta} \quad \text{if } 0 < \delta \leq |x| \leq \pi.
+    \]
+\end{pbox}
+
+Since $\cos x$ is decreasing on $[0, \pi]$, then $0 < \delta \leq |x| \leq \pi$ implies $\cos x \leq \cos\delta$. Additionally, since $\cos x \geq - 1$ for all $x \in \R$, then $1 - \cos x \leq 2$. So
+\[
+    K_N(x)
+        = \frac{1}{N+1} \cdot \frac{1 - \cos(N + 1)x}{1 - \cos x}
+        \leq \frac{1}{N+1} \cdot \frac{2}{1 - \cos \delta}.
+\]
+
+\begin{pbox}
+    If $s_N = s_N(f; x)$ is the $N$th partial sum of the Fourier series of $f$, consider the arithmetic means
+    \[
+        \sigma_N = \frac{s_0 + s_1 + \dots + s_N}{N + 1}.
+    \]
+    Prove that
+    \[
+        \sigma_N(f; x) = \frac{1}{2\pi} \int_{-\pi}^{\pi} f(x-t)K_N(t) \dd{t},
+    \]
+\end{pbox}
+
+We have that
+\[
+    s_n(f; x) = \frac{1}{2\pi} \int_{-\pi}^{\pi} f(x - t) D_n(t) \dd{t}, 
+\]
+so
+\begin{align*}
+    \sigma_N(f; x)
+        &= \frac{1}{N+1} \sum_{n=0}^{N} s_n(f; x) \\
+        &= \frac{1}{N+1} \sum_{n=0}^{N} \qty(\frac{1}{2\pi} \int_{-\pi}^{\pi} f(x - t) D_n(t) \dd{t}) \\
+        &= \frac{1}{2\pi} \int_{-\pi}^{\pi} f(x - t) \qty(\frac{1}{N+1} \sum_{n=0}^{N} D_n(t)) \dd{t} \\
+        &= \frac{1}{2\pi} \int_{-\pi}^{\pi} f(x - t) K_N(t) \dd{t}.
+\end{align*}
+
+
+\newpage
+\begin{pbox}[]
+    and hence prove Fej\'er's theorem: If $f$ is continuous, with period $2\pi$, then $\sigma_N(f; x) \to f(x)$ uniformly on $[-\pi, \pi]$. Hint: use properties (a), (b), (c), to proceed as in Theorem 7.26.
+\end{pbox}
+
+\begin{proof}
+    Since $f$ is continuous on the compact interval $[-\pi, \pi]$, then it is uniformly continuous. Additionally $f$ is bounded; let $M > 0$ such that $|f(x)| \leq M$ for all $x \in [-\pi, \pi]$. 
+
+    Let $\eps > 0$ be given. To show uniform convergence, we want to find some $N \in \N$ such that
+    \[
+        n \geq N, \implies |\sigma_n(f; x) - f(x)| < \eps,
+    \]
+    for all $x \in [-\pi, \pi]$. Using (a) and (b), we find
+    \begin{align*}
+        |\sigma_n(f; x) - f(x)|
+            &= \abs{\frac{1}{2\pi} \int_{-\pi}^{\pi} f(x - t) K_n(t) \dd{t} - f(x) \qty(\frac{1}{2\pi} \int_{-\pi}^{\pi} K_n(t) \dd{t})} \\
+            &= \abs{\frac{1}{2\pi} \int_{-\pi}^{\pi} \qty\big[f(x - t) - f(x)] K_n(t) \dd{t}} \\
+            &\leq \frac{1}{2\pi} \int_{-\pi}^{\pi} \abs\big{f(x - t) - f(x)} K_n(t) \dd{t}.
+    \end{align*}
+    By the uniform continuity of $f$, let $\delta > 0$ such that 
+    \[
+        |x - y| < \delta \implies |f(x) - f(y)| < \frac{\eps}{2}.
+    \]
+    Additionally, assume $\delta < \pi$. We will estimate the above integral in two parts: first for $|t| \leq \delta$ and second for $\delta \leq |t| \leq \pi$. Using (a) and the choice of $\delta$, we find
+    \begin{align*}
+        \frac{1}{2\pi} \int_{-\delta}^{\delta} \abs\big{f(x - t) - f(x)} K_n(t) \dd{t}
+            &\leq \frac{1}{2\pi} \int_{-\delta}^{\delta} \frac{\eps}{2} K_n(t) \dd{t} \\
+            &\leq \frac{\eps}{2} \cdot \frac{1}{2\pi} \int_{-\pi}^{\pi}K_n(t) \dd{t} \\
+            &= \frac{\eps}{2}.
+    \end{align*}
+    Now using (c) and the choice of $M$, we find
+    \begin{align*}
+        \frac{1}{2\pi} \int_{\delta \leq |t| \leq \pi} \big|f(x - t) - f(x)\big| K_n(t) \dd{t}
+            &\leq \frac{1}{2\pi} \int_{\delta \leq |t| \leq \pi} 2M \cdot \frac{1}{n + 1} \cdot \frac{2}{1 - \cos \delta} \dd{t} \\
+            &\leq \frac{1}{n + 1} \cdot \frac{4M}{1-\cos \delta} \cdot \frac{1}{2\pi} \int_{-\pi}^{\pi} \dd{t} \\
+            &= \frac{1}{n + 1} \cdot \frac{4M}{1-\cos \delta}.
+    \end{align*}
+    Then we can choose $N \in \N$ such that
+    \[
+        \frac{1}{N} < \frac{\eps}{2} \cdot \frac{1 - \cos\delta}{4M}.
+    \]
+    In which case, for any $n \geq N$ and $x \in [-\pi, \pi]$ we have
+    \[
+        |\sigma_n(f; x) - f(x)|
+            \leq \frac{\eps}{2} + \frac{1}{n + 1} \cdot \frac{4M}{1-\cos \delta}
+            < \frac{\eps}{2} + \frac{\eps}{2}
+            = \eps.
+    \]
+    Thus, $\sigma_n(f; x) \to f(x)$ uniformly on $[-\pi, \pi]$.
+    
+\end{proof}
+
+\newpage
+\begin{pbox}[Exercise 8.17]
+    Assume $f$ is bounded and monotonic on $[-\pi, \pi)$, with Fourier coefficients $c_n$, as given by (62).
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Use Exercise 17 of Chap. 6 to prove that $\{nc_n\}$ is a bounded sequence.
+\end{pbox}
+
+
+By definition, we have
+\[
+    c_n = \frac{1}{2\pi} \int_{-\pi}^{\pi} f(x)e^{-inx} \dd{x}. 
+\]
+We take $g(x) = e^{-inx}$ and $G(x) = ie^{-inx}/n$ for Exercise 6.17, giving us
+\begin{align*}
+    \abs{\int_{-\pi}^{\pi} f(x)e^{-inx} \dd{x}}
+        &= \abs{f(\pi)G(\pi) - f(-\pi)G(-\pi) - \int_{-\pi}^{\pi} G \dd{f}} \\
+        &\leq |f(\pi)G(-\pi)| + |f(-\pi)G(\pi)| + \int_{-\pi}^{\pi} |G| |{\dd{f}}|.
+\end{align*}
+Note that $|G(x)| = 1/n$ for all real $x$, so
+\begin{align*}
+    \abs{\int_{-\pi}^{\pi} f(x)e^{-inx} \dd{x}}
+        &\leq \frac{1}{n}|f(\pi)| + \frac{1}{n}|f(-\pi)| + \frac{1}{n}|f(\pi) - f(-\pi)| \\
+        &\leq \frac{2|f(\pi)| + 2|f(-\pi)|}{n}.
+\end{align*}
+Hence,
+\[
+    |nc_n|
+        \leq n \cdot \frac{1}{2\pi} \cdot \frac{2|f(\pi)| + 2|f(-\pi)|}{n}
+        = \frac{2|f(\pi)| + 2|f(-\pi)|}{\pi},
+\]
+which is a uniform bound of the terms by a constant.
+
+
+
+\begin{pbox}[(b)]
+    Combine (a) with Exercise 16 and with Exercise 14(e) of Chap. 3, to conclude that
+    \[
+        \lim_{N \to \infty} s_N(f; x) = \tfrac12 [f(x+) + f(x-)]
+    \]
+    for every $x$.
+\end{pbox}
+
+Given $x$, we take $a_n = c_ne^{inx}$. Then $|na_n| = |c_n|$ is bounded as shown in (a). Let $s_N = s_N(f; x)$ and $\sigma_N = \sigma_N(f; x)$. Then from Exercises 3.14(e) and 8.16, we know that
+\[
+    \lim_{N \to \infty} s_N(f; x)
+        = \lim_{N \to \infty} \sigma_N(f; x)
+        = \tfrac12[f(x+) + f(x-)].
+\]
+
+
+\newpage
+\begin{pbox}[(c)]
+    Assume only that $f \in \RR$ on $[-\pi, \pi]$ and that $f$ is monotonic in some segment $(\alpha, \beta) \subset [-\pi, \pi]$. Prove that the conclusion of (b) holds for every $x \in (\alpha, \beta)$. (This is an application of the localization theorem.)
+\end{pbox}
+
+Since $f \in \RR[-\pi, \pi]$, then $f$ is bounded on $[-\pi, \pi]$. In particular, $f$ is bounded on $(\alpha, \beta)$; define $a = \inf_{(\alpha, \beta)} f$ and $b = \sup_{(\alpha, \beta)} f$. Then define the function
+\[
+    g(x) = \begin{cases}
+        a & x \in [-\pi, \alpha], \\
+        f(x) & x \in (\alpha, \beta), \\
+        b & x \in [\alpha, \pi].
+    \end{cases}
+\]
+Then  $g(x) = f(x)$ for all $x \in (\alpha, \beta)$, so the localization theorem tells us that
+\[
+    \lim_{N \to \infty} s_N(f; x) = \lim_{N \to \infty} s_N(g; x), \quad x \in (\alpha, \beta).
+\]
+Additionally, $g$ is monotonic on $[-\pi, \pi]$, so for any $x \in (\alpha. \beta)$ we find
+\begin{align*}
+    \lim_{N \to \infty} s_N(f; x)
+        &= \lim_{N \to \infty} s_N(g; x) \\
+        &= \tfrac12[g(x+) + g(x-)] \\
+        &= \tfrac12[f(x+) + f(x-)].
+\end{align*}
+
+
+
+
+
+\end{document}

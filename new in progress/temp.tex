@@ -1,0 +1,104 @@
+% Packages
+\usepackage[margin=1in]{geometry} % proper margins
+\usepackage{amsmath} % align, cases, eqref, matrices, dots, roots, delimiters, math mode functions, mod, arrows
+\usepackage{amsthm} % theorems, proofs
+\usepackage{amssymb} % mathbb, most fancy fonts, niche relations/negations
+\usepackage{mathrsfs} % much more loopy calligraphy font
+\usepackage{enumitem} % custom numbering for lists
+
+% Theorems
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}
+    {\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\mybox}}\end{center}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+
+% Alternate Characters
+\newcommand{\eps}{\varepsilon} % double curved, rather than single curve with midline
+\newcommand{\phi}{\varphi} % single stroke loop, rather than vertical line through circle
+\renewcommand{\emptyset}{\varnothing} % circular, rather than tall
+
+% Named Sets
+\newcommand{\N}{\mathbb{N}} % natural numbers
+\newcommand{\Z}{\mathbb{Z}} % integers 
+\newcommand{\Q}{\mathbb{Q}} % rational numbers
+\newcommand{\R}{\mathbb{R}} % real numbers
+\newcommand{\C}{\mathbb{C}} % complex numbers
+
+
+% Fancy Characters
+\newcommand{\F}{\mathbb{F}} % arbitrary field
+\renewcommand{\P}{\mathbb{P}} % probability measure (apparently, sometimes prime numbers)
+\newcommand{\FF}{\mathcal{F}} % sigma algebra
+\newcommand{\BB}{\mathcal{B}} % Borel sigma algebra
+\newcommand{\E}{\mathbb{E}} % Expected value of a random variable or distribution
+
+% Paired Delimiters
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil} % ceiling
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor} % floor
+\newcommand{\<}{\left\langle} % left angle bracket
+\renewcommand{\>}{\right\rangle} % right angle bracket
+
+% Functions
+\renewcommand{\Im}{\operatorname{Im}} % imaginary part of a complex number
+\renewcommand{\Re}{\operatorname{Re}} % real part of a complex number
+\newcommand{\Arg}{\operatorname{Arg}} % principal argument (angle) of complex number
+\newcommand{\Log}{\operatorname{Log}} % principal log of complex number
+\newcommand{\Var}{\operatorname{Var}} % variance of a distribution
+
+% Simplified Notation
+\newcommand{\id}[1]{\operatorname{id_{\mathnormal{#1}}}} % identity operator
+\newcommand{\seq}[2][n]{\left\{#2\right\}_{#1\in\N}} % sequence
+\newcommand{\od}[3][1]{\ifx1#1{\frac{\d #2}{\d #3}}\else{\frac{\d^{#1}#2}{\d #3^{#1}}}\fi} % ordinary derivative
+\newcommand{\pd}[3][1]{\ifx1#1{\frac{\partial #2}{\partial#3}}\else{\frac{\partial^{#1}#2}{\partial#3^{#1}}}\fi} % partial derivative
+\newcommand{\intr}[1]{\accentset{\circ}{#1}} % interior of a set
+
+% Renaming
+\let\sm\setminus % set minus (difference)
+\let\clo\overline % closure of a set
+\let\conj\overline % conjugate of an object
+\let\eqc\overline % equivalence class of an object
+\newcommand{\teq}{\trianglelefteq} % normal subgroup
+\let\iso\cong % isomorphic (groups)
+
+% Notes
+% medskip for header-less paragraph
+% intertext{} for short text inside big display structure
+% dots is dynamic based on surroundings, no it isn't
+% dfrac and tfrac to force large or small fractions
+% operatorname for new operators instead of text
+% consider using nath; it seems to break most formatting and is not compatible with many packages
+
+\newcommand{\teq}{\trianglelefteq}
+\newcommand{\Syl}{\operatorname{Syl}}
+\newcommand{\<}{\left\langle}
+\renewcommand{\>}{\right\rangle}
+\newcommand{\Aut}{\operatorname{Aut}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\isom}{\cong}
+
+% Sketch
+\def\[#1\]{\begin{align*}#1\end{align*}}
+
+% old
+\newcommand{\pdv}[3][1]{\ifnum#1=1{\frac{\partial #2}{\partial#3}}\else{\frac{\partial^{#1}#2}{\partial#3^{#1}}}\fi}
+\renewcommand{\d}[1]{\operatorname{d}\!#1} % differential operator
+\newcommand{\od}[3][1]{\ifnum#1=1{\frac{\d #2}{\d #3}}\else{\frac{\d^{#1}#2}{\d #3^{#1}}}\fi} % ordinary derivative
+
+
+% Real Analysis
+\newcommand{\intr}[1]{\accentset{\circ}{#1}}

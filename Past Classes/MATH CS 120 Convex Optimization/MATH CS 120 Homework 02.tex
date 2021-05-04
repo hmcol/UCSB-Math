@@ -1,0 +1,431 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow,enumitem}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Set Names
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+
+% Misc Characters
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\newcommand{\eps}{\varepsilon}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ang}{\langle}{\rangle}
+
+% Homework Sections
+\setlength{\fboxsep}{4pt}
+\newcommand{\generic}[2]{\section*{#1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\ex}[2]{\generic{Exercise #1}{#2}}
+\newcommand{\prob}[2]{\generic{Problem #1}{#2}}
+\newcommand{\ques}[2]{\generic{Question #1}{#2}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+% MATH CS 117 Intro to Real Analysis
+\newcommand{\ds}{\displaystyle}
+\newcommand{\seq}[1]{\left\{#1\right\}_{n=1}^\infty}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+ 
+ 
+\begin{document}
+ 
+\title{Homework 2\\
+    \large MATH CS 120 Convex Optimization}
+\author{Harry Coleman}
+\date{June 2, 2020}
+\maketitle
+
+\section*{4.2}
+ Consider the optimization problem
+\[\text{minimize } f_0(x)=-\sum_{i=1}^m\log(b_i-a_i^Tx)\]
+with domain $\textbf{dom}f_0=\{x : Ax < b\}$, where $A\in\R^{m\times n}$ (with rows $a_i^T)$. We assume that $\textbf{dom}f_0$ is nonempty. Prove the following facts
+
+\subsection*{4.2.a}
+$\textbf{dom}f_0$ is unbounded if and only if there exists a $v\ne0$ with $Av\leq0$.
+
+\begin{proof}
+    Suppose $\textbf{dom}f_0$ is unbounded. Then for any $n\in\N$, there exists some $x_n\in\textbf{dom}f_0$ such that $||x_n||>n$. Let $\{x_n\}$ be a sequence in $\textbf{dom}f_0$ such that $||x_n||>n$ for all $n\in\N$. Now consider the sequence $\{y_n\}$ given by
+    \[y_n=\frac{x_n}{||x_n||}\]
+    for each $n\in\N$. This is a sequence in the set of unit vectors $\{x\in\R^n : ||x||=1\}$, which is bounded. So by the Bolzano-Weierstrass theorem, there is a convergent subsequence $\{y_{n_k}\}$ with $y_{n_k}\to y$. We also take the corresponding subsequence $\{x_{n_k}\}$ of $\{x_n\}$, noting that $||x_{n_k}||\to\infty$. We now consider for some row $a_i^T$ of $A$,
+    \[a_i^Ty_{n_k} = \frac{a_i^Tx_{n_k}}{||x_{n_k}||} < b_i\frac{1}{||x_{n_k}||}.\]
+    Now letting $k\to\infty$, we find
+    \[a_i^Ty \leq b_i\cdot0 = 0.\]
+    Since this is true for each $a_i^T$ row of $A$, we in fact have $Ay\leq 0$. Also note that since $||y_n||=1$ for all $n\in\N$, we have $||y||=1$, so $y\ne 0$.
+    
+    Now suppose there exists some $v\ne0$ with $Av\leq0$. Since $\textbf{dom}f_0$ is nonempty, we also pick a point $x\in\textbf{dom}f_0$. Now for any $t\geq0$, we have
+    \[A(x+tv) = Ax + tAv \leq Ax + 0 < b,\]
+    so $x+tv\in\textbf{dom}f_0$. And for any $M\in\R_+$, we can pick
+    \[t=\frac{\|x\|+M}{\|v\|},\]
+    then by the reverse triangle inequality,
+    \[\|x+tv\| \geq \left|\|x\|-t\|v\|\right| = \left|\|x\|-\frac{\|x\|+M}{\|v\|}\|v\|\right| = M.\]
+    So $\textbf{dom}f_0$ is unbounded.
+    
+\end{proof}
+
+\subsection*{4.2.b}
+$f_0$ is unbounded below if and only if there exists a $v$ with $Av\leq0$, $Av\ne0$. \textit{Hint.} There exists $v$ such that $Av\leq0$, $Av\ne0$ if and only if there exists no $z>0$ such that $A^Tz=0$.
+
+\begin{proof}
+    Suppose there exists a $v$ with $Av\leq0$ and $Av\ne0$. Let $M_1\in\R$ be given and let $x\in\textbf{dom}f_0$. Now for any $t\geq0$, we have
+    \[A(x+tv) = Ax + tAv \leq Ax + 0 < b,\]
+    so $x+tv\in\textbf{dom}f_0$. We want to pick $t$ such that
+    \[f_0(x+tv) = -\sum_{i=1}^m\log(b_i-a_i^T(x+tv)) \leq M_1.\]
+    This will be true if and only if
+    \[\sum_{i=1}^m\log(b_i-a_i^T(x+tv)) \geq -M_1.\]
+    Notice that since for each $i$, we have $a_i^T(x+tv) < b$, we also have $b_i-a_i^T(x+tv)>0$, which implies $\log(b_i-a_i^T(x+tv))>0$. We now choose $j$ such that $a_j^Tv < 0$ since $Av\ne0$. Then since each term is positive,
+    \[\sum_{i=1}^m\log(b_i-a_i^T(x+tv)) \geq \log(b_j-a_j^T(x+tv)).\]
+    Since the $\log$ function is increasing and unbounded above, we can pick some $M_2$ such that
+    \[y\geq M_2 \implies \log(y)\geq -M_1.\]
+    Now since
+    \[b_j - a_j^T(x-vt) = b_j-a_j^T - (a_j^Tv)t\]
+    is linear with respect to $t$ and has slope $-a_j^Tv>0$, we can pick $t$ large enough such that
+    \[b_j-a_j^T(x+vt) \geq M_2.\]
+    This now implies that
+    \[\sum_{i=1}^m\log(b_i-a_i^T(x+tv)) \geq\log(b_j-a_j^T(x+tv)) \geq -M_1.\]
+    which gives us
+    \[f_0(x+vt)\leq M_1,\]
+    so $f_0$ is unbounded below. 
+    
+    Suppose $f_0$ is unbounded below. Then let $\{x_n\}$ be a sequence in $\textbf{dom}f_0$ such that $f_0(x_n)\to-\infty$. This implies that
+    \[\sum_{i=1}^m\log(b_i-a_i^Tx_n) \to +\infty,\]
+    \[\sum_{i=1}^m(b_i-a_i^Tx_n) \to +\infty.\]
+    Assume for contradiction that there exists some $z\in\R^m$, such that $z>0$ and $A^Tz = 0$. In particular, we choose $z$ such that $z_i\geq1$ for all $i$; this is possible since any positive scalar multiple of $z$ has the same properties. Then since
+    \[(b_i-a_i^Tx_n)>0 \quad\text{and}\quad z_i\geq1,\]
+    we have
+    \begin{align*}
+        \sum_{i=1}^m(b_i-a_i^Tx_n) 
+            &\leq \sum_{i=1}^m z_i(b_i-a_i^Tx_n) \\
+            &= \sum_{i=1}^m z_ib_i - \sum_{i=1}^m z_i(a_i^Tx_n) \\
+            &= z^Tb - z^TAx_n \\
+            &= z^Tb - (A^Tz)^Tx_n \\
+            &= z^Tb - 0x_n \\
+            &= z^Tb.
+    \end{align*}
+    This implies that $z^Tb\to+\infty$ as $n\to+\infty$, which is as contradiction as $z^Tb$ is constant with respect to $n$. Therefore, no such $z$ exists. Then from the hint, this implies that there exists a $v$ such that $Av\leq0$, $Av\ne0$.
+    
+\end{proof}
+
+\subsection*{4.2.c}
+If $f_0$ is bounded below then its minimum is attained, i.e., then there exists an $x$ that satisfies the optimality condition (4.23).
+
+\begin{proof}
+    Suppose $f_0$ is bounded below, then by the contrapositive of 4.2.b and the hint, there exists some $z>0$ such that $A^Tz=0$. That is,
+    \[0 = A^Tz = \sum_{i=1}^mz_ia_i = \sum_{i=1}^m\frac1{b_i-a_i^Tw)}a_i = \nabla f_0(w)\]
+    if $w$ is the vector such that
+    \[Aw = b - 
+        \begin{bmatrix}
+            1/z_1 \\
+            \vdots \\
+            1/z_m
+        \end{bmatrix}.
+    \]
+    This vector $w$ can be shown to exist if rank$A=n$. In which case, $z>0$ implies $Aw<b$ so $w\in\textbf{dom} f_0$. Then we would have that $w$ satisfies the optimality condition.
+    
+    I was unable to prove rank$A=n$.
+    
+\end{proof}
+
+\subsection*{4.2.d}
+The optimal set is affine: $X_\text{opt} = \{x^*+v : Av=0\}$, where $x^*$ is any optimal point.
+
+\begin{proof}
+    Let $x^*$ be an optimal point and let $v\in\ker A$. Then
+    \begin{align*}
+        \nabla f_0(x^*+v)
+            &= \sum_{i=1}^m\frac1{b_i-a_i^T(x^*+v)}a_i \\
+            &= \sum_{i=1}^m\frac1{b_i-a_i^Tx^*+a_i^Tv}a_i \\
+            &= \sum_{i=1}^m\frac1{b_i-a_i^Tx^*+0}a_i \\
+            &= \nabla f_0(x^*)\\
+            &= 0.
+    \end{align*}
+    So $x^*+v$ is optimal. This implies that $\{x^*+v : Av=0\}\subseteq X_\text{opt}$. Now suppose $y^*\in X_\text{opt}$. Then $y^*=x^* + z$ for some vector $z$. We aim to prove $z\in\ker A$, as this will imply that $y^*\in\{x^*+v : Av=0\}$ and therefore $X_\text{opt}=\{x^*+v : Av=0\}$. 
+    
+    I was unable to complete this.
+    
+\end{proof}
+
+\section*{4.3}
+Prove that $x^*=(1,1/2,-1)$ is optimal for the optimization problem
+\begin{alignat*}{3}
+    &\text{minimize}    &\quad& f_0(x) = \frac12x^TPx+q^Tx+r \\
+    &\text{subject to}  &\quad& -1\leq x_i \leq 1, \quad i=1,2,3,
+\end{alignat*}
+where
+\[P = 
+    \begin{bmatrix}
+        13 & 12 & -2 \\
+        12 & 17 & 6 \\
+        -2 & 6 & 12
+    \end{bmatrix},
+    \quad
+    q=
+    \begin{bmatrix}
+        -22.0 \\
+        -14.5 \\
+        13.0
+    \end{bmatrix},
+    \quad
+    r=1.
+\]
+
+\begin{proof}
+    We first note that $x^*$ satisfies the constraints, and is therefore feasible. Let $y$ be another feasible point. We verify the first order optimality condition on $x^*$.
+    \begin{align*}
+        \nabla f_0(x^*)^T(y-x^*)
+            &= (Px^* + q^T)^T(y-x^*) \\
+            &=  \begin{bmatrix}
+                    -1 & 0 & 2
+                \end{bmatrix}
+                \begin{bmatrix}
+                    y_1-1 \\
+                    y_2 - 1/2 \\
+                    y_3 + 1
+                \end{bmatrix} \\
+            &= -y_1+2y_3+4.
+    \end{align*}
+    Since $-1\leq y_1,y_3 \leq 1$, then
+    \[\nabla f_0(x^*)^T(y-x^*) \geq -1+2(-1)+4 = 1 \geq 0.\]
+    So $x^*$ satisfies the first order optimality condition and is therefore optimal.
+    
+\end{proof}
+
+\section*{4.8}
+Give an explicit solution of each of the following LP's.
+
+\subsection*{4.8.a}
+Minimizing a linear function over an affine space.
+\begin{alignat*}{3}
+    &\text{minimize}    &\quad& c^Tx \\
+    &\text{subject to}  &\quad& Ax=b.
+\end{alignat*}
+
+\begin{proof}
+    If the system $Ax=b$ is inconsistent, then the feasible set is empty and the minimization problem has no solution. Otherwise, $Ax=b$ is consistent, and we let $x_0$ be such that $Ax=b$. Then we can express by 
+    \[X = \{x_0+y : y\in\ker A\}\]
+    the feasible set. If $c\perp\ker A$, then for any $x\in X$, we have $x=x_0+y$ where $y\in\ker A$. So
+    \begin{align*}
+        c^Tx
+            &= c^T(x_0 + y) \\
+            &= c^Tx_0 + c^Ty \\
+            &= c^Tx_0 + 0 \\
+            &= c^Tx_0.
+    \end{align*}
+    This tells us that $c^Tx=c^Tx_0$ for all $x\in X$, so $c^Tx_0$ is the solution. Now if $c\not\perp\ker A$, then for some $y\in\ker A$, we have $c^Ty\ne0$. Now for any $t\in\R$,
+    \[A(x_0+ty) = Ax_0 + tAy = b + 0 = b.\]
+    So $x_0+ty\in X$ for all $t\in\R$. Consider now
+    \[c^T(x_0+ty) = c^Tx_0 + (c^Ty)t.\]
+    So if $c^Ty>0$, then
+    \[\lim_{t\to-\infty}c^T(x_0+ty) = -\infty.\]
+    And if $c^Ty<0$, then
+    \[\lim_{t\to+\infty}c^T(x_0+ty) = -\infty.\]
+    So $c^Tx$ is unbounded below for $x\in X$. In conclusion, the optimal value is
+    \[\begin{cases}
+        c^Tx, \text{ for any } x\in X &\text{if } Ax=b \text{ is consistent and } c\perp\ker A, \\
+        -\infty &\text{if } Ax=b \text{ is consistent and } c\not\perp\ker A, \\
+        \text{none} &\text{otherwise.}
+    \end{cases}\]
+
+\end{proof}
+
+
+
+\subsection*{4.8.b}
+Minimizing a linear function over a halfspace.
+\begin{alignat*}{3}
+    &\text{minimize}    &\quad& c^Tx \\
+    &\text{subject to}  &\quad& a^Tx\leq b,
+\end{alignat*}
+where $a\ne0$.
+
+\begin{proof}
+    Let $X = \{x : a^Tx\leq b\}$ denote the feasible set. For each $x$, we write $x=t_xa + d_x$, where $d_x\perp a$. In other words, $t_xa$ is the projection of $x$ onto $a$. Then
+    \[a^Tx = a^T(t_xa + d_x) = t_x(a^Ta) + a^Td_x = t_x(a^Ta) + 0 = t_x(a^Ta).\]
+    So $x\in X$ if and only if $t_x\leq b/(a^Ta)$. Consider now $c=t_ca+d_c$. If $t_c>0$, then for any $t\leq b/(a^Ta)$, we have $ta\in X$ and
+    \[c^T(ta) = (t_ca + d_c)^T(ta) = t(t_ca^Ta).\]
+    Then
+    \[\lim_{t\to-\infty}c^T(ta) = \lim_{t\to-\infty}t(t_ca^Ta) = -\infty,\]
+    so $c^Tx$ is unbounded below for $x\in X$. If $t_c<0$, then for any $x\in X$,
+    \[c^Tx = (t_ca + d_c)^T(t_xa+d_x) = t_x(t_ca^Ta) + d_xd_c.\]
+    If $d_c=0$, then $c^Tx$ decreases as $t_x$ increases, and since $t_x\leq b/(a^Ta)$, we know that $c^Tx$ attains a minimum at $t_x=b/(a^Ta)$, that is
+    \[\frac{b}{a^Ta}(t_ca^Ta) = bt_c = c^Tx = (t_ca)^Tx,\]
+    which implies $a^Tx=b$. So $c^Tx$ is minimized by any point on the hyperplane $a^Tx=b$. If $d_c\ne0$, then for any $x\in X$ and $k\in\R$,
+    \[a^T(x+kd_c) = a^Tx + ka^Td_c = a^Tx + 0 \leq b.\]
+    So $x+kd_c\in X$ for any $x\in X$ and $k\in\R$. Then
+    \[c^T(x+kd_c) = c^Tx + kc^Td_c,\]
+    which is linear with respect to $k$, and is therefore unbounded below. In conclusion, the optimal value is
+    \[\begin{cases}
+        c^Tx, \text{ for any } x \text{ s.t } ax=b &\text{if } a||c \text{ and } a^Tc>0, \\
+        -\infty &\text{otherwise.}
+    \end{cases}\]
+    
+\end{proof}
+
+\subsection*{4.8.c}
+Minimizing a linear function over a rectangle.
+\begin{alignat*}{3}
+    &\text{minimize}    &\quad& c^Tx \\
+    &\text{subject to}  &\quad& \ell \leq x \leq u,
+\end{alignat*}
+where $\ell$ and $u$ satisfy $\ell\leq u$.
+
+\begin{proof}
+    For each index $i=1,\dots,n$, if $c_i>0$, then $c_ix_i$ is increasing with respect to $x_i$, and attains a minimum at $x_i=\ell_i$. If $c_i<0$, the $c_ix_i$ is decreasing with respect to $x_i$, and attains a minimum at $u_i$. If $c_i=0$, then $c_ix_i$ is constant for all $x_i$. We choose $x^*$ in the feasible set such that
+    \[x^*_i =
+        \begin{cases}
+            \ell_i &\text{if } c_i\geq0, \\
+            u_i &\text{otherwise.}
+        \end{cases}
+    \]
+    Then for any $y$ in the feasible set,
+    \begin{align*}
+        c^Ty - c^Tx^*
+            &= \sum_{i=1}^nc_iy_i - \sum_{i=1}^nc_ix^*_i \\
+            &= \sum_{i=1}^nc_iy_i-c^*_ix^*_i)
+            &\geq 0,
+    \end{align*}
+    Since each term is minimized by $x^*$. So the solution is $c^Tx^*$.
+    
+\end{proof}
+
+\subsection*{4.8.d}
+Minimizing a linear function over the probability simplex.
+\begin{alignat*}{3}
+    &\text{minimize}    &\quad& c^Tx \\
+    &\text{subject to}  &\quad& \textbf{1}^Tx=1, \quad x\geq0.
+\end{alignat*}
+What happens if the equality is replaces by an inequality $\textbf{1}^Tx\leq1$?
+
+\begin{proof}
+    Define $x^*$ to be the vector with
+    \[x_i =
+        \begin{cases}
+            1 &\text{if } c_i=\min\{c_j : j=1,\dots,n\} \text{ and } i\leq j \text{ for all } c_i=c_j, \\
+            0 &\text{otherwise.}
+        \end{cases}
+    \]
+    In other words, $x^*$ is the vector with all zeros except for a 1 at the same index as the first index of the minimum value of $c$. The given feasibility conditions mean that for any feasible $x$, $c^Tx$ is a convex combination of the elements of $c$. And any $x$ which has a nonzero value at an index which is not a minimum of $c$ will have a greater value than $x^*$. So
+    \[c^Tx^* = \min\{c_i : i=1,\dots,n\}\]
+    is the solution.
+    
+    If the equality is replaced with an inequality, then we construct $x^*$ similarly, except if all the elements of $c$ are positive, we take $x^*=0$. So the solution is
+    \[\min(\{c_i : i=1,\dots,n\}\cup\{0\}).\]
+    
+    
+\end{proof}
+
+\subsection*{4.8.e}
+Minimizing a linear function over a unit box with a total budget constraint.
+\begin{alignat*}{3}
+    &\text{minimize}    &\quad& c^Tx \\
+    &\text{subject to}  &\quad& \textbf{1}^Tx=\alpha, \quad 0\leq x \leq \textbf{1}.
+\end{alignat*}
+where $\alpha$ is an integer between $0$ and $n$. What happens if $\alpha$ is not an integer (but satisfies $0\leq\alpha\leq n$)? What if we change the equality to an inequality $\textbf{1}^Tx\leq\alpha$?
+
+\begin{proof}
+    Similar to 4.8.d, for any feasible $x$, $c^Tx$ is a linear combination of the elements of $c$, with each index of $x$ limited between 0 and 1. In this case, we pick $x^*$ such that it has 1's at the $\alpha$ indices which are least in $c$. In other words, if we sort the indices of $c$ such that $c_{i_1}\leq\cdots\leq c_{i_n}$, then $x^*$ will have 1's at indices $i_1,\dots,i_\alpha$ and 0's elsewhere. 
+
+    If $\alpha$ is not an integer, then we construct $x^*$ similarly for $\floor{\alpha}$ and define $x_{i_{\alpha+1}}=\alpha-\floor{\alpha}$. That is, we similarly 'distribute' a total value of $\alpha$ across the indices of $x^*$ starting with the indices which are minimum in $c$. Then as each index of $x$ is 'filled up' to 1, we move to the next index which is the next smallest in $c$. In either case, the solution is
+    \[\sum_{k=1}^{\floor{\alpha}}c_{i_k} + (\alpha - \floor{\alpha})c_{i_{\floor{\alpha}+1}},\]
+    where $(i_k)_{k=1}^n$ is a permutation of $\{1,\dots,n\}$ with $c_{i_1}\leq\cdots\leq c_{i_n}$.
+    
+    Also similar to 4.8.d, if the equality is replaced with an inequality, then we only 'fill up' indices of $x$ so long as they are nonpositive indices of $c$. So the solution is
+    \[\sum_{k=1}^{\floor{\alpha}}\min\{0,c_{i_k}\} + (\alpha - \floor{\alpha})\min\{0,c_{i_{\floor{\alpha}+1}}\},\]
+    where $(i_k)_{k=1}^n$ is a permutation of $\{1,\dots,n\}$ with $c_{i_1}\leq\cdots\leq c_{i_n}$.
+\end{proof}
+
+
+\subsection*{4.8.f}
+Minimizing a linear function over a unit box with a weighted budget constraint.
+\begin{alignat*}{3}
+    &\text{minimize}    &\quad& c^Tx \\
+    &\text{subject to}  &\quad& d^Tx=\alpha, \quad 0\leq x \leq \textbf{1}.
+\end{alignat*}
+with $d>0$, and $0\leq\alpha\leq\textbf{1}^Td$.
+
+\begin{proof}
+    This is equivalent to minimizing $c^Tx$ subject to $\textbf{1}^Tx=\alpha, 0\leq x \leq d$. In other words, this is the same as 4.8.e, except instead of each index of $x$ being able to hold a maximum value of 1, each index can hold a maximum value of the corresponding index of $d$. So we have a similar solution as 4.8.e, but each term is multiplied by it's weight in $d$:
+    \[\sum_{k=1}^{\floor{\alpha}}c_{i_k}d_{i_k} + (\alpha - \floor{\alpha})c_{i_{\floor{\alpha}+1}}d_{i_{\floor{\alpha}+1}},\]
+    where $(i_k)_{k=1}^n$ is a permutation of $\{1,\dots,n\}$ with $c_{i_1}\leq\cdots\leq c_{i_n}$.
+    
+\end{proof}
+
+\section*{4.9}
+Consider the LP
+\begin{alignat*}{3}
+    &\text{minimize}    &\quad& c^Tx \\
+    &\text{subject to}  &\quad& Ax\leq b,
+\end{alignat*}
+with $A$ square and nonsingular. Show that the optimal value is given by
+\[p^*=
+    \begin{cases}
+        c^TA^{-1}b &\text{if } A^{-T}c \leq 0, \\
+        -\infty &\text{otherwise.}
+    \end{cases}
+\]
+
+\begin{proof}
+    Denote the original minimization problem by (1). Denote by (2) the problem
+    \begin{alignat*}{3}
+        &\text{minimize}    &\quad& c^Tx \\
+        &\text{subject to}  &\quad& Ax + z= b, \\
+                                &&& z\geq 0.
+    \end{alignat*}
+    We claim problems (1) and (2) are equivalent. Let $X$ and $Z$ be the feasible sets for (1) and (2), respectively. If $x\in X$, then $Ax\leq b$, which implies $Ax+z = b$ for some $z\geq 0$. Then the pair $(x,z)\in Z$. Likewise, if $(x,z)\in Z$, then $z\geq0$ and $Ax+z=b$, so $Ax\leq b$. Then $x\in X$. This gives us a correspondence between the feasible sets of (1) and (2) and the objective function of each are the same. Thus, problems (1) and (2) are equivalent. 
+    
+    Now given some $z\geq0$, we can find the necessary $x$ such that $(x,z)\in Z$, by solving for $x$ in the equality constraint. That is,
+    \begin{align*}
+        Ax + z &= b \\
+        Ax &= b-z \\
+        x &= A^{-1}(b-z).
+    \end{align*}
+    So for any $z\geq0$, $(A^{-1}(b-z), z)\in Z$. So we can now write problem (3), equivalent to (2), which is found by substituting the solved value of $x$ into the objective function:
+    \begin{alignat*}{3}
+        &\text{minimize}    &\quad& f_0(z) = c^TA^{-1}(b-z) \\
+        &\text{subject to}  &\quad& z\geq 0.
+    \end{alignat*}
+    We claim that if $A^{-T}c\leq0$, then $z=0$ minimizes (3). To prove this, suppose $A^{-T}c\leq0$ and let $y\geq0$ be feasible for (3). Then consider
+    \begin{align*}
+        f_0(y)-f_0(z)
+            &= c^TA^{-1}(b-y) - c^TA^{-1}(b-z) \\
+            &= c^TA^{-1}b - c^TA^{-1}y - c^TA^{-1}b + c^TA^{-1}0 \\
+            &= - c^TA^{-1}y.
+    \end{align*}
+    Now since $A^{-T}c\leq0$, then $-c^TA^{-1}=-(A^{-T}c)^T\geq0$. And since $y\geq0$, we have
+    \[f_0(y)-f_0(z) \geq 0.\]
+    So $f_0(z)\leq f_0(y)$ for all feasible $y$. Thus, $z=0$ is an optimal point for (3). This now implies that $(A^{-1}b, 0)$ is and optimal point for (2), and that $A^{-1}b$ is an optimal point for (1). Therefore, the optimal value of (1) is 
+    \[c^TA^{-1}b.\]
+    
+    Now if it is not the case that $A^{-T}c\leq0$, then for some index $i$, we have $(A^{-T}c)_i = (c^TA^{-1})_i >0$. Then for any $t\geq0$, the point $te_i$ is feasible for (3). Consider now
+    \[c^TA^{-1}(b-te_i) = c^TA^{-1}b-c^TA^{-1}te_i = c^TA^{-1}b-(c^TA^{-1})_it,\]
+    which goes to $-\infty$ as $t\to\infty$. Thus (3) is unbounded below, and similarly, (2) and (1). Thus the optimal value of (1) is
+    \[p^*=
+    \begin{cases}
+        c^TA^{-1}b &\text{if } A^{-T}c \leq 0, \\
+        -\infty &\text{otherwise.}
+    \end{cases}
+\]
+    
+\end{proof}
+
+
+
+
+\end{document}

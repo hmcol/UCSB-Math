@@ -1,0 +1,254 @@
+\documentclass[12pt]{article}
+
+\usepackage[margin=1in]{geometry} 
+\usepackage[utf8]{inputenc}
+\usepackage{latexsym,amsfonts,amssymb,amsmath,tikz,scrextend}
+\usetikzlibrary{arrows,arrows.meta,patterns}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{mdframed}
+\usepackage{xcolor,colortbl}
+\pagestyle{fancy}
+
+\newtheorem{question}{Question}
+\newmdtheoremenv{theorem}{Theorem}
+\newmdtheoremenv{lemma}{Lemma}
+
+\newsavebox{\mybox}
+\newcounter{problem}[section]
+\newenvironment{problem}[1][]
+{\refstepcounter{problem}\noindent\textbf{Problem~\theproblem #1}\vspace{0.2cm}\\\begin{lrbox}{\mybox}\begin{minipage}{\textwidth}}
+{\end{minipage}\end{lrbox}\fbox{\usebox{\mybox}}}
+
+\newcounter{exercise}[section]
+\newenvironment{exercise}[1][]
+{\refstepcounter{exercise}\noindent\textbf{Exercise~\theproblem #1}\vspace{0.2cm}\\\begin{lrbox}{\mybox}\begin{minipage}{\textwidth}}
+{\end{minipage}\end{lrbox}\fbox{\usebox{\mybox}}}
+
+
+\newenvironment{solution}{\vspace{0.1cm}\\}{\vspace{0.5cm}}
+\newcommand{\qed}{\hfill$\square$}
+\newenvironment{proof}{{\textit{Proof.}}}{\hfill \qed}
+
+\usepackage{mathtools}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+
+\title{CS 101B Homework 4}
+\author{Harry Coleman, Riley Hull, Gahl Shemy, Joseph Sullivan}
+\date{16 January 2020}
+
+\begin{document}
+\maketitle
+
+\begin{problem}
+     How many different license plates can be made by a state if each plate is to display three letters followed by 3 numbers?
+\end{problem}
+\begin{solution}
+    If we let $L=\{A,\dots,Z\}$ and $N=\{0,\dots9\}$, then the set of possible license plates can be described by
+    \[P = L\times L\times L\times N\times N\times N.\]
+    By the multiplication principle, we find that
+    \[|P| = |L|\cdot|L|\cdot|L|\cdot|N|\cdot|N|\cdot|N| = 26\cdot26\cdot26\cdot10\cdot10\cdot10 = 26^3\cdot10^3.\]
+    So there are $26^3\cdot10^3$ possible license plates.
+\end{solution}
+
+\begin{problem}
+    The state of California makes license plates with 3 letters followed by 3 numbers, and also plates with 3 numbers followed by 3 letters. How many different license plates are possible in California?
+\end{problem}
+\begin{solution}
+    Let $L=\{A,\dots,Z\}$ and $N=\{0,\dots9\}$. We will consider $A$ and $B$ to be the set of license plates of the first and second type, respectively. We can describe the set of all possible license plates by
+    \begin{align*}
+        P &= A \cup B, \\
+        A &= L\times L\times L\times N\times N\times N, \\
+        B &= N\times N\times N\times L\times L\times L.
+    \end{align*}
+    By the addition principle, we find that $|P|=|A|+|B|.$ And by the multiplication principle, we find that
+    \begin{align*}
+        |P| &= (|L|\cdot|L|\cdot|L|\cdot|N|\cdot|N|\cdot|N|)+(|N|\cdot|N|\cdot|N|\cdot|L|\cdot|L|\cdot|L|), \\
+        |P| &= (26\cdot26\cdot26\cdot10\cdot10\cdot10) + (10\cdot10\cdot10\cdot26\cdot26\cdot26), \\
+        |P| &= 2\cdot26^3\cdot10^3.
+    \end{align*}
+    So there are $2\cdot26^3\cdot10^3$ possible license plates.
+\end{solution}
+
+\begin{problem}
+    How many $n$-bit strings contain at least one zero? 
+\end{problem} 
+\begin{solution}
+    Let $B=\{0,1\}$. The set of $n$-bit strings can be described by the set of $n$-tuples with elements in $B$. We find this set by the Cartesian product of $n$ instances of $B$\textemdash that is,
+    \[B^n = \underbrace{B\times \cdots \times B}_\text{$n$}.\]
+    Since we only want elements with at least one 0, we can exclude the complement, which would be elements with no 0's. So we consider the set
+    \[S = B^n\setminus\{(\underbrace{1,\cdots,1}_\text{$n$})\}.\]
+    By the subtraction principle, we find that
+    \[|S| = |B^n| - |\{(1,\cdots,1)\}| = |B^n|-1.\]
+    By the multiplication principle, we find
+    \[|S| = (|B|\times\cdots\times |B|)-1 = |B|^2-1 = 2^n-1.\]
+    So there are $2^n-1$ total $n$-bit strings with at least one zero.
+\end{solution}
+
+\begin{problem}
+    A civics club consist of 9 female democrats, 5 male democrats, 6 female republicans, 7 male republicans. How many ways can the club choose
+    \begin{enumerate}[label=(\emph{\alph*})]
+        \item a female democrat and a male republican to serve on the budget committee?
+        \item a female democrat or a male republican to serve as a chairperson?
+        \item a female or a republican to serve as a chairperson?
+    \end{enumerate}
+\end{problem}
+\begin{solution}
+    Let $S$ be the set of members of the club. Let $F$ and $M$ be a partition of $C$ into females and males. Let $D$ and $R$ be a partition of $C$ into democrats and republicans. 
+    \begin{enumerate}[label=(\emph{\alph*})]
+        \item The possible pairs of female democrats and male republicans is described by
+        \[A = (F\cap D)\times(M\cap R).\]
+        By the multiplication principle,
+        \begin{align*}
+            |A| &= |F\cap D|\cdot|M\cap R|, \\
+            |A| &= 9\cdot7 = 63.
+        \end{align*}
+        
+        \item The set of members who are female democrats or male republicans is described by
+        \[B = (F\cap D) \cup (M\cap R).\]
+        By the addition principle,
+        \begin{align*}
+            |B| &= |F\cap D| + |M \cap R|, \\
+            |B| &= 9 + 7 = 16.
+        \end{align*}
+        
+        \item The set of members who are female or republican can also be stated as the members who are not male democrats\textemdash that is,
+        \[C = M\setminus(M\cap D).\]
+        By the subtraction principle,
+        \begin{align*}
+            |C| &= |S| - |M\cap D|, \\
+            |C| &= 27 - 5 = 22.
+        \end{align*}
+    \end{enumerate}
+\end{solution}
+
+\begin{problem}
+    Determine the number of positive integers that are factors of the number $3^4 \cdot 5^2 \cdot 11^7 \cdot 13^8$. 
+\end{problem}
+\begin{solution}
+\noindent Each distinct prime integer from the set $\{3,5,11,13\}$ has a specific number of ways it can be included in a factor of the number $3^4 \cdot 5^2 \cdot 11^7 + 13^8$. For instance, the number $3$ can be included zero, one, two, three, or four times in a factor of our number, and so we define $S_{3}$ as the set containing all of the possible number of $3$s we can choose for any factor of the number. We also define $S_{5}, S_{11},$ and $S_{13}$ for the integers $5, 11,$ and $13$ respectively. We then have that
+\begin{center}
+    $S_{3} = \{0,1,2,3,4\}$\\
+    $S_{5} = \{0,1,2\}$\\
+    $S_{11} = \{0,1,2,3,4,5,6,7\}$\\
+    $S_{13} = \{0,1,2,3,4,5,6,7,8\}$
+\end{center}
+\noindent Because $|S_{3}| = 5, |S_{5}|=3, |S_{11}| = 8$, and $|S_{13}| = 9$, then we have five options for the number of $3$s in our factor, three options for the number of $5$s, eight options for the number of $11$s, and nine options for the number of $13$s. By the multiplication principle, this means we have $|S_{3}|\cdot |S_{5}| \cdot |S_{11}| \cdot |S_{13}| = 5 \cdot 3 \cdot 8 \cdot 9 = 1080$ integer factors of $3^4 \cdot 5^2 \cdot 11^7 \cdot 13^8$.\\
+
+\noindent However, this includes the possibility of including $3$ zero times, $5$ zero times, $11$ zero times, and $13$ zero times. Although zero is a factor of our number, it is not a positive integer. We therefore have $1079$ positive integer factors of our number.  
+\end{solution}
+
+\begin{problem}
+    How many two-digit numbers have distinct and nonzero digits?
+\end{problem}
+\begin{solution}
+    We count the number of such two-digit numbers by considering how many ways to choose each digit. Let $A$ be the set of nonzero digits, that is, $A=\{1,2,\dots,9\}$. In order to have distinct elements for each digit, we choose an element $x$ out of $A$, then choose another element out of $A\setminus \{x\}$. The ways of choosing both digits, and therefore the number of such two-digit numbers, is the cardinality of $A \times (A\setminus \{x\})$. Thus, by the multiplication principle, the number of such two digit numbers is $|A|\cdot |A\setminus \{x\}|$. We know $|A|$ has a cardinality of 9, and $|A\setminus \{x\}|$ has one fewer element regardless of the choice for $x$, giving it a cardinality of 8. Therefore, the number of way of such two-digit numbers having distinct and nonzero digits is $9\cdot 8=72$.
+\end{solution}
+
+\begin{problem}
+    How many odd numbers between 1000 and 9999 have distinct digits?
+\end{problem}
+\begin{solution}
+    We count how many numbers meet such properties by considering the number of ways to choose each digit. Without considering distinctiveness, the set $S_1$ of possible ways to choose the first digit is $S_1=\{1,2,\dots,9\}$. Likewise, for the second digit $S_2=\{0,1,\dots,9\}$, the third digit $S_3=\{0,1,\dots,9\}$, and the fourth digit $S_{4}= \{1,3,5,7,9\}$.\\
+    
+    However, to consider distinctiveness we must choose digits in an order such that the choice of the first digit selected does \textit{not} affect the cardinality of the set of choices for the subsequent digit. For example, if we constructed our numbers by first choosing a digit from $S_2$ then $S_1$, we would not know the number of ways each digit could have been chosen distinctively because if $0$ is chosen from $S_2$, then $S_1$ still has $9$ options. Otherwise, however, $S_1$ would have $8$ options.\\
+    
+    Thus, when choosing digits $x_i$ and $x_j$ from $S_i$ and $S_j$ respectively, we choose $x_i$ first then $x_j$ if and only if $S_i\subseteq S_j$. This allows $S_j\setminus \{x_i\}$ to have a fixed size regardless of the choice of $x_i$, since $x_i \in S_j$.\\
+    
+    Specifically, we first choose a digit $x_4$ from $S_4$, then we choose $x_1$ from $S_1\setminus \{x_4\}$, then we choose $x_2$ from $S_2\setminus \{x_1,x_4\}$, and then we choose $x_3$ from $S_3\setminus \{x_1,x_3,x_4\}$. This meets our aforementioned criteria because $S_4\subseteq S_1 \subseteq S_2 \subseteq S_3$.\\
+    
+    Thus, the number of such odd numbers between 1000 and 9999 having distinct digits is the cardinality of $S_4 \times (S_1\setminus \{x_4\}) \times (S_2 \setminus \{x_1,x_4\}) \times (S_3 \setminus \{x_1,x_2,x_4\})$. Therefore, by the multiplication principle, there are $|S_4| \cdot |S_1\setminus \{x_4\}| \cdot |S_2 \setminus \{x_1,x_4\}| \cdot |S_3 \setminus \{x_1,x_2,x_4\}|=5\cdot 8 \cdot 8 \cdot 7=2240$ such numbers.
+\end{solution}
+
+\begin{problem}
+    How many integers strictly between 0 and 10,000 have exactly one digit equal to 5?
+\end{problem}
+\begin{solution}
+    Integers strictly between 0 and 10,000 have five digits, allowing zero to be a leading digit. Since we must have exactly one '5', the other four digits, call them $a,b,c,d$, must each be in the set of digits $S=\{0,1,2,3,4,6,7,8,9\}$. By the multiplication principle, there are
+    \[|S|\cdot|S|\cdot|S|\cdot|S| = 9\cdot9\cdot9\cdot9 = 6561\]
+    total possibilities for $a,b,c$ and $d$. For each of these, there are five possibilities for the location of the '5':
+    \[5abcd, \quad a5bcd, \quad ab5cd, \quad abc5d, \quad abcd5.\]
+    So by the multiplication principle, there are $6561\cdot5=32805$ integers strictly between 0 and 10,000 which have exactly one '5' digit.
+\end{solution}
+
+\begin{problem}
+    How many different five-digit numbers can be constructed out of the digits $1,1,1,3,8$?
+\end{problem}
+\begin{solution}
+    Given five numbers, we can permute them in $5!$ arrangements (as we have five options for the first digit, four remaining options for the second digit, etc.). However, this count necessarily includes repeated numbers, since every permutation of the five digits will include multiple permutations of $1$s that actually represent the same number. Since we have three $1$s to include in each permutation of the five digits, then we have $3!$ ways to arrange those $1s$ such that the number we constructed is the same as another number we have already constructed. Therefore, by the division principle, the number of \textit{distinct} five-digit numbers that can be constructed out of the digits $1,1,1,3,8$ is $\frac{5!}{3!} = 20$ numbers. 
+\end{solution}
+
+\begin{problem}
+    How many 4 letter words are there with at least one vowel?
+\end{problem}
+\begin{solution}
+    Let $S$ be the set of all $26$ characters in the alphabet, so that $S = \{a,...,z\}$. Since we have $6$ vowels ($V= \{a,e,i,o,u,y\}$), $20$ of our letters must be consonants. If our $4$ letter words have no restrictions on number of vowels, then we have $26^4$ options, since we can use all $26$ options for each letter in our word. However, this number includes words that have no vowels, of which we have $20^4$ such options (since there are $20$ possible consonants we can use for each letter in the word). Thus, by the subtraction principle, we have that the number of $4$ character sequences with at least one vowel is the number of total sequences minus the number of sequences with no vowels. This is equivalent to $26^4-20^4$.
+\end{solution}
+
+\begin{problem}
+    How many numbers from 24 to 135 are not divisible by 3?
+\end{problem}
+\begin{solution}
+    Let $S$ be the set of numbers from $24$ to $135$ (inclusive). We thus have that $|S| = 112$. \\
+    
+    \noindent We can express any number between $24$ and $135$ as some multiple of $3$ plus a remainder. In order for a number to be a multiple of $3$, it must have a remainder of $0$ when expressed in the form $a = b(3) + r$. Because both $24$ and $135$ are multiples of $3$, then adding $3k$ to $24$, where $k \in \mathbb{N}$, will always result in another number divisible by $3$. In order to determine how many numbers are divisible by $3$ between $24$ and $135$, we solve the following equation for $k$:
+    \begin{align}
+        24 + 3k = 135\\
+        3k = 111\\
+        k = 37
+    \end{align}
+    \noindent If we let $K$ represent the set of all numbers divisible by $3$ between $24$ and $135$ (inclusive), then we have by the subtraction principle that there are $|S|- |K|$ numbers between $24$ and $135$ that are not divisible by $3$. Since $|S| = 112$ and $|K| = 38$ (37 numbers \textit{between} $24$ and $135$, plus the additional number $24$ which is divisible by $3$), then we have that there are $74$ numbers between $24$ and $135$ that are not divisible by $3$. 
+    
+    
+\end{solution}
+
+\begin{problem}
+    Suppose a camp counselor has 4 kids to line-up and two of them, Duncan and Daniel are fighting. How many ways can the counselor line up the kids so that Duncan and Daniel are not next to each other?
+\end{problem}
+\begin{solution}
+    First we figure out how many ways the two children will be next to each other; 6, as they can be on one end or in the middle in arrangements as follows $$\{A,B,D,D\}, \{B,A,D,D\}, \{D,D,A,B\}, \{D,D,B,A\}, \{A,D,D,B\}, \{B,D,D,A\}.$$ Now as there are $4!$ ways to arrange the kids without considering separating Duncan and Daniel, by the subtraction principle we get there are $4!-6$ ways to arrange the kids without Duncan and Daniel next to each other.
+\end{solution}
+
+\begin{problem}
+    There are 15 different sandwich and drink combinations for a lunch. If the choice of a drink does not matter, and there are three drink choices, what is the number of ways to pick a lunch?
+\end{problem}
+\begin{solution}
+Let $S$ be the set of options for sandwiches and $D$ be the set of options for drinks. We are given that there are 15 different combinations for lunch such that $|S\times D|=15$, and we are told that there are three drink choices, i.e., that $|D|=3$.\\
+
+\noindent By the multiplication principle, we have $|S \times D|= |S| \times |D|$, and therefore $|S|=5$. Thus, if the drink choice does not matter, the number of ways to pick a lunch (i.e., pick a sandwich) is five ways.
+\end{solution}
+
+\begin{problem}
+    Suppose a license plate is to consist of 3 letters followed by 3 digits. How many license plates are allowed if the letters A, S, S may not appear in that order in a license plate.
+\end{problem}
+\begin{solution}
+    Let $L$ be the set of 26 letters, i.e., $L=\{A,\dots,Z\}$, and let $N$ be the set of single digit numbers $N=\{0,\dots,9\}$.\\
+    
+    The set of all three letter combinations (the first part of the license plate, including the possibility for the letters A, S, S) is therefore $L\times L \times L$. By the multiplication principle it has a cardinality $|L|\cdot |L|\cdot |L|=26^3$. The set of three letters excluding the possibility of A, S, S is $(L\times L \times L) \setminus \{(A,S,S)\}$, which by the subtraction principle has a cardinality of $|L\times L \times L| - |\{(A,S,S)\}|=26^3-1$.\\
+    
+    Then, the set of all number combinations is $N\times N\times N$, which by the multiplication principle has a cardinality of $|N|\cdot |N|\cdot |N|=10^3$.\\
+    
+    Finally, the set of all license plates allowed has a cardinality of
+    \begin{align*}
+        &|(L\times L \times L) \setminus \{(A,S,S)\}) \times (N\times N\times N)|\\ &= |(L\times L \times L) \setminus \{(A,S,S)\}| \cdot |N\times N\times N|\\
+        &=(26^3-1)\cdot(10^3)=17,575,000
+    \end{align*}
+\end{solution}
+
+\begin{problem}
+    How many numbers are there from 3 to 20 that are not divisible by 2 or 5?
+\end{problem}
+\begin{solution}
+    
+    We first list the number of numbers in between 3 and 20 that are divisible by 2. $$A=\{4,6,8,10,12,14,16,18,20\}$$ Now we list the numbers in between 3 and 20 that are divisible by 5. $$B=\{5,10,15,20\}$$ By the subtraction and addition principles we get the number of numbers from 3 to 20 not divisible by 2 or 5 to be $$18-|A|-|B|+|A\cap B|=18-9-4+2=7.$$
+\end{solution}
+
+\end{document}

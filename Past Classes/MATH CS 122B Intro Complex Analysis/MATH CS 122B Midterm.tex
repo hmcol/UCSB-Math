@@ -1,0 +1,252 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{amsmath, amsthm, amssymb, physics}
+\usepackage{tikz}
+\usetikzlibrary{arrows,arrows.meta}
+
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{4pt}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\pfrac}[2]{\left(\frac{#1}{#2}\right)}
+
+% Extra Commands
+\newcommand{\bd}{\partial}
+\newcommand{\Arg}{\operatorname{Arg}}
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH CS 122B Midterm}
+    \fancyhead[C]{February 19, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+
+\begin{pbox}[1]
+    Show that if $f(z) : D \to \C$ is continuous in the domain $D \subset \C$ and $f^8(z)$ is analytic in $D$, then in fact $f(z)$ is analytic in $D$.
+\end{pbox}
+
+\begin{proof}
+    Since $f^8(z)$ is analytic in the domain $D$, then its zeros are isolated. And since the zeros of $f^8(z)$ are precisely the zeros of $f(z)$, then the zeros of $f(z)$ are isolated. Since $f(z)$ is continuous, it suffices to prove that it is analytic in $D' = \{z \in D : f(z) \ne 0\}$. If some zero $z_0 \in D \setminus D'$ were a singularity of $f(z)$, then it would have to be a removable singularity, as the continuity of $f(z)$ implies its boundedness around $z_0$. In other words, $f(z)$ would not have a singularity at $z_0$, since it could be made analytic there by defining $f(z_0) = \lim_{z\to z_0} f(z) = 0$, which is simply the actual value of $f(z_0)$.
+    
+    Let $z_0 \in D'$ and define $w_0 = f(z_0)$. Consider the open neighborhood of $w_0$ given by
+    \[
+        U =  \{w \in f(D') : |\Arg w - \Arg w_0| < \tfrac{\pi}{8}\},
+    \]
+    which can be thought of as the intersection $f(D')$ and a sector of $\C$ around $w_0$. Now consider the function $h(w) = w^8$ defined on $U$, then $f^8(z) = h(f(z))$. We will show that $h(w)$ is injective. Suppose $w_1, w_2 \in U$ with $h(w_1) = h(w_2)$. Then
+    \[
+        |w_1|^8e^{i8\Arg w_1} = w_1^8 = w_2^8 = |w_2|^8e^{i8\Arg w_2}, 
+    \]
+    which implies $|w_1| = |w_2|$ and $\Arg w_1 = \Arg w_2 + \frac{\pi}{4}k$ for some $k \in \Z$. By the triangle inequality and the fact that $w_1, w_2 \in U$, we have
+    \[
+        |\Arg w_1 - \Arg w_2| \leq |\Arg w_1 - \Arg w_0| + |\Arg w_0 - \Arg w_2| < \tfrac{\pi}{4},
+    \]
+    so we must have $k = 0$. Thus, $h(w)$ is injective on $U$, and its inverse will be some branch of the complex $8$th root function.
+    
+    In particular, we can make a branch cut opposite of $w_0^8$ to obtain the slit plane
+    \[
+        S = \C \setminus \{re^{-i8\Arg w_0} : r \geq 0\} \supseteq h(U),
+    \]
+    on which we define $g(z)$ to be the branch of $\sqrt[8]{z}$ such that $|\Arg g(z) - \Arg w_0| < \pi/8$. Since every nonzero complex number has eight $8$th roots, separated from each other by an angle of $\pi/4$, then each point in $S$ has an $8$th root within an angle of $\pi/8$ of $w_0$. In other words, $g(z)$ chooses the $8$th root of $z$ which is contained in $U$. Then $g(z)$ is analytic on $S$ and, in particular, on $h(U)$.
+    
+    Recall that $U$ is an open neighborhood of $w_0 = f(z_0)$ contained in $f(D')$. We take the preimage $V = f^{-1}(U)$, which is an open neighborhood of $z_0$ contained in $D'$. Then $f^8(z)$ is analytic in $V$, so the composition $g(f^8(z)) = g(h(f(z)) = f(z)$ is analytic in $V$. Thus, $f(z)$ is analytic in $D'$ and, therefore, all of $D$.
+    
+    
+    
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[2]
+    Let $f$ be a bounded analytic function on the unit disc $D = \{z \in \C : |z| < 1\}$. Suppose that there are a finite number of points on the boundary of $D$ such that $f(z)$ extends continuously to the arcs of $\bd D$ separating the points and satisfies $|f(e^{i\theta})| \leq M$ on the arcs. Show that $|f(z)| \leq M$ for all $z \in D$.
+\end{pbox}
+
+\begin{proof}
+    Let $C \geq 0$ bound the modulus of $f(z)$, that is, $|f(z)| \leq C$ for all $z \in D$. Let $E = \{z_1, \dots, z_n\}$ be the set of points on the boundary of $D$ such that $f(z)$ extends continuously to the rest of the boundary, and define $\Gamma = \bd D \setminus E$ to be the arcs of the unit circle separating the points of $E$. For $\eps > 0$, we define the function
+    \[
+        g(z) = ((z - z_1) \cdots (z - z_n))^\eps f(z),
+    \]
+    which is analytic in $D$. Since $f(z)$ extends continuously to $\Gamma$, and $((z - z_1) \cdots (z - z_n))^\eps$ is analytic in $\C \setminus E$, then $g(z)$ extends continuously to $\Gamma$. If $z \in \Gamma$, then
+    \begin{align*}
+        |g(z)|
+            &= (|z - z_1| \cdots |z - z_n|)^\eps |f(z)| \\
+            & \leq (2^n)^\eps M.
+    \end{align*}
+    For any $z_j \in E$ and $z \in D$, we find
+    \begin{align*}
+        |g(z)| 
+            &= (|z - z_1| \cdots |z - z_n|)^\eps |f(z)| \\
+            &\leq |z - z_j|^\eps(2^{n-1})^\eps C,
+    \end{align*}
+    so $|g(z)| \to 0$ as $z \to z_j$. Thus, $g(z)$ extends continuously to the whole boundary $\bd D$, defining $g(z_j) = 0$ for all $z_j \in E$, and we conclude that $|g(z)| \leq (2^n)^\eps M$ for all $z \in \bd D$. The maximum principle tells us that in fact $|g(z)| \leq (2^n)^\eps M$ for all $z \in D$. In other words, we have shown for all $z \in D$ and $\eps > 0$,
+    \[
+        |f(z)| \leq \pfrac{2^n}{|z-z_1|\cdots|z-z_n|}^\eps M.
+    \]
+    For a fixed $z \in D$, letting $\eps \to 0$ gives us $|f(z)| \leq M$. Thus, $|f(z)| \leq M$ for all $z \in D$.
+    
+    
+    
+    
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[3]
+    By integrating around a keyhole contour show that
+    \[
+        \int_{0}^{\infty} \frac{\log x}{x^a(x+1)} \dd{x} = \frac{\pi^2 \cos(\pi a)}{\sin^2(\pi a)}, \quad 0 < a < 1.
+    \]
+\end{pbox}
+
+Let $0 < \eps < 1 < R$, and we consider the keyhole contour.
+\begin{drawing}
+    %\draw[help lines, color=gray, dashed] (-2.9,-2.9) grid (2.9,2.9);
+    
+    
+    %\draw[->, >=Triangle] (1.77,-1.77) arc (-45 : 45 : 2.5);
+    
+    \draw[] (2.5, 0) arc (0 : 90 : 2.5) node[midway, sloped]{\footnotesize{$<$}};
+    \draw[] (0, 2.5) arc (90 : 180 : 2.5) node[midway, sloped]{\footnotesize{$<$}};
+    \draw[] (-2.5, 0) arc (-180 : -90 : 2.5) node[midway, sloped]{\footnotesize{$>$}};
+    \draw[] (0, -2.5) arc (-90 : 0 : 2.5) node[midway, sloped]{\footnotesize{$>$}};
+    
+    %\draw[->, >=Triangle] (1.77,1.77) arc (45 : 135 : 2.5);
+    %\draw[->, >=Triangle] (-1.77,1.77) arc (135 : 225 : 2.5);
+    %\draw[->, >=Triangle] (-1.77,-1.77) arc (225 : 315 : 2.5);
+    
+    \fill[fill=white] (2.5, 0) circle (0.12);
+    \draw[] (-3,0)--(3,0);
+    \draw[] (0,-3)--(0,3);
+    
+    \draw[fill=black] (2.5,0) circle (2pt) node[anchor=north west]{$R$};
+    \draw[fill=black] (-2.5,0) circle (2pt) node[anchor=north east]{$-R$};
+    
+    
+    \draw[] (0.215, -0.125) arc (330 : 30 : 0.25);
+    \draw[] (0.215, -0.125) arc (330 : 120 : 0.25) node[midway, sloped]{\footnotesize{$<$}};
+    \draw[] (0.215, 0.125) -- (2.5, 0.125) node[midway, sloped]{\footnotesize{$>\quad$}};
+    \draw[] (0.215, -0.125) -- (2.5, -0.125) node[midway, sloped]{\footnotesize{$\quad<$}};
+    
+    \draw[] (2,2) node[]{$\Gamma_R$};
+    \draw[] (-0.4,0.4) node[]{$\gamma_\eps$};
+    \draw[] (1, 1) node[]{$D_R$};
+\end{drawing}
+Let $f(z) = (\log z)/(z^a(z+1))$ be the branch defined on the slit plane $\C \setminus [0, +\infty)$ by
+\[
+    f(z) = \frac{\log r + i\theta}{r^a e^{i\theta a}(z + 1)}, \qquad z = re^{i\theta},\; \theta \in (0, 2\pi).
+\]
+We extend to function to the positive real axis with $\theta = 0$ from above and $\theta = 2\pi$ from below. Then
+\[
+    \int_{\bd D_R} f(z) \dd{z}
+        = \int_{\Gamma_R} f(z) \dd{z}
+            + \int_{\gamma_\eps} f(z) \dd{z}
+            + \int_{\eps}^{R} \frac{\log x}{x^a(x + 1)} \dd{x}
+            + \int_{R}^{\eps} \frac{\log x + i2\pi}{x^ae^{i2\pi a}(x + 1)} \dd{x}
+\]
+Since $f(z)$ has one simple pole inside of $D_R$ at $-1 = e^{i\pi}$, then by the residue theorem
+\begin{align*}
+    \int_{\bd D_R} f(z) \dd{z}
+        &= 2\pi i \cdot \Res[f(z), -1] \\
+        &= 2\pi i \cdot \lim_{z \to -1} (z + 1) f(z) \\
+        &= 2\pi i \cdot \frac{\log 1 + i\pi}{1^a e^{i\pi a}} \\
+        &= \frac{-2\pi^2}{e^{i\pi a}}
+\end{align*}
+Applying the $ML$-estimate to the integral over $\Gamma_R$, we find
+\[
+    \left|\int_{\Gamma_R} \frac{\log r + i\theta}{r^a e^{i\theta a}(z + 1)} \dd{z}\right|
+        \leq \frac{\log R + 2\pi}{R^a(R - 1)} \cdot 2\pi R
+        \sim \frac{\log R}{R^a}.
+\]
+We confirm that this tends to zero with L'H\^opital's rule, 
+\[
+    \lim_{R \to \infty} \frac{\log R}{R^a}
+        = \lim_{R \to \infty} \frac{1/R}{aR^{a-1}}
+        = \lim_{R \to \infty} \frac{1}{aR^a}
+        = 0.
+\]
+Applying the $ML$-estimate to the integral over $\gamma_\eps$, we find
+\[
+    \left|\int_{\gamma_\eps} \frac{\log r + i\theta}{r^a e^{i\theta a}(z + 1)} \dd{z}\right|
+        \leq \frac{\log \eps + 2\pi}{\eps^a(1 - \eps)} \cdot 2\pi \eps
+        \sim \frac{\log \eps}{\eps^{a-1}}.
+\]
+Again, we verify the limit
+\[
+    \lim_{\eps \to 0} \frac{\log \eps}{\eps^{a-1}}
+        = \lim_{R \to \infty} \frac{\log \frac{1}{R}}{\pfrac{1}{R}^{a-1}}
+        = \lim_{R \to \infty} \frac{-\log R}{R^{1-a}}
+        = 0.
+\]
+For the integrals along the real line, we have
+\begin{align*}
+    \int_{R}^{\eps} \frac{\log x + i2\pi}{x^ae^{i2\pi a}(x + 1)} \dd{x}
+        &= -e^{-i2\pi a} \int_{\eps}^{R} \frac{\log x}{x^a(x + 1)} \dd{x} - \frac{i2\pi}{e^{i2\pi a}} \int_{\eps}^{R} \frac{x^{-a}}{(x + 1)} \dd{x}.
+\end{align*}
+Letting $R \to \infty$ and $\eps \to 0$ in the original equation for the integral over $\bd D$, we obtain
+\[
+    \frac{-2\pi^2}{e^{i\pi a}}
+        = (1 - e^{-i2\pi a}) \int_{0}^{\infty} \frac{\log x}{x^a(x + 1)} \dd{x} - \frac{i2\pi}{e^{i2\pi a}} \int_{0}^{\infty} \frac{x^{-a}}{(x + 1)} \dd{x}.
+\]
+We have previously seen that
+\[
+    \int_{0}^{\infty} \frac{x^{-a}}{(x + 1)} \dd{x} = \frac{\pi}{\sin(\pi a)}.
+\]
+Then
+\begin{align*}
+    \int_{0}^{\infty} \frac{\log x}{x^a(x + 1)} \dd{x}
+        &= \frac{1}{1 - e^{-i2\pi a}}\left(\frac{i2\pi^2}{e^{i2\pi a}\sin(\pi a)} - \frac{2\pi^2}{e^{i\pi a}}\right) \\
+        &=  \frac{i2\pi^2}{e^{i\pi a} - e^{-i\pi a}}\left(\frac{1}{e^{i\pi a}\sin(\pi a)} + i\right) \\
+        &=  \frac{i2\pi^2}{i2\sin(\pi a)}\left(\frac{e^{-i\pi a}}{\sin(\pi a)} + i\right) \\
+        &=  \frac{\pi^2}{\sin^2(\pi a)}\left(e^{-i\pi a} + i\sin(\pi a)\right) \\
+        &=  \frac{\pi^2}{\sin^2(\pi a)} \left(\cos(\pi a) - i\sin(\pi a) + i\sin(\pi a)\right) \\
+        &=  \frac{\pi^2\cos(\pi a)}{\sin^2(\pi a)}
+\end{align*}
+
+
+
+
+
+\end{document}

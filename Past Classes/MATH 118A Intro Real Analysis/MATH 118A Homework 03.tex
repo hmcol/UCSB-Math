@@ -1,0 +1,278 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow,enumitem}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools,babel,accents}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{\textwidth-10pt}}
+    {\end{minipage}\end{lrbox}\framebox[6.5in]{\usebox{\mybox}}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+\newenvironment{response}{\paragraph{}}{}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\seq}[2]{\left\{#1\right\}_{#2=1}^\infty}
+\newcommand{\clo}[1]{\overline{#1}}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ang}{\langle}{\rangle}
+
+% Sets
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+
+% Misc Characters
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\let\eps\varepsilon
+\let\emptyset\varnothing
+
+% Functions
+\newcommand{\id}[1]{\mathsf{id}_{#1}}
+
+% Babel Shorthands
+\useshorthands*{"}
+\defineshorthand{"-}{\setminus}
+\defineshorthand{"d}{\partial}
+
+% Probability
+\newcommand{\FF}{\mathcal{F}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\bx}{\ensuremath{\mathbf{x}}} 
+\newcommand{\by}{\ensuremath{\mathbf{y}}} 
+\newcommand{\bz}{\ensuremath{\mathbf{z}}}
+
+% Complex Analysis
+\renewcommand{\Im}{\text{Im }}
+\renewcommand{\Re}{\text{Re }}
+\newcommand{\Arg}{\text{Arg }}
+ 
+\begin{document}
+ 
+\title{Homework 3\\
+    %\large MATH CS 121 Intro to Probability
+    %\large MATH CS 122A Complex Analysis I
+    \large MATH 118A Intro to Real Analysis
+    %\large MATH 111A Intro to Abstract Algebra
+}
+\author{Harry Coleman}
+\date{October 22, 2020}
+\maketitle
+
+ \section*{Exercise 2}
+\begin{problem}
+    Determine whether the following function is a metric in the set $\mathbb{R}^+$ of positive real numbers, and if so, determine what a ball is in this metric: 
+    \begin{equation}
+    d(x,y) = \Big |\log\left ( \frac{x}{y} \right ) \Big |,\quad x,y>0.
+    \end{equation}
+\end{problem}
+
+\begin{proposition}
+    $d(x,y)$ is a metric on $\R^+$.
+\end{proposition}
+
+\begin{proof}
+    By definition, $d(x,y)\geq 0$ since it is an absolute value. Additionally, $d(x,y)=0$ if any only if
+    \[\log \frac xy = 0,\]
+    which is the case if and only if
+    \[e^0 = 1 = \frac xy,\]
+    which is the case if and only if $x=y$. Secondly, for any $x,y\in\R^+$, we have by the properties of the logarithm
+    \begin{align*}
+        d(x,y)
+            &= \left|\log\frac xy\right| \\
+            &= \left|\log x - \log y\right| \\
+            &= \left|-(\log y - \log x)\right| \\
+            &= \left|-\log \frac yx\right| \\
+            &= \left|\log \frac yx\right| \\
+            &= d(y,x).
+    \end{align*}
+    Lastly, for any $x,y,z\in\R^+$, we have by the properties of the logarithm and the triangle inequality of absolute value
+    \begin{align*}
+        d(x,z)
+            &= \left|\log\frac xz\right| \\
+            &= \left|\log\frac xy\frac yz\right| \\
+            &= \left|\log\frac xy + \log\frac yz\right| \\
+            &\leq \left|\log\frac xy\right| + \left|\log\frac yz\right| \\
+            &= d(x,y) + d(y,z).
+    \end{align*}
+    
+\end{proof}
+
+Given a center $x\in\R^+$ and a radius $r>0$, a point $y\in\R^+$ is in the ball $B_r(x)$ if and only if
+\[d(y,x) = \left|\log\frac yx\right| < r.\]
+This condition is equivalent to the following inequalities:
+\begin{alignat*}{3}
+    -r &<& \log\frac yx &<& r, \\
+    e^{-r} &<& \frac yx &<& e^r, \\
+    xe^{-r} &<& y &<& xe^r.
+\end{alignat*}
+Therefore, we have
+\[B_r(x) = \{y\in\R^+ : xe^{-r}<y<xe^r\}.\]
+
+\section*{Exercise 3}
+\begin{problem}
+    Let $(X,d)$ be a metric space, and $A\subseteq X$. Define the distance from $x$ to $A$ by
+    \begin{equation}
+    d(x,A) = \inf \left \{ d(x,y):\quad  y \in A \right \}.
+    \end{equation}
+\end{problem}
+
+\newpage
+\subsection*{Exercise 3(a)}
+\begin{problem}
+    Prove that
+    \[
+    \bigg | d(x,A) - d(y,A) \bigg | \le d(x,y)\ \ \forall x,y \in X.
+    \]
+\end{problem}
+
+\begin{proof}
+    Let $x,y\in X$. For all $z\in A$, we have the triangle inequalities
+    \begin{align*}
+        d(x,z) &\leq d(x,y) + d(y,z), \\
+        d(y,z) &\leq d(x,y) + d(x,z).
+    \end{align*}
+    By the definition of the distance from a point to $A$, we have
+    \begin{align*}
+        d(x,A) &\leq d(x,y) + d(y,z), \\
+        d(y,A) &\leq d(x,y) + d(x,z),
+    \end{align*}
+    equivalently,
+    \begin{align*}
+        d(x,A) - d(x,y) &\leq d(y,z), \\
+        d(y,A) - d(x,y) &\leq d(x,z),
+    \end{align*}
+    Note now that the left-hand sides are lower bounds for $d(y,z)$ and $d(x,z)$ for all $z\in A$. Therefore, by the definition of infimia, we have
+    \begin{align*}
+        d(x,A) - d(x,y) &\leq d(y,A), \\
+        d(y,A) - d(x,y) &\leq d(x,A),
+    \end{align*}
+    which implies
+    \begin{align*}
+        d(x,A) - d(y,A) &\leq d(x,y), \\
+        d(y,A) - d(x,A) &\leq d(x,y).
+    \end{align*}
+    Thus, we obtain the desired result
+    \[\bigg| d(x,A) - d(y,A) \bigg| \leq d(x,y),\]
+    for all $x,y\in X$.
+    
+\end{proof}
+
+\subsection*{Exercise 3(b)}
+\begin{problem}
+    Prove that $d(x,A) = 0$ if and only if $x \in \overline{A}$. 
+\end{problem}
+
+\begin{proof}
+    Suppose $d(x,A)=0$. Then for any $r>0$ there exists some $z\in A$ such that $d(x,z)<r$, that is, $z\in B_r(x)$. So for all $r>0$, $B_r(x)\cap A \ne\emptyset$, therefore $x\in\clo{A}$. Now suppose $x\in\clo{A}$, so for all $r>0$, $B_r(x)\cap A \ne\emptyset$. So for any $r>0$, there exists some $z\in A$ with $d(x,z)<r$, and since $d(x,A)\leq d(x,z)$ for all $z\in A$, we have $d(z,A)\leq r$ for all $r>0$. Therefore $d(x,A)=0$.
+    
+\end{proof}
+
+\section*{Exercise 4}
+\begin{problem}
+    Let $A_1$, $A_2$, $A_3$, $\dots$ be subsets of a metric space. 
+\end{problem}
+
+\subsection*{Exercise 4(a)}
+\begin{problem}
+    If $B_n = \cup _{i=1}^n A_i$, prove that $\overline{B_n} = \cup_{i=1}^n \overline{A_i}$.  
+\end{problem}
+
+\begin{proof}
+    Let $x\in\clo{B_n}$, so $B_r(x)\cap B_n \ne\emptyset$ for all $r>0$. For a given $r>0$, let $z\in B_r(x)\cap B_n$. Since $z\in B_n$ and $B_n = \cup_{i=1}^n A_i$, then $z\in A_i$ for some $i\in\{1,\dots,n\}$. Therefore, for all $r>0$, there is some $i\in\{1,\dots,n\}$ such that $B_r(x)\cap A_i \ne\emptyset$.
+    
+    Suppose for contradiction that there does not exist a particular $j\in\{1,\dots,n\}$, such that $B_r(x)\cap A_j \ne\emptyset$ for all $r>0$. This implies that for all $i\in\{1,\dots,n\}$, there is some $r_i>0$ such that $B_{r_i}(x)\cap A_i=\emptyset$. Then letting $r=\min\{r_1,\dots,r_n\}$, we have $B_r(x)\cap A_i = \emptyset$ for all $i\in\{1,\dots,n\}$, which contradicts the conclusion of the previous paragraph. Thus for a particular $j\in\{1,\dots,n\}$, we have $B_r(x)\cap A_j\ne\emptyset$ for all $r>0$. So $x\in\clo{A_j}$ which implies $x\in\cup_{i=1}^n \overline{A_i}$.
+    
+    Now suppose $x\in\cup_{i=1}^n \overline{A_i}$, so $x\in\clo{A_j}$ for some $j\in\{1,\dots,n\}$. Now for a particular $r>0$, let $z\in B_r(x)\cap A_j$. Since $B_n = \cup_{i=1}^n A_i$, we have $z\in B_n$. Thus $B_r(x)\cap B_n\ne\emptyset$ for all $r>0$, giving us $x\in\clo{B_n}$.
+    
+\end{proof}
+
+\subsection*{Exercise 4(b)}
+\begin{problem}
+    If $B = \cup _{i=1}^{\infty} A_i$, prove that $\overline{B} \supseteq \cup_{i=1}^{\infty} \overline{A_i}$.  
+\end{problem}
+
+\begin{proof}
+    Suppose $x\in\cup_{i=1}^\infty \overline{A_i}$, so $x\in\clo{A_j}$ for some $j\in\N$. Now for a particular $r>0$, let $z\in B_r(x)\cap A_j$. Since $B = \cup_{i=1}^\infty A_i$, we have $z\in B$. Thus $B_r(x)\cap B\ne\emptyset$ for all $r>0$, giving us $x\in\clo{B}$.
+    
+\end{proof}
+
+\subsection*{Exercise 4(c)}
+\begin{problem}
+    Give an example for which (b) above is strict.  
+\end{problem}
+\paragraph{}
+
+Let $A_i$ denote the interval $(1/i, 2) \subseteq\R$ for all $i\in\N$. Then $B=\cup _{i=1}^{\infty} A_i = (0,2)$ and $\clo{B}=[0,2]$. However, we have $\clo{A_i}=[1/i,2]$ and $\cup_{i=1}^{\infty} \overline{A_i} = (0,2]$, which is a strict subset of $B$.
+
+\section*{Exercise 5}
+\begin{problem}
+    Remember that $\accentset{\circ}{E}$ denotes the set of interior points of a set $E$:
+\end{problem}
+
+\subsection*{Exercise 5(a)}
+\begin{problem}
+    Prove that the complement of $\accentset{\circ}{E}$ is the closure of the complement of $E$:
+    \begin{equation}
+    \left ( \accentset{\circ}{E} \right )^c = \overline{E^c}.
+    \end{equation}
+\end{problem}
+
+\begin{proof}
+    For any $x$ in the space, we have by definition of complement
+    \[x\in\left(\accentset{\circ}{E}\right)^C \iff x\notin\accentset{\circ}{E}.\]
+    Since the definition of interior tells us that $x\in\accentset{\circ}{E}$ if and only if there exists some $r>0$ such that $B_r(x)\subseteq E$, then
+    \[x\notin\accentset{\circ}{E} \iff \forall r>0,\ B_r(x)\not\subseteq E.\]
+    And since $B_r(x)\subseteq E$ if and only if $B_r(x)\cap E^C=\emptyset$, then
+    \[\forall r>0,\ B_r(x)\not\subseteq E \iff \forall r>0,\ B_r(x)\cap E^C \ne\emptyset.\]
+    Finally, by the definition of closure, we have
+    \[\forall r>0,\ B_r(x)\cap E^C \ne\emptyset \iff x\in\clo{E^C},\]
+    giving us
+    \[x\in\left(\accentset{\circ}{E}\right)^C \iff x\in\clo{E^C}.\]
+    
+\end{proof}
+
+\subsection*{Exercise 5(b)}
+\begin{problem}
+    Do $E$ and $\overline{E}$ always have the same interiors? Prove or give a counterexample.
+\end{problem}
+\paragraph{}
+
+Consider the set $E = (-1,0)\cup(0,1)$. Clearly $0\notin\accentset{\circ}{E}$ since $0\notin E$. However, $\clo{E}=[-1,1]$, so $0\in\accentset{\circ}{\clo{E}}$. Thus $\accentset{\circ}{E}\ne\accentset{\circ}{\clo{E}}$
+
+
+\subsection*{Exercise 5(c)}
+\begin{problem}
+    Do $E$ and $\accentset{\circ}{E}$ always have the same closures? Prove or give a counterexample.
+\end{problem}
+\paragraph{}
+
+Consider $E=\{0\}$, then $\clo{E}=\{0\}$. However, $\accentset{\circ}{E}=\emptyset$, so $\clo{\accentset{\circ}{E}}=\emptyset$. Thus $\clo{E}\ne\clo{\accentset{\circ}{E}}$.
+
+
+\end{document}

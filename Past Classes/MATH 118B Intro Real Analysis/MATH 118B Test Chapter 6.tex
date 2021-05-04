@@ -1,0 +1,522 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{amsmath, amsthm, amssymb, physics}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{4pt}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+%\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\pfrac}[2]{\left(\frac{#1}{#2}\right)}
+
+% Extra Commands
+\newcommand{\RR}{\mathcal{R}}
+
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH 118B Test Chapter 6}
+    \fancyhead[C]{February 21, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+
+\begin{pbox}[1]
+    Suppose that $f$ is continuous, nonnegative, and decreasing on $[1,+\infty)$. Consider the series $\sum_{n=1}^\infty f(n)$. 
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Prove that $\sum_{n=1}^\infty f(n)$ converges if and only if 
+    \begin{equation}
+    \int_1^\infty f(x)\,dx
+    \end{equation}
+    converges.
+\end{pbox}
+
+\begin{proof}
+    Suppose $\sum_{n=1}^{\infty} f(n)$ converges, we want to show that
+    \[
+        \int_1^\infty f(x) \dd{x} = \lim_{b \to \infty} \int_1^b f(x) \dd{x}
+    \]
+    converges. For a given $b > 1$, let $n \in \N$ be the maximum natural number less than $b$. Since $f$ is continuous, $f \in \RR([1, b])$ and
+    \[
+        \int_1^b f(x) \dd{x} = \sum_{k=1}^{n-1}\int_{k}^{k+1} f(x) \dd{x} + \int_{n}^{b} f(x) \dd{x}.
+    \]
+    Since $f$ is decreasing, then $f(x) \leq f(k)$ for all $x \in [k, k+1]$ and $f(x) \leq n$ for all $x \in [n, b]$. Additionally, $b - n \leq 1$, otherwise, $n + 1 < b$ contradicting the choice of $n$. Therefore, we can bound the integral of $f$ over $[1, b]$ by
+    \begin{align*}
+        \int_1^b f(x) \dd{x}
+            \leq \sum_{k=1}^{n-1} f(k)(k+1-k) + f(n)(b-n)
+            \leq \sum_{k=1}^{n}f(k).
+    \end{align*}
+    Note that the choice of $n$ means $n \to \infty$ as $b \to \infty$. Since $f$ is nonnegative, then the integral over $[1,b]$ is increasing as $b \to \infty$. Thus, the convergence of the improper integral is implied by the upper bound
+    \[
+        \int_1^\infty f(x) \dd{x}
+            = \lim_{b \to \infty} \int_1^b f(x) \dd{x}
+            \leq \lim_{b \to \infty} \sum_{k=1}^{n}f(k)
+            = \sum_{n=1}^{\infty}f(n).
+    \]
+    
+    Suppose $\int_{1}^{\infty} f(x) \dd{x}$ converges. Then, in particular, the limit
+    \[
+        \lim_{n \to \infty} \int_{1}^{n} f(x) \dd{x}
+            = \lim_{n \to \infty} \sum_{k=2}^{n} \int_{k-1}^{k} f(x) \dd{x}
+    \]
+    converges and equals the improper integral. Since $f$ is decreasing, then $f(x) \geq f(k)$ for all $x \in [k-1, k]$. Then we can bound the terms
+    \[
+        f(k)
+            = f(k)(k - (k-1))
+            \leq \int_{k-1}^{k} f(x) \dd{x} .
+    \]
+    Since $f$ is nonnegative, then the sequence of partial sums is increasing. So the convergence of the infinite sum is implied by the upper bound
+    \[
+        \sum_{n=2}^{\infty} f(n)
+            = \lim_{n \to \infty} \sum_{k=2}^{n} f(k)
+            \leq \lim_{n \to \infty} \sum_{k=2}^{n} \int_{k-1}^{k} f(x) \dd{x}
+            = \int_1^\infty f(x) \dd{x}.
+    \]
+    And since $f(1)$ is simply some finite value, then $\sum_{1}^{\infty} f(n)$ also converges.
+    
+\end{proof}
+
+\begin{pbox}[(b)]
+    Use the previous part to show that 
+    \begin{equation}
+    \sum_{n=1}^\infty \frac{1}{n^p}
+    \end{equation}
+    converges if and only if $p>1$.
+\end{pbox}
+
+\begin{proof}
+    If $p \leq 1$, then for any $n \in \N$, we have $n^{p} \leq n$, which implies $1/n \leq 1/n^p$. And we know that the harmonic series diverges, so $\sum_{1}^{\infty} 1/n^p$ diverges.
+    
+    Suppose $p>1$, and consider the function $f(x) = x^{-p}$. Then $f$ is continuous, nonnegative, and decreasing on $[1, +\infty)$. By the previous result, it suffices to show that $\int_{1}^{\infty} f(x) \dd{x}$ converges. If it exists, the improper integral is given by
+    \[
+        \int_{1}^{\infty} f(x) \dd{x} = \lim_{b \to \infty} \int_{1}^{b} f(x) \dd{x}.
+    \]
+    Consider the function $F(x) = x^{1-p}/(1-p)$, which is well defined as $1-p \ne 0$, and whose derivative we find using the power rule to be
+    \[
+        F'(x) = (1-p)\frac{x^{(1-p)-1}}{1-p} = x^{-p} = f(x).
+    \]
+    Then by the fundamental theorem of calculus, we have
+    \[
+        \int_{1}^{b} f(x) \dd{x}
+            = F(b) - F(1)
+            = \frac{b^{1-p} - 1}{1-p}.
+    \]
+    Now since $1-p < 0$, then $b^{1-p} \to 0$ as $b \to \infty$. So taking the limit, we obtain convergence of the improper integral
+    \[
+        \int_{1}^{\infty} f(x) \dd{x}
+            = \lim_{b\to\infty} \frac{b^{1-p} - 1}{1-p}
+            = \frac{1}{p-1}.
+    \]
+    By part (a), this implies convergence of the infinite sum
+    \[
+        \sum_{n=1}^{\infty} f(n) = \sum_{n=1}^{\infty} \frac{1}{x^p}.
+    \]
+    
+\end{proof}
+
+
+
+
+
+
+\begin{pbox}[2]
+    Let $f:[a,b]\to \R$ be continuous and such that 
+    \begin{equation}
+    \int_c^df(x)\,dx = 0
+    \end{equation}
+    for any interval $[c,d]\subseteq [a,b]$. Show that $f$ is identically zero.
+\end{pbox}
+
+\begin{proof}
+    Suppose, for contradiction, that $f$ is not identically zero and let $x_0 \in [a,b]$ such that $f(x_0) \ne 0$. Since $f$ is continuous, there exists some $\delta > 0$ such that $|x - x_0| < \delta$ implies $|f(x) - f(x_0)| < |f(x_0)|$. We define the points
+    \[
+        c = \max\{a, x_0 - \delta/2\},
+        \isp{and}
+        d = \min\{b, x_0 + \delta/2\},
+    \]
+    so $[c,d] \subseteq (x_0-\delta, x_0+\delta)$ and $[c,d] \subseteq [a,b]$. Then $|f(x) - f(x_0)| < |f(x_0)|$ for all $x \in [c, d]$, implying $f(x) \ne 0$ for all $x \in [c,d]$. However, the mean value theorem for integrals tells us that there exists some $y_0 \in [c, d]$ such that
+    \[
+        f(y_0) = \frac{1}{d-c}\int_{c}^{d} f(x) \dd{x} = 0,
+    \]
+    which is a contradiction.
+    
+\end{proof}
+
+
+
+
+
+\newpage
+\begin{pbox}[3]
+    Let $f:[a,b]\to \R$ be a bounded function. Suppose that there exist partitions $\{P_n\}_{n\in\N}$ and $\{Q_n\}_{n\in \N}$, such that 
+    \begin{equation}
+    \lim_{n\to \infty} (U(P_n,f)-L(Q_n,f))=0. 
+    \end{equation}
+    Prove that $f\in \mathcal{R}([a,b])$ and 
+    \begin{equation}
+    \int_a^b f(x)\,dx = \lim_{n\to \infty} U(P_n,f)= \lim_{n\to \infty} L(Q_n,f).
+    \end{equation}
+\end{pbox}
+
+\begin{proof}
+    For each $n \in \N$, the partition $S_n = P_n \cup Q_n$ is a refinement of both $P_n$ and $Q_n$. So
+    \[
+        L(Q_n, f) \leq L(S_n, f) \leq U(S_n, f) \leq U(P_n, f),
+    \]
+    which implies
+    \[
+        0 \leq U(S_n, f) - L(S_n, f) \leq U(P_n, f) - L(Q_n, f).
+    \]
+    Hence,
+    \[
+        \lim_{n \to \infty} (U(S_n, f) - L(S_n, f)) = 0.
+    \]
+    In other words, for any $\eps > 0$ there exists a partition of $[a,b]$, namely $S_n$, such that
+    \[
+        U(S_n, f) - L(S_n, f) < \eps,
+    \]
+    so $f \in \RR([a,b])$. Now for all $n \in \N$, we know that
+    \[
+        L(Q_n, f) \leq \int_{a}^{b} f(x) \dd{x} \leq U(P_n, f),
+    \]
+    so
+    \begin{align*}
+        0 \leq \int_{a}^{b} f(x) \dd{x} - L(Q_n, f) &\leq U(P_n,f) - L(Q_n,f), \\
+        0 \leq U(P_n, f) - \int_{a}^{b} f(x) \dd{x} &\leq U(P_n,f) - L(Q_n,f).
+    \end{align*}
+    By the squeeze theorem, both of these go to zero, and we obtain
+    \[
+        \lim_{n\to\infty} L(Q_n, f) = \int_{a}^{b} f(x) \dd{x} = \lim_{n\to\infty} U(P_n, f).
+    \]
+    
+    
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[4]
+    Evaluate the following limits: 
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Let $0<a<b<+\infty$. Prove that 
+    \begin{equation}
+    \lim_{n\to \infty} \int_a^b \frac{\cos(nx)}{\sqrt{x}}\,dx = 0.
+    \end{equation}
+\end{pbox}
+
+\begin{proof}
+    For a fixed $n \in \N$, define the functions
+    \[
+        f(x) = \frac{\cos x}{\sqrt{x}}
+        \isp{and}
+        \phi(x) = nx.
+    \]
+    Then $\phi(x)$ is strictly increasing and differentiable on $[a,b]$ with $\phi'(x) = n$. By the change of variables, we have
+    \begin{align*}
+        \int_a^b \frac{\cos(nx)}{\sqrt{x}} \dd{x}
+            &= \frac{1}{\sqrt{n}} \int_{a}^{b} f(\phi(x)) \phi'(x) \dd{x} \\
+            &= \frac{1}{\sqrt{n}} \int_{\phi(a)}^{\phi(b)} f(x) \dd{x} \\
+            &= \frac{1}{\sqrt{n}} \int_{na}^{nb} f(x) \dd{x}.
+    \end{align*}
+    Without loss of generality, assume $n$ large enough that $n(b-a) > 4\pi$. Define
+    \[
+        m_n = \min\{k \in \N : na < 2\pi k\}
+        \isp{and}
+        M_n = \max\{k \in \N : 2\pi k < nb\},
+    \]
+    then the integral over $[na, nb]$ can be rewritten as
+    \[
+        \int_{na}^{nb} f(x) \dd{x}
+            = \int_{2\pi m_n}^{2\pi M_n} f(x) \dd{x}
+                + \int_{na}^{2\pi m_n} f(x) \dd{x}
+                + \int_{2\pi M_n}^{nb} f(x) \dd{x}.
+    \]
+    By the mean value theorem for integrals, there is some $c_n \in [na,2 \pi m_n]$ such that
+    \[
+        \int_{na}^{2\pi m_n} f(x) \dd{x} = f(c_n)(2\pi m_n - na).
+    \]
+    By construction of $m_n$, we have $na < 2\pi m_n \leq  na + 2\pi$, so
+    \[
+        |f(c_n)(2\pi m_n - na)|
+            = \frac{|\cos c_n|}{\sqrt{c_n}} (2\pi m_n - an)
+            \leq \frac{2\pi}{\sqrt{na}}
+    \]
+    Similarly, let $d_n \in [2\pi M_n, nb]$ such that
+    \[
+        \int_{2\pi M_n}^{nb} f(x) \dd{x} = f(d_n)(b - 2\pi M_n),
+    \]
+    then
+    \[
+        |f(c_n)(b - 2\pi M_n)|
+            = \frac{|\cos d_n|}{\sqrt{d_n}} (b - 2\pi M_n)
+            \leq \frac{2\pi}{\sqrt{na}}
+    \]
+    Thus, we have the bound
+    \[
+        \left|\int_{na}^{2\pi m_n} f(x) \dd{x} + \int_{2\pi M_n}^{nb} f(x) \dd{x}\right|
+            \leq \frac{4\pi}{\sqrt{na}}
+            \leq \frac{4\pi}{\sqrt{a}}.
+    \]
+    We now rewrite the integral over $[2\pi m_n, 2\pi M_n]$ to be
+    \[
+        \int_{2\pi m_n}^{2\pi M_n} f(x) \dd{x}
+            = \sum_{k=m_n}^{M_n-1} \int_{2\pi k}^{2\pi(k+1)} f(x) \dd{x}.
+    \]
+    For a fixed $k$, we have
+    \begin{align*}
+        \int_{2\pi k}^{2\pi(k+1)} f(x) \dd{x}
+            &= \int_{2\pi k}^{2\pi k + \pi} \frac{\cos x}{\sqrt{x}} \dd{x}
+                + \int_{2\pi k + \pi}^{2\pi k + 2\pi} \frac{\cos x}{\sqrt{x}} \dd{x} \\
+            &= \int_{2\pi k}^{2\pi k + \pi} \frac{\cos x}{\sqrt{x}} \dd{x}
+                + \int_{2\pi k}^{2\pi k + \pi} \frac{\cos(x + \pi)}{\sqrt{x + \pi}} \dd{x} \\
+            &= \int_{2\pi k}^{2\pi k + \pi} \frac{\cos x}{\sqrt{x}} \dd{x}
+                + \int_{2\pi k}^{2\pi k + \pi} \frac{-\cos x}{\sqrt{x + \pi}} \dd{x} \\
+                &= \int_{2\pi k}^{2\pi k + \pi} \cos x \left(\frac{1}{\sqrt{x}} - \frac{1}{\sqrt{x + \pi}}\right) \dd{x}.
+    \end{align*}
+    We bound the absolute value of each term by
+    \begin{align*}
+        \left|\cos x \left(\frac{1}{\sqrt{x}} - \frac{1}{\sqrt{x + \pi}}\right)\right|
+            &\leq \left|\frac{1}{\sqrt{x}} - \frac{1}{\sqrt{x + \pi}}\right| \\
+            &= \left|\frac{\sqrt{x + \pi} - \sqrt{x}}{\sqrt{x(x+\pi)}} \cdot \frac{\sqrt{x+\pi} + \sqrt{x}}{\sqrt{x+\pi} + \sqrt{x}}\right| \\
+            &= \left|\frac{x + \pi - x}{\sqrt{x(x+\pi)^2} + \sqrt{x^2(x+\pi)}}\right| \\
+            &= \frac{\pi}{(x+\pi)\sqrt{x} + x\sqrt{x+\pi}} \\
+            &\leq \frac{\pi}{x\sqrt{x} + x\sqrt{x}} \\
+            &= \frac{\pi}{2x^{3/2}} \\
+            &\leq \frac{\pi}{2 (2\pi k)^{3/2}} \\
+            &= \frac{1}{\sqrt{32\pi} k^{3/2}}.
+    \end{align*}
+    Then we can bound the absolute value of the integral by
+    \[
+        \left|\int_{2\pi k}^{2\pi(k+1)} f(x) \dd{x}\right|
+            \leq \frac{1}{\sqrt{32\pi} k^{3/2}}(2\pi k + \pi - 2\pi k)
+            = \frac{\sqrt{\pi/32}}{k^{3/2}}.
+    \]
+    With this, we bound the absolute value of the summation by
+    \[
+        \left|\sum_{k=m_n}^{M_n-1} \int_{2\pi k}^{2\pi(k+1)} f(x) \dd{x}\right|
+            \leq \sum_{k=m_n}^{M_n-1} \frac{\sqrt{\pi/32}}{k^{3/2}}
+            = (\pi/32)^{1/2} \sum_{k=m_n}^{M_n-1} \frac{1}{k^{3/2}}
+    \]
+    From 1(b), we know that the infinite sum
+    \[
+        S = \sum_{k=1}^{\infty} \frac{1}{k^{3/2}}
+    \]
+    converges, and since each term is positive,
+    \[
+        \sum_{k=m_n}^{M_n-1} \frac{1}{k^{3/2}} \leq S.
+    \]
+    Thus, we have bounded the absolute value of the integral
+    \[
+        \left|\int_{2\pi m_n}^{2\pi M_n} f(x) \dd{x}\right| \leq (\pi/32)^{1/2}S.
+    \]
+    This now gives us the bound
+    \[
+        \left|\int_{na}^{nb} f(x) \dd{x}\right| \leq  (\pi/32)^{1/2}S + \frac{4\pi}{\sqrt{a}} = C,
+    \]
+    where $C$ is a positive constant. We can now bound the absolute value of the original integral by
+    \[
+        \left|\int_a^b \frac{\cos(nx)}{\sqrt{x}} \dd{x}\right|
+            = \left| \frac{1}{\sqrt{n}} \int_{na}^{nb} f(x) \dd{x}\right|
+            \leq \frac{C}{\sqrt{n}}.
+    \]
+    And since $C/\sqrt{n} \to 0$ as $n \to \infty$, then we have
+    \[
+        \lim_{n \to \infty} \int_a^b \frac{\cos(nx)}{\sqrt{x}} \dd{x}
+            = 0.
+    \]
+    
+    
+    
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[(b)]
+    \begin{equation}
+    \lim_{n\to\infty} \frac{2}{n} \sqrt[n]{n!}.
+    \end{equation}
+\end{pbox}
+
+For a fixed $n$, we write
+\begin{align*}
+    \frac{2}{n}\sqrt[n]{n!}
+        &= 2 \pfrac{n!}{n^n}^{1/n} \\
+        &= 2 \left(\prod_{k=1}^{n} \frac{k}{n} \right)^{1/n} \\
+        &= 2 \exp(\frac{1}{n} \log(\prod\limits_{k=1}^{n} \frac{k}{n})) \\
+        &= 2 \exp(\frac{1}{n} \sum\limits_{k=1}^{n}\log \frac{k}{n}).
+\end{align*}
+If the logarithm is Riemann integrable on $[0,1]$, then the integral is given by the
+\[
+    \int_0^1 \log x \dd{x} = \lim_{n\to \infty} \frac{1}{n} \sum\limits_{k=1}^{n}\log \frac{k}{n}.
+\]
+We show this limit exists by evaluating
+\[
+    \lim_{a \to 0} \int_a^1 \log x \dd{x}.
+\]
+Since the logarithm is continuous on $[a, 1]$ for $a \in (0,1)$, then it is integrable. Moreover, letting $g(x) = x\log x - x$, we find
+\begin{align*}
+    g'(x)
+        &= x\dv{x} \log x + \log x \dv{x}x - \dv{x}x \\
+        &= x\frac{1}{x} + \log x - 1 \\
+        &= \log x.
+\end{align*}
+Then by the fundamental theorem of calculus, we have
+\[
+    \int_a^1 \log x \dd{x}
+        = g(1) - g(a)
+        = -1 - a\log a + a.
+\]
+We now evaluate the limit of $a \log a$ as $a \to 0$. We can rewrite this limit as
+\[
+    \lim_{a \to 0} a \log a
+        = \lim_{x \to \infty} \frac{\log(1/x)}{x}.
+\]
+Applying L'H\^opital's rule, we find
+\begin{align*}
+    \lim_{x \to \infty} \frac{\log(1/x)}{x}
+        &= \lim_{x \to \infty} \frac{\dv{x}\log(1/x)}{\dv{x}x} \\
+        &= \lim_{x \to \infty} \frac{1}{1/x}\dv{x}\frac{1}{x} \\
+        &= \lim_{x \to \infty} x\frac{-1}{x^2} \\
+        &= \lim_{x \to \infty} \frac{-1}{x} \\
+        &= 0.
+\end{align*}
+Therefore, we have the limit of the integral
+\[
+    \lim_{a \to 0} \int_a^1 \log x \dd{x}
+        = \lim_{a \to 0}(-1 - a\log a + a)
+        = -1.
+\]
+Since the exponential function is continuous, then we find
+\begin{align*}
+    \lim_{n\to\infty} \exp(\frac{1}{n} \sum\limits_{k=1}^{n}\log \frac{k}{n})
+        &= \exp(\lim_{n\to\infty} \frac{1}{n} \sum\limits_{k=1}^{n}\log \frac{k}{n}) \\
+        &= \exp(\int_0^1 \log x \dd{x}) \\
+        &= \exp(-1) \\
+        &= \frac{1}{e}.
+\end{align*}
+Hence,
+\[
+    \lim_{n\to\infty} \frac{2}{n}\sqrt[n]{n!} = \frac{2}{e}.
+\]
+    
+
+
+
+\newpage
+\begin{pbox}[5]
+    Examine the existence of the following improper integrals:
+\end{pbox}
+
+\begin{pbox}[(a)]
+    \begin{equation}
+    \int_2^{+\infty} \frac{\sqrt{x+1}-\sqrt{x}}{x}\,dx.
+    \end{equation}
+\end{pbox}
+
+For $x \geq 2$, we have
+\begin{align*}
+    \frac{\sqrt{x+1}-\sqrt{x}}{x}
+        &= \frac{\sqrt{x+1}-\sqrt{x}}{x} \cdot \frac{\sqrt{x+1} + \sqrt{x}}{\sqrt{x+1} + \sqrt{x}} \\
+        &= \frac{1}{x(\sqrt{x+1} + \sqrt{x})} \\
+        &\leq \frac{1}{x(\sqrt{x} + \sqrt{x})} \\
+        &= \frac{1}{2x^{3/2}}.
+\end{align*}
+From 1(a) and 1(b), we know that the improper integral
+\[
+    \int_{1}^{\infty} \frac{1}{x^{3/2}}
+\]
+converges since $3/2 > 1$. In particular, the integral
+\[
+    \int_{2}^{\infty} \frac{1}{x^{3/2}}
+\]
+converges. The function
+\[
+    \frac{\sqrt{x+1}-\sqrt{x}}{x}
+\]
+is continuous, and therefore integrable, on the interval $[2, b]$ for $b > 2$. Moreover, it is positive, so the bound
+\[
+    0 \leq \int_{2}^{b}\frac{\sqrt{x+1}-\sqrt{x}}{x} \leq \int_{2}^{b} \frac{1}{x^{3/2}}
+\]
+implies the convergence of the improper integral when $b \to \infty$,
+\[
+    0 \leq \int_{2}^{\infty} \frac{\sqrt{x+1}-\sqrt{x}}{x}
+        \leq \int_{2}^{\infty} \frac{1}{x^{3/2}}.
+\]
+
+
+\newpage
+\begin{pbox}[(b)]
+    \begin{equation}
+    \int_0^{\frac{\pi}{2}} \tan x\,dx.
+    \end{equation}
+\end{pbox}
+
+If it exists, the improper integral is given by
+\[
+    \int_0^{\frac{\pi}{2}} \tan x \dd{x}
+        = \lim_{b \to \pi/2} \int_0^{b} \tan x \dd{x}.
+\]
+Since the tangent function is continuous on $[0, b]$ for $b \in (0, \pi/2)$, then it is integrable. Additionally, letting $g(x) = -\log \cos x$, we find
+\[
+    g'(x) 
+        = \frac{-1}{\cos x} \dv{x} \cos x
+        = \frac{\sin x}{\cos x}
+        = \tan x.
+\]
+So by the fundamental theorem of calculus, we have
+\[
+    \int_0^{b} \tan x \dd{x}
+        = g(b) - g(0)
+        = -\log\cos b + \log\cos 0
+        = -\log\cos b.
+\]
+Since $\cos b \to 0$ as $b \to \pi/2$ and $\log x \to -\infty$ as $x \to 0$, then
+\[
+    \lim_{b \to \pi/2} \int_0^{b} \tan x \dd{x} = +\infty.
+\]
+In other words, the improper integral does not converge.
+
+\end{document}

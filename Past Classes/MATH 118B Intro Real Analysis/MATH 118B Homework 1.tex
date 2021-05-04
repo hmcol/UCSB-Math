@@ -1,0 +1,415 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amsthm, amssymb, physics}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}
+    {\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\mybox}}\end{center}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{1em}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+
+% Extra Commands
+
+
+
+% Document Info
+\title{Homework 1\\
+    \large MATH 118B
+}
+\author{Harry Coleman}
+\date{January 14, 2021}
+
+% Begin Document
+\begin{document}
+\maketitle
+
+\section{}
+\begin{problem}
+    Let $f:[a,b]\to \R$ be continuous on $[a,b]$ and differentiable on $(a,b)$.
+\end{problem}
+
+\subsection{}
+\begin{problem}
+    Prove that if $f'(x)\ne 0$ in $(a,b)$ then $f$ is injective (one-to-one).
+\end{problem}
+
+\begin{proof}
+    We will prove the contrapositive: if $f$ is not injective, then $f'$ has a zero in $(a,b)$. Suppose $f$ is not injective and $x < y$ with $f(x) = f(y)$. Since $[x, y] \subseteq [a, b]$ and $(x, y) \subseteq (a, b)$, then $f$ is continuous on $[x, y]$ and differentiable on $(x, y)$. Then by Rolle's theorem, there exists some $c \in (x, y)$ such that $f'(c) = 0$. Since $c \in (a, b)$, this is the desired result.
+\end{proof}
+
+\subsection{}
+\begin{problem}
+    Give an example of a function $f:\R\to \R$ that is one-to-one, and such that $f'(x_0)=0$ for some $x_0\in \R$.
+\end{problem}
+
+The cubic function $f(x) = x^3$ is injective on $\R$ and has $f'(0) = 0$.
+ 
+\subsection{}
+\begin{problem}
+    Prove that if $f'(x)>0$ in $(a,b)$, then $f$ is strictly increasing in $[a,b]$. 
+\end{problem}
+
+\begin{proof}
+    Assume, in contradiction, that $f'(x) > 0$ in $(a, b)$ but $f$ is not strictly increasing. Let $x < y$ such that $f(x) \geq f(y)$. Note that $[x, y] \subseteq [a, b]$, so $f$ is continuous on $[x, y]$ and differentiable on $(x, y)$. Then by the mean value theorem, there exists some $c \in (x, y)$ such that
+    \[
+        f'(c) = \frac{f(y) - f(x)}{y - x}.
+    \]
+    Since $y - x > 0$ and $f(y) - f(x) \leq 0$, then $f'(c) \leq 0$. However, since $c \in (a,b)$, this is a contradiction. 
+    
+\end{proof}
+
+\subsection{}
+\begin{problem}
+    Prove that if $f'(x)<0$ in $(a,b)$, then $f$ is strictly decreasing in $[a,b]$. 
+\end{problem}
+
+\begin{proof}
+    Assume, in contradiction, that $f'(x) < 0$ in $(a, b)$ but $f$ is not strictly decreasing. Let $x < y$ such that $f(x) \leq f(y)$. Note that $[x, y] \subseteq [a, b]$, so $f$ is continuous on $[x, y]$ and differentiable on $(x, y)$. Then by the mean value theorem, there exists some $c \in (x, y)$ such that
+    \[
+        f'(c) = \frac{f(y) - f(x)}{y - x}.
+    \]
+    Since $y - x > 0$ and $f(y) - f(x) \geq 0$, then $f'(c) \geq 0$. However, since $c \in (a,b)$, this is a contradiction. 
+    
+\end{proof}
+
+\newpage
+\section{}
+\begin{problem}
+    We have defined the exponential function as the power series 
+    \begin{equation}
+    e^x= \sum_{n=0}^\infty \frac{x^n}{n!},\quad x\in \R.
+    \end{equation}
+    We also know that the radius of convergence is $+\infty$, and therefore it converges (absolutely) for every $x\in \R$.
+\end{problem}
+
+\subsection{}
+\begin{problem}
+    Use the Cauchy product to show that 
+    \begin{equation}
+        e^{x+y} = e^x e^y,\quad \forall\,x,y\in \R.
+    \end{equation}
+    Use this to show that $e^x$ is never zero, and find its reciprocal.
+\end{problem}
+
+\begin{proof}
+    Let $x, y \in \R$. The power series representation of $e^{x + y}$ is given by
+    \[
+        e^{x + y} = \sum_{n=0}^\infty \frac{(x + y)^n}{n!}.
+    \]
+    The binomial theorem tells us that
+    \[
+        (x + y)^n 
+            = \sum_{k=0}^n \binom{n}{k} x^k y^{n-k} 
+            = n! \cdot \sum_{k=0}^n \left(\frac{x^k}{k!}\right) \left(\frac{y^{n-k}}{(n-k)!}\right).
+    \]
+    Substituting this into the power series of $e^{x + y}$, we obtain the Cauchy product of the power series of $e^x$ and $e^y$:
+    \[
+        e^{x + y} 
+            = \sum_{n=0}^\infty \sum_{k=0}^n \left(\frac{x^k}{k!}\right) \left(\frac{y^{n-k}}{(n-k)!}\right)
+            = \left(\sum_{n=0}^\infty \frac{x^n}{n!}\right)\left(\sum_{n=0}^\infty \frac{y^n}{n!}\right)
+            =e^x e^y.
+    \]
+    
+\end{proof}
+
+For any $x \in \R$, we have
+\[
+    e^xe^{-x} = e^{x-x} = e^0 = 1,
+\]
+which implies $e^x \ne 0$. Moreover, this gives us
+\[
+    \frac{1}{e^x} = (e^x)^{-1} = e^{-x}.
+\]
+
+\newpage
+\subsection{}
+\begin{problem}
+    Prove that the exponential is continuous at $0$ and use this and the previous result to prove that the exponential is continuous everywhere.
+\end{problem}
+
+\begin{proof}
+    We aim to prove that $\ds\lim_{x \to 0} e^x = e^0 = 1$. Let $\eps > 0$ be given and choose $\delta > 0$ such that $\delta < \min\{\frac12, \eps\}$. Now suppose $|x| < \delta$ and consider
+    \[
+        |e^x - 1| 
+            = \left|\sum_{n=0}^\infty \frac{x^n}{n!} - 1\right| 
+            = \left|\sum_{n=1}^\infty \frac{x^n}{n!}\right|.
+    \]
+    For each $n \in \N$, we have
+    \[
+        \left|\frac{x^n}{n!}\right| = \frac{|x|^n}{n!} \leq \delta^n.
+    \]
+    Since we have convergence of the geometric series
+    \[
+        \sum_{n=1}^\infty \delta^n = \frac{\delta}{1 - \delta},
+    \]
+    then we have absolute convergence of the series
+    \[
+        \left|\sum_{n=1}^\infty \frac{x^n}{n!}\right|
+         \leq \sum_{n=1}^\infty \left|\frac{x^n}{n!}\right|
+         \leq \frac{\delta}{1 - \delta}.
+    \]
+    We now find
+    \begin{align*}
+        \delta &< \frac12, \\
+        2\delta &< 1, \\
+        1 &< 2 - 2\delta, \\
+        \frac{1}{1 - \delta} &< 2.
+    \end{align*}
+    Thus,
+    \[
+        |e^x - 1| < 2\delta < \eps.
+    \]
+    
+\end{proof}
+
+For any $x_0 \in \R$, we find
+\[
+    \lim_{x \to x_0} e^x 
+        = \lim_{x \to x_0} e^{x_0 + x - x_0}
+        = e^{x_0} \lim_{x \to x_0} e^{x-x_0}
+        = e^{x_0} \lim_{x \to 0} e^x
+        = e^{x_0} e^0
+        =e^{x_0}.
+\]
+
+\subsection{}
+\begin{problem}
+    Prove that 
+    \begin{equation}
+        \lim_{h\to 0} \frac{e^h-1}{h} = 1.
+    \end{equation}
+    {\it Hint: Careful, you cannot simply exchange the limit and the summation without justification.}
+\end{problem}
+
+\begin{proof}
+    Let $x \in \R \setminus \{0\}$. Using the power series representation of $e^x$, we find
+    \[
+        \frac{e^x - 1}{x} - 1
+            = \frac{\sum_{n=0}^\infty \frac{x^n}{n!} - 1 - x}{x}
+            = \frac{\sum_{n=2}^\infty \frac{x^n}{n!}}{x}
+            = \sum_{n=2}^\infty \frac{x^{n-1}}{n!}
+            = x\sum_{n=0}^\infty \frac{x^n}{(n+2)!}.
+    \]
+    We bound the absolute value of the terms of this series by
+    \[
+        \left|\frac{x^n}{(n+2)!}\right| = \frac{|x|^n}{(n+2)!} \leq \frac{|x|^n}{n!},
+    \]
+    giving us
+    \[
+        \left|x \sum_{n=0}^\infty \frac{x^n}{(n+2)!}\right|
+            \leq |x| \sum_{n=0}^\infty \left|\frac{x^n}{(n+2)!}\right|
+            \leq |x| \sum_{n=0}^\infty \frac{|x|^n}{n!}
+            = |x|e^{|x|}.
+    \]
+    From 2(b), we know that the exponential is continuous, so
+    \[
+        \lim_{x \to 0} \left|\frac{e^x - 1}{x} - 1\right| \leq \lim_{x \to 0} |x|e^{|x|} = 0.
+    \]
+    Hence,
+    \[
+        \lim_{x \to 0} \frac{e^x - 1}{x} = 1.
+    \]
+    
+    
+\end{proof}
+
+\subsection{}
+\begin{problem}
+    Prove that the exponential function is differentiable in the real line and that 
+    \begin{equation}
+        \frac{d}{dx} e^x = e^x,\quad \forall\, x\in \R.
+    \end{equation}
+\end{problem}
+
+\begin{proof}
+    Let $x \in \R$. Then the derivative of the exponential at $x$, if the limit exists, is
+    \[
+        \lim_{h \to 0} \frac{e^{x + h} - e^x}{h}.
+    \]
+    From 2(a), we have
+    \[
+        \frac{e^{x + h} - e^x}{h}
+            = \frac{e^x e^{h} - e^x}{h}
+            = e^x \left(\frac{e^{h} - 1}{h}\right).
+    \]
+    Then, 2(c) confirms that the limit exists and is the derivative of the exponential at $x$:
+    \[
+        \lim_{h \to 0} \frac{e^{x + h} - e^x}{h}
+            = e^x \left(\lim_{h \to 0} \frac{e^{h} - 1}{h} \right)
+            = e^x.
+    \]
+    
+\end{proof}
+
+\subsection{}
+\begin{problem}
+    Show that the exponential function never vanishes, is strictly increasing on $\R$, and that 
+    \begin{equation}
+        \lim_{x\to +\infty} e^x = +\infty;\quad \lim_{x\to -\infty} e^x = 0.
+    \end{equation}
+\end{problem}
+
+\begin{proof}
+    From 2(a), the exponential is nonzero, i.e., never vanishes. If $0 \leq x < y$, then
+    \[
+        e^x = \sum_{n=0}^\infty \frac{x^n}{n!} < \sum_{n=0}^\infty \frac{y^n}{n!} = e^y.
+    \]
+    If $x < y < 0$, then $0 < |y| < |x|$. As an instance of the first case,
+    \[
+        e^{|y|} < e^{|x|}.
+    \]
+    Then, using the reciprocal of the exponential found in 2(a), we find
+    \[
+        e^x = e^{-|x|} = \frac{1}{e^{|x|}} < \frac{1}{e^{|y|}} = e^{-|y|} = e^y.
+    \]
+    Thus, the exponential is strictly increasing on $\R$. We now show that it has the stated end-behavior. Let $M > 0$, then for any $x > M$ we have
+    \[
+        e^x = 1 + x + \sum_{n=2}^\infty \frac{x^n}{n!} > x > M.
+    \]
+    Hence, $\ds\lim_{x\to +\infty} e^x = +\infty$. Moreover, this implies
+    \[
+        \lim_{x\to -\infty} e^x = \lim_{x\to +\infty} e^{-x} = \lim_{x\to +\infty} \frac{1}{e^x} = 0.
+    \]
+    
+\end{proof}
+
+\subsection{}
+\begin{problem}
+    Conclude that the exponential function has an inverse defined on $(0,+\infty)$. This is what we call the \emph{logarithm function} $\log:(0,+\infty)\to \R$.
+\end{problem}
+
+\begin{proof}
+    From 2(e), we know the exponential is strictly increasing, i.e., $x < y$ implies $e^x < e^y$. In particular, this means that $x \ne y$ implies $e^x \ne e^y$, i.e., the exponential is injective. And for any $y \in (0, +\infty)$, we can find $a, b \in \R$ such that $e^a < y < e^b$. From 2(b), the exponential is continuous and the intermediate value theorem tells us that there exists some $c \in (a, b)$ such that $e^c = y$. Hence, the exponential is surjective on $(0, +\infty)$. Since the exponential is a bijection $R \to (0, +\infty)$, then it has an inverse $(0, +\infty) \to \R$.
+    
+\end{proof} 
+
+\subsection{}
+\begin{problem}
+    Show that the $\log$ is a continuous function.
+\end{problem}
+
+\begin{proof}
+    Let $y_0 \in (0, +\infty)$ and $\eps > 0$. Since $-\eps < 0 < \eps$ and the exponential is strictly increasing, then $e^{-\eps} < 1 < e^\eps$ and, moreover, $y_0e^{-\eps} < y_0 < y_0e^\eps$. Define
+    \[
+        \delta = \min\{|y_0e^{-\eps} - y_0|, |y_0 - y_0e^\eps|\}.
+    \]
+    Suppose $y \in (0, +\infty)$ such that $|y - y_0| < \delta$. Using the fact that the exponential and logarithm are inverses and the property proved in 2(a), we find
+    \[
+        |\log y - \log y_0|
+            = \left| \log e^{\log y - \log y_0} \right|
+            = \left| \log \frac{e^{\log y}}{e^{\log y_0}} \right|
+            = \left| \log \frac{y}{y_0} \right|
+    \]
+    Since $y \in (y_0e^{-\eps}, y_0e^\eps)$, we have the following:
+    \[
+        y_0e^{-\eps} < y < y_0e^\eps,
+    \]
+    \[
+        e^{-\eps} < \frac{y}{y_0} < e^\eps.
+    \]
+    Since the exponential is continuous, the intermediate value theorem tells us that there is some $a \in (-\eps, \eps)$  such that $e^a = y/y_0$. Then
+    \[
+        |\log y - \log y_0|
+            = |\log e^a|
+            = |a|
+            < \eps.
+    \]
+    
+\end{proof}
+
+\newpage
+\section{}
+\begin{problem}
+    Let $g:(a,b)\to \R$ be differentiable, and assume that there exists $M>0$ such that $|g'(x)|\le M$ for all $x \in (a,b)$.
+\end{problem}
+
+\subsection{}
+\begin{problem}
+    Show that $g$ is Lipschitz continuous. 
+\end{problem}
+
+\begin{proof}
+    Let $x, y \in \R$ and, without loss of generality, assume $x < y$. By the mean value theorem, there exists some $c \in (x, y)$ such that
+    \[
+        (g(x) - g(y)) = g'(c)(x - y).
+    \]
+    Then,
+    \[
+        |g(x) - g(y)| = |g'(c)||x - y| \leq M|x - y|.
+    \]
+    Hence, $g$ is Lipschitz continuous.
+    
+\end{proof}
+
+\subsection{}
+\begin{problem}
+    Show that $g$ is uniformly continuous. 
+\end{problem}
+
+\begin{proof}
+    Let $\eps > 0$ and choose $\delta = \eps/M$. Then, for all $x, y \in \R$ such that $|x - y| < \delta$ we have
+    \[
+        |g(x) - g(y)| \leq M|x - y| < M \frac{\eps}{M} = \eps.
+    \]
+    Hence, $g$ is uniformly continuous. 
+    
+\end{proof}
+
+\newpage
+\subsection{}
+\begin{problem}
+    Show that $g$ can be extended continuously to $[a,b]$, and that this extension is unique.
+\end{problem}
+
+\begin{proof}
+    Let $\{x_n\}_{n\in\N}$ be a sequence in $(a,b)$ converging to $a$. Let $\eps > 0$ and choose $\delta > 0$ such that for all $x, y \in \R$
+    \[
+        |x - y| < \delta \implies |g(x) - g(y)| < \eps.
+    \]
+    Since $\{x_n\}_{n\in\N}$ is convergence, in particular, it is Cauchy. Let $N \in \N$ such that
+    \[
+        n, m \geq N \implies |x_n - x_m| < \delta.
+    \]
+    Then, in fact,
+    \[
+        n, m \geq N \implies |g(x_n) - g(y_m)| < \eps.
+    \]
+    That is, the image sequence $\{g(x_n)\}_{n \in \N} \subseteq \R$ is Cauchy and, therefore, convergence. We define the limit of this sequence to be the extension of $g$ at $a$ and call it $g(a)$. Repeating this argument, we define the extension $g(b)$ to be the limit of the image of a sequence in $(a,b)$ converging to $b$. To see why this notation makes sense, we now prove that
+    \[
+        \lim_{x \to a} g(x) = g(a).
+    \]
+    In other words, we prove that this extension is continuous. If this limit is correct, then this extension will be unique, as the limit is unique. Let $\eps > 0$ and choose $\delta > 0$ as above and choose $N \in \N$ such that
+    \[
+        n \geq N \implies |g(x_n) - g(a)| < \eps.
+    \]
+    Suppose $x \in (a, b)$ such that $|x - a| < \delta$. Since $x, x_N \in (a, a + \delta)$, then $|x - x_N| < \delta$. Then, the triangle inequality gives us
+    \[
+        |g(x) - g(a)| \leq |g(x) - g(x_N)| + |g(x_N) - g(a)| < \eps + \eps = 2\eps.
+    \]
+    Hence, $\ds\lim_{x \to a} g(x) = g(a)$.
+    
+\end{proof}
+
+\end{document}

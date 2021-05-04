@@ -1,0 +1,191 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Set Names
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+
+% Misc Characters
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\newcommand{\eps}{\varepsilon}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+% Homework Sections
+\setlength{\fboxsep}{4pt}
+\newcommand{\generic}[2]{\section*{#1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\ex}[2]{\generic{Exercise #1}{#2}}
+\newcommand{\prob}[2]{\generic{Problem #1}{#2}}
+\newcommand{\ques}[2]{\generic{Question #1}{#2}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+% MATH CS 117 Intro to Real Analysis
+\newcommand{\ds}{\displaystyle}
+\newcommand{\seq}[1]{\left\{#1\right\}_{n=1}^\infty}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+
+ 
+\begin{document}
+ 
+\title{Assignment 2\\
+    \large MATH CS 117 Intro to Real Analysis}
+\author{Harry Coleman}
+\date{April 13, 2020}
+\maketitle
+
+
+\ques{1}{
+    Let $\seq{a_n}$ be a sequence in $\R$ which converges to $L$.  Prove that the sequence $\seq{|a_n|}$ converges to $|L|$.
+}
+
+Let $\eps > 0$ and $N\in\N$ such that
+\[n\geq N \implies |a_n - L| < \eps.\]
+By the triangle inequality, if $n\geq N$, then
+\[||a_n| - |L|| \leq |a_n - L| < \eps.\]
+Therefore, $|a_n| \to |L|$.
+
+\ques{2}{
+    Suppose that $\seq{a_n}$, $\seq{b_n}$, $\seq{c_n}$ are sequences in $\R$ such that
+    \[a_n\le b_n\le c_n,\isp{for all} n\in\N.\]
+    Prove that if $\seq{a_n}$ and $\seq{c_n}$ converge to the same limit $L$, then $\seq{b_n}$ also converges to $L$.
+}
+
+Let $\eps>0$ and $N_1,N_2\in\N$ such that
+\begin{align*}
+    n \geq N_1 &\implies |a_n-L| < \eps, \\
+    n \geq N_2 &\implies |c_n-L| < \eps. 
+\end{align*}
+Let $N=\max\{N_1,N_2\}$. So if $n\geq N$, then
+\[-\eps < a_n-L \leq b_n-L \leq c_n-L < \eps,\]
+or equivalently,
+\[|b_n-L| < \eps.\]
+Thus, $b_n\to L$.
+
+\ques{3}{
+    Prove that $\ds\lim_{n\to\infty}2^{-n}=0$.  (Suggestion:  Use problem (2).)
+}
+
+We first show that $2^{-n}\leq \ds\frac1n$ for all $n\in\N$ by induction on $n$. As the base case, when $n=1$,
+\[2^{-1} = \frac12 \leq \frac11.\]
+For the inductive step, we assume for some $n>1$ that $2^{-n} \leq \ds\frac1n$. Consider
+\begin{align*}
+    2^{-(n+1)}  &= \frac1{2^n}\cdot\frac12 \\
+                &\leq \frac1n\cdot\frac12 \\
+                &= \frac1{n+n} \\
+                &\leq \frac1{n+1}.
+\end{align*}
+Thus, $2^{-n}\leq \ds\frac1n$ for all $n\in\N$. Since $0\to0$, $\ds\frac1n \to 0$, and
+\[0 \leq 2^{-n} \leq \frac1n \quad \forall n\in\N,\]
+then $2^{-n} \to 0$.
+
+
+\ques{4}{
+    Prove that \[\lim_{n\to\infty}\frac{\cos n}{n}\] exists, and find the limit. (You may pretend that we have rigorously defined the cosine function and derived its properties. Suggestion:  Use problem (2).)
+}
+
+Since $-1\leq \cos n \leq 1$ for all $n\in\N$, then
+\[\frac{-1}n \leq \frac{\cos n}n \leq \frac1n \quad \forall n\in\N.\]
+And since $\ds\frac{-1}n \to 0$ and $\ds\frac1n \to 0$, then $\ds\frac{\cos n}n \to 0$.
+
+\newpage
+\ques{5a}{
+    Let $\seq{a_n}$ and $\seq{b_n}$ be sequences in $\R$ such that $\seq{a_n}$ converges to $L\ne0$ and $\seq{b_n}$ is unbounded.  Prove the the sequence $\seq{a_nb_n}$ is unbounded.
+}
+
+Suppose, to the contrary that $\seq{a_nb_n}$ is bounded, and let $M\in\N$ such that
+\[|a_nb_n| < M \quad \forall n\in\N.\]
+Let $\eps>0$ such that $\eps < |L|$. Now let $N\in\N$ such that
+\[n\geq N \implies |a_n-L| < \eps \quad \forall n\in\N.\]
+By the triangle inequality, if $n\geq N$, then
+\[||a_n| - |L|| \leq |a_n-L| < \eps,\]
+or equivalently,
+\[|L|-\eps < |a_n| < |L| + \eps.\]
+Since $|L|-\eps > 0$, by the Archimedean principle we let $K\in\N$ such that
+\[(|L|-\eps)K > M.\]
+Since $\seq{b_n}$ is unbounded, then for all $x\in\R$, there are an infinite number of $n\in\N$ such that $b_n > x$. Let $k\in\N$ such that $k\geq N$ and $b_k>K$. Consider
+\begin{align*}
+    |a_kb_k|    &= |a_k||b_k| \\
+                &> (|L|-\eps)K \\
+                &> M.
+\end{align*}
+This is a contradiction with the fact that
+\[|a_nb_n| < M \quad \forall n\in\N.\]
+Therefore, $\seq{a_nb_n}$ is unbounded.
+
+\ques{5b}{
+    Is the statement true if $L=0$?
+}
+
+Not necessarily. If we consider the sequences $\seq{n^{-2}}$ which converges to 0 and $\seq{n}$ which is unbounded, then their product sequence $\seq{n^{-1}}$ converges to 0 and is thus bounded. However, we might also consider the sequences $\seq{n^{-1}}$ which converges to 0 and $\seq{n^2}$ which is unbounded, but whose product sequence $\seq{n}$ is unbounded. So if $L=0$, then $\seq{a_nb_n}$ could be bounded or unbounded depending on $a_n$ and $b_n$.
+
+\ques{6}{
+    Prove that if $A\subset B\subset\R$, then $A'\subset B'$.
+}
+
+Let $L\in A'$. In order to show $A'\subset B'$, we must now show that $L\in B'$. Let $\seq{a_n}$ be a sequence in $A$ that converges to $L$, and let $\seq{b_n}$ be a sequence in $B$ defined by
+\[b_n = a_n \quad \forall n\in\N.\]
+Note that $\seq{b_n}$ is in fact a sequence in $B$ since $a_n\in B$ for all $n\in\N$. Now since
+\[a_n \leq b_n \leq a_n \quad \forall n\in\N,\]
+and $a_n\to L$, then $b_n\to L$. Now since $\ds\lim_{n\to\infty}b_n = L$, then $b_n$ belongs to every neighborhood of $L$ for infinitely many $n\in\N$. That is, every neighborhood of $L$ contains infinitely many points in $B$, thus $L$ is an accumulation point of $B$, so $L\in B'$. Therefore, $A'\subset B'$.
+
+\ques{7}{
+    Suppose that $S\subset \R$ is bounded above.  Prove that $\sup S\in S\cup S'$.
+}
+
+Let $L=\sup S$, If $L\in S$, then clearly $L \in S \cup S'$, so without loss of generality, we assume $L \notin S$ and seek to prove $L\in S'$. Consider the sequence $\seq{a_n}$ in $\R$ defined by
+\[a_n = L-\frac1n.\]
+Since $L\to L$ and $\ds\frac1n \to 0$, then $a_n\to L$. We now let $\seq{b_n}$ be a sequence in $S$ such that
+\[a_n \leq b_n \leq L \quad \forall n\in\N.\]
+This is possible since for all $n\in\N$, $a_n < L$, there must be some $b_n\in S$ such that $a_n\leq b_n$, otherwise $a_n$ would be the supremum of $S$. Now since $a_n\to L$ and $L\to L$, it is also the case that $b_n\to L$. Therefore, every neighborhood of $L$ contains $b_n$ for all but finitely many $n\in\N$. That is, every neighborhood of $L$ contains infinitely many points of $S$, therefore $L\in S'$. 
+
+
+\newpage
+\ques{8}{
+    Decide for which values of $k\in\N$ the sequence 
+    \[\seq{\frac{2n^k-n+1}{5n^3+1}}\] is convergent or divergent, and prove your answer.
+}
+
+Since
+\begin{align*}
+    \frac{2n^k-n+1}{5n^3+1} &\leq  \frac{2n^k-n+1}{5n^3} \\
+                            &=  \frac15\left(2n^{k-3} - \frac1{n^2} + \frac1{n^3}\right),
+\end{align*}
+and $\frac1{n^3}\to 0$ and $\frac1{n^2}\to 0$, then 
+\[\lim_{n\to \infty} \frac{2n^k-n+1}{5n^3+1} = \frac25\lim_{n\to \infty} n^{k-3}.\]
+Now if $k\geq 4$, then $n^{k-3}$ diverges and if $k\leq 3$, then $n^{k-3}$ converges. Therefore, the same can be said of
+\[\seq{\frac{2n^k-n+1}{5n^3+1}}.\]
+
+
+
+\ques{9}{
+    Prove true or give a counterexample:  An uncountable set $S\subset\R$ has an accumulation point.
+    %(Suggestion:  First show that $S'\ne\emptyset$, then show that $S'$ cannot be finite or countable.)
+}
+
+I was unable to finish this problem in time.
+
+
+
+
+
+
+\end{document}

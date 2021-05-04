@@ -1,0 +1,199 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow,enumitem}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools,babel}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{\textwidth-10pt}}
+    {\end{minipage}\end{lrbox}\framebox[6.5in]{\usebox{\mybox}}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+\newenvironment{response}{\paragraph{}}{}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\seq}[2]{\left\{#1\right\}_{#2=1}^\infty}
+\newcommand{\<}{\left\langle}
+\renewcommand{\>}{\right\rangle}
+\newcommand{\clo}[1]{\overline{#1}}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ang}{\langle}{\rangle}
+
+% Sets
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+
+% Misc Characters
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\let\eps\varepsilon
+\let\emptyset\varnothing
+
+% Functions
+\newcommand{\id}[1]{\mathsf{id}_{#1}}
+
+% Babel Shorthands
+\useshorthands*{"}
+\defineshorthand{"-}{\setminus}
+\defineshorthand{"d}{\partial}
+
+% Probability
+\newcommand{\FF}{\mathcal{F}}
+\renewcommand{\P}{\mathbb{P}}
+
+% Complex Analysis
+\renewcommand{\Im}{\text{Im }}
+\renewcommand{\Re}{\text{Re }}
+\newcommand{\Arg}{\text{Arg }}
+ 
+\begin{document}
+ 
+\title{Midterm 1\\
+    %\large MATH CS 121 Intro to Probability
+    %\large MATH CS 122A Complex Analysis I
+    %\large MATH 118A Intro to Real Analysis
+    \large MATH 111A Intro to Abstract Algebra
+    %\large MATH 104A Intro to Numerical Analysis
+}
+\author{Harry Coleman}
+\date{October 22, 2020}
+\maketitle
+
+\section*{Problem 1}
+
+\begin{proposition}
+    The set of all even integers is a group under addition.
+\end{proposition}
+
+\begin{proof}
+    Let $G\subseteq\Z$ denote the set of all even integers. There does exist at least one even integer, $2$ for example, so $G\ne\emptyset$. Now suppose that $x,y\in G$, that is, $x=2k$ and $y=2\ell$ for some integers $k,\ell$. Then
+    \[x+(-y) = 2k + (-2\ell) = 2(k-\ell),\]
+    and since $k-\ell$ is an integer, then $x+(-y)$ is an even integer, i.e., $x+(-y)\in G$. Therefore, $G$ is a subgroup of $\Z$, so it is a group.
+    
+\end{proof}
+
+
+\section*{Problem 2}
+
+\begin{proposition}
+    $\Z_{>0}$ is not a subgroup of $\Q-\{0\}$.
+\end{proposition}
+
+\begin{proof}
+    Since $2\in\Z_{>0}$, but $\frac12\notin\Z_{>0}$, then $\Z_{>0}$ is not closed under inverses and is therefore not a group.
+    
+\end{proof}
+
+\section*{Problem 3}
+
+\begin{proposition}
+    $\Q-\{0\}$ is not  a group under $\star$.
+\end{proposition}
+
+\begin{proof}
+    Let $a,b,c\in\Q-\{0\}$, then
+    \[a\star (b\star c) = a\star b^2c^2 = a^2b^4c^4,\]
+    \[(a\star b) \star c = a^2b^2\star c = a^4b^4c^2.\]
+    These are not equal for all values of $a,b,c$, for example if $a=1$, $b=1$, and $c=2$, so $\star$ is not associative on $\Q=\{0\}$.
+    
+\end{proof}
+
+\section*{Problem 4}
+
+\[\<\overline{2}\> = \{2, 4, 1\}\]
+
+\section*{Problem 5}
+
+\begin{proposition}
+    $\Z/35\Z$ is a cyclic group.
+\end{proposition}
+
+\begin{proof}
+    Consider $\overline{3}\in\Z/35\Z$. Since $(3,35)=1$, then there exist $k,\ell\in\Z$ such that
+    \[k3 + \ell35 = 1.\]
+    Then for any $\overline{h}\in\Z/35\Z$, we have
+    \[hk3 + h\ell35 = h,\]
+    or in other words
+    \[hk3 \equiv h \pmod{35},\]
+    so $(hk)\overline{3} = \overline{h}$. Therefore, $\overline{h}\in\<\overline{3}\>$ for all $\overline{h}\in\Z/35\Z$, so $\<\overline{3}\>=\Z/35\Z$.
+    
+\end{proof}
+
+\section*{Problem 6}
+
+We first find the cycle decomposition,
+\[(143)(1542)(26) = (153)(264).\]
+Then the order is the least common multiple of the lengths of the cycles in the cycle decomposition,
+\[|(143)(1542)(26)| = |(153)(264)| = \text{lcm}\{3,3\} = 3.\]
+
+\section*{Problem 7}
+
+\begin{proof}
+    Since $sr,sr^2\in\<sr,sr^2\>$ and $sr=r^{-1}s$, then
+    \[(r^{-1}s)sr^2 = r^{-1}r^2 = r^{-1}rr = r \in \<sr,sr^2\>.\]
+    Note that any element of $D_{2n}$ is either of the form $r^j$ or $sr^j$ with $j\in\Z$. For any $r^j\in D_{2n}$, the fact that $r\in\<sr,sr^2\>$ implies that $r^j\in\<sr,sr^2\>$. Similarly, for any $sr^j\in D_{2n}$, we have $sr,r^{j-1}\in\<sr,sr^2\>$, so $srr^{j-1}=sr^j\in\<sr,sr^2\>$. Therefore $\<sr,sr^2\>=D_{2n}$.
+    
+\end{proof}
+
+\section*{Problem 8}
+
+\begin{proof}
+    Let $a_k\in\{a_1,\dots,a_{r+2}\}$. If $k<r$, then
+    \[(a_1\cdots a_r)(a_ra_{r+1}a_{r+2})a_k = (a_1\cdots a_r)a_k = a_{k+1}.\]
+    If $k=r$ or $k=r+1$, then
+    \[(a_1\cdots a_r)(a_ra_{r+1}a_{r+2})a_k = (a_1\cdots a_r)a_{k+1} = a_{k+1}.\]
+    If $k=r+2$, then
+    \[(a_1\cdots a_r)(a_ra_{r+1}a_{r+2})a_{r+2} = (a_1\cdots a_r)a_r = a_1.\]
+    Therefore, for any $a_k\in\{a_1,\dots,a_{r+2}\}$, we have
+    \[(a_1\cdots a_r)(a_ra_{r+1}a_{r+2})a_k = \begin{cases}
+        a_{k+1} & k<{r+2},\\
+        a_1 & k=r+2,
+    \end{cases}\]
+    which is precisely the behavior of the $r+2$-cycle $(a_1\cdots a_ra_{r+1}a_{r+2})$, and the two are equal.
+    
+\end{proof}
+
+\section*{Problem 9}
+
+\begin{proof}
+    Note that since $1g=g1$ for all $g\in G$, then $1\in Z(G)\ne \emptyset$. And since $H\subseteq G$, then $H\ne\emptyset$, so $HZ(G)=\emptyset$ since $hz\in HZ(G)$ for some $h\in H$ and $z\in Z(G)$. Now let $hz\in HZ(G)$ be any element. By the definition of $Z(G)$ and the properties of the group $G$, for any $g\in G$, we have
+    \[z^{-1}g = (g^{-1}z)^{-1} = (zg^{-1})^{-1} = gz^{-1}.\]
+    Therefore, $z^{-1}\in Z(G)$. And since $H$ is a group, we have $h^{-1}\in H$, so $h^{-1}z^{-1}\in HZ(G)$. Moreover, by the definition of $Z(G)$, we have $h^{-1}z^{-1} = z^{-1}h^{-1}$. Then
+    \[(hz)(z^{-1}h^{-1}) = hzz^{-1}h^{-1} = hh^{-1} = 1\]
+    implies that $HZ(G)$ is closed under inverses. Now suppose $h_1z_1,h_2z_2\in HZ(G)$. then
+    \[(h_1z_1)(h_2z_2) = h_1(z_1h_2)z_2 = h_1(h_2z_1)z_2 = (h_1h_2)(z_1z_2).\]
+    Since $H$ is a group, $h_1h_2\in H$. And by the definition of $Z(G)$, we find that for any $g\in G$, we have
+    \[g(z_1z_2) = (gz_1)z_2 = (z_1g)z_2 = z_1(gz_2) = z_1(z_2g) = (z_1z_2)g,\]
+    so $z_1z_2\in Z(G)$. Thus $(h_1z_1)(h_2z_2) = (h_1h_2)(z_1z_2) \in HZ(G)$, and $HZ(G)$ is closed under multiplication. Therefore $HZ(G)\leq G$.
+
+    
+\end{proof}
+
+
+
+\end{document}

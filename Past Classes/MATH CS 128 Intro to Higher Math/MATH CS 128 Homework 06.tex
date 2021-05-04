@@ -1,0 +1,268 @@
+\documentclass[11pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{colortbl}
+\usepackage{verbatim}
+\usetikzlibrary{arrows, angles, quotes}
+\usepackage{framed}
+
+
+\lstset{basicstyle=\footnotesize}
+\usetikzlibrary{calc}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+ 
+\begin{document}
+ 
+\title{Homework 6\\
+    \large CS128 Intro to Higher Mathematics}
+\author{Harry Coleman}
+\date{October 18, 2019}
+
+\maketitle
+
+\section*{Exercise 2}
+\fbox{
+    \parbox{\textwidth}{
+       Give an English translation of the following formulas.
+    }
+}
+\\
+
+\begin{itemize}
+    \item $\forall x(x \in \R \implies x \geq 1)$. All real numbers are at least 1.
+    \item $\exists x(x \in \R \land x \geq 0 \land x \leq 0)$. There is a real number that is no more than zero and no less than zero.
+    \item $\forall x(x \text{ is prime} \land x \ne 2 \implies x \text{ is odd})$. All odd numbers other than two are odd.
+    \item $\lnot\exists x(x \in \R \land x^2 < 0)$. There is no real number whose square is negative.
+    \item $\forall x(x \in \N \land x \text{ is odd} \implies x^2 \text{ is odd})$. Every odd natural number has an odd square.
+    \item $\exists x(x \in \R \land x^2 = 0)$. There is a real number whose sqaure is zero.
+\end{itemize}
+
+\section*{Exercise 3}
+\fbox{
+    \parbox{\textwidth}{
+       Prove that the following formula in Predicate Logic is a wff.
+       
+       $$\forall x\forall y\forall t(P(t,z) \iff (t=x \lor t=y))$$
+    }
+}
+\\
+
+\begin{center}
+    \begin{tabular}{|r|c l|l|}
+        \hline
+        1 & $t, x, y, z$ & are terms & Definition of Term (a) \\
+        \hline
+        2 & $t=x, t=y$ & are wffs & Definition of wff (a) \\
+        \hline
+        3 & $P(t,z)$ & is a wff & Definition of wff (b) \\ 
+        \hline
+        4 & $t=x \lor t=y$ & is a wff & Definition of wff (c) \\
+        \hline
+        5 & $P(t,z) \iff (t=x \lor t=y)$ & is a wff & Definition of wff (c) \\
+        \hline
+        6 & $\forall t(P(t,z) \iff (t=x \lor t=y))$ & is a wff & Definition of wff (c) \\
+        \hline
+        7 & $\forall y\forall t(P(t,z) \iff (t=x \lor t=y))$ & is a wff & Definition of wff (c) \\
+        \hline
+        8 & $\forall x\forall y\forall t(P(t,z) \iff (t=x \lor t=y))$ & is a wff & Definition of wff (c) \\
+        \hline
+    \end{tabular}
+\end{center}
+
+
+
+
+\section*{Exercise 4}
+\fbox{
+    \parbox{\textwidth}{
+       Define formally what it means for a variable to occur free in a wff (you may use a  recursive definition). Use your definition to determine if the variables in the next formulas occur free or are bound. 
+        \begin{itemize}
+        \item $\forall x \forall y (P(x) \rightarrow Q(x, f(y), z))$. 
+        \item $P(x) \rightarrow \forall x Q(x)$.  
+        
+        \end{itemize}
+    }
+}
+\\
+
+\begin{framed}
+    \large
+    \textbf{Boundness}
+    \normalsize
+    
+    For a variable $x$, we use the following to determine if $x$ is bound.
+    \begin{enumerate}
+        \item For some wff $\Phi$:
+        \begin{enumerate}
+            \item If $\Phi$ is the scope of a quantifier of $x$ ($\forall x\Phi$ or $\exists x\Phi$), then $x$ is bound for $\Phi$.
+            \item If $\Psi, \Omega$ are wffs, $x$ is bound for $\Psi$, $y$ is a variable, and 
+            
+                    $\Psi \in \{(\Phi \lor \Omega), (\Phi \land \Omega), (\Phi \implies \Omega), (\Omega \implies \Phi), (\Phi \iff \Omega), (\lnot\Phi), (\forall y\Phi), (\exists y\Phi)\}$), 
+                    
+                    then $x$ is bound for $\Phi$.
+            \item If $x$ is not bound for $\Phi$ by (a) or (b), then $x$ is free for $\Phi$.
+        \end{enumerate}
+        \item For some term $t$:
+        \begin{enumerate}
+            \item If $\Phi$ is a wff for which $x$ is bound, $s$ is a term, and $\Phi = (t=s)$, then $x$ is bound for $t$.
+            \item If $\Phi$ is a wff for which $x$ is bound, $R$ is an $n$-ary predicate, $t_1 \dots t_n$ are terms, and $\Phi = R(t_1, \dots, t, \dots, t_n)$, then $x$ is bound for $t$.
+            \item If $s$ is a term for which $x$ is bound, $f$ is an $n$-ary function, $t_1,\dots t_n$ are terms, and $s = f(t_1, \dots, t, \dots, t_n)$, then $x$ is bound for $t$.
+            \item If $x$ is not bound for $t$ by (a), (b), or (c), then $x$ is free for $t$.
+        \end{enumerate}
+        \item If $x$ is a variable term for which $x$ is bound, then $x$ occurs bound.
+        \item If $x$ is a variable term for which $x$ is free, then $x$ occurs free.
+        
+    \end{enumerate}
+\end{framed}
+
+\begin{framed}
+    \textbf{Sidenote}: I could be wrong, but I think that when you have $A = \forall x(R(x))$ then we would say that $A$ is bound for $x$ and that $x$ occurs bound in $A$. But when referring to the predicate $R(x)$, we would say that $R(x)$ is not bound for $x$ and $x$ occurs free in $R(x)$. So the language of my definition doesn't really mesh with the typical way of referring to free and bound variables, but I sort of structured it like our recursive definition of a wff. So when something says that an expression is bound or free for a variable, it is in the context of the overall given formula.
+\end{framed}
+
+
+For each formula, we'll check each variable. For the first equation, we'll check for the boundness of $x$.
+\begin{center}
+    \begin{tabular}{|r|l c|l|}
+    \hline
+        1 & & $\forall x \forall y (P(x) \rightarrow Q(x, f(y), z))$ & Given \\
+        \hline
+        2 & $x$ is bound for & $\forall y (P(x) \rightarrow Q(x, f(y), z))$ & Definition of Boundness (1a) on line 1 \\
+        \hline
+        3 & $x$ is bound for & $(P(x) \rightarrow Q(x, f(y), z))$ & Definition of Boundness (1b) on line 2 \\
+        \hline
+        4 & $x$ is bound for & $P(x)$ & Definition of Boundness (1b) on line 3 \\
+        \hline
+        5 & $x$ is bound for & $x$ & Definition of Boundness (2b) on line 4 \\
+        \hline
+        6 & $x$ occurs bound & & Definition of Boundness (3) on line 5 \\
+        \hline
+        7 & $x$ is bound for & $Q(x, f(y), z)$ & Definition of Boundness (1b) on line 3 \\
+        \hline
+        8 & $x$ is bound for & $x$ & Definition of Boundness (2b) on line 7 \\
+        \hline
+        9 & $x$ occurs bound & & Definition of Boundness (3) on line 8 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+Since both occurrences of $x$ were found to be bound, we can say that $x$ only occurs bound in the given formula. Next, we'll check for the boundness of $y$.
+\begin{center}
+    \begin{tabular}{|r|l c|l|}
+    \hline
+        1 & & $\forall x \forall y (P(x) \rightarrow Q(x, f(y), z))$ & Given \\
+        \hline
+        2 & $y$ is free for & $\forall y (P(x) \rightarrow Q(x, f(y), z))$ & Definition of Boundness (1c) on line 1 \\
+        \hline
+        3 & $y$ is bound for & $(P(x) \rightarrow Q(x, f(y), z))$ & Definition of Boundness (1b) on line 2 \\
+        \hline
+        4 & $y$ is bound for & $Q(x, f(y), z)$ & Definition of Boundness (1b) on line 3 \\
+        \hline
+        5 & $y$ is bound for & $f(y)$ & Definition of Boundness (2b) on line 4 \\
+        \hline
+        6 & $y$ is bound for & $y$ & Definition of Boundness (2c) on line 5 \\
+        \hline
+        7 & $y$ occurs bound & & Definition of Boundness (3) on line 6 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+Since the only occurrence of $y$ was found to be bound, we can say that $y$ only occurs bound in the given formula. Lastly, we'll check for the boundness of $z$.
+
+\begin{center}
+    \begin{tabular}{|r|l c|l|}
+    \hline
+        1 & & $\forall x \forall y (P(x) \rightarrow Q(x, f(y), z))$ & Given \\
+        \hline
+        2 & $z$ is free for & $\forall y (P(x) \rightarrow Q(x, f(y), z))$ & Definition of Boundness (1c) on line 1 \\
+        \hline
+        3 & $z$ is free for & $(P(x) \rightarrow Q(x, f(y), z))$ & Definition of Boundness (1c) on line 2 \\
+        \hline
+        4 & $z$ is free for & $Q(x, f(y), z)$ & Definition of Boundness (1c) on line 3 \\
+        \hline
+        5 & $z$ is free for & $z$ & Definition of Boundness (2d) on line 4 \\
+        \hline
+        7 & $z$ occurs free &&  Definition of Boundness (4) on line 5 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+Since the only occurrence of $z$ was found to be free, we can say that $z$ only occurs free in the given formula. We'll now look at the second formula, checking for the boundness of $x$.
+\begin{center}
+    \begin{tabular}{|r|l c|l|}
+    \hline
+        1 & & $P(x) \rightarrow \forall x Q(x)$ & Given \\
+        \hline
+        2 & $x$ is free for & $P(x)$ & Definition of Boundness (1c) on line 1 \\
+        \hline
+        3 & $x$ is free for & $x$ & Definition of Boundness (2d) on line 2 \\
+        \hline
+        4 & $x$ occurs free &  & Definition of Boundness (4) on line 3 \\
+        \hline
+        5 & $x$ is free for & $\forall x Q(x)$ & Definition of Boundness (1c) on line 1 \\
+        \hline
+        6 & $x$ is bound for & $Q(x)$ & Definition of Boundness (1a) on line 5 \\
+        \hline
+        7 & $x$ is bound for & $x$ & Definition of Boundness (2b) on line 6 \\
+        \hline
+        8 & $x$ occurs bound & & Definition of Boundness (3) on line 7 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+Since $x$ was found free for one occurrence and bound for the other, we can say that $x$ occurs both bound and free in the given formula.
+
+
+\newpage
+\section*{Axioms Exercise 1}
+\fbox{
+    \parbox{\textwidth}{
+       Show that the identity element for addition (resp., multiplication) in $\Z$ is unique.
+    }
+}
+\\
+
+\begin{enumerate}
+    \begin{framed}
+        \item Assume that the identity element for addition in $\Z$ is not unique.
+        \item Let $c$ be an additive identity in $\Z$, such that $c \ne 0$.
+        \item $a + c = a$ by Definition of $c$.
+        \item $a + 0 = a$ by Definition of Additive Identity.
+        \item $a + c = a + 0$ by Transitivity of Equality on lines 3 and 4.
+        \item $(-a) + a + c = (-a) + a + 0$ by Addition Property of Equality on line 5.
+        \item $0 + c = 0 + 0$ by Additive Inverse on line 6.
+        \item $c = 0$ by Definition of Additive Identity on line 7.
+        \item $(c=0) \land (c \ne 0)$ by Conjunction Introduction on lines 1 and 8.
+        \item $F$ by Definition of Contradiction on line 9.
+        
+        Therefore, our assumption is false, so the identity element for multiplication in $\Z$ is unique.
+    \end{framed}
+\end{enumerate}
+
+\begin{enumerate}
+    \begin{framed}
+        \item Assume that the identity element for multiplication in $\Z$ is not unique.
+        \item Let $c$ be a multiplicative identity in $\Z$, such that $c \ne 1$.
+        \item $a \cdot c = a$ by Definition of $c$.
+        \item $a \cdot 1 = a$ by Definition of Multiplicative Identity.
+        \item $a \cdot c = a \cdot 1$ by Transitivity of Equality on lines 3 and 4.
+        \item $c = 1$ by Multiplication Property of Equality on line 5.
+        \item $(c=1) \land (c \ne 1)$ by Conjunction Introduction on lines 1 and 6.
+        \item $F$ by Definition of Contradiction on line 7.
+        
+        Therefore, our assumption is false, so the identity element for addition in $\Z$ is unique.
+    \end{framed}
+\end{enumerate}
+
+
+\end{document}
+

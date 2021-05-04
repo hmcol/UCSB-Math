@@ -1,0 +1,232 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amsthm, amssymb}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}
+    {\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\mybox}}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{1em}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+
+% Extra Commands
+\newcommand{\Aut}{\operatorname{Aut}}
+\newcommand{\<}{\left\langle}
+\renewcommand{\>}{\right\rangle}
+\newcommand{\teq}{\trianglelefteq}
+\newcommand{\Syl}{\operatorname{Syl}}
+\newcommand{\isom}{\cong}
+
+\begin{document}
+ 
+\title{Final\\
+    \large MATH 111A Intro to Abstract Algebra
+}
+\author{Harry Coleman}
+\date{December 17, 2020}
+\maketitle
+
+\section{}
+\subsection{}
+Yes. Let $a, b \in \Z$ and let $(x, y) \in S$. Then we have
+\begin{align*}
+    (a + b) \cdot (x, y) 
+        &= (x, y - 2(a + b)x) \\
+        &= (x, y - 2ax - 2bx) \\
+        &= a \cdot (x, y - 2bx) \\
+        &= a \cdot (b \cdot (x, y)).
+\end{align*}
+Note that $0$ is the identity for $(\Z, +)$, so
+\[
+    0 \cdot (x, y) = (x, y - 2(0)x) = (x, y - 0) = (x, y).
+\]
+
+\subsection{}
+No. Consider the identity of $(\Z, +)$, which is $0$. Then for any $x \in S$ we have
+\[
+    0 \cdot x = x^0 = 1 \ne x.
+\]
+
+\newpage
+\subsection{}
+No. Let $\sigma_1, \sigma_2 \in \Aut(H)$ and $\phi \in S$. Then we have
+\begin{align*}
+    (\sigma_1 \circ \sigma_2) \cdot \phi
+        &= \phi \circ (\sigma_1 \circ \sigma_2) \\
+        &= (\phi \circ \sigma_1) \circ \sigma_2 \\
+        &= \sigma_2 \cdot (\phi \circ \sigma_1) \\
+        &= \sigma_2 \cdot (\sigma_1 \cdot \phi).
+\end{align*}
+However, $\Aut(H)$ is not necessarily abelian, so this is not necessarily equal to
+\[
+    \sigma_1 \cdot ( \sigma_2 \cdot \phi) = (\sigma_2 \circ \sigma_1) \cdot \phi.
+\]
+
+\newpage
+\section{}
+
+\subsection{}
+Since $\sigma = (14)(357)$, and the sign map $\eps$ is a group homomorphism, then
+\[
+    \eps(\sigma) = \eps(14)\eps(357) = (-1)^{2-1} (-1)^{3-1} = -1.
+\]
+
+\subsection{}
+Since $\sigma$ and $\tau_1 = (12)(34586)$ are given as a cycle decompositions, and they do not have the same cycle type, they are not conjugates. We find a cycle decomposition for $\tau_2 =  (123579)(39754)$,
+\[
+    \tau_2 = (123)(45)(7)(9),
+\]
+and we can see that they have the same cycle type so $\sigma$ and $\tau_2$ are conjugates. We now find a cycle decomposition for $\tau_3 = (25936)(249)(14598)$,
+\[
+    \tau_3 = (1362498)(5),
+\]
+and we can that they do not have the same cycle type so $\sigma$ and $\tau_3$ are not conjugates. We now find a cycle decomposition for $\tau_4 = \sigma^2$,
+\[
+    \tau_4 = (1)(4)(375),
+\]
+and we can that they do not have the same cycle type so $\sigma$ and $\tau_4$ are not conjugates.
+
+
+\subsection{}
+The only conjugate of $\sigma$ in (b) is $\tau_2$, so we want to find $g \in S_9$ such that $\tau_2 = g\sigma g^{-1}$. In particular, we want
+\begin{align*}
+    g(1) &= 4, \\
+    g(4) &= 5, \\
+    g(3) &= 1, \\
+    g(5) &= 2, \\
+    g(7) &= 3.
+\end{align*}
+We take $g = (731452)$.
+
+\newpage
+\section{}
+\begin{proof}
+    Suppose $G$ is a simple group, so it contains no nontrivial normal subgroups. Now suppose, for contradiction, that nontrivial $G$-action on a set $X$ is not faithful, i.e., the kernel of the action
+    \[
+        K = \{g \in g : g \cdot x = x, \forall x \in X\}
+    \]
+    is nontrivial. Then for any $k \in K$, $g \in G$, and $x \in X$, we have
+    \begin{align*}
+        (gkg^{-1}) \cdot x
+            &= g \cdot(k \cdot(g^{-1} \cdot x)) \\
+            &= g \cdot (g^{-1} \cdot x) \\
+            &= (gg^{-1}) \cdot x \\
+            &= 1 \cdot x \\
+            &= x.
+    \end{align*}
+    Thus, we have $gkg^{-1}$ in the kernel of the action, i.e., $gkg^{-1} \in K$. This implies that $K$ is a nontrivial normal subgroup of $G$, which is a contradiction.
+    
+\end{proof}
+
+\section{}
+\begin{proof}
+    Suppose $|G| = 63 = 3^3 \cdot 7$. Sylow's theorem tells us that
+    \[
+        n_7 \mid 9 \isp{and} n_7 \equiv 1 \pmod{7}.
+    \]
+    The first condition tells us that $n_7 \in \{1, 3, 9\}$ and the second restricts this to only $n_7 = 1$. This implies that there is a unique Sylow $7$-subgroup of $G$ and, moreover, it is normal in $G$. The order of this subgroup is $7$ so it is neither $\{1\}$ nor $G$. Thus, $G$ has a proper nontrivial normal subgroup, so it is not simple.
+    
+\end{proof}
+
+
+\newpage
+\section{}
+
+\subsection{}
+Yes. We have $\<r^2\> = \{1, r^2, r^4\}$. The conjugacy class of $r^2$ in $D_{12}$ is the pair
+\[
+    \{r^2, r^{6-2}\} = \{r^2, r^4\} \subseteq \<r^2\>.
+\]
+This is also the conjugacy class of $r^4$. And the conjugacy class of $1$ is $\{1\}$. In other words, $\<r^2\>$ is closed under conjugation in $D_{12}$, so it is normal.
+
+\subsection{}
+
+No. Consider $s \in \<s, r^3\>$ and $r^2 \in D_{12}$. Then we have
+\[
+    r^2sr^{-2} = sr^{-2}r^{-2} = sr^{-4} = sr^{6-4} = sr^2 \notin \<s, r^3\>.
+\]
+
+\subsection{}
+
+We have $\<r^2\> \in \Syl_3(D_{12})$. And since it is normal, it is unique.
+
+\subsection{}
+
+We know that $n_2 \mid 3$ and $n_2 \equiv 1 \pmod{2}$. And since the Sylow $2$-subgroup $\<s, r^3\>$ is not normal, we know $n_2 \ne 1$, which implies $n_2 = 3$. We obtain the other two by conjugation of $\<s, r^3\>$.
+\[
+    r\{1, r^3, s, sr^3\}r^{-1} = \{1, r^3, sr^4, sr\},
+\]
+\[
+    sr\{1, r^3, s, sr^3\}(sr)^{-1} = \{1, r^3, sr^2, sr^5\}.
+\]
+
+\subsection{}
+This action is transitive since all Sylow $2$-subgroups are conjugate to each other, meaning there is only one equivalence class under this action. This action is not faithful as its kernel is not trivial. In particular, consider $r^3 \in D_{12}$. Then for any $r^k \in D_{12}$, we have
+\[
+    r^3r^kr^{-3} = r^k.
+\]
+Moreover, for any $sr^k \in D_{12}$, we have
+\[
+    r^3 sr^k r^{-3} = s r^{-3} r^k r^3 = sr^k.
+\]
+Therefore, $r^3 \in Z(D_{12})$, so it is in the kernel of this conjugation action.
+
+\newpage
+
+\section{}
+We have $270 = 2 \cdot 5 \cdot 3^3$. By the fundamental theorem of finitely generated abelian groups, every abelian group of order $270$ can be decomposed into the product of cyclic groups. In particular, we have the possible elementary divisor decompositions
+\begin{align*}
+    &Z_2 \times Z_5 \times Z_{27}, \\
+    &Z_2 \times Z_5 \times Z_3 \times Z_9, \\
+    &Z_2 \times Z_5 \times Z_3 \times Z_3 \times Z_3.
+\end{align*}
+
+\section{}
+
+\begin{proof}
+    We have
+    \[
+        \Aut(Z_{43}) \isom (\Z/43\Z)^\times = \{a \in \Z/43\Z : (a, 43) = 1\}.
+    \]
+    Since $43$ is prime, then 
+    \[
+        \{a \in \Z/43\Z : (a, 43) = 1\} = \{1, \dots, 42\}.
+    \]
+    That is, we have $|\Aut(43)| = 42$. Since $(\Z/43\Z)^\times$ is abelian, so is $\Aut(Z_{43})$, and we can find a decomposition. Now since $42 = 2 \cdot 3 \cdot 7$, then there is only one elementary divisor decomposition, namely
+    \[
+        \Aut(Z_{43}) \isom Z_2 \times Z_3 \times Z_7 \isom Z_{42}.
+    \]
+    
+\end{proof}
+
+\newpage
+\section{}
+
+\subsection{}
+
+\begin{proof}
+    
+    
+\end{proof}
+
+\end{document}

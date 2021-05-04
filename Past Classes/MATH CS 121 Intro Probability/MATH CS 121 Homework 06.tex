@@ -1,0 +1,576 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage[explicit]{titlesec}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}
+    {\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\mybox}}}
+
+% Default Commands
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\newtheorem{proposition}{Proposition}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+% Extra Commands
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\FF}{\mathcal{F}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Exp}{\operatorname{Exp}}
+\newcommand{\Bin}{\operatorname{Bin}}
+\newcommand{\sm}{\setminus}
+
+
+\begin{document}
+ 
+\title{Homework 6\\
+    \large MATH CS 121 Intro to Probability
+}
+\author{Harry Coleman}
+\date{December 7, 2020}
+\maketitle
+
+\section{}
+\begin{problem}
+    Use Markov's inequality to bound the probability that an exponentially distributed random variable $X$ with mean $\E[X] = 3$ is larger than $5$. Can you improve the estimate using Chebyshev inequality?
+\end{problem}
+\medskip
+
+Suppose $X$ is an exponentially distributed random variable, that is, $X \sim \Exp(\lambda)$ for some $\lambda \in (0, \infty)$. Since we also assume $X$ to have a mean of $3$, then
+\[
+    3 = \E[X] = \frac{1}{\lambda},
+\]
+implying that $\lambda = 1/3$. Moreover, $X$ has a probability density function $f$, satisfying
+\[
+    \P(X \leq b) = \int_{-\infty}^{b} f(x) dx, \quad b \in \R.
+\]
+Therefore, point values of $X$ have probability zero; in particular,
+\[
+    \P(X = 5) = \int_{5}^{5} f(x) dx = 0.
+\]
+And since the events that $X > 5$ and $X = 5$ are disjoint, then
+\[
+    \P(X \geq 5) = \P(X > 5) + \P(X = 5) = \P(X > 5).
+\]
+Thus, Markov's inequality gives us the following upper bound on the probability that $X$ is larger than $5$:
+\[
+    \P(X > 5) \leq \frac{\E[X]}{5} = \frac{3}{5}.
+\]
+Note that the variance of $X$ is given by
+\[
+    \Var(X) = \frac{1}{\lambda^2} = \frac{1}{(1/3)^2} = 9.
+\]
+Then Chebyshev's inequality gives us the upper bound
+\[
+    \P(X > 5) = \P(X > 2 + \E[X]) \leq \frac{\Var(X)}{2^2} = \frac{9}{4}.
+\]
+This is not an improvement over what Markov's inequality gives us.
+
+
+
+\newpage
+\section{}
+\begin{problem}
+    You are given a $4$-sided die with each of its four sides showing a different number of dots from $1$ to $4$. When rolled, we assume that each value is equally likely. Suppose that you roll the die twice in a row. Let $X$ represent the maximum value from the two rolls.
+\end{problem}
+
+\subsection{}
+\begin{problem}
+    Specify the underlying probability space $(\Omega, \FF, \P)$ in order to describe the corresponding random experiment (make sure that the two rolls are independent!).
+\end{problem}
+\medskip
+
+We let $\Omega$ be the set of all ordered pairs of the set $\{1, 2, 3, 4\}$, i.e.,
+\[
+    \Omega = \{1, 2, 3, 4\}^2 = \{(\omega_1, \omega_2) : \omega_i \in \{1, 2, 3, 4\},\; i = 1, 2\}.
+\]
+Here, the values $\omega_1$ and $\omega_2$, respectively, represent the results of the first and second rolls of the die. We take the power set $\sigma$-algebra, $\FF = 2^{\Omega}$, and the Laplace probability measure, $\P$.
+
+\subsection{}
+\begin{problem}
+    Specify two independent random variables $X_1$ and $X_2$ (Show that they are actually independent!)
+\end{problem}
+\medskip
+
+We let $X_1$ and $X_2$ be the projections from $\Omega$ to $\{1, 2, 3, 4\}$ on the first and second values, respectively. In other words,
+\[
+    X_1((\omega_1, \omega_2)) = \omega_1 \isp{and} X_2((\omega_1, \omega_2)) = \omega_2.
+\]
+We say that the random variables $X_1$ and $X_2$ are independent if
+\[
+    \P(X_1 = a, X_2 = b) = \P(X_1 = a)\P(X_2 = b)
+\]
+for all values $a, b \in \{1, 2, 3, 4\}$. Fix some $a, b \in \{1, 2, 3, 4\}$. Then
+\[
+    \P(X_1 = a, X_2 = b) = \P(\{(a,b)\}) = \frac{|\{(a,b)\}|}{|\Omega|} = \frac{1}{4^2} = \frac{1}{16}.
+\]
+And
+\begin{align*}
+    \P(X_1 = a)\P(X_2 = b)
+        &= \P(\{(a, \omega_2) : \omega_2 = 1, \dots 4\})\P(\{(\omega_1, b) : \omega_1 = 1, \dots 4\}) \\[1em]
+        &= \frac{|\{(a, \omega_2) : \omega_2 = 1, \dots 4\}|}{|\Omega|} \cdot \frac{|\{(\omega_1, b) : \omega_1 = 1, \dots 4\}|}{|\Omega|} \\
+        &= \frac{4}{4^2} \cdot \frac{4}{4^2} \\
+        &= \frac{1}{16}.
+\end{align*}
+Thus, $X_1$ and $X_2$ are independent. (This also verifies that the rolls are independent in our definition of $(\Omega, \FF, \P)$.)
+
+
+\subsection{}
+\begin{problem}
+    Specify $X$ as random variable defined on the sample space $\Omega$ onto a properly determined state space $S_X \subset \R$.
+\end{problem}
+\medskip
+
+Let the random variable $X$ be given by
+\[
+    X((\omega_1, \omega_2)) = \max\{\omega_1, \omega_2\}.
+\]
+We claim that the range of $X$ is the set $\{1, 2, 3, 4\}$. First, we see that $X$ attains all the values in this set, since
+\[
+    X((1, 1)) = 1, \quad X((2, 2)) = 2, \quad X((3, 3)) = 3, \quad X((4, 4)) = 4.
+\]
+Second, the values of $X$ must be in this set, since $X((\omega_1, \omega_2)) = a$ implies that either $\omega_1 = a$ or $\omega_2 = a$. And since $\omega_1$ and $\omega_2$ can only take on values in the set $\{1, 2, 3, 4\}$, then $a$ must be in the set.
+
+\subsection{}
+\begin{problem}
+    Compute the probability mass function $p_X$ of $X$.
+\end{problem}
+\medskip
+
+The probability mass function $p_X$ of $X$ is given by
+\[
+    p_X(k) = \P(X = k), \quad k \in \{1, 2, 3, 4\}.
+\]
+When $k \in \{1, 2, 3, 4\}$, the subset of $\Omega$ for which $X = k$ is given by the disjoint union
+\[
+    X^{-1}(k) = \{(\omega_1, k) \in \Omega : \omega_1 < k\} \sqcup \{(k, \omega_2) \in \Omega : \omega_2 < k\} \sqcup \{(k, k)\}.
+\]
+Then the size of this set is
+\[
+    |X^{-1}(k)| = (k - 1) + (k - 1) + 1 = 2k - 1.
+\]
+Thus, the probability mass function can be given explicitly as
+\[
+    p_X(k) = \P(X = k) = \frac{|X^{-1}(k)|}{|\Omega|} = \frac{2k - 1}{16},
+\]
+for $k \in \{1, 2, 3, 4\}$ and zero, otherwise. Even more explicitely, we have
+\[
+    p_X(1) = \frac{1}{16}, \quad p_X(2) = \frac{3}{16}, \quad p_X(3) = \frac{5}{16}, \quad p_X(4) = \frac{7}{16}.
+\]
+
+\newpage
+\subsection{}
+\begin{problem}
+    Compute the cumulative distribution function $F_X$ of $X$.
+\end{problem}
+\medskip
+
+The cumulative distribution function $F_X$ of $X$ is given by
+\[
+    F_X(s) = \P(X \leq s) = \sum_{k \leq s} p_X(k), \quad s \in \R.
+\]
+Using the values of $p_X$ that we found in 2(d), the values of $F_X$ are given by
+\[
+    F_X(s) = \begin{cases}
+        0 & s \in (-\infty, 1) \\
+        1/16 & s \in [1, 2) \\
+        4/16 & s \in [2, 3) \\
+        9/16 & s \in [3, 4) \\
+        1 & s \in [4, \infty).
+    \end{cases}
+\]
+
+
+\newpage
+\section{}
+\begin{problem}
+    Consider the function
+    \[
+        f(x) = \begin{cases}
+            C(2x - x^3)     & 0 < x < \frac52 \\
+            0               & \text{otherwise}
+        \end{cases}
+    \]
+    Could $f$ be a probability density function? If so, find $C$. Otherwise, explain why not.
+\end{problem}
+
+\begin{proposition}
+    The function $f$ cannot be a probability density function.
+\end{proposition}
+
+\begin{proof}
+    Suppose, for contradiction, that $f$ is a probability density function for some random variable $X$ and probability measure $\P$. Then for all $b \in \R$, we have
+    \[
+        \P(X \leq b) = \int_{-\infty}^{b} f(x) dx = C\int_{-\infty}^{b} (2x - x^3) dx.
+    \]
+    Since $f(x) = 0$ for all $x \leq 0$, then this can, equivalently, be written as
+    \[
+         \P(X \leq b) = C\int_{0}^{b} (2x - x^3) dx = C \left(b^2 - \frac{b^4}{4} \right).
+    \]
+    We now consider the specific values of $\P(x \leq b)$ for $b = 1$ and $b = 5/2$. These are
+    \[
+        \P(X \leq 1) = C \frac34 \isp{and} \P(X \leq 5/2) = C \frac{-225}{64}.
+    \]
+    If $C < 0$ then $\P(X \leq 1) < 0$, and if $C > 0$ then $\P(X \leq 5/2) < 0$. Since the probability measure is nonnegative, it follows that $C = 0$. Therefore, $\P(X \leq b) = 0$ for all $b \in \R$, which is to say that $\P(X \in \R) = 0$. However, $X$ is a map from the sample space $\Omega$ to the real numbers, meaning the preimage of $\R$ under $X$ is $\Omega$, i.e., $X^{-1}(\R) = \Omega$. And because $\P$ is a probability measure, we have $\P(\Omega) = 1$. All of this, together, implies
+    \[
+        1 = \P(\Omega) = \P(X^{-1}(\R)) = \P(X \in \R) = 0,
+    \]
+    which is a contradiction.
+    
+\end{proof}
+
+\newpage
+\section{}
+\begin{problem}
+    Suppose $X$ has density
+    \[
+        f_X(t) = \begin{cases}
+            \frac{c}{t^4}   & t > 1 \\
+            0               & \text{otherwise}
+        \end{cases}
+    \]
+    where $c$ is a constant. Find
+\end{problem}
+
+\subsection{}
+\begin{problem}
+    $c$
+\end{problem}
+\medskip
+
+Given the fact that $\P(X \in \R) = 1$, we have the following equality:
+\[
+    1 = \P(X \in \R) = \int_{-\infty}^{\infty} f_X(t) dt.
+\]
+Now because $f_X(t) = 0$ for all $t \leq 1$, then we can rewrite this as
+\[
+    1 = \int_{-\infty}^\infty f_X(t) dt = c \int_1^\infty \frac{1}{t^4} dt = c \lim_{a \to \infty} \int_1^a \frac{1}{t^4} dt.
+\]
+Evaluating the integral, we find
+\[
+    \int_1^a \frac{1}{t^4} dt = \left(\frac{-1}{3a^3} - \frac{-1}{3(1)^3} \right) = \left( \frac13 - \frac1{3a^3} \right).
+\]
+Thus, we have
+\[
+    1 = c \lim_{a \to \infty} \left( \frac13 - \frac1{3a^3} \right) = c\left( \frac13 - 0 \right) = \frac{c}{3},
+\]
+which implies that $c = 3$.
+
+
+\subsection{}
+\begin{problem}
+    $\E[X]$
+\end{problem}
+\medskip
+
+Again, restricting the integral to values above 1, we have
+\[
+    \E[X] = \int_{-\infty}^\infty t f_X(t) dt = \int_1^\infty t \frac{3}{t^4} dt = \lim_{a \to \infty} \int_1^a \frac3{t^3} dt.
+\]
+And since
+\[
+    \int_1^a \frac3{t^3} dt = \left( \frac{-3}{2a^2} - \frac{-3}{2(1)^2} \right) = \left( \frac32 - \frac3{2a^2} \right),
+\]
+then
+\[
+    \E[X] = \lim_{a \to \infty} \left( \frac32 - \frac3{2a^2} \right) = \frac32.
+\]
+
+\subsection{}
+\begin{problem}
+    $\Var[X]$
+\end{problem}
+\medskip
+
+We evaluate the following:
+\begin{align*}
+    \Var(x)
+        &= \int_{-\infty}^\infty \left( t - \E[X] \right)^2 f_X(t) dt \\[1em]
+        &= \int_1^\infty \left( t - \frac32 \right)^2 \frac{3}{t^4} dt \\[1em]
+        &= \int_1^\infty \frac{12t^2 - 36t + 27}{4t^4} dt \\[1em]
+        &= \lim_{a \to \infty} \int_1^a \frac{12t^2 - 36t + 27}{4t^4} dt \\[1em]
+        &= \lim_{a \to \infty} \frac{3 (a^3 - 4a^2 + 6a -3)}{4a^3} \\[1em]
+        &= \frac34.
+\end{align*}
+
+\newpage
+\section{}
+\begin{problem}
+    A continuous random variable X has the probability density function
+    \[
+        f_X(t) = \begin{cases}
+            at + bt^2   & 0 < t < 1 \\
+            0           & \text{otherwise}
+        \end{cases}
+    \]
+    If $\E[X] = 1/2$, find
+\end{problem}
+
+\subsection{}
+\begin{problem}
+    $a$ and $b$
+\end{problem}
+\medskip
+
+Since $f_X$ is zero outside the interval $(0, 1)$, the probability of $X \in \R$ is given by
+\[
+    1 = \P(X \in \R) = \int_{-\infty}^{\infty} f_X(t) dt = \int_0^1 (at + bt^2) dt = \frac{a}{2} + \frac{b}{3}.
+\]
+Similarly, the expected value of $X$ is given by
+\[
+    \frac12 = \E[X] = \int_{-\infty}^{\infty} tf_X(t) dt = \int_0^1 (at^2 + bt^3) dt = \frac{a}{3} + \frac{b}{4}.
+\]
+With two equations and two unknowns, we find that $a = 6$ and $b = -6$.
+
+\subsection{}
+\begin{problem}
+    $\P(X < 1/2)$
+\end{problem}
+\medskip
+
+Since the probability of $X$ on points in zero, we have
+\[
+    \P(X < 1/2) = \P(X \leq 1/2) = \int_{-\infty}^{1/2} f_X(t) dt = \int_0^{1/2} (6t - 6t^2) dt = \frac12.
+\]
+
+\subsection{}
+\begin{problem}
+    $\Var(X)$
+\end{problem}
+\medskip
+
+The variance of $X$ is given by
+\[
+    \Var(X) = \int_{-\infty}^{\infty}(t - \E[X])^2f_X(t) dt = \int_0^1 (t - 1/2)^2 (6t - 6t^2) dt = \frac{1}{20}.
+\]
+
+\newpage
+\section{}
+\begin{problem}
+    Suppose the probability density function of $X$, the lifetime of your professor’s computer (measured in years), is given by
+    \[
+        f_X(x) = \begin{cases}
+            \frac{10}{x^2}  & x > 10 \\
+            0           & x \leq 10
+        \end{cases}
+    \]
+\end{problem}
+
+\subsection{}
+\begin{problem}
+    Compute $\P(X > 20)$.
+\end{problem}
+\medskip
+
+The probability that $X$ is greater than $20$ is given by
+\[
+    \P(X > 20) = 1 - \P(X \leq 20) = 1 - \int_{-\infty}^{20} f_X(x) dx.
+\]
+Then since $f_X(x) = 0$ for all $x \leq 10$, we have
+\[
+    \P(X > 20) = 1 - \int_{10}^{20} \frac{10}{x^2} dx = \frac12.
+\]
+
+\subsection{}
+\begin{problem}
+    What is the cumulative distribution function of $X$?
+\end{problem}
+\medskip
+
+The cumulative distribution function of $X$, for $a > 10$, is given by
+\[
+    F_X(a) = \P(X \leq a) = \int_{-\infty}^{a} f_X(x) dx = \int_{10}^{a} \frac{10}{x^2} dx = \frac{a - 10}{a}.
+\]
+For $a < 10$, we have $F_X(a) = 0$.
+
+\newpage
+\subsection{}
+\begin{problem}
+    What is the probability that of $6$ of your professor’s computers, at least $3$ will function for at least $15$ years? (Are you making any assumptions here? If so, what is the assumption?)
+\end{problem}
+\medskip
+
+We make the assumption that the lifetimes of the computers are independent and identically distributed to the random variable $X$. Then the probability that a particular computer functions for at least $15$ years is
+\[
+    \P(X \geq 15) = 1 - \P(X < 15).
+\]
+Since the probability of $X$ on points is zero, we have
+\[
+    \P(X \geq 15) = 1 - \P(X \leq 15) = 1 - F_X(15) = 1 - \frac{15 - 10}{15} = \frac23.
+\]
+We now let $Y$ be the random variable representing the number of computers which function for at least 15 years. Then $Y$ is a binomial distribution with each trial being a computer and a success being that the computer functions for at least $15$ years, i.e., $Y \sim \Bin(6, 2/3)$. Then the probability that at least $3$ of the computers will function for at least $15$ years is
+\[
+    \P(Y \geq 3) = 1 - \P(Y \leq 2) = 1 - \sum_{k=0}^2 \binom{6}{k} (2/3)^k (1/3)^{6 - k} = \frac{656}{729} \approx 0.8999.
+\]
+If the lifetimes of the computers are not independent and identically distributed to $X$, then we can say nothing.
+
+\newpage
+\section{}
+\begin{problem}
+    A winery is supplied with crushed grapes once a week. If its weekly volume of sales in thousands of gallons is a random variable with probability density function
+    \[
+        f(t) = \begin{cases}
+            5(1 - t)^4 & 0 < t < 1 \\
+            0 & \text{otherwise}
+        \end{cases}
+    \]
+    what must the capacity of the tank be so that the probability of the supply being exhausted in a given week is $0.01$?
+\end{problem}
+\medskip
+
+Let $X$ be the random variable representing the weekly volume of sales in thousands of gallons and let $C$ be the capacity of the tank in thousands of gallons. The probability that the supply is exhausted in a week is given by
+\[
+    \P(X \geq C) = 1 - \P(X < C) = 1 - \int_{\infty}^C f(t) dt.
+\]
+Note that
+\[
+    \P(X \in [0, 1]) = \int_0^1 f(t) dt = \int_0^1 5(1 - t)^4 dt = 1,
+\]
+so in order to have $P(X < C) \in (0, 1)$, we must have $C \in (0, 1)$. And since $f(t) = 0$ for all $t \leq 0$, we have
+\[
+    \P(X \geq C) = 1 - \int_0^C 5(1 - t)^4 dt = 1 - ((C - 1)^5 + 1) = -(C - 1)^5.
+\]
+Thus, in order to have
+\[
+    0.01 = \P(X \geq C) = -(C - 1)^5,
+\]
+we must have 
+\[
+    C = 1 - \frac{1}{\sqrt[5]{100}} \approx 0.6019.
+\]
+In other words, the capacity of the tank should be about $6019$ gallons.
+
+\newpage
+\section{}
+\begin{problem}
+    Suppose that the continuous random variable $X$ has cdf given by
+    \[
+        F_X(t) = \begin{cases}
+            0 & \text{if $t < \sqrt{2}$} \\
+            t^2 - 2 & \text{if $\sqrt{2} \leq t < \sqrt{3}$} \\
+            1 & \text{if $t \geq \sqrt{3}$}. \\
+        \end{cases}
+    \]
+\end{problem}
+\medskip
+
+\subsection{}
+\begin{problem}
+    Find the smallest interval $[a, b]$ such that of $\P(a \leq X \leq b) = 1$.
+\end{problem}
+
+\begin{proposition}
+    The smallest such interval is $[\sqrt{2}, \sqrt{3}]$.
+\end{proposition}
+
+\begin{proof}
+    The function $F_X(t) = t^2 - 2$ is strictly increasing on the interval $[\sqrt{2}, \sqrt{3}]$, so the image of this interval under $F_X$ is given by
+    \[
+        F_X\left([\sqrt{2}, \sqrt{3}]\right) = \left[F_X(\sqrt{2}), F_X(\sqrt{3})\right] = [0, 1].
+    \]
+    Therefore, $F_X(t) \in [0, 1]$ for all $t \in \R$. For any interval $[a, b]$, we have
+    \[
+        \P(a \leq X \leq b) = \P(X \leq b) - \P(X < a).
+    \]
+    Since the probability of $X$ at points is zero,
+    \[
+        \P(a \leq X \leq b) = \P(X \leq b) - \P(X \leq a) = F_X(b) - F_X(a).
+    \]
+    If $b < \sqrt{3}$, then $F_X(b) < F_X(\sqrt{3}) = 1$. And since $F_X(a) \geq 0$, this implies that
+    \[
+        \P(a \leq X \leq b) \leq F_X(b) - 0 < 1.
+    \]
+    If $a > \sqrt{2}$, then $F_X(a) > F_X(\sqrt{2}) = 0$. And since $F_X(b) \leq 1$, this implies that
+    \[
+        \P(a \leq X \leq b) \leq 1 - F_X(a) < 1.
+    \]
+    Therefore, if $\P(a \leq X \leq b) = 1$, then we must have $a \leq \sqrt{2}$ and $\sqrt{3} \leq 3$. In other words, we must have $[\sqrt{2}, \sqrt{3}] \subseteq [a, b]$. And since we, in fact, have
+    \[
+        \P(\sqrt{2} \leq X \leq \sqrt{3}) = 1 - 0 = 1,
+    \]
+    then the interval $[\sqrt{2}, \sqrt{3}]$ is a minimum among such intervals; thus, it is the smallest.
+     
+\end{proof}
+
+\newpage
+\subsection{}
+\begin{problem}
+    Find $\P(X = 1.5)$, $\P(X < 1.5)$, and $\P(X \leq 1.5)$.
+\end{problem}
+\medskip
+
+We have, immediately, that
+\[
+    \P(X \leq 1.5) = F(1.5) = 1.5^2 - 2 = 0.25.
+\]
+Because the events that $X = 1.5$ and $X < 1.5$ are independent, we also have
+\[
+    \P(X \leq 1.5) = \P(X < 1.5) + \P(X = 1.5).
+\]
+(We know that because $X$ admits a probability density function, then the probability of $X$ on points is zero. We will show this particular case without appealing to this fact.) For any $\eps > 0$, we have
+\[
+    \P(X \leq 1.5 - \eps) < P(X < 1.5) \leq \P(X \leq 1.5)
+\]
+because $F$ is strictly increasing around $1.5$. Moreover, assuming $\sqrt{2} < 1.5 - \eps$, then
+\[
+    \P(X < 1.5 - \eps) = F(1.5 - \eps) = (1.5 - \eps)^2 - 2 = \eps^2 - 3\eps + 0.25.
+\]
+Thus, since
+\[
+    \eps^2 - 3\eps + 0.25 < P(X < 1.5) \leq 0.25
+\]
+for all $\eps > 0$, we must have equality
+\[
+    \P(X < 1.5) = 0.25.
+\]
+And this implies that $\P(X = 1.5) = 0$.
+
+\subsection{}
+\begin{problem}
+    Find $\P(1 \leq X \leq 1.5)$.
+\end{problem}
+\medskip
+
+First, we see that
+\[
+    \P(1 \leq X \leq 1.5) = \P(X \leq 1.5) - \P(X < 1).
+\]
+Since the probability of $X$ on points is zero, then
+\[
+    \P(1 \leq X \leq 1.5) = \P(X \leq 1.5) - \P(X \leq 1) = F(1.5) - F(1) = 0.25 - 0 = 0.25.
+\]
+
+\newpage
+\subsection{}
+\begin{problem}
+    Find the probability density function of $X$.
+\end{problem}
+\medskip
+
+The probability density function of $X$ is a function $f$ such that
+\[
+    F(a) = \P(X \leq a) \int_{-\infty}^a f(t) dt, \quad a \in \R.
+\]
+For $a < \sqrt{2}$, we have $F(a) = 0$, so for $t < \sqrt{2}$, we want $f(t) = 0$. Similarly, since $F(a) = 1$ for all $a \geq \sqrt{3}$, we want $f(t) = 1$ for all $t \geq \sqrt{3}$. And for $a \in (\sqrt{2}, \sqrt{3})$, we want
+\[
+    F(a) = a^2 - 2 = \int_{\sqrt{2}}^a f(t) dt.
+\]
+Thus, $f(t) = 2t$ since
+\[
+    \int_{\sqrt{2}}^a 2t dt = a^2 - (\sqrt{2})^2 = a^2 - 2.
+\]
+
+\end{document}

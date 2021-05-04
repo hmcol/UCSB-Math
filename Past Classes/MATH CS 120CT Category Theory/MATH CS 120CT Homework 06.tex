@@ -1,0 +1,207 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+
+% custom commands
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathsf{C}}
+\newcommand{\D}{\mathsf{D}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\p}{^{\prime}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\newcommand{\id}[1]{\text{id}_{#1}}
+\newcommand{\set}{\mathsf{Set}}
+\newcommand{\homc}{\text{Hom}_\C}
+
+\setlength{\fboxsep}{4pt}
+\newcommand{\ex}[2]{\section*{Exercise #1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+ 
+\begin{document}
+ 
+\title{Homework 6\\
+    \large MATH CS 120CT Category Theory}
+\author{Harry Coleman}
+\date{March 4, 2020}
+\maketitle
+
+\ex{1.1.i}{
+    Show that a morphism can have at most one inverse isomorphism.
+}
+
+Suppose we have the morphism $f: X\rightarrow Y$ with at least one inverse isomorphism. Let $g,g':Y\rightarrow X$ be inverse morphisms of $f$, so\[f \circ g = \id{Y} = f\circ g'.\]
+Where $f^{-1}$ is an arbitrary inverse of $f$,
+\begin{align*}
+    f^{-1} \circ (f \circ g) &= f^{-1} \circ (f \circ g'), \\
+    (f^{-1} \circ f) \circ g &= (f^{-1} \circ f) \circ g', \\
+    \id{X} \circ g &= \id{X}\circ g', \\
+    g &= g'.
+\end{align*}
+Since $g$ and $g'$ are equal, the inverse morphism of $f$ must be unique.
+
+
+\ex{1.3.iii}{
+    Find an example to show that the objects and morphisms in the image of a functor $F: \C \rightarrow \D$ do not necessarily define a subcategory of $\D$.
+}
+
+Let $\C$ be the category:
+\begin{drawing}
+    \draw (0,0) node{$c_1$};
+    \draw (1,0) node{$c_2$};
+    \draw (3,0) node{$c_3$};
+    \draw (4,0) node{$c_4$};
+    
+    \draw[->, line width=0.5pt] (0.25,0) -- (0.75,0) node[midway,anchor=south]{$f$};
+    \draw[->, line width=0.5pt] (3.25,0) -- (3.75,0)node[midway,anchor=south]{$g$};
+\end{drawing}
+And $F:\C\rightarrow\D$ be the functor such that $c_2$ and $c_3$ map to the same object in $D$. That is, we have the image $F(C)$:
+\begin{drawing}
+    \draw (0,0) node{$Fc_1$};
+    \draw (3,0.25) node{$Fc_2$};
+    \draw (3,-0.25) node{$Fc_3$};
+    \draw (6,0) node{$Fc_4$};
+    
+    \draw[->, line width=0.5pt] (0.5,0) -- (2.5,0) node[midway,anchor=south]{$Ff$};
+    \draw[->, line width=0.5pt] (3.5,0) -- (5.5,0)node[midway,anchor=south]{$Fg$};
+\end{drawing}
+However, since $f$ and $g$ are not composable in $C$, there is no composition $Fg\circ Ff$, so $F(C)$ is not a (sub)category. 
+
+\ex{1.4.ii}{
+    What is a natural transformation between a parallel pair of functions between groups, regarded as one-object categories?
+}
+
+Let $X,Y$ be groups, regarded as single-object categories, with the group homomorphisms and natural transformation:
+\begin{drawing}
+    \draw (0,0) node{$X$};
+    \draw (2,0) node{$Y$};
+    
+    \draw[->, line width=0.5pt] (0.25,0.25) to [out=30,in=150] (1.75,0.25);
+    \draw[->, line width=0.5pt] (0.25,-0.25) to [out=-30,in=-150] (1.75,-0.25);
+    
+    \draw (1,0.75) node{$F$};
+    \draw (1,0) node{$\Downarrow\alpha$};
+    \draw (1,-0.75) node{$H$};
+\end{drawing}
+
+Since $F$ and $H$ must satisfy the functorality axioms,
+\[F(a\circ b) = F(a)\circ F(b),\]
+\[H(a\circ b) = H(a)\circ H(b),\]
+$FX$ and $HX$ are subgroups of $Y$. Since $\alpha$ has only one component for the one object $y$ in $Y$, then $\alpha_y\circ Fa= Ha\circ \alpha_y$ for all elements $a$ of $X$. Additionally, since $\alpha_y$ has an inverse, we have $Fa=\alpha_y^{-1}\circ Ha\circ \alpha_y$. In other words, the natural transformation $\alpha$ tells us that the subgroups $FX$ and $HX$ are conjugate to each other.
+
+\ex{2.1.ii}{
+    Prove that if $F:\C \to \set$ is representable, then $F$ preserves monomorphisms, i.e., sends every monomorphism in $\C$ to an injective function. Use the contrapositive to find a covariant set-valued functor defined on your favorite concrete category that is not representable. 
+}
+
+Let $F:\C\rightarrow\set$ be a representable functor with natural isomorphism
+\[\alpha: F \Rightarrow \homc(x,-)\]
+where $x$ is an object of $\C$. Let $f:a\rightarrow b$ be a monomorphism in $\C$. Since $F$ is representable, the following diagram commutes in $\set$:
+\begin{drawing}
+    \draw (0,2) node{$Fa$};
+    \draw (4,2) node{$Fb$};
+    \draw (0,0) node{$\homc(x,a)$};
+    \draw (4,0) node{$\homc(x,b)$};
+    
+    \draw[->] (0.5,2) -- (3.5,2) node[midway, anchor=south]{$Ff$};
+    \draw[->] (1.25,0) -- (2.75,0) node[midway, anchor=north]{$f\circ-$};
+    
+    \draw[->] (0,1.5) -- (0,0.5) node[midway,anchor=east]{$\alpha_a$};
+    \draw[->] (4,1.5) -- (4,0.5) node[midway,anchor=west]{$\alpha_b$};
+\end{drawing}
+
+For $F$ to preserve monomorphisms, we must have $Ff$ be an injective function. The function $Ff$ is an injection if and only if $\alpha_b^{-1}\circ (f\circ-)\circ\alpha_a$ is an injection. Since $\alpha_a$ and $\alpha_b$ are bijections, this is equivalent to $f\circ-$ being an injection.
+
+Let $g,h\in\homc(x,a)$, such that $f\circ g = f\circ h$. Since $f$ is a monomorphism, this implies that $g=h$. Therefore, $f\circ-$ is an injection, and so is $Ff$. Thus, $F$ preserves monomorphisms.
+
+\newpage
+Now let $\C$ be the category free category on the following graph:
+\begin{drawing}
+    \draw[fill=black] (0,0) circle (2pt) node[anchor=north]{$a$};
+    \draw[fill=black] (2,0) circle (2pt) node[anchor=north]{$b$};
+    \draw (0,0) -- (2,0) node[midway]{$>$};
+    \node at (1,-0.5){$f$};
+\end{drawing}
+The only morphism into $a$ is $\id{a}$ and clearly,
+\begin{align*}
+    f\circ \id{a} &= f\circ \id{a}, \\
+    \id{a} &= \id{a}.
+\end{align*}
+Therefore, $f$ is a monomorphism. Now let
+\begin{align*}
+    F:\C &\rightarrow\set \\
+        a &\mapsto \{0,1\} \\
+        b &\mapsto \{0\} \\
+        f &\mapsto \{(0,0), (1,0)\}
+\end{align*}
+Evidently, $Ff$ is not an injection since $Ff(0)=Ff(1)$, but $0\ne1$. Therefore, $F$ is not representable.
+
+
+\newpage
+\ex{3.1.vi}{
+    Prove that if
+    \begin{drawing}
+        \draw (0,0) node{$E$};
+        \draw (2,0) node{$A$};
+        \draw (4,0) node{$B$};
+        
+        \draw[->, line width=0.5pt] (0.25,0) -- (1.75,0) node[midway, anchor=south]{\footnotesize$h$};
+        \draw[->, line width=0.5pt] (2.25,0.1) -- (3.75,0.1) node[midway, anchor=south]{\footnotesize$f$};
+        \draw[->, line width=0.5pt] (2.25,-0.1) -- (3.75,-0.1) node[midway, anchor=north]{\footnotesize$g$};
+    \end{drawing}
+    is an equalizer diagram, then $h$ is a monomorphism.
+}
+
+Suppose it is an equalizer diagram, so
+\[f\circ h = g\circ h.\]
+Consider the object $X$ with morphisms $k$ and $l$
+\begin{drawing}
+    \draw (-2,0) node{$X$};
+    \draw (0,0) node{$E$};
+    \draw (2,0) node{$A$};
+    \draw (4,0) node{$B$};
+    
+    \draw[->, line width=0.5pt] (0.25,0) -- (1.75,0) node[midway, anchor=south]{\footnotesize$h$};
+    \draw[->, line width=0.5pt] (2.25,0.1) -- (3.75,0.1) node[midway, anchor=south]{\footnotesize$f$};
+    \draw[->, line width=0.5pt] (2.25,-0.1) -- (3.75,-0.1) node[midway, anchor=north]{\footnotesize$g$};
+    
+    \draw[->, line width=0.5pt] (-1.75,0.1) -- (-0.25,0.1) node[midway, anchor=south]{\footnotesize$k$};
+    \draw[->, line width=0.5pt] (-1.75,-0.1) -- (-0.25,-0.1) node[midway, anchor=north]{\footnotesize$l$};
+\end{drawing}
+such that $h\circ k = h\circ l$. To show $h$ is a monomorphism, we must show that $k=l$.
+
+Consider the morphisms
+\begin{align*}
+    h\circ k&:X\rightarrow A, \\
+    h\circ l&:X\rightarrow A.
+\end{align*}
+The first of these, $h\circ k$ (and for the same reasons $h\circ l$), equalizes $f$ and $g$ since
+\begin{align*}
+    f\circ(h\circ k)
+        &= (f\circ h)\circ k \\
+        &= (g\circ h)\circ k \\
+        &= g\circ (h\circ k).
+\end{align*}
+Therefore, there exists a unique morphism $u:X\rightarrow E$ such that
+\[h\circ u = h\circ k.\]
+Since both $k$ and $l$ satisfy this, $u=k=l$. Thus, $h$ is a monomorphism.
+
+
+
+\end{document}

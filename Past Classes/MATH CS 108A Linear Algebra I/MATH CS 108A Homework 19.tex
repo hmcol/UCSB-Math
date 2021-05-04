@@ -1,0 +1,143 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% custom commands
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\p}{^{\prime}}
+\newcommand{\id}[1]{\text{id}_{#1}}
+
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\setlength{\fboxsep}{4pt}
+\newcommand{\generic}[2]{\section*{#1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\ex}[2]{\generic{Exercise #1}{#2}}
+\newcommand{\prob}[2]{\generic{Problem #1}{#2}}
+\newcommand{\ques}[2]{\generic{Question #1}{#2}}
+
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+ 
+\begin{document}
+ 
+\title{Homework 19\\
+    \large MATH CS 108A Linear Algebra I}
+\author{Harry Coleman}
+\date{March 6, 2020}
+\maketitle
+
+
+\ex{2}{
+    Let $A$ be a matrix representation of $T \in L(V, W)$. Assume $A$ is an $m \times n$ matrix and let $P$ and $Q$ be $m \times m$ and $n \times n$ invertible matrices, respectively. Are there ordered bases $\beta$ and $\gamma$ of $V$ and $W$, respectively, such that $[T]_\beta^\gamma = PAQ$?
+}
+
+Since $A$ is a matrix representation of $T$, there are some bases $\beta',\gamma'$ of $V,W$ such that
+\[A = [T]_{\beta'}^{\gamma'}.\]
+
+From exercise 1, there is a basis $\beta$ of $V$ such that
+\[Q = Q_\beta^{\beta'},\]
+and some basis $\gamma$ of $W$ such that
+\[P = Q_{\gamma'}^\gamma.\]
+So
+\[[T]_\beta^\gamma = Q_{\gamma'}^\gamma[T]_{\beta'}^{\gamma'}Q_\beta^{\beta'} = PAQ.\]
+
+
+\ex{3}{
+    Let $T \in L(V, V)$ and let $\beta$ and $\beta'$ be two ordered bases for $V$. Let $A = [T]_\beta^\beta$ be the matrix representation of $T$ in the basis $\beta$ and let $B = [T]_{\beta'}^{\beta'}$ be the matrix representation of $T$ in the basis $\beta'$. Show that $A$ and $B$ are similar, that is, there exists an invertible matrix $P$ such that $A = PBP^{-1}$.
+}
+
+Consider
+\begin{align*}
+    A   &= [T]_\beta^\beta \\
+        &= [\id{V} \circ T \circ \id{V}]_\beta^\beta \\
+        &= [\id{V}]_{\beta'}^\beta [T]_{\beta'}^{\beta'} [\id{V}]_\beta^{\beta'} \\
+        &= Q_{\beta'}^\beta B Q_\beta^{\beta'}.
+\end{align*}
+Let $P=Q_{\beta'}^\beta $, so $P^{-1}=(Q_{\beta'}^\beta)^{-1} =Q_\beta^{\beta'}$. Therefore, $A=PBP^{-1}$.
+
+
+
+\newpage
+\ex{4}{
+    Let $A$ be an $m\times n$ matrix. Show that $A$ is equivalent to a matrix of the form
+    \[\begin{bmatrix}
+        I_k & 0 \\
+        0 & 0
+    \end{bmatrix},\]
+    where k = rank(A).
+}
+
+Consider the linear transformation $L_A$, and let $\beta'$ be a basis for ker$(L_A)$. We now extend $\beta'$ to a basis for $\F^n$,
+\[\beta = \{v_1,\dots,v_k,v_{k+1},\dots,v_n\},\]
+where $\beta'=\{v_{k+1},\dots,v_n\}$. We now take the $R(L_A)$ basis $\{L_A(v_1),\dots,L_A(v_k)\}$ and extend it to a basis for $\F^m$,
+\[\gamma = \{u_1,\dots,u_m\} = \{L_A(v_1),\dots,L_A(v_k), u_{k+1},\dots,u_m\}.\]
+We now solve for
+\begin{align*}
+    [L_A]_\beta^\gamma 
+        &= \begin{bmatrix}
+                | & & | & | & & | \\
+                [L_A(v_1)]_\gamma & \cdots & [L_A(v_k)]_\gamma & [L_A(v_{k+1})]_\gamma & \cdots & [L_A(v_n)]_\gamma \\
+                | & & | & | & & | \\
+            \end{bmatrix} \\
+        &= \begin{bmatrix}
+                | & & | & | & & | \\
+                [u_1]_\gamma & \cdots & [u_k]_\gamma & [0]_\gamma & \cdots & [0]_\gamma \\
+                | & & | & | & & | \\
+            \end{bmatrix} \\
+            &= \begin{bmatrix}
+                I_k & 0 \\
+                0 & 0 \\
+            \end{bmatrix}.
+\end{align*}
+Evidently, rank$([L_A]_\beta^\gamma)=k$. We now find that
+\[Q_\gamma^{S_m}[L_A]_\beta^\gamma Q_{S_n}^\beta = [L_A]_{S_n}^{S_m} = A.\]
+Since $Q_\gamma^{S_m}$ and $Q_{S_n}^\beta$ are invertible, $A$ and $[L_A]_\beta^\gamma$ are equivalent and have the same rank, $k$.
+
+
+\newpage
+\ex{5}{
+     Show that rank$(A) = $rank$(A^T)$ using Exercise 4.
+}
+
+Let rank$(A)=k$, so for some invertible $P$ and $Q$,
+\[PAQ = \begin{bmatrix}
+    I_k & 0_1 \\
+    0_2 & 0_3
+\end{bmatrix},\]
+where $0_1,0_2,0_3$ are rectangular sections of zeros. Taking the transpose of both sides, we find
+\begin{align*}
+    (PAQ)^T &= \begin{bmatrix}
+                I_k & 0_1 \\
+                0_2 & 0_3
+           \end{bmatrix}^T \\
+    Q^T A^T P^T &= \begin{bmatrix}
+                I_k & 0_2^T \\
+                0_1^T & 0_3^T
+           \end{bmatrix}.
+\end{align*}
+So rank$(Q^T A^T P^T) = k =$rank$(A)$. And since $Q^T$ and $P^T$ are invertible, rank$(A^T)=(Q^T A^T P^T)$. Therefore rank$(A^T)=$rank$(A)$.
+
+
+
+
+
+
+
+\end{document}

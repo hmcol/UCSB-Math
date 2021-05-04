@@ -1,0 +1,183 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow,enumitem}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools,babel}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{\textwidth-10pt}}
+    {\end{minipage}\end{lrbox}\framebox[6.5in]{\usebox{\mybox}}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+\newenvironment{response}{\paragraph{}}{}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\seq}[2]{\left\{#1\right\}_{#2=1}^\infty}
+\newcommand{\clo}[1]{\overline{#1}}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ang}{\langle}{\rangle}
+
+% Sets
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+
+% Misc Characters
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\let\eps\varepsilon
+\let\emptyset\varnothing
+
+% Functions
+\newcommand{\id}[1]{\mathsf{id}_{#1}}
+
+% Babel Shorthands
+\useshorthands*{"}
+\defineshorthand{"-}{\setminus}
+\defineshorthand{"d}{\partial}
+
+% Topology
+\newcommand{\T}{\mathscr{T}}
+\renewcommand{\S}{\mathscr{S}}
+\newcommand{\B}{\mathscr{B}}
+\renewcommand{\int}{\text{int}}
+\newcommand{\diam}{\text{diam}}
+ 
+\begin{document}
+ 
+\title{Homework\\
+    \large MATH 145 Intro to Topology
+}
+\author{Harry Coleman}
+\date{August 1, 2020}
+\maketitle
+
+\section*{Problem 1(a)}
+\begin{problem}
+    State the definition of connectedness for topological spaces.
+\end{problem}
+
+\begin{response}
+    A topological space $X$ is said to be connected if it is not the disjoint union of two nonempty open subsets, i.e., there does not exist $U,V\subseteq X$ open such that $U\ne\emptyset$, $V\ne\emptyset$, and $U\sqcup V=X$.
+\end{response}
+
+\section*{Problem 1(b)}
+\begin{problem}
+    Let $\R$ be the real line with Euclidean topology. Prove that every connected subset of $\R$ is an interval.
+\end{problem}
+
+\begin{proof}
+    Let $U\subseteq\R$ be connected, and suppose for contradiction that $U$ is not an interval. Since $U$ is not an interval, then there exist some $a,b\in U$ such that $a\ne b$ and there exists some $c\in(a,b)$ such that $c\notin U$. Then $(-\infty,c),(c,\infty)\subseteq\R$ are open subsets and $(-\infty,c)\cap U,(c,\infty)\cap U \subseteq U$ are open subsets. In particular, $((-\infty,c)\cap U) \sqcup ((c,\infty)\cap U) = U$, however, since $U$ is connected, this is a contradiction. Therefore, $U$ is an interval.
+    
+\end{proof}
+
+\newpage
+\section*{Problem 2}
+\begin{problem}
+    Suppose that $f:X\to Y$ is a continuous and surjective map between two topological spaces. Determine if the following statements are true or false. If true, prove the statement, if false, give a counterexample.
+\end{problem}
+
+\subsection*{Problem 2(a)}
+\begin{problem}
+    If $X$ is path-connected, then so is $Y$
+\end{problem}
+
+\begin{response}
+    True.
+\end{response}
+
+\begin{proof}
+    Suppose $X$ is path-connected. Let $y_1,y_2\in Y$. Since $f:X\to Y$ is surjective, there exist $x_1,x_2\in X$ such that $f(x_1)=y_1$ and $f(x_2)=y_2$. Now since $X$ is path-connected, there exists a continuous map $g:[0,1]\to X$ such that $g(0)=x_1$ and $g(1)=x_2$. Then we have the continuous composition $f\circ g :[0,1] \to Y$ with $f\circ g(0) = y_1$ and $f\circ g(1)=y_2$. Therefore $Y$ is path-connected.
+    
+\end{proof} 
+
+\subsection*{Problem 2(b)}
+\begin{problem}
+    If $X$ is locally compact, then so is $Y$.
+\end{problem}
+
+\begin{response}
+    False.
+\end{response}
+
+\begin{proof}
+    Let $X=\Q$ with the discrete topology and let $Y=\Q$ with the metric topology. We have $X$ locally compact since for any $x\in X$, there exists the compact open neighborhood $\{x\}\subseteq X$ of $x$. We have $Y$ not locally compact since for any $y\in Y$ and any neighborhood $U\subseteq Y$ of $y$, $U$ is not complete, since any sequence in $U$ converging to an irrational number has no subsequence which converges in $U$, therefore $y$ has no compact neighborhood. However, we can have the identity map $\id{\Q}:X\to Y$ which is clearly surjective and is continuous since $X$ has a finer topology on $\Q$ than $Y$.
+    
+\end{proof}
+
+\subsection*{Problem 2(c)}
+\begin{problem}
+    If $X$ is Hausdorff, then so is $Y$.
+\end{problem}
+
+\begin{response}
+    False.
+\end{response}
+
+\begin{proof}
+    Let $X=[0,1]\times[0,1]$ with the topology from $\R$ and define the equivalence relation $\sim$ on $X$ by declaring $(s_0,t_0)\sim (s_1,t_1)$ if and only if $t_0=t_1>0$. Let $Y=X/\sim$. Then $X$ is a Hausdorff space but $Y$ is not, yet we have the continuous and surjective map $\pi:X\to Y$.
+    
+\end{proof}
+
+\section*{Problem 3}
+\begin{problem}
+    Let $S^1$ be the unit circle with the usual topology, $S^1\times S^1$ be the product space, and define the torus $T:=[0,1]\times[0,1]/\sim$ as a quotient space, where $\sim$ is the equivalence relation that $(1,y)\sim(0,y)$ for all $y\in[0,1]$ and $(x,0)\sim(x,1)$ for all $x\in[0,1]$. Prove that $S^1\times S^1$ and $T$ are homeomorphic.
+\end{problem}
+
+\begin{proof}
+    Note that $S^1$ is homeomorphic to the quotient space obtained from $[0,1]$ by identifying $0$ and $1$, so the points of $S^1$ may be indexed by values of $[0,1]$ where $0$ and $1$ are the same. Now consider the function $f:[0,1]\times[0,1]\to S^1\times S^1$ given by $f((x,y))=(x,y)$. Now for any open subset $U\subseteq S^1\times S^1$ any any point $x\in U$, there exist some open subsets $U_1\subseteq S^1$, $U_2\subseteq S^1$ such that $x\in U_1\times U_2 \subseteq U$. Then $f^{-1}(U_1\times U_2)$ is essentially equal to $U_1\times U_2$ but with the point which denotes both $0$ and $1$ in $S^1$ mapping to both $0$ and $1$ in the preimage. This gives us that $U_1$ and $U_2$ are open subsets of $[0,1]$ so $U_1\times U_2\subseteq[0,1]\times[0,1]$ is an open subset. In particular, $x\in U_1\times U_2\subseteq[0,1] \subseteq f^{-1}(U)$, so $f^{-1}(U)$ is open. Therefore, $f$ is a continuous function. Additionally, it is surjective, as any point in $S^1\times S^1$ is essentially a point in $[0,1]\times[0,1]$. And it is constant on the equivalence classes of $\sim$ as $f$ maps $0$ and $1$ to the same point of $S^1$. Therefore, since $[0,1]\times[0,1]$ and $S^1\times S^1$ are compact Hausdorff spaces and $f$ is a continuous surjective map which is constant on equivalence classes, we have $S^1\times S^1 \simeq T = [0,1]\times[0,1]/\sim$.
+    
+\end{proof}
+
+\section*{Problem 4}
+\begin{problem}
+    Let $X:=\Pi_{\alpha\in I}X_\alpha$ be a product space (with the product topology), $\pi_\alpha:X\to X_\alpha$ be the projection map for each $\alpha\in I$, and $\seq{x_n}{n}$ be a sequence in $X$. Prove that the sequence $\{x_n\}$ converges to a point $x\in X$ if and only if $\{\pi_\alpha(x_n)\}$ converges to $\pi_\alpha(x)$ for every $\alpha\in I$.
+\end{problem}
+
+\begin{proof}
+    Suppose $\seq{x_n}{n}$ converges to some $x\in X$. Then for some $\alpha\in I$, let $U_\alpha\subseteq X_\alpha$ be an open neighborhood of $\pi_\alpha(x)$. Since $\pi_\alpha$ is continuous, $\pi_\alpha^{-1}(U_\alpha)$ is an open subset of $X$, in particular, an open neighborhood of $x$. Then since $x_n\to x$, then there exists some $N\in\N$ such that $n\geq N$ implies $x_n\in \pi_\alpha^{-1}(U_\alpha)$, which then implies that $\pi_\alpha(x_n)\in U)_\alpha$. Therefore, $\seq{\pi_\alpha(x_n)}{n}$ converges to $\pi_\alpha(x)$.
+    
+    Now suppose that $\seq{\pi_\alpha(x_n)}{n}$ converges to $\pi_\alpha(x)$ for all $\alpha\in I$. Let $U\subseteq X$ be an open neighborhood of $x$. Then by definition of product space,
+    \[U = \pi_{\alpha_1}^{-1}(U_{\alpha_1}) \cap \cdots \cap \pi_{\alpha_m}^{-1}(U_{\alpha_m}),\]
+    where $U_{\alpha_i}$ is an open subset of $X_{\alpha_i}$. In particular, each $U_{\alpha_i}$ is an open neighborhood of $\pi_{\alpha_i}(x)$, so there exists some $N_i\in\N$ such that $n\geq N_i$ implies $\pi_{\alpha_i}(x_n)\in U_{\alpha_i}$. Now let $N=\max\{N_1,\dots,N_m\}$, so $n\geq N$ implies that $\pi_{\alpha_i}(x_n)\in U_{\alpha_i}$ for all $i=1,\dots,m$. In turn, $n\geq N$ implies that $x_n\in\pi_{\alpha_i}^{-1}(U_{\alpha_i})$ for all $i=1,\dots,m$, so $x_n\in U$. Therefore, $\seq{x_n}{n}$ converges to $x$.
+    
+\end{proof}
+
+\section*{Problem 5}
+\begin{problem}
+    Let $S^2$ denote the 2-dimensional sphere. Define the complex projective line $CP^1$ as the quotient space $X^2"-\{0\}/\sim$, where $\sim$ is the equivalence relation on $\C^2"-\{0\}$ that $x\sim y$ if $x=\lambda y$ for some $\lambda\in\C$. Prove that $S^2$ and $CP^1$ are homeomorphic.
+\end{problem}
+
+\begin{proof}
+    Consider the subset $U=\{[(z_0,z_1)] : z_0\ne0\}\subseteq CP^1$. For each $[(z_0,z_1)]\in U$, note that $[(z_0,z_1)]=[(1,z_1/z_0)]$, so $U=\{[(1,z)] : z\in\C\}$. Now consider the map $f:U\to\C$ given by $f((1,z))=z$; clearly, $f$ is bijective. Now for any open subset $V$ of $\C$,
+    \[\pi^{-1}\circ f^{-1} = \pi^{-1}(\{[(1,z)] : z\in V\}) = \{(\lambda, \lambda z) : z\in V, \lambda\in\C\},\]
+    which is an open subset of $\C^2$. and since $f\circ \pi$ is continuous, $f$ is also continuous. Thus, we have $U\simeq\C$, and furthermore that $U\simeq\R^2$. Now consider the subset $CP^1"-U$. Since $U=\{[(z_0,z_1)] : z_0\ne 1\}$, then $CP^1"-U=\{[(0,z_1)]\}=\{[(0,1)]\}$. That is, since $U$ is not compact and $CP^1=U\sqcup\{[(0,1)]\}$ and $CP^1$ is compact, then $CP^1$ is the unique one-point compactification of $U$. And since $U$ is homeomorphic to $\R^2$, there one-point compactifications are homeomorphic. Therefore, $CP^1\simeq S^2$.
+    
+\end{proof}
+
+
+\end{document}

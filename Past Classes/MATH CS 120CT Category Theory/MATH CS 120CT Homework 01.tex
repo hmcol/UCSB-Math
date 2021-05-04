@@ -1,0 +1,93 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage[margin=1in]{geometry}
+\usepackage{framed}
+\usepackage[table]{xcolor}
+\usepackage{colortbl, multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym}
+\usepackage{mathrsfs, mathtools}
+\usepackage{tikz,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\usepackage{graphicx}
+
+% custom commands
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\p}{^{\prime}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+ 
+\begin{document}
+ 
+\title{Homework 1\\
+    \large MATH CS 120CT Category Theory}
+\author{Harry Coleman}
+\date{January 8, 2020}
+
+\maketitle
+
+\section*{Exercise 1}
+\fbox{
+    \parbox{\textwidth} {
+        Let $A$ be a set and $\sim$ be an equivalence relation on $A$. Show that the set of equivalence classes, $A/{\sim}$, is a partition, and that any partition of $A$ is the set of equivalences classes for some equivalence relation on $A$.
+    }
+}
+\\
+
+We say that a collection of sets is a partition of $A$ if
+\begin{align*}
+    1. \qquad & \bigcup_{X\in A/{\sim}}X = A, \\\\
+    2. \qquad & \forall X,Y \in A/{\sim} (X \cap Y = \emptyset).
+\end{align*}
+
+\subsection*{A Set of Equivalence Classes is a Partition}
+Since $\sim$ is an equivalence relation, every element in $A$ is at least equivalent to itself, and is therefore part of some equivalence class, which contains at least the element itself, which is in $A/{\sim}$. So the union of all the equivalence classes will contain all the elements in $A$. And since $\sim$ is defined only for elements in $A$, the union will contain only elements in $A$. This means $A/{\sim}$ satisfies the first requirement for being a partition.
+
+To satisfy requirement 2, we must have no single element in multiple different equivalence classes in $A/{\sim}$. To show this is the case by contradiction, we assume the opposite is true. Let $c$ be such an element of two equivalence classes, $X$ and $Y$ where $X,Y \in A/{\sim}$ and $X\ne Y$. By the transitive property of the equivalence relation, for any $x\in X$ and for any $y\in Y$, $x\sim c\sim y$, so $x\sim y$. This means that every element in $X$ is also in $Y$, and every element in $Y$ is also in $X$. Therefore, $X=Y$. This is a contradiction, so it must be the case that no two equivalence classes share elements. This satisfies the second requirement.
+
+Since both 1 and 2 are satisfied by $A/{\sim}$, it must be a partition of $A$.
+
+\newpage
+\subsection*{A Partition is a Set of Equivalence Classes}
+
+Let $\A$ be a set of subset of $A$ such that $\A$ is a partition of $A$. We define the relation $\sim$ on $A$ as
+\[x\sim y \iff \exists X\in\A(x,y\in X).\]
+This means that any two elements of $A$ are equivalent by $\sim$ if and only if they are in the same subset of $A$ that occurs in the partition $\A$. In order for this to be an equivalence relation, it must be reflexive, symmetric, and transitive. 
+
+For any element of $A$, it is in some element of $\A$, and every element is in the same set as itself, the relation is reflexive. Since the definition of our relation does not account for the order of related elements, $x\sim y$ is evaluated the same as $y\sim x$, so it is symmetric. For any three values $x,y,z \in A$, where $x\sim y$ and $y\sim z$, we know $y$ is only an element of one set in $\A$. Since $y$ is related to both $x$ and $z$, then $x$ and $z$ must be in that same set, and therefore $x\sim z$. So the relation is transitive. Because our definition of $\sim$ is reflexive, symmetric, and transitive, it is an equivalence relation, and $\A$ would be the set of equivalence classes.
+
+\section*{Exercise 2}
+\fbox{
+    \parbox{\textwidth} {
+        Given a set $P$ and a preorder $\leq$,
+        \[P^{op} = (P, \leq^{op}).\]
+        \[\text{up}(P) = \{X\in\powerset(P) : \forall x\in X, p\in P(x\leq p \implies p\in X)\},\]
+        \[\uparrow p = \{x\in P: p\leq x\}, \text{ and}\]
+        \[\uparrow: P^{op} \rightarrow (\powerset(P), \subseteq).\]
+        Determine if $\uparrow$ is a monotone map, injective, and/or surjective.
+    }
+}
+\\
+
+Let $x,y \in P$ such that $x\leq y$, so $y\in(\uparrow x)$. And since for all $z\in(\uparrow y)$, $y\leq z$, we also have $x \leq z$, and therefore $z\in(\uparrow x)$. So $(\uparrow y) \subseteq (\uparrow x)$. This means that under the opposite order, we have for all $x,y\in P$, 
+\[y \leq^{op} x \implies (\uparrow y) \subseteq (\uparrow x).\]
+Repeating this reasoning in the other direction, we would find the converse to be true, giving us
+\[y \leq^{op} x \iff (\uparrow y) \subseteq (\uparrow x).\]
+
+$\uparrow$ is not necessarily injective. Consider $P=\{A,B\}$ where $A\leq B$ and $B\leq A$, but $A\ne B$, then $\uparrow A = \{A,B\} = \uparrow B$.
+
+$\uparrow$ is not surjective onto $\powerset(P)$. Consider $P=\{A,B\}$, where $A\leq B$, we have
+\[\powerset(P) = \{\emptyset, \{A\}, \{B\}, \{A,B\}\},\]
+\[\uparrow P = \{\{A, B\}, \{B\}\}.\]
+
+
+
+
+\end{document}

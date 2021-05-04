@@ -1,0 +1,227 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amsthm, amssymb, physics}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}
+    {\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\mybox}}\end{center}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{1em}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+
+% Extra Commands
+
+
+
+% Document Info
+\title{Homework 3\\
+    \large MATH 118B
+}
+\author{Harry Coleman}
+\date{January 28, 2021}
+
+% Begin Document
+\begin{document}
+\maketitle
+
+\section{}
+\begin{problem}
+    Suppose that $f \in \mathcal{R}([0,1])$. Prove that 
+    \begin{equation}
+        \int_0^1 f(x)  \dd{x} = \lim_{n\to \infty} \frac{1}{n}\sum_{k=1}^n f\left (\frac{k}{n}\right).
+    \end{equation}
+\end{problem}
+
+\begin{proof}
+    Since $f$ is Riemann integrable it is bounded, suppose $|f(x)| \leq M$ for all $x \in [0,1]$. Let $\eps > 0$ be given and let $P = \{x_j\}_{j=1}^m$ be a partition of $[0, 1]$ such that
+    \[
+        U(P, f) - L(P, f) < \eps.
+    \]
+    We choose $N_0 \in \N$ such that $1/N_0 < \min\{\Delta x_1, \dots, \Delta x_m\}$. We claim that if $n \geq N_0$, then each interval $(x_{j-1}, x_j]$ (left-open and right-closed) contains some $k/n$. In particular, let $k_j = \max\{k \in \N : k/n \leq x_j\}$, which implies $k_j/n \leq x_j$. And if $k_j/n \leq x_{j-1}$, then we would find
+    \[
+        \frac{k_j + 1}{n} = \frac{k_j}{n} + \frac1n \leq x_{j-1} + \Delta x_j = x_j.
+    \]
+    But this contradicts the definition of $k_j$, so in fact $k_j/n \in (x_{j-1}, x_j]$. Now, for each $n \geq N_0$ we define a partition
+    \[
+        P_n = P \cup \{k/n : k = 1, \dots, n\} = \{y_i\}_{i=1}^{m+n}.
+    \]
+    In any case where $k/n = x_j$, we take $y_i = k/n$ and $y_{i+1} = x_j$. In particular, this means that if $y_i = x_j$, then $y_{i-1} = k_j/n$ and $y_{i+1} = (k_j+1)/n$, where $k_j$ is defined as above. Since $P_n$ is a refinement of $P$, then $U(P_n, f) - L(P_n, f) < \eps$. We now make a choice of $t_i \in [y_{i-1}, y_i]$ for each interval of $P_n$. If $y_{i-1} = k/n$ then we pick $t_i = y_i$, otherwise if $y_{i-1} = x_j$ then we pick $t_i = x_j$. Then we have the estimation
+    \[
+        \left| \int_0^1 f(x)  \dd{x} - \sum_{i=1}^{m+n} f(t_i) \Delta y_i \right| < \eps.
+    \]
+    We will estimate the difference between the following Riemann sums:
+    \[
+        \left| \sum_{i=1}^{m+n} f(t_i) \Delta y_i - \frac{1}{n}\sum_{k=1}^n f\left (\frac{k}{n}\right)\right|.
+    \]
+    From our selection of each $t_i$, we have
+    \[
+        \Delta y_i = \begin{cases}
+            \dfrac1n &\text{if $t_i = k/n$,} \\\\
+            x_j - \dfrac{k_j}{n} &\text{if $t_i = x_j$ and $y_i = x_j$,} \\\\
+            \dfrac{k_j + 1}{n} - x_j &\text{if $t_i = x_j$ and $y_{i-1} = x_j$.}
+        \end{cases}
+    \]
+    In particular, if $y_i = x_j$ then $t_i = t_{i+1} = x_j$, which implies
+    \[
+        f(t_i)\Delta y_i + f(t_{i+1})\Delta y_{i+1} = f(x_j)\frac1n.
+    \]
+    Therefore, we can rewrite the following Riemann sum in these terms:
+    \[
+        \sum_{i=1}^{m+n} f(t_i) \Delta y_i
+            = \frac1n\sum_{j=1}^m f(x_j)
+            + \frac1n\sum_{\substack{i = 1 \\ t_i = k/n}}^{m+n} f\left(\frac{k}{n}\right).
+    \]
+    Notice that the summation on the right is the sum over all $k = 1, \dots, n$, but excluding $k_j$ for all $j = 1, \dots, m$. That is,
+    \[
+        \sum_{\substack{i = 1 \\ t_i = k/n}}^{m+n} f\left(\frac{k}{n}\right) - \sum_{k=1}^n f\left (\frac{k}{n}\right)
+         = -\sum_{j=1}^{m} f\left(\frac{k_j + 1}{n}\right)
+    \]
+    Therefore, we obtain the estimation
+    \begin{align*}
+        \left| \sum_{i=1}^{m+n} f(t_i) \Delta y_i - \frac{1}{n}\sum_{k=1}^n f\left (\frac{k}{n}\right)\right|
+            &= \frac1n\left|\sum_{j=1}^m \left(f(x_j) - f\left(\frac{k_j + 1}{n}\right)\right)\right| \\
+            &\leq \frac1n\sum_{j=1}^m \left(\left|f(x_j)\right| + \left|f\left(\frac{k_j + 1}{n}\right)\right|\right) \\
+            &\leq  \frac1n\sum_{j=1}^m 2M \\
+            &= \frac{2Mm}{n}.
+    \end{align*}
+    Now choose $N_1 \in \N$ such that $1/N_1 < \eps/(2Mm)$. Then if $n \geq N = \max\{N_0, N_1\}$, then with the triangle inequality and the two estimations we found,
+    \[
+        \left| \int_0^1 f(x)  \dd{x} - \frac{1}{n}\sum_{k=1}^n f\left (\frac{k}{n}\right) \right|
+            < \eps + \frac{2Mm}{n}
+            < 2\eps.
+    \]
+    
+
+\end{proof}
+
+\section{}
+\begin{problem}
+    Suppose that $f,g\in \mathcal{R}([a,b])$. Define $h(x) = \max \{f(x),g(x)\}$. Prove that $h \in \mathcal{R}([a,b])$.
+\end{problem}
+
+\begin{proof}
+    For any $x, y \in \R$, we have
+    \[
+        \max\{x, y\} = \frac{x + y + |x - y|}{2}.
+    \]
+    If $x \geq y$, then
+    \[
+        \frac{x + y + |x - y|}{2} = \frac{x + y + x - y}{2} = \frac{2x}{2} = x = \max\{x, y\}.
+    \]
+    If $x \leq y$, then
+    \[
+        \frac{x + y + |x - y|}{2} = \frac{x + y + y - x}{2} = \frac{2y}{2} = y = \max\{x, y\}.
+    \]
+    Therefore, we can write $h$ as
+    \[
+        h(x) = \max\{f(x), g(x)\} = \frac{f(x) + g(x) + |f(x) - g(x)|}{2}.
+    \]
+    We know that sums, products, and absolute values of Riemann integrable functions are Riemann integrable. Since $f, g \in \mathcal{R}([a,b])$, then
+    \[
+        h = \frac{f + g + |f - g|}{2} \in \mathcal{R}([a,b]).
+    \]
+    
+    
+\end{proof}
+
+\newpage
+\section{}
+\begin{problem}
+    Suppose that $f:[a,b]\to \R$ is bounded and $f^2\in \mathcal{R}([a,b])$. Does it follow that $f\in \mathcal{R}([a,b])$? Does the answer change if instead we assume that $f^3\in \mathcal{R}([a,b])$?
+\end{problem}
+
+Consider the function $f : [a, b] \to \R$ defined by
+\[
+    f(x) = \begin{cases}
+        1 &\text{if $x \in \Q$,} \\
+        -1 &\text{if $x \notin \Q$.}
+    \end{cases}
+\]
+Then $f^2 = 1$ is Riemann integrable, but $f$ is not. The Riemann sum for any rational partition is $b - a$, and $a - b$ for any irrational partition.
+
+If we assume that $f^3 \in \mathcal{R}([a,b])$, then it does follow that $f\in \mathcal{R}([a,b])$. The cube function $g(x) = x^3$ is a differentiable bijection from $\R\setminus\{0\}$ to itself with $g'(x) = 3x^2 \ne 0$. Therefore, it has a continuous inverse $g^{-1}(x) = \sqrt[3]{x}$, which is also continuous at $0$. Thus, $\sqrt[3]{x}$ is continuous on $\R$, so the composition $\sqrt[3]{f^3} = f \in \mathcal{R}([a,b])$.
+
+\section{}
+\begin{problem}
+     Assume that $f\in \mathcal{R}([c,1])$ for all $c>0$. Show that if $f\in \mathcal{R}([0,1])$, then 
+    \begin{equation}
+        \int_0^1f(x)  \dd{x} = \lim_{c\to 0^+} \int_c^1f(x)  \dd{x}.
+    \end{equation}
+\end{problem}
+
+\begin{proof}
+    Since $f \in \mathcal{R}([0,1])$, then $f$ is bounded on $[0, 1]$, let $M >0$ such that $|f(x)| \leq M$ for all $x \in [0, 1]$. Then for any $c \in (0, 1)$, we have
+    \[
+        \left|\int_0^c f(x) \dd{x}\right| \leq M(c - 0) = Mc.
+    \]
+    Let $\eps > 0$ and choose $c \in (0, 1)$ with  $c < \eps/M$. Then
+    \begin{align*}
+        \left|\int_0^1 f(x) \dd{x} - \int_c^1 f(x) \dd{x}\right|
+            = \left|\int_0^c f(x) \dd{x}\right|
+            \leq Mc
+            < \eps.
+    \end{align*}
+    Thus,
+    \[
+        \int_0^1f(x)  \dd{x} = \lim_{c\to 0^+} \int_c^1f(x)  \dd{x}.
+    \]
+    
+\end{proof}
+
+\newpage
+\section{}
+\begin{problem}
+    Prove that 
+    \begin{equation}
+        \frac{1}{3\sqrt{2}}\le \int_0^1\frac{x^2}{\sqrt{1+x^2}}  \dd{x} \le \frac{1}{3}.
+    \end{equation}
+\end{problem}
+
+\begin{proof}
+    For all $x \in [0, 1]$, we have
+    \begin{alignat*}{3}
+        0 &\leq& x &\leq 1 \\
+        0 &\leq& x^2 &\leq 1 \\
+        1 &\leq& 1 + x^2 &\leq 2 \\
+        1 &\leq& \sqrt{1 + x^2} &\leq \sqrt{2} \\
+        \frac{1}{\sqrt{2}} &\leq& \frac{1}{\sqrt{1 + x^2}} &\leq 1 \\
+        \frac{x^2}{\sqrt{2}} &\leq& \frac{x^2}{\sqrt{1 + x^2}} &\leq x^2.
+    \end{alignat*}
+    Since $\dv{x} \frac{x^3}{3} = x^2$, then the fundamental theorem of calculus gives us
+    \[
+        \int_0^1 x^2 \dd{x} = \frac{1^3}{3} - \frac{0^3}{3} = \frac13.
+    \]
+    Therefore,
+    \begin{alignat*}{3}
+        \frac{1}{\sqrt{2}}\int_0^1 x^2 \dd{x} &\leq& \int_0^1 \frac{x^2}{\sqrt{1 + x^2}} \dd{x} &\leq \int_0^1 x^2 \dd{x} \\
+        \frac{1}{3\sqrt{2}} &\leq& \int_0^1 \frac{x^2}{\sqrt{1 + x^2}} \dd{x} &\leq \frac13.
+    \end{alignat*}
+    
+    
+\end{proof}
+
+
+
+\end{document}

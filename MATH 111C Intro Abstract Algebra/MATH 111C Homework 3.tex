@@ -1,0 +1,270 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{amsmath, amsthm, amssymb, tikz-cd}
+\usepackage{enumerate}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\theoremstyle{definition}
+\allowdisplaybreaks
+\addtolength{\jot}{4pt}
+%\setlength{\parindent}{0pt}
+%\setlength{\parskip}{\baselineskip}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\pfrac}[2]{\left(\frac{#1}{#2}\right)}
+
+% Extra Commands
+\DeclareMathOperator{\id}{id}
+\newcommand{\isom}{\cong}
+\newcommand{\clo}{\overline}
+\newcommand{\divides}{\bigm|}
+\newcommand{\ndivides}{%
+  \mathrel{\mkern.5mu % small adjustment
+    % superimpose \nmid to \big|
+    \ooalign{\hidewidth$\big|$\hidewidth\cr$\nmid$\cr}%
+  }%
+}
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH 111C Homework 3}
+    \fancyhead[C]{April 23, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+
+\begin{pbox}[Q1]
+    Show that $[\clo{\Q} : \Q] = \infty$.
+\end{pbox}
+
+\begin{proof}
+    Consider $\Q$ as a subfield of $\C$. For each $n \in \N$, $\sqrt[n]{2} \in \C$ is algebraic over $\Q$, as it is a root of the polynomial $x^n - 2 \in \Q[x]$. In fact, $m_{\sqrt[n]{2}, \Q}(x) = x^n - 2$, since it is monic and irreducible over $\Q$, by Eisenstein's criterion. Then
+    \[
+        [\Q(\sqrt[n]{2}) : \Q] = \deg m_{\sqrt[n]{2}, \Q}(x) = \deg(x^n - 2) = n.
+    \]
+    So $\Q(\sqrt[n]{2})/\Q$ is algebraic, therefore $\clo{\Q(\sqrt[n]{2})} = \clo{\Q}$. We may now deduce
+    \[
+        [\clo{\Q} : \Q] 
+            = [\clo{\Q(\sqrt[n]{2})} : \Q(\sqrt[n]{2})][\Q(\sqrt[n]{2}) : \Q]
+            \geq [\Q(\sqrt[n]{2}) : \Q]
+            = n.
+    \]
+    Since $[\clo{\Q} : \Q] \geq n$ for all $n \in \N$, then necessarily $[\clo{\Q} : \Q] = \infty$.
+
+    \[
+        a + (b \cdot c) = (a + b) \cdot (a + c)
+    \]
+
+\end{proof}
+
+\begin{pbox}[Q2]
+    Let $F \subseteq K \subseteq L$ be fields. Show that if $L/F$ is separable, then both $K/F$ and $L/K$ are separable.
+\end{pbox}
+
+\begin{proof}
+    We first show $K/F$ is separable. For each $\alpha \in K$, we also have $\alpha \in L$. And since $L/F$ is separable, then $\alpha$ is separable over $F$. Hence, $K/F$ is separable.
+
+    Next, we show $L/K$ is separable. First, note that $L/F$ is algebraic, so $K/F$ and $L/K$ are both algebraic. Let $\alpha \in L$ and consider its minimal polynomials $m_{\alpha, K}(x) \in K[x]$ and $m_{\alpha, F}(x) \in F[x]$. Since the minimal polynomial of $\alpha$ over $F$ is also a polynomial over $K$ with $\alpha$ as a root, then $m_{\alpha, K}(x) \divides m_{\alpha, F}(x)$. Then any root $\beta \in \clo{K}$ of $m_{\alpha, K}(x)$ is also a root of $m_{\alpha, F}(x)$. Moreover, because $K/F$ is algebraic, we have $\clo{K} = \clo{F}$, so $\beta \in \clo{F}$.
+    
+    Since $L/F$ is separable and $\alpha \in L$, then $m_{\alpha, F}(x)$ is separable over $F$. Then $\beta$ is a simple root for $m_{\alpha, F}(x)$. In $\clo{K}[x] = \clo{F}[x]$, we must at least have $(x - \beta) \divides m_{\alpha, K}(x)$. However, $(x - \beta)^2$ must not divide $m_{\alpha, K}(x)$, as $m_{\alpha, K}(x) \divides m_{\alpha, F}(x)$ but $(x - \beta)^2$ does not divide $m_{\alpha, F}(x)$. Hence, $\beta$ is a simple root for $m_{\alpha, K}(x)$, and we conclude that $L/K$ is separable.
+
+\end{proof}
+
+
+\newpage
+\begin{pbox}[Q3]
+    Let $F$ be a field and $A$ be a subset of $F[x]$. An algebraic extension $K$ of $F$ is called a \textit{splitting field} for $A$ over $F$ if
+    \begin{enumerate}[(i)]
+        \item every polynomial in $A$ splits completely in $K[x]$,
+        \item if $F \subseteq E \subseteq K$ and every polynomial in $A$ splits completely in $E[x]$, then $E = K$.
+    \end{enumerate}
+\end{pbox}
+
+\begin{lemma}
+    Let $K/F$ be a field extension and let $f(x), g(x) \in F[x]$ be nonzero polynomials such that their product $f(x)g(x)$ splits completely in $K[x]$. Then both $f(x)$ and $g(x)$ split completely in $K[x]$.
+\end{lemma}
+
+\begin{proof}
+    We will use induction on $n = \deg f(x)g(x)$. For the base case, $n = 1$, we have 
+    \[
+        f(x)g(x) = a(x - \alpha)
+    \]
+    for some $a \in F^\times$ and $\alpha \in K$. Then $\deg f(x) + \deg g(x) = 1$, so one of the two polynomials has degree $1$ and the other has degree $0$. Assume $\deg g(x) = 0$, so $g(x) = g \in F^\times$ (and $g(x)$ splits completely in $K[x]$). Then
+    \[
+        f(x) = g^{-1}a(x - \alpha)
+    \]
+    is a factorization of $f(x)$ into linear factors in $K[x]$, so $f(x)$ splits completely in $K[x]$.
+
+    As the induction hypothesis, assume the result is true for any pair of polynomials in $K[x]$ whose product has degree at most $n- 1$. Now suppose $\deg f(x)g(x) = n$, so
+    \[
+        f(x)g(x) = a(x - \alpha_1) \cdots (x - \alpha_n)
+    \]
+    for some $a \in F^\times$ and $\alpha_1, \dots, \alpha_n \in K$. Since $x - \alpha_n$ is an irreducible polynomial in the UFD $K[x]$, then it is prime. Then the fact that $(x - \alpha_n) \divides f(x)g(x)$ implies $x - \alpha_n$ divides either $f(x)$ or $g(x)$. Without loss of generality, assume $(x - \alpha_n) \divides g(x)$, so
+    \[
+        g(x) = (x- \alpha_n)h(x)
+    \]
+    for some $h(x) \in K[x]$ with $\deg h(x) = \deg g(x) - 1$. Then we have
+    \[
+        f(x)h(x) = a(x - \alpha_1) \cdots (x - \alpha_{n-1}).
+    \]
+    Because $\deg f(x)h(x) = n - 1$, then we may apply the induction hypothesis to deduce that both $f(x)$ and $h(x)$ split completely in $K[x]$. As $h(x)$ splits completely in $K[x]$, we write
+    \[
+        h(x) = b(x - \beta_1) \cdots (x - \beta_m)
+    \]
+    for some $b \in F^\times$ and $\beta_1, \dots, \beta_m \in K$. Then
+    \[
+        g(x) = b(x - \beta_1) \cdots (x - \beta_m)(x - \alpha_n),
+    \]
+    which is a factorization of $g(x)$ into linear factors in $K[x]$. Hence, $g(x)$ splits completely in $K[x]$, which completes the induction.
+
+\end{proof}
+
+\begin{pbox}[(a)]
+    Suppose that $A = \{f_1(x), f_2(x), \dots, f_n(x)\} \subseteq F[x]$. Let $f(x) = \prod_{j=1}^{n} f_j(x)$ and $K$ be a splitting field of $f(x) \in F[x]$. Show that that $K$ is a splitting field of $A$ over $F$.
+\end{pbox}
+
+\begin{proof}
+    We will use induction on $n$. For the base case, if $n = 1$, then $f(x) = f_1(x)$ and $K$ is simply the splitting field of $f_1(x)$. This is the same as saying $K$ is the splitting field for the singleton $A = \{f_1(x)\}$.
+    
+    For the inductive hypotheses, assume that the result is true for any subset of $F[x]$ containing at most $n - 1$ polynomials. For $j = 1, \dots, n - 2$ define $g_j(x) = f_j(x)$, and define $g_{n-1}(x) = f_{n-1}(x)f_n(x)$. Then we apply the induction hypothesis to the subset $B = \{g_1(x), \dots, g_{n-1}(x)\} \subseteq F[x]$ containing $n - 1$ polynomials. We see that
+    \[
+        g_1(x) \cdots g_{n-1}(x) = f_1(x) \cdots f_{n-1}(x)f_n(x) = f(x),
+    \]
+    so $K$ is a splitting field of $B$ over $F$. In particular, $g_{n-1}(x) = f_{n-1}(x)f_n(x)$ splits completely in $K[x]$, so Lemma 1 tells us that both $f_{n-1}(x)$ and $f_n(x)$ split completely in $K[x]$. And since $f_1(x), \dots, f_{n-2}(x) \in B$ also split completely in $K[x]$, we conclude that every polynomial in $A$ splits completely in $K[x]$.
+    
+    Suppose $E$ is a field such that $F \subseteq E \subseteq K$ and every polynomial in $A$ splits completely in $E[x]$. Then, for $j = 1, \dots, n-2$, each $g_j(x) = f_j(x)$ splits completely in $E[x]$. We write
+    \[
+        f_{n-1}(x) = a(x - \alpha_1) \cdots (x - \alpha_m) \isp{and} f_n(x) = b(x - \beta_1) \cdots (x - \beta_k),
+    \]
+    for some $a, b \in F^\times$ and $\alpha_1, \dots, \alpha_m, \beta_1, \dots, \beta_k \in E$. Then
+    \[
+        g_{n-1}(x) = ab(x - \alpha_1) \cdots (x - \alpha_m)(x - \beta_1) \cdots (x - \beta_k)
+    \]
+    is a factorization of $g_{n-1}(x)$ into linear factors in $E[x]$. Hence, every polynomial in $B$ splits completely in $E[x]$. Since $K$ is a splitting field of $B$ over $F$, then $E = K$. Thus, $K$ is a splitting field of $A$ over $F$.
+
+\end{proof}
+
+\begin{pbox}[(b)]
+    Let $S \subseteq \clo{F}$ be the subset consisting of roots of polynomials in $A$. Show that $F(S)$ is a splitting field of $A$ over $F$.
+\end{pbox}
+
+\begin{proof}
+    Because $F(S) \subseteq \clo{F}$, we know that $F(S)/F$ is an algebraic field extension. For each $f(x) \in A$, we have
+    \[
+        f(x) = a(x - \alpha_1) \cdots (x - \alpha_n)
+    \]
+    for some $a \in F$ and $\alpha_1, \dots, \alpha_n \in \clo{F}$. Since $\alpha_1, \dots, \alpha_n$ are precisely the roots of $f(x)$, they are contained in $S \subseteq F(S)$. Therefore, this is a factorization of $f(x)$ into linear factors in $(F(S))[x]$, i.e., every polynomial in $A$ splits completely in $(F(S))[x]$.
+
+    Suppose $E$ is a field such that $F \subseteq E \subseteq F(S)$ and every polynomial in $A$ splits completely in $E[x]$. Given $\alpha \in S$, there is some $f(x) \in A$ such that $\alpha$ is a root of $f(x)$. Then we write
+    \[
+        f(x) = a(x - \alpha_1) \cdots (x - \alpha_n),
+    \]
+    for some $a \in F$ and $\alpha_1, \dots, \alpha_n \in E$. Since $f(\alpha) = 0$, then $\alpha = \alpha_j$ for some $j$. This implies $\alpha \in E$, and we conclude that $S \subseteq E$. Since the field $E$ also contains $F$, then in fact $F(S) \subseteq E$. Therefore, as we have the opposite inclusion by assumption, we have equality $E = F(S)$. Hence, $F(S)$ is a splitting field of $A$ over $F$.
+
+\end{proof}
+
+\begin{pbox}[(c)]
+    Suppose that $K$ is a splitting field of $A$ over $F$. Show that there exists a field isomorphism $\phi : K \to F(S)$ such that $\phi|_F = \id_F$.
+    
+    (Hint: Prop 5 on Apr 13 can be useful.)
+\end{pbox}
+
+\begin{proof}
+    Both $F(S)/F$ and $K/F$ are algebraic. Consider the algebraic closure $\clo{F}$ of $F$, which contains $F(S)$ as a subfield. Then Proposition 5 implies the existence of a field embedding $\phi : K \to \clo{F}$ such that the following diagram commutes:
+    \begin{center}
+        \begin{tikzcd}[labels={font=\normalsize}]
+            F \arrow[d, hook] \arrow[r, hook] & F(S) \arrow[r, hook] & \clo{F} \\
+            K \arrow[urr, swap, "\phi"] 
+        \end{tikzcd}
+    \end{center}
+    In particular, $\phi|_F = \id_F$. Since the inclusion map $F \hookrightarrow \clo{F}$ is injective, then $\phi$ is injective, therefore $K \isom \phi(K)$. We claim that $\phi(K) = F(S)$.
+
+
+    Given a polynomial $f(x) \in A$, we have
+    \[
+        f(x) = a(x - \alpha_1) \cdots (x - \alpha_n)
+    \]
+    for some $a \in F^\times$ and $\alpha_1, \dots, \alpha_n \in F(S)$. More specifically, we know that $\alpha_1, \dots, \alpha_n \in S$. Additionally,
+    \[
+        f(x) = b(x - \beta_1) \cdots (x - \beta_n)
+    \]
+    for some $b \in F^\times$ and $\beta_1, \dots, \beta_n \in K$. Extending $\phi$ to a ring homomorphism $\phi' : K[x] \to \clo{F}[x]$, we know that $\phi'|_{F[x]} = \id_{F[x]}$. Then in $\clo{F}[x]$, we find
+    \[
+        f(x) 
+            = \phi'(f(x))
+            = \phi'(b(x - \beta_1) \cdots (x - \beta_n)) 
+            = b(x - \phi(\beta_1)) \cdots (x - \phi(\beta_n)).
+    \]
+    Then we now have two factorizations of $f(x)$ into linear factors in $\clo{F}[x]$, given by
+    \[
+        f(x) = a(x - \alpha_1) \cdots (x - \alpha_n) = b(x - \phi(\beta_1)) \cdots (x - \phi(\beta_n)).
+    \]
+    Since $\clo{F}[x]$ is a UFD then, up to reordering, $\alpha_j = \phi(\beta_j)$ for $j = 1, \dots, n$. That is, every root of $f(x)$ in $\clo{F}$ is an element of $\phi(K)$. Since this is true for all polynomials in $A$, then we must have $S \subseteq \phi(K)$. And since $F = \phi(F) \subseteq \phi(K)$, then we must have $F(S) \subseteq \phi(K)$. Since $K$ is a splitting field for $A$ over $F$, then so is $\phi(A)$. And since $F(S)$ is also a splitting field for $A$ over $F$, then in fact $F(S) = \phi(K)$. Hence, $\phi : K \to F(S)$ is an isomorphism which is the identity on $F$. 
+
+\end{proof}
+
+
+\newpage
+\begin{pbox}[Q4]
+    Let $F$ be a field of characteristic $p$. Show that if $K/F$ is a finite inseparable field extension, then $p \divides [K : F]$.
+\end{pbox}
+
+\begin{proof}
+    Since $K/F$ inseparable, then there exists some element $\alpha \in K$ such that $m_{\alpha, F}(x)$ is inseparable, so $\deg m_{\alpha, F}(x) \geq 2$ and $\gcd(m_{\alpha, F}(x), m_{\alpha, F}'(x)) \ne 1$. Since $m_{\alpha, F}(x)$ is irreducible, this means that $m_{\alpha, F}(x)$ divides $m_{\alpha, F}'(x)$. But the degree of $m_{\alpha, F}(x)$ is strictly greater than the degree of its derivative, and the only polynomial multiple of $m_{\alpha, F}(x)$ with a lesser degree is $0$. Therefore, $m_{\alpha, F}'(x) = 0$. Suppose
+    \[
+        m_{\alpha, F}(x) = x^{n} + \sum_{j=0}^{n-1} a_jx^{j}
+    \]
+    where $n = \deg m_{\alpha, F}(x)$, then
+    \[
+        m_{\alpha, F}'(x) = nx^{n-1} + \sum_{j=1}^{n-1} ja_jx^{j-1}.
+    \]
+    But $\deg m_{\alpha, F}(x) \geq 2$ and $\deg m_{\alpha, F}'(x) = 0$. so we must have $n = 0$ in $F$, which means that $n$ is an integer multiple of $p$. Therefore,
+    \[
+        [K : F] = [K : F(\alpha)][F(\alpha) : F] = [K : F(\alpha)] \cdot n
+    \]
+    is an integer multiple of $p$, i.e., $p \divides [K : F]$.
+    
+    
+
+\end{proof}
+
+
+
+\end{document}

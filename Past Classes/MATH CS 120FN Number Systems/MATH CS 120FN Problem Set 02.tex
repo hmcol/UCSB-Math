@@ -1,0 +1,155 @@
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{colortbl}
+
+\lstset{basicstyle=\footnotesize}
+\usetikzlibrary{calc}
+
+ 
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{question}[2][Question]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+ 
+\begin{document}
+ 
+\title{Problem Set 2\\
+    \large CS120FN Number Systems}
+\author{Harry Coleman}
+\date{October 8, 2019}
+
+\maketitle
+
+\section*{Problem 2}
+\fbox{
+    \parbox{\textwidth}{
+        If $(A,B,C)$ is a solution, show that $(n^2A,n^2B,n^3C)$ is also a solution.
+    }
+}
+\\
+
+We are given that
+
+\begin{equation}\label{base}
+    A^3 + B^3 = C^2
+\end{equation}
+
+If we multiply both sides by $n^6$, we get
+
+\[n^6(A^3 + B^3) = n^6(C^2)\]
+\[n^6 A^3 + n^6 B^3 = n^6 C^2\]
+\[(n^2 A)^3 + (n^2 B)^3 = (n^3 C)^2\]
+
+Therefore $(n^2A,n^2B,n^3C)$ is also a solution.
+
+\newpage
+\section*{Problem 3}
+\fbox{
+    \parbox{\textwidth}{
+        Call a solution \emph{primitive} if it is not of the form $(n^2A,n^2B,n^3C)$ for some $n\geq 2$. Find four different primitive solutions.
+    }
+}
+\\
+
+In order to generate some primitive solutions to equation \ref{base}, we'll use the hint from problem one that solutions can be written in the form 
+\begin{equation}\label{hint}
+    (xz, yz, z^2)
+\end{equation} 
+Substitution these values into equation \ref{base} we get
+\begin{align}
+    \nonumber (xz)^3 + (yz)^3 &= (z^2)^2\\
+    \nonumber x^3 \cdot z^3 + y^3 \cdot z^3 &= z \cdot z^3\\
+    x^3 + y^3 &= z \label{zeqn}
+\end{align}
+
+We now select a variety of $x$ and $y$ values, and use equation \ref{zeqn} to find the corresponding $z$ value for each. Then, for each set of $(x, y, z)$ values, we'll use equation \ref{hint} to generate $(a, b, c)$ values for equation \ref{base}. To make sure we have primitive solutions, we'll see if $a$ and $b$ have a common factor in the form $n^2$. If it does, we'll divide $a$ and $b$ by $n^2$ and divide $c$ by $n^3$. This will give us an $(A, B, C)$ that is a primitive solution to equation \ref{base}. 
+
+\begin{center}
+    \begin{tabular}{c|c|c||c|c|c||c|c|c}\label{ye}
+        $x$ & $y$ & $z$ & $a$ & $b$ & $c$ & $A$ & $B$ & $C$ \\
+        \hline
+        1 & 1 & 2   & 2     & 2     & 4     &\cellcolor{gray!25} 2      &\cellcolor{gray!25} 2  &\cellcolor{gray!25} 4 \\
+        1 & 2 & 9   & 9     & 18    & 81    &\cellcolor{gray!25} 1      &\cellcolor{gray!25} 2  &\cellcolor{gray!25} 3 \\
+        1 & 3 & 28  & 28    & 84    & 784   &\cellcolor{gray!25} 7      &\cellcolor{gray!25} 21 &\cellcolor{gray!25} 98 \\
+        1 & 4 & 65  & 65    & 260   & 4225  &\cellcolor{gray!25} 65     &\cellcolor{gray!25}260 &\cellcolor{gray!25} 4225 \\
+        1 & 5 & 126 & 126   & 630   & 15876 &\cellcolor{gray!25} 14     &\cellcolor{gray!25} 70 &\cellcolor{gray!25} 588 \\
+        2 & 2 & 16  & 32    & 32    & 256   & 2     & 2     & 4 \\
+        2 & 3 & 35  & 70    & 105   & 1225  &\cellcolor{gray!25} 70     &\cellcolor{gray!25} 105&\cellcolor{gray!25} 1225 \\
+        2 & 4 & 72  & 144   & 288   & 5184  & 1     & 2     & 3 \\
+        2 & 5 & 133 & 266   & 665   & 17689 &\cellcolor{gray!25} 266    &\cellcolor{gray!25} 665&\cellcolor{gray!25} 17689 \\
+        3 & 3 & 54  & 162   & 162   & 2916  & 2     & 2     & 4 \\
+        3 & 4 & 91  & 273   & 364   & 8281  &\cellcolor{gray!25} 273    &\cellcolor{gray!25} 364&\cellcolor{gray!25} 8281 \\
+        3 & 5 & 152 & 456   & 760   & 23104 &\cellcolor{gray!25} 114    &\cellcolor{gray!25} 190&\cellcolor{gray!25} 2888 \\
+        4 & 4 & 128 & 512   & 512   & 16384 & 2     & 2     & 4 \\
+        4 & 5 & 189 & 756   & 945   & 35721 &\cellcolor{gray!25} 84     &\cellcolor{gray!25} 105&\cellcolor{gray!25} 1323 \\
+        5 & 5 & 250 & 1250  & 1250  & 62500 & 2     & 2     & 4 \\
+        17 & 61 & 231894 & 3942198 & 14145534 & 53774827236 &\cellcolor{gray!25} 438022 &\cellcolor{gray!25} 1571726 &\cellcolor{gray!25} 1991660268 \\
+    \end{tabular}
+\end{center}
+
+We now have 11 different primitive solutions to equation \ref{base}, highlighted in the above table. (The last row would be a solution to \textbf{Problem 5}).
+
+
+\newpage
+\section*{Problem 4}
+\fbox{
+    \parbox{\textwidth}{
+        Find all primitive solutions $(a,b,c)$ with $a=b$.
+    }
+}
+\\
+
+We can rewrite equation \ref{base} as
+\begin{align}
+    \nonumber A^3 + A^3 &= C^2\\
+    2A^3 &= C^2 \label{aceqn}
+\end{align}
+
+We see here that $C^2$ must be even, so $C$ must be even and have a factor of 2, so $C^2$ must have a factor of 4. If $C^2$ has a factor of 4, then $A^3$ must be even, so $A$ must be even and have a factor of 2. So we can define
+\begin{align*}
+    A &= 2n \\
+    C &= 4m
+\end{align*}
+where $n, m \in \mathbb{N}$. So we can rewrite equation \ref{aceqn} as
+\begin{align}
+    \nonumber 2(2n)^3 &= (4m)^2 \\
+    \nonumber 16n^3 &= 16m^2 \\
+    n^3 &= m^2 \label{nmeqn}
+\end{align} 
+
+If we define
+\begin{align*}
+    n &= t^2 \\
+    m &= t^3
+\end{align*}
+where $t \in \mathbb{N}$, then substituting into equation \ref{nmeqn} we get
+\begin{align*}
+    (t^2)^3 &= (t^3)^2\\
+    t^6 &= t^6
+\end{align*}
+
+So we can define
+\begin{align*}
+    A = B &= 2t^2 \\
+    C &= 4t^3
+\end{align*}
+
+So we know that for all $t \in \mathbb{N}$, $(2t^2, 2t^2, 4t^3)$ is a solution to equation \ref{base} where $a=b$. However, we also know that if the solution can be written as $(n^2A,n^2B,n^3C)$, then it is not primitive. So the only value for $t$ that gives us a primitive solution is 1. So the only primitive solution to equation \ref{base} is $(2, 2, 4)$.
+
+
+\end{document}
+

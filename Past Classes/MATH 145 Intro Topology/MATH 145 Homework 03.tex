@@ -1,0 +1,163 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow,enumitem}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools,babel}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{\textwidth-10pt}}
+    {\end{minipage}\end{lrbox}\framebox[6.5in]{\usebox{\mybox}}\\}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\seq}[2]{\left\{#1\right\}_{#2=1}^\infty}
+\newcommand{\clo}[1]{\overline{#1}}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ang}{\langle}{\rangle}
+
+% Sets
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+
+% Misc Characters
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\let\eps\varepsilon
+\let\emptyset\varnothing
+
+% Functions
+\newcommand{\id}[1]{\mathsf{id}_{#1}}
+
+% Babel Shorthands
+\useshorthands*{"}
+\defineshorthand{"-}{\setminus}
+\defineshorthand{"d}{\partial}
+
+% Topology
+\newcommand{\T}{\mathscr{T}}
+\renewcommand{\S}{\mathscr{S}}
+\newcommand{\B}{\mathscr{B}}
+\renewcommand{\int}{\text{int}}
+ 
+\begin{document}
+ 
+\title{Homework 3\\
+    \large MATH 145 Intro to Topology
+}
+\author{Harry Coleman}
+\date{July 13, 2020}
+\maketitle
+
+\section*{Exercise 2.6.1}
+\begin{problem}
+    Prove in detail that compactness is a topological property.
+\end{problem}
+
+\begin{proposition}
+    If $X$ and $Y$ are homeomorphic topological spaces with $X$ compact, then $Y$ is also compact.
+\end{proposition}
+
+\begin{proof}
+    Suppose $X$ is a compact topological space, $Y$ is any topological space, and we have a homeomorphism $f:X\to Y$. Now suppose $\{U_\alpha:\alpha\in I\}$ is an open cover of $Y$. Now for each $x\in X$, $f(x)\in U_\alpha$ for some $\alpha\in I$, that is, $x\in f^{-1}(U_\alpha)$. Since $f$ is continuous, each $f^{-1}(U_\alpha)$ is open, so $\{f^{-1}(U_\alpha) : \alpha\in I\}$ is an open cover of $X$. Because $X$ is compact, there exists a finite subcover $\{f^{-1}(U_i) : i=1,\dots,n\}$. Now since $f$ is bijective, for each $y\in Y$, there exist some $x\in X$ such that $y=f(x)\in U_i$ for some $i\in\{1,\dots,n\}$. Therefore $\{U_i : i=1,\dots,n\}$ is a finite subcover of $Y$ and $Y$ is compact.
+    
+\end{proof}
+
+\section*{Exercise 2.6.3}
+\begin{problem}
+    Show that any space with the cofinite topology is compact.
+\end{problem}
+
+\begin{proof}
+    Let $X$ be a set with the cofinite topology. Suppose $\{U_\alpha : \alpha\in I\}$ is an open cover of $X$. Let $U_{\alpha_1}\in\{U_\alpha : \alpha\in I\}$ be any open set part of the open cover. Since $U_{\alpha_1}$ is open in the cofinite topology, $X"-U_{\alpha_1}$ is finite; let $\{x_2,\dots,x_n\}=X"-U_{\alpha_1}$. For each $x_i\in X"-U_{\alpha_1}$, there exists some $\alpha_i\in I$ such that $x_i\in U_{\alpha_i}$. Then $\{U_{\alpha_i}:i=2,\dots,n\}$ covers $X"-U_{\alpha_1}$, and $\{U_i:i=1,\dots,n\}$ is a finite subcover of our original open cover of $X$. Therefore $X$ is compact.
+    
+\end{proof}
+
+\section*{Exercise 2.6.5}
+\begin{problem}
+    Show that a continuous real-valued function on a compact space attains its maximum value and its minimum value. In particular, show that a continuous real-valued function on a compact space is bounded.
+\end{problem}
+
+\begin{proposition}
+    A continuous real-valued function on a compact space is bounded.
+\end{proposition}
+
+\begin{proof}
+    Let $X$ be a compact space and let $f:X\to\R$ be continuous. Then $f(X)$ is compact in $\R$ and by the Heine-Borel theorem, $f(X)$ is bounded. That is, there exist some $m,M\in\R$ such that $m\leq f(x)\leq M$ for all $x\in X$, so $f$ is bounded.
+    
+\end{proof}
+
+\begin{proposition}
+    A continuous real-valued function on a compact space attains its maximum value and its minimum value.
+\end{proposition}
+
+\begin{proof}
+    Let $X$ be a compact space and let $f:X\to\R$ be continuous. Then $f(X)$ is compact in $\R$ and by the Heine-Borel theorem, $f(X)$ is closed and bounded. Let
+    \[m=\inf_{x\in X}f(x) \isp{and} M=\sup_{x\in X}f(x).\]
+    Now we construct two sequences $\seq{x_n}{n}$ and $\seq{y_n}{n}$ in $X$ such that $f(x_n)\to m$ and $f(y_n)\to M$. Since $X$ is compact, there exist subsequences $\seq{x_{n_k}}{k}$ and $\seq{y_{n_k}}{k}$ converging to $x$ and $y$, respectively. By construction, we have $f(x)=m$ and $f(y)=M$, therefore $f$ attains its minimum and maximum.
+    
+\end{proof}
+
+\section*{Exercise 2.6.6}
+\begin{problem}
+    Prove that if $X$ is a compact Hausdorff space and if $x,y\in X$ satisfy $x\ne y$, then there is a continuous real-valued function $f$ on $X$ such that $f(x)\ne f(y)$. (In other words, the continuous real-valued functions on $X$ ``separate the points'' of $X$.)
+\end{problem}
+
+\begin{proof}
+    Let $x,y\in X$ such that $x\ne y$. Since $X$ is compact and Hausdorff, it is normal. Since $X$ Hausdorff, and therefore $T_1$, the singletons $\{x\}$ and $\{y\}$ are closed in $X$. Therefore, by Urysohn's lemma, there exists a continuous function $f:X\to[0,1]$ such that $f(x)=0\ne1=f(y)$. 
+    
+\end{proof}
+
+\newpage
+\section*{Exercise 2.7.2}
+\begin{problem}
+    Prove in detail that local compactness is a topological property.
+\end{problem}
+
+\begin{proposition}
+    If $X$ and $Y$ are homeomorphic topological spaces with $X$ locally compact, then $Y$ is also compact.
+\end{proposition}
+
+\begin{proof}
+    Suppose $X$ is locally compact, $Y$ is any topological space, and $f:X\to Y$ is a homeomorphism. Let $y\in Y$, and $x\in X$ such that $f(x)=y$. Then because $X$ is locally compact, there exist some open neighborhood $U$ of $x$ such that $\clo{U}$ is compact. Since $f$ is a homeomorphism, $f(U)$ is an open neighborhood of $y$ and $f(\clo{U})$ is compact. By definition of closure, since $f(U)\subseteq f(\clo{U})$, with $f(\clo{U})$ closed, $\clo{f(U)}\subseteq f(\clo{U})$. And since $f(\clo{U})$ is compact, any closed subset, in particular $\clo{f(U)}$, is also compact. Therefore, every point in $Y$ has an open neighborhood whose closure is compact; $Y$ is locally compact. 
+    
+\end{proof}
+
+\section*{Exercise 2.7.5}
+\begin{problem}
+    Let $X$ be a topological space and define the family $\S$ of subsets of $Y= X \cup \{\infty\}$ as in the proof of theorem 7.1. Which conclusions of theorem 7.1 are valid without any further hypothesis on $X$? Which are valid when $X$ is a Hausdorff space?
+\end{problem}
+
+With no further hypothesis on $X$, we still obtain that $(Y,\S)$ is a com pact topological space, as the proof does not utilize the fact that $X$ is locally compact nor Hausdorff. However, it is not necessarily the case that the topology defined on $Y$ will agree with the original topology on $X$. A counterexample would be $X=\{0,1\}$ with the topology $\T = \{\emptyset, \{0\}, X\}$, as the subset $\{0\}$ is evidently compact but not closed, but the definition of $\S$ would give that it is open.
+
+When $X$ is Hausdorff, then we can obtain that the topology $\S$ on $Y$ agrees with the original topology on $X$. However, local compactness of $X$ is necessary to prove that $(Y,\S)$ is a Hausdorff space.
+
+
+
+
+\end{document}

@@ -1,0 +1,154 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow,enumitem}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools,babel}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{\textwidth-10pt}}
+    {\end{minipage}\end{lrbox}\framebox[6.5in]{\usebox{\mybox}}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+\newenvironment{response}{\paragraph{}}{}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\seq}[2]{\left\{#1\right\}_{#2=1}^\infty}
+\newcommand{\clo}[1]{\overline{#1}}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ang}{\langle}{\rangle}
+
+% Sets
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+
+% Misc Characters
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\let\eps\varepsilon
+\let\emptyset\varnothing
+
+% Functions
+\newcommand{\id}[1]{\mathsf{id}_{#1}}
+
+% Babel Shorthands
+\useshorthands*{"}
+\defineshorthand{"-}{\setminus}
+\defineshorthand{"d}{\partial}
+
+% Probability
+\newcommand{\FF}{\mathcal{F}}
+\renewcommand{\P}{\mathbb{P}}
+ 
+\begin{document}
+ 
+\title{Homework 1\\
+    \large MATH CS 121 Intro to Probability
+}
+\author{Harry Coleman \#9480690}
+\date{October 14, 2020}
+\maketitle
+
+\section*{Exercise 1}
+\begin{problem}
+    Let $\Omega = \{1,2,3,4,5,6\}$. Verify that $\FF=\{\{1,3,5\},\{2,4,5\},\{1,2,3,4,5,6\},\emptyset\}$ is a sigma algebra and determine the set of probability measures on $\FF$.
+\end{problem}
+
+\begin{proposition}
+    $\FF=\{\{1,3,5\},\{2,4\,5\},\{1,2,3,4,5,6\},\emptyset\}$ is a sigma algebra.
+\end{proposition}
+
+\begin{proof}
+    Clearly, $\Omega=\{1,2,3,4,5,6\}\in\FF$, so condition (F1) is satisfied. Note that $\FF$ is comprised of two pairs of complementary sets:
+    \[\{1,3,5\}^C = \{2,4,6\} \isp{and} \Omega^C = \emptyset,\]
+    so condition (F2) is satisfied. Now let $A_1,A_2,\dots$ be a countable sequence of elements of $\FF$ and consider the union
+    \[\bigcup_{i=1}^\infty A_i.\]
+    Enumerate the elements of $\FF$ by $B_1,B_2,B_3,B_4$. Since $\FF$ has only fours elements, then for each $A_i$, we must have $A_i=B_k$ for some $k\in\{1,2,3,4\}$. Therefore, we may rewrite the summation as
+    \[\bigcup_{i=1}^\infty A_i = \bigcup_{k:\exists i\in\N,A_i=B_k}B_k,\]
+    which is simply a union of up to four elements of $\FF$. Since any choice of up to four elements of $\FF$ produces a union which is also in $\FF$, we we can conclude that indeed
+    \[\bigcup_{i=1}^\infty A_i \in \FF,\]
+    satisfying condition (F3).
+    
+\end{proof}
+
+For any probability measure $\P:\FF\to[0,1]$, we must have $\P(\Omega)=1$ and $\P(\emptyset)=0$. Since
+\[\{1,3,5\}\sqcup\{2,4,6\} = \Omega,\]
+and therefore
+\[\P(\{1,3,5\}) = 1-\P(\{2,4,6\}),\]
+we can say that $\P$ is uniquely determined by how it maps either $\{1,3,5\}$ of $\{2,4,6\}$. Letting $\P_x:\FF\to[0,1]$ be the probability measure which maps $\P_x(\{1,3,5\}) = x$ for any $x\in[0,1]$, then the set of all probability measures on $\FF$ is
+\[\{\P_x : x\in[0,1]\}.\]
+
+\section*{Exercise 2}
+\begin{problem}
+    Let $A_1,A_2,\dots$ be events. Show that $\ds\P\left(\bigcup_{k=1}^\infty A_k\right) \leq \sum_{k=1}^\infty\P(A_k)$.
+\end{problem}
+
+\begin{proof}
+    Define $B_k=A_1\cup\cdots\cup A_k$ for each $k\in\N$. This definition gives us that
+    \[\bigcup_{k=1}^\infty A_k = \bigcup_{k=1}^\infty B_k\]
+    and that $B_1\subseteq B_2\subseteq \cdots$. Then by the continuity of the probability measure,
+    \[\P\left(\bigcup_{k=1}^\infty A_k\right) = \P\left(\bigcup_{k=1}^\infty B_k\right) = \lim_{n\to\infty}\P(B_n).\]
+    Furthermore, by the definition of $B_k$ and the properties of the probability measure, we have
+    \[\P(B_n) = \P(A_1\cup\dots\cup A_n) \leq \sum_{k=1}^n\P(A_k).\]
+    Finally, by the definition of infinite summation, we find
+    \[\P\left(\bigcup_{k=1}^\infty A_k\right) \leq \lim_{n\to\infty}\sum_{k=1}^n\P(A_k) = \sum_{k=1}^\infty\P(A_k).\]
+    
+\end{proof}
+
+\newpage
+\section*{Exercise 3}
+\begin{problem}
+    Let $\Omega$ be a sample and let $\FF_1$ and $\FF_2$ be two $\sigma$-algebras. Show that the intersection $\FF=\FF_1\cap\FF_2$ is also a $\sigma$-algebra.
+\end{problem}
+
+\begin{proof}
+    Since both $\FF_1$ and $\FF_2$ are $\sigma$-algebras, $\Omega\in\FF_1$ and $\Omega\in\FF_2$, and therefore $\Omega\in\FF_1\cap\FF_2=\FF$. Now suppose $A\in\F$, that is, $A\in\FF_1$ and $A\in\FF_2$. Again since both are $\sigma$-algebras, we have $A^C\in\FF_1$ and $A^C\in\FF_2$, so $A^C\in\FF_1\cap\FF_2=\FF$. Now suppose $A_1,A_2,\dots\in\FF$, that is, $A_1,A_2,\dots\in\FF_1$ and $A_1,A_2,\dots\in\FF_2$. Again, since both are $\sigma$-algebras, we have
+    \[\bigcup_{i=1}^\infty A_i \in \FF_1 \isp{and} \bigcup_{i=1}^\infty A_i \in \FF_2,\]
+    and therefore
+    \[\bigcup_{i=1}^\infty A_i \in \FF_1\cap\FF_2 = \FF.\]
+    
+\end{proof}
+
+\section*{Exercise 4}
+\begin{problem}
+    Show that the union of two $\sigma$-algebra does not have to be a $\sigma$-algebra.
+\end{problem}
+
+\begin{proof}
+    Consider the sample space $\Omega=\{1,2,3\}$ and the two $\sigma$-algebras
+    \begin{align*}
+        \FF_1 &= \{\{1\},\{2,3\},\Omega,\emptyset\}, \\
+        \FF_2 &= \{\{2\},\{1,3\},\Omega,\emptyset\}.
+    \end{align*}
+    If we let $\FF=\FF_1\cup\FF_2$, then $\{1\}\in\FF$ and $\{2\}\in\FF$, but $\{1\}\cup\{2\}=\{1,2\}\notin\FF$. Therefore $\FF$ is not a $\sigma$-algebra.
+    
+\end{proof}
+
+
+
+
+\end{document}

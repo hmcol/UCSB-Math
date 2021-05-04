@@ -1,0 +1,210 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% custom commands
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\p}{^{\prime}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\newcommand{\exercise}[2]{\section*{Exercise #1}\framebox{\begin{minipage}{\textwidth}#2\end{minipage}}\par\vspace{1em}}
+\newcommand{\problem}[2]{\section*{Problem #1}\framebox{\begin{minipage}{\textwidth}#2\end{minipage}}\par\vspace{1em}}
+
+ 
+\begin{document}
+ 
+\title{Homework 6\\
+    \large MATH CS 108A Linear Algebra I}
+\author{Harry Coleman}
+\date{January 22, 2020}
+
+\maketitle
+
+
+\exercise{1}{
+    Is
+    \[A =
+        \begin{bmatrix}
+            2 & 1 & 2 & 1  \\
+            1 & 0 & 1 & 2  \\
+            3 & 2 & 1 & -1 \\
+        \end{bmatrix}
+    \]
+    row equivalent to a matrix in echelon form?
+}
+
+We will apply a series of elementary row operations to $A$ in order to obtain a matrix in echelon form. That matrix will, by definition, be row-equivalent to $A$.
+
+\[e_{12}(A) =
+    \begin{bmatrix}
+        1 & 0 & 1 & 2  \\
+        2 & 1 & 2 & 1  \\
+        3 & 2 & 1 & -1 \\
+    \end{bmatrix}
+\]
+
+\[e_{21(-2)}(e_{12}(A)) =
+    \begin{bmatrix}
+        1 & 0 & 1 & 2  \\
+        0 & 1 & 0 & -3  \\
+        3 & 2 & 1 & -1 \\
+    \end{bmatrix}
+\]
+
+\[e_{31(-3)}(e_{21(-2)}(e_{12}(A))) =
+    \begin{bmatrix}
+        1 & 0 & 1 & 2  \\
+        0 & 1 & 0 & -3  \\
+        0 & 2 & -2 & -5 \\
+    \end{bmatrix}
+\]
+
+\[A' = e_{32(-2)}(e_{31(-3)}(e_{21(-2)}(e_{12}(A)))) =
+    \begin{bmatrix}
+        1 & 0 & 1 & 2  \\
+        0 & 1 & 0 & -3  \\
+        0 & 0 & -2 & 1 \\
+    \end{bmatrix}
+\]
+
+Since $A'$, which is a matrix in echelon form, is obtained by a series of elementary row operations on $A$, we know that $A$ and $A'$ are row-equivalent.
+
+\newpage
+\exercise{2}{
+    Find a matrix in row-echelon form that is row-equivalent to $A$.
+    \[ A = 
+    \begin{bmatrix}
+        1 & -i \\
+        2 & 2 \\
+        i & 1+i
+    \end{bmatrix}
+    \in M_{3\times 2}(\C).\]
+}
+
+We will apply a series of elementary row operations to $A$ in order to obtain a matrix in echelon form. That matrix will, by definition, be row-equivalent to $A$.
+\[e_{21(-2)}(A) = 
+    \begin{bmatrix}
+        1 & -i \\
+        0 & 2+2i \\
+        i & 1+i
+    \end{bmatrix}
+\]
+
+\[e_{31(-i)}(e_{21(-2)}(A)) = 
+    \begin{bmatrix}
+        1 & -i \\
+        0 & 2+2i \\
+        0 & i
+    \end{bmatrix}
+\]
+
+\[e_{23(2i-2)}(e_{31(-i)}(e_{21(-2)}(A))) = 
+    \begin{bmatrix}
+        1 & -i \\
+        0 & 0 \\
+        0 & i
+    \end{bmatrix}
+\]
+
+\[A' = e_{23}(e_{23(2i-2)}(e_{31(-i)}(e_{21(-2)}(A)))) = 
+    \begin{bmatrix}
+        1 & -i \\
+        0 & i \\
+        0 & 0
+    \end{bmatrix}
+\]
+
+Since $A'$, which is a matrix in echelon form, is obtained by a series of elementary row operations on $A$, we know that $A$ and $A'$ are row-equivalent.
+
+
+\newpage
+\exercise{3}{
+    We say that two matrices $A$ and $B$ are column-equivalent if there is a sequence of column operations that transform $A$ into $B$. Show that this is an equivalence relation.
+}
+
+For this to be an equivalent relation, it must be reflexive, symmetric, and transitive. Any matrix $A$ is column-equivalent to itself, since we can find a series of column operations on $A$ to obtain $A$. For instance, multiplying the first column by 1. This means that column-equivalence is a reflexive relation.
+
+Suppose we have two matrices $A$ and $B$ with $B \sim A$\textemdash that is, there is a sequence of column operations $(e_1 \circ \cdots \circ e_n)$ such that $(e_1 \circ \cdots \circ e_n)(A) = B$. We can take the inverse of each of these column operations to find $(e_n^{-1} \circ \cdots \circ e_1^{-1})(B) = A$. Which means that $A \sim B$. Therefore, column-equivalence is a symmetric relation.
+
+Now suppose we have matrices $A$, $B$, and $C$ where $A\sim B$ and $B\sim C$. This tells us we can find series of row operations $(e_i \circ \cdots \circ e_n)$ and $(f_1 \circ \cdots \circ f_m)$ where
+\[(e_i \circ \cdots \circ e_n)(B) = A \text{ and } (f_1 \circ \cdots \circ f_m)(C) = B.\]
+Substituting for $B$, we find
+\[(e_i \circ \cdots \circ e_n)((f_1 \circ \cdots \circ f_m)(C)) = A,\]
+\[(e_i \circ \cdots \circ e_n \circ f_1 \circ \cdots \circ f_m)(C) = A.\]
+Since there is a sequence of column operations from $C$ to $A$, we know $A\sim C$. Therefore column-equivalence is a transitive relation. Since it is reflexive, symmetric, and transitive, it is an equivalence relation.
+
+
+
+\newpage
+\exercise{6}{
+    Show that every $n \times m$ matrix is row-equivalent to a matrix in echelon form.
+}
+
+A matrix is row-equivalent to some matrix in echelon form if and only if there exists a series of row operations which, when applied to the matrix, produce a matrix in echelon form. We will show that from any matrix, we can obtain a matrix in echelon form using only row operations. To show this is possible for a matrix $A\in\F^{n\times m}$, we will perform induction on the number of rows $n$.
+
+The base case of $n=1$ is clearly true since for $A\in\F^{1\times m}$, we have
+\[A = [a_{11} \quad a_{12} \quad a_{13} \quad \cdots \quad a_{1n}],\]
+which is already a matrix in echelon form, so we need not apply any row operations.
+
+For the inductive step, we assume that from every matrix of size $n\times m$, we can obtain a matrix in echelon form using only row operations. Let $A\in\F^{(n+1)\times m}$ where
+\[A =
+    \begin{bmatrix}
+        a_{11} & a_{12} & a_{13} & \cdots & a_{1m} \\
+        a_{21} & a_{22} & a_{23} & \cdots & a_{2m} \\
+        a_{31} & a_{32} & a_{33} & \cdots & a_{3m} \\
+        \vdots & \vdots & \vdots & \ddots & \vdots \\
+        a_{n1} & a_{n2} & a_{n3} & \cdots & a_{nm} \\
+        a_{(n+1)1} & a_{(n+1)2} & a_{(n+1)3} & \cdots & a_{(n+1)m} \\
+    \end{bmatrix}
+.\]
+
+We now consider the matrix $A'$, which is the first $n$ rows of $A$, and the matrix $B$, which is just the $(n+1)$th row of $A$. That is,
+\[A' =
+    \begin{bmatrix}
+        a_{11} & a_{12} & a_{13} & \cdots & a_{1m} \\
+        a_{21} & a_{22} & a_{23} & \cdots & a_{2m} \\
+        a_{31} & a_{32} & a_{33} & \cdots & a_{3m} \\
+        \vdots & \vdots & \vdots & \ddots & \vdots \\
+        a_{n1} & a_{n2} & a_{n3} & \cdots & a_{nm} \\
+    \end{bmatrix}
+,\]
+\[B = [a_{(n+1)1} \quad a_{(n+1)2} \quad a_{(n+1)3} \quad \cdots \quad a_{(n+1)m}].\]
+
+Since $A'$ is an $n\times m$ matrix, we can find a series of row operations $e_1,\dots,e_k$ such that $A_1' = (e_1 \circ\dots\circ e_k)(A')$ is a matrix in echelon form. We now take $A_1 = (e_1 \circ\dots\circ e_k)(A)$, to obtain a matrix with the same entries as $A_1'$ in the first $n$ rows, and the same entries as $B$ in the $(n+1)$th row.
+
+We define $k_i$ to be the column of the first nonzero element in the $i$th row of $A_1$. Since $A_1'$ is a matrix in echelon form, and has the same values as the first $n$ rows of $A_1$, then for the first $r\leq n$ nonzero rows in $A_1$, we find that $k_1<\dots<k_r$.
+
+If row $n+1$ is all zeros, then $A_1$ is already in echelon form. Otherwise, we define $c_1$ to be the column of the first nonzero element in the $(n+1)$th row of $A_1$. If $k_r<c_1$, then we swap rows $r+1$ and $n+1$, which produces a matrix in echelon form. Otherwise, we consider the smallest $i$ for which $c_1<k_i$.
+
+If $k_{i-1}<c_1<k_i$, then we swap rows $i$ and $n+1$, then swap rows $i+1$ and $n+1$, and so on until we swap rows $r+1$ and $n+1$. At which point, we have obtained a matrix in echelon form. Otherwise, it is the case that $k_{i-1}=c_1$, so we add a multiple of row $i-1$ to row $n+1$ which results in the entry of row $n+1$ at column $c_1$ to be zero. Then we find $c_2$, which is the column of the first nonzero entry in row $n+1$. Applying this operation to $A_1$ gives us $A_2$, which has the same entries as $A_1$ in the first $n$ rows, but different in the $(n+1)$th row. Notably, $c_1<c_2$, in other words, the first nonzero element in the $(n+1)$th row occurs at a later column in $A_2$ than in $A_1$. 
+
+If $k_r<c_2$, then we swap rows $r+1$ and $n+1$, which produces a matrix in echelon form. Otherwise, we consider the smallest $i$ for which $c_2<k_i$, and repeat the process in the previous two paragraphs with $A_2,A_3,\dots,A_l$, until a matrix $A_l$ in echelon form in produced. This process will eventually complete, since each $c_1<\cdots<c_l<m$, for a finite fixed $m$.
+
+So, there is a sequence of row operations which can be applied to $A$ to produce a matrix in echelon form. Which completes the inductive step.
+
+Therefore, for any $n\times m$ matrix, we can apply a series of row operations to obtain a matrix in row echelon for. Which tells us that every $n\times m$ matrix is row-equivalent to a matrix in echelon form.
+
+
+
+
+
+
+
+\end{document}

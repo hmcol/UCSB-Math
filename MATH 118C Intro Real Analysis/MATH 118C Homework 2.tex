@@ -1,0 +1,274 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{amsmath, amsthm, amssymb, physics}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{4pt}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\pfrac}[2]{\left(\frac{#1}{#2}\right)}
+
+% Extra Commands
+\newcommand{\bm}{\mathbf}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\y}{\mathbf{y}}
+\newcommand{\e}{\mathbf{e}}
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH 118C Homework 2}
+    \fancyhead[C]{Aprile 13, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+
+\begin{pbox}[Exercise 9.2]
+    Prove that $BA$ is linear if $A$ and $B$ are linear transformations.
+\end{pbox}
+
+\begin{proof}
+    Assume the codomain of $A$ is the domain of $B$. Then for any $\x_1, \x_2$ in the domain of $X$ and scalar $c$, the linearity of $A$ and $B$ give us
+    \[
+        BA(c\x_1 + \x_2) = B(cA\x_1 + A\x_2) = cBA\x_1 + BA\x_2.
+    \]
+    Hence, $BA$ is linear.
+\end{proof}
+
+\begin{pbox}[]
+    Prove also that $A^{-1}$ is linear and invertible.
+\end{pbox}
+
+\begin{proof}
+    Assume $A$ is an invertible (bijective) linear transformation with inverse $A^{-1}$. Then for any $\y_1, \y_2$ is the domain of $A^{-1}$ (same as the codomain of $A$) and scalar $c$, we find
+    \begin{align*}
+        A^{-1}(c\y_1 + \y_2)
+            &= A^{-1}(cAA^{-1}\y_1 + AA^{-1}\y_2) \\
+            &= A^{-1}A(cA^{-1}\y_1 + A^{-1}\y_2) \\
+            &= cA^{-1}\y_1 + A^{-1}\y_2.
+    \end{align*}
+    Hence, $A^{-1}$ is linear. For any $\x$ in the codomain of $A^{-1}$ (same as the domain of $A$), we know that $A^{-1}A\x = \x$, so $A^{-1}$ is surjective. If $A^{-1}\y_1 = A^{-1}\y_2$, then applying $A$, we find
+    \[
+        y_1 = AA^{-1}\y_1 = AA^{-1}\y_2 = \y_2.
+    \]
+    Hence, $A^{-1}$ is also injective, therefore invertible. 
+
+\end{proof}
+
+
+
+
+\begin{pbox}[Exercise 9.3]
+    Assume $A \in L(X, Y)$ and $A\x = \bm{0}$ only when $\x = \bm{0}$. Prove that $A$ is then 1-1.
+\end{pbox}
+
+\begin{proof}
+    Suppose $\x_1, \x_2 \in X$ such that $A\x_1 = A\x_2$. Since $A$ is linear,
+    \[
+        \bm{0} = A\x_1 - A\x_2 = A(\x_1 - \x_2).
+    \]
+    Therefore, $\x_1 - \x_2 = \bm{0}$, so in fact $\x_1 = \x_2$. Hence, $A$ is injective.
+
+\end{proof}
+
+
+
+
+\newpage
+\begin{pbox}[Exercise 9.5]
+    Prove that to every $A \in L(\R^n, \R^1)$ corresponds a unique $\y \in \R^n$ such that $A\x = \x \cdot \y$.
+\end{pbox}
+
+\begin{proof}
+    Let $\{\e_1, \dots, \e_n\}$ be the standard basis for $\R^n$. Given $A \in L(\R^n, \R^1)$, define the vector
+    \[
+        \y = A\e_1 + \cdots + A\e_n = \mqty[A\e_1 & \cdots & A\e_n]^T.
+    \]
+    Each $\x \in \R^n$ has a unique representation as
+    \[
+        \x = a_1\e_1 + \cdots + a_n\e_n = \mqty[a_1 & \cdots & a_n]^T,
+    \]
+    for some $a_1, \dots, a_n \in \R$. Then we find
+    \begin{align*}
+        A\x &= A(a_1\e_1 + \cdots + a_n\e_n) \\
+            &= a_1A\e_1 + \cdots + a_nA\e_n \\
+            &= \mqty[a_1 & \cdots & a_n]^T \cdot \mqty[A\e_1 & \cdots & A\e_n]^T \\
+            &= \x \cdot \y.
+    \end{align*}
+    This proves existence, we now show uniqueness. Suppose there are two vectors $\y_1, \y_2 \in \R^n$ such that $\x \cdot \y_1 = A\x = \x \cdot \y_2$ for all $\x \in \R$. In particular, take
+    \[
+        \y_1 = \mqty[a_1 & \cdots & a_n]^T
+        \isp{and}
+        \y_2 = \mqty[b_1 & \cdots & b_n]^T.
+    \]
+    Then for $j = 1, \dots, n$, we find
+    \[
+        a_j = \e_j \cdot \y_1 = \e_j \cdot \y_2 = b_j.
+    \]
+    Hence, $y_1 = y_2$.
+
+\end{proof}
+
+
+\begin{pbox}[]
+    Prove also that $\|A\| = |\y|$.
+\end{pbox}
+
+\begin{proof}
+    For any $\x \in \R^n$ with $|x| = 1$, the Cauchy-Schwarz inequality gives us
+    \[
+        |A\x| = |\x \cdot \y| \leq |\x||\y| = |\y|.
+    \]
+    Since this inequality holds for all unit vectors, then
+    \[
+        \|A\| = \sup_{\substack{x \in \R^n \\ |x| = 1}}|Ax| \leq |\y|.
+    \]
+    In particular, consider the the unit vector $\y/|\y|$. We find
+    \[
+        \|A\| 
+            \geq |A\y| 
+            = |\y \cdot (\y/|\y|)| 
+            = \frac{|\y \cdot \y|}{|\y|}
+            = \frac{|\y|^2}{|\y|}
+            = |\y|
+    \]
+    Thus, $\|A\| = |\y|$.
+
+\end{proof}
+
+
+
+
+\begin{pbox}[Exercise 9.6]
+    If $f(0, 0) = 0$ and
+    \[
+        f(x, y) = \frac{xy}{x^2 + y^2} \quad \text{if } (x, y) \ne (0, 0),
+    \]
+    prove that $(D_1f)(x, y)$ and $(D_2f)(x, y)$ exist at every point of $\R^2$, although $f$ is not continuous at $(0, 0)$.
+\end{pbox}
+
+\begin{proof}
+    Note that $f(x, y)$ is symmetric in the arguments $x$ and $y$, so it is sufficient to show that $(D_1f)(x, y)$ exists at every point of $\R^2$. For all $x \in \R$, we have $f(x, 0) = 0$, so $(D_1f)(x, 0) = 0$. If we fix $y \ne 0$, then $f(x, y)$ is simply a differentiable function on $\R$ in the variable $x$, with derivative $(D_1f)(x, y)$. Hence, all the partial derivatives of $f$ exist.
+
+    As previously noted, $f(x, 0) = 0$ for all $x \in \R$, which means that $f(x, 0) \to 0$ as $x \to 0$. On the other hand, for $x \ne 0$, we have
+    \[
+        f(x, x) = \frac{x^2}{2x^2} = \frac{1}{2.}
+    \]
+    So $f(x, x) \to 1/2$ as $x \to 0$. Thus, the limit of $f(x, y)$ as $(x, y) \to (0, 0)$ does not exist, implying that $f$ is discontinuous at the origin.
+
+\end{proof}
+
+
+
+
+\begin{pbox}[Exercise 9.8]
+    Suppose that $f$ is a differentiable real function in an open set $E \subseteq \R^n$, and that $f$ has a local maximum at a point $\x \in E$. Prove that $f'(\x) = 0$.
+\end{pbox}
+
+\begin{proof}
+    Let $\x = (x_1, \dots, x_n)$. For each $j = 1, \dots, n$, define the function
+    \[
+        f_j(x) = f(x_1, \dots, x_{j-1}, x, x_{j+1}, \dots, x_n),
+    \]
+    Define $E_j \subseteq $ to be the projection of $E$ onto the $j$th coordinate. Then $f_j : E_j \to \R$ is a differentiable function with a local maximum at $x_j \in E_j$. Then as an instance of the $1$-dimensional case, we know that 
+    \[
+        (D_jf)(\x) = f_j'(x_j) = 0.
+    \]
+    Therefore,
+    \[
+        [f'(\x)] = \mqty[(D_1f)(\x) & \cdots & (D_nf)(\x)]^T = \mqty[0 & \cdots & 0]^T,
+    \]
+    so in fact $f'(\x) = 0$.
+
+\end{proof}
+
+
+
+
+\newpage
+\begin{pbox}[Exercise 9.9]
+    If $\bm{f}$ is a differentiable mapping of a connected open set $E \subseteq \R^n$ into $\R^m$, and if $\bm{f}'(\x) = \bm{0}$ for every $\x \in E$, prove that $\bm{f}$ is constant in $E$.
+\end{pbox}
+
+\begin{proof}
+    Choose some point $\x_0 \in E$, and define the set
+    \[
+        U = \{\x \in E : \bm{f}(\x) = \bm{f}(\x_0)\}.
+    \]
+    We claim that $U$ is open. For any $\x \in U \subseteq E$, there is some radius $\eps > 0$ such that $B_{\eps}(\x) \subseteq E$. Since $\bm{f}'$ is zero on the convex set $B_{\eps}(\x)$ and $\bm{f}(\x) = \bm{f}(\x_0)$, then $\bm{f}$ is constantly $\bm{f}(\x_0)$ on the open ball. Hence, $B_{\eps}{(\x)} \subseteq U$, and we conclude that $U$ is open.
+
+    Now define the set
+    \[
+        V = E \setminus U = \{\x \in E : \bm{f}(\x) \ne \bm{f}(\x_0)\}.
+    \]
+    Again, we claim that $V$ is open, and give a similar argument. Any point $\x \in V$ must have some open ball centered at $\x$ and contained in $E$, on which $\bm{f}$ is constantly $\bm{f}(\x)$. In particular, $\bm{f}(\x) \ne \bm{f}(\x_0)$, implying that the open ball is contained in $V$, which tells us that $V$ is open.
+
+    Since we now have disjoint open sets $U$ and $V$ with $U$ nonempty such that $E = U \cup V$ (and $U$ is nonempty), then in fact $V$ must be empty. Hence, $\bm{f}$ is constant on $E$, in particular equal to $\bm{f}(\x_0)$.
+
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[Exercise 9.10]
+    If $f$ is a real function defined in a convex open set $E \subseteq \R^n$, such that $(D_1f)(\x) = 0$ for every $\x \in E$, prove that $f(\x)$ depends only on $x_2, \dots, x_n$.
+\end{pbox}
+
+\begin{proof}
+    Fix some $x_2, \dots, x_n \in \R$ and define the set
+    \[
+        D = \{x \in \R : (x, x_2, \dots, x_n) \in E\}.
+    \]
+    Then there is an injective mapping $D \to E$ given by $x \mapsto (x, x_2, \dots, x_n)$. We see that $D$ is convex (i.e., an interval in $\R$) since any pair of points $x, y \in D$ have a corresponding pair of points $(x, x_2, \dots, x_n), (y, x_2, \dots, x_n) \in E$. The segment between the pair in $E$ is contained in $E$, and the points on that segment vary only in the first coordinate. Hence, there is a corresponding segment between $x$ and $y$ in $D$, implying $D$ is convex.
+
+    Then function the function $D \to \R$ defined by $x \mapsto f(x, x_2, \dots, x_n)$ is differentiable with derivative $(D_1f)(x, x_2, \dots, x_n) = 0$ for all $x \in D$. Then since the derivative of this function is zero on the real interval $D$, it must be constant on $D$. That is, $f$ is constant on all the points in $E$ of the form $(x, x_2, \dots, x_n)$. Hence the value of $f(\x)$ is independent of the first coordinate of $\x$.
+
+
+\end{proof}
+
+\begin{pbox}[]
+    Show that the convexity of $E$ can be replaced by a weaker condition, but that some condition is required.
+\end{pbox}
+
+All that is required for the above proof is that $E$ contain every interval between pairs of points which differ only in the first coordinate. This is precisely the condition which ensures $D$ to be an interval in $\R$.
+
+
+\end{document}

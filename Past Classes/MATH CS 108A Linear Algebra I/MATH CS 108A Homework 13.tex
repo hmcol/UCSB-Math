@@ -1,0 +1,103 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% custom commands
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\p}{^{\prime}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\setlength{\fboxsep}{4pt}
+\newcommand{\exercise}[2]{\section*{Exercise #1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\problem}[2]{\section*{Problem #1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\generic}[2]{\section*{#1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+
+ 
+\begin{document}
+ 
+\title{Homework 13\\
+    \large MATH CS 108A Linear Algebra I}
+\author{Harry Coleman}
+\date{February 14, 2020}
+\maketitle
+
+\exercise{2}{
+    Let $V$ be a finite-dimensional vector space. Show that
+    \begin{enumerate}
+        \item If $L \subseteq V$ is linearly independent, then $|L| \leq $ dim$(V)$.
+        \item If $G \subseteq V$ is a generating set for $V$, then $|G| \geq $ dim$(V)$.
+        \item If dim$(V) = n$ and $G$ is a generating set such that $|G| = n$, then $G$ is a basis for $V$.
+        \item If dim$(V) = n$ and $L$ is a linearly independent subset of $V$ such that $|L| = n$, then $L$ is a basis for $V$.
+        \item Every linearly independent subset of $V$ can be extended to a basis for $V$.
+    \end{enumerate}
+}
+
+\subsection*{1}
+Suppose $L \subseteq V$ is linearly independent. Let $L'$ be a maximal linearly independent subset $L'\subseteq V$ such that $L\subseteq L'$, which is equal to $L$ if $L$ is maximal. Since $L'$ is a maximal linearly independent subset of $V$, it is a basis for $V$ and $|L| \leq |L'| = $ dim$(V)$.
+
+So if $L \subseteq V$ is linearly independent, then $|L| \leq $ dim$(V)$.
+
+\subsection*{2}
+Suppose $G \subseteq V$ is a generating set for $V$. Let $G' \subseteq G$ be a minimal generating set for $V$, which is equal to $G$ if $G$ is minimal. So $G'$ is a basis for $V$, and dim$(V) = |G'| \leq |G|$.
+
+Therefore, if $G \subseteq V$ is a generating set for $V$, then $|G| \geq $ dim$(V)$.
+
+
+\subsection*{3}
+Suppose dim$(V) = n$ and $G$ is a generating set such that $|G| = n$. Suppose $G$ is not minimal, so there is some minimal generating set $G'\subset G$, which is a strict subset of $G$. Since $G'$ is a minimal generating set, it is a basis for $V$, and $n=|G'|<|G|$. This contradicts $|G|=n$, so $G$ is a minimal generating set for $V$ and therefore a basis for $V$.
+
+So if dim$(V) = n$ and $G$ is a generating set such that $|G| = n$, then $G$ is a basis for $V$.
+
+\subsection*{4}
+Suppose dim$(V) =n$ and $L$ is a linearly independent subset of $V$ such that $|L|=n$. Suppose $L$ is not maximal, so there is some maximal linearly independent $L'\subseteq V$ such that $L'\subset L$. Since $L'$ is a maximal linearly independent subset of $V$, it is a basis for $V$ and $|L| < |L'| = $ dim$(V)$. Which contradicts $|L|=n$, so $L$ is maximal, and therefore a basis for $V$.
+
+So if dim$(V) = n$ and $L$ is a linearly independent subset of $V$ such that $|L| = n$, then $L$ is a basis for $V$.
+
+\subsection*{5}
+Let $L$ be a linearly independent subset of $V$. If $L$ is maximal, then it is a basis for $V$. If $L$ is not maximal, then it is the subset of some maximal linearly independent $L'\subseteq V$, which is therefore a basis of $V$. We might obtain $L'$ by adding vectors of $V$ which are linearly independent to $L$ until we obtain a maximal linearly independent subset of $V$. This is possible because $V$ is finite dimensional, so any basis/maximal linearly independent subset will have a finite number of elements, so we need only add a finite number of vectors to $L$ to obtain $L'$.
+
+In this way, every linearly independent subset of $V$ can be extended to a basis for $V$.
+
+\exercise{5}{
+    Let $V$ be a finite-dimensional vector space and let $W$ be a subspace of $V$ . Show that there exists a complement for $W$ in $V$, that is, there exists a subspace $U$ of $V$ such that
+    \[V = W \oplus U.\]
+}
+
+Since $W\subseteq V$, then $W$ is also finite dimensional. We find a finite $S\subseteq W$ which is a basis for $W$. If $S$ is a basis for $V$, then $U=\{0v\}$ and $V = W \oplus U$. Otherwise, $S$ is a linearly independent subset of $V$, but not maximal, so we find a maximal linearly independent $S'\subseteq V$ such that $S\subset S'$. Now let $G=S'\setminus S$ be a generating set for the subspace $U$. Since $W$ and $U$ are generated by partitions of a generating set for $V$, then $W+U = V$. We want to show that their intersection is $\{0_V\}$. If there were some nonzero vector $v$ in both $W$ and $U$, then $v$ would have two different representations as linear combinations of vectors in $S'$. But this is a contradiction since $S'$ is linearly independent. So $W\cap U = \{0_v\}$ and therefore $V = W \oplus U$.
+
+
+\newpage
+\exercise{8}{
+    Let $V$ be a finite-dimensional vector space over an infinite field $\F$. Show that $V$ and $\F$ have the same cardinality.
+}
+
+Since $V$ is finite dimensional, there is some finite basis $S=\{u_1,\dots,u_n\}$ such that every vector $v\in V$ can be expressed in a unique way as
+\[v= \alpha_1 u_1 + \cdots + \alpha_n u_n,\]
+for some $\alpha_1,\dots,\alpha_n\in\F$. So there is a bijection between $V$ and $\F^n$. In order for $V$ to have the same cardinality as $F$ we would need a bijection between the two, and therefore a bijection between $\F^n$ and $\F$. For this bijection to exist for any $n\geq2$, we must have a bijection between $\F\times\F$ and $\F$ which exists if and only if we have $|A\times A| = |A|$ for any infinite set $A$, which is a result of the axiom of choice. So given the axiom of choice, we find a bijection between $\F$ and $\F^n$ and therefore $V$, which tells us that $V$ and $\F$ have the same cardinality.
+
+
+\exercise{10}{
+    Can a finitely generated vector space have two bases with different cardinality? Why?
+}
+
+Let $V$ be a finitely generated vector space. So there exists some finite set $G$ which generates $V$. We now find a minimal generating set $G' \subseteq G$, which is equal to $G$ if $G$ is minimal. So $G'$ is a basis for $V$, and $|G'|$ is the dimension of $V$. If $A,B$ are bases for $V$, then by definition of dimension, $|A|=|G'|=|B|$. So any bases for a finitely generated vector space have the same cardinality.
+
+
+\end{document}

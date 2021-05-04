@@ -1,0 +1,194 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Set Names
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+
+% Misc Characters
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\newcommand{\eps}{\varepsilon}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ang}{\langle}{\rangle}
+
+% Homework Sections
+\setlength{\fboxsep}{4pt}
+\newcommand{\generic}[2]{\section*{#1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\ex}[2]{\generic{Exercise #1}{#2}}
+\newcommand{\prob}[2]{\generic{Problem #1}{#2}}
+\newcommand{\ques}[2]{\generic{Question #1}{#2}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+% MATH CS 117 Intro to Real Analysis
+\newcommand{\ds}{\displaystyle}
+\newcommand{\seq}[1]{\left\{#1\right\}_{n=1}^\infty}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+ 
+\begin{document}
+ 
+\title{Assignment 3\\
+    \large MATH CS 120FG Graph Theory II}
+\author{Harry Coleman}
+\date{April 30, 2020}
+\maketitle
+
+\ex{1}{
+    Let G be a graph with vertex set $V = \{1, 2,\dots, n\}$ and adjacency matrix $A$. Then for all positive integers $k$, and vertices $i, j$, the $(i, j)$ entry of $A^k$ is equal to the total number of $(i, j)$-walks of length $k$. Prove by induction on $k$.
+}
+
+For the base case, $k=1$, we simply have $(A^1)_{ij}=A_{ij}$, which is the number of edges between $i$ and $j$. Equivalently, this is the number of $(i,j)$ walks of length 1, so the base case is true. For the inductive step, we suppose that for some $k\geq1$, that $A^k$ has the desired property. Then
+\[(A^{k+1})_{ij} = \sum_{m=1}^n(A^k)_{im}A_{mj}.\]
+To find the number of $(i,j)$ walks of length $k+1$, we notice that any $(i,j)$ walk of length $k+1$ is simply an $(i,m)$ walk of length $k$ followed by an $(m,j)$ walk of length 1 (that is, an edge between $m$ and $j$) for some vertex $m$. For each $m\in V$, we find the number of $(i,m)$ walks of length $k$, given by $(A^K)_{im}$, and multiply it by the possible ways to finish the $(i,j)$ walk with an edge from $m$ to $j$, given by $A_{mj}$. Summing the values found for each $m\in V$ gives us the number of $(i,j)$ walks of length $k+1$. Since this calculation is precisely that of $(A^{k+1})_{ij}$, this completes the inductive step.
+
+\ex{2}{
+    If $G$ is a graph with $e$ edges and $t$ triangles, prove that
+    \[2e = \text{tr}(A^2) \text{ and } 6t = \text{tr}(A^3).\]
+    Here tr$(A)$ is the trace of $A$: the sum of the entries on the main diagonal.
+}
+
+For the first part, we assume our graph is simple. From exercise 1, we know that $(A^2)_{ij}$ is the number of $(i,j)$ walks of length 2. In particular $(A^2)_{ii}$ is the number of $(i,i)$ walks of length 2. So tr$(A^2)$ is the total number of closed walks of length 2. Such a walk is simply a choice of vertex and adjacent edge, and the corresponding walk takes that edge twice. So the number of closed walks of length $2$ is given by
+\[\sum_{i=1}^n\text{deg}(i) = 2e.\]
+Thus, $2e = \text{tr}(A^2)$. For the second part we allow our graph to have parallel edges, but not loops. Similar to the first part, we know that tr$(A^3)$ is the number of closed walks with a length of 3. Since we have no loops, such a closed walk is simply a choice of triangle in the graph, a choice of starting vertex in the triangle, and a direction around the triangle. For each of $t$ graphs, there are 3 possible starting vertices, and 2 possible directions for the walk around the triangle. This gives us $6t$ total closed walks of length 3, so indeed $6t=$ tr$(A^3)$.
+
+\ex{3}{
+    Prove that
+    \[\text{tr}(A) = \lambda_1 + \cdots + \lambda_n.\]
+    (Hint: Consider the coefficient of $x^{n-1}$.)
+}
+
+The eigenvalues are the values $\lambda_1,\dots,\lambda_n$ such that
+\[\det(A-xI) = (-1)^n(x-\lambda_1)\cdots(x-\lambda_n).\]
+Using the Leibniz formula for determinants, we have
+\[\sum_{\sigma\in S_n} \text{sgn}(\sigma)\prod_{i=1}^n(A-xI)_{\sigma(i)i} = (-1)^n(x-\lambda_1)\cdots(x-\lambda_n),\]
+where $S_n$ is the set of permutations of the indices $1,\dots,n$ and sgn$(\sigma)$ is the number of swaps necessary to obtain the permutation $\sigma$. Following the hint, we are interested in the coefficient of $x^{n-1}$. On the right hand side, it is clear that we obtain $x^{n-1}$ terms when the $x$ is chosen from each of $n-1$ factors and the $\lambda_i$ from the remaining factor. So the coefficient of the $x^{n-1}$ term is
+\[(-1)^n(-\lambda_1 - \cdots -\lambda_n) = (-1)^{n-1}(\lambda_1 + \cdots + \lambda_n).\]
+We now derive the coefficient of $x^{n-1}$ on the left hand side. Notice that $A-xI$ only has $x$ in elements along the main diagonal, so $(A-xI)_{\sigma(i)i}$ contains an $x$ only if $\sigma(i)=i$. This implies that if $\sigma$ is anything other than the identity, at least two indices will be out of place, and at most $n-2$ factors of $x$ are obtained. So we will only find $x^{n-1}$ in the expression
+\[\prod_{i=1}^n(A-xI)_{ii} = (A_{11}-x)\cdots(A_{nn}-x).\]
+And similar to the right hand side, we obtain $x^{n-1}$ terms when we select the $x$ from $n-1$ factor and the $A_{ii}$ from the remaining factor. This gives us
+\[(A_{11} + \cdots + A_{nn})(-x)^{n-1} = (-1)^{n-1}(A_{11} + \cdots + A_{nn})x^{n-1}.\]
+Setting this coefficient equal to the previous one, we find
+\[(-1)^{n-1}(A_{11} + \cdots + A_{nn}) = (-1)^{n-1}(\lambda_1 + \cdots + \lambda_n),\]
+\[\text{tr}(A) = A_{11} + \cdots + A_{nn} = \lambda_1 + \cdots + \lambda_n.\]
+
+
+\ex{5}{
+    Compute the spectrum of $K_{1,4}$ and $C_4 \cup K_1$ (i.e., the graph consisting of a 4-cycle and one extra isolated vertex). Deduce that ”we cannot say the same for the number of 4-cycles.”
+}
+
+The adjacency matrix of $K_{1,4}$ is
+\[A = \begin{bmatrix}
+    0 & 1 & 1 & 1 & 1 \\
+    1 & 0 & 0 & 0 & 0 \\
+    1 & 0 & 0 & 0 & 0 \\
+    1 & 0 & 0 & 0 & 0 \\
+    1 & 0 & 0 & 0 & 0
+\end{bmatrix},\]
+so to solve for the eigenvalues, we want the determinant of the following matrix to be zero:
+\[A-\lambda I_5 = \begin{bmatrix}
+    -\lambda & 1 & 1 & 1 & 1 \\
+    1 & -\lambda & 0 & 0 & 0 \\
+    1 & 0 & -\lambda & 0 & 0 \\
+    1 & 0 & 0 & -\lambda & 0 \\
+    1 & 0 & 0 & 0 & -\lambda
+\end{bmatrix}
+\]
+By elementary row operations, we find the following matrix with the same determinant:
+\[
+    \begin{bmatrix}
+    -\lambda & 0 & 0 & 0 & 1 \\
+    0 & -\lambda & 0 & 0 & 1 \\
+    0 & 0 & -\lambda & 0 & 1 \\
+    0 & 0 & 0 & -\lambda & 1 \\
+    0 & 0 & 0 & 0 & -\lambda+\frac4{\lambda}
+\end{bmatrix}
+\]
+So
+\[0 = \det(A - \lambda I_5) = \lambda^4\left(-\lambda + \frac4{\lambda}\right) = \lambda^3(4-\lambda^2).\]
+So the spectrum for $K_{1,4}$ is $\{0,0,0,-2,2\}$. The adjacency matrix of $C_4\cup K_1$ is
+\[A = \begin{bmatrix}
+    0 & 1 & 0 & 1 & 0 \\
+    1 & 0 & 1 & 0 & 0 \\
+    0 & 1 & 0 & 1 & 0 \\
+    1 & 0 & 1 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0
+\end{bmatrix}\]
+So
+\[0 = \det(A - \lambda I_5) = 4\lambda^3 - \lambda^5 = \lambda^3(4-\lambda^2),\]
+So the spectrum of $C_4\cup K_1$ is the same $\{0,0,0,-2,2\}$. So these two graphs have the same spectrum, but only the second has a 4-cycle. Therefore we cannot say anything about the number of 4-cycles in a graph based on its eigenvalues.
+
+\ex{6}{
+    Prove that the eigenvalues of $J_n$ are $n$ (with multiplicity 1) and 0 (with multiplicity $n -1$). Do this by explicitly finding an orthogonal set of $n$ eigenvectors.
+}
+
+Clearly $[1 \cdots 1]^T$ is an eigenvector since $J_n[1\cdots 1]^T = [n \cdots n]^T$, which gives us an eigenvalue of $n$. An eigenvector for the eigenvalue 0, is a vector $[x_1 \cdots x_n]^T$ such that
+\[x_1 + \cdots + x_n = 0.\]
+Notice that this condition is what is necessary for $J_n[x_1 \cdots x_n]^T=0$ and to be orthogonal to $[1\cdots 1]^T$. We define the vector $v_i\in\R^n$ for $i=2,\dots,n$ in the following way:
+\[(v_i)_j = \begin{cases}
+    1 &\text{ if } j<i; \\
+    1-i &\text{ if } i=j; \\
+    0 &\text{ if } i<j.
+\end{cases}\]
+Notice that each of these vectors has $i-1$ entries of 1, and an entry of $1-i$. So each of these vectors satisfies the condition for being an eigenvector of 0 and being orthogonal to $[1\cdots1]^T$. And for any two $v_i,v_j$ with $i\leq j$, there dot product is given by the sum of the entries in $v_i$, which is zero, so $v_i\perp v_j$. Since we have $n-1$ orthogonal eigenvectors for 0, then the multiplicity of 0 is at least $n-1$. And since the eigenvalue $n$ has multiplicity at least one, we know precisely that $n$ has multiplicity 1 and 0 has multiplicity $n-1$.
+
+
+\ex{7}{
+    Give a combinatorial argument that the number of closed walks of length $\ell$ in $K_n$ is $(n - 1)^\ell + (n - 1)(-1)^\ell$.
+}
+
+Let $n\in\N$ and we define $a_\ell$ to be the total number of closed walks of length $\ell$ in $K_n$. Since the last edge chosen for a closed walk of length $\ell$ must be to the starting vertex, an open walk of length $\ell-1$ uniquely determines a closed walk of length $\ell$, and vice versa. The second to last vertex of an open walk of length $\ell-1$ is either the starting vertex or some other vertex. In the case where the second to last vertex is the starting vertex, then the open walk of length $\ell-1$ is simply a closed walk of length $\ell-2$ and a choice of $n-1$ possible final vertices. In the case where the second to last vertex is some other vertex, the open walk of length $\ell-1$ is simply a closed walk of length $\ell-1$, but the last vertex is replaces with one of $n-2$ vertices other than the starting vertex. This gives us the recursive formula
+\[a_\ell = (n-2)a_{\ell-1} + (n-1)a_{\ell-2}.\]
+To find an explicit form, we assume that $a_\ell=kr^\ell$ for some constants $k,r$, and substitute into the recursive formula. This gives us
+\[kr^\ell = (n-2)kr^{\ell-2} + (n-1)kr^{\ell-2},\]
+\[r^2 - (n-2)r - (n-1) = 0.\]
+Solving for $r$, we find
+\begin{align*}
+    r   &= \frac{(n-2)\pm\sqrt{(n-2)^2+4(n-1)}}{2} \\
+        &= \frac{n\pm\sqrt{n^2-4n+4+4n-4}}{2} - 1 \\
+        &= \frac{n\pm n}{2} - 1
+\end{align*}
+So $r=-1$ or $r=n-1$. We now adjust our formula to be
+\[a_\ell = k_1(n-1)^\ell + k_2(-1)^\ell.\]
+To solve for the coefficients $k_1,k_2$, we substitute in the known values from exercise 2 for $a_2$ and $a_3$:
+\[a_2 = 2e = k_1(n-1)^2 + k_2(-1)^2,\]
+\[a_3 = 6t = k_1(n-1)^3 + k_2(-1)^3.\]
+Summing these two equations, we solve for the first constant:
+\begin{align*}
+    2e + 6t &= k_1((n-1)^2 + (n-1)^3) \\
+    2{n \choose 2} + 6{n\choose 3} &= k_1(n-1)^2(1 + n-1) \\
+    n(n-1) + n(n-1)(n-2) &= k_1(n-1)^2n \\
+    \frac{1 + n-2}{n-1} &= k_1 \\
+    k_1 &= 1.
+\end{align*}
+Now solving for the second constant:
+\begin{align*}
+    a_2 = n(n-1) &= (n-1)^2 + k_2(-1)^2 \\
+    n^2 - n &= n^2 -2n + 1 + k_2 \\
+    k_2 &= n-1.
+\end{align*}
+So we obtain the explicit form
+\[a_\ell = (n-1)^\ell + (n-1)(-1)^\ell\]
+for the total number of closed walks of length $\ell$ in $K_n$.
+
+
+
+\end{document}

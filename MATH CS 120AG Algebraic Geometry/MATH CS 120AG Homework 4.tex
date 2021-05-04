@@ -1,0 +1,271 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{amsmath, amsthm, amssymb, mathrsfs}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{4pt}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\pfrac}[2]{\left(\frac{#1}{#2}\right)}
+
+% Extra Commands
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\DeclareMathOperator{\codim}{codim}
+\renewcommand{\O}{\mathscr{O}}
+\newcommand{\eqc}{\overline}
+\newcommand{\isom}{\cong}
+\newcommand{\clo}{\overline}
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH CS 120AG Homework 4}
+    \fancyhead[C]{April 26, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+
+\begin{pbox}[Ecercise 4.12]
+    (Affine conics). An irreducible quadric curve in $\A^2$ is also called an \textit{affine conic}. Show that every affine conic over a field of characteristic not equal to $2$ is isomorphic to exactly one of the varieties $X_1 = V(x_2 - x_1^2)$ and $X_2 = V(x_1x_2 - 1)$, with an isomorphism given by a linear transformation followed by a translation.
+\end{pbox}
+
+\begin{proof}
+    Suppose $X \subseteq \A^2$ is an affine conic, then Remark 2.38 tells us that its ideal is given by $I(X) = \<f\>$ for some irreducible polynomial $f \in K[x, y]$ with $\deg f = 2$. Then we can write
+    \[
+        f = a_1x^2 + a_2xy + a_3y^2 + a_4x + a_5y + a_6
+    \]
+    for some $a_1, \dots, a_6 \in K$. At least one of $a_1, a_2, a_3$ must be nonzero. If $a_1 = a_3 = 0$, then we can divide $f$ by the nonzero coefficient of $xy$, and the zero locus remains the same. We can then assume
+    \[
+        f = xy + a_4x + a_5y + a_6 = (x + a_5)(y + a_4) - c,
+    \]
+    where $c = a_4a_5 - a_6 \in K$. We now define a map $ V(f) \to V(xy - c)$, componentwise by $g = (x + a_5, y + a_4)$. We verify the codomain of $g$. If $(x, y) \in V(f)$, then evaluating $xy - c$ at $g(x, y)$ results in $f(x, y) = 0$, so $f(x, y) \in V(xy - c)$. The inverse of $g$ is given by $g^{-1} = (x - a_5, y - a_4)$. By Proposition 4.7, both $g$ and $g^{-1}$ are morphisms, hence isomorphisms. 
+    
+    We now have $X \isom V(xy - c)$. Notice that $c \ne 0$, otherwise $X \isom V(xy) = V(x) \cup V(y)$ is a decomposition into proper closed subsets, but $X$ is irreducible. Then $c \in K^\times$, so $V(xy - c) = V(c^{-1}xy - 1)$. We now define a morphism $V(c^{-1}xy - 1) \to V(xy - 1)$ by $h = (x, c^{-1}y)$, which has the inverse morphism $h^{-1} = (x, cy)$. Then the composition $h \circ g : V(f) \to V(xy - 1)$ is an isomorphism of affine varieties, and can be written as
+    \[
+        h \circ g = (x + a_5, c^{-1}(y + a_4)) = (x, c^{-1}y) + (a_5, c^{-1}a_4),
+    \]
+    which proves the case when $a_1 = a_3 = 0$.
+
+    Now suppose one of $a_1$ or $a_3$ is nonzero. We will assume $a_1$ is nonzero, as the argument for $a_3$ nonzero is symmetric, by swapping $x$ and $y$. Then $a_1 \in K^\times$, and we can divide $f$ by $a_1$ and the zero locus remains the same. We can then assume
+    \[
+        f = x^2 + a_2xy + a_3y^2 + a_4x + a_5y + a_6.
+    \]
+    Since $K$ is algebraically closed, then 
+    \[
+        x^2 + a_2x + a_3 = (x - a)(x - b),
+    \]
+    for some $a, b \in K$, so
+    \[
+        f = (x - ay)(x - by) + d(x - cy) + e,
+    \]
+    for some $c, d, e \in K$. If $a = b = c$, then
+    \[
+        f = (x - ay)^2 + d(x - ay) + e,
+    \]
+    which can be factored in the same way as $x^2 + dx + e$ in $K[x]$, because $K$ is algebraically closed. Since $f$ is irreducible, this cannot be the case.
+
+    If $a = b \ne c$, then
+    \[
+        f = (x - ay)^2 + d(x - cy) + e,
+    \]
+    and we define a morphism $V(f) \to V(x^2 + dy + c)$ by $g = (x - ay, x - cy)$, which has the inverse $g^{-1} = \left(\frac{ay - cx}{a - c}, \frac{x - y}{a - c}\right)$. Then we define a morphism to $V(x^2 - y)$ by $h = (x, dy + c)$ which has inverse $h^{-1} = (x, d^{-1}(y - c))$. Then 
+    \[
+        V(f) \isom V(x^2 - y) = V(y - x^2),
+    \]
+    by the isomorphism
+    \[
+        h \circ g = (x - ad^{-1}y,\; x - cd^{-1}y) + (acd^{-1},\; c^2d^{-1}),
+    \]
+    which proves the case for $a = b \ne c$.
+
+    Lastly, if $a \ne b$, then $x + ay$ and $x + by$ are a basis for the $k$-vector space $Kx + Ky$ of homogenous degree $1$ polynomials in $K[x, y]$. That is, there is some $c_1, c_2 \in K$ such that
+    \[
+        c_1(x + ay) + c_2(x + by) = x + cy,
+    \]
+    so
+    \[
+        f = (x + ay)(x + by) + c_1(x + ay) + c_2(x + by) + e.
+    \]
+    Then we define a morphism $V(f) \to V(xy + c_1x + c_2y + e)$ by $g = (x + ay, x + by)$, which has inverse $g^{-1} = \left(\frac{ay - bx}{a - b}, \frac{x - y}{a - b}\right)$. And we have shown (in the first case of $a_1 = a_3 = 0$) that the zero locus of a polynomial of this form is isomorphic to $V(xy - 1)$ by some $h : V(xy + c_1x + c_2y + e) \to V(xy - 1)$, which is a linear transformation followed by a translation. Since $g$ is a linear transformation, then the composition $h \circ g : V(f) \to V(xy - 1)$ is an isomorphism by a linear transformation followed by a translation.
+
+    We have shown that $V(f)$ is isomorphic to one of $V(y - x^2)$ or $V(xy - 1)$. To show that $V(f)$ is isomorphic to exactly one of these affine varieties, it remains to show that $V(y - x^2) \not\isom V(xy - 1)$. The affine varieties are isomorphic if and only if their coordinate rings,
+    \[
+        K[x, y]/\<y - x^2\> \isp{and} K[x, y]/\<xy - 1\>,
+    \]
+    are isomorphic as $K$-algebras. For the former, we consider the $K$-algebra homomorphism
+    \begin{align*}
+        K[x, y] &\to K[x] \\
+            p(x, y) &\mapsto p(x, x^2),
+    \end{align*}
+    i.e., the map determined by $y \mapsto x^2$. This map is the identity on $K[x]$, so it is surjective. Moreover, its kernel is precisely the ideal $\<y - x^2\>$, so
+    \[
+        K[x, y]/\<y - x^2\> \isom K[x].
+    \]
+    On the other hand, we have a $K$-algebra homomorphism
+    \begin{align*}
+        K[x, y] &\to K[x, x^{-1}] \\
+            p(x, y) &\mapsto p(x, x^{-1}),
+    \end{align*}
+    i.e., the map determined by $y \mapsto x^{-1}$. This map is surjective, as any polynomial in $K[x, x^{-1}]$ could be mapped to a polynomial in $K[x, y]$, by $x^{-1} \mapsto y$, whose image is the original polynomial in $K[x, x^{-1}]$. Moreover, the kernel of this map is precisely the ideal $\<xy - 1\>$, so
+    \[
+        K[x, y]/\<xy - 1\> \isom K[x, x^{-1}],
+    \]
+    as $K$-algebras.
+
+    However, $K[x]$ and $K[x, x^{-1}]$ are not isomorphic as $K$-algebras. If there were a $K$-algebra isomorphism $\phi : K[x] \to K[x, x^{-1}]$, then the units of both rings would correspond under $\phi$. However, $K[x]^\times = K^\times$ and $\phi(K^\times) = K^\times$, but $x$ is a unit of $K[x, x^{-1}]$, which is not in $K^\times$. Thus,
+    \[
+        K[x, y]/\<y - x^2\> \isom K[x] \not\isom K[x, x^{-1}] \isom K[x, y]/\<xy - 1\>,
+    \]
+    as $K$-algebras, which implies $V(y - x^2) \not\isom V(xy - 1)$ as affine varieties.
+
+\end{proof}
+
+
+
+
+\newpage
+\begin{pbox}[Exercise 5.8(a)]
+    Show that every isomorphism $f : \P^1 \to \P^1$ is of the form $f(x) = \frac{ax + b}{cx + d}$ for some $a, b, c, d \in K$, where $x$ is an affine coordinate on $\A^1 \subseteq \P^1$.
+\end{pbox}
+
+
+
+\begin{lemma}
+    A fractional linear transformation $f : \P^1 \to \P^1$ given by $f(x) = \frac{ax + b}{cx + d}$ is a morphism.
+\end{lemma}
+
+\begin{proof}
+    For $a, b \in K$, we claim the dilation and translation map $f : \P^1 \to \P^1$ given by $x \mapsto ax + b$ is a morphism. For an open subset $U \subseteq \P^1$ and regular function $\phi \in \O_{\P^1}(U)$, we consider the pullback $f^*\phi$. To see that $f^*\phi$ is regular on $f^{-1}(U)$, we consider a point $x_0 \in f^{-1}(U)$. Then $\phi|_V = \frac{g}{h}$ for some open neighborhood $V \subseteq U$ of $f(x_0)$ and polynomials $g, h \in A(\A^1) = K[x]$. Then
+    \[
+        f^*\phi|_{f^{-1}(V)} = \frac{g \circ f}{h \circ f} = \frac{g'}{h'},
+    \]
+    where $g'(x) = g(ax + b)$ and $h'(x) = h(ax + b)$ are polynomials in $K[x]$. Hence, $f^*\phi \in \O_{\P^1}(f^{-1}(U))$, so $f$ is a morphism.
+    
+    As noted in Example 5.5(a), the map $\P^1 \to \P^1$ given by the inversion $x \mapsto \frac{1}{x}$ is a morphism. Therefore, the composition of dilations, translations, and inversions are morphisms $\P^1 \to \P^1$. It is straightforward to check that any such compositions yield fractional linear transformations.
+    
+    Moreover, when $ad - bc \ne 0$, the fractional linear transformation $\frac{ax + b}{cx + d}$ is invertible, and the inverse is again a fractional linear transformation. Therefore, such a map is in fact an isomorphism $\P^1 \to \P^1$.
+
+\end{proof}
+
+\begin{lemma}
+    Given three distinct points $a_1, a_2, a_3 \in \P^1$ and three distinct points $b_1, b_2, b_3 \in \P^1$, there exists a unique fractional linear transformation $f : \P^1 \to \P^2$ such that $f(a_i) = b_i$ for $i = 1, 2, 3$.
+\end{lemma}
+
+\begin{proof}
+    We first define the fractional linear transformation
+    \[
+        f = \frac{(x - a_1)(a_2 - a_3)}{(x - a_3)(a_2 - a_1)}
+            = \frac{(a_2 - a_3)x - a_1(a_2 - a_3)}{(a_2 - a_1)x - a_3(a_2 - a_1)},
+    \]
+    which maps
+    \[
+        a_1 \mapsto 0 \quad a_2 \mapsto 1 \quad a_3 \mapsto \infty.
+    \]
+    Then, similarly, we define
+    \[
+        g = \frac{(x - b_1)(b_2 - b_3)}{(x - b_3)(b_2 - b_1)}
+            = \frac{(b_2 - b_3)x - b_1(b_2 - b_3)}{(b_2 - b_1)x - b_3(b_2 - b_1)},
+    \]
+    which maps
+    \[
+        b_1 \mapsto 0 \quad b_2 \mapsto 1 \quad b_3 \mapsto \infty.
+    \]
+    Then the condition for the invertibility of $g$ is
+    \[
+        (b_1 - b_2)(b_2 - b_3)(b_1 - b_3) \ne 0,
+    \]
+    which is true since $b_1, b_2, b_3$ are distinct and $K$ is an integral domain. Then the composition $g^{-1} \circ f$ is a fractional linear transformation which maps $a_i \mapsto b_i$ for $i = 1, 2, 3$.
+    
+    To see uniqueness, we suppose that
+    \[
+        \frac{a_1x + b_1}{c_1x + d_1} = \frac{a_2x + b_2}{c_2x + d_2}
+    \]
+    for all $x \in \P^1$. Evaluating at the points $0, 1, \infty, -d_1/c_1$ gives us the conditions
+    \[
+        \frac{b_1}{d_1} = \frac{b_2}{d_2},
+        \quad
+        \frac{a_1 + b_1}{c_1 + d_1} = \frac{a_2 + b_2}{c_2 + d_2}
+        \quad
+        \frac{a_1}{b_1} = \frac{a_2}{b_2},
+        \quad
+        \frac{d_1}{c_1} = \frac{d_2}{c_2}.
+    \]
+    From these we can deduce that they represent the same fractional linear transformation, up to scaling the numerator and denominator by the same unit.
+
+\end{proof}
+
+\begin{proposition}
+    Every isomorphism $f : \P^1 \to \P^1$ is of the form $f(x) = \frac{ax + b}{cx + d}$ for some $a, b, c, d \in K$, where $x$ is an affine coordinate on $\A^1 \subseteq \P^1$.
+\end{proposition}
+
+\begin{proof}
+    Let $f : \P^1 \to \P^1$ be an isomorphism. We define a fractional linear transformation $g : \P^1 \to \P^1$ such that $g(f(0)) = 0$, $g(f(1)) = 1$, and $g(f(\infty)) = \infty$. Since $f$ is a bijection, then the points $f(0), f(1), f(\infty)$ are distinct, so $g$ is an isomorphism. Therefore, the composition $h = g \circ f : \P^1 \to \P^1$ is an isomorphism which is the identity on $0, 1, \infty$.
+
+    Considering $\A^1$ and an subset of $\P^1$, we have the identity polynomial $x \in K[x] = \O_{\P^1}(\A^1)$. Then since $h$ is a morphism, the pullback $h^*x = h$ is a regular function on $h^{-1}(\A^1) = \A^1$. That is, $h$ is a polynomial on $\A^1$. Since $K$ is algebraically closed, then $h$ splits into
+    \[
+        h = a(x - \alpha_1) \cdots (x - \alpha_n),
+    \]
+    where $\alpha_1, \dots, \alpha_n$ are the roots of $h$ in $K$. Since $h$ is injective and $h(0) = 0$, then $0$ is the only root of $h$, so $h = ax^n$. Since $h(1) = 1$, then $a = 1$. If we assume $K$ to be of characteristic $0$, then it contains the algebraic numbers $\clo{\Q}$ as a subfield. In particular, it contains exactly $n$ distinct $n$th roots of units, each of which evaluate to $1$ under $h$. However, since $h$ is injective, then there can only be one root of unity, so $h = x$. That is, $h$ is the identity polynomial on $\A^1$.
+
+    Extending $h$ to the point at $\infty$, we must have $h$ to be the identity on all of $\P^1$. The identity is a fractional linear transformation given by
+    \[
+        \frac{1x + 0}{0x + 1} = h = g \circ f.
+    \]
+    Recall that $g$ is invertible, with fractional linear inverse $g^{-1}$. Then the composition $g^{-1} = g^{-1} \circ g \circ f = f$ is a fractional linear transformation. 
+
+\end{proof}
+
+
+\newpage
+\begin{pbox}[Exercise 5.8(b)]
+    Given three distinct points $a_1, a_2, a_3 \in \P^1$ and three distinct points $b_1, b_2, b_3 \in \P^1$, show that there is a unique isomorphism $f : \P^1 \to \P^1$ such that $f(a_i) = b_i$ for $i = 1, 2, 3$. 
+\end{pbox}
+
+\begin{proof}
+    By Lemma 1 and Proposition 1, the isomorphisms $\P^1 \to \P^1$ are precisely the fractional linear transformations $\P^1 \to \P^1$. By Lemma 2, there exists a unique fractional linear transformations $f : \P^1 \to \P^1$ satisfying $f(a_i) = b_i$ for $i = 1, 2, 3$, which must be the unique such isomorphism.
+
+\end{proof}
+
+
+\end{document}

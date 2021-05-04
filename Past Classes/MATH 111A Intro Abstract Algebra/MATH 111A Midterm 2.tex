@@ -1,0 +1,210 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry} % proper margins
+\usepackage{enumitem} % custom numbering for lists
+\usepackage{amsmath} % align, cases, eqref, matrices, dots, roots, delimiters, math mode functions, mod, arrows
+\usepackage{amsthm} % theorems, proofs
+\usepackage{amssymb} % fancy letters, niche relations/negations
+\usepackage{mathrsfs} % much more loopy calligraphy font
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}
+    {\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\mybox}}}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+
+% Alternate Characters
+\let\eps\varepsilon % double curved, rather than single curve with midline
+\let\phi\varphi % single stroke loop, rather than vertical line through circle
+\let\emptyset\varnothing % circular, rather than tall
+
+% Named Sets
+\newcommand{\N}{\mathbb{N}} % natural numbers
+\newcommand{\Z}{\mathbb{Z}} % integers 
+\newcommand{\Q}{\mathbb{Q}} % rational numbers
+\newcommand{\R}{\mathbb{R}} % real numbers
+\newcommand{\C}{\mathbb{C}} % complex numbers
+
+% Fancy Characters
+\newcommand{\F}{\mathbb{F}} % arbitrary field
+\renewcommand{\P}{\mathbb{P}} % probability measure (apparently, sometimes prime numbers)
+\newcommand{\FF}{\mathcal{F}} % sigma algebra
+
+% Paired Delimiters
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil} % ceiling
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor} % floor
+\newcommand{\<}{\left\langle} % left angle bracket
+\renewcommand{\>}{\right\rangle} % right angle bracket
+
+% Functions
+\renewcommand{\Im}{\operatorname{Im}} % imaginary part of a complex number
+\renewcommand{\Re}{\operatorname{Re}} % real part of a complex number
+\newcommand{\Arg}{\operatorname{Arg}} % principal argument (angle) of complex number
+
+% Simplified Notation
+\newcommand{\id}[1]{\operatorname{id_{\mathnormal{#1}}}} % identity operator
+\newcommand{\seq}[2][n]{\left\{#2\right\}_{#1\in\N}} % sequence
+\newcommand{\pdv}[3][1]{\ifnum#1=1{\frac{\partial #2}{\partial#3}}\else{\frac{\partial^{#1}#2}{\partial#3^{#1}}}\fi} % partial derivative
+\newcommand{\intr}[1]{\accentset{\circ}{#1}} % interior of a set
+
+% Renaming
+\let\sm\setminus % set minus (difference)
+\let\clo\overline % closure of a set
+\let\conj\overline % conjugate of an object
+\let\eqc\overline % equivalence class of an object
+\let\teq\trianglelefteq % normal subgroup
+\let\iso\cong % isomorphic (groups)
+
+
+\begin{document}
+ 
+\title{Midterm 2\\
+    %\large MATH CS 121 Intro to Probability
+    \large MATH 111A Intro to Abstract Algebra
+    %\large MATH CS 122A Complex Analysis I
+    %\large MATH 118A Intro to Real Analysis
+    %\large MATH 104A Intro to Numerical Analysis
+}
+\author{Harry Coleman}
+\date{November 12, 2020}
+\maketitle
+
+\section*{Q1}
+
+\subsection*{Q1(a)}
+
+Not a homomorphism. For any $x,y\in\Q-\{0\}$, we have
+\[\phi(xy) = -(xy) = -x \cdot y,\]
+and
+\[\phi(x)\phi(y) = -x \cdot -y = xy.\]
+Thus, $\phi(xy)\ne\phi(x)\phi(y)$, which tells us that $\phi$ is not a homomorphism.
+
+\subsection*{Q1(b)}
+
+Not a homomorphism. For any $x,y\in D_{2n}$m we have
+\[\phi(xy) = (xy)^{-1} = y^{-1}x^{-1},\]
+and
+\[\phi(x)\phi(y) = x^{-1}y^{-1}.\]
+So $\phi$ is a homomorphism if and only if $D_{2n}$ is abelian. However, if we consider $sr \in D_{2n}$, then we have $sr = r^{-1}s$. If $D_{2n}$ were abelian, we would have $r=r^{-1}=r^{n-1}$. However, with $n\geq 3$, $n-1\geq 2$, so $D_{2n}$ is not abelian.
+
+\subsection*{Q1(c)}
+
+Homomorphism. For any $n,m\in Z$, we have
+\[\phi(n+m) = \begin{bmatrix}1 & 0 \\ n+m & 1\end{bmatrix} = \begin{bmatrix}1 & 0 \\ n & 1\end{bmatrix}\begin{bmatrix}1 & 0 \\ m & 1\end{bmatrix} = \phi(n)\phi(m).\]
+
+
+\section*{Q2}
+
+\subsection*{Q2(a)}
+
+Since $\Z$ under addition is abelian, then every subgroup is normal, in particular $\<9, 48, 336\>$.
+
+\subsection*{Q2(b)}
+
+Not normal. Consider $(14)\in S_6$ and $(123)\in H$. Note that $(14)^{-1}=(14)$, we have
+\[(14)(123)(14)^{-1} = (14)(123)(14).\]
+If we loot at how this permutation maps the element $4$, we find
+\[((14)(123)(14))(4) = ((14)(123))(1) = [(14)](2) = 2.\]
+However, since $H=\{(123),(132)\}$, all of which are the identity on $4$, we cannot have the above permutation in $H$, so $H$ is not normal.
+
+\subsection*{Q2(c)}
+
+Normal. For any $g\in G$ and $z\in H$, we have
+\[gzg^{-1} = gg^{-1}z = 1z = z \in H.\]
+Therefore, $gHg^{-1} \subseteq H$ for all $g\in G$, so $H$ is normal.
+
+\newpage
+\section*{Q3}
+
+\begin{proposition}
+    $(sr)H = (sr^7)H$.
+\end{proposition}
+
+\begin{proof}
+    Note that $aH = bH$ if and only if $a^{-1}b \in H$. We have
+    \[(sr)^{-1}sr^7 = r^{-1}s^{-1}sr^7 = r^{-1}r^{7} = r^6 = (r^2)^3 \in \<r^2\> = H,\]
+    so indeed $(sr)H = (sr^7)H$.
+    
+\end{proof}
+
+\newpage
+\section*{Q4}
+
+\begin{proof}
+    We define the map
+    \begin{align*}
+        \phi : G &\to \R_{>0} \\
+        x &\mapsto |x|.
+    \end{align*}
+    For any $x,y\in G$, we have
+    \[\phi(xy) = |xy| = |x|\cdot |y| = \phi(x)\phi(y),\]
+    so $\phi$ is a homomorphism. Next, for any $x\in\R_{>0}$, we have $x\in G$. And since $x>0$, we have
+    \[\phi(x) = |x| = x,\]
+    so $\phi$ is surjective. Evidently, $|-1|=|1| = 1$, so $H = \{1,-1\} \subseteq \ker\phi$. For any $x\in\ker\phi$, we have
+    \[|x| = \phi(x) = 1.\]
+    This implies that $x=1$ or $x=-1$, in either case, $x\in H$. Therefore, $\ker\phi = H$. Then by the first isomorphism theorem, we have
+    \[G/H = G/\ker\phi \iso \phi(G) = \R_{>0}.\]
+
+\end{proof}
+
+\newpage
+\section*{Q5}
+
+\subsection*{Q5(a)}
+
+\begin{proof}
+    Let $k\in \phi(G)$, and we consider $k(\phi(G) \cap M)k^{-1}$. Let $x\in \phi(G)\cap M$. Since $k\in H$, $x\in M$, and $M\teq H$, then $kxk^{-1} \in M$. Now since $k,x\in\phi(G)$ and $\phi(G)\leq H$, then $kxk^{-1} \in \phi(G)$. Therefore, $kxk^{-1}\in \phi(G)\cap M$, and we have $\phi(G)\cap M \teq \phi(G)$.
+    
+\end{proof}
+
+
+\subsection*{Q5(b)}
+
+\begin{proof}
+    Let $g\in G$, and we consider $g\phi^{-1}(M)g^{-1}$. Let $x\in\phi^{-1}(M)$, so $\phi(x)\in M$. Since $\phi$ is a homomorphism, we have
+    \[\phi(gxg^{-1}) = \phi(g)\phi(x)\phi(g^{-1}) = \phi(g)\phi(x)\phi(g)^{-1},\]
+    And since $\phi(x)\in M$ and $M\teq H$, then $\phi(gxg^{-1}) \in M$, so $gxg^{-1} \in \phi^{-1}(M)$ giving us $\phi^{-1}(M)\teq G$.
+    
+\end{proof}
+
+\subsection*{Q5(c)}
+
+\begin{proof}
+    The map
+    \begin{align*}
+        \theta : G &\to \phi(G)/(\phi(G)\cap M) \\
+        g &\mapsto \phi(g)(\phi(G)\cap M),
+    \end{align*}
+    is a surjective homomorphism, whose kernel is $\phi^{-1}(M)$. Clearly surjective as all elements of $\phi(G)/(\phi(G)\cap M)$ are of the form $\phi(g)(\phi(G)\cap M)$. It is a homomorphism since
+    \[\theta(g_1g_2) = \phi(g_1g_2)(\phi(G)\cap M) = \phi(g_1)\phi(g_2)(\phi(G)\cap M) = \phi(g_1)(\phi(G)\cap M)\phi(g_2)(\phi(G)\cap M) = \theta(g_1)\theta(g_2).\]
+    For any $x\in \phi^{-1}(M)$, we have
+    \[\theta(x) = \phi(x)(\phi(G)\cap M) = (\phi(G)\cap M)\]
+    since $\phi(x) \in \phi(G)$ and $\phi(x) \in M$. Additionally, for any $x\in\ker\theta$, we have
+    \[\theta(x) = \phi(x)(\phi(G)\cap M) = (\phi(G)\cap M),\]
+    which implies that $\phi(x) \in M$, so $x\in\phi^{-1}(M)$. Thus, $\ker\theta = \phi^{-1}(M)$. So by the first isomorphism theorem, we have
+    \[G/\phi^{-1}(M) \iso \phi(G)/(\phi(G)\cap M).\]
+    
+\end{proof}
+
+
+\newpage
+\section*{Q6}
+
+\begin{proof}
+    If $H$ is cyclic, then for some $g\in G$, we have for all $x\in G$, that $xH = g^nH$ for some $n\in\N$. Since $g^nH = gH$, then in particular for $1\in G$, we have $H = gH$. This implies that for all $x\in G$, we have $xH = H$, which implies that $x\in H \subseteq Z(G)$. Therefore, $G\subseteq Z(G)$. So for all $g_1,g_2\in G$, we have $g_1g_2 = g_2g_1$, so $G$ is abelian.
+    
+\end{proof}
+
+
+\end{document}

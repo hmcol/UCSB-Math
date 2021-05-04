@@ -1,0 +1,703 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% custom commands
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\p}{^{\prime}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\setlength{\fboxsep}{4pt}
+\newcommand{\generic}[2]{\section*{#1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\ex}[2]{\generic{Exercise #1}{#2}}
+\newcommand{\prob}[2]{\generic{Problem #1}{#2}}
+\newcommand{\ques}[2]{\generic{Question #1}{#2}}
+
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+\newcommand{\ob}{\text{ob}}
+\newcommand{\cat}{\mathsf{Cat}}
+\newcommand{\set}{\mathsf{Set}}
+\newcommand{\graph}{\mathsf{Graph}}
+\newcommand{\digraph}{\mathsf{DiGraph}}
+
+\newcommand{\C}{\mathsf{C}}
+\newcommand{\D}{\mathsf{D}}
+\newcommand{\one}{\mathsf{1}}
+\newcommand{\id}[1]{\text{id}_{#1}}
+\newcommand{\homset}[1]{\text{Hom}_{#1}}
+
+ 
+\begin{document}
+ 
+\title{Homework 7\\
+    \large MATH CS 120CT Category Theory}
+\author{Harry Coleman}
+\date{March 13, 2020}
+\maketitle
+
+\ex{4.1.ii}{
+    Define left and right adjoints to
+    \begin{enumerate}
+        \item $\ob: \cat \rightarrow \set,$
+        \item $V: \graph \rightarrow \set,$
+        \item $V: \digraph \rightarrow \set.$
+    \end{enumerate}
+}
+
+The functor $\Sigma:\set\rightarrow \cat$, in order to be the left adjoint  $\Sigma\dashv \ob$, must satisfy for any category $\C$ and set $X$,
+\[\homset{\cat}(\Sigma X, \C) \cong \homset{\set}(X, \ob\C).\]
+We claim that $\Sigma X$ is the discrete category which has an object for each element of $X$, and no morphisms other than identities. So a functor $\Sigma X \rightarrow\C$ essentially takes elements of $X$ to the objects of $\C$, which is the same as a function $X\rightarrow\ob\C$. The right adjoint $\ob\dashv\Pi$ must satisfy
+\[\homset{\set}(\ob \C, X) \cong \homset{\cat}(\C, \Pi X).\]
+We claim that $\Pi X$ is the category with an object for each element of $X$ and for each pair of elements, a unique morphism between them. So a functor $\C\rightarrow\Pi X$ is completely determined by how it assigns the objects of $\C$ to the elements of $X$, which is the same as a function $\ob \C \rightarrow X$.
+
+The left adjoint $\Sigma\dashv V$, must satisfy
+\[\homset{\graph}(\Sigma X, G) \cong \homset{\set}(X, VG).\]
+We claim that $\Sigma X$ is the discrete graph with a vertex for each object of $X$ and no edges. So a graph homomorphism $\Sigma X\rightarrow G$ is completely determined by how it assigns the elements of $X$ to the vertices of $G$, which is the same as a function $X\rightarrow VG$. The right adjoint $\ob\dashv\Pi$ must satisfy
+\[\homset{\set}(VG, X) \cong \homset{\graph}(G, \Pi X).\]
+We claim that $\Pi X$ is the complete graph with a vertex for each element of $X$ and an edge for each pair of vertices, including loops. So a graph homomorphism $G \rightarrow \Pi X$ is completely determined by how it assigns the vertices of $G$ to the elements of $X$, which is the same as a function $VG\rightarrow X$. 
+
+The left and right adjoints for $V: \digraph \rightarrow \set$ are the same as those for $V:\graph\rightarrow\set$ but instead of an edge for each pair of vertices in $\Pi X$, we have two directed edges, one in each direction. 
+
+
+
+\ex{4.5.i}{
+    When does the unique functor $!:\C\rightarrow\one$ have a left adjoint? When does it have a right adjoint?
+}
+
+The functor $\Sigma:\one\rightarrow\C$, in order to be a left adjoint $\Sigma \dashv !$, must satisfy for all objects $c$ of $\C$ and the object $\bullet$ of $\one$,
+\[\homset{\C}(\Sigma \bullet, c) \cong \homset{\one}(\bullet,!c).\]
+Since $!c=\bullet$, and the only morphism $\bullet\rightarrow\bullet$ is the identity, there must be a unique morphism $\Sigma\bullet\rightarrow c$. In other words, $\Sigma\bullet$ must be an initial object in $\C$. Similarly, the right adjoint $!\dashv\Pi$ must satisfy
+\[\homset{\one}(!c, \bullet) \cong \homset{\C}(c,\Pi\bullet).\]
+So there must be a unique morphism $c\rightarrow\Pi\bullet$. In other words, $\Pi\bullet$ must be a terminal object in $\C$. The the left adjoint to $!$ exists if $\C$ has an initial object, and the right adjoint exists if $\C$ has a terminal object. 
+
+\ex{5.2.v}{
+    Verify that the assignments $F_T$ and $U_T$ defined in the proof of Lemma 5.2.11 are functorial.
+}
+
+The mapping $F_T:\C\rightarrow\C_T$ is defined as
+\begin{align*}
+    F_T:\C              &\rightarrow\C_T \\
+        c               &\mapsto    c \\
+    (f:a\rightarrow b)    &\mapsto    (\eta_b\circ f):a\rightarrow Tb = (a\rightsquigarrow b).
+\end{align*}
+We want to check if $F_T$ satisfies the two functoriality axioms:
+\begin{itemize}
+    \item For any composable pair $f,g$ in $\C$, then $F_T(g)\circ_T F_T(f) = F(g\circ f)$. 
+    \begin{itemize}
+        \item Note: $\circ_T$ denotes composition in the Kleisli category.
+    \end{itemize}
+    \item For each object $c$ of $\C$, then $F_T(\id{c}) = \id{F_T(c)}$.
+\end{itemize}
+Let $f:a\rightarrow b$ and $g:b\rightarrow c$ be morphisms in $\C$. Consider the composition
+\[F_T(g) \circ_T F_T(f) = (\eta_c \circ g) \circ_T (\eta_b \circ f).\]
+The definition of composition in the Kleisli category $\C_T$ gives us
+\begin{align*}
+    F_T(g) \circ_T F_T(f)   
+        &= \mu_c \circ T(\eta_c \circ g) \circ (\eta_b \circ f) \\
+        &= (\mu_c \circ T\eta_c) \circ (Tg \circ \eta_b) \circ f.
+\end{align*}
+Since $(T,\eta,\mu)$ is a monad, we have $\mu_c\circ T\eta_c = \id{Tc}$, so
+\begin{align*}
+    F_T(g) \circ_T F_T(f)   
+        &= \id{Tc} \circ Tg \circ \eta_b \circ f \\
+        &= (Tg \circ \eta_b) \circ f.
+\end{align*}
+By the naturality of $\eta$, we have $Tg\circ\eta_b = \eta_c\circ g$, so
+\begin{align*}
+    F_T(g) \circ_T F_T(f)   
+        &= \eta_c\circ g \circ f \\
+        &= F_T(g\circ f),
+\end{align*}
+satisfying the first functoriality axiom. Additionally,
+\[F_T(\id{c}) = \eta_c\circ\id{c} = \eta_c,\]
+is precisely the identity on $c$ is the Kleisli category. Thus, $F_T$ is a functor.
+
+The mapping $U_T:\C_T\rightarrow\C$ is defined as
+\begin{align*}
+    U_T:\C_T                                    &\rightarrow\C \\
+    c                                           &\mapsto Tc \\
+    (a\rightsquigarrow b)=(f:a\rightarrow Tb) &\mapsto (\mu_b\circ Tf):Ta\rightarrow Tb.
+\end{align*}
+We want to check if $U_T$ satisfies the two functoriality axioms:
+\begin{itemize}
+    \item For any composable pair $f,g$ in $\C_T$, then $U_T(g)\circ U_T(f) = F(g\circ_T f)$. 
+    \item For each object $c$ of $\C_T$, then $U_T(\id{c}) = \id{U_T(c)}$.
+\end{itemize}
+Let $(a\rightsquigarrow b) = (f:a\rightarrow Tb)$ and $(b\rightsquigarrow c)=(g:b\rightarrow Tc)$ be morphisms in $\C_T$. Consider the composition
+\[U_T(g)\circ U_T(f) = (\mu_c \circ Tg) \circ (\mu_b \circ Tf).\]
+By naturality of $\mu$, we have $Tg\circ \mu_b = \mu_{Tc}\circ T^2g$, so
+\begin{align*}
+    U_T(g)\circ U_T(f)
+        &= \mu_c \circ (Tg\circ \mu_b) \circ Tf \\
+        &= \mu_c \circ (\mu_{Tc} \circ T^2g) \circ Tf.
+\end{align*}
+By the definition of composition in the Kleisli category, we have
+\begin{align*}
+    U_T(g)\circ U_T(f)
+        &= \mu_c \circ (\mu_{Tc} \circ T^2g \circ Tf) \\
+        &= \mu_c \circ (Tg \circ_T Tf) \\
+        &= \mu_c \circ T(g \circ_T f) \\
+        &= U_T (g \circ_T f).
+\end{align*}
+So $U_T$ satisfies the first functoriality axiom. Now consider how $U_T$ maps $\eta_c$, which is the identity on $c$ in $C_T$,
+\[U_T(\eta_c) = \mu_c \circ T\eta_c.\]
+Since $(T,\eta,\mu)$ is a monad, this gives
+\[U_T(\eta_c) = \id{Tc} = \id{U_T(c)},\]
+satisfying the second functoriality axiom. Thus, $U_T$ is a functor.
+
+    
+\ex{6.5.vi}{
+    Show that the triple $(T,\eta:\id{\C}\Rightarrow T,\mu:T^2\Rightarrow T$) constructed in Definition 6.5.10 defines a monad on $\C$.
+}
+
+Given a functor $G:\D\rightarrow \C$, the endofunctor $T:\C\rightarrow\C$ and natural transformation $\epsilon:TG\Rightarrow G$ is the right Kan extension of $G$ along itself. As a string diagram:
+\begin{drawing}
+    \draw[color=white, pattern=north east lines] (-0.5,0)--(-0.5,2)--(1.5,2)--(1.5,0)--(-0.5,0);
+    
+    \draw[color=white,fill=white] (0.5,1)--(0.5,2)--(-0.5,2)--(-0.5,0);
+    \draw[color=white,fill=white] (1,0)to[out=90,in=0](0.5,1)--(-0.5,2)--(-0.5,0);
+    
+    \draw[thick] (0.5,1)--(0.5,2);
+    \draw[thick] (0,0)to[out=90,in=180](0.5,1);
+    \draw[thick] (1,0)to[out=90,in=0](0.5,1);
+    
+    
+    \draw (0,-0.5)node{$T$};
+    \draw (1,-0.5)node{$G$};
+    \draw (0.5,2.5)node{$G$};
+    \draw[fill=white] (0.5,1) circle (6pt) node{$\epsilon$};
+    
+\end{drawing}
+
+The unit and multiplication natural transformations are defined as the unique natural transformations which satisfy the following:
+
+\begin{minipage}{0.45\textwidth}
+    \begin{drawing}
+        \draw[color=white, pattern=north east lines] (-0.5,0)--(-0.5,3)--(2.5,3)--(2.5,0)--(-0.5,0);
+        
+        \draw[color=white,fill=white] (0.75,1)--(0.75,3)--(-0.5,3)--(-0.5,0);
+        \draw[color=white,fill=white] (2,0)to[out=90,in=0](1.5,1)--(-0.5,2)--(-0.5,0);
+        \draw[color=white,fill=white] (1.5,1)to[out=90,in=0](0.75,2)--(-0.5,2)--(-0.5,0);
+        
+        
+        \draw[thick] (1,0)to[out=90,in=180](1.5,1);
+        \draw[thick] (2,0)to[out=90,in=0](1.5,1);
+        \draw[thick] (1.5,1)to[out=90,in=0](0.75,2);
+        \draw[thick] (0,0)to[out=90,in=180](0.75,2);
+        \draw[thick] (0.75,2)--(0.75,3);
+        
+        
+        
+        \draw (0,-0.5)node{$T$};
+        \draw (1,-0.5)node{$T$};
+        \draw (2,-0.5)node{$G$};
+        \draw (0.75,3.5)node{$G$};
+        \draw[fill=white] (1.5,1) circle (6pt) node{$\epsilon$};
+        \draw[fill=white] (0.75,2) circle (6pt) node{$\epsilon$};
+    \end{drawing}
+\end{minipage}
+=
+\begin{minipage}{0.35\textwidth}
+    \begin{drawing}
+        \draw[color=white, pattern=north east lines] (-0.5,0)--(-0.5,3)--(2.5,3)--(2.5,0)--(-0.5,0);
+        
+        \draw[color=white,fill=white] (1.25,1)--(1.25,3)--(-0.5,3)--(-0.5,0);
+        \draw[color=white,fill=white] (2,0)to[out=90,in=0](1.25,2)--(-0.5,2)--(-0.5,0);
+        \draw[color=white,fill=white] (1.5,1)to[out=90,in=0](0.75,2)--(-0.5,2)--(-0.5,0);
+        
+        
+        \draw[thick] (0,0)to[out=90,in=180](0.5,1);
+        \draw[thick] (1,0)to[out=90,in=0](0.5,1);
+        \draw[thick] (0.5,1)to[out=90,in=180](1.25,2);
+        \draw[thick] (2,0)to[out=90,in=0](1.25,2);
+        \draw[thick] (1.25,2)--(1.25,3);
+        
+        
+        
+        \draw (0,-0.5)node{$T$};
+        \draw (1,-0.5)node{$T$};
+        \draw (2,-0.5)node{$G$};
+        \draw (1.25,3.5)node{$G$};
+        \draw[fill=white] (1.25,2) circle (6pt) node{$\epsilon$};
+        \draw[fill=white] (0.5,1) circle (6pt) node{$\mu$};
+                        
+    \end{drawing}
+\end{minipage}
+
+ \begin{minipage}{0.45\textwidth}
+    \begin{drawing}
+        \draw[color=white, pattern=north east lines] (0,0)--(0,1)--(0.5,1)--(0.5,0)--(0,0);
+        
+        
+        \draw[thick] (0,0)--(0,1);
+        
+        \draw (0,-0.5)node{$G$};
+        \draw (0,1.5)node{$G$};
+        \end{drawing}
+\end{minipage}
+=
+\begin{minipage}{0.35\textwidth}
+    \begin{drawing}
+        \draw[color=white, pattern=north east lines] (-0.5,0)--(-0.5,3)--(2.5,3)--(2.5,0)--(-0.5,0);
+        
+        \draw[color=white,fill=white] (1.25,1)--(1.25,3)--(-0.5,3)--(-0.5,0);
+        \draw[color=white,fill=white] (2,0)to[out=90,in=0](1.25,2)--(-0.5,2)--(-0.5,0);
+        \draw[color=white,fill=white] (1.5,1)to[out=90,in=0](0.75,2)--(-0.5,2)--(-0.5,0);
+        
+        
+
+        \draw[thick] (0.5,1)to[out=90,in=180](1.25,2);
+        \draw[thick] (2,0)to[out=90,in=0](1.25,2);
+        \draw[thick] (1.25,2)--(1.25,3);
+        
+        
+        \draw (2,-0.5)node{$G$};
+        \draw (1.25,3.5)node{$G$};
+        \draw[fill=white] (1.25,2) circle (6pt) node{$\epsilon$};
+        \draw[fill=white] (0.5,1) circle (6pt) node{$\eta$};
+                        
+    \end{drawing}
+\end{minipage}
+
+To show that these definitions of $\eta$ and $\mu$ define a monad $(T,\eta,\mu)$, we first show that $\mu \circ T\mu = \mu \circ \mu T$. Consider the composition $\epsilon \circ T\epsilon \circ T^2\epsilon$ as a string diagram:
+\begin{drawing}
+    \draw[color=white, pattern=north east lines] (-0.5,0)--(-0.5,4)--(3.5,4)--(3.5,0)--(-0.5,0);
+    
+    \draw[color=white,fill=white] (3,0)to[out=90,in=0](2.5,1)--(-0.5,1)--(-0.5,0);
+    \draw[color=white,fill=white] (2.5,1)to[out=90,in=0](1.75,2)--(-0.5,2)--(-0.5,1);v
+    \draw[color=white,fill=white] (1.75,2)to[out=90,in=0](0.875,3)--(-0.5,3)--(-0.5,1);
+    \draw[color=white,fill=white] (0.875,3)--(0.875,4)--(-0.5,4)--(-0.5,3);
+    
+    
+    \draw[thick] (3,0)to[out=90,in=0](2.5,1);
+    \draw[thick] (2,0)to[out=90,in=180](2.5,1);
+    
+    \draw[thick] (2.5,1)to[out=90,in=0](1.75,2);
+    \draw[thick] (1,0)to[out=90,in=180](1.75,2);
+    
+    \draw[thick] (1.75,2)to[out=90,in=0](0.875,3);
+    \draw[thick] (0,0)to[out=90,in=180,looseness=0.9](0.875,3);
+    
+    \draw[thick] (0.875,3)--(0.875,4);
+    
+    
+    \draw (0,-0.5)node{$T$};
+    \draw (1,-0.5)node{$T$};
+    \draw (2,-0.5)node{$T$};
+    \draw (3,-0.5)node{$G$};
+    \draw (0.875,4.5)node{$G$};
+    \draw[fill=white] (2.5,1) circle (6pt) node{$\epsilon$};
+    \draw[fill=white] (1.75,2) circle (6pt) node{$\epsilon$};
+    \draw[fill=white] (0.875,3) circle (6pt) node{$\epsilon$};
+\end{drawing}
+
+We can apply the definition of $\mu$ to this diagram in two ways to obtain the following equal diagrams:
+
+\begin{minipage}{0.45\textwidth}
+    \begin{drawing}
+        \draw[color=white, pattern=north east lines] (-0.5,0)--(-0.5,4)--(3.5,4)--(3.5,0)--(-0.5,0);
+        
+        \draw[color=white,fill=white] (3,0)to[out=90,in=0](2.5,1)--(-0.5,1)--(-0.5,0);
+        \draw[color=white,fill=white] (2.5,1)to[out=90,in=0](1.5,3)--(-0.5,3)--(-0.5,1);
+        \draw[color=white,fill=white] (1.5,3)--(1.5,4)--(-0.5,4)--(-0.5,3);
+        
+        
+        \draw[thick] (3,0)to[out=90,in=0](2.5,1);
+        \draw[thick] (2,0)to[out=90,in=180](2.5,1);
+        
+        \draw[thick] (1,0)to[out=90,in=0,looseness=0.7](0.5,2);
+        \draw[thick] (0,0)to[out=90,in=180,looseness=0.7](0.5,2);
+        
+        \draw[thick] (2.5,1)to[out=90,in=0](1.5,3);
+        \draw[thick] (0.5,2)to[out=90,in=180](1.5,3);
+        
+        \draw[thick] (1.5,3)--(1.5,4);
+        
+        
+        \draw (0,-0.5)node{$T$};
+        \draw (1,-0.5)node{$T$};
+        \draw (2,-0.5)node{$T$};
+        \draw (3,-0.5)node{$G$};
+        \draw (1.5,4.5)node{$G$};
+        \draw[fill=white] (2.5,1) circle (6pt) node{$\epsilon$};
+        \draw[fill=white] (0.5,2) circle (6pt) node{$\mu$};
+        \draw[fill=white] (1.5,3) circle (6pt) node{$\epsilon$};
+    \end{drawing}
+\end{minipage}
+=
+\begin{minipage}{0.35\textwidth}
+    \begin{drawing}
+        \draw[color=white, pattern=north east lines] (-0.5,0)--(-0.5,4)--(3.5,4)--(3.5,0)--(-0.5,0);
+    
+        \draw[color=white,fill=white] (3,0)to[out=90,in=0](2.25,2)--(-0.5,2)--(-0.5,0);
+        \draw[color=white,fill=white] (2.25,2)to[out=90,in=0](1.125,3)--(-0.5,3)--(-0.5,1);
+        \draw[color=white,fill=white] (1.125,3)--(1.125,4)--(-0.5,4)--(-0.5,3);
+        
+        \draw[thick] (3,0)to[out=90,in=0](2.25,2);
+        \draw[thick] (1.5,1)to[out=90,in=180](2.25,2);
+        
+        \draw[thick] (2,0)to[out=90,in=0](1.5,1);
+        \draw[thick] (1,0)to[out=90,in=180](1.5,1);
+        
+        \draw[thick] (2.25,2)to[out=90,in=0](1.125,3);
+        \draw[thick] (0,0)to[out=90,in=180](1.125,3);
+        
+        \draw[thick] (1.125,3)--(1.125,4);
+        
+        
+        \draw (0,-0.5)node{$T$};
+        \draw (1,-0.5)node{$T$};
+        \draw (2,-0.5)node{$T$};
+        \draw (3,-0.5)node{$G$};
+        \draw (1.125,4.5)node{$G$};
+        \draw[fill=white] (1.5,1) circle (6pt) node{$\mu$};
+        \draw[fill=white] (2.25,2) circle (6pt) node{$\epsilon$};
+        \draw[fill=white] (1.125,3) circle (6pt) node{$\epsilon$};
+    \end{drawing}
+\end{minipage}
+
+By associativity of horizontal composition of natural transformations, the left diagram can be modified to obtain the following:
+
+\begin{minipage}{0.45\textwidth}
+    \begin{drawing}
+        \draw[color=white, pattern=north east lines] (-0.5,0)--(-0.5,4)--(3.5,4)--(3.5,0)--(-0.5,0);
+        
+        \draw[color=white,fill=white] (3,0)to[out=90,in=0,looseness=0.7](2.5,2)--(-0.5,2)--(-0.5,0);
+        \draw[color=white,fill=white] (2.5,2)to[out=90,in=0](1.5,3)--(-0.5,3)--(-0.5,2);
+        \draw[color=white,fill=white] (1.5,3)--(1.5,4)--(-0.5,4)--(-0.5,3);
+        
+        
+        \draw[thick] (3,0)to[out=90,in=0,looseness=0.7](2.5,2);
+        \draw[thick] (2,0)to[out=90,in=180,looseness=0.7](2.5,2);
+        
+        \draw[thick] (1,0)to[out=90,in=0](0.5,1);
+        \draw[thick] (0,0)to[out=90,in=180](0.5,1);
+        
+        \draw[thick] (2.5,2)to[out=90,in=0](1.5,3);
+        \draw[thick] (0.5,1)to[out=90,in=180](1.5,3);
+        
+        \draw[thick] (1.5,3)--(1.5,4);
+        
+        
+        \draw (0,-0.5)node{$T$};
+        \draw (1,-0.5)node{$T$};
+        \draw (2,-0.5)node{$T$};
+        \draw (3,-0.5)node{$G$};
+        \draw (1.5,4.5)node{$G$};
+        \draw[fill=white] (2.5,2) circle (6pt) node{$\epsilon$};
+        \draw[fill=white] (0.5,1) circle (6pt) node{$\mu$};
+        \draw[fill=white] (1.5,3) circle (6pt) node{$\epsilon$};
+    \end{drawing}
+\end{minipage}
+=
+\begin{minipage}{0.35\textwidth}
+    \begin{drawing}
+        \draw[color=white, pattern=north east lines] (-0.5,0)--(-0.5,4)--(3.5,4)--(3.5,0)--(-0.5,0);
+    
+        \draw[color=white,fill=white] (3,0)to[out=90,in=0](2.25,2)--(-0.5,2)--(-0.5,0);
+        \draw[color=white,fill=white] (2.25,2)to[out=90,in=0](1.125,3)--(-0.5,3)--(-0.5,1);
+        \draw[color=white,fill=white] (1.125,3)--(1.125,4)--(-0.5,4)--(-0.5,3);
+        
+        \draw[thick] (3,0)to[out=90,in=0](2.25,2);
+        \draw[thick] (1.5,1)to[out=90,in=180](2.25,2);
+        
+        \draw[thick] (2,0)to[out=90,in=0](1.5,1);
+        \draw[thick] (1,0)to[out=90,in=180](1.5,1);
+        
+        \draw[thick] (2.25,2)to[out=90,in=0](1.125,3);
+        \draw[thick] (0,0)to[out=90,in=180](1.125,3);
+        
+        \draw[thick] (1.125,3)--(1.125,4);
+        
+        
+        \draw (0,-0.5)node{$T$};
+        \draw (1,-0.5)node{$T$};
+        \draw (2,-0.5)node{$T$};
+        \draw (3,-0.5)node{$G$};
+        \draw (1.125,4.5)node{$G$};
+        \draw[fill=white] (1.5,1) circle (6pt) node{$\mu$};
+        \draw[fill=white] (2.25,2) circle (6pt) node{$\epsilon$};
+        \draw[fill=white] (1.125,3) circle (6pt) node{$\epsilon$};
+    \end{drawing}
+\end{minipage}
+
+We now modify each diagram by the definition of $\mu$ to obtain:
+
+\begin{minipage}{0.45\textwidth}
+    \begin{drawing}
+        \draw[color=white, pattern=north east lines] (-0.5,0)--(-0.5,4)--(3.5,4)--(3.5,0)--(-0.5,0);
+        
+        \draw[color=white,fill=white] (3,0)to[out=90,in=0,looseness=0.8](2.125,3)--(-0.5,3)--(-0.5,0);
+        \draw[color=white,fill=white] (2.125,3)--(2.125,4)--(-0.5,4)--(-0.5,3);
+        
+        
+        \draw[thick] (1,0)to[out=90,in=0](0.5,1);
+        \draw[thick] (0,0)to[out=90,in=180](0.5,1);
+        
+        \draw[thick] (2,0)to[out=90,in=0](1.25,2);
+        \draw[thick] (0.5,1)to[out=90,in=180](1.25,2);
+        
+        \draw[thick] (3,0)to[out=90,in=0,looseness=0.8](2.125,3);
+        \draw[thick] (1.25,2)to[out=90,in=180](2.125,3);
+        
+        \draw[thick] (2.125,3)--(2.125,4);
+        
+        
+        \draw (0,-0.5)node{$T$};
+        \draw (1,-0.5)node{$T$};
+        \draw (2,-0.5)node{$T$};
+        \draw (3,-0.5)node{$G$};
+        \draw (2.125,4.5)node{$G$};
+        \draw[fill=white] (0.5,1) circle (6pt) node{$\mu$};
+        \draw[fill=white] (1.25,2) circle (6pt) node{$\mu$};
+        \draw[fill=white] (2.125,3) circle (6pt) node{$\epsilon$};
+    \end{drawing}
+\end{minipage}
+=
+\begin{minipage}{0.35\textwidth}
+    \begin{drawing}
+        \draw[color=white, pattern=north east lines] (-0.5,0)--(-0.5,4)--(3.5,4)--(3.5,0)--(-0.5,0);
+    
+        \draw[color=white,fill=white] (3,0)to[out=90,in=0](1.875,3)--(-0.5,3)--(-0.5,0);
+        \draw[color=white,fill=white] (1.875,3)--(1.875,4)--(-0.5,4)--(-0.5,3);
+
+        
+        \draw[thick] (2,0)to[out=90,in=0](1.5,1);
+        \draw[thick] (1,0)to[out=90,in=180](1.5,1);
+        
+        \draw[thick] (1.5,1)to[out=90,in=0](0.75,2);
+        \draw[thick] (0,0)to[out=90,in=180](0.75,2);
+        
+        \draw[thick] (3,0)to[out=90,in=0](1.875,3);
+        \draw[thick] (0.75,2)to[out=90,in=180](1.875,3);
+        
+        \draw[thick] (1.875,3)--(1.875,4);
+        
+        
+        \draw (0,-0.5)node{$T$};
+        \draw (1,-0.5)node{$T$};
+        \draw (2,-0.5)node{$T$};
+        \draw (3,-0.5)node{$G$};
+        \draw (1.875,4.5)node{$G$};
+        \draw[fill=white] (1.5,1) circle (6pt) node{$\mu$};
+        \draw[fill=white] (0.75,2) circle (6pt) node{$\mu$};
+        \draw[fill=white] (1.875,3) circle (6pt) node{$\epsilon$};
+    \end{drawing}
+\end{minipage}
+
+From these diagrams we derive that $\epsilon \circ (\mu\circ\mu T)G = \epsilon \circ (\mu\circ T\mu)G$. By the universal property of $\epsilon$, this implies that $\mu\circ\mu T = \mu\circ T\mu$, satisfying the associativity axiom. 
+
+Now consider the diagram for $\epsilon$ (which is equal to $\epsilon \circ \id{T}G$):
+
+\begin{drawing}
+    \draw[color=white, pattern=north east lines] (-0.5,0)--(-0.5,2)--(1.5,2)--(1.5,0)--(-0.5,0);
+    
+    \draw[color=white,fill=white] (0.5,1)--(0.5,2)--(-0.5,2)--(-0.5,0);
+    \draw[color=white,fill=white] (1,0)to[out=90,in=0](0.5,1)--(-0.5,2)--(-0.5,0);
+    
+    \draw[thick] (0.5,1)--(0.5,2);
+    \draw[thick] (0,0)to[out=90,in=180](0.5,1);
+    \draw[thick] (1,0)to[out=90,in=0](0.5,1);
+    
+    
+    \draw (0,-0.5)node{$T$};
+    \draw (1,-0.5)node{$G$};
+    \draw (0.5,2.5)node{$G$};
+    \draw[fill=white] (0.5,1) circle (6pt) node{$\epsilon$};
+    
+\end{drawing}
+
+Using the definition of $\eta$, we now modify the diagram to obtain the following equal diagrams:
+
+\begin{minipage}{0.45\textwidth}
+    \begin{drawing}
+        \draw[color=white, pattern=north east lines] (-0.5,0)--(-0.5,4)--(3.5,4)--(3.5,0)--(-0.5,0);
+        
+        \draw[color=white,fill=white] (3,0)to[out=90,in=0](2.5,1)--(-0.5,1)--(-0.5,0);
+        \draw[color=white,fill=white] (2.5,1)to[out=90,in=0](1.5,3)--(-0.5,3)--(-0.5,1);
+        \draw[color=white,fill=white] (1.5,3)--(1.5,4)--(-0.5,4)--(-0.5,3);
+        
+        
+        \draw[thick] (3,0)to[out=90,in=0](2.5,1);
+        \draw[thick] (2,0)to[out=90,in=180](2.5,1);
+        
+        
+        \draw[thick] (2.5,1)to[out=90,in=0](1.5,3);
+        \draw[thick] (0.5,2)to[out=90,in=180](1.5,3);
+        
+        \draw[thick] (1.5,3)--(1.5,4);
+        
+        
+        \draw (2,-0.5)node{$T$};
+        \draw (3,-0.5)node{$G$};
+        \draw (1.5,4.5)node{$G$};
+        \draw[fill=white] (2.5,1) circle (6pt) node{$\epsilon$};
+        \draw[fill=white] (0.5,2) circle (6pt) node{$\eta$};
+        \draw[fill=white] (1.5,3) circle (6pt) node{$\epsilon$};
+    \end{drawing}
+\end{minipage}
+=
+\begin{minipage}{0.35\textwidth}
+    \begin{drawing}
+        \draw[color=white, pattern=north east lines] (-0.5,0)--(-0.5,4)--(3.5,4)--(3.5,0)--(-0.5,0);
+    
+        \draw[color=white,fill=white] (3,0)to[out=90,in=0](2.25,2)--(-0.5,2)--(-0.5,0);
+        \draw[color=white,fill=white] (2.25,2)to[out=90,in=0](1.125,3)--(-0.5,3)--(-0.5,1);
+        \draw[color=white,fill=white] (1.125,3)--(1.125,4)--(-0.5,4)--(-0.5,3);
+        
+        \draw[thick] (3,0)to[out=90,in=0](2.25,2);
+        \draw[thick] (1.5,1)to[out=90,in=180](2.25,2);
+        
+        
+        \draw[thick] (2.25,2)to[out=90,in=0](1.125,3);
+        \draw[thick] (0,0)to[out=90,in=180](1.125,3);
+        
+        \draw[thick] (1.125,3)--(1.125,4);
+        
+        
+        \draw (0,-0.5)node{$T$};
+        \draw (3,-0.5)node{$G$};
+        \draw (1.125,4.5)node{$G$};
+        \draw[fill=white] (1.5,1) circle (6pt) node{$\eta$};
+        \draw[fill=white] (2.25,2) circle (6pt) node{$\epsilon$};
+        \draw[fill=white] (1.125,3) circle (6pt) node{$\epsilon$};
+    \end{drawing}
+\end{minipage}
+
+By associativity of horizontal composition of natural transformations, the left diagram can be modified to obtain the following:
+
+\begin{minipage}{0.45\textwidth}
+    \begin{drawing}
+        \draw[color=white, pattern=north east lines] (-0.5,0)--(-0.5,4)--(3.5,4)--(3.5,0)--(-0.5,0);
+        
+        \draw[color=white,fill=white] (3,0)to[out=90,in=0,looseness=0.7](2.5,2)--(-0.5,2)--(-0.5,0);
+        \draw[color=white,fill=white] (2.5,2)to[out=90,in=0](1.5,3)--(-0.5,3)--(-0.5,2);
+        \draw[color=white,fill=white] (1.5,3)--(1.5,4)--(-0.5,4)--(-0.5,3);
+        
+        
+        \draw[thick] (3,0)to[out=90,in=0,looseness=0.7](2.5,2);
+        \draw[thick] (2,0)to[out=90,in=180,looseness=0.7](2.5,2);
+        
+        \draw[thick] (2.5,2)to[out=90,in=0](1.5,3);
+        \draw[thick] (0.5,1)to[out=90,in=180](1.5,3);
+        
+        \draw[thick] (1.5,3)--(1.5,4);
+        
+        \draw (2,-0.5)node{$T$};
+        \draw (3,-0.5)node{$G$};
+        \draw (1.5,4.5)node{$G$};
+        \draw[fill=white] (2.5,2) circle (6pt) node{$\epsilon$};
+        \draw[fill=white] (0.5,1) circle (6pt) node{$\eta$};
+        \draw[fill=white] (1.5,3) circle (6pt) node{$\epsilon$};
+    \end{drawing}
+\end{minipage}
+=
+\begin{minipage}{0.35\textwidth}
+    \begin{drawing}
+        \draw[color=white, pattern=north east lines] (-0.5,0)--(-0.5,4)--(3.5,4)--(3.5,0)--(-0.5,0);
+    
+        \draw[color=white,fill=white] (3,0)to[out=90,in=0](2.25,2)--(-0.5,2)--(-0.5,0);
+        \draw[color=white,fill=white] (2.25,2)to[out=90,in=0](1.125,3)--(-0.5,3)--(-0.5,1);
+        \draw[color=white,fill=white] (1.125,3)--(1.125,4)--(-0.5,4)--(-0.5,3);
+        
+        \draw[thick] (3,0)to[out=90,in=0](2.25,2);
+        \draw[thick] (1.5,1)to[out=90,in=180](2.25,2);
+        
+        
+        \draw[thick] (2.25,2)to[out=90,in=0](1.125,3);
+        \draw[thick] (0,0)to[out=90,in=180](1.125,3);
+        
+        \draw[thick] (1.125,3)--(1.125,4);
+        
+        
+        \draw (0,-0.5)node{$T$};
+        \draw (3,-0.5)node{$G$};
+        \draw (1.125,4.5)node{$G$};
+        \draw[fill=white] (1.5,1) circle (6pt) node{$\eta$};
+        \draw[fill=white] (2.25,2) circle (6pt) node{$\epsilon$};
+        \draw[fill=white] (1.125,3) circle (6pt) node{$\epsilon$};
+    \end{drawing}
+\end{minipage}
+
+Now applying the definition of $\mu$ to both diagrams, we obtain:
+
+\begin{minipage}{0.45\textwidth}
+    \begin{drawing}
+        \draw[color=white, pattern=north east lines] (-0.5,0)--(-0.5,4)--(3.5,4)--(3.5,0)--(-0.5,0);
+        
+        \draw[color=white,fill=white] (3,0)to[out=90,in=0,looseness=0.8](2.125,3)--(-0.5,3)--(-0.5,0);
+        \draw[color=white,fill=white] (2.125,3)--(2.125,4)--(-0.5,4)--(-0.5,3);
+        
+        
+        
+        \draw[thick] (2,0)to[out=90,in=0](1.25,2);
+        \draw[thick] (0.5,1)to[out=90,in=180](1.25,2);
+        
+        \draw[thick] (3,0)to[out=90,in=0,looseness=0.8](2.125,3);
+        \draw[thick] (1.25,2)to[out=90,in=180](2.125,3);
+        
+        \draw[thick] (2.125,3)--(2.125,4);
+        
+        
+        \draw (2,-0.5)node{$T$};
+        \draw (3,-0.5)node{$G$};
+        \draw (2.125,4.5)node{$G$};
+        \draw[fill=white] (0.5,1) circle (6pt) node{$\eta$};
+        \draw[fill=white] (1.25,2) circle (6pt) node{$\mu$};
+        \draw[fill=white] (2.125,3) circle (6pt) node{$\epsilon$};
+    \end{drawing}
+\end{minipage}
+=
+\begin{minipage}{0.35\textwidth}
+    \begin{drawing}
+        \draw[color=white, pattern=north east lines] (-0.5,0)--(-0.5,4)--(3.5,4)--(3.5,0)--(-0.5,0);
+    
+        \draw[color=white,fill=white] (3,0)to[out=90,in=0](1.875,3)--(-0.5,3)--(-0.5,0);
+        \draw[color=white,fill=white] (1.875,3)--(1.875,4)--(-0.5,4)--(-0.5,3);
+
+        
+        \draw[thick] (1.5,1)to[out=90,in=0](0.75,2);
+        \draw[thick] (0,0)to[out=90,in=180](0.75,2);
+        
+        \draw[thick] (3,0)to[out=90,in=0](1.875,3);
+        \draw[thick] (0.75,2)to[out=90,in=180](1.875,3);
+        
+        \draw[thick] (1.875,3)--(1.875,4);
+        
+        
+        \draw (0,-0.5)node{$T$};
+        \draw (3,-0.5)node{$G$};
+        \draw (1.875,4.5)node{$G$};
+        \draw[fill=white] (1.5,1) circle (6pt) node{$\eta$};
+        \draw[fill=white] (0.75,2) circle (6pt) node{$\mu$};
+        \draw[fill=white] (1.875,3) circle (6pt) node{$\epsilon$};
+    \end{drawing}
+\end{minipage}
+
+Converting these diagrams back into equations, we have
+\[\epsilon \circ \id{T}G = \epsilon \circ (\mu \circ \eta T)G = \epsilon \circ (\mu \circ T\eta)G.\]
+And by the universal property of $\epsilon$, this gives us
+\[\id{T} = \mu \circ \eta T= \mu \circ T\eta,\]
+satisfying the identity axiom. Therefore, $(T,\eta,\mu)$ is a monad.
+
+
+
+\end{document}

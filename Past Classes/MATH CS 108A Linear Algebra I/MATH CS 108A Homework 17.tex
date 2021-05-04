@@ -1,0 +1,170 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% custom commands
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\p}{^{\prime}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\setlength{\fboxsep}{4pt}
+\newcommand{\ex}[2]{\section*{Exercise #1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\prob}[2]{\section*{Problem #1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\ques}[2]{\section*{Question #1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\generic}[2]{\section*{#1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+ 
+\begin{document}
+ 
+\title{Homework 17\\
+    \large MATH CS 108A Linear Algebra I}
+\author{Harry Coleman}
+\date{March 2, 2020}
+\maketitle
+
+
+\ex{3}{
+    Let $V$ be an $n$-dimensional vector space. Prove that the function $\phi_\beta: V\rightarrow \F^n$ that takes each vector in $V$ to its coordinates in the ordered basis $\beta$ is an isomorphism.
+}
+
+Let $u,v\in V$ and $\alpha\in\F$ such that
+\[[u]_\beta = \begin{bmatrix}u_1 \\ \vdots \\ u_n\end{bmatrix}, \qquad [v]_\beta = \begin{bmatrix}v_1 \\ \vdots \\ v_n\end{bmatrix}.\]
+Consider
+\begin{align*}
+    \alpha u + v &= \alpha(u_1\beta_1 + \cdots + u_n\beta_n) + (v_1\beta_1 + \cdots + v_n\beta_n) \\
+                &= (\alpha u_1 + v_1)\beta_1 + \cdots + (\alpha u_n + v_n)\beta_n
+\end{align*}
+and
+\[\alpha[u]_\beta + [v]_\beta = \begin{bmatrix}\alpha u_1 + v_1 \\ \vdots \\ \alpha u_n + v_n\end{bmatrix}.\]
+So $[\alpha u + v]_\beta = \alpha[u]_\beta + [v]_\beta$, therefore $\phi_\beta$ is linear. Let $v\in\text{ker}(\phi_\beta)$, so $[v]_\beta = 0_{\F^n}$ and
+\[v = 0\beta_1 + \cdots + 0\beta_n = 0_V.\]
+Thus, ker$(\phi_\beta)=\{0_V\}$, therefore $\phi_\beta$ is injective. Since dim$(V)=$ dim$(\F^n)$, $\phi_\beta$ is also surjective, and therefore bijective. Since $\phi_\beta$ is a bijective linear transformation, it is an isomorphism.
+
+
+\newpage
+\ex{4}{
+    Let $V$ be a vector space over a field $\F$. Let $\beta$ be a basis for $V$. Show that $V$ is isomorphic to $(\F^\beta)_0$, that is, the set of functions $f: \beta \rightarrow \F$ with finite support, that is, functions that take only a finite number of vectors in $\beta$ to a nonzero element of $\F$. What does this result say when $V$ is finite-dimensional?
+}
+
+Let $T:V\rightarrow (\F^\beta)_0$ be the function which maps a vector $v\in V$ to the function $f_v:\beta\rightarrow\F$ which maps each vector $\beta_i\in\beta$ to $a_i$ where
+\[v = \sum_{a_i\ne0_\F}a_i\beta_i = \sum_{f_v(\beta_i)\ne0_\F}f_v(\beta_i)\beta_i.\]
+Since a finite number of $a_i$'s are nonzero for any given $v\in V$, the function $f_v:\beta_i\mapsto a_i$ is a function with finite support. Let $u,v\in V$ and $\alpha\in\F$. Let $S$ be the finite set of vectors in $\beta$ with a nonzero image under $f_u, f_v,$ or $f_{\alpha u+v}$. Consider
+\begin{align*}
+    \sum_{\beta_i\in S}f_{\alpha u+v}(\beta_i)\beta_i 
+        &= \alpha u + v \\
+        &= \alpha\sum_{\beta_i\in S}f_u(\beta_i)\beta_i + \sum_{\beta_i\in S}f_v(\beta_i)\beta_i \\
+        &= \sum_{\beta_i\in S}(\alpha f_u(\beta_i) + f_v(\beta_i))\beta_i.
+\end{align*}
+Since the representation of $\alpha u + v$ as a linear combination of vectors in $\beta$ is essentially unique, for all $\beta_i$,
+\begin{align*}
+    f_{\alpha u+v}(\beta_i) &= \alpha f_u(\beta_i) + f_v(\beta_i), \\
+    T(\alpha u + v) &= \alpha T(u) + T(v).
+\end{align*}
+So $T$ is linear. Let $v\in$ ker$(T)$, so $T(v)=f_0$ where $f_0$ is the function which maps all $\beta_i$ to $0_\F$. So
+\[v= \sum_{f(\beta_i)\ne0_\F}f_0(\beta_i)\beta_i = 0_V,\]
+thus $T$ is injective. Suppose $f\in(\F^\beta)_0$ and consider the sum
+\[v = \sum_{f(\beta_i)\ne0_\F}f(\beta_i)\beta_i.\]
+Since $f$ has finite support, $v$ is a finite linear combination of vectors in $V$ so $v\in V$ and $T(v)=f$, therefore $f\in R(T)$ and $T$ is surjective. So $T$ is a bijective linear transformation; an isomorphism. Thus, $V$ and $(\F^\beta)_0$ are isomorphic. If $V$ is finite dimensional, for each $v\in V$, the function $f_v$ maps each $\beta_i\in\beta$ to the $i$th entry in $[v]_\beta$.
+
+
+\newpage
+\ex{5}{
+    We have proven in class that every $T \in L(\F^n, \F^m)$ is of the form $T(x) = Ax$ for some matrix. Let $V$ and $W$ be two finite-dimensional vector spaces. Give a characterization of all the linear transformations from $V$ to $W$ using the characterization of linear transformations from $\F^n$ to $\F^m$.
+}
+
+Let $V$ be $n$-dimensional and $W$ be $m$-dimensional. Let $T\in L(V,W)$ and $\beta$ and $\gamma$ be ordered bases of $V$ and $W$, respectively. Let
+\begin{alignat*}{2}
+    \phi_\beta: &V \rightarrow \F^n \qquad &\phi_\gamma: &W \rightarrow \F^m\\ 
+                &v \mapsto [v]_\beta        &         &w \mapsto [w]_\gamma
+\end{alignat*}
+be the functions which map vectors to their coordinate vectors. Since $\phi_\beta$ and $\phi_\gamma$ are isomorphisms, the composition
+\[\phi_\gamma \circ T \circ \phi_\beta^{-1}:\F^n\rightarrow\F^m\]
+is a linear transformation which can be characterized by its standard matrix representation:
+\[(\phi_\gamma \circ T \circ \phi_\beta^{-1})(x) = \left[\phi_\gamma \circ T \circ \phi_\beta^{-1}\right]_{S_n}^{S_m}x.\]
+With this, we characterize $T$ by
+\begin{align*}
+    T(v)    &= (\phi_\gamma^{-1}\circ\phi_\gamma\circ T\circ\phi_\beta^{-1}\circ\phi_\beta)(v) \\[1em]
+            &= \phi_\gamma^{-1}((\phi_\gamma\circ T\circ\phi_\beta^{-1})(\phi_\beta(v))) \\[1em]
+            &= \phi_\gamma^{-1}(\left[\phi_\gamma \circ T \circ \phi_\beta^{-1}\right]_{S_n}^{S_m}\phi_\beta(v)).
+\end{align*}
+So every linear transformation $T:V\rightarrow W$ is of the form
+\[T(v) = \phi_\gamma^{-1}(A\phi_\beta(v)),\]
+where $A=\left[\phi_\gamma \circ T \circ \phi_\beta^{-1}\right]_{S_n}^{S_m}$ for some ordered bases $\beta$ and $\gamma$ of $V$ and $W$, respectively. 
+
+
+\newpage
+\ex{6}{
+    Let $V$ and $W$ be an $n$-dimensional and an $m$-dimensional vector space over a field $\F$, respectively. Use Exercise ?? to show that $dim(L(V, W)) = nm$ by showing that $L(V, W)$ is isomorphic to a well-known vector space of dimension $mn$.
+}
+
+Let $\beta$ and $\gamma$ be ordered bases of $V$ and $W$, respectively. Let $F$ be the function
+\begin{align*}
+    F: L(V,W)   &\rightarrow \F^{m\times n} \\
+            T   &\mapsto \left[\phi_\gamma \circ T \circ \phi_\beta^{-1}\right]_{S_n}^{S_m}.
+\end{align*}
+Suppose some $T\in$ ker$(F)$, so $F(T) = 0_{\F^{m\times n}}$. From exercise 5, for all $v\in V$,
+\begin{align*}
+    T(v)    &= \phi_\gamma^{-1}(F(T)\phi_\beta(v)) \\
+            &= \phi_\gamma^{-1}(0_{\F^{m\times n}}\phi_\beta(v)) \\
+            &= \phi_\gamma^{-1}(0_{\F^m}) \\
+            &= 0_W.
+\end{align*}
+So $T=0_{L(V,W)}$, therefore $F$ is injective. Let $A\in\F^{m\times n}$ and let $L_A$ be the linear transformation
+\begin{align*}
+    L_A: \F^n   &\rightarrow \F^m \\
+            x   &\mapsto Ax.
+\end{align*}
+The composition
+\begin{align*}
+    \phi_\gamma^{-1}\circ L_A\circ\phi_\beta: V   &\rightarrow W \\
+            v   &\mapsto \phi_\gamma^{-1}(A\phi_\beta(v))
+\end{align*}
+is also a linear transformation by linearity of $\phi_\beta$ and $\phi_\gamma$. The image of this linear transformation under $F$ is given by
+\begin{align*}
+    F(\phi_\gamma^{-1}\circ L_A\circ\phi_\beta)
+        &= \left[\phi_\gamma \circ (\phi_\gamma^{-1}\circ L_A\circ\phi_\beta) \circ \phi_\beta^{-1}\right]_{S_n}^{S_m} \\
+        &= [L_A]_{S_n}^{S_m} \\
+        &= A.
+\end{align*}
+So $A\in R(F)$, which means $F$ is surjective, and therefore bijective. Now let $\alpha\in\F$ and $v\in V$ and $T,H\in L(V,W)$. Consider the matrix
+\[F(\alpha T + H) = \left[\phi_\gamma \circ (\alpha T + H) \circ \phi_\beta^{-1}\right]_{S_n}^{S_m}.\]
+From exercise 5, this means that
+\[(\alpha T + H)(v) = \phi_\gamma^{-1}(F(\alpha T + H)\phi_\beta(v)).\]
+By the linearity of $T,H,\phi_\beta,\phi_\gamma$,
+\begin{align*}
+    (\alpha T + H)(v) 
+        &= \alpha T(v) + H(v) \\[1em]
+        &= \alpha\phi_\gamma^{-1}(F(T)\phi_\beta(v)) + \phi_\gamma^{-1}(F(H)\phi_\beta(v)) \\[1em]
+        &= \phi_\gamma^{-1}(\alpha F(T)\phi_\beta(v) + F(H)\phi_\beta(v))\\[1em]
+        &= \phi_\gamma^{-1}((\alpha F(T) + F(H))\phi_\beta(v)).
+\end{align*}
+Now we simplify
+\begin{align*}
+    \phi_\gamma^{-1}(F(\alpha T + H)\phi_\beta(v)) &= \phi_\gamma^{-1}((\alpha F(T) + F(H))\phi_\beta(v)), \\
+    F(\alpha T + H) &= \alpha F(T) + F(H).
+\end{align*}
+Therefore, $F$ is linear. So $F$ is an isomorphism between $L(V,W)$ and $\F^{m\times n}$. Thus, the two spaces are isomorphic and have the same dimension, $mn$.
+
+
+
+
+\end{document}

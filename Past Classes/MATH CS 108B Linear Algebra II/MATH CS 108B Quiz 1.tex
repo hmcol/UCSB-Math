@@ -1,0 +1,122 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Set Names
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+
+% Misc Characters
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\newcommand{\eps}{\varepsilon}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+% Homework Sections
+\setlength{\fboxsep}{4pt}
+\newcommand{\generic}[2]{\section*{#1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\ex}[2]{\generic{Exercise #1}{#2}}
+\newcommand{\prob}[2]{\generic{Problem #1}{#2}}
+\newcommand{\ques}[2]{\generic{Question #1}{#2}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+% MATH CS 117 Intro to Real Analysis
+\newcommand{\ds}{\displaystyle}
+\newcommand{\seq}[1]{\left\{#1\right\}_{n=1}^\infty}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+ 
+\begin{document}
+
+
+\ques{2}{}
+
+We want to find $\beta^*=\{v_1^*, v_2^*, v_3^*\}$ where $v_i^*$ gives the $i$th coordinate of a vector in the basis $\beta$. Let $(x,y,z)\in\R^3$. We should have
+\begin{align*}
+    v_1^*(x,y,z) &= a_1, \\
+    v_2^*(x,y,z) &= a_2, \\
+    v_3^*(x,y,z) &= a_3,
+\end{align*}
+such that
+\[(x,y,z) = a1(0,1,1) + a_2(1,1,0) + a_3(0,2,0).\]
+
+We solve for $a_1,a_2,a_3$ using the augmented matrix
+\[\left[\begin{tabular}{ccc|c}
+    0 & 1 & 0 & $x$ \\
+    1 & 1 & 2 & $y$ \\
+    1 & 0 & 0 & $z$ 
+\end{tabular}\right]
+\sim
+\left[\begin{tabular}{ccc|c}
+    1 & 0 & 0 & $z-x$ \\
+    0 & 1 & 0 & $x$ \\
+    0 & 0 & 1 & $\frac{-1}2(z-y)$ 
+\end{tabular}\right]
+\]
+So
+\begin{align*}
+    v_1^*(x,y,z) &= z-x, \\
+    v_2^*(x,y,z) &= x, \\
+    v_3^*(x,y,z) &= \frac{-1}2(z-y).
+\end{align*}
+
+
+\ques{4}{}
+
+Let $\alpha\in\F$, $u_1,u_2\in\F^n$, $v\in\F^m$, and consider
+\begin{align*}
+    \phi(\alpha u_1 + u_2, v)   &= v^TA(\alpha u_1 + u_2) \\
+                                &= \alpha(v^TA u_1) + v^TAu_2 \\
+                                &= \alpha\phi(u_1,v) + \phi(u_2,v).
+\end{align*}
+So $\phi$ is linear in the first argument. Now let $\alpha\in\F$, $u\in\F^n$, $v_1,v_2\in\F^m$, and consider
+\begin{align*}
+    \phi(u, \alpha v_1, +v_2)   &= (\alpha v_1 + v_2)^TAu \\
+                                &= (\alpha v_1^T + v_2^T)Au \\
+                                &= \alpha(v_1^TAu) + v_2^TAu \\
+                                &= \alpha\phi(u,v_1) + \phi(u,v_2).
+\end{align*}
+So $\phi$ is linear in the second argument, and therefore bilinear.
+
+\ques{5}{}
+
+We first show that $T$ being surjective implies that $T^\times$ is injective. Suppose $T$ is surjective, so $R(T)=W$. Now let $f,g\in W^*$ such that
+\[T^\times(f) = T^\times(g).\]
+That is,
+\[f(T(v)) = g(T(v))\]
+for all $v\in V$. Since every $w\in W$ is the image under $T$ of some $v\in V$, this implies that
+\[f(w) = g(w)\]
+for all $w\in W$. Thus, $f=g$, so $T^\times$ is injective.
+
+We now show that $T^\times$ being injective implies that $T$ is surjective. Suppose that $T^\times$ is injective, so
+\[T^\times(f) = T^\times(g) \implies f=g\]
+for all $f,g\in W^*$. We now suppose that $T$ is not surjective, and seek to derive a contradiction. Since $T$ is not surjective, we let $w$ be a vector of $W$ which is not the image under $T$ of any vector of $V$. We now extend $w$ to a basis $\gamma$ for $W$, where $w$ is the first vector of $\beta$.
+
+We now consider two linear functionals $f,g$ from $W$ to the field. We define $f$ to be the linear functional which maps a vector of $W$ to its first coordinate in the basis $\gamma$. And we define $g$ to be the zero functional which maps all vectors of $W$ to zero in the field. Clearly, $f\ne g$, however, we claim that $T^\times(f)=T^\times(g)$, which would be a contradiction, since $T^\times$ is injective.
+
+Since $w$ is not in the range of $T$, then any vector of $W$ with a nonzero first coordinate in the basis $\beta$ must also not be in the range of $T$. Since if this were not the case, then $w$ would have to be in the range of $T$ by the linearity of $T$. This means that for all $v\in V$, $T(v)$ has a zero for its first coordinate in the basis $\beta$. In other words, $T^\times(f)(v) = f(T(v)) = 0$ for all $v\in V$. and since $g$ is simply the zero functional,
+\[T^\times(f)(v) = 0 = g(T(v)) = T^\times(g)(v)\]
+for all $v\in V$. Therefore $T^\times(f)=T^\times(g)$, which is a condradiction. Therefore, $T$ is surjective.
+
+In conclusion, $T$ is surjective if and only if $T^\times$ is injective.
+
+
+
+\end{document}

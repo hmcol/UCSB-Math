@@ -1,0 +1,388 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow,enumitem}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools,babel}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{\textwidth-10pt}}
+    {\end{minipage}\end{lrbox}\framebox[6.5in]{\usebox{\mybox}}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+\newenvironment{response}{\paragraph{}}{}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\seq}[2]{\left\{#1\right\}_{#2=1}^\infty}
+\newcommand{\clo}[1]{\overline{#1}}
+\newcommand{\conj}[1]{\overline{#1}}
+\newcommand{\eqc}[1]{\overline{#1}}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ang}{\langle}{\rangle}
+
+% Sets
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+
+% Misc Characters
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\let\eps\varepsilon
+\let\emptyset\varnothing
+
+% Functions
+\newcommand{\id}[1]{\mathsf{id}_{#1}}
+
+% Babel Shorthands
+\useshorthands*{"}
+\defineshorthand{"-}{\setminus}
+\defineshorthand{"d}{\partial}
+
+% Probability
+\newcommand{\FF}{\mathcal{F}}
+\renewcommand{\P}{\mathbb{P}}
+
+% Complex Analysis
+\renewcommand{\Im}{\text{Im }}
+\renewcommand{\Re}{\text{Re }}
+\newcommand{\Arg}{\text{Arg }}
+\newcommand{\pd}[2]{\frac{"d#1}{"d#2}}
+\newcommand{\pdn}[3]{\frac{"d^{#3}#1}{"d#2^{#3}}}
+ 
+\begin{document}
+ 
+\title{Homework 2\\
+    %\large MATH CS 121 Intro to Probability
+    \large MATH CS 122A Complex Analysis I
+    %\large MATH 118A Intro to Real Analysis
+    %\large MATH 111A Intro to Abstract Algebra
+}
+\author{Harry Coleman}
+\date{October 24, 2020}
+\maketitle
+
+\section*{Exercise 2.1.14}
+\begin{problem}
+    Let $h(t)$ be a continuous complex-valued function on the unit interval $[0,1]$, and consider
+    \[H(z) = \int_0^1\frac{h(t)}{t-z}dt.\]
+    Where is $H(z)$ defined? Where is $H(z)$ continuous? Justify your answer. 
+\end{problem}
+
+\begin{proposition}
+    $H(z)$ is defined and continuous on $\C"-[0,1]$.
+\end{proposition}
+
+\begin{proof}
+    $H(z)$ will be defined whenever $\ds\frac{h(t)}{t-z}$ is integrable over $[0,1]$, which is the case when $t-z$ is nonzero for $t\in[0,1]$, which is precisely when $z\in\C"-[0,1]$. Therefore, $H(z)$ is defined on $\C"-[0,1]$ and undefined on $[0,1]$. Note that because $H(z)$ is undefined on $[0,1]$, is also not continuous on $[0,1]$.
+    
+    Fix values for $z_0\in\C"-[0,1]$, $t\in[0,1]$, and let $\eps>0$. For any $z\in\C"-[0,1]$, we have
+    \begin{align*}
+        \left|\frac{h(t)}{t-z} - \frac{h(t)}{t-z_0}\right| 
+            &= \left|\frac{h(t)(t-z_0)}{(t-z)(t-z_0)} - \frac{h(t)(t-z)}{(t-z)(t-z_0)}\right| \\
+            &= \left|\frac{h(t)(z-z_0)}{(t-z)(t-z_0)}\right| \\
+            &= |z-z_0|\cdot\frac{|h(t)|}{|t-z_0|}\cdot\frac1{|t-z|}.
+    \end{align*}
+    By the reverse triangle inequality, we have
+    \begin{align*}
+        \left|\frac{h(t)}{t-z} - \frac{h(t)}{t-z_0}\right| 
+            &\leq |z-z_0|\cdot\frac{|h(t)|}{|t-z_0|}\cdot\frac1{||t-z_0|-|z-z_0||}.
+    \end{align*}
+    If we have $|z-z_0|\leq\frac12|t-z_0|$, then
+    \begin{align*}
+        \left|\frac{h(t)}{t-z} - \frac{h(t)}{t-z_0}\right| 
+            &\leq |z-z_0|\cdot\frac{|h(t)|}{|t-z_0|}\cdot\frac1{|t-z_0|} \\
+            &= |z-z_0|\cdot\frac{|h(t)|}{|t-z_0|^2}.
+    \end{align*}
+    And if $|z-z_0|\leq \eps\frac{|t-z_0|^2}{|h(t)|}$, then
+    \[\left|\frac{h(t)}{t-z} - \frac{h(t)}{t-z_0}\right| \leq \delta.\]
+    Therefore, if we choose $\delta\leq\min\{\frac12|t-z_0|, \eps\frac{|t-z_0|^2}{|h(t)|}\}$, then for all $z\in\C"-[0,1]$, there is some $\delta>0$ such that
+    \[|z-z_0| \leq \delta \implies \left|\frac{h(t)}{t-z} - \frac{h(t)}{t-z_0}\right| \leq \eps.\]
+    Therefore, for all $z\in\C"-[0,1]$, there is a delta such that if $|z-z_0|<\delta$, then
+    \begin{align*}
+        |H(z)-H(z_0)|
+            &= \left| \int_0^1\frac{h(t)}{t-z} - \int_0^1\frac{h(t)}{t-z_0} dt\right| \\
+            &= \left| \int_0^1\frac{h(t)}{t-z} - \frac{h(t)}{t-z_0} dt\right| \\
+            &\leq \int_0^1\left|\frac{h(t)}{t-z} - \frac{h(t)}{t-z_0}\right|dt
+            &\leq \eps.
+    \end{align*}
+    Therefore, $H(z)$ is continuous on $\C"-[0,1]$.
+    
+\end{proof}
+
+\section*{Exercise 2.3.3}
+\begin{problem}
+    Show that if $f$ and $\clo{f}$ are both analytic on a domain $D$, then $f$ is constant.
+\end{problem}
+
+\begin{proof}
+    The Cauchy-Riemann conditions on $f=u+iv$  for points in $D$ give us
+    \[\frac{"du}{"dx} = \frac{"dv}{"dy}, \qquad \frac{"du}{"dy} = -\frac{"dv}{"dx},\]
+    and on $\conj{f} = u - iv$ give us
+    \[\frac{"du}{"dx} = -\frac{"dv}{"dy}, \qquad \frac{"du}{"dy} = \frac{"dv}{"dx}.\]
+    Which imply that all of the above partial derivatives are zero, in particular,
+    \[\frac{"du}{"dx} = \frac{"dv}{"dx} = 0.\]
+    Therefore, for any $z=x+iy\in D$,
+    \[f'(z) = \frac{"du}{"dx}(x,y) + i\frac{"dv}{"dx}(x,y) = 0 + i0 = 0.\]
+    Therefore, $f$ is constant on $D$.
+    
+\end{proof}
+
+\section*{Exercise 2.3.4}
+\begin{problem}
+    Show that if $f$ is analytic on a domain $D$, and if $|f|$ is constant, then $f$ is constant.
+\end{problem}
+
+\begin{proof}
+    If $|f|=0$, then $f=0$ is constant. We assume, without loss of generality, that $|f|>0$. This implies that $f(z)\ne 0$ for all $z\in\C$. Therefore, the quotient with nonzero analytic denominator
+    \[\conj{f} = \frac{|f|^2}{f}\]
+    is analytic. By the previous exercise, $f,\conj{f}$ both analytic implies $f$ is constant.
+    
+    
+\end{proof}
+
+\section*{Exercise 2.3.8}
+\begin{problem}
+    Derive the polar form of the Cauchy-Riemann equations for $u$ and $v$:
+    \[\frac{"du}{"dr} = \frac1r \frac{"dv}{"d\theta}, \qquad \frac{"du}{"d\theta} = -r\frac{"dv}{"dr}.\]
+    Check that for any integer $m$, the functions $u(r^{i\theta})=r^m\cos(m\theta)$ and $v(re^{i\theta}) = r^m\sin(m\theta)$ satisfy the Cauchy-Riemann equations.
+\end{problem}
+
+\begin{proof}
+    For a given complex value $z$, we have the euclidean and polar representations:
+    \[z=x+iy = r\cos\theta + ir\sin\theta,\]
+    giving us $x=r\cos\theta$ and $y=r\sin\theta$. Note that $\theta$ is constant with respect to $r$ and vice versa. We then solve for the partial derivatives
+    \[\frac{"dx}{"dr} = \frac{"d}{"dr}r\cos\theta = \cos\theta \isp{and} \frac{"dy}{"d\theta} = \frac{"d}{"d\theta}r\sin\theta = r\cos\theta.\]
+    By the chain rule, we find
+    \[\frac{"du}{"dr} = \frac{"du}{"dx}\cdot\frac{"dx}{"dr} \isp{and} \frac{"dv}{"d\theta} = \frac{"dv}{"dy}\cdot\frac{"dy}{"d\theta},\]
+    \[\frac{"du}{"d\theta} = \frac{"du}{"dy}\cdot\frac{"dy}{"d\theta} \isp{and} \frac{"dv}{"dr} = \frac{"dv}{"dx}\cdot\frac{"dx}{"dr}.\]
+    And by the Euclidean Cauchy-Riemann equations, we have
+    \[\frac{"du}{"dr}\cdot\left(\frac{"dx}{"dr}\right)^{-1} = \frac{"du}{"dx} = \frac{"dv}{"dy} = \frac{"dv}{"d\theta}\cdot\left(\frac{"dy}{"d\theta}\right)^{-1}.\]
+    \[\frac{"du}{"d\theta}\cdot\left(\frac{"dy}{"d\theta}\right)^{-1} = \frac{"du}{"dy} = -\frac{"dv}{"dx} = -\frac{"dv}{"dr}\cdot\left(\frac{"dx}{"dr}\right)^{-1}.\]
+    Substituting for the partial derivatives of $x$ and $y$ with respect to $r$ and $\theta$, respectively, we obtain the desired result:
+     \[\frac{"du}{"dr} = \frac1r\cdot\frac{"dv}{"d\theta} \isp{and} \frac{"du}{"d\theta} = -r\cdot\frac{"dv}{"dr}.\]
+    
+\end{proof}
+
+Now for some integer $m$, let $u(r^{i\theta})=r^m\cos(m\theta)$ and $v(re^{i\theta}) = r^m\sin(m\theta)$. Firstly,
+\begin{align*}
+ \frac{"du}{"dr}
+    &= \frac{"d}{"dr}r^m\cos(m\theta) \\
+    &= mr^{m-1}\cos(m\theta) \\
+    &= \frac1r\cdot mr^m\cos(m\theta)\\
+    &= \frac1r\cdot \frac{"d}{"d\theta}r^m\sin(m\theta) \\
+    &= \frac1r\cdot \frac{"dv}{"d\theta}.
+\end{align*}
+And secondly,
+\begin{align*}
+\frac{"du}{"d\theta}
+    &= \frac{"d}{"d\theta}r^m\cos(m\theta)\\
+    &= -mr^m\sin(m\theta) \\
+    &= -r\cdot mr^{m-1}\sin(m\theta) \\
+    &= -r\cdot \frac{"d}{"dr}r^m\sin(m\theta) \\
+    &= -r\cdot\frac{"dv}{"dr}
+\end{align*}
+
+\newpage
+\section*{Exercise 2.5.1}
+\begin{problem}
+    Show that the following functions are harmonic and find the harmonic conjugates:
+\end{problem}
+
+\subsection*{Exercise 2.5.1(a)}
+\begin{problem}
+    \[x^2-y^2\]
+\end{problem}
+\paragraph{}
+
+We first check that $u=x^2-y^2$ is harmonic, i.e., that it satisfies Laplace's equation $\Delta u=0$:
+\begin{align*}
+    \Delta u 
+        &= \pdn{}{x}{2}(x^2-y^2) + \pdn{}{y}{2}(x^2-y^2) \\
+        &= \pd{}{x}2x + \pd{}{y}(-2y) \\
+        &= 2 - 2 \\
+        &= 0.
+\end{align*}
+
+Now to find it's harmonic conjugate, $v$, we let $(x_0,y_0)$ be a fixed point in the domain. Then for any $(x,y)$ in the domain, we have
+\begin{align*}
+    v(x,y)
+        &= \int_{y_0}^y\pd ux (x,t) dt - \int_{x_0}^x\pd uy (s,y_0)ds + C \\
+        &= \int_{y_0}^y2x dt - \int_{x_0}^x(-2y_0)ds + C \\
+        &= (2xy - 2xy_0) + (2xy_0 - 2x_0y_0) + C \\
+        &= 2xy + C,
+\end{align*}
+up to some constant $C$.
+
+
+\subsection*{Exercise 2.5.1(b)}
+\begin{problem}
+    \[xy+3x^2y-y^3\]
+\end{problem}
+\paragraph{}
+
+We first check that $u=xy+3x^2y-y^3$ is harmonic, i.e., that it satisfies Laplace's equation $\Delta u=0$:
+\begin{align*}
+    \Delta u 
+        &= \pdn{}{x}{2}(xy+3x^2y-y^3) + \pdn{}{y}{2}(xy+3x^2y-y^3) \\
+        &= \pd{}{x}(y+6xy) + \pd{}{y}(x+3x^2-3y^2) \\
+        &= 6y - 6y \\
+        &= 0.
+\end{align*}
+
+Now to find it's harmonic conjugate, $v$, we let $(x_0,y_0)$ be a fixed point in the domain. Then for any $(x,y)$ in the domain, we have
+\begin{align*}
+    v(x,y)
+        &= \int_{y_0}^y\pd ux (x,t) dt - \int_{x_0}^x\pd uy (s,y_0)ds + C \\
+        &= \int_{y_0}^y(t + 6xt) dt - \int_{x_0}^x(s + 3s^2 - 3y_0^2)ds + C \\
+        &= [(\frac12y + 3xy^2) - (\frac12y_0 + 3xy_0^2)] - [(\frac12x^2 + x^3 - 3xy_0^2) - (\frac12x_0^2 + x_0^3 - 3x_0y_0^2)] + C \\
+        &= \frac12y + 3xy^2 - \frac12y_0 - 3xy_0^2 - \frac12x^2 - x^3 + 3xy_0^2 + \frac12x_0^2 + x_0^3 - 3x_0y_0^2 + C \\
+        &= -x^3 -\frac12x^2 +2xy^2 + \frac12y + C,
+\end{align*}
+up to some constant $C$.
+
+\subsection*{Exercise 2.5.1(c)}
+\begin{problem}
+    \[\sinh x \sin y\]
+\end{problem}
+\paragraph{}
+
+We first check that $u=\sinh x \sin y$ is harmonic, i.e., that it satisfies Laplace's equation $\Delta u=0$:
+\begin{align*}
+    \Delta u 
+        &= \pdn{}{x}{2}(\sinh x \sin y) + \pdn{}{y}{2}(\sinh x \sin y) \\
+        &= \pd{}{x}(\cosh x \sin y) + \pd{}{y}(\sinh x \cos y) \\
+        &= \sinh x \sin y - \sinh x \sin y \\
+        &= 0.
+\end{align*}
+
+Now to find it's harmonic conjugate, $v$, we let $(x_0,y_0)$ be a fixed point in the domain. Then for any $(x,y)$ in the domain, we have
+\begin{align*}
+    v(x,y)
+        &= \int_{y_0}^y\pd ux (x,t) dt - \int_{x_0}^x\pd uy (s,y_0)ds + C \\
+        &= \int_{y_0}^y(\cosh x \sin t) dt - \int_{x_0}^x(\sinh s \cos y_0)ds + C \\
+        &= \cosh x \int_{y_0}^y(\sin t) dt -  \cos y_0\int_{x_0}^x(\sinh s)ds + C \\
+        &= \cosh x(-\cos y + \cos y_0) - \cos y_0(\cosh x - \cosh x_0) + C\\
+        &= -\cosh x \cos y + C
+\end{align*}
+up to some constant $C$.
+
+\subsection*{Exercise 2.5.1(d)}
+\begin{problem}
+    \[e^{x^2-y^2}\cos(2xy)\]
+\end{problem}
+\paragraph{}
+
+We first check that $u=e^{x^2-y^2}\cos(2xy)$ is harmonic, i.e., that it satisfies Laplace's equation $\Delta u=0$:
+\begin{align*}
+    \Delta u 
+        &= \pdn{}{x}{2}\left(e^{x^2-y^2}\cos(2xy)\right) + \pdn{}{y}{2}\left(e^{x^2-y^2}\cos(2xy)\right) \\
+        &= \pd{}{x}\left(\pd{}{x}\left(e^{x^2-y^2}\right)\cos(2xy) + e^{x^2-y^2}\pd{}{x}\cos(2xy)\right) + \pd{}{y}\left(\pd{}{y}\left(e^{x^2-y^2}\right)\cos(2xy) + e^{x^2-y^2}\pd{}{y}\cos(2xy)\right) \\
+        &= \pd{}{x}\left(2xe^{x^2-y^2}\cos(2xy) - 2ye^{x^2-y^2}\sin(2xy)\right) + \pd{}{y}\left(-2ye^{x^2-y^2}\cos(2xy) - 2xe^{x^2-y^2}\sin(2xy)\right) \\
+        &= 2\pd{}{x}\left(xe^{x^2-y^2}\cos(2xy)\right) - 2y\pd{}{x}\left(e^{x^2-y^2}\sin(2xy)\right) \\
+        &\quad - 2\pd{}{y}\left(ye^{x^2-y^2}\cos(2xy)\right) - 2x\pd{}{y}\left(e^{x^2-y^2}\sin(2xy)\right) \\
+        &= 2\pd{}{x}\left(xe^{x^2-y^2}\right)\cos(2xy) + 2xe^{x^2-y^2}\pd{}{x}\cos(2xy) - 2y\pd{}{x}\left(e^{x^2-y^2}\right)\sin(2xy) - 2ye^{x^2-y^2}\pd{}{x}\sin(2xy) \\
+        &\quad - 2\pd{}{y}\left(ye^{x^2-y^2}\right)\cos(2xy) - 2ye^{x^2-y^2}\pd{}{y}\cos(2xy) - 2x\pd{}{y}\left(e^{x^2-y^2}\right)\sin(2xy) - 2xe^{x^2-y^2}\pd{}{y}\sin(2xy) \\
+        &= (2 + 4x^2)e^{x^2-y^2}\cos(2xy) - 4xye^{x^2-y^2}\sin(2xy) - 4xye^{x^2-y^2}\cos(2xy) - 4y^2e^{x^2-y^2}\cos(2xy) \\
+        &\quad - (2 - 4y^2)e^{x^2-y^2}\cos(2xy) + 4xye^{x^2-y^2}\sin(2xy) + 4xye^{x^2-y^2}\cos(2xy) - 4x^2e^{x^2-y^2}\cos(2xy) \\
+        &= 2e^{x^2-y^2}\cos(2xy) - 2e^{x^2-y^2}\cos(2xy) \\
+        &= 0.
+\end{align*}
+
+Now to find it's harmonic conjugate, $v$, we let $(x_0,y_0)$ be a fixed point in the domain. Then for any $(x,y)$ in the domain, we have
+\begin{align*}
+    v(x,y)
+        &= \int_{y_0}^y\pd ux (x,t) dt - \int_{x_0}^x\pd uy (s,y_0)ds + C \\
+        &= \int_{y_0}^y\left(2xe^{x^2-t^2}\cos(2xt) - 2te^{x^2-t^2}\sin(2xt)\right) dt \\
+        &\quad - \int_{x_0}^x\left(-2y_0e^{s^2-y_0^2}\cos(2sy_0) + 2se^{s^2-y_0^2}\sin(2sy_0)\right)ds + C \\
+        &= e^{x^2-y^2}\sin(2xy) - e^{x^2-y_0^2}\sin(2xy_0) + e^{x^2-y_0^2}\sin(2xy_0) - e^{x_0^2-y_0^2}\sin(2x_0y_0) + C \\
+        &= e^{x^2-y^2}\sin(2xy) + C
+\end{align*}
+up to some constant $C$.
+
+\newpage
+\subsection*{Exercise 2.5.1(e)}
+\begin{problem}
+    \[\tan^{-1}(y/x),\ x>0\]
+\end{problem}
+\paragraph{}
+
+We first check that $u=\tan^{-1}(y/x)$ is harmonic, i.e., that it satisfies Laplace's equation $\Delta u=0$:
+\begin{align*}
+    \Delta u 
+        &= \pdn{}{x}{2}(\tan^{-1}(y/x)) + \pdn{}{y}{2}(\tan^{-1}(y/x)) \\
+        &= \pd{}{x}\left(\frac1{(y/x)^2 +1} \cdot \frac{-y}{x^2}\right) + \pd{}{y}\left(\frac1{(y/x)^2 +1} \cdot \frac1{x}\right) \\
+        &= -y\pd{}{x}\left(\frac1{y^2 + x^2}\right) + \pd{}{y}\left(\frac1{y^2/x + x} \cdot \frac xx\right) \\
+        &= -y\pd{}{x}\left(\frac1{y^2 + x^2}\right) + x\pd{}{y}\left(\frac1{y^2 + x^2}\right) \\
+        &= -y\frac{-1}{(y^2 + x^2)^2}\cdot 2x + x\frac{-1}{(y^2 + x^2)^2}\cdot 2y \\
+        &= \frac{2xy}{(y^2 + x^2)^2} - \frac{2xy}{(y^2 + x^2)^2} \\
+        &= 0.
+\end{align*}
+
+Now to find it's harmonic conjugate, $v$, we let $(x_0,y_0)$ be a fixed point in the domain. Then for any $(x,y)$ in the domain, we have
+\begin{align*}
+    v(x,y)
+        &= \int_{y_0}^y\pd ux (x,t) dt - \int_{x_0}^x\pd uy (s,y_0)ds + C \\
+        &= -\int_{y_0}^y\left(\frac{t}{t^2 + x^2}\right) dt - \int_{x_0}^x\left(\frac{s}{y_0^2 + s^2}\right)ds + C \\
+        &= -\frac12\log(y^2+x^2) + \frac12\log(y_0^2+x^2) - \frac12\log(y_0^2+x^2) + \frac12\log(y_0^2+x_0^2) + C \\
+        &= -\frac12\log(y^2+x^2) + C
+\end{align*}
+up to some constant $C$.
+
+\newpage
+\subsection*{Exercise 2.5.1(f)}
+\begin{problem}
+    \[x/(x^2+y^2)\]
+\end{problem}
+\paragraph{}
+
+We first check that $u=x/(x^2+y^2)$ is harmonic, i.e., that it satisfies Laplace's equation $\Delta u=0$:
+\begin{align*}
+    \Delta u 
+        &= \pdn{}{x}{2}(x/(x^2+y^2)) + \pdn{}{y}{2}(x/(x^2+y^2)) \\
+        &= \pd{}{x}\left(\frac{(x^2+y^2)\pd{}{x}(x) - x\pd{}{x}(x^2+y^2)}{(x^2+y^2)^2}\right) + \pd{}{y}\left(\frac{-x}{(x^2+y^2)^2}\cdot 2y\right) \\
+        &= \pd{}{x}\left(\frac{x^2+y^2 - x(2x)}{(x^2+y^2)^2}\right) + \pd{}{y}\left(\frac{-2xy}{(x^2+y^2)^2}\right) \\
+        &= \pd{}{x}\left(\frac{y^2-x^2}{(x^2+y^2)^2}\right) -2x\pd{}{y}\left(\frac{y}{(x^2+y^2)^2}\right) \\
+        &= \pd{}{x}\left(\frac{y^2-x^2}{x^2+y^2}\cdot\frac1{x^2+y^2}\right) -2x\left(\frac{(x^2+y^2)^2\pd{}{y}y - y\pd{}{y}(x^2+y^2)^2}{(x^2+y^2)^4}\right) \\
+        &= \frac{y^2-x^2}{x^2+y^2}\pd{}{x}\left(\frac1{x^2+y^2}\right) + \pd{}{x}\left(\frac{y^2-x^2}{x^2+y^2}\right)\frac1{x^2+y^2} -2x\left(\frac{(x^2+y^2)^2\pd{}{y}y - y\pd{}{y}(x^2+y^2)^2}{(x^2+y^2)^4}\right) \\
+        &= \frac{y^2-x^2}{x^2+y^2}\left(\frac{-1}{(x^2+y^2)^2}\cdot 2x\right) + \left(\frac{(x^2+y^2)\pd{}{x}(y^2-x^2) - (y^2-x^2)\pd{}{x}(x^2+y^2) }{(x^2+y^2)^2}\right)\frac1{x^2+y^2} \\
+        &\quad -2x\left(\frac{(x^2+y^2)^2 - y2(x^2+y^2)(2y)}{(x^2+y^2)^4}\right) \\
+        &= \frac{-2x(y^2-x^2)}{(x^2+y^2)^3} + \frac{-2x(x^2+y^2) - (y^2-x^2)(2x)}{(x^2+y^2)^3} +\frac{-2x(x^2+y^2) + 8xy^2}{(x^2+y^2)^3}\\
+        &= \frac{-2x(y^2-x^2) -2x(x^2+y^2) - (y^2-x^2)(2x) - 2x(x^2+y^2) + 8xy^2}{(x^2+y^2)^3} \\
+        &= \frac{-4x(y^2-x^2) -4x(x^2+y^2) + 8xy^2}{(x^2+y^2)^3} \\
+        &= \frac{-4xy^2 + 4x^3 -4xx^3 - 4xy^2 + 8xy^2}{(x^2+y^2)^3} \\
+        &= 0.
+\end{align*}
+
+Now to find it's harmonic conjugate, $v$, we let $(x_0,y_0)$ be a fixed point in the domain. Then for any $(x,y)$ in the domain, we have
+\begin{align*}
+    v(x,y) = -y/(x^2+y^2) + C
+\end{align*}
+up to some constant $C$.
+
+
+
+\end{document}

@@ -1,0 +1,409 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amsthm, amssymb, physics}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{pbox}
+    {\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}
+    {\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\mybox}}\end{center}}
+
+% Options
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{1em}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+
+% Extra Commands
+\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\pfrac}[2]{\left(\frac{#1}{#2}\right)}
+
+
+% Document Info
+\title{Homework 2\\
+    \large MATH CS 122B
+}
+\author{Harry Coleman}
+\date{January 31, 2021}
+
+% Begin Document
+\begin{document}
+\maketitle
+
+\section{Exercise VI.2.11}
+\begin{pbox}
+    Suppose $f(z) = \sum a_k z^k$ is analytic for $|z| < R$, and suppose that $f(z)$ extends to be meromorphic for $|z| < R + \eps$, with only one pole $z_0$ on the circle $|z| = R$. Show that $a_k/a_{k+1} \to z_0$ as $k \to \infty$. (Assume $z_0$ is a simple pole)
+\end{pbox}
+
+\begin{proof}
+    Let $\eps >0$ such that $f(z)$ is meromorphic on the open disc $B_{R + \eps}(0)$ with a simple pole at $z_0$. Inside this domain, we have
+    \[
+        f(z) = \frac{g(z)}{z - z_0} = \pfrac{-g(z)}{z_0} \pfrac{1}{1 - \frac{z}{z_0}}
+    \]
+    where $g(z)$ is analytic on the open ball $B_{R + \eps}(0)$ with $g(z_0) \ne 0$. Let $h(z) = -g(z)/z_0$, which is similarly analytic on $B_{R + \eps}(0)$ with $h(z_0) \ne 0$. If $|z| < R$, then we have a geometric series
+    \[
+        \frac{1}{1 - \frac{z}{z_0}} = \sum_{k}^\infty \pfrac{z}{z_0}^k = \sum_{k}^\infty z_0^{-k} z^k.
+    \]
+    We now take the power series expansion of $f(z)$ inside $B_R(0)$ and $h(z)$ inside $B_{R + \eps}(0)$ , giving us
+    \[
+        \sum_{k=0}^\infty a_k z^k 
+            = \left( \sum_{k=0}^\infty b_k z^k \right) \left( \sum_{k=0}^\infty z_0^{-k} z^k \right)
+            = \sum_{k=0}^\infty  \left( \sum_{n=0}^k b_n z_0^{n-k}  \right) z^k.
+    \]
+    Since the power series expansion of $f(z)$ inside $B_R(0)$ is unique, then
+    \[
+        a_k = \sum_{n=0}^k b_n z_0^{n-k} = z_0^{-k} \sum_{n=0}^k b_n z_0^n.
+    \]
+    Expressing $a_k/a_{k+1}$ in these terms, we find
+    \[
+        \frac{a_k}{a_{k+1}} 
+            = \frac{z_0^{-k} \sum_{n=0}^k b_n z_0^n}{z_0^{-(k+1)} \sum_{n=0}^{k+1} b_n z_0^n}
+            = z_0 \pfrac{\sum_{n=0}^k b_n z_0^n}{\sum_{n=0}^{k+1} b_n z_0^n}
+    \]
+    Since the power series expansion of $h(z)$ holds in $B_{R + \eps}(0)$ and $h(z_0) \ne 0$, then taking the limit of this, we find
+    \[
+        \lim_{k \to \infty} \frac{a_k}{a_{k + 1}} 
+            = \lim_{k \to \infty} z_0 \frac{\sum_{n=0}^k b_n z_0^n}{\sum_{n=0}^{k+1} b_n z_0^n}
+            = z_0 \frac{\sum_{n=0}^{\infty} b_n z_0^n}{\sum_{n=0}^{\infty} b_n z_0^n}
+            = z_0 \frac{h(z_0)}{h(z_0)}
+            = z_0.
+    \]
+    
+\end{proof}
+
+\newpage
+\section{Exercise VI.2.12}
+\begin{pbox}
+    Show that if $z_0$ is an isolated singularity of $f(z)$ that is not removable, then $z_0$ is an essential singularity for $e^{f(z)}$.
+\end{pbox}
+
+\begin{proof}
+    Since $f(z)$ is analytic in some annulus $A_{0,R}(z_0)$ and $e^z$ is entire, then $e^{f(z)}$ is analytic in the annulus $A_{0, R}(0)$. Because $z_0$ is not a removable singularity of $f(z)$, it is either essential or a pole. First, suppose $z_0$ is an essential singularity of $f(z)$. Given any nonzero complex number $w_0 \in \C$, there exists a sequence $z_n \to z_0$ such that $f(z_n) \to \Log w_0$. The exponential function is continuous, so
+    \[
+        e^{f(z_n)} \to e^{\Log w_0} = w_0.
+    \]
+    For any $M \in \R$, we can find a sequence $z_n \to z_0$ such that $e^{f(z_n)} \to w_0$ for some $|w_0| \geq M$, so $e^{f(z)}$ is not bounded around $z_0$, i.e., does not has a removable singularity at $z_0$. Moreover, the limit of $|e^{f(z)}|$ as $z \to z_0$ does not exist, so $z_0$ is not a pole for $e^{f(z)}$. Hence, $z_0$ is an essential singularity for $e^{f(z)}$.
+    
+    Now suppose $z_0$ is a pole of $f(z)$ of order $N$, then
+    \[
+        f(z) = \frac{g(z)}{(z - z_0)^N}
+    \]
+    where $g(z)$ is analytic at $z_0$ with $g(z_0) \ne 0$. We choose a sequence $z_n \to z_0$ defined by
+    \[
+        z_n = \frac1n \exp(N^{-1}\Log g(z_0)) + z_0.
+    \]
+    Then we have the image sequence
+    \[
+        f(z_n) 
+            %= \frac{g(z_n)}{(\frac1n \exp(N^{-1}\Log g(z_0)) + z_0 - z_0)^N}
+            = \frac{n^N g(z_n)}{\exp(N^{-1}\Log g(z_0))^N}.
+    \]
+    Note that the exponentiation in the denominator is multivalued such that for any $k \in \Z$
+    \begin{align*}
+        \exp(N^{-1}\Log g(z_0))^N
+            %&= \exp((N^{-1}\Log g(z_0) + i2\pi k) N) \\
+            &= \exp(\Log g(z_0) + i2\pi kN) \\
+            &= \exp(\Log g(z_0)) \\
+            &= g(z_0). 
+    \end{align*}
+    This gives us $f(z_n) = n^N g(z_n)/g(z_0)$ and because $g(z)$ is analytic at $z_0$, we have $g(z_n) \to g(z_0)$ as $z_n \to z_0$. So $f(z_n) \to +\infty$ on the real axis and $e^{f(z_n)} \to +\infty$. So $e^{f(z)}$ is unbounded near $z_0$ and, therefore, does not have $z_0$ as a removable singularity. Similarly, if we define the sequence
+    \[
+        z_n = \frac1n \exp(N^{-1}\Log(-g(z_0))) + z_0,
+    \]
+    then $z_n \to z_0$ with $f(z_n) \to -\infty$ on the real axis and $e^{f(z_n)} \to 0.$ Therefore, the limit of $|e^{f(z)}|$ as $z \to z_0$ does not exist. Therefore, $z_0$ is not a pole for $e^{f(z)}$, so it must be an essential singularity.
+    
+    
+    
+\end{proof}
+
+\newpage
+\section{Exercise VI.3.2}
+\begin{pbox}
+    Suppose that $f(z)$ is an entire function that is not a polynomial. What kind of singularity can $f(z)$ have at $\infty$.
+\end{pbox}
+
+\begin{proposition}
+    $f(z)$ has an essential singularity at $\infty$.
+\end{proposition}
+
+\begin{proof}
+    Since $f(z)$ is entire, then it has a power series expansion
+    \[
+        f(z) = \sum_{k=0}^\infty a_k z^k, \quad z \in \C.
+    \]
+    Since $f(z)$ is not a polynomial, then we must have $a_k \ne 0$ for infinitely many $k \geq 0$. The expansion of $f(z)$ at $\infty$ can now be found as the expansion of $f(w^{-1})$ at zero, i.e.,
+    \[
+        f(w^{-1}) = \sum_{k=0}^\infty a_k w^{-k} = \sum_{k=-\infty}^0 a_{-k} w^k.
+    \]
+    Since the Laurent series expansion of $f(w^{-1})$ has infinitely many negative powers of $w$ with nonzero coefficients, then it has an essential singularity at $0$, which implies $f(z)$ has an essential singularity at $\infty$.
+    
+\end{proof}
+
+\section{Exercise VI.3.3}
+\begin{pbox}
+    Show that if $f(z)$ is a nonconstant entire function, then $e^{f(z)}$ has an essential singularity at $z = \infty$.
+\end{pbox}
+
+\begin{proof}
+    Since $f(z)$ is entire, it is analytic for $|z| > R$, so $f(z)$ has an isolated singularity at $\infty$. Moreover, $f(z)$ is unbounded around $\infty$. Otherwise, if $f(z)$ were bounded for $|z| > R$, then it would also be bounded on the compact set $|z| \leq R$. In which case, it would be bounded on $\C$ and Liouville's theorem would imply that $f(z)$ is constant. Therefore, $\infty$ is not a removable singularity of $f(z)$ and Exercise 2 implies that $e^{f(z)}$ has an essential singularity at $\infty$.
+\end{proof}
+
+\newpage
+\section{Exercise VI.4.1}
+\begin{pbox}
+    Find the partial fractions decompositions of the following functions.
+\end{pbox}
+
+\subsection{Exercise VI.4.1(a)}
+\begin{pbox}
+    \[
+        \frac{1}{z^2 - z}
+    \]
+\end{pbox}
+
+The partial fractions decomposition is given by
+\[
+    \frac{1}{z^2 - z}
+        = \frac{1}{z(z-1)}
+        = \frac{a}{z} + \frac{b}{z - 1}.
+\]
+To find $a, b$, we rearrange this equation to be
+\begin{align*}
+    1 
+        &= a(z - 1) + bz \\
+        &= -a + (a + b) z
+\end{align*}
+Solving for the coefficients of the powers of $z$, we obtain
+\[
+    a = -1, \quad b = 1.
+\]
+
+\subsection{Exercise VI.4.1(b)}
+\begin{pbox}
+    \[
+        \frac{z^2 + 1}{z(z^2 - 1)}
+    \]
+\end{pbox}
+
+The partial fractions decomposition is given by
+\begin{align*}
+    \frac{z^2 + 1}{z(z^2 - 1)}
+        = \frac{z^2 + 1}{z(z - 1)(z + 1)} 
+        = \frac{a}{z} + \frac{b}{z + 1} + \frac{c}{z - 1}.
+\end{align*}
+To find $a, b, c$, we rearrange this equation to be
+\begin{align*}
+    1 
+        &= a(z + 1)(z - 1) + bz(z - 1) + cz(z + 1) \\
+        &= -a + (-b + c) z + (a + b + c) z^2
+\end{align*}
+Solving for the coefficients of the powers of $z$, we obtain
+\[
+    a = -1, \quad b = 1, \quad c = 1.
+\]
+
+\subsection{Exercise VI.4.1(c)}
+\begin{pbox}
+    \[
+        \frac{1}{(z + 1)(z^2 + 2z + 2)}
+    \]
+\end{pbox}
+
+The partial fractions decomposition is given by
+\begin{align*}
+    \frac{1}{(z + 1)(z^2 + 2z + 2)}
+        &= \frac{1}{(z + 1)(z + 1 - i)(z + 1 + i)} \\
+        &= \frac{a}{z + 1} + \frac{b}{z + 1 - i} + \frac{c}{z + 1 + i}.
+\end{align*}
+To find $a, b, c$, we rearrange this equation to be
+\begin{align*}
+    1 
+        &= a(z + 1 - i)(z + 1 + i) + b(z + 1)(z + 1 + i) + c(z + 1)(z + 1 - i) \\
+        &= [2 a + (1 + i) b + (1 - i) c] + [2 a  + (2 + i) b + (2 - i) c] z + [a + b  + c] z^2
+\end{align*}
+Solving for the coefficients of the powers of $z$, we obtain
+\[
+    a = 1, \quad b = -1/2, \quad c = -1/2.
+\]
+
+\subsection{Exercise VI.4.1(d)}
+\begin{pbox}
+    \[
+        \frac{1}{(z^2 + 1)^2}
+    \]
+\end{pbox}
+
+First, we have
+\begin{align*}
+    \frac{1}{(z^2 + 1)^2}
+        = \pfrac{1}{(z - i)(z + i)}^2
+        = \left(\frac{a}{z - i} + \frac{b}{z + i}\right)^2.
+\end{align*}
+To find $a, b$, we rearrange this equation to be
+\begin{align*}
+    1 
+        &= a (z + i) + b (z - i)  \\
+        &= -ia + ib + (a + b) z. 
+\end{align*}
+Solving for the coefficients of the powers of $z$, we obtain
+\[
+    a = -i/2, \quad b = i/2.
+\]
+Then we have
+\begin{align*}
+    \frac{1}{(z^2 + 1)^2}
+        &= \left(\frac{i}{2}\left(\frac{-1}{z - i} + \frac{1}{z + i}\right)\right)^2 \\
+        &= \frac{-1}{4}\left(\frac{1}{(z - i)^2} + \frac{1}{(z + i)^2} + \frac{-2}{(z - i)(z + i)}\right) \\
+        &= \frac{-1/4}{(z - i)^2} + \frac{-1/4}{(z + i)^2} + \frac{1}{2}\pfrac{1}{(z - i)(z + i)} \\
+        &= \frac{-1/4}{(z - i)^2} + \frac{-1/4}{(z + i)^2} + \frac{1}{2}\left(\frac{i}{2}\left(\frac{-1}{z - i} + \frac{1}{z + i}\right)\right) \\
+        &= \frac{-1/4}{(z - i)^2} + \frac{-1/4}{(z + i)^2} + \frac{-i/4}{z - i} + \frac{i/4}{z + i} \\
+\end{align*}
+
+
+\subsection{Exercise VI.4.1(e)}
+\begin{pbox}
+    \[
+        \frac{z - 1}{z + 1}
+    \]
+\end{pbox}
+
+The partial fractions decomposition is given by
+\[
+    \frac{z - 1}{z + 1}
+        = \frac{z + 1 - 2}{z + 1}
+        = 1 + \frac{-2}{z + 1}.
+\]
+
+\subsection{Exercise VI.4.1(f)}
+\begin{pbox}
+    \[
+        \frac{z^2 - 4z + 3}{z^2 - z - 6}
+    \]
+\end{pbox}
+
+The partial fractions decomposition is given by
+\begin{align*}
+    \frac{z^2 - 4z + 3}{z^2 - z - 6}
+        &= \frac{(z - 1)(z - 3)}{(z + 2)(z - 3)} \\
+        &= \frac{z + 2 -3}{z + 2} \\
+        &= 1 + \frac{-3}{z + 2}.
+\end{align*}
+
+\newpage
+\section{Exercise VI.4.2}
+\begin{pbox}
+    Use the division algorithm to obtain the partial fraction decompositions of the following functions.
+\end{pbox}
+
+\subsection{Exercise VI.4.2(a)}
+\begin{pbox}
+    \[
+        \frac{z^3 + 1}{z^2 + 1}
+    \]
+\end{pbox}
+
+The partial fractions decomposition is given by
+\begin{align*}
+    \frac{z^3 + 1}{z^2 + 1}
+        &= \frac{z(z^2 + 1) - z + 1}{z^2 + 1} \\
+        &= z + \frac{-z + 1}{(z - i)(z + i)} \\
+        &= z + \frac{a}{z - i} + \frac{b}{z + i}.
+\end{align*}
+To find $a, b$, we rearrange this equation to be
+\begin{align*}
+    -z + 1
+        &= a(z - i) + b(z + i) \\
+        &= -ia + ib + (a + b) z.
+\end{align*}
+Solving for the coefficients of the powers of $z$, we obtain
+\[
+    a = (-1 + i)/2, \quad b = (1 + i)/2.
+\]
+
+\newpage
+\subsection{Exercise VI.4.2(b)}
+\begin{pbox}
+    \[
+        \frac{z^9 + 1}{z^6 - 1}
+    \]
+\end{pbox}
+
+The partial fractions decomposition is given by
+\begin{align*}
+    \frac{z^9 + 1}{z^6 - 1}
+        &= \frac{z^3(z^6 - 1) + z^3 + 1}{z^6 - 1} \\
+        &= z^3 + \frac{z^3 + 1}{(z^3 - 1)(z^3 + 1)} \\
+        &= z^3 + \frac{1}{(z - 1)(z^2 + z + 1)} \\
+        &= z^3 + \frac{1}{(z - 1)(z + \frac12 - i\frac{\sqrt{3}}{2})(z + \frac12 + i\frac{\sqrt{3}}{2})} \\
+        &= z^3 + \frac{a}{z - 1} + \frac{b}{z + \frac12 - i\frac{\sqrt{3}}{2}} + \frac{c}{z + \frac12 + i\frac{\sqrt{3}}{2}}.
+\end{align*}
+To solve for $a, b, c$, we rearrange this equation to be
+\begin{align*}
+    1
+        &= a(z^2 + z + 1) + b(z - 1)\left(z + \tfrac12 + i\tfrac{\sqrt{3}}{2}\right) + c(z - 1)\left(z + \tfrac12 - i\tfrac{\sqrt{3}}{2}\right).
+\end{align*}
+Solving for the coefficients of the powers of $z$, we obtain
+\[
+    a = 1/3, \quad b = -\tfrac16 + i\tfrac{\sqrt{3}}{6},   \quad c = - \tfrac16 - i\tfrac{\sqrt{3}}{6}.
+\]
+
+\newpage
+\subsection{Exercise VI.4.2(c)}
+\begin{pbox}
+    \[
+        \frac{z^6}{(z^2 + 1)(z - 1)^2}
+    \]
+\end{pbox}
+
+First, we use the division algorithm to find
+\begin{align*}
+    \frac{z^6}{(z^2 + 1)(z - 1)^2}
+        &= \frac{z^6}{z^4 - 2z^3 + 2z^2 - 2z + 1} \\
+        &= \frac{z^2(z^4 - 2z^3 + 2z^2 - 2z + 1) + 2z^5 - 2z^4 +2z^3 - z^2}{z^4 - 2z^3 + 2z^2 - 2z + 1} \\
+        &= z^2 + \frac{2z^5 - 2z^4 +2z^3 - z^2}{z^4 - 2z^3 + 2z^2 - 2z + 1} \\
+        &= z^2 + \frac{2z(z^4 - 2z^3 + 2z^2 - 2z + 1) + 2z^4 - 2z^3 + 3z^2 - 2z}{z^4 - 2z^3 + 2z^2 - 2z + 1} \\
+        &= z^2 + 2z + \frac{2z^4 - 2z^3 + 3z^2 - 2z}{z^4 - 2z^3 + 2z^2 - 2z + 1} \\
+        &= z^2 + 2z + \frac{2(z^4 - 2z^3 + 2z^2 - 2z + 1) + 2z^3 - z^2 + 2z - 2}{z^4 - 2z^3 + 2z^2 - 2z + 1} \\
+        &= z^2 + 2z + 2 + \frac{2z^3 - z^2 + 2z - 2}{z^4 - 2z^3 + 2z^2 - 2z + 1} \\
+        &= z^2 + 2z + 2 + \frac{(z^2 + 1)(2z - 1) - 1}{(z^2 + 1)(z - 1)^2} \\
+        &= z^2 + 2z + 2 + \frac{z + z - 1}{(z - 1)^2} + \frac{- 1}{(z^2 + 1)(z - 1)^2} \\
+        &= z^2 + 2z + 2 + \frac{z}{(z - 1)^2} + \frac{1}{z - 1} + \frac{-1}{(z^2 + 1)(z - 1)^2}.
+\end{align*}
+We now find the partial fractions decomposition of
+\[
+    \frac{z}{(z - 1)^2} = \frac{1}{z - 1} + \frac{1}{(z - 1)^2},
+\]
+and
+\[
+    \frac{-1}{(z^2 + 1)(z - 1)^2} = \frac{-z/2}{z^2 + 1} + \frac{1/2}{z - 1} + \frac{-1/2}{(z - 1)^2}.
+\]
+Lastly, we find
+\[
+    \frac{-z/2}{z^2 + 1} = \frac{-z/2}{(z - i)(z + i)} = \frac{-1/4}{z - i} + \frac{-1/4}{z + i}.
+\]
+Thus, we have the partial fractions decomposition
+\[
+    \frac{z^6}{(z^2 + 1)(z - 1)^2}
+        = z^2 + 2z + 2 + \frac{5/4}{z - 1} + \frac{1/2}{(z - 1)^2} + \frac{-1/4}{z - i} + \frac{-1/4}{z + i}.
+\]
+
+
+\end{document}

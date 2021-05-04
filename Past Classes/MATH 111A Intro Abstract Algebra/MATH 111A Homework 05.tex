@@ -1,0 +1,189 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry} % proper margins
+\usepackage{enumitem} % custom numbering for lists
+\usepackage{amsmath} % align, cases, eqref, matrices, dots, roots, delimiters, math mode functions, mod, arrows
+\usepackage{amsthm} % theorems, proofs
+\usepackage{amssymb} % fancy letters, niche relations/negations
+\usepackage{mathrsfs} % much more loopy calligraphy font
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}
+    {\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\mybox}}}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+
+% Alternate Characters
+\let\eps\varepsilon % double curved, rather than single curve with midline
+\let\phi\varphi % single stroke loop, rather than vertical line through circle
+\let\emptyset\varnothing % circular, rather than tall
+
+% Named Sets
+\newcommand{\N}{\mathbb{N}} % natural numbers
+\newcommand{\Z}{\mathbb{Z}} % integers 
+\newcommand{\Q}{\mathbb{Q}} % rational numbers
+\newcommand{\R}{\mathbb{R}} % real numbers
+\newcommand{\C}{\mathbb{C}} % complex numbers
+
+% Fancy Characters
+\newcommand{\F}{\mathbb{F}} % arbitrary field
+\renewcommand{\P}{\mathbb{P}} % probability measure (apparently, sometimes prime numbers)
+\newcommand{\FF}{\mathcal{F}} % sigma algebra
+
+% Paired Delimiters
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil} % ceiling
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor} % floor
+\newcommand{\<}{\left\langle} % left angle bracket
+\renewcommand{\>}{\right\rangle} % right angle bracket
+
+% Functions
+\renewcommand{\Im}{\operatorname{Im}} % imaginary part of a complex number
+\renewcommand{\Re}{\operatorname{Re}} % real part of a complex number
+\newcommand{\Arg}{\operatorname{Arg}} % principal argument (angle) of complex number
+
+% Simplified Notation
+\newcommand{\id}[1]{\operatorname{id_{\mathnormal{#1}}}} % identity operator
+\newcommand{\seq}[2][n]{\left\{#2\right\}_{#1\in\N}} % sequence
+\newcommand{\pdv}[3][1]{\ifnum#1=1{\frac{\partial #2}{\partial#3}}\else{\frac{\partial^{#1}#2}{\partial#3^{#1}}}\fi} % partial derivative
+\newcommand{\intr}[1]{\accentset{\circ}{#1}} % interior of a set
+
+% Renaming
+\let\sm\setminus % set minus (difference)
+\let\clo\overline % closure of a set
+\let\conj\overline % conjugate of an object
+\let\eqc\overline % equivalence class of an object
+\let\teq\trianglelefteq % normal subgroup
+\let\iso\cong % isomorphic (groups)
+
+
+\begin{document}
+ 
+\title{Homework 5\\
+    %\large MATH CS 121 Intro to Probability
+    \large MATH 111A Intro to Abstract Algebra
+    %\large MATH CS 122A Complex Analysis I
+    %\large MATH 118A Intro to Real Analysis
+    %\large MATH 104A Intro to Numerical Analysis
+}
+\author{Harry Coleman}
+\date{November 12, 2020}
+\maketitle
+
+\section*{Q1 Exercise 3.4.1}
+\begin{problem}
+    Prove that if $G$ is an abelian simple group then $G \cong Z_p$ for some prime $p$ (do not assume $G$ is a finite group).
+\end{problem}
+
+\begin{proof}
+    Since $G$ is abelian, then all subgroups of $G$ are normal subgroups. And since $G$ is simple, then $G$ has no nontrivial normal subgroups. Therefore, $G$ has no nontrivial subgroups, that is, the only subgroups of $G$ are $\{1\}$ and $G$. Additionally, since $G$ is simple, $|G|>1$, so $G$ is not the trivial group. Let $x\in G$ such that $x\ne 1$, then $\<x\>\leq G$. Since $x\ne1$, then $\<x\>\ne\{1\}$, so $\<x\>=G$. Therefore, $G$ is a cyclic group, so
+    \[G \iso \begin{cases}
+        (\Z, +) &\text{if $|G|=\infty$,} \\
+        Z_n &\text{if $|G|=n$.}
+    \end{cases}\]
+    
+    We claim that $|G|<\infty$. Suppose, for contradiction, that $|G|=\infty$. In which case, we have an isomorphism $\phi:\Z\to G$. If we now consider the subgroup $2\Z\leq\Z$ of even integers, then the image $\phi(2\Z) \leq \phi(\Z) = G$. Clearly, $\phi(2\Z)$ is not the trivial subgroup, $\{1\}$. However, because $\phi$ is a bijection from $\Z$ to $G$ and $2\Z$ is a strict subset of $\Z$, its image $\phi(2\Z)$ must be a strict subset of $\phi(\Z)=G$. This is a contradiction since $\phi$ being a homomorphism gives us $\phi(2\Z)$ to be a subgroup of $G$ which is neither the trivial subgroup nor $G$, itself.
+    
+    Let $n\in\N$ such that $|G|=n$ and $G\iso Z_n$. Recall that $G=\<x\>$, so we have the property
+    \[\<x^a\> = \<x^b\> \iff (a,n) = (b,n),\]
+    for any $a,b\in\{1,\dots,n-1\}$. In particular, since $G$ has no nontrivial subgroups,
+    \[\<x\> = \<x^b\>\]
+    is true for all $b\in\{1,\dots,n-1\}$. Therefore,
+    \[1 = (1,n) = (b,n)\]
+    for all $b\in\{1,\dots,n-1\}$, so $n$ is prime. 
+        
+\end{proof}
+
+\section*{Q2 Exercise 3.3.4}
+\begin{problem}
+    Let $C$ be a normal subgroup of the group $A$ and let $D$ be a normal subgroup of the group $B$. Prove that $(C\times D)\teq(A\times B)$ and $(A\times B)/(C\times D) \iso (A/C)\times(B/D)$.
+\end{problem}
+
+\begin{proof}
+    Consider the following map between groups:
+    \begin{align*}
+        \phi : (A\times B) &\to (A/C)\times(B/D) \\
+        (a,b) &\mapsto (aC,bD).
+    \end{align*}
+    For any $(aC,bD) \in (A/C)\times(B/D)$, we have $\phi((a,b)) = (aC,bD)$, so this map is surjective. Next, we prove that $\phi$ is a homomorphism. If $(a_1,b_1),(a_2,b_2)\in(A\times B)$, then
+    \begin{align*}
+        \phi((a_1,b_1)(a_2, b_2)) 
+            &= \phi((a_1a_2, b_1b_2)) \\
+            &= ((a_1a_2)C, (b_1b_2)D) \\
+            &= (a_1C \cdot a_2C, b_1D \cdot b_2D) \\
+            &= (a_1C,b_1D)(a_2C,b_2D) \\
+            &= \phi((a_1,b_2))\phi((a_2,b_2)).
+    \end{align*}
+    Note that $(cC,dD)$ is the identity of $(A/C)\times(B/D)$ for any $c\in C$ and $d\in D$, since for any $(aC,bD)\in(A/C)\times(B/D)$, we have
+    \begin{align*}
+        (aC,bD)(cC,dD)
+            &= (aC,bD)(1_AC,1_BD) \\
+            &= (aC \cdot 1_AC, bD \cdot 1_BD) \\
+            &= ((a1_A)C, (b1_B)D) \\
+            &= (aC, bD).
+    \end{align*}
+    Therefore, if $(a,b)\in\ker\phi$, then
+    \[\phi((a,b)) = (aC,bD) = (cC, dD),\]
+    for some $c\in C$ and $d\in D$. This would imply that
+    \[aC = cC = C \isp{and} bD = dD = D,\]
+    giving us $a\in C$ and $b\in D$. In other words, $\ker\phi \subseteq (C\times D)$. Now for any $(c,d)\in (C\times D)$, we have
+    \[\phi((c,d)) = (cC,dD),\]
+    where $c\in C$ and $d\in D$. Therefore, $(C\times D)\subseteq\ker\phi$ and we, in fact, have equality $\ker\phi = (C\times D)$. Then by the first isomorphism theorem, we have
+    \[\ker\phi = (C\times D) \teq (A\times D)\]
+    and
+    \[(A\times B)/(C\times D) = (A\times B)/\ker\phi \iso \phi(A\times B) = (A/C)\times(B/D).\]
+    
+    
+    
+\end{proof}
+
+
+\newpage
+\section*{Q3}
+\begin{problem}
+    Let $G$ be a group and $X$ be a nonempty set. Let $A=\{\text{functions from $X$ to $G$}\}$. Given $f_1,f_2\in A$, define $f_1f_2$ as
+    \[(f_1f_2)(x) = f_1(x)f_2(x).\]
+    This is a binary operation on $A$ under which $A$ is a group. Fix $x_0\in X$, and define
+    \[A_0 = \{f\in A \mid f(x_0) = 1\}.\]
+\end{problem}
+
+\subsection*{Q3.1}
+\begin{problem}
+    Show that $A_0$ is a normal subgroup of $A$.
+\end{problem}
+
+\begin{proof}
+    Consider the map
+    \begin{align*}
+        \phi : A &\to G \\
+        f &\mapsto f(x_0).
+    \end{align*}
+    For any $g\in G$, we define the function $f_g: X \to G$, where $f_g(x) = g$ for all $x\in X$. Then we have $f_g\in A$ and $\phi(f_g) = f_g(x_0) = g$, so $\phi$ is surjective. Now for any $f_1,f_2\in A$, we have
+    \[\phi(f_1f_2) = (f_1f_2)(x_0) = f_1(x_0)f_2(x_0) = \phi(f_1)\phi(f_2),\]
+    so $\phi$ is a homomorphism. Now for any $f\in A$, we have $f\in\ker\phi$ if and only if $\phi(f) = f(x_0) = 1_G$, which is the case if and only if $f\in A_0$. Therefore, $\ker\phi = A_0$, and by the first isomorphism theorem, we have $A_0\teq A$.
+
+\end{proof}
+
+\subsection*{Q3.2}
+\begin{problem}
+    Show that $A/A_0 \cong G$.
+\end{problem}
+
+\begin{proof}
+    We take the same map $\phi:X\to G$, which is a surjective homomorphism whose kernel is $A_0$. Then by the first isomorphism theorem, $A/A_0 \iso G$.
+    
+\end{proof}
+
+
+
+\end{document}

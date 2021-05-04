@@ -1,0 +1,133 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry} % proper margins
+\usepackage{enumitem} % custom numbering for lists
+\usepackage{amsmath} % align, cases, eqref, matrices, dots, roots, delimiters, math mode functions, mod, arrows
+\usepackage{amsthm} % theorems, proofs
+\usepackage{amssymb} % fancy letters, niche relations/negations
+\usepackage{mathrsfs} % much more loopy calligraphy font
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}
+    {\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\mybox}}}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand*{\defeq}{\mathrel{\vcenter{\baselineskip0.5ex \lineskiplimit0pt\hbox{\scriptsize.}\hbox{\scriptsize.}}}=}
+
+% Alternate Characters
+\let\eps\varepsilon % double curved, rather than single curve with midline
+\let\phi\varphi % single stroke loop, rather than vertical line through circle
+\let\emptyset\varnothing % circular, rather than tall
+
+% Named Sets
+\newcommand{\N}{\mathbb{N}} % natural numbers
+\newcommand{\Z}{\mathbb{Z}} % integers 
+\newcommand{\Q}{\mathbb{Q}} % rational numbers
+\newcommand{\R}{\mathbb{R}} % real numbers
+\newcommand{\C}{\mathbb{C}} % complex numbers
+
+% Fancy Characters
+\newcommand{\F}{\mathbb{F}} % arbitrary field
+\renewcommand{\P}{\mathbb{P}} % probability measure (apparently, sometimes prime numbers)
+\newcommand{\FF}{\mathcal{F}} % sigma algebra
+\newcommand{\BB}{\mathcal{B}} % Borel sigma algebra
+
+% Paired Delimiters
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil} % ceiling
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor} % floor
+\newcommand{\<}{\left\langle} % left angle bracket
+\renewcommand{\>}{\right\rangle} % right angle bracket
+
+% Functions
+\renewcommand{\Im}{\operatorname{Im}} % imaginary part of a complex number
+\renewcommand{\Re}{\operatorname{Re}} % real part of a complex number
+\newcommand{\Arg}{\operatorname{Arg}} % principal argument (angle) of complex number
+
+% Simplified Notation
+\newcommand{\id}[1]{\operatorname{id_{\mathnormal{#1}}}} % identity operator
+\newcommand{\seq}[2][n]{\left\{#2\right\}_{#1\in\N}} % sequence
+\renewcommand{\d}[1]{\operatorname{d}\!#1} % differential operator
+\newcommand{\od}[3][1]{\ifnum#1=1{\frac{\d #2}{\d #3}}\else{\frac{\d^{#1}#2}{\d #3^{#1}}}\fi} % ordinary derivative
+\newcommand{\pd}[3][1]{\ifnum#1=1{\frac{\partial #2}{\partial#3}}\else{\frac{\partial^{#1}#2}{\partial#3^{#1}}}\fi} % partial derivative
+\newcommand{\intr}[1]{\accentset{\circ}{#1}} % interior of a set
+
+% Renaming
+\let\sm\setminus % set minus (difference)
+\let\clo\overline % closure of a set
+\let\conj\overline % conjugate of an object
+\let\eqc\overline % equivalence class of an object
+\let\teq\trianglelefteq % normal subgroup
+\let\iso\cong % isomorphic (groups)
+
+% Notes
+% medskip for header-less paragraph
+% intertext{} for short text inside big display structure
+% dots is dynamic based on surroundings
+% dfrac and tfrac to force large or small fractions
+% operatorname for new operators instead of text
+% consider using nath; it seems to break most formatting and is not compatible with many packages
+
+\begin{document}
+ 
+\title{Homework 8\\
+    %\large MATH CS 121 Intro to Probability
+    \large MATH 111A Intro to Abstract Algebra
+    %\large MATH CS 122A Complex Analysis I
+    %\large MATH 118A Intro to Real Analysis
+    %\large MATH 104A Intro to Numerical Analysis
+}
+\author{Harry Coleman}
+\date{December 2, 2020}
+\maketitle
+
+\section{Exercise 4.3.13}
+\begin{problem}
+    Find all finite groups which have exactly two conjugacy classes.
+\end{problem}
+
+\begin{proposition}
+    A finite group with exactly two conjugacy classes is isomorphic to the cyclic group $Z_2$.
+\end{proposition}
+
+\begin{proof}
+    Suppose $G$ is a finite group with exactly two conjugacy classes. We consider $G$ to act on itself by conjugation, so the conjugacy classes are the orbits of this action. Every group, in particular $G$, has the singleton conjugacy class of the identity, $\{1\}$. Then for some $x \in G \setminus \{1\}$, the orbit of $x$ is the other conjugacy class in $G$. In other words, $G$ is partitioned as $G = \{1\} \sqcup (G \cdot x)$, so
+    \[|G| = |\{1\}| + |G \cdot x| = 1 + |G \cdot x|.\]
+    Since $G$ acts on itself by conjugation, we have
+    \[|G \cdot x| = [G : G_x] = \frac{|G|}{|G_x|}.\]
+    Letting $n = |G| \in \N$, we find that
+    \begin{align*}
+        n &= 1 + \frac{n}{|G_x|}, \\
+        |G_x| &= \frac{n}{n-1}.
+    \end{align*}
+    Now since $|G_x| \in \N$, and $n = 2$ is the only natural number for which $n/(n-1)$ is also a natural number, then we must have $|G| = 2$. Denote by $x$ the element of $G$ which is not the identity, so $G = \{1, x\}$. Since $G$ is a group, we must have $x^{-1} \in G$. And since $1x = x \ne 1$, then $x$ must be its own inverse. That is, $x^2 = 1$, which implies that $G$ is generated by $x$. Since $G$ is a cyclic group of order 2, it is isomorphic to $Z_2$.
+    
+\end{proof}
+
+\newpage
+\section{Exercise 4.3.29}
+\begin{problem}
+    Let $p$ be a prime and let $G$ be a group of order $p^\alpha$. Prove that $G$ has a subgroup of order $p^\beta$, for every $\beta$ with $0 \leq \beta \leq \alpha$. [Use Theorem 8 and induction on $\alpha$.]
+\end{problem}
+
+\begin{proof}
+    We prove the property by induction on $\alpha$. Consider $\alpha = 0$, then $\beta = 0$ and we have the subgroup $\{1\} \leq G$ with order $p^\beta$; this proves the base case. Suppose that the property holds for all powers of $p$ up to $\alpha - 1$, for some $\alpha \geq 1$. Additionally, we assume that $\beta > 0$, since we always have $\{1\} \leq G$. Now since $p$ is prime and $|G| = p^\alpha$ with $\alpha \geq 1$, then $Z(G)$ is nontrivial. Because $Z(G) \leq G$, then $|Z(G)|$ divides $|G|$. Since $|Z(G)| \ne 1$ and the factors of $|G|$ are powers of $p$, then $|Z(G)|$ is some nonzero power of $p$. This tells us that $p$ divides $|Z(G)|$, so by Cauchy's theorem, there exists a subgroup $N \leq Z(G)$ of order $p$. Since $N \leq Z(G) \teq G$, then we know that $N \teq G$ and we consider the quotient group $G/N$, which has order
+    \[|G/N| = \frac{|G|}{|N|} = \frac{p^\alpha}{p} = p^{\alpha - 1}.\]
+    Since $0 < \beta \leq \alpha$, then $0 \leq \beta - 1 \leq \alpha - 1$. So by the inductive hypothesis, there exists a subgroup $\conj{P} \leq G/N$ of order $p^{\beta - 1}$. Then by the fourth isomorphism theorem, there exists some subgroup $P \leq G$ such that $P/N = \conj{P}$. Moreover,
+    \[p^{\beta - 1} = |\conj{P}| = |P/N| = \frac{|P|}{|N|} = \frac{|N|}{p},\]
+    so $|P| = p^{\beta}$ and the induction is complete.
+    
+\end{proof}
+
+
+\end{document}

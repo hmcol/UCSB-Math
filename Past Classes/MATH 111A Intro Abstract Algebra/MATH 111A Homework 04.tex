@@ -1,0 +1,247 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage[margin=1in]{geometry} % proper margins
+\usepackage{enumitem} % custom numbering for lists
+\usepackage{amsmath} % align, cases, eqref, matrices, dots, roots, delimiters, math mode functions, mod
+\usepackage{amsthm,amssymb,wasysym,mathrsfs,mathtools,babel}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{\textwidth-10pt}}
+    {\end{minipage}\end{lrbox}\framebox[6.5in]{\usebox{\mybox}}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\seq}[2]{\left\{#1\right\}_{#2=1}^\infty}
+\newcommand{\clo}[1]{\overline{#1}}
+\newcommand{\conj}[1]{\overline{#1}}
+\newcommand{\eqc}[1]{\overline{#1}}
+\newcommand{\quo}[1]{\overline{#1}}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\newcommand{\<}{\left\langle}
+\renewcommand{\>}{\right\rangle}
+
+% Sets
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+
+% Misc Characters
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\let\eps\varepsilon
+\let\emptyset\varnothing
+
+% Functions
+\newcommand{\id}[1]{\mathsf{id}_{#1}}
+
+% Babel Shorthands
+\useshorthands*{"}
+\defineshorthand{"-}{\setminus}
+
+% Probability
+\newcommand{\FF}{\mathcal{F}}
+\renewcommand{\P}{\mathbb{P}}
+
+% Complex Analysis
+\renewcommand{\Im}{\text{Im }}
+\renewcommand{\Re}{\text{Re }}
+\newcommand{\Arg}{\text{Arg }}
+\newcommand{\pdv}[3][1]{\ifnum#1=1{\frac{\partial #2}{\partial#3}}\else{\frac{\partial^{#1}#2}{\partial#3^{#1}}}\fi}
+
+% Real Analysis
+\newcommand{\intr}[1]{\accentset{\circ}{#1}}
+
+% Notes
+% medskip for header-less paragraph
+% intertext{} for short text inside big display structure
+% dots is dynamic based on surroundings
+% dfrac and tfrac to force large or small fractions
+% operatorname for new operators instead of text
+
+\begin{document}
+ 
+\title{Homework 4\\
+    %\large MATH CS 121 Intro to Probability
+    \large MATH 111A Intro to Abstract Algebra
+    %\large MATH CS 122A Complex Analysis I
+    %\large MATH 118A Intro to Real Analysis
+    %\large MATH 104A Intro to Numerical Analysis
+}
+\author{Harry Coleman}
+\date{November 4, 2020}
+\maketitle
+
+\section*{Q1}
+\begin{problem}
+    Show that the map
+    \begin{align*}
+        \{\text{left cosets of $H$ in $G$}\} &\to \{\text{right cosets of $H$ in $G$}\} \\
+        gH &\mapsto Hg^{-1}
+    \end{align*}
+    is well defined and is a bijection. (In order to show that the map is well defined, what needs to be shown in $g_1H = g_2 H \implies Hg_1^{-1} = Hg_2^{-1}$.)
+\end{problem}
+
+\begin{proof}
+    We first show that the map is well-defined. Suppose $g_1H = g_2H$, then $g_1^{-1}g_2\in H$, which implies $Hg_1^{-1} = Hg_2^{-1}$. In a similar manner, we show that the map is injective. Suppose $Hg_1^{-1} = Hg_2^{-1}$, then $g_1^{-1}g_2\in H$, which implies $g_1H = g_2H$. Finally, to show that the map is surjective, let $Hg$ be a right coset of $H$ in $G$. The definition of coset tells us that $g\in G$ and, since $g^{-1}\in G$, we have $g^{-1}H$ to be a left coset of $H$ in $G$. Then under our map, we have $g^{-1}H \mapsto H(g^{-1})^{-1} = Hg$.
+
+\end{proof}
+
+\section*{Q2 Exercise 3.2.6}
+\begin{problem}
+    Let $H\leq G$ and let $g\in G$. Prove that if the right coset $Hg$ equals \emph{some} left coset of $H$ in $G$ then it equals the left coset $gH$ and $g$ must be in $N_G(H)$.
+\end{problem}
+
+\begin{proof}
+    Suppose $Hg$ is equal to some left coset of $H$ in $G$, i.e, $Hg = kH$ for some $k\in G$. Since $H\leq G$, we have $1\in H$, which implies that $1g = g \in Hg = kH$. From the definition of coset, there exists some $h\in H$ such that $g = kh$. Thus, $k^{-1}g = h \in H$, which implies that $gH = kH$ and, moreover, that $Hg = gH$.
+    
+    Let $h\in H$ be any arbitrary element of $h$. Then $gh\in gH = Hg$, so there exists some $h'\in H$ such that $gh = h'g$. Thus, we have $ghg^{-1} = h' \in H$, so $gHg^{-1}\subseteq H$. Additionally, we have $hg\in Hg = gH$, so there exists some $h'\in H$ such that $hg = gh'$. Thus, we have $h = gh'g^{-1} \in gHg^{-1}$, so $H\subseteq gHg^{-1}$. Therefore, $gHg^{-1} = H$, giving us $g\in N_G(H)$.
+
+\end{proof}
+
+\section*{Q3 Exercise 3.1.16}
+\begin{problem}
+    Let $G$ be a group, let $N$ be a normal subgroup of $G$ and let $\quo{G} = G/N$. Prove that if $G=\<x,y\>$, then $\quo{G}=\<\eqc{x}, \eqc{y}\>$. Prove more generally that if $G=\<S\>$ for any subset $S$ of $G$, then $\quo{G} = \<\quo{S}\>$.
+\end{problem}
+
+\begin{proposition}
+    If $G=\<S\>$ for any subset $S$ of $G$, then $\quo{G} = \<\quo{S}\>$.
+\end{proposition}
+
+\begin{proof}
+    Suppose $G=\<S\>$ for some $S\subseteq G$. For any $sN\in \quo{S}$, we have $s \in S\subseteq G$, so $sN\in\quo{G}$. Therefore, $\quo{S}\subseteq G$, which implies $\<\quo{S}\>\leq G$, and it remains only to be proven that $\quo{G} \subseteq \<\quo{S}\>$. Suppose $gN \in \quo{G}$. Without loss of generality, assume $g\ne1_G$; otherwise we have, trivially, that $gN = 1_GN = 1_{\quo{G}} \in \<\quo{S}\>$. Since $g\in G = \<S\>$, then
+    \[g = s_1^{\eps_1}\cdots s_n^{\eps_n}\]
+    where $n\in\N$, $s_i\in S$ and $\eps_i = \pm1$ for $i=1,\dots,n$. If it is the case that
+    \[gN = (s_1^{\eps_1}\cdots s_n^{\eps_n})N = (s_1N)^{\eps_1}\cdots(s_nN)^{\eps_n},\]
+    then we would have $gN\in\<\quo{S}\>$, completing the proof. We will prove that this equality holds for all $n\in\N$ by induction on $n$. For the base case, suppose $n=1$ and consider the left coset of $N$ in $G$, $s_1^{\eps_1}N$. It is either the case that $\eps_1=1$ or $\eps_1=-1$. If $\eps_1 = 1$, then
+    \[s_1^{\eps_1}N = s_1^1N = s_1N = (s_1N)^1 = (s_nN)^{\eps_1}.\]
+    If $\eps_1 = -1$, then
+    \[s_1N \cdot s_1^{\eps_1} N = s_1N \cdot s_1^{-1} N = (s_1s_1^{-1})N = 1_GN = 1_{\quo{G}},\]
+    which implies, by definition of inverse, that
+    \[s_1^{\eps_1}N = (s_1N)^{-1} = (s_1N)^{\eps_1}.\]
+    Thus,
+    \[s_1^{\eps_1}N = (s_1N)^{\eps_1}.\]
+    Now suppose that the equality holds for some $n\geq1$ and consider the left coset of $N$ in $G$,
+    \[(s_1^{\eps_1}\cdots s_n^{\eps_n} s_{n+1}^{\eps_{n+1}})N.\]
+    By the definition of multiplication in the quotient group $\quo{G}$, we have
+    \[(s_1^{\eps_1}\cdots s_n^{\eps_n} s_{n+1}^{\eps_{n+1}})N = (s_1^{\eps_1}\cdots s_n^{\eps_n})N \cdot s_{n+1}^{\eps_{n+1}}N.\]
+    We now apply the inductive hypothesis to the first $n$ terms and the base case to the final term, giving us the desired equality,
+    \[(s_1^{\eps_1}\cdots s_n^{\eps_n} s_{n+1}^{\eps_{n+1}})N = (s_1N)^{\eps_1}\cdots(s_nN)^{\eps_n} \cdot (s_{n+1}N)^{\eps_{n+1}}.\]
+    
+\end{proof}
+
+
+\begin{proposition}
+    If $G=\<x,y\>$, then $\quo{G}=\<\eqc{x}, \eqc{y}\>$
+\end{proposition}
+
+\begin{proof}
+    Suppose $G=\<x,y\>$. We apply proposition 1 for $S=\{x,y\}$, giving us $\quo{G} = \<\quo{\{x,y\}}\>$. Now since
+    \[\quo{\{x,y\}} = \{zN : z\in\{x,y\}\} = \{xN, yN\} = \{\eqc{x}, \eqc{y}\},\]
+    then in fact, $\quo{G} = \<\eqc{x}, \eqc{y}\>$.
+    
+\end{proof}
+
+\newpage
+\section*{Q4 Exercise 3.1.29}
+\begin{problem}
+    Let $N$ be a \emph{finite} subgroup of $G$ and suppose $G=\<T\>$ and $N=\<S\>$ for some subsets $S$ and $T$ of $G$. Prove that $N$ is normal in $G$ if and only if $tSt^{-1} \subseteq N$ for all $t\in T$.
+\end{problem}
+
+\begin{proof}
+    Suppose $N$ is normal in $G$, and let $t\in T$. Because $\<S\>=N$, we must have $S\subseteq N$, so $tSt^{-1}\subseteq tNt^{-1} =  N$.
+    
+    Now suppose that $tSt^{-1} \subseteq N$ for all $t\in T$. We first prove that $tNt^{-1} = N$ for all $t\in T$. Let $k\in N=\<S\>$. If $k=1$, then
+    \[tkt^{-1} = t1t^{-1} = tt^{-1} =1 \in \<S\> = N.\]
+    Without loss of generality, assume $k\ne1$, so
+    \[k = s_1^{\eps_1}\cdots s_n^{\eps_n}\]
+    where $n\in\N$, $s_i\in S$ and $\eps_i=\pm1$ for $i=1,\dots,n$. For a given $t\in T$, we aim to prove that
+    \[t(s_1^{\eps_1}\cdots s_n^{\eps_n})t^{-1} \in N\]
+    for all $n\in\N$, and do so by induction on $n$. For the base case, suppose $n=1$ and consider $ts_1^{\eps_1}t^{-1}$. It is either the case that $\eps_1=1$ or $\eps_1 = -1$. If $\eps_1 = 1$, then $s_1\in S$ implies that
+    \[ts_1^{\eps_1}t^{-1} = ts_1 t^{-1} \in tSt^{-1} \subseteq N.\]
+    If $\eps_1 = -1$, then because $ts_1t^{-1}\in N$ and $N\leq G$, then its inverse is also in $N$, so
+    \[ts_1^{\eps_1}t^{-1} = ts_1^{-1}t^{-1} = (ts_1t^{-1})^{-1} \in N.\]
+    Now suppose that the property is true for some $n\geq 1$ and consider
+    \[t(s_1^{\eps_1}\cdots s_n^{\eps_n}s_{n+1}^{\eps_{n+1}})t^{-1}.\]
+    By the inductive hypothesis and the base case, we have
+    \[t(s_1^{\eps_1}\cdots s_n^{\eps_n})t^{-1} \in N \isp{and} ts_{n+1}^{\eps_{n+1}}t^{-1}\in N.\]
+    Now since $N=\<S\>$, then their product is also in $N$, i.e,
+    \[t(s_1^{\eps_1}\cdots s_n^{\eps_n}s_{n+1}^{\eps_{n+1}})t^{-1} = t(s_1^{\eps_1}\cdots s_n^{\eps_n})t^{-1}\cdot ts_{n+1}^{\eps_{n+1}}t^{-1} \in N,\]
+    completing the induction. We now have that
+    \[tkt^{-1} = t(s_1^{\eps_1}\cdots s_n^{\eps_n})t^{-1} \in N,\]
+    which implies that $tNt^{-1} \subseteq N$ for all $t\in T$. Moreover, for any $t\in T$, if $tk_1t^{-1},tk_2t^{-1} \in tNt^{-1}$ such that $tk_1,t^{-1} = tk_2t^{-1}$, then by the cancellation law, $k_1=k_2$. So the map $N \to tNt^{-1}$ taking $k\mapsto tkt^{-1}$ is injective, which implies that $|N| \leq |tNt^{-1}|$. Now since $N$ is finite, then the injective inclusion map $tNt^{-1} \hookrightarrow N$ is also a surjection, giving us $N\subseteq tNt^{-1}$. Thus, $tNt^{-1} = N$ for all $t\in T$.
+    
+    It remains to be proven that $gNg^{-1} = N$ for all $g\in G$, i.e., that $N$ is normal. Let $g\in G = \<T\>$. If $g=1$, then trivially, $1N1^{-1} = N$. We assume, without loss of generality, that $g\ne1$, so
+    \[g = t_1^{\eps_1}\cdots t_n^{\eps_n}\]
+    where $n\in\N$, $t_i\in T$ and $\eps_i=\pm1$ for $i=1,\dots,n$. If it is the case that
+    \[gNg^{-1} = (t_1^{\eps_1}\cdots t_n^{\eps_n}) N (t_n^{-\eps_n}\cdots t_1^{-\eps_1}) = N,\]
+    then the proof is complete. We prove the equality for all $n\in\N$ by induction on $n$. For the base case, suppose $n=1$, and consider
+    \[t_1^{\eps_1}Nt_1^{-\eps_1}.\]
+    It is either the case that $\eps_1 = 1$ or $\eps_1 = -1$. If $\eps_1 = 1$, then we have
+    \[t_1^{\eps_1}Nt_1^{-\eps_1} = t_1Nt_1^{-1} = N,\]
+    by what has previously been shown about $N$. If $\eps = -1$, then because $t_1Nt_1^{-1} = N$, we have
+    \[t_1^{\eps_1}Nt_1^{-\eps_1} = t_1^{-1}Nt_1 = t_1^{-1}(t_1Nt_1^{-1})t_1 = (t_1^{-1}t_1)N(t_1^{-1}t_1) = N.\]
+    Now suppose that the equality holds true for some $n\geq1$ and consider 
+    \[(t_1^{\eps_1}\cdots t_n^{\eps_n}t_{n+1}^{\eps_{n+1}}) N (t_{n+1}^{-\eps_{n+1}}t_n^{-\eps_n}\cdots t_1^{-\eps_1}).\]
+    Notice that this can be seen as an instance of the base case with the innermost pair of terms, composed with an instance of the inductive hypothesis. Therefore,
+    \[(t_1^{\eps_1}\cdots t_n^{\eps_n})t_{n+1}^{\eps_{n+1}} N t_{n+1}^{-\eps_{n+1}}(t_n^{-\eps_n}\cdots t_1^{-\eps_1}) = (t_1^{\eps_1}\cdots t_n^{\eps_n})N(t_n^{-\eps_n}\cdots t_1^{-\eps_1}) = N,\]
+    completing the proof.
+     
+    
+\end{proof}
+
+\newpage
+\section*{Q5 Exercise 3.1.41}
+\begin{problem}
+    Let $G$ be a group. Prove that $N=\<x^{-1}y^{-1}xy \mid x,y\in G\>$ is a normal subgroup of $G$ and $G/N$ is abelian ($N$ is called the \emph{commutator subgroup} of $G$).
+\end{problem}
+
+\begin{proposition}
+    $N=\<x^{-1}y^{-1}xy \mid x,y\in G\>$ is a normal subgroup of $G$.
+\end{proposition}
+
+\begin{proof}
+    For $N$ to be normal, we must show that $gNg^{-1} = N$ for all $g\in G$, or equivalently, that $gNg^{-1} \subseteq N$ for all $g\in G$. Let $g\in G$ and $k\in N$, so $gkg^{-1}$ is an arbitrary element of $gNg^{-1}$, and showing that $gkg^{-1} \in N$ will complete the proof. By assumption, we have
+    \[gg^{-1}k = k \in N.\]
+    Since $g\in G$ and $G$ is a group, $g^{-1}\in G$. Then since $k\in G$, by the definition of $N$, we have
+    \[k^{-1}(g^{-1})^{-1}kg^{-1} = k^{-1}gkg^{-1} \in N.\]
+    Because $N\leq G$, the product of any two elements of $N$ is also in $N$, so
+    \[gg^{-1}k \cdot k^{-1}gkg^{-1} = gg^{-1}gkg^{-1} = gkg^{-1} \in N.\]
+
+\end{proof}
+
+\begin{proposition}
+    $G/N$ is abelian.
+\end{proposition}
+
+\begin{proof}
+    Suppose $gN, hN \in G/N$. Since $g,h\in G$, then
+    \[(hg)^{-1}(gh) = g^{-1}h^{-1}gh \in N,\]
+    which implies that $(hg)N = (gh)N$. Now since $N$ is normal, we have
+    \[gN \cdot hN = (gh)N = (hg)N = hN \cdot gN,\]
+    so $G/N$ is abelian.
+    
+\end{proof}
+
+\end{document}

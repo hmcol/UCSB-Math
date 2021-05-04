@@ -1,0 +1,152 @@
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{colortbl}
+
+\lstset{basicstyle=\footnotesize}
+\usetikzlibrary{calc}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+
+ 
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{question}[2][Question]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+ 
+\begin{document}
+ 
+\title{Problem Sets 6\\
+    \large CS120FN Number Systems}
+\author{Harry Coleman}
+\date{October 22, 2019}
+
+\maketitle
+
+\section*{Exercise 3}
+\fbox{
+    \parbox{\textwidth}{
+        Decide whether or not $12345678$ is a perfect square.
+    }
+}
+\\
+
+We'll look at the value in (mod 5). Since 12345678 ends with an 8, we know that
+
+\[12345678 \equiv 3 \pmod{5}\]
+
+We'll now look at the perfect squares in (mod 5). Every integer is equivalent to one of 5 values in (mod 5) and multiplication retains the modular properties of integers.
+\begin{align*}
+    0^2 &\equiv 0 \pmod{5} \\
+    1^2 &\equiv 1 \pmod{5} \\
+    2^2 &\equiv 4 \pmod{5} \\
+    3^2 &\equiv 4 \pmod{5} \\
+    4^2 &\equiv 1 \pmod{5} 
+\end{align*}
+
+This means that every perfect square of an integer is either 0, 1, or 4 in (mod 5). Since 12345678 is none of these, it cannot be a perfect square.
+
+\newpage
+\section*{Exercise 4}
+\fbox{
+    \parbox{\textwidth}{
+        Explain  why the polynomial  $x^{19}+2x^{10}+1$ has no integer roots.
+    }
+}
+\\
+
+To find roots, we want to find solutions to the equation
+
+\[x^{19}+2x^{10}+1 = 0\]
+
+Just to show that $x \ne 0$,
+\[(0)^{19}+2(0)^{10}+1 = 0 + 0 + 1 = 1 \ne 0\]
+
+So we can rearrange the equation to get
+\begin{align*}
+    x^{19}+2x^{10}+1 &= 0 \\
+    x^{10}(x^9 + 2) +1 &= 0 \\
+    x^9 + 2 + \frac{1}{x^{10}} &= 0 \\
+    x^9 + 2 &= -\frac{1}{x^{10}} \\
+\end{align*}
+
+Since we're looking for integer solutions for $x$ and because the integers are closed under multiplication and addition, we know that the left side is an integer. Which also means that 
+\[-\frac{1}{x^{10}}\]
+is an integer. So the only possible values for $x$ are 1 and -1.
+
+\[(1)^{19}+2(1)^{10}+1 = 1 + 2 + 1 = 4 \ne 0\]
+\[(-1)^{19}+2(-1)^{10}+1 = -1 + 2 + 1 = 2 \ne 0\]
+
+So there are no integer roots for our polynomial.
+
+\newpage
+\section*{Exercise 5}
+\fbox{
+    \parbox{\textwidth}{
+        There is a pile of bricks such that when stacked $3$ at a time, $2$ bricks are left over, when stacked $4$ at a time, $3$ bricks are left over, when stacked $5$ at a time, $4$ bricks are leftover, and so forth all the way up until one discovers that the bricks can be stacked $13$ at a time with none left over. What are the possible number of bricks in the pile?
+    }
+}
+\\
+
+We'll call the possible number of bricks $n$, which has the following properties
+
+\begin{center}
+    \begin{tabular}{r r r r}
+        $n=$&  2 &= -1 &  $\pmod{3}$ \\
+            &  3 &= -1 &  $\pmod{4}$ \\
+            &  4 &= -1 &  $\pmod{5}$ \\
+            &  5 &= -1 &  $\pmod{6}$ \\
+            &  6 &= -1 &  $\pmod{7}$ \\
+            &  7 &= -1 &  $\pmod{8}$ \\
+            &  8 &= -1 &  $\pmod{9}$ \\
+            &  9 &= -1 & $\pmod{10}$ \\
+            & 10 &= -1 & $\pmod{11}$ \\
+            & 11 &= -1 & $\pmod{12}$ \\
+            &    &=  0 & $\pmod{13}$
+    \end{tabular}
+\end{center}
+
+So if we have some value $z$ which is 0 in (mod 3), (mod 3),...,(mod 12). Then $z-1$ would be -1 in all these moduli. We'll take $z$ to be the least positive integer with this property, that being the least common multiple of $\{3,4,\dots,12\}$ which is $2^3\cdot 3^3\cdot 5\cdot 7\cdot 11 = 27720$.
+
+Since $z$ is zero in all these moduli, then any multiple of $z$ will also be zero in each modulus. So we can say
+\[n = xz - 1\]
+where $z=27720$ and $x\in \Z$. The last property of $n$ is that it is 0 in (mod 13).
+\begin{align*}
+    n = xz - 1 &\equiv 0 \pmod{13} \\
+    xz &\equiv 1 \pmod{13}
+\end{align*}
+
+So we're looking for $x$ to be the multiplicative inverse of $Z$ in (mod 13). We'll replace $z$ with it's smallest residual in (mod 13).
+\[x4 \equiv 1 \pmod{13}\]
+\[x \equiv 10 \pmod{13}\]
+\[x = 13k + 10\]
+where $k \in \Z$. So
+\begin{align*}
+    n &= (13k + 10)z - 1 \\
+      &= (13k + 10)27720 - 1 \\
+      &= 360360k + 277199
+\end{align*}
+
+The smallest value being $n=277199$. Or any value obtained from an integer $k$ in the above formula.
+
+
+
+\end{document}
+

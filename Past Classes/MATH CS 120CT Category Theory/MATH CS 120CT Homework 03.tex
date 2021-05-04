@@ -1,0 +1,61 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% custom commands
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\p}{^{\prime}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\newcommand{\exercise}[2]{\section*{Exercise #1}\framebox{\begin{minipage}{\textwidth}#2\end{minipage}}\par\vspace{1em}}
+\newcommand{\problem}[2]{\section*{Problem #1}\framebox{\begin{minipage}{\textwidth}#2\end{minipage}}\par\vspace{1em}}
+
+ 
+\begin{document}
+ 
+\title{Homework 3\\
+    \large MATH CS 120CT Category Theory}
+\author{Harry Coleman}
+\date{January 22, 2020}
+\maketitle
+
+\exercise{1}{Prove that every monoid can be given a preorder that makes it a monoidal preorder. What about a monoidal partial order?}
+
+Let $(P, *)$ be a monoid with unit $I$ such that for all $p_1,p_2,p_3 \in P$, we have
+\[p_1 * I = I * p_1 = p_1,\]
+\[p_1 * (p_2 * p_3) = (p_1 * p_2) * p_3.\]
+
+We want to equip $P$ with some preorder $\leq$ such that for all $p_1,p_2,q_1,q_2\in P$, we have
+\[(p_1\leq p_2) \land (q_1\leq q_2) \implies (p_1 * q_1) \leq (p_2 * q_2).\]
+
+If we let $\leq$ be the preorder in which every element of $P$ is only comparable with itself (essentially the notion of equality), we find this to satisfy the above property, since for $x,y\in P$,
+\[(x\leq x)\land(y\leq y) \implies (x*y)\leq(x*y).\]
+
+As well, equality satisfies the property of being antisymmetric, making it a monoidal partial order.
+
+\exercise{2}{Can every partial order be given a monoidal structure that makes it a monoidal partial order?}
+
+We cannot say for an arbitrary partial order, if it can be equipped with a monoidal structure that makes it a monoidal partial order. However, let $L$ be a lattice, which is a partial order with the additional property that any pair of points has a unique meet and join. We can equip $L$ with the binary operation "join" with the unit of the min($L$), to produce a monoidal partial order. 
+
+
+
+
+
+\end{document}

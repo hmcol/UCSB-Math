@@ -1,0 +1,76 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% custom commands
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\p}{^{\prime}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\setlength{\fboxsep}{4pt}
+\newcommand{\generic}[2]{\section*{#1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\ex}[2]{\generic{Exercise #1}{#2}}
+\newcommand{\prob}[2]{\generic{Problem #1}{#2}}
+\newcommand{\ques}[2]{\generic{Question #1}{#2}}
+
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+ 
+\begin{document}
+ 
+\title{Assignment 0\\
+    \large MATH CS 117 Intro to Real Analysis}
+\author{Harry Coleman}
+\date{April 2, 2020}
+\maketitle
+
+\prob{1}{
+    Relative to California, in what time zone will you be living during the Spring Quarter? Please give your answer in the form $+x$ if you are $x$ hours ahead and $-x$ if you are $x$ hours behind.
+}
+
+California Time $+0$.
+
+\prob{2}{
+    True or false? $0 \in \N$.
+}
+
+False. (For this class, based on the notes. But depending on the context, some people include 0 in the natural numbers.)
+
+\prob{3}{
+    True or false? Every set in $\R$ is bounded above.
+}
+
+False. 
+
+\newpage
+\prob{4}{
+    True or false? $\Q$ is an ordered field.
+}
+
+True, but $\Q$ is not a \emph{complete} ordered field since it does not satisfy the least upper bound property.
+
+\prob{5}{
+    True or false? $\R$ satisfies the least upper bound principle.
+}
+
+True.
+
+
+\end{document}

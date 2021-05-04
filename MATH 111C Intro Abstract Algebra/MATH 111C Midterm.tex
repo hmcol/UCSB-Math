@@ -1,0 +1,184 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{amsmath, amsthm, amssymb}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{4pt}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\pfrac}[2]{\left(\frac{#1}{#2}\right)}
+
+% Extra Commands
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\Aut}{Aut}
+
+\newcommand{\isom}{\cong}
+\newcommand{\clo}{\overline}
+\newcommand{\eqc}{\overline}
+
+\newcommand{\F}{\mathbb{F}}
+
+\newcommand{\divides}{\bigm|}
+\newcommand{\ndivides}{%
+  \mathrel{\mkern.5mu % small adjustment
+    % superimpose \nmid to \big|
+    \ooalign{\hidewidth$\big|$\hidewidth\cr$\nmid$\cr}%
+  }%
+}
+
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH 111C Midterm}
+    \fancyhead[C]{April 29, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+
+\section*{1}
+
+Since the roots of the polynomial are $\pm\sqrt{2}, \pm\sqrt{10}$, then the splitting field is given by $\Q(\sqrt{2}, \sqrt{10})$. Clearly, $\Q(\sqrt{2} + \sqrt{5})$ is a subset of the splitting field, we will show the opposite inclusion. Since the former contains $\sqrt{2} + \sqrt{5}$, it also contains
+\[
+    (\sqrt{2} + \sqrt{5})^2 = 7 + \sqrt{10}
+\]
+and $-7 \in \Q$, so $\sqrt{10} \in \Q(\sqrt{2} + \sqrt{5})$. Then
+\[
+    (\sqrt{2} + \sqrt{5})\sqrt{10} = 2\sqrt{5} + 5\sqrt{2} \in \Q(\sqrt{2} + \sqrt{5}),
+\]
+and subtracting $2(\sqrt{2} + \sqrt{5})$, we obtain $3\sqrt{2} \in \Q(\sqrt{2} + \sqrt{5})$. And since $1/3 \in \Q$, then in fact $\sqrt{2} \in \Q(\sqrt{2} + \sqrt{5})$. Hence, the splitting field $\Q(\sqrt{2}, \sqrt{10})$ is precisely $\Q(\sqrt{2} + \sqrt{5})$.
+
+
+\newpage
+\section*{2}
+
+
+Given that $K$ is the splitting field for $f(x)$, then
+\[
+    f(x) = a(x - \alpha_1) \cdots (x - \alpha_n)
+\]
+for some $a \in F^\times$ and $\alpha_1, \dots, \alpha_n \in K$. Let $S = \{\alpha_1, \dots, \alpha_n\}$, then we know $K = F(S)$. Given any $\alpha \in S$, we know $\alpha$ is a root of $f(x)$, so
+\[
+    m_{\alpha, F}(x) \divides f(x).
+\]
+Since $\gcd(f(x), f'(x)) = 1$, then $f(x)$ is separable, so $m_{\alpha, F}(x)$ must also be separable (otherwise, $m_{\alpha, F}(x) \divides f(x)$ would imply $f(x)$ has multiple roots). That is, $\alpha$ is separable over $F$, so every element of $S$ is separable over $F$. And since $K = F(S)$, then $K/F$ is separable.
+
+
+\newpage
+\section*{3}
+
+The proof is symmetric with respect to $\alpha$ and $\beta$; it suffices to show one direction. Suppose $m_{\alpha, F}(x)$ is irreducible over $(F(\beta))[x]$. We have 
+\[
+    [F(\alpha, \beta) : F] = [(F(\beta))(\alpha) : F(\beta)][F(\beta) : F],
+\]
+where $[F(\beta) : F] = \deg m_{\beta, F}(x)$. Since $m_{\alpha, F}(x) \in (F(\beta))[x]$ is monic, irreducible  and has $\alpha$ as a root, then in fact, it is the minimal polynomial of $\alpha$ in $(F(\beta))[x]$. Therefore, we have
+\[
+    [F(\alpha, \beta) : F] = (\deg m_{\alpha, F}(x))(\deg m_{\beta, F}(x)).
+\]
+
+On the other hand, we have
+\[
+    [F(\alpha, \beta) : F] = [(F(\alpha))(\beta) : F(\alpha)][F(\alpha) : F],
+\]
+where $[F(\alpha) : F] = \deg m_{\alpha, F}(x)$. Therefore, we have
+\[
+    [(F(\alpha))(\beta) : F(\alpha)] = \deg m_{\beta, F}(x).
+\]
+Now since $m_{\beta, F}(x) \in (F(\alpha))[x]$ has $\beta$ as a root and has the same degree as the extension $(F(\alpha))(\beta)/F(\alpha)$, then we must have $m_{\beta, F}(x)$ irreducible in $(F(\alpha))[x]$.
+
+
+\newpage
+\section*{4}
+
+\subsection*{(a)}
+
+Since $\theta_1 \in \clo{\F_p}$, then $\F_p(\theta_1)$ is a finite subfield of $\clo{\F_p}$. Then the minimal polynomial of $\theta_1$ over $\F_p$ divides $f(x)$. Since $f(x)$ is irreducible, then $m_{\theta_1, \F_p}(x) = a^{-1}f(x)$, where $a \in \F_p^\times$ is the leading coefficient of $f(x)$. In particular,
+\[
+    [\F_p(\theta_1) : \F_p] = \deg m_{\theta_1, \F_p}(x) = \deg f(x).
+\]
+By the same argument.
+\[
+    [\F_p(\theta_2) : \F_p] = \deg m_{\theta_2, \F_p}(x) = \deg f(x).
+\]
+This implies that $|\F_p(\theta_1)| = p^{\deg f(x)} = |\F_p(\theta_2)|$. Since both $F_p(\theta_1)$ and $\F_p(\theta_2)$ are subfields of $\clo{\F_p}$ with the same cardinality, then they must be precisely the same subfield, i.e., $\F_p(\theta_1) = \F_p(\theta_2)$.
+
+
+\subsection*{(b)}
+
+Since $K \subseteq \clo{\F_p}$ is the splitting field for $f(x)$ over $\F_p$, then $K = \F_p(S)$, where $S \subseteq \clo{\F_p}$ is the set of roots of $f(x)$ in $\clo{\F_p}$. For any pair $\theta_1, \theta_2 \in S$, from $(a)$, we know that $\F_p(\theta_1) = \F_p(\theta_2)$. Moreover, this means
+\[
+    \F_p(\theta_1, \theta_2) = \F_p(\theta_1).
+\]
+Continuing inductively, suppose $\F_p(\theta_1, \dots, \theta_{n - 1}) = \F_p(\theta_1)$, for roots $\theta_1, \dots, \theta_n \in S$. Then 
+\[
+    \F_p(\theta_1, \dots, \theta_n)
+        = (\F_p(\theta_1, \dots, \theta_{n - 1}))(\theta_n)
+        = \F_p(\theta_1, \theta_n)
+        = \F_p(\theta_1).
+\]
+Since $S$ has only finitely many roots, this induction shows that $K = \F_p(S) = \F_p(\theta)$ for any root $\theta \in S$. Then $m_{\theta, \F_p}(x) = a^{-1}f(x)$, where $a \in \F_p^\times$ is the leading coefficient of $f(x)$ (since $a^{-1}f(x) \in \F_p[x]$ monic, irreducible, and has $\theta$ as root), so
+\[
+    [K : \F_p] = [\F_p(\theta) : F] = \deg m_{\theta, \F_p}(x) = \deg f(x).
+\]
+
+
+
+\newpage
+\section*{5}
+
+
+\subsection*{(a)}
+
+By definition, $E \subseteq K$. Clearly, each $\alpha \in F$ is separable over $F$ since $m_{\alpha, F}(x) = x - \alpha \in F[x]$ has only $\alpha$ as a simple root. Therefore, as sets, $F \subseteq E \subseteq K$.
+
+We now show $E$ is a field. Since $F \subseteq E$, then in particular, $0, 1 \in E$. If $\alpha, \beta \in E$, i.e., $\alpha, \beta$ are separable over $F$, then $F(\alpha, \beta)/F$ is a separable field extension of $F$. Since $F(\alpha, \beta)$ is a field containing $\alpha$ and $\beta$, then we know $\alpha - \beta, \alpha^{-1}\beta \in F(\alpha, \beta)$. Since $F(\alpha, \beta)$ is separable over $F$, then both $\alpha - \beta$ and $\alpha^{-1}\beta$ are separable over $F$. That is, both are contained in $E$, proving that $E$ is a field. 
+
+
+\subsection*{(b)}
+
+Since $F$ is characteristic $p$, if $m_{\alpha, F}(x)$ is inseparable, we have shown its derivative will be identically zero. This means that all the powers of $x$ are multiples of $p$, so we can write it as a polynomial in $x^p$, say $m_{\alpha, F}(x) = f(x^p)$. Then either $f(x)$ is separable or its inseparable, if it is inseparable, we repeat the process until we obtain a separable function $g(x)$ such that $g(x^{p^m}) = m_{\alpha, F}(x)$. Then $\alpha^{p^m}$ is separable over $F$.
+
+After this, it would remain to show that $n \geq m$ implies $\alpha^{p^n}$ is separable
+
+
+\subsection*{(c)}
+
+\end{document}

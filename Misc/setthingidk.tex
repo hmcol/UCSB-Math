@@ -1,0 +1,200 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amsthm, amssymb, physics}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-8pt\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+%\addtolength{\jot}{1em}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+
+% Extra Commands
+
+
+
+% Begin Document
+\begin{document}
+
+
+
+\begin{lemma}
+    For any $a, b \in \R$ with $a < b$, we have $|(a, b)| = |(0, 1)|$.
+\end{lemma}
+
+\begin{proof}
+    To show that the cardinalities are equal, we will construct a bijection between the two intervals. Define the function $f : (a, b) \to (0, 1)$ by
+    \[
+        f(x) = \frac{x - a}{b - a}.
+    \]
+    (If necessary, one can check that $(0, 1)$ makes sense as the codomain for this function. If $x \in (a, b)$, then $x > a$ implies
+    \[
+        f(x) = \frac{x - a}{b - a} > \frac{a - a}{b - a} = 0,
+    \]
+    and $x < b$ implies
+    \[
+        f(x) = \frac{x - a}{b - a} < \frac{b - a}{b - a} = 1.
+    \]
+    Hence, $f(x) \in (0, 1)$ for all $(a, b)$. And if you want to get really granular, you can show that the above inequalities hold because $a < b$. They might not hold, otherwise.)
+    
+    First, $f$ is a surjection, that is, for any $y \in (0, 1)$, there is some $x \in (a, b)$ with $f(x) = y$. Let $y \in (0, 1)$ and consider the point $x = (1 - y)a + yb$. We find
+    \[
+        x = (1 - y)a + yb < (1 - y)b + yb = b,
+    \]
+    and
+    \[
+        x = (1 - y)a + yb > (1 - y)a + ya = a.
+    \]
+    Hence, $x \in (a, b)$ (It is important that $y \in (0, 1)$, and you can check what is necessary for each of the above inequalities to see why). Moreover, we have
+    \[
+        f(x)
+            = \frac{x - a}{b - a}
+            = \frac{(1 - y)a + yb - a}{b - a} \\
+            = \frac{y(b - a)}{b - a} \\
+            = y.
+    \]
+    
+    Second, $f$ is an injection, that is, $f(x) = f(y)$ implies $x = y$ for all $x, y \in (a, b)$. Suppose $x, y \in (a, b)$ with $f(x) = f(y)$, then
+    \begin{align*}
+        \frac{x - a}{b - a} &= \frac{y - a}{b - a}, \\
+        x - a &= y - a, \\
+        x &= y.
+    \end{align*}
+    
+    Therefore, $f : (a, b) = (0, 1)$ is a bijection, so $|(a, b)| = |(0, 1)|$.
+    
+\end{proof}
+
+\newpage
+\begin{lemma}
+    $|(0, 1)| = |\R|$.
+\end{lemma}
+
+\begin{proof}
+    Define the function $f : \R \to (-1, 1)$ by
+    \[
+        f(x) = \frac{x}{|x| + 1}.
+    \]
+    (You could do $1/(1 + e^{-x})$, which is a bijection to $(0, 1)$, but you typically wouldn't have those sorts of functions, formally, this early in set theory, and this makes use of the lemma.) We check that the codomain makes sense. Suppose $x \in \R$. Then
+    \[
+        |f(x)| = \left|\frac{x}{|x| + 1}\right| =\frac{|x|}{|x| + 1} < \frac{|x| + 1}{|x| + 1} = 1.
+    \]
+    That is, $|f(x)| < 1$, so $f(x) \in (-1, 1)$.
+    
+    First, $f$ is an surjection. Let $y \in (-1, 1)$ and define
+    \[
+        x = \frac{y}{1 - |y|}.
+    \]
+    Since $|y| < 1$, then $x \in \R$. Moreover,
+    \[
+        f(x)
+            = \frac{\frac{y}{1 - |y|}}{\left|\frac{y}{1 - |y|}\right| + 1}
+            = \frac{y}{(1 - |y|)\left(\frac{|y|}{1 - |y|} + 1\right)}
+            = \frac{y}{|y| + 1 - |y|}
+            = y.
+    \]
+    
+    Second, $f$ is an injection. Suppose $x, y \in \R$ with $f(x) = f(y)$. In particular, we have $|f(x)| = |f(y)|$, so
+    \begin{align*}
+        \frac{|x|}{|x| + 1} &= \frac{|y|}{|y| + 1}, \\
+        |x||y| + |x| &= |y||x| + |y|, \\
+        |x| &= |y|.
+    \end{align*}
+    With this, we find
+    \begin{align*}
+        \frac{x}{|x| + 1} &= \frac{y}{|y| + 1}, \\
+        \frac{x}{|x| + 1} &= \frac{y}{|x| + 1}, \\
+        x &= y.
+    \end{align*}
+    
+    So $f : \R \to (-1, 1)$ is a bijection. By Lemma 1, $|(-1,1)| = |(0,1)|$, so there exists a bijection between the two intervals. Let $g : (-1, 1) \to (0, 1)$ be such a bijection. Then the composition $g \circ f : \R \to (0, 1)$ is a bijection. Thus, $|(0, 1)| = |\R|$.
+    
+\end{proof}
+
+\newpage
+\begin{lemma}
+    For any collection of sets $\{A_i\}_{i \in I}$,
+    \[
+        \left|\bigcup_{i \in I} A_i\right| \leq \sum_{i \in I} |A_i|.
+    \]
+\end{lemma}
+
+\begin{proof}
+    Let $A = \bigcup_{i \in I} A_i$ and let $A'$ be the disjoint union
+    \[
+        A' = \bigsqcup_{i \in I} A_i = \{(a, i) : a \in A_i, i \in I\}.
+    \]
+    (Disjoint union basically just means the union, but keep all elements distinct. There are multiple ways to define disjoint union, this is a common one.)
+    
+    The cardinality of $A'$ is precisely
+    \[
+        |A'| = \sum_{i \in I} |A_i|,
+    \]
+    so we want to show $|A| \leq |A'|$. There is a natural surjection $f : A' \to A$ where $f(a, i) = a$.
+    
+    (More generally, for any Cartesian product $B \times C$, we have two projections $\pi_1 : B \times C \to B$ and $\pi_2 : B \times C \to C$, where $\pi_1(b, c) = b$ and $\pi_2(b, c) = c$, which `project' into the first and second coordinate, respectively. We can consider $A' \subset A \times I$, and $f$ as the restriction to $A'$ of the natural projection into the first coordinate.) 
+    
+    Since the $A_i$'s are not necessary disjoint, then we do not have an exact inverse for $f$. Instead, for each $a \in A$, we have the preimage
+    \[
+        f^{-1}(a) = \{x \in A' : f(x) = a\}.
+    \]
+    For each $a_1, a_2 \in A$ with $a_1 \ne a_2$, the preimages $f^{-1}(a_1)$ and $f^{-1}(a_2)$ are disjoint. So if we can define a function $g : A \to A'$ where $g(a) \in f^{-1}(a)$ for all $a \in A$, we will have an injection.
+    
+    (In other words, for each $a \in A$, we want to make a choice of $x \in f^{-1}(a)$ and define $g(a) = x$. You might be able to prove something weaker for the case when $I = \N$ using the axiom of countable choice, but this route does require the full axiom of choice, so that's something to keep in mind.)
+    
+    By the axiom of choice, such a function does exist, so $|A| \leq |A'|$.
+    
+\end{proof}
+
+\newpage
+
+\begin{proposition}
+    If $|A_n| = |\R|$ for all $n \in \N$, then $\left|\bigcup_{n \in \N} A_n\right| = |\R|$. 
+\end{proposition}
+
+\begin{proof}
+    Let $A = \bigcup_{n\in\N} A_n$. We first show that $|\R| \leq |A|$. In particular, we have $A_1 \subseteq A$, which implies $|A_1| \leq |A|$. And since $|A_1| = |\R|$, then we obtain $|\R| \leq |A|$.
+    
+    We now show that $|A| \leq |\R|$. By Lemmas 2 and 3,
+    \[
+        |A| \leq \sum_{n \in \N}|A_n| = \sum_{n \in \N}|(0,1)| = |\N| \cdot |(0,1)| = |\N \times (0,1)|.
+    \]
+    It remains to show $|\N \times (0, 1)| \leq |\R|$. Define the function $f : \N \times (0, 1) \to \R$ by
+    \[
+        f(n, x) = n + x.
+    \]
+    One can check $f(n, x) \in (n, n+1)$. We claim that $f$ is an injection.
+    
+    (That is, we want to show $f(n, x) = f(m, y)$ implies $(n, x) = (m, y)$ for all $n, m \in \N$ and $x, y \in \R$. The injectivity of $f$ can, equivalently, be stated in terms of the contrapositive: $(n, x) \ne (m, y)$ implies $f(n, x) \ne f(m, y)$.)
+    
+    Suppose $(n, x) \ne (m ,y)$, then we have two cases to consider: $n = m$ or $n \ne m$. If $n = m$, then we must have $x \ne y$. Moreover,
+    \[
+        f(n, x) - f(m, y) = (n + x) - (m + y) = x - y \ne 0,
+    \]
+    which implies $f(n, x) \ne f(m, y)$. If $n \ne m$, then the intervals $(n, n+1)$ and $(m, m+1)$ are disjoint. And since $f(n, x) \in (n, n+1)$ and $f(m, y) \in (m, m+1)$, then we must have $f(n, x) \ne f(m, y)$.
+    
+\end{proof}
+
+
+\end{document}

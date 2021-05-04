@@ -1,0 +1,483 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amsthm, amssymb, physics}
+\usepackage[shortlabels]{enumitem}
+\usepackage{tikz-cd}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{8pt}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+
+% Environments
+\newenvironment{definition}{\begin{fullbox}}{\end{fullbox}}
+\newcommand{\keyword}[1]{\textbf{#1}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\setlist[enumerate]{nosep}
+\def\[#1\]{\begin{align*}#1\end{align*}}
+
+\newcommand{\sepline}{\rule{\textwidth}{0.4pt}}
+
+
+
+% Document Formatting
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Math Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\tc}[1]{, \qquad \text{#1}}
+\newcommand{\mc}[1]{, \qquad #1}
+\newcommand{\cfa}[1]{, \qquad \text{for all $#1$}}
+
+% Symbols
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Zpos}{\mathbb{Z}_{\geq0}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+
+% Delimiters
+\newcommand{\<}{\left\langle}
+\renewcommand{\>}{\right\rangle}
+
+% Relations
+\newcommand{\isom}{\cong}
+\newcommand{\dsum}{\oplus}
+\newcommand{\divides}{\mid}
+
+\newcommand{\eqc}{\overline}
+
+% Math Roman
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Ann}{Ann}
+
+
+\newcommand{\sqMat}[1]{\operatorname{M}_{#1 \times #1}}
+\newcommand{\MnF}{\sqMat{n}(F)}
+\newcommand{\GLn}{\operatorname{GL}_{n}}
+
+
+
+\title{Abstract Algebra\\
+    \large UCSB MATH 111
+}
+\author{}
+\date{2020\textendash 2021}
+
+\begin{document}
+
+Let $R$ be a ring (not necessarily commutative nor with $1$). A (left) \keyword{$R$-module} is a set $M$ together with
+\begin{enumerate}[(1)]
+    \item a binary operation $+$, under which $M$ is an abelian group, and
+    \item an $R$-action on $M$ (i.e., a map $R \times M \to M$) denoted by $rm$ for all $r \in R$ and $m \in M$ which satisfies
+    \begin{enumerate}[(i)]
+        \item $(r + s)m = rm + sm$,
+        \item $(rs)m = r(sm)$,
+        \item $r(m + n) = rm + rn$,
+        \item if $1 \in R$, then $1m = m$.
+    \end{enumerate}
+\end{enumerate}
+
+An \keyword{$R$-submodule} of an $R$-module $M$ is a subgroup $N$ of $M$ which is closed under the action of ring elements, i.e., $rn \in N$ for all $r \in R$ and $n \in N$.
+
+
+
+\sepline
+
+Let $R$ be a ring and let $M$ and $N$ be $R$-modules.
+
+A map $\phi : M \to N$ is an \keyword{$R$-module homomorphism} if it respects the $R$-module structure of $M$ and $N$, i.e., for all $x, y \in M$ and $r \in R$ the map satisfies
+\begin{enumerate}[(i)]
+    \item $\phi(x + y) = \phi(x) + \phi(y)$,
+    \item $\phi(rx) = r\phi(x)$.
+\end{enumerate}
+If $\phi$ is also a bijection, it is called an \keyword{isomorphism} (of $R$-modules), and the $R$-modules $M$ and $N$ are said to be \keyword{isomorphic}, denoted $M \isom N$.
+
+The $\keyword{kernel}$ of $\phi$ is the set
+\[
+    \ker\phi = \{m \in M \mid \phi(m) = 0\}.
+\]
+
+The \keyword{image} of $\phi$ is the set
+\[
+    \phi(M) = \{\phi(m) \mid m \in M\}.
+\]
+
+\sepline
+
+Define $\Hom_R(M, N)$ to be the set of all $R$-module homomorphisms from $M$ to $N$.
+
+For $\phi, \psi \in \Hom_R(M, N)$, define $\phi + \psi$ by
+\[
+    (\phi + \psi)(m) = \phi(m) + \psi(m) \tc{for all $m \in M$}.
+\]
+Then $\phi + \psi \in \Hom_R(M, N)$ and under this operation, $\Hom_R(M, N)$ is an abelian group.
+
+If $R$ is commutative, then for $r \in R$ define $r\phi$ by
+\[
+    (r\phi)(m) = r(\phi(m)) \cfa{m \in M}.
+\]
+Then $r\phi \in \Hom_R(M, N)$ and under this action, $\Hom_R(M, N)$ is an $R$-module.
+
+With addition as above and taking composition as multiplication, $\Hom_R(M, M)$ is a ring with identity. We call this ring the \keyword{endomorphism ring} of $M$ and denote it by $\End_R(M)$; its elements are called \keyword{endomorphisms}.
+
+\sepline
+
+Let $M$ be an $R$-module and $N$ be an $R$-submodule of $M$. Then the quotient group
+\[
+    M/N = \{\eqc{x} = x + N \mid x \in M\}
+\]
+can be made into an $R$-module with the $R$-action defined by $r\eqc{x} = \eqc{rx}$, where $rx$ is determined by the $R$-action on $M$. This is called the \keyword{quotient $R$-module of $M$ by $N$} and the natural projection $\pi : M \to M/N$ is an $R$-module homomorphism, with $\ker\pi = N$.
+
+\sepline
+
+Let $M$ be an $R$-module and let $N_1, \dots, N_n$ be submodules of $M$.
+
+The \keyword{sum} of $N_1, \dots, N_n$ is the set of all finite sums of elements from the sets, denoted by
+\[
+    N_1 + \cdots + N_n = \{a_1 + \cdots + a_n \mid a_j \in N_j\}.
+\]
+
+For any $A \subseteq M$ define the \keyword{$R$-submodule of $M$ generated by $A$} to be
+\[
+    RA = \{r_1a_1 + \cdots + r_ka_k \mid r_j \in R,\; a_j \in A,\; k \in \Z^+\}.
+\]
+If $A$ is the finite set $\{a_1, \dots, a_n\}$, write $Ra_1 + \cdots + Ra_n$ for $RA$. If $A = \emptyset$, take $RA = \{0\}$.
+
+If $N$ is an $R$-submodule of $M$ and $N = RA$ for some $A \subseteq M$, we call $A$ a \keyword{generating set} for $N$, and say $N$ is \keyword{generated} by $A$.
+
+We say $N$ is \keyword{finitely generated} if it is generated by a finite subset of $M$, i.e., if $N = RA$ for some finite subset $A$ of $M$.
+
+An $R$-submodule $N$ of $M$ is \keyword{cyclic} if it is generated by a single element of $M$, i.e., if 
+\[
+    N = Ra = \{ra \mid r \in R\}
+\]
+for some $a \in M$.
+
+If $N_1, \dots, N_n$ are $R$-submodules of $M$ which are generated by the subsets $A_1, \dots, A_n$ of $M$, then the sum $N_1 + \cdots + N_n$ is generated by $A_1 \cup \cdots \cup A_n$.
+
+If $M = Rx_1 + \cdots + Rx_n$, i.e., $M$ is generated by the set $\{x_1, \dots, x_n\}$, and $N$ is an $R$-submodule of $M$, then $M/N = R\eqc{x_1} + \cdots + R\eqc{x_n}$.
+
+\sepline
+
+Let $M_1, \dots M_n$ be a collection of $R$-modules. The \keyword{direct product} of $M_1, \dots, M_n$ is the $R$-module
+\[
+    M_1 \times \cdots \times M_n = \{(x_1, \dots, x_n) \mid x_j \in M_j\},
+\]
+with addition defined by
+\[
+    (x_1, \dots, x_n) + (y_1, \dots, y_n) = (x_1 + y_1, \dots, x_n + y_n)
+\]
+and $R$-action defined by
+\[
+    r(x_1, \dots, x_n) &= (rx_1, \dots, rx_n).
+\]
+
+Also referred to as the (external) \keyword{direct sum} and denoted $M_1 \dsum \cdots \dsum M_n$.
+
+\sepline
+
+Let $R$ be a ring with identity.
+
+And $R$-module $M$ is said to the \keyword{free} on the subset $A \subseteq M$ if, for every nonzero element $x \in M$, there exist unique nonzero elements $r_1, \dots, r_n \in R$ and unique $a_1, \dots, a_n \in A$ such that $x = r_1a_1 + \cdots + r_na_n$, for some $n \in \Z^+$. Equivalently, $M$ is free on $A$ if
+\begin{enumerate}[(i)]
+    \item every $x \in M$ can be written as a finite sum $x = r_1a_1 + \cdots + r_na_n$ for some $a_1, \dots, a_n \in A$ and $r_1, \dots, r_n \in R$, and
+    
+    \item for all $r_1, \dots, r_n \in R$ and distinct $a_1, \dots, a_n \in A$,
+    \[
+        r_1a_1 + \cdots + r_na_n = 0 \implies r_1 = \cdots = r_n = 0.
+    \]
+\end{enumerate}
+
+In this case, we say $A$ is a \keyword{basis} or a set of \keyword{free generators} for $M$. And if $R$ is commutative, then the cardinality of $A$ is called the \keyword{rank} of $M$.
+
+\sepline
+
+Let $M$ be an $R$-module.
+
+Define 
+\[
+    \Tor_R(M) &= \{x \in M \mid rx = 0 \text{ for some nonzero } r \in R\}.
+\]
+When $R$ is an integral domain, $\Tor_R(M)$ is called the \keyword{torsion $R$-submodule} of $M$.
+
+If $\Tor_R(M) = 0$, then $M$ is said to be \keyword{torsion free}.
+
+For any $R$-submodule $N$ of $M$, the \keyword{annihilator} of $N$ is the ideal of $R$ defined by
+\[
+    \Ann_R(N) &= \{r \in R \mid rx = 0 \text{ for all } x \in N\}.
+\]
+
+If $N$ is not a torsion $R$-submodule of $M$ then $\Ann_R(N) = (0)$
+
+
+
+
+
+
+
+
+
+\newpage
+
+\begin{proposition}(Submodule Criterion)
+    Let $R$ be a ring with identity. A subset $N$ of an $R$-module $M$ is an $R$-submodule of $M$ if and only if
+    \begin{enumerate}[(i)]
+        \item $N \ne \emptyset$,
+        \item $x + ry \in N$ for all $r \in R$ and $x, y \in N$.
+    \end{enumerate}
+\end{proposition}
+
+\begin{proposition}
+    Let $R$ be a ring with identity and let $M$ and $N$ be $R$-modules. A map $\phi : M \to N$ is an $R$-module homomorphism if and only if
+    \[
+        \phi(rx + y) = r\phi(x) + \phi(y) \tc{for all $x, y \in M$, $r \in R$}.
+    \]
+\end{proposition}
+
+\begin{theorem}(Isomorphism Theorems)
+    \begin{enumerate}[(1)]
+        \item Let $M$ and $N$ be $R$-modules and let $\phi : M \to N$ be an $R$-module homomorphism. Then $\ker\phi$ is a submodule of $M$ and $M/\ker\phi \isom \phi(M)$.
+        
+        \item Let $A$ and $B$ be $R$-submodules of the $R$-module $M$. Then $(A + B)/B \isom A/(A \cap B)$.
+        
+        \item Let $M$ be an $R$-module and let $A$ and $B$ be $R$-submodules of $M$ with $A \subseteq B$. Then $(M/A)/(B/A) \isom M/B$.
+        
+        \item Let $N$ be an $R$-submodule of the $R$-module $M$ and $\pi : M \to M/N$ be the natural projection. Then the map
+        \[
+            \{\text{$R$-submodules of $M$ containing $N$}\} &\to \{\text{$R$-submodules of $M/N$}\} \\
+                A &\mapsto \eqc{A} = A/N
+        \]
+        is a bijection and its inverse map is
+        \[
+             \{\text{$R$-submodules of $M/N$}\} &\to \{\text{$R$-submodules of $M$ containing $N$}\} \\
+                \eqc{A} &\mapsto \pi^{-1}(\eqc{A}) = \{x \in M \mid \eqc{x} \in \eqc{A}\}.
+        \]
+    \end{enumerate}
+\end{theorem}
+
+
+\begin{proposition}
+    Let $N_1, \dots, N_k$ be $R$-submodules of the $R$-module $N$. Then the following are equivalent:
+    \begin{enumerate}[(1)]
+        \item The map
+        \[
+            \pi : N_1 \times \cdots \times N_k &\to M \\
+                (a_1, \dots, a_k) &\mapsto a_1 + \cdots + a_k
+        \]
+        is an isomorphism of $R$-modules.
+        
+        \item $N_1 + \cdots + N_k = M$ and $N_j \cap (N_1 + \cdots + N_{j-1} + N_{j+1} + \cdots + N_k) = 0$.
+        
+        \item Every $x \in M$ can be written uniquely in the form $x = a_1 + \cdots + a_k$ with $a_j \in N_j$.
+    \end{enumerate}
+\end{proposition}
+
+\newpage
+\begin{theorem}
+    For any set $A$ there exists a free $R$-module $F(A)$ on $A$, satisfying the following \keyword{universal property}: if $M$ is any $R$-module and $\phi : A \to M$ is any map of sets, then there is a unique $R$-module homomorphism $\Phi : F(A) \to M$ such that $\Phi(a) = \phi(a)$ for all $a \in A$, i.e., the following diagram commutes:
+    \begin{center}
+        \begin{tikzcd}[labels={font=\normalsize}]
+            A \arrow[drr, swap, "\phi"] \arrow[rr, "\text{inclusion}"] && F(A) \arrow[d, "\Phi"] \\
+            && M
+        \end{tikzcd}
+    \end{center}
+    \begin{center}
+        \begin{tikzcd}[labels={font=\normalsize}]
+            A \arrow[dr, swap, "\phi"] \arrow[r, hook] & F(A) \arrow[d, dashed, "\Phi"] \\
+            & M
+        \end{tikzcd}
+    \end{center}
+    \begin{center}
+        \begin{tikzcd}[labels={font=\normalsize}]
+            A \arrow[r, "\phi"] \arrow[d, hook] & M \\
+            F(A) \arrow[ur, dashed, swap, "\Phi"]
+        \end{tikzcd}
+    \end{center}
+    When $A$ is the finite set $\{a_1, \dots, a_n\}$, $F(A) = Ra_1 \dsum \cdots \dsum Ra_n \isom R^n$.
+\end{theorem}
+
+\begin{corollary}
+    If $M_1$ and $M_2$ are free modules on the same set $A$, there is a unique isomorphism between $M_1$ and $M_2$ which is the identity on $A$.
+\end{corollary}
+
+\begin{corollary}
+    If $M$ is any free $R$-module with basis $A$, then $M \isom F(A)$. In particular, $M$ enjoys the same universal property with respect to $A$ as $F(A)$ does in the theorem.
+\end{corollary}
+
+
+\begin{theorem}(Fundamental Theorem of Finitely Generated Modules over PID's) Let $R$ be a PID and let $M$ be a finitely generated $R$-module.
+    \begin{enumerate}[(1)]
+        \item (Invariant Factor Form)
+        \[
+            M \isom R^r \dsum R/(a_1) \dsum \cdots \dsum R/(a_m)
+        \]
+        for some $r \in \Z_{\geq0}$ and nonzero non-unit $a_1, \dots, a_m \in R$ satisfying $a_j \divides a_{j+1}$. The integer $r$ is uniquely determined by $M$ and the elements $a_1, \dots, a_m$ are uniquely determined up to units by $M$.
+        
+        \item (Elementary Divisor Form)
+        \[
+            M \isom R^r \dsum R/(p_1^{\alpha_1}) \dsum \cdots \dsum R/(p_k^{\alpha_k})
+        \]
+        for some $r \in \Z_{\geq0}$ (same as in (1)) and nonzero prime $p_1, \dots, p_k \in R$ (not necessarily distinct) and $\alpha_1, \dots, \alpha_k \in \Z^+$. The integer $r$ is uniquely determined by $M$ and the elements $p_1, \dots, p_k$ are uniquely determined up to units by $M$.
+    
+        
+    \end{enumerate}
+    We call $r$ the \keyword{free rank} of $M$, the elements $a_1, \dots, a_m$ the \keyword{invariant factors} of $M$, and the elements $p_1, \dots, p_k$ the \keyword{elementary divisors} of $M$.
+\end{theorem}
+
+\newpage
+Examples
+\begin{enumerate}[1.]
+    \item Any ring $R$ is naturally an $R$-module under the action of multiplication . If $R$ is commutative, any subset is an $R$-submodule if and only if it is an ideal.
+    
+    \item Let $M$ be an $R$-module and $I$ be an ideal of $R$. Then the set
+    \[
+        IM = \{a_1 m_1 + \cdots + a_n m_n \mid a_j \in I,\; m_j \in M,\; n \in \Z^+\}
+    \]
+    is an $R$-submodule of $M$.
+    
+    \item If $\phi : R \to S$ is a ring homomorphism and $M$ is an $S$-module, then $M$ is also an $R$-module with the $R$-action $rm = \phi(r)m$, where $\phi(r)$ acts on $m$ under the $S$-action. In particular, if $I$ is an ideal of $R$, then any $(R/I)$-module is an $R$-module, where the $R$-action is obtained from the $(R/I)$-action using the natural projection.
+
+    \item An abelian group $(A, +)$ is naturally a $\Z$-module with the action defined inductively for $n \in \Z$ and $a \in A$ by 
+    \[
+        0a &= 0 \\
+        (n+1)a &= na + a, \quad n \geq 0 \\
+        -1a &= -a.
+    \]
+    In other words, the action of an integer on an element of the group is repeated addition, with negative integers giving the additive inverse in the group. If the binary operation of the group is written multiplicatively, then the $\Z$-action can be written as $a^n$, and follows the usual laws of exponents. In fact, this is the only $\Z$-module structure than can be put on $A$, and any $\Z$-module admits an abelian group. So $\Z$-module are the same as abelian groups, with submodules being the subgroups.
+    
+    \item For a field $F$, the axioms of an $F$-module are precisely the axiom of a vector space over $F$, i.e., $F$-modules and vector spaces over $F$ are the same. Let $V$ be a vector space over $F$ and let $T : V \to V$ be a linear transformation. Then $V$ can be viewed as an $F[x]$-module under the $F[x]$-action
+    \[
+        (a_n x^n + \cdots a_1 x + a_0)v
+            = (a_n T^n + \cdots a_1 T + a_0)v
+            = a_n T^n(v) + \cdots a_1 T(v) + a_0v.
+    \]
+    This $F[x]$ action agrees with the natural $F$-action for elements of $F$. In fact there is a bijective correspondence between $F[x]$-modules and linear operators on vectors spaces over $F$. The $F[x]$-submodules are the subspaces of the vector space which are stable under the linear operator.
+
+\end{enumerate}
+
+
+
+
+\newpage
+Let $F$ be a field and denote by $\MnF$ the set of $n \times n$ matrices with entries in $F$.
+
+Define the \keyword{general linear group} of degree $n$ over $F$ to be the set
+\[
+    \GLn(F) = \{A \in \MnF \mid \det A \ne 0\},
+\]
+which is a group under the usual matrix multiplication.
+
+Let $A \in \MnF$.
+
+The \keyword{characteristic polynomial} of a $A$ is
+\[
+    c_A(x) = \det(xI - A).
+\]
+Note that $c_{P^{-1}AP}(x) = c_A(x)$ for all $P \in \GLn(F)$.
+
+A monic polynomial $m_A(x) \in F[x]$ is called the \keyword{minimal polynomial} of $A$ if
+\begin{enumerate}[(i)]
+    \item $m_A(A) = 0$,
+    \item $p(A) = 0$ implies $m_A(x) \divides p(x)$, for all $p(x) \in F[x]$.
+\end{enumerate}
+
+\sepline
+
+Let $V$ be a vector space of dimension $n$ over the field $F$. Let $T : V \to V$ be a linear transformation and fix a basis $\beta = \{e_1, \dots, e_n\}$ of $V$.
+
+Then $T$ corresponds to a matrix $A_T \in \MnF$ such that $T(v) = A_T[v]_\beta$ for all $v \in V$, where $[v]_\beta$ is the $n \times 1$ vector of the coordinates of $v$ in the basis $\beta$.
+
+The characteristic polynomial of $T$ is defined as $c_T(x) = c_{A_T}(x)$.
+
+The minimal polynomial of $T$ is defined as $m_T(x) = m_{A_T}(x)$.
+
+Both $c_T(x)$ and $m_T(x)$ are independent of the choice of basis $\beta$.
+
+\sepline
+
+Let $F$ be a field and $A \in \MnF$. Let $V = F^n$ be equipped with the $F[x]$-module structure induced by the linear transformation
+\[
+    T_A : V &\to V \\
+    v &\mapsto Av.
+\]
+
+Since $F[x]$ is a PID, then the fundamental theorem of finitely generated modules over PID's implies (after checking that free rank of $V$ is zero) that
+\[
+    V \isom F[x]/(a_1(x)) \dsum \cdots \dsum F[x]/(a_m(x)),
+\]
+where each $a_j(x)$ is a monic polynomial in $F[x]$ with $\deg a_j(x) \geq 1$ and $a_j(x) \divides a_{j+1}(x)$. And
+\[
+    V \isom F[x]/(p_1(x)^{\alpha_1}) \dsum \cdots \dsum F[x]/(p_k(x)^{\alpha_k}),
+\]
+where each $p_j(x)$ is a monic, irreducible polynomial in $F[x]$ and $\alpha_j \in \Z_{\geq 0}$.
+
+We call $a_1(x), \dots, a_m(x)$ the invariant factors of $A$ and $p_1(x), \dots, p_k(x)$ the elementary divisors of $A$.
+
+\sepline
+
+Let $F$ be a field. Let $k \in \Z^+$ and $\lambda \in F$.
+
+The $k \times k$ \keyword{elementary Jordan matrix} with eigenvalue $\lambda$, or the \keyword{Jordan block} of size $k$ with eigenvalue $\lambda$, is the matrix
+\[
+    \mqty[
+        \lambda & 1 & & 0 \\
+        & \lambda & \ddots  \\
+        && \ddots & 1 \\
+        0&&& \lambda 
+    ]
+    \in \sqMat{k}(F).
+\]
+
+A matrix is said to be in \keyword{Jordan canonical form} if is has the shape
+\[
+    \mqty[\dmat{J_1, J_2, \ddots, J_t}]
+\]
+where each $J_i$ is a Jordan block.
+
+
+
+\newpage
+
+\begin{proposition}
+    Let $F$ be a field, $A \in \MnF$, and $a_1(x), \dots, a_m(x)$ be the invariant factors of $A$.
+    \begin{enumerate}[(1)]
+        \item $m_A(x) = a_m(x)$
+        \item $c_A(x) = a_1(x) \cdots a_m(x)$
+        \item (Cayley-Hamilton) $c_A(A) = 0$
+    \end{enumerate}
+\end{proposition}
+
+\begin{theorem}
+    Let $F$ be a field and $A \in \MnF$. Suppose that $c_A(x)$ factorizes into a product of degree one polynomials in $F[x]$ (not necessarily distinct). (If $F = \C$, then this condition is always satisfied.)
+    \begin{enumerate}[(1)]
+        \item $A$ is similar to a matrix in Jordan canonical form, i.e., there exists $P \in \GLn(F)$ such that
+        \[
+            P^{-1}AP = \mqty[\dmat{J_1, \ddots, J_t}]
+        \]
+        where each $J_i$ is a Jordan block.
+        
+        \item The Jordan block form of $A$ is unique up to a permutation of the Jordan blocks. More precisely, under the assumption on $c_A(x)$, the elementary divisors of $A$ are
+        \[
+            (x - \lambda_1)^{\alpha_1}, \dots, (x - \lambda_k)^{\alpha_k},
+        \]
+        where $\lambda_1, \dots, \lambda_k \in F$ (not necessarily distinct). The Jordan canonical form of $A$ has $k$ Jordan blocks, which are of sizes $\alpha_1, \dots, \alpha_k$ and eigenvalues $\lambda_1, \dots, \lambda_k$.
+    \end{enumerate}
+\end{theorem}
+
+\end{document}

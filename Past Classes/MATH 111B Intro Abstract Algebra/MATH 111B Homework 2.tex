@@ -1,0 +1,328 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amsthm, amssymb, physics}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}
+    {\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\mybox}}\end{center}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{1em}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+
+% Extra Commands
+\newcommand{\isom}{\cong}
+\newcommand{\conj}{\overline}
+\newcommand{\inc}{\hookrightarrow}
+
+
+% Document Info
+\title{Homework 2\\
+    \large MATH 111B
+}
+\author{Harry Coleman}
+\date{January 22, 2021}
+
+% Begin Document
+\begin{document}
+\maketitle
+
+\section{Problem 7.3.10}
+\begin{problem}
+    Decide which of the following are an ideal of the ring $\Z[x]$:
+\end{problem}
+
+\subsection{Problem 7.3.10(a)}
+\begin{problem}
+    the set of all polynomials whose constant term is a multiple of $3$.
+\end{problem}
+
+The composition of ring homomorphisms
+\[
+    \begin{array}{cccccc}
+        \phi : & \Z[x] & \to & \Z & \to & \Z/3\Z \\
+             & p(x) & \mapsto & p(0) & \mapsto & \conj{p(0)}
+    \end{array}
+\]
+is a ring homomorphism. Moreover, its kernel is
+\[
+    \ker\phi
+        = \{p(x) \mid \conj{p(0)} = 0\}
+        = \{p(x) \mid p(0) \in 3\Z\},
+\]
+which is precisely the polynomials whose constant term is a multiple of $3$. As the kernel of a ring homomorphism, it is an ideal of $\Z[x]$.
+
+
+
+\subsection{Problem 7.3.10(b)}
+\begin{problem}
+    the set of all polynomials whose coefficient of $x^2$ is a multiple of $3$.
+\end{problem}
+
+Consider $2x + 3x^2$ in this set. Then $x(2x + 3x^2) = 2x^2 + 3x^3$, which is not in the set, so it is not an ideal.
+
+\subsection{Problem 7.3.10(d)}
+\begin{problem}
+    $\Z[x^2]$ (i.e., the polynomials in which on even powers of $x$ appear)
+\end{problem}
+
+Consider $x^2$ in this set. Then $x(x^2) = x^3$, which is not in the set, so it is not an ideal.
+
+\section{Problem 7.3.24}
+\begin{problem}
+    Let $\phi : R \to S$ be a ring homomorphism.
+\end{problem}
+
+\subsection{Problem 7.3.24(a)}
+\begin{problem}
+    Prove that if $J$ is an deal of $S$ then $\phi^{-1}(J)$ is an ideal of $R$. Apply this to the special case when $R$ is a subring of $S$ and $\phi$ is the inclusion homomorphism to deduce that if $J$ is an ideal of $S$ then $J\cap R$ is an ideal of $R$.
+\end{problem}
+
+\begin{proof}
+    Since $\phi$ is a group homomorphism and $J$ is a subgroup of $S$ for addition, then $\phi^{-1}(J)$ is a subgroup of $R$ for addition. Let $r \in R$ and $x \in \phi^{-1}(J)$, then
+    \[
+        \phi(rx) = \phi(r)\phi(x) \in \phi(r)J = J,
+    \]
+    \[
+        \phi(xr) = \phi(x)\phi(r) \in J\phi(r) = J.
+    \]
+    Thus, $rx, xr \in \phi^{-1}(J)$. so $\phi^{-1}(J)$ is an ideal of $R$. If $\phi : R \inc S$ is the inclusion homomorphism, then
+    \[
+        \phi^{-1}(J) = \{x \in R : \phi(x) = x \in J\} = R \cap J
+    \]
+    is an ideal of $R$.
+
+\end{proof}
+
+\subsection{Problem 7.3.24(b)}
+\begin{problem}
+    Prove that if $\phi$ is surjective and $I$ is an ideal of $R$ then $\phi(I)$ is an ideal of $S$. Give an example where this fails if $\phi$ is not surjective.
+\end{problem}
+
+\begin{proof}
+    Since $\phi$ is a group homomorphism and $I$ is a subgroup of $R$ for addition, then $\phi(I)$ is a subgroup of $S$ for addition. Let $s \in S$ and $y \in \phi(I)$. Since $\phi$ is surjective, there is some $r \in R$ and $x \in I$ such that $\phi(r) = s$ and $\phi(x) = y$. Then
+    \[
+        sy = \phi(r)\phi(x) = \phi(rx) \in \phi(I),
+    \]
+    \[
+        ys = \phi(x)\phi(r) = \phi(xr) \in \phi(I),
+    \]
+    so $\phi(I)$ is an ideal of $S$.
+    
+\end{proof}
+
+Consider the inclusion ring homomorphism  $\Z \inc \Q$ be. Then $\Z$ is an ideal of $\Z$, but not and ideal of $\Q$. Consider $1 \in \Z$ and $\frac12 \in \Q$, then $\frac12\cdot 1 = \frac12 \notin\Z$.
+
+\newpage
+\section{Problem 7.3.34}
+\begin{problem}
+    Let $I$ and $J$ be ideals of $R$.
+\end{problem}
+
+\subsection{Problem 7.3.34(a)}
+\begin{problem}
+    Prove that $I + J$ is the smallest ideal of $R$ containing both $I$ and $J$.
+\end{problem}
+
+\begin{proof}
+    Both $I$ and $J$ are subgroups of $R$ for addition, so $I + J$ is a subgroup of $R$ for addition. Let $r \in R$, then
+    \begin{align*}
+        r(I + J) 
+            &= \{r(a + b) \mid a \in I, b \in J\} \\
+            &= \{ra + rb \mid a \in I, b \in J\} \\
+            &= rI + rJ \\
+            &\subseteq I + J
+    \end{align*}
+    and
+    \begin{align*}
+        (I + J)r
+            &= \{(a + b)r \mid a \in I, b \in J\} \\
+            &= \{ar + br \mid a \in I, b \in J\} \\
+            &= Ir + Jr \\
+            &\subseteq I + J,
+    \end{align*}
+    so $I + J$ is an ideal of $R$. Suppose $K$ is an ideal of $R$ containing both $I + J$. Then for all $a \in I$ and $b \in J$, we have $a, b \in K$. Since $K$ is a subgroup of $R$ for addition, $a + b \in K$, implying $I + J \subseteq K$. 
+    
+\end{proof}
+
+\newpage
+\subsection{Problem 7.3.34(b)}
+\begin{problem}
+    Prove that $IJ$ is an ideal contained in $I \cap J$.
+\end{problem}
+
+\begin{proof}
+    We first show $IJ$ is a subgroup of $R$ for addition. Since $0 \in I$ and $0 \in J$, then $0 \cdot 0 \in IJ \ne \emptyset$. Let $x, y \in IJ$. Then we can write $x$ and $y$ as
+    \[
+        x = \sum_{k=1}^n a_k b_k \isp{and} y = \sum_{k=n+1}^m a_k b_k,
+    \]
+    where $a_k \in I$ and $b_k \in J$ for $k = 1, \dots, m$. Then
+    \[
+        x - y = \sum_{k=1}^m a_k' b_k,
+    \]
+    where $a_k' = a_k$ for $k \leq n$, and $a_k' = -a_k$ for $k \geq n+1$. Then $a_k' \in I$ for $k = 1, \dots, m$, so $x - y \in IJ$ and $IJ$ is a subgroup of $R$ for addition. Let $r \in R$ and $x \in IJ$. Then
+    \[
+        rx = r\sum_{k=1}^n a_k b_k = \sum_{k=1}^n ra_k b_k = \sum_{k=1}^n a_k' b_k
+    \]
+    where $a_k' = ra_k$. Since $I$ is an ideal, $a_k' \in I$, so $rx \in IJ$. And
+    \[
+        xr = \left(\sum_{k=1}^n a_k b_k\right)r = \sum_{k=1}^n a_k b_kr = \sum_{k=1}^n a_k b_k'
+    \]
+    where $b_k' = b_kr$. Since $J$ is an ideal, $b_k' \in J$, so $xr \in IJ$. Thus, $IJ$ is an ideal of $R$. For any $x \in IJ$, we have
+    \[
+        x = \sum_{k=1}^n a_k b_k.
+    \]
+    Because $I$ and $J$ are both ideals,  $a_kb_k \in I \cap J$ for $k = 1, \dots n$. Since both $I$ and $J$ are subgroups of $R$ for addition, so is $I \cap J$ and we have $x \in I \cap J$.
+    
+\end{proof}
+
+\subsection{Problem 7.3.34(c)}
+\begin{problem}
+    Give an example where $IJ \ne I \cap J$.
+\end{problem}
+
+Consider the ideal $I = 2\Z$ of $\Z$, then $I \cap I = 2\Z$, but
+\begin{align*}
+    I^2 
+        &= \{a_1b_1 + \cdots + a_nb_n \mid a_j, b_j \in 2\Z\} \\
+        &= \{(2k_1)(2\ell_1) + \cdots + (2k_n)(2\ell_n) \mid k, \ell \in \Z\} \\
+        &= \{4(k_1\ell_1 + \cdots + k_n\ell_n) \mid k, \ell \in \Z\} \\
+        &= 4\Z.
+\end{align*}
+
+
+\subsection{Problem 7.3.34(d)}
+\begin{problem}
+    Prove that if $R$ is commutative with identity and if $I + J = R$ then $IJ = I \cap J$.
+\end{problem}
+
+\begin{proof}
+    Let $x \in I \cap J$. Since $R = I + J$ and $1 \in R$, then $1 = a + b$ for some $a \in I$ and $b \in J$. Since $R$ is commutative and $x$ is in both $I$ and $J$,
+    \[
+        x = x(a + b) = xa + xb = ax + xb \in IJ.
+    \]
+    Having already shown the opposite inclusion, we have equality $IJ = I \cap J$.
+    
+\end{proof}
+
+\newpage
+\section{}
+\begin{problem}
+    Let $A$ be a subring of a ring $R$ and $I$ be an ideal of $R$. Prove the following statements.
+\end{problem}
+
+\subsection{}
+\begin{problem}
+    $A + I = \{a + r \mid a \in A, r \in I\}$ is a subring of $R$.
+\end{problem}
+
+\begin{proof}
+    Since $A$ and $I$ are both subgroups of $R$ for addition, then so is $A + I$. Let $a, b \in A$ and $x, y \in I$, so $a + x$ and $b + y$ are arbitrary elements of $A + I$. Then
+    \[
+        (a + x)(b + y) = a(b + y) + x(b + y) = ab + ay + xb + xy.
+    \]
+    Since $A$ is a subring, $ab \in A$. Since $I$ is an ideal, then $ay, xb \in I$. And since $I$ is a subring, then $(ay + xb + xy) \in I$. Hence, $ab + (ay + xb + xy) \in A + I$.
+\end{proof}
+
+\subsection{}
+\begin{problem}
+    $I$ is an ideal of $A + I$ and $A \cap I$ is an ideal of $A$.
+\end{problem}
+
+\begin{proof}
+    Since $A$ is a subgroup of $R$ for addition, $0 \in A$, so $I = 0 + I \subseteq A + I$. Because $I$ and $A + I$ are subgroups of $R$ for addition and $I \subseteq A + I$, then $I$ is a subgroup of $A + I$ for addition. Since $rI, Ir \subseteq I$ for all $r \in R$, then, in particular, $rI, Ir \subseteq I$ for all $r \in A + I$. Hence, $I$ is an ideal of $A + I$.
+    
+    Since $A$ and $I$ are both subgroups of $R$ for addition, then so is $A \cap I$. Since $A$ is a subgroup of $R$ for addition and $A \cap I \subseteq A$, then $A + I$ is a subgroup of $A$ for addition. If $a \in A$ and $x \in A \cap I$, then $ax \in A$ since $A$ is a subring of $R$ and $ax \in I$ since $I$ is an ideal of $R$. This implies $ax \in A \cap I$ and $xa \in A \cap I$ for the same reasons. Hence, $A \cap I$ is an ideal of $A$.
+    
+\end{proof}
+
+\subsection{}
+\begin{problem}
+    $A + I/I \isom A/A \cap I$.
+\end{problem}
+
+\begin{proof}
+    Since $A$ and $A + I$ are subrings of $R$ with $A \subseteq A + I$, then $A$ is a subring of $A + I$ and the inclusion map $A \inc (A + I)$ is a ring homomorphism. Since $I$ is and ideal of $A + I$, then the natural projection $\pi : (A + I) \to (A + I)/I$  is a ring homomorphism. So their composition
+    \[
+        \begin{array}{cccccc}
+            \phi : & A & \inc & A + I & \to & (A + I)/I \\
+                 & a & \mapsto & a + 0 & \mapsto & a + I
+        \end{array}
+    \]
+    is a ring homomorphism. Its kernel is
+    \[
+        \ker \phi = \{a \in A \mid a + I = I\} = \{a \in A \mid a \in I\} = A \cap I,
+    \]
+    so the first isomorphism theorem for rings gives us $A/(A \cap I) \isom (A + I)/I$.
+    
+\end{proof}
+
+\section{}
+\begin{problem}
+    Let $I$ and $J$ be ideals of a ring $R$ with $I \subseteq J$. Prove the following statements.
+\end{problem}
+
+\subsection{}
+\begin{problem}
+    $I$ is an ideal of $J$ and $J/I$ is an ideal of $R/I$.
+\end{problem}
+
+\begin{proof}
+    Since $I$ and $J$ are subrings of $R$ with $I \subseteq J$, then $I$ is a subring of $J$. In particular, $I$ is a subgroup of $J$ for addition. Since $rI, Ir \subseteq I$ for all $r \in R$, then, in particular, $rI, Ir \subseteq I$ for all $r \in J$. 
+    
+    The natural projection $\pi : R \to R/I$ is a surjective homomorphism and $J$ is an ideal of $R$, so $\pi(J) = J/I$ is an ideal of $\pi(R) = R/I$.
+    
+\end{proof}
+
+\subsection{}
+\begin{problem}
+    $(R/I)/(J/I) \isom R/J$.
+\end{problem}
+
+\begin{proof}
+    Let $\phi : R/I \to R/J$ be the map $(r + I) \mapsto (r + J)$. This map is well-defined since $r_1 + I = r_2 + I$ only if $r_1 - r_2 \in I \subseteq J$, implying that $r_1 + J = r_2 + J$. Note that $\phi$ is surjective since $\phi(r + I) = r + J$ for any $r + J \in R/J$. Then
+    \begin{align*}
+        \phi((a + I) + (b + I))
+            &= \phi((a + b) + I) \\
+            &= (a + b) + J \\
+            &= (a + J) + (b + J) \\
+            &= \phi(a + I) + \phi(b + I) 
+    \end{align*}
+    and
+    \begin{align*}
+        \phi((a + I)(b + I))
+            &= \phi(ab + I) \\
+            &= ab + J \\
+            &= (a + J)(b + J) \\
+            &= \phi(a + I)\phi(b + I).
+    \end{align*}
+    Thus, $\phi$ is a surjective ring homomorphism. Moreover, its kernel is
+    \[
+        \ker \phi = \{r + I \mid r + J = J\} = \{r + I \mid r \in J\} = J/I,
+    \]
+    so the first isomorphism theorem gives us $(R/I)/(J/I) \isom R/J$.
+    
+\end{proof}
+
+\end{document}

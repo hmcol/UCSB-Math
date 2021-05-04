@@ -1,0 +1,226 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage{subcaption}
+\usepackage{framed}
+\usepackage[table]{xcolor}
+\usepackage{colortbl, multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym}
+\usepackage{mathrsfs, mathtools}
+\usepackage{tikz,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\usepackage{graphicx}
+
+% custom commands
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\p}{^{\prime}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+ 
+\begin{document}
+ 
+\title{Homework 3
+\\
+    \large MATH CS 108A Linear Algebra I}
+\author{Harry Coleman}
+\date{January 13, 2020}
+
+\maketitle
+
+\section*{Exercise 5}
+\fbox{
+    \parbox{\textwidth} {
+        Let $X$ be a set and let $\powerset(X)$ denote the power set of $X$. Determine if $(\powerset(X), \cup, \cap)$ is a ring or a field or neither, where $\cup$ denote union of sets and $\cap$ denotes intersection.
+    }
+}
+\\
+
+Since for any set $A$, we find that
+\[A\cup\emptyset = \emptyset\cup A = A,\]
+
+we might consider the empty set the identity element for $(\powerset(X), \cup)$. However, given a non-empty set $A$, the union of $A$ and any other set must contain all elements in $A$, and therefore could not be the empty set. So $A$ would not have an inverse with respect to union. This tells us that $(\powerset(X), \cup)$ is not an abelian group, so $(\powerset(X), \cup, \cap)$ cannot be a ring.
+
+However, the symmetric difference operation ($A\triangle B = (A\cup B)\setminus(A\cap B)$) with $\powerset(X)$ does form an abelian group $(\powerset(X), \triangle)$. Since for all sets $A,B,C$, we have
+\begin{align*}
+    A\triangle (B\triangle C) &= (A\triangle B) \triangle C &\text{ (associativity)}, \\
+    A\triangle B &= B \triangle A &\text{ (commutativity)}, \\
+    A \triangle \emptyset &= A &\text{ (identity)}, \\
+    A \triangle A &= \emptyset &\text{ (inverses)}.
+\end{align*}
+
+It is also the case that set intersection distributes over symmetric difference\textemdash that is, for all sets $A,B,C$,
+\[A\cap(B\triangle C) = (A\cap B) \triangle (A\cap C),\]
+\[(B\triangle C)\cap A = (B\cap A) \triangle (C\cap A).\]
+
+In fact, for all set $A,B,C\in\powerset(X)$,
+\begin{align*}
+    A\cap (B\cap C) &= (A\cap B) \cap C &\text{ (associativity)}, \\
+    A\cap B &= B \cap A &\text{ (commutativity)}, \\
+    A \cap X &= A &\text{ (identity)}.
+\end{align*}
+
+Which makes $(\powerset(X), \cap)$ a group, and therefore $(\powerset(X), \triangle, \cap)$ is a ring with commutativity, and an identity. Since set intersection does not have inverses, it is not a field. The characteristic of this ring would be 2 since $X\triangle X = \emptyset$. We also find that this ring does not have integral domain since we have zero divisors, namely, $A\cap(A\triangle X) = \emptyset$.
+
+
+\section*{Exercise 10}
+\fbox{
+    \parbox{\textwidth} {
+        A ring $R$ is a Boolean ring if $a^2 = a$ for all $a \in R$, so that every element is idempotent. Show that every Boolean ring is commutative.
+    }
+}
+\\
+
+Let $R$ be a Boolean ring and let $a$ be an arbitrary element in $R$. We have
+\[(a+a)^2 = (a+a).\]
+Expanding and distributing on the left hand side, we obtain
+\begin{align*}
+    (a+a)\star(a+a) &= (a+a),\\
+    a\star(a+a) + a\star(a+a) &= (a+a), \\
+    (a\star a + a\star a) + (a\star a + a\star a) &= (a+a), \\
+    (a^2 + a^2) + (a^2 + a^2) &= (a+a), \\
+    (a+a) + (a+a) &= (a+a).
+\end{align*}
+Cancellation law with respect to addition gives us
+\[(a+a) = 0.\]
+We add the additive inverse of $a$ to both sides to obtain
+\begin{align*}
+    (a+a)+(-a) &= 0+(-a), \\
+    a+(a+(-a)) &= -a, \\
+    a + 0 = -a, \\
+    a = -a
+\end{align*}
+This tells us that in $R$, every element is its own additive inverse.
+We now let $a$ and $b$ be two arbitrary elements in $R$. We now consider the similar case of
+\[(a+b)^2 = a+b.\]
+We expand and distribute on the left hand side to obtain
+\begin{align*}
+    (a+b)\star(a+b) &= (a+b),\\
+    a\star(a+b) + b\star(a+b) &= (a+b), \\
+    (a\star a + a\star b) + (b\star a + b\star b) &= (a+b), \\
+    (a^2 + ab) + (ba + a^2) &= (a+b), \\
+    (a+(ab+ba))+b &= a+b.
+\end{align*}
+Cancellation law with respect to addition gives us
+\begin{align*}
+    a+(ab+ba) &= a, \\
+    ab + ba = 0.
+\end{align*}
+We add the additive inverse of $ba$ to both sides to obtain
+\begin{align*}
+    (ab + ba) + (-(ba))  &= 0 + (-(ba)), \\
+    ab + (ba + (-(ba))) &= -(ba), \\
+    ab + 0 &= -(ba), \\
+    ab &= -(ba).
+\end{align*}
+
+Since we found that every element is its own additive inverse, we know
+\[-(ba) = ba.\]
+So we use transitivity to find
+\[ab=ba.\]
+
+So for all $a,b\in R$, we have $ab=ba$, so $R$ is commutative. Therefore every Boolean ring is commutative.
+
+
+\newpage
+\section*{Exercise 11}
+\fbox{
+    \parbox{\textwidth} {
+        \textbf{Definition} A ring $R$ with $0 \ne 1$ is a division ring if every nonzero element $a \in R$ has a multiplicative inverse. Division rings differ from fields only in that their multiplication is not required to be commutative. \\
+        
+        Let $(S, +, \cdot)$ be a nonempty set where $+$ and $\cdot$ are binary operations on $S$ such that
+        \begin{itemize}
+            \item $(S, +)$ is a group.
+            \item $(S^*, \cdot)$ is a group where $S^*$ consists of all elements of $S$ except the additive identity element.
+            \item $a(b + c) = ab + ac$ and $(b + c)a = ba + ca.$
+        \end{itemize}
+        Show that $(S, +, \cdot)$ is a division ring.
+    }
+}
+\\
+
+In order for $(S, +, \cdot)$ to be a division ring we must show that $(S, +)$ is commutative, and therefore an abelian group. Let $a$ be an arbitrary element in $S$. Now consider
+\[0\cdot a = 0.\]
+We can replace a zero with the sum of any element and its additive inverse. Doing so with the multiplicative identity gives us
+\[((-1)+1)\cdot a = 0.\]
+Distributing and simplifying with identities gives us
+\begin{align*}
+    (-1)\cdot a + 1\cdot a &= 0, \\
+    (-1)\cdot a + a &= 0, \\
+    ((-1)\cdot a + a) + (-a) &= 0 +(-a), \\
+    (-1)\cdot a + (a + (-a)) &= (-a), \\
+    (-1)\cdot a + 0 &= (-a), \\
+    (-1)\cdot a &= (-a).
+\end{align*}
+So for any element $a$ in $S$, we have $(-1)\cdot a = (-a)$. (Note: In general, an algebraic structure $(R,+,\cdot)$ where addition is associative, has an identity, and has inverses and multiplication has an identity and distributes over addition, the product of $(-1)$ and any element $a$ is the additive identity of $a$.) We now consider
+\[(a+b) + (-(a+b)) = 0.\]
+Applying what we just showed gives
+\[(a+b) + (-1)\cdot(a+b) = 0.\]
+We now distribute and simplify to find
+\begin{align*}
+    (a+b) + ((-1)\cdot a + (-1)\cdot b) &= 0, \\
+    (a+b) + ((-a) + (-b)) &= 0.
+\end{align*}
+We now add $(b+a)$ to both sides and use associativity to simplify with inverses. This gives us
+\begin{align*}
+    ((a+b) + ((-a) + (-b))) + (b+a) &= 0 + (b+a), \\
+    (a+b) + ((-a) + (((-b)+ b)+a)) &= (b+a), \\
+    (a+b) + ((-a) + (0+a)) &= (b+a), \\
+    (a+b) + ((-a) + a) &= (b+a), \\
+    (a+b) + 0 &= (b+a), \\
+    (a+b) &= (b+a).
+\end{align*}
+Therefore, we have commutativity in $(S,+)$, and $(S,+,\cdot)$ is a division ring.
+
+
+\section*{Exercise 12}
+\fbox{
+    \parbox{\textwidth} {
+        \textbf{Definition} Let $R$ be a commutative ring with identity. A zero divisor of $R$ is any nonzero element $x$ such that $xy = 0$ for some $y \ne 0$. If $R$ does not contain zero divisors, then $R$ is said to be an integral domain. \\
+        
+        Let $R$ be a commutative ring with identity. Prove that $R$ is an integral domain if and only if the cancellation law with respect to multiplication holds.
+    }
+}
+\\
+
+We will first show that $R$ is an integral domain only if the cancellation law with respect to multiplication holds. To do so, we assume that $R$ is an integral domain and must show that for all $x,y,z\in R$, we have $xy=xz \implies y=z$. Now let $x,y,z$ be nonzero elements in $R$ such that
+\[xy=xz\ne 0.\]
+We now add the additive inverse of $xz$ to both sides to find
+\begin{align*}
+    xy + (-(xz)) &= xz + (-(xz)), \\
+    xy + (-(xz)) &= 0.
+\end{align*}
+Since we have all the necessary properties, the note from exercise 11 applies. So we can say that the product of $(-1)$ and any element $a$ is the additive identity of $a$. We use this to find
+\begin{align*}
+    xy + (-1)\cdot(xz) &= 0, \\
+    xy + x\cdot(-1)\cdot z &= 0, \\
+    x\cdot(y + (-1)\cdot z) &= 0, \\
+    x\cdot(y + (-z)) &= 0.
+\end{align*}
+Since R is an integral domain, no product of nonzero elements can be zero. And since $x\ne 0$, we must have
+\[y + (-z) = 0.\]
+We add $z$ to both sides and obtain
+\begin{align*}
+    (y+(-z)) + z &= 0 + z, \\
+    y + ((-z) + z) &= z, \\
+    y + 0 &= z, \\
+    y = z.
+\end{align*}
+So for all $x,y,z \in R$, we have $xy=xz \implies y=z$. So cancellation law with respect to multiplication holds.
+
+We now must show that that $R$ is an integral domain if the cancellation law with respect to multiplication holds. So we assume that for all $x,y,z \in R$, we have $xy=xz \implies y=z$, and must show that no two nonzero elements of $R$ multiply to zero. Suppose, to the contrary, that there exists $x,y\in R$ with $x\ne0$ and $y\ne 0$, but $xy=0$. From
+\[xy=0,\]
+we find
+\[xy = x\cdot 0.\]
+And with cancellation law, we obtain
+\[y = 0,\]
+which is a contradiction. Therefore, $R$ must be an integral domain.
+
+\end{document}

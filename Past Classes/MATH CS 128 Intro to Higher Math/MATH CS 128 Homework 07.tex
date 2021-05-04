@@ -1,0 +1,241 @@
+\documentclass[11pt]{article}
+ 
+\usepackage[table]{xcolor}
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{colortbl}
+\usepackage{verbatim}
+\usetikzlibrary{arrows, angles, quotes}
+\usepackage{framed}
+
+
+\lstset{basicstyle=\footnotesize}
+\usetikzlibrary{calc}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+ 
+\begin{document}
+ 
+\title{Homework 7\\
+    \large CS128 Intro to Higher Mathematics}
+\author{Harry Coleman}
+\date{October 25, 2019}
+
+\maketitle
+
+\section*{Exercise 11}
+\fbox{
+    \parbox{\textwidth}{
+       Show that every nonzero real number has a unique multiplicative inverse.
+    }
+}
+\\
+
+We can write the statement
+\begin{center}
+    \emph{Every nonzero real number has a unique multiplicative inverse.}
+\end{center}
+as the following:
+\[\forall x(((x\in\R) \land (x \ne 0)) \implies \exists y((x \cdot y = 1) \land \forall z(((x \cdot z = 1)) \implies (y = z))))\]
+
+To prove this is true, we'll assume the negation, and show that a contradiction follows. The negation of our formula is
+\[\lnot \forall x(((x\in\R) \land (x \ne 0)) \implies \exists y((x \cdot y = 1) \land \forall z(((x \cdot z = 1)) \implies (y = z))))\]
+
+We'll simplify this using a number of logical equivalences.
+
+\begin{center}
+    \rowcolors{1}{gray!10}{white}
+    \begin{tabular}{c l}
+        $\exists x(\lnot(((x\in\R) \land (x \ne 0)) \implies \exists y((x \cdot y = 1) \land \forall z((x \cdot z = 1) \implies (y = z)))))$ & by Negation of Quantifiers \\
+        $\exists x(\lnot(\lnot ((x\in\R) \land (x \ne 0)) \lor \exists y((x \cdot y = 1) \land \forall z(\lnot (x \cdot z = 1) \lor (y = z)))))$ & by Definition of Implication \\
+        $\exists x(\lnot(\lnot ((x\in\R) \land (x \ne 0))) \land \lnot \exists y((x \cdot y = 1) \land \forall z(\lnot (x \cdot z = 1) \lor (y = z))))$ & by De Morgan's Laws \\
+        $\exists x(((x\in\R) \land (x \ne 0)) \land \lnot \exists y((x \cdot y = 1) \land \forall z(\lnot (x \cdot z = 1) \lor (y = z))))$ & by Double Negation \\
+        $\exists x(((x\in\R) \land (x \ne 0)) \land \forall y(\lnot((x \cdot y = 1) \land \forall z(\lnot (x \cdot z = 1) \lor (y = z)))))$ & by Negation of Quantifiers \\
+        $\exists x(((x\in\R) \land (x \ne 0)) \land \forall y(\lnot(x \cdot y = 1) \lor \lnot \forall z(\lnot (x \cdot z = 1) \lor (y = z))))$ & by De Morgan's Laws \\
+        $\exists x(((x\in\R) \land (x \ne 0)) \land \forall y(\lnot(x \cdot y = 1) \lor \exists z(\lnot(\lnot (x \cdot z = 1) \lor (y = z)))))$ & by Negation of Quantifiers \\
+        $\exists x(((x\in\R) \land (x \ne 0)) \land \forall y(\lnot(x \cdot y = 1) \lor \exists z(\lnot(\lnot (x \cdot z = 1)) \land \lnot (y = z))))$ & by De Morgan's Laws \\
+        $\exists x(((x\in\R) \land (x \ne 0)) \land \forall y(\lnot(x \cdot y = 1) \lor \exists z((x \cdot z = 1) \land \lnot (y = z))))$ & by Double Negation \\
+        $\exists x(((x\in\R) \land (x \ne 0)) \land \forall y((x \cdot y \ne 1) \lor \exists z((x \cdot z = 1) \land  (y \ne z))))$ & by $\lnot(a=b) \equiv (a\ne b)$\\
+    \end{tabular}
+\end{center}
+
+Let $a$ be a specific constant which satisfies for $x$ in our equation.
+
+Let $b$ be an arbitrary constant.
+
+Let $c$ be a specific constant which satisfies for $z$ in our equation.
+
+\newpage
+By Existential and Universal Instantiation, we get
+\[1 \quad ((a\in\R) \land (a \ne 0)) \land ((a \cdot b \ne 1) \lor ((a \cdot c = 1) \land  (b \ne c)))\]
+
+\begin{center}
+    \rowcolors{1}{gray!10}{white}
+    \begin{tabular}{r c l l}
+        $\#$ & Statement & Reasoning & on Steps \\
+        \hline
+        2 & $(a \cdot b \ne 1) \lor ((a \cdot c = 1) \land  (b \ne c))$ & by Simplification & 1 \\
+        3 & $\lnot(a \cdot b \ne 1) \implies ((a \cdot c = 1) \land  (b \ne c))$ & by Definition of Implication & 2 \\
+        4.1 & $\lnot(a \cdot b \ne 1)$ & Assumption for Conditional Method & \\
+        4.2 & $\lnot(\lnot(a \cdot b = 1))$ & by $\lnot(a=b) \equiv (a\ne b)$ & 4.1 \\
+        4.3 & $a \cdot b = 1$ & by Double Negation & 4.2 \\
+        4.4 & $(a \cdot c = 1) \land  (b \ne c)$ & by Modus Ponens & 3, 4.1 \\
+        4.5 & $a \cdot c = 1$ & by Simplification & 4.4 \\
+        4.6 & $a \cdot b = a \cdot c$ & by Transitivity of Equality & 4.3, 4.5 \\
+        4.7 & $b = c$ & by Multiplication Property of Equality & 4.6 \\
+        4.8 & $b \ne c$ & Simplification & 4.4 \\
+        4.9 & F & by Contradiction & 4.7,4.8 \\
+        13 & $\lnot(\lnot(a \cdot b \ne 1) \implies ((a \cdot c = 1) \land  (b \ne c)))$ & by Conditional Method & 4 \\
+        14 & F & by Contradiction & 3, 13
+    \end{tabular}
+\end{center}
+
+Therefore, our assumption, which was the negation of our original statement, is false, so our original statement is true.
+\begin{center}
+    \emph{Every nonzero real number has a unique multiplicative inverse.}
+\end{center}
+
+\section*{Exercise 8}
+\fbox{
+    \parbox{\textwidth}{
+       Show $S(a)$ from the premises:
+        \begin{itemize}
+            \item $\forall x (R(x) \leftrightarrow \forall y S(y))$
+            \item $\exists x R(x)$.
+        \end{itemize}
+    }
+}
+\\
+
+\begin{center}
+    \rowcolors{1}{gray!10}{white}
+    \begin{tabular}{r c l l}
+        $\#$ & Statement & Reasoning & on Steps \\
+        \hline
+        1 & $\forall x (R(x) \leftrightarrow \forall y S(y))$ & Premise & \\
+        2 & $\exists x R(x)$ & Premise & \\
+        \hline
+        3 & \multicolumn{2}{l}{Let $c$ be a specific constant which satisfies for $x$} & 2 \\
+        4 & $R(c)$ & by Existential Instantiation & 2, 3 \\
+        5 & $R(c) \leftrightarrow \forall y S(y)$ & Universal Instantiation & 1, 3 \\
+        6 & $\forall y S(y)$ & Modus Ponens & 4, 5 \\
+        7 & \multicolumn{3}{l}{Let $a$ be an arbitrary constant} \\
+        8 & $S(a)$ & Universal Instantiation & 6, 7 \\
+    \end{tabular}
+\end{center}
+
+
+\newpage
+\section*{Exercise 13}
+\fbox{
+    \parbox{\textwidth}{
+       Show that for every natural number $n$, if $n \equiv 2$ mod 3, then $n$ is not a square.
+    }
+}
+\\
+
+Every natural number in (mod 3) is either 0, 1, or 2.
+
+\[\forall x ((x\in\N) \implies ((x\text{ mod } 3) \in \{0, 1, 2\}))\]
+
+Therefore, any natural number squared would be one of
+\[0^2 \equiv 0 \pmod{3}\]
+\[1^2 \equiv 1 \pmod{3}\]
+\[2^2 \equiv 1 \pmod{3}\]
+So
+\[\forall x ((x\in\N) \implies ((x^2\text{ mod } 3) \in \{0, 1\}))\]
+
+Since we want to prove that
+\begin{center}
+    \emph{For every natural number $n$, if $n \equiv 2$ mod 3, then $n$ is not a square}
+\end{center}
+or
+\[\forall n(((n\in\N) \land (n \equiv 2 \pmod{3})) \implies \lnot\exists k((k\in\N) \land (n = k^2))\]
+we'll assume the negation is true and show it leads to a contradiction. The negation is
+\[\lnot\forall n(((n\in\N) \land (n \equiv 2 \pmod{3})) \implies \lnot\exists k((k\in\N) \land (n = k^2))\]
+
+Through a number of logical equivalences, we can get this to be
+
+\[\exists n(((n\in\N) \land (n \equiv 2 \pmod{3})) \land \exists k((k\in\N) \land (n = k^2)))\]
+
+Let $c$ be a specific constant which satisfies for $n$ in the above formula. 
+
+Let $m$ be a specific constant which satisfies for $k$ in the above formula.
+
+So through Existential Instantiation, we get
+
+\[((c\in\N) \land (c \equiv 2 \pmod{3})) \land ((m\in\N) \land (c = m^2)))\]
+
+\begin{center}
+    \rowcolors{1}{gray!10}{white}
+    \begin{tabular}{r c l l}
+        $\#$ & Statement & Reasoning & on Steps \\
+        \hline
+        1 & $((c\in\N) \land (c \equiv 2 \pmod{3})) \land ((m\in\N) \land (c = m^2)))$ & Premise & \\
+        2 & $\forall x ((x\in\N) \implies ((x^2\text{ mod } 3) \in \{0, 1\}))$ & Premise & \\
+        \hline
+        3 & $c \equiv 2 \pmod{3}$ & Simplification & 1 \\
+        4 & $c = m^2$ & Simplification & 1 \\
+        5 & $(m^2 \equiv 0 \pmod{3}) \lor (m^2 \equiv 1 \pmod{3})$ & Existential Instantiation & 2 \\
+        6 & $(c \equiv 0 \pmod{3}) \lor (c \equiv 1 \pmod{3})$ & Substitution & 4, 5 \\
+        7 & $\lnot(c \equiv 0 \pmod{3})$ & Equivalency & 3 \\
+        8 & $\lnot(c \equiv 1 \pmod{3})$ & Equivalency & 3 \\
+        9 & F & Condition of Anti-Tautology & 6, 7, 8 \\
+    \end{tabular}
+\end{center}
+
+Therefore, our assumption is false, so
+\begin{center}
+    \emph{For every natural number $n$, if $n \equiv 2$ mod 3, then $n$ is not a square}
+\end{center}
+
+
+\section*{Exercise 4}
+\fbox{
+    \parbox{\textwidth}{
+       Write a useful denial of the statement: ``For each pair of real numbers $a$ and $b$ with $a<b$, there is a rational number $r$ such that $a<r<b$.
+    }
+}
+\\
+
+Original statement:
+\[\forall a \forall b \exists r(((a\in\R)\land(b\in\R)\land(a<b)) \implies ((r\in\Q)\land(a<r<b)))\]
+
+Negation:
+\[\lnot\forall a \forall b \exists r(((a\in\R)\land(b\in\R)\land(a<b)) \implies ((r\in\Q)\land(a<r<b)))\]
+
+By Negation of Quantifiers:
+\[\exists a \exists b \forall r(\lnot((a\in\R)\land(b\in\R)\land(a<b)) \implies ((r\in\Q)\land(a<r<b))))\]
+
+By Definition of Implication:
+\[\exists a \exists b \forall r(\lnot(\lnot((a\in\R)\land(b\in\R)\land(a<b))) \lor ((r\in\Q)\land(a<r<b))))\]
+
+By De Morgan's:
+\[\exists a \exists b \forall r(\lnot(\lnot((a\in\R)\land(b\in\R)\land(a<b))) \land \lnot((r\in\Q)\land(a<r<b)))\]
+
+By Double Negation:
+\[\exists a \exists b \forall r((a\in\R)\land(b\in\R)\land(a<b) \land \lnot((r\in\Q)\land(a<r<b)))\]
+
+By De Morgan's:
+\[\exists a \exists b \forall r((a\in\R)\land(b\in\R)\land(a<b) \land (\lnot(r\in\Q)\lor \lnot(a<r<b)))\]
+
+By Definition of Implication:
+\[\exists a \exists b \forall r((a\in\R)\land(b\in\R)\land(a<b) \land ((a<r<b) \implies (r\notin\Q)))\]
+
+In Natural language:
+\begin{center}
+    \emph{There exist some pair of real numbers a, b, such that every number between them is not rational}
+\end{center}
+or
+\begin{center}
+    \emph{There exist some pair of real numbers a, b, such that there does not exist a rational number between them.}
+\end{center}
+
+\end{document}
+

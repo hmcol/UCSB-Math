@@ -1,0 +1,188 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Set Names
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+
+% Misc Characters
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\newcommand{\eps}{\varepsilon}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ang}{\langle}{\rangle}
+
+% Homework Sections
+\setlength{\fboxsep}{4pt}
+\newcommand{\generic}[2]{\section*{#1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\ex}[2]{\generic{Exercise #1}{#2}}
+\newcommand{\prob}[2]{\generic{Problem #1}{#2}}
+\newcommand{\ques}[2]{\generic{Question #1}{#2}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+% MATH CS 117 Intro to Real Analysis
+\newcommand{\ds}{\displaystyle}
+\newcommand{\seq}[1]{\left\{#1\right\}_{n=1}^\infty}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+ 
+\begin{document}
+ 
+\title{Midterm\\
+    \large MATH CS 120 Convex Optimization}
+\author{Harry Coleman}
+\date{May 15, 2020}
+\maketitle
+
+\ex{2.35}{
+    A matrix $X\in\textbf{S}^n$ is called copositive if $z^TXz \geq 0$ for all $z\geq 0$. Verify that the set of copositive matrices is a proper cone. Find its dual cone.
+}
+
+Let $K$ be the set of copositive matrices. We must verify that $K$ is a cone which is closed, convex, pointed, and solid for it to be a proper cone. We first prove $K$ is closed. Let $X$ be a limit point of $K$, so there is a sequence $\{X_n\}$ in $K$ converging to $X$. For all $n\in\N$, we have for all $z\geq0$ that $z^TX_nz \geq 0$. Letting $X_n$ go to its limit $X$, this gives us $z^TXz\geq0$ for all $z\geq0$. Therefore, $X\in K$, so $K$ is closed. Next we prove $K$ is a convex cone. Let $X,Y\in K$ and let $\theta_1,\theta_2\geq0$. Then for all $z\geq0$,
+\begin{align*}
+    z^T(\theta_1 X + \theta_2Y)z 
+        &= \theta_1 z^TXz + \theta_2z^TXz \\
+        &\geq \theta_10 + \theta_20 \\
+        &= 0.
+\end{align*}
+Therefore $\theta_1 X + \theta_2Y \in K$, so $K$ is a convex cone. Next we prove $K$ is pointed. Suppose $X$ and $-X$ are in $K$. Then for all $z\geq0$, 
+\[0 \geq z^T(-X)z = -z^TXz \leq 0.\]
+This implies $z^TXz=0$ for all $z\geq 0$, so $X=0$. Therefore $K$ is pointed. Finally we prove $K$ is solid. For this to be the case, there must be some copositive matrix $X$ such that the ball centered at $X$ with some radius is in $K$. We claim that the matrix $J_n$ of all 1's is a matrix on the interior and the ball centered at $J_n$ with radius 1 is contained in $K$. First note that in fact $J_n\in K$ since $z^TJ_nz \geq 0$ for all $z\geq 0$ since all elements are positive. We now consider the ball
+\[B_1(J_n) = \{X: ||X-J_n|| \leq1\},\]
+which is defined using the norm induced by the Frobenius inner product on matrices. Then for any $X\in B_1(J_n)$,
+\[||X-J_n||^2 = \ang{X-J_n, X-J_n}_F = \sum_{i,j}(X-J_n)_{ij}^2 \leq 1\]
+This implies that for each term $-1\leq(X-J_n)_{ij}\leq1$, so $0\leq X_{ij}\leq 2$. Since each element of $X$ is nonnegative, we have $z^TXz \geq 0$ for all $z\geq0$. So $X\in K$, therefore $K$ is solid. Since $K$ is a cone which is closed, convex, pointed, and solid, it is a proper cone.
+
+To find the dual cone of $K$, we first define the following set:
+\[C = \{Y\in S^n : Y=yy^T \text{ where } y\geq0\}.\]
+We claim that the convex hull of this set, $\textbf{conv}C$, is the dual cone of $K$. Firstly, $C$ is a cone since if $yy^T\in C$ and $\theta\geq0$, then
+\[\theta yy^T = (\sqrt{\theta}y)(\sqrt{\theta}y)^T \text{ where } (\sqrt{\theta}y)\geq0,\]
+so $\theta yy^T\in C$. Thus, $\textbf{conv}C$ is a convex cone. Additionally, we prove $C$ is closed. Let $\{Y_n = y_ny_n^T\}$ be a sequence in $C$ converging to $Y$. Then we can take the corresponding sequence $\{y_n\}$ converging to some $y$. And since $y_n\geq0$ for all $n\in\N$, we have $y\geq0$. So since $Y_n=y_ny_n^T$, we can let $n\to\infty$ and obtain $Y=yy^T$ where $y\geq0$. So $Y\in C$, thus $C$ is closed.
+
+I was unable to prove this, but I believe $C$ being a closed cone should imply that $\textbf{conv}C$ is a closed, convex cone. Assuming $\textbf{conv}C$ is a closed, convex cone, then $(\textbf{conv}C)^{**}=\textbf{conv}C$.
+
+Next we prove $\textbf{conv}C\subseteq K^*$. Let $Y\in\textbf{conv}C$ so
+\[Y = \theta_1y_1y_1^T + \cdots + \theta_ky_ky_k^T,\]
+where $y_1,\dots,y_k\geq0$ and $\theta_1,\dots,\theta_k\geq0$. Then for any $X\in K$,
+\begin{align*}
+    \ang{X,Y}_F
+        &= \ang{X,\theta_1y_1y_1^T + \cdots + \theta_ky_ky_k^T}_F \\
+        &= \theta_1\ang{X,y_1y_1^T}_F + \cdots + \theta_k\ang{X,y_ky_k^T}_F \\
+        &= \theta_1\sum_{i,j}X_{ij}y_{1i}y_{1j} + \cdots + \theta_k\sum_{i,j}X_{ij}y_{ki}y_{kj} \\
+        &= \theta_1 y_1^TXy_1 + \cdots + \theta_k y_k^TXy_k \\
+        &\geq \theta_1 0 + \cdots + \theta_k 0 \\
+        &= 0.
+\end{align*}
+So $Y\in K^*$. Finally, we prove $K^*\subseteq\textbf{conv}C$, which is equivalent to $(\textbf{conv}C)^*\subseteq K$, since both are closed, convex cones. Let $X\in(\textbf{conv}C)^*$. In particular for any $yy^T\in C\subseteq\textbf{conv}C$,
+\[0\leq \ang{X,yy^T}_F = \sum_{i,j}X_{ij}y_iy_j = y^TXy.\]
+Thus $z^TXz\geq0$ for all $z\geq0$, so $X\in K$. Therefore, $K^* = \textbf{conv}C$.
+
+
+
+
+
+\ex{2.39}{
+    Let $K$ and $\tilde{K}$ be two convex cones whose interiors are nonempty and disjoint. Show that there is a nonzero $y$ such that $y\in K^*, -y\in\tilde{K}^*$.
+}
+
+Since $\text{int}K$ and $\text{int}\tilde{K}$ are convex and and disjoint, then there is a separating hyperplane $f(x) = a^Tx +b$, $a\ne0$, such that
+\[\begin{cases}
+  f(x) \geq 0 &\text{if } x\in \text{int}K, \\
+  f(x) \leq 0 &\text{if } x\in\text{int}\tilde{K}.
+\end{cases}\]
+To show that this hyperplane separates $K$ and $\tilde{K}$, we must show that the inequality is satisfied by any points on the boundaries of$K$ and $\tilde{K}$. Let $x$ be a point on the boundary of $K$, and let $\{x_n\}$ be a sequence in $\text{int}K$ converging to $x$. Then for all $n\in\N$,
+\[a^Tx_n +b \geq 0.\]
+Letting $x_n$ go to its limit $x$, we find $a^Tx +b \geq 0$. Similarly, if $x\in\text{int}\tilde{K}$ and $x_n\to x$, then for all $n\in\N$, $a^Tx_n +b \leq0$. Thus we obtain $a^tx +b \leq0$. So in fact, this hyperplane separates $K$ and $\tilde{K}$, that is,
+\[\begin{cases}
+  f(x) \geq 0 &\text{if } x\in K, \\
+  f(x) \leq 0 &\text{if } x\in\tilde{K}.
+\end{cases}\]
+In particular, since $0\in K$ and $0\in\tilde{K}$,
+\[a^T0 +b  = b \geq 0,\]
+\[a^T0 + b = b\leq 0,\]
+so $b=0$. Then for all $x\in K$, $a^Tx \geq 0$, so $a\in K^*$. And similarly, for all $x\in\tilde{K}$, $-a^Tx \geq0$, so $-a\in\tilde{K}^*$. 
+
+\newpage
+\ex{3.4}{
+    Show that a continuous funtion $f:\R\to\R$ is convex if and only if for every line segment, its average value on the segment is less than or equal to the average of its values at the endpoints of the segment: For every $x,y\in\R^n$,
+    \[\int_0^1f(x+\lambda(y-x))d\lambda \leq \frac{f(x)+f(y)}{2}.\]
+}
+
+Suppose $f$ is convex. Let $x,y\in\R$. Then
+\begin{align*}
+    \int_0^1f(\theta x+(1-\theta)y)d\theta 
+        &\leq \int_0^1(\theta f(x) + (1-\theta)f(y))d\theta \\
+        &= f(x)\int_0^1\theta d\theta + f(y)\int_0^1(1-\theta)d\theta \\
+        &= f(x)\frac12 + f(y)\frac12 \\
+        &= \frac{f(x)+f(y)}2.
+\end{align*}
+
+Now suppose $f$ is not convex, we aim to prove that the opposite inequality is true for some segment. For some $x,y\in\R^n$ and some $\theta\in(0,1)$,
+\[f(\theta x + (1-\theta)y) > \theta f(x) + (1-\theta)f(y).\]
+Since $f$ is continuous, we can choose an interval $(\theta_a,\theta_b)\subseteq(0,1)$ around a point at which the inequality is true such that for all $\theta\in(\theta_a,\theta_b)$ the inequality is true. In a particular, we choose this interval such that
+\[f(\theta_a x + (1-\theta_a)y) = \theta_a f(x) + (1-\theta_a)f(y),\]
+\[f(\theta_b x + (1-\theta_b)y) = \theta_b f(x) + (1-\theta_b)f(y).\]
+If we now let
+\[x' = \theta_a x + (1-\theta_a)y,\]
+\[y' = \theta_b x + (1-\theta_b)y,\]
+we have for all $\theta\in(0,1)$,
+\[f(\theta x' + (1-\theta)y') > \theta f(x') + (1-\theta)f(y').\]
+Then 
+\begin{align*}
+    \int_0^1f(\theta x'+(1-\theta)y')d\theta
+        &> \int_0^1(\theta f(x') +(1-\theta)f(y'))d\theta \\
+        &= f(x')\int_0^1\theta d\theta  + f(y')\int_)^1(1-\theta)d\theta \\
+        &= f(x')\frac12 + f(y')\frac12 \\
+        &= \frac{f(x')+f(y')}2.
+\end{align*}
+
+
+
+\ex{3.5}{
+    Suppose $f:\R\to\R$ is convex, with $\R_+\subseteq\text{dom} f$. Show that its running average $F$. defined as
+    \[F(x) = \frac1x\int_0^xf(t)dt, \quad \text{dom} F = \R_{++},\]
+    is convex. Hint: For each $s$, $f(sx)$ is convex in $x$, so $\int_0^1f(sx)$ is convex. 
+}
+
+Let $x,y\in\R_{++}$ and $\theta\in[0,1]$. Then
+\begin{align*}
+    F(\theta x + (1-\theta)y)
+        &= \frac1{\theta x + (1-\theta)y}\int_0^{\theta x + (1-\theta)y}f(t)dt \\
+        &= \int_0^1f(t(\theta x + (1-\theta)y))dt \\
+        &\leq \int_0^1(\theta f(tx) + (1-\theta)f(ty))dt \\
+        &= \theta \int_0^1f(tx)dt + (1-\theta)\int_0^1f(ty)dt \\
+        &= \theta \frac1x\int_0^xf(t)dt + (1-\theta)\frac1y\int_0^yf(t)dt \\
+        &= \theta F(x) + (1-\theta)F(y).
+\end{align*}
+So $F$ is convex on $\R_{++}$.
+
+\ex{3.7}{
+    Suppose $f:\R^n\to\R$ is convex with $\text{dom}f=\R^n$, and bounded above on $\R^n$. Show that $f$ is constant.
+}
+
+Let $x,y\in\R_{++}$ such that $f(x)\leq f(y)$. And since $f$ is bounded above, let $M\in\R$ such that $f(x)\leq M$ for all $x\in\R^n$. Consider the ray in $\R^{n+1}$ given by
+\[(z_\theta,t_\theta) = (x + \theta(y-x), f(x) + \theta (f(y)-f(x)),\]
+for all $\theta\in[0,\infty)$. Since $f$ is convex, then for all $\theta\in[0,1]$, $f(z_\theta)\leq t_\theta$, and for all $\theta\in(1,\infty)$, $f(z_\theta)\geq t_\theta$. Now since $M\geq f(x)$ for all $x\in\R^n$, this implies $M\geq t_\theta$ for all $\theta\in(1,\infty)$. That is, $M\geq f(x)+\theta(f(y)-f(x))$ for all $\theta\in(1,\infty)$. And since $f(x)\leq f(y)$, we have that $f(y)-f(x)$ is nonnegative. Therefore, $f(y)-f(x)=0$, since otherwise we could choose $\theta\in(1,\infty)$ large enough that $M<t_\theta$. Thus for all $x,y\in\R^n$, $f(x)=f(y)$, so $f$ is constant.
+
+
+
+
+\end{document}

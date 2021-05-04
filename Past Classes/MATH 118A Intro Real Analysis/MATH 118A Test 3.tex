@@ -1,0 +1,481 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry} % proper margins
+\usepackage{enumitem} % custom numbering for lists
+\usepackage{amsmath} % align, cases, eqref, matrices, dots, roots, delimiters, math mode functions, mod, arrows
+\usepackage{amsthm} % theorems, proofs
+\usepackage{amssymb} % fancy letters, niche relations/negations
+\usepackage{mathrsfs} % much more loopy calligraphy font
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}
+    {\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\mybox}}}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand*{\defeq}{\mathrel{\vcenter{\baselineskip0.5ex \lineskiplimit0pt\hbox{\scriptsize.}\hbox{\scriptsize.}}}=}
+
+% Alternate Characters
+\let\eps\varepsilon % double curved, rather than single curve with midline
+\let\phi\varphi % single stroke loop, rather than vertical line through circle
+\let\emptyset\varnothing % circular, rather than tall
+
+% Named Sets
+\newcommand{\N}{\mathbb{N}} % natural numbers
+\newcommand{\Z}{\mathbb{Z}} % integers 
+\newcommand{\Q}{\mathbb{Q}} % rational numbers
+\newcommand{\R}{\mathbb{R}} % real numbers
+\newcommand{\C}{\mathbb{C}} % complex numbers
+
+% Fancy Characters
+\newcommand{\F}{\mathbb{F}} % arbitrary field
+\renewcommand{\P}{\mathbb{P}} % probability measure (apparently, sometimes prime numbers)
+\newcommand{\FF}{\mathcal{F}} % sigma algebra
+\newcommand{\BB}{\mathcal{B}} % Borel sigma algebra
+
+% Paired Delimiters
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil} % ceiling
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor} % floor
+\newcommand{\<}{\left\langle} % left angle bracket
+\renewcommand{\>}{\right\rangle} % right angle bracket
+
+% Functions
+\renewcommand{\Im}{\operatorname{Im}} % imaginary part of a complex number
+\renewcommand{\Re}{\operatorname{Re}} % real part of a complex number
+\newcommand{\Arg}{\operatorname{Arg}} % principal argument (angle) of complex number
+\newcommand{\Log}{\operatorname{Log}} % principal log of complex number
+
+% Simplified Notation
+\newcommand{\id}[1]{\operatorname{id_{\mathnormal{#1}}}} % identity operator
+\newcommand{\seq}[2][n]{\left\{#2\right\}_{#1\in\N}} % sequence
+\renewcommand{\d}[1]{\operatorname{d}\!#1} % differential operator
+\newcommand{\od}[3][1]{\ifnum#1=1{\frac{\d #2}{\d #3}}\else{\frac{\d^{#1}#2}{\d #3^{#1}}}\fi} % ordinary derivative
+\newcommand{\pd}[3][1]{\ifnum#1=1{\frac{\partial #2}{\partial#3}}\else{\frac{\partial^{#1}#2}{\partial#3^{#1}}}\fi} % partial derivative
+\newcommand{\intr}[1]{\accentset{\circ}{#1}} % interior of a set
+
+% Renaming
+\let\sm\setminus % set minus (difference)
+\let\clo\overline % closure of a set
+\let\conj\overline % conjugate of an object
+\let\eqc\overline % equivalence class of an object
+\let\teq\trianglelefteq % normal subgroup
+\let\iso\cong % isomorphic (groups)
+
+% Notes
+% medskip for header-less paragraph
+% intertext{} for short text inside big display structure
+% dots is dynamic based on surroundings
+% dfrac and tfrac to force large or small fractions
+% operatorname for new operators instead of text
+% consider using nath; it seems to break most formatting and is not compatible with many packages
+
+\begin{document}
+ 
+\title{Test 3\\
+    %\large MATH CS 121 Intro to Probability
+    %\large MATH 111A Intro to Abstract Algebra
+    %\large MATH CS 122A Complex Analysis I
+    %\large MATH 118A Intro to Real Analysis
+    %\large MATH 104A Intro to Numerical Analysis
+}
+\author{Harry Coleman}
+\date{December 5, 2020}
+\maketitle
+
+\section*{Problem 1}
+\begin{problem}
+    Test the following series for convergence or divergence. If the series converges, determine whether it is absolutely or conditionally convergent:
+\end{problem}
+
+\subsection*{Problem 1(a)}
+\begin{problem}
+    \begin{equation}
+        \sum_{n=1}^\infty \frac{(-2)^n}{n^3}.
+    \end{equation}
+\end{problem}
+
+\begin{proposition}
+    The series diverges.
+\end{proposition}
+
+\begin{proof}
+    Let $a_n$ denote the $n$th term of the series (1). We apply the ratio test to consecutive terms in the series. For $n \in \N$, we find that
+    \[
+        \left| \frac{a_{n+1}}{a_n} \right| = \left| \frac{(-2)^{n+1}/(n + 1)^3}{(-2)^n/n^3} \right| = \left| -2 \cdot \frac{n^3}{(n + 1)^3} \right| = 2 \cdot \left( \frac{n}{n+1} \right)^3 = 2 \cdot \left( \frac{1}{1 + \frac1n} \right)^3.
+    \]
+    Now since
+    \[
+        \lim_{n \to \infty} \frac1n = 0,
+    \]
+    then
+    \[
+        \lim_{n \to \infty} \left| \frac{a_{n+1}}{a_n} \right| = \lim_{n \to \infty} 2 \cdot \left( \frac{1}{1 + \frac1n} \right)^3 = 2 \cdot \left( \frac{1}{1 + 0} \right)^3 = 2.
+    \]
+    In other words, we can find some $n_0 \in \N$ such that for all $n \in \N$ with $n \geq n_0$, we have
+    \[
+        \left| \left| \frac{a_{n+1}}{a_n} \right| - 2 \right| < \frac12.
+    \]
+    This implies that for all $n \geq n_0$,
+    \[
+        1 < 2 - \frac12 < \left| \frac{a_{n+1}}{a_n} \right|.
+    \]
+    Thus, the series diverges.
+    
+\end{proof}
+
+\subsection*{Problem 1(b)}
+\begin{problem}
+    \begin{equation}
+        \sum_{n=1}^\infty (-1)^n\frac{\sqrt{n+1} - \sqrt{n}}{n}.
+    \end{equation}
+\end{problem}
+
+\begin{proposition}
+    The series converges absolutely.
+\end{proposition}
+
+\begin{proof}
+    We will find an upper bounding series for the the absolute value of the terms of the series (2). For any $n \in \N$, we have
+    \begin{align*}
+        n &\leq n + 1, \\
+        \sqrt{n} &\leq \sqrt{n + 1}, \\
+        0 &\leq \sqrt{n + 1} - \sqrt{n}, \\
+        0 &\leq \frac{\sqrt{n + 1} - \sqrt{n}}{n}.
+    \end{align*}
+    Then,
+    \begin{align*}
+        \left| (-1)^n\frac{\sqrt{n+1} - \sqrt{n}}{n} \right| 
+            &=  \frac{\sqrt{n + 1} - \sqrt{n}}{n} \cdot \frac{\sqrt{n + 1} + \sqrt{n}}{\sqrt{n + 1} + \sqrt{n}} \\
+            &= \frac1n \cdot \frac{n + 1 - n}{\sqrt{n + 1} + \sqrt{n}} \\
+            &= \frac1n \cdot \frac{1}{\sqrt{n + 1} + \sqrt{n}} \\
+            &\leq \frac1n \cdot \frac{1}{2\sqrt{n}} \\
+            &= \frac1{2 n^{3/2}} \\
+            &\leq \frac1{n^{3/2}}
+    \end{align*}
+    Therefore, we can bound above the series of the absolute value of the terms of the series (2) by
+    \[
+        \sum_{n=1}^\infty \left| (-1)^n\frac{\sqrt{n+1} - \sqrt{n}}{n} \right| \leq \sum_{n=1}^\infty \frac1{n^{3/2}}.
+    \]
+    Since $3/2 > 1$, then the series
+    \[
+        \sum_{n=1}^\infty \frac1{n^{3/2}}
+    \]
+    converges. Thus, (2) converges absolutely.
+    
+    
+\end{proof}
+
+\newpage
+\subsection*{Problem 1(c)}
+\begin{problem}
+    \begin{equation}
+        \sum_{n=1}^\infty (-1)^{n-1}\frac{(n-1)}{n^2+1}.
+    \end{equation}
+\end{problem}
+
+\begin{proposition}
+    The series converges conditionally
+\end{proposition}
+
+\begin{proof}
+    Let $a_n$ denote the non-alternating part of the $n$th term of the series (3), i.e.,
+    \[
+        a_n = \frac{n - 1}{n^2 + 1}.
+    \]
+    We rewrite (3) to be in the typical form of an alternating series,
+    \[
+        \sum_{n=1}^\infty (-1)^{n - 1}\frac{n-1}{n^2 + 1} = -\sum_{n=1}^\infty (-1)^n a_n.
+    \]
+    To prove the series (3) converges, it is sufficient to prove that the alternating series
+    \[
+        \sum_{n=1}^\infty (-1)^n a_n
+    \]
+    converges, since if this series converges to $A$, then (3) converges to $-A$. Now, for all $n \in \N$, we have
+    \[
+        n - 1 \geq 0 \isp{and} n^2 + 1 > 0,
+    \]
+    so
+    \[
+        a_n = \frac{n - 1}{n^2 + 1} \geq 0.
+    \]
+    Moreover, we find that
+    \[
+        a_n = \frac{n - 1}{n^2 + 1} \leq \frac{n}{n^2 + 1} \leq \frac{n}{n^2} = \frac1n. 
+    \]
+    Now since
+    \[
+        0 \leq a_n \leq \frac1n
+    \]
+    and $\frac1n \to 0$, then by the squeeze theorem, $a_n \to 0$. Thus, the alternating series
+    \[
+        \sum_{n=1}^\infty (-1)^n a_n
+    \]
+    converges and, therefore, so does (3). We now show that the series does not converge absolutely. First, note that if $n = 1$, then
+    \[
+        (-1)^{n-1}\frac{(n-1)}{n^2+1} = (-1)^{1-1}\frac{(1-1)}{1^2+1} = 0.
+    \]
+    So we can rewrite the summation in (3) to exclude the first term, i.e.,
+    \[
+        \sum_{n=1}^\infty (-1)^{n - 1}\frac{(n-1)}{n^2+1} = \sum_{n=2}^\infty (-1)^{n-1}\frac{(n-1)}{n^2+1}.
+    \]
+    Now if $n \in \N$ with $n \geq 2$, then it can be seen that
+    \begin{align*}
+        \frac12 = \left( 1 - \frac12 \right) \leq \left( 1 - \frac1n \right).
+    \end{align*}
+    We now consider the absolute value of the terms in the series (3) for $n \geq 2$:
+    \begin{align*}
+        \left| (-1)^{n - 1}\frac{n - 1}{n^2 + 1} \right|
+            &= \frac{n - 1}{n^2 + 1} \\
+            &\geq \frac{n - 1}{n^2 + n^2} \\
+            &= \frac{1}{2n} \cdot \frac{n - 1}{n} \\
+            &= \frac{1}{2n} \left( 1 - \frac1n \right) \\
+            &\geq \frac{1}{4n}.
+    \end{align*}
+    Therefore, we can bound the series of the absolute values of the terms of the series (3) by
+    \[
+        \sum_{n = 2}^\infty \left| (-1)^{n - 1}\frac{n - 1}{n^2 + 1} \right| \geq \frac14 \sum_{n = 2}^\infty \frac1n.
+    \]
+    And since the harmonic series diverges, then the series (3) does not converge absolutely.
+    
+\end{proof}
+
+\newpage
+\section*{Problem 2}
+\begin{problem}
+    Assume that $\sum_n a_n$ is a convergent series of positive terms:  
+\end{problem}
+
+\subsection*{Problem 2(a)}
+\begin{problem}
+    Show that 
+    \begin{equation}
+        \sum_n a_n^p
+    \end{equation}
+    is convergent for any $p>1$.
+\end{problem}
+
+\begin{proof}
+    Let $p > 1$. Denote by $A_n$ and $A'_n$ the partial sums
+    \[
+        A_n = \sum_{k = 1}^n a_n \isp{and} A'_n = \sum_{k = 1}^n a_k^p,
+    \]
+    and let $A$ be the sum of the series
+    \[
+        A = \sum_{n = 1}^\infty a_n.
+    \]
+    Since the series $\sum_n a_n$ converges, then the positive sequence of terms converges to zero. Let $N \in \N$ such that
+    \[
+        n \in \N, n \geq N \implies 0 < |a_n - 0| = a_n < 1.
+    \]
+    Now since $p > 1$, then for any $n \geq N$, we have $0 < a_n^p < a_n$. We bound above the series (4) by
+    \begin{align*}
+        \sum_{n = 1}^\infty a_n^p 
+            &= A'_N + \sum_{N + 1}^\infty a_n^p \\
+            &< A'_N + \sum_{N + 1}^\infty a_n \\
+            &= A'_N + A - A_N.
+    \end{align*}
+    Therefore, since (4) is a series of positive terms which is bounded above, it is convergent.
+    
+\end{proof}
+
+\newpage
+\subsection*{Problem 2(b)}
+\begin{problem}
+    Prove that 
+    \begin{equation}
+        \sum_n \frac{\sqrt{a_n}}{n}
+    \end{equation}
+    converges.
+\end{problem}
+
+\begin{proof}
+    Denote by $A$ and $B$ the sums of convergent series
+    \[
+        A = \sum_{n = 1}^\infty a_n \isp{and} B = \sum_{n = 1}^\infty \frac{1}{n^2}.
+    \]
+    For all $n \in \N$, we find that
+    \begin{align*}
+        0 &\leq \left( \sqrt{a_n} - \frac1n \right)^2, \\[1em]
+        0 &\leq a_n - \frac{2 \sqrt{a_n}}{n} + \frac{1}{n^2}, \\[1em]
+        \frac{2 \sqrt{a_n}}{n} &\leq a_n + \frac{1}{n^2}, \\[1em]
+        \frac{\sqrt{a_n}}{n} &\leq \frac12 \left( a_n + \frac{1}{n^2} \right).
+    \end{align*}
+    Additionally, since $\sqrt{a_n} > 0$ and $n > 0$, we have
+    \[
+        \frac{\sqrt{a_n}}{n} > 0.
+    \]
+    We bound above the series (5) by
+    \[
+        \sum_{n = 1}^\infty \frac{\sqrt{a_n}}{n} \leq \frac12 \sum_{n = 1}^\infty \left( a_n + \frac{1}{n^2} \right) = \frac12 \left( \sum_{n = 1}^\infty a_n + \sum_{n = 1}^\infty \frac{1}{n^2} \right) = \frac12 (A + B).
+    \]
+    Therefore, since (5)  is a series of positive terms which is bounded above, it is convergent.
+    
+\end{proof}
+
+\newpage
+\section*{Problem 3}
+\begin{problem}
+    For any two real sequences $\{a_n\}_{n\in\N}$, $\{b_n\}_{n\in\N}$, prove that 
+    \begin{equation}
+        \limsup _{n\to \infty} (a_n+b_n) \le \limsup _{n\to \infty} a_n +\limsup _{n\to \infty} b_n,
+    \end{equation}
+    and 
+    \begin{equation}
+        \liminf _{n\to \infty} (a_n+b_n) \ge \liminf _{n\to \infty} a_n +\liminf _{n\to \infty} b_n,
+    \end{equation}
+    provided that the right hand side is not of the form $\infty - \infty$.
+\end{problem}
+
+\begin{proposition}
+    \[
+        \limsup _{n\to \infty} (a_n+b_n) \le \limsup _{n\to \infty} a_n + \limsup _{n\to \infty} b_n.
+    \]
+\end{proposition}
+
+\begin{proof}
+    Let
+    \[
+        \alpha = \ds\limsup_{n\to \infty} a_n \isp{and} \beta = \ds\limsup_{n\to \infty} b_n
+    \]
+    where $\alpha, \beta \in \R \cup \{\pm \infty\}$. Without loss of generality, assume $\alpha \leq \beta$ and $\alpha + \beta \ne \infty - \infty$. In the case that $\beta = +\infty$, then $\alpha \in \R\cup\{+\infty\}$, and we obtain the result
+    \[
+        \limsup _{n\to \infty} (a_n+b_n) \leq + \infty = \alpha + \beta.
+    \]
+    If $\beta = - \infty$, then we must also have $\alpha = -\infty$. This means that $a_n \to -\infty$ and $b_n \to -\infty$, and we obtain the result
+    \[
+        \limsup _{n\to \infty} (a_n+b_n) = - \infty \leq \alpha + \beta.
+    \]
+    If $\beta \in \R$, then $\alpha \in \R \cup\{-\infty\}$. If $\alpha = - \infty$, then $a_n \to -\infty$ and there exists some $M \in \R$ such that $b_n \leq M$ for all $n \in \N$ . This implies
+    \[
+        a_n + b_n \leq a_n + M \to -\infty,
+    \]
+    and we obtain the result
+    \[
+        \limsup _{n\to \infty} (a_n+b_n) = - \infty \leq \alpha + \beta.
+    \]
+    The inequality remains only to be proven for $\alpha, \beta \in \R$. Suppose, for contradiction, that
+    \[
+        \limsup _{n\to \infty} (a_n+b_n) > \alpha + \beta.
+    \]
+    Then there exists some subsequence $\seq[k]{a_{n_k} + b_{n_k}}$ such that $a_{n_k} + b_{n_k} \to \gamma > \alpha + \beta$ where $\gamma \in \R \cup\{+\infty\}$. Evidently, we cannot have $\gamma = +\infty$, since that would imply that either $a_{n_k} \to +\infty$ or $b_{n_k} \to +\infty$, and that would contradict the fact that $\alpha, \beta \in \R$. We now pick a subsequence $\seq[i]{k_i} \subseteq \seq[k]{n_k}$ such that $a_{n_i} \to \alpha'$. And another subsequence $\seq[j]{i_j} \subseteq \seq[i]{k_i}$ such that $b_{i_j} \to \beta'$. Note that neither $\alpha'$ nor $\beta'$ are equal to $-\infty$, since that would imply that the other is equal to $+\infty$ due to the fact that $\gamma \in \R$. Therefore, we have
+    \[
+        \alpha' + \beta' = \gamma > \alpha + \beta.
+    \]
+    However, this is a contradiction because $\alpha'$ and $\beta'$ are subsequential limits, and we must have $\alpha' \leq \alpha$ and $\beta' \leq \beta$, which implies that $\alpha' + \beta' \leq \alpha + \beta$.
+    
+\end{proof}
+
+\begin{proposition}
+    \[
+        \liminf _{n\to \infty} (a_n+b_n) \geq \liminf _{n\to \infty} a_n +\liminf _{n\to \infty} b_n.
+    \]
+\end{proposition}
+
+\begin{proof}
+    This follows from the previous proposition and the fact that
+    \[
+        \limsup_{n \to \infty} x_n = -\liminf_{n \to \infty}( -x_n)
+    \]
+    for all sequences $\seq{x_n} \subseteq \R$. We first apply the previous proposition to the sequences $\seq{-a_n}$ and $\seq{-b_n}$ to obtain
+    \[
+        \limsup_{n \to \infty} (-a_n - b_n) \leq \limsup_{n \to \infty} (-a_n) + \limsup_{n \to \infty} (-b_n).
+    \]
+    By the above identity, this is equivalent to
+    \[
+        - \liminf_{n \to \infty} (a_n + b_n) \leq -\liminf_{n\to \infty} (a_n) - \liminf_{n \to \infty} (b_n).
+    \]
+    And multiplying by $-1$, we obtain the result
+    \[
+        \liminf_{n \to \infty} (a_n + b_n) \geq \liminf_{n\to \infty} (a_n) + \liminf_{n \to \infty} (b_n).
+    \]
+    
+\end{proof}
+
+\newpage
+\section*{Problem 4}
+\begin{problem}
+    Consider $a\in \R$, $a>0$. Given $x_1>\sqrt{a}$, define the following sequence: 
+    \begin{equation}
+        x_{n+1} = \frac{1}{2} \left ( x_n + \frac{a}{x_n}\right ),\quad n\ge 1.
+    \end{equation}
+\end{problem}
+
+\subsection*{Problem 4(a)}
+\begin{problem}
+    Prove that $x_n > \sqrt{a}$ for all $n\ge 1$.
+\end{problem}
+
+\begin{proof}
+    The case of $x_1 > \sqrt{a}$. We now prove, for all $n \in \N$, that $x_{n + 1} > \sqrt{a}$ using the definition in terms of $x_n$. For a given $n \in \N$, we find
+    \begin{align*}
+        0 &< (x_n\sqrt{a} - a)^2, \\
+        0 &< x_n^2a - 2x_n a \sqrt{a} + a^2, \\
+        2x_n a \sqrt{a} &< x_n^2a + a^2, \\
+        2\sqrt{a} &< x_n + \frac{a}{x_n}, \\
+        \sqrt{a} &< \frac12 \left( x_n + \frac{a}{x_n} \right),\\
+        \sqrt{a} &< x_{n + 1}.
+    \end{align*}
+    
+\end{proof}
+
+\subsection*{Problem 4(b)}
+\begin{problem}
+    Prove that $\{x_n\}$ is monotonically decreasing.
+\end{problem}
+
+\begin{proof}
+    For a given $n \in \N$, we find
+    \[
+        x_{n + 1} = \frac{1}{2} \left( x_n + \frac{a}{x_n} \right) < \frac{1}{2} \left( x_n + \frac{a}{\sqrt{a}} \right) = \frac{x_n + \sqrt{a}}{2} < \frac{x_n + x_n}{2} = x_n.
+    \]
+    Thus, $x_{n + 1} < x_n$ and $\seq{x_n}$ is monotonically decreasing.
+    
+\end{proof}
+
+\newpage
+\subsection*{Problem 4(c)}
+\begin{problem}
+    Show that $\{x_n\}_{n\in\N}$ converges.
+\end{problem}
+
+\begin{proof}
+    Since $\{x_n\}_{n\in\N}$ is monotonically decreasing and bounded below by $\sqrt{a}$, then it is convergent.
+    
+\end{proof}
+
+\subsection*{Problem 4(d)}
+\begin{problem}
+    Find its limit.
+\end{problem}
+
+\begin{proof}
+    Let $L$ be the limit of the sequence. Then
+    \[
+        L = \lim_{n \to \infty} x_n = \lim_{n \to \infty} x_{n + 1} = \lim_{n \to \infty} \frac12 \left( x_n + \frac{a}{x_n} \right) = \frac12 \left( L + \frac{a}{L} \right).
+    \]
+    Therefore, we find that
+    \begin{align*}
+        2L &= L + \frac{a}{L}, \\
+        2L^2 &= L^2 + a, \\
+        L^2 = a, \\
+        L = \sqrt{a}.
+    \end{align*}
+    Thus,
+    \[
+        \lim_{n \to \infty} x_n = \sqrt{a}.
+    \]
+    
+\end{proof}
+
+
+\end{document}

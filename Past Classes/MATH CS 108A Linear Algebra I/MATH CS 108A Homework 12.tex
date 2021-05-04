@@ -1,0 +1,128 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% custom commands
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\p}{^{\prime}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\setlength{\fboxsep}{4pt}
+\newcommand{\exercise}[2]{\section*{Exercise #1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\problem}[2]{\section*{Problem #1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\generic}[2]{\section*{#1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+
+ 
+\begin{document}
+ 
+\title{Homework 12\\
+    \large MATH CS 108A Linear Algebra I}
+\author{Harry Coleman}
+\date{February 12, 2020}
+\maketitle
+
+
+\exercise{2}{
+    Let $S$ be a subset of a vector space $V$. Show that $S$ is linearly independent if and only if every finite subset of $S$ is linearly independent.
+}
+
+We will show the contrapositive biconditional: $S$ is linearly dependent if and only if some finite subset of $S$ is linearly dependent.
+
+Suppose $S$ is linearly dependent, so there some nonzero scalars $\alpha_1,\dots,\alpha_m\in\F$ and some vectors $u_1,\dots,u_m\in S$ such that
+\[\alpha_1u_1 + \cdots + \alpha_mu_m = 0.\]
+So the finite subset $\{u_1,\dots,u_m\}\subseteq S$ is linearly dependent.
+
+Suppose we have some finite subset $\{u_1,\dots,u_m\}\subseteq S$ which is linearly dependent. So there are some scalars  $\alpha_1,\dots,\alpha_m\in\F$ such that
+\[\alpha_1u_1 + \cdots + \alpha_mu_m = 0.\]
+And since $u_1,\dots,u_m\in S$, we also have that $S$ is linearly dependent.
+Therefore $S$ is linearly dependent if and only if some subset of $S$ is linearly dependent, which equivalently says that $S$ is linearly independent if and only if every finite subset of $S$ is linearly independent
+
+
+\newpage
+\exercise{4}{
+    Find a basis for the column space of
+    \[A = \begin{bmatrix}
+        1 & 1 & 2 & 0 \\
+        0 & 1 & 1 & 0 \\
+        2 & 3 & 5 & 1
+    \end{bmatrix} \]
+    using rref($A$). Explain your conclusions.
+}
+
+First, we find
+\[\text{rref}(A) = \begin{bmatrix}
+    1 & 0 & 1 & 0 \\
+    0 & 1 & 1 & 0 \\
+    0 & 0 & 0 & 1
+\end{bmatrix}. \]
+Since the rank of $A$ is 3, there are 3 columns of $A$ for which no one can be obtained by a linear combination of the other two, so the basis for the column space $A$ must have at least 3 linearly independent vectors. Since the span of 3 linearly independent vectors is $R^3$, the column space of $A$ is $R^3$. The vectors
+\[ \begin{bmatrix}
+    1 \\
+    0 \\
+    0 
+\end{bmatrix},
+\begin{bmatrix}
+    0 \\
+    1 \\
+    0 
+\end{bmatrix},
+\begin{bmatrix}
+    0 \\
+    0 \\
+    1 
+\end{bmatrix}\]
+are a basis for $R^3$ and thus for the column space of $A$.
+
+
+
+\exercise{5}{
+    Let $S = \{u_1, \dots , u_n\} \subseteq \R^n$. Let $A := [u_1,\dots, u_n]$, that is, $A$ is the matrix whose columns are the vectors in $S$. Show that the following are equivalent:
+    \begin{enumerate}
+        \item $S$ is linearly independent;
+        \item the matrix $A$ is invertible;
+        \item the linear system of equations Ax = 0 has a unique solution.
+    \end{enumerate}
+}
+
+$A$ is invertible if and only if $A$ is row-equivalent to $I_n$. $A$ is row-equivalent to $I_n$ if and only if rank$(A)=n$, which is true if and only if $Ax=0$ has a unique solution. So (2) and (3) are equivalent.
+
+Since $I_n$ is in both reduced row and column echelon form, $A$ is row equivalent to $I_n$ if and only if it is column equivalent to $I_n$. And $A$ is column equivalent to $I_n$ if and only if no series of column operations (equivalently linear combination of columns) produces a column of all zeros (equivalently the zero column vector). No linear combination of the columns of $A$ produces the zero column vector if and only if the columns of $A$ (which is $S$) are linearly independent. So (1) is true if and only if (2) is true.
+
+Therefore, all three statements are equivalent.
+
+
+
+\exercise{6}{
+    Let $S \subseteq V$, where $V$ is a vector space. Show that $S$ is a minimal generating set of $V$ if and only if $S$ is a maximal linearly independent set in $V$.
+}
+
+Suppose $S=\{s_1,\dots,s_m\}$ is a minimal generating set of $V$, and therefore linearly independent. If we suppose that $S$ is not maximal, then $S\cup\{v\}$ is also linearly independent for some $v\in V$. However, since $S$ is a generating set, for some $\alpha_1,\dots,\alpha_m\in\R$, 
+\[\alpha_1s_1 + \cdots + \alpha_ms_m = v,\]
+and therefore
+\[\alpha_1s_1 + \cdots + \alpha_ms_m + (-1)v = 0.\]
+so $S\cup\{v\}$ is ot linearly independent, so $S$ is maximal.
+
+We now suppose $S$ is a maximal linearly independent set in $V$. If we suppose that $S$ is not a generating set, then there is some $v\in V$ which is not equal to a linear combination of vectors of $S$. However, this means that $S\cup\{v\}$ would be a linearly independent set, making $S$ not maximal. So $S$ is a generating set (which is also linearly independent), and therefore minimal.
+
+So $S$ is a minimal generating set of $V$ if and only if it is a maximal linearly independent set in $V$.
+
+
+
+\end{document}

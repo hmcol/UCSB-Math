@@ -1,0 +1,170 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow,enumerate}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% custom commands
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\p}{^{\prime}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\setlength{\fboxsep}{4pt}
+\newcommand{\exercise}[2]{\section*{Exercise #1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\problem}[2]{\section*{Problem #1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\generic}[2]{\section*{#1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+
+ 
+\begin{document}
+ 
+\title{Homework\\
+    \large MATH CS 108A Linear Algebra I}
+\author{Harry Coleman}
+\date{February 3, 2020}
+\maketitle
+
+\generic{Definition 1}{
+    A vector space consists of the following:
+    \begin{enumerate}
+        \item a field $\F$ of scalars;
+        \item a nonempty set $V$ of objects, called vectors;
+        \item a binary operation for vector addition, $x+y\in V$, for all $x,y\in V$;
+        \item an  external operation for scalar multiplication for $\alpha x \in V$, for all $\alpha\in\F, x\in V$;
+    \end{enumerate}
+    such that the following properties hold:
+    \begin{enumerate}[(i)]
+        \item $(V, +)$ is an abelian group;
+        \item $1\cdot x = x$, for all $x\in V$, where 1 is the multiplicative identity in $\F$;
+        \item $\alpha(x + y) = \alpha x + \alpha y$, for all $\alpha, \beta \in \F$ and $x, y \in V$;
+        \item $(\alpha + \beta)x = \alpha x + \beta x$, for all $\alpha, \beta \in \F$ and $x, y \in V$;
+        \item $\alpha(\beta x) = (\alpha \beta)x$, for all $\alpha, \beta \in \F$ and $x \in V$.
+    \end{enumerate}
+    We shall say that $V$ together with the addition and the scalar multiplication is a vector space over $\F$. We will also call it an $\F$-space.
+}
+
+
+\exercise{8}{
+    (textbook) In any vector space $V$, show that $(a+b)(x+y) = ax+ay + bx + by$ for any $x,y \in V$ and any $a,b \in \F$.
+}
+
+Since $V$ is a vector space, we have distributivity of scalar multiplication and addition, so
+\[(a+b)(x+y) = (a+b)x + (a+b)y = ax + bx + ay + by.\]
+
+
+\exercise{1}{
+    Let $S$ be a nonempty set and let $V$ be a vector space over $\F$. Let $H$ be the set of functions $f: S \rightarrow V$ . Show that $H$ is a vector space over $\F$ with the operations
+    \[(f + g)(t) = f(t) + g(t), (\alpha f)(t) = \alpha f(t), \alpha \in \F.\]
+}
+
+Let $f,g,h\in H, t\in S$. By the definition of addition in $H$, we find that
+\[((f+g)+h))(t) = (f+g)(t) + h(t) = (f(t) + g(t)) + h(t).\]
+By the associativity of addition in $V$, this is equal to
+\[f(t) + (g(t) + h(t)).\]
+And again by the definition of addition in $H$, we find that
+\[f(t) + (g(t) + h(t)) = f(t) + (g + h)(t) = (f+(g+h))(t),\]
+so
+\[((f+g)+h))(t) = (f+(g+h))(t).\]
+So addition in $H$ is associative. With the commutativity of addition in $V$, we also find that
+\[(f+g)(t) = f(t) + g(t) = g(t) + f(t) = (g+f)(t).\]
+So addition is commutative in $H$. The function $0_H$ which maps all inputs to the additive identity in $V$ is the additive identity in $H$ since
+\[(f+0_H)(t) = f(t) + 0_H(t) = f(t) + 0_V = f(t).\]
+And if we say that $(-f)(t) = -f(t)$, we find that
+\[(f+(-f))(t) = f(t) + (-f)(t) = f(t) - f(t) = 0_V = 0_H(t).\]
+So $H$ has additive inverses. Let $\alpha\in\F$. By the properties of scalar multiplication in $V$,
+\[(\alpha(f+g))(t) = \alpha(f+g)(t) = \alpha(f(t) +g(t)) = \alpha f(t) +\alpha g(t) =(\alpha f + \alpha g)(t).\]
+Similarly by our definitions and the properties in $V$,
+\[((\alpha + \beta)f)(t) = (\alpha + \beta)f(t) = \alpha f(t) + \beta f(t) = (\alpha f)(t) + (\beta f)(t) = (\alpha f + \beta f)(t).\]
+Also by the properties of $V$, 
+\[(\alpha(\beta f))(t) = \alpha(\beta f)(t) = \alpha(\beta f(t)) = (\alpha \beta)f(t) = ((\alpha \beta)f)(t).\]
+And taking the multiplicative identity in $\F$, we find
+\[(1f)(t) = 1f(t) = f(t).\]
+These satisfy the remaining requirements for $H$ to be a vector space. So $H$ is a vector space with the given definitions of addition and scalar multiplication.
+
+
+
+
+\exercise{4}{
+    Show that the only subspaces of $\R^2$ with the usual operations of addition and scalar multiplication by real numbers, are $\{[0\;0]^T \}$, the lines passing through zero, and the whole space.
+}
+
+To show that these three subspaces are the only possible subspaces of $\R^2$, we will suppose we have a nonempty subspace $S$ of $\R^2$ which is none of the three given. In other words, $S$ has some linearly independent elements, and does not contain every element of $\R^2$. Let $x, y \in S$ be two nonzero, linearly independent column vectors and $z \in \R^2$ some column vector not in $S$ . To show a contradiction, we want to find scalars $a,b\in\R$ such that
+\[ax + by = z.\]
+This is equivalent to finding $a,b$ such that
+\[[x|y][a\;b]^T = z.\]
+Since $x$ and $y$ are linearly independent, the $2\times2$ matrix $[a|b]$ has rank 2, so we can find a unique solution for $a$ and $b$ in $\R$ which satisfies the above equation, which gives us that
+\[ax + by = z.\]
+Since $S$ is a vector space, it is closed under the addition and scalar multiplication of $R^2$, and $z\in S$. Which is a contradiction, so we cannot have a subspace of $\R^2$ which is not one of the three given in the problem.
+
+
+\exercise{6}{
+    Let $V$ be a vector space over a field $\F$ and let $W \subseteq V$ . Then, $W \leq V$ if and only if
+    
+    $W \ne \emptyset$;
+    
+    $\alpha x + y \in W$, for all $x, y \in W$ and $\alpha \in \F$.
+}
+
+Suppose $W \leq V$. Since $(W,+)$ is an abelian group, we have at least the additive identity, so it is not the empty set. Since it is a vector space, it is closed under addition and scalar multiplication, so for all $x,y\in W, \alpha\in\F$, we have $\alpha x+y\in W$. So the right implication is true.
+
+To show the left implication, we suppose that $W\ne\emptyset$ and for all $x,y\in W, \alpha\in\F$, we have $\alpha x+y\in W$. With the second property, we find that for all $x,y\in W$,
+\[1x+y \in W,\]
+\[x+y \in W.\]
+So $W$ is closed under addition. We also have from the addition in $V$, that the addition in $W$ is associative and commutative. If we now let $x\in W$,
+\[(-1)x + x \in W,\]
+\[-x + x \in W,\]
+\[0_V \in W.\]
+So the identity for addition in $V$ is also in $W$, and since every element in $W$ is also in $V$, it is also the identity for addition in $W$. If we now let $x\in W$, using the inverses and identities in $V$, we find
+\[(-1)x + 0 \in W,\]
+\[-x \in W.\]
+So we have additive inverses in $W$. So $(W, +)$ is an abelian group, satisfying (i) in the definition of a vector space. We now let $\alpha\in\F, x\in W$, and we have that
+\[\alpha x + 0 \in W,\]
+\[\alpha x \in W.\]
+So scalar multiplication is closed in $W$. Since a scalar multiplication in $W$ is the same as scalar multiplication in $V$, it satisfies (ii), (iii), (iv), (v) in the definition of vector space. So $W$ is a vector space, so the left implication is true, giving us that the bi conditional is true.
+
+
+\exercise{8}{
+    Let $S = \{(x, y) \in \R^2: x^2 + y^2 = 1\}$. Can you find an addition and a scalar multiplication on $S$ such that $S$ becomes a vector space over $\R$?
+}
+
+TO find operations for addition and scalar multiplication, we will relate each ordered pair $(x,y)$ of real numbers with a complex number $x+yi$ with the same coefficients as the entries in the ordered pair. We now use multiplication of complex numbers to find a definition for real ordered pairs on the unit circle. If we have two complex numbers, multiplying them together can be thought of as considering at the vectors centered at the origin, adding their angles together, and multiplying their magnitudes. With complex numbers on the unit circle, all vectors have a magnitude of one, so any product of these is simply a sum of angles. In terms of pairs of real numbers, for all $(x_1,y_1),(x_2,y_2)\in S$, we find the related complex product
+\[(x_1 + y_1i)(x_2 + y_2i) = (x_1x_2 - y_1y_2) + (x_1y_2 + y_1x_2)i\]
+and define
+\[(x_1,y_1) + (x_2, y_2) = (x_1x_2 - y_1y_2, x_1y_2 + y_1x_2).\]
+To show that this new value is in $S$, we solve for the value of
+\[(x_1x_2 - y_1y_2)^2 + (x_1y_2 + y_1x_2)^2,\]
+\[x_1^2(x_2^2 + y_2^2) + y_1^2(x_2^2 + y_2^2),\]
+\[x_1^2(1) + y_1^2(1),\]
+\[1.\]
+So $S$ is closed under this definition of addition. Since this addition is based on the multiplication of complex numbers, which is associative, commutative, has an identity, and inverses, so does the addition in $S$. So $(S, +)$ is an abelian group. 
+
+For all $\alpha\in\R$, $(x,y)\in\R^2$, we consider the exponentiation of the related complex number by the scalar\textemdash that is,
+\[(x+yi)^\alpha.\]
+If we let $\theta$ be the angle of the vector related to $x+yi$ in the complex plane, we find that
+\[(x+yi)^\alpha = \cos(\alpha \theta) + i\sin(\alpha \theta).\]
+So from this, we define
+\[\alpha(x,y) = (\cos(\alpha \theta), \sin(\alpha \theta)),\]
+where $\theta$ is the angle of the vector $x+yi$ in the complex plane. By the trigonometric identity
+\[\cos^2(\alpha \theta) + \sin^2(\alpha \theta) = 1,\]
+so $\alpha(x,y)\in S$. So $S$ is closed under this scalar multiplication. Since multiplication and exponentiation of complex numbers has mixed associativity, so do these definitions of addition and scalar multiplication, which satisfies (ii),(iii),(iv),(v) of the definition of a vector space. So with these definitions of addition and scalar multiplication, $S$ is a vector space over $\R$.
+
+
+
+
+
+
+\end{document}

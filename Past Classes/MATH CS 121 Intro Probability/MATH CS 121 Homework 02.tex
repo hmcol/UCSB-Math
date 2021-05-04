@@ -1,0 +1,265 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow,enumitem}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools,babel}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{\textwidth-10pt}}
+    {\end{minipage}\end{lrbox}\framebox[6.5in]{\usebox{\mybox}}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+\newenvironment{response}{\paragraph{}}{}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\seq}[2]{\left\{#1\right\}_{#2=1}^\infty}
+\newcommand{\clo}[1]{\overline{#1}}
+\newcommand{\conj}[1]{\overline{#1}}
+\newcommand{\eqc}[1]{\overline{#1}}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ang}{\langle}{\rangle}
+
+% Sets
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+
+% Misc Characters
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\let\eps\varepsilon
+\let\emptyset\varnothing
+
+% Functions
+\newcommand{\id}[1]{\mathsf{id}_{#1}}
+
+% Babel Shorthands
+\useshorthands*{"}
+\defineshorthand{"-}{\setminus}
+\defineshorthand{"d}{\partial}
+
+% Probability
+\newcommand{\FF}{\mathcal{F}}
+\renewcommand{\P}{\mathbb{P}}
+
+% Complex Analysis
+\renewcommand{\Im}{\text{Im }}
+\renewcommand{\Re}{\text{Re }}
+\newcommand{\Arg}{\text{Arg }}
+\newcommand{\pd}[2]{\frac{"d#1}{"d#2}}
+\newcommand{\pdn}[3]{\frac{"d^{#3}#1}{"d#2^{#3}}}
+
+% Real Analysis
+\renewcommand{\int}[1]{\accentset{\circ}{#1}}
+
+
+\begin{document}
+ 
+\title{Homework 2\\
+    \large MATH CS 121 Intro to Probability
+    %\large MATH CS 122A Complex Analysis I
+    %\large MATH 118A Intro to Real Analysis
+    %\large MATH 111A Intro to Abstract Algebra
+    %\large MATH 104A Intro to Numerical Analysis
+}
+\author{Harry Coleman}
+\date{October 28, 2020}
+\maketitle
+
+\section*{Exercise 1}
+\begin{problem}
+    Consider an urn with $12$ red, $5$, green and $5$ yellow balls. You draw two without replacement. What is the probability that the sample contains exactly one red or exactly one yellow ball? (inclusive \emph{or}) State a reasonable probability space $(\Omega, \FF, \P)$ with the Laplace measure first. Explain which properties of probability measure, $\sigma$-algebra you are using, more rigorously than in the book of Anderson et. al.
+\end{problem}
+\paragraph{}
+
+Let 
+\begin{align*}
+    R &= \{r_1,\dots, r_{12}\}, \\
+    G &= \{g_1,\dots,g_5\}, \\
+    Y &= \{y_1, \dots, y_5\},
+\end{align*}
+be the sets of red, green, and yellow balls, respectively. Now let
+\[\Omega = \{\{\omega_1, \omega_2\} : \omega_1,\omega_2 \in (R\cup G \cup Y), \omega_1\ne\omega_2\}\]
+be our sample space and $\FF = 2^\Omega$ be our $\sigma$-algebra. We take our probability measure, $\P$, to be the Laplace measure. Note that by this definition of $\Omega$, any element $\{\omega_1,\omega_2\}\in\Omega$ is a choice of two elements from the set $R\cup G\cup Y$, so
+\[|\Omega| =  {|R\cup G \cup Y| \choose 2} = {22 \choose 2} = \frac{22!}{2!20!} = \frac{22\cdot 21}{2} = 231.\]
+We now define the subset $A\subseteq\Omega$ of instances where exactly one ball is red or exactly one ball is yellow:
+\[A = \{\{\omega_1,\omega_2\} \in \Omega : (\omega_1\in R, \omega_2\in G) \text{ or }  (\omega_1\in Y, \omega_2\in G) \text{ or } (\omega_1\in R, \omega_2\in Y)\}.\]
+The first of the three conditions in this definition expresses when exactly one ball is red and the other is not yellow. The second condition expresses the situation when exactly one ball is yellow and the other is not red. The third expresses when we have exactly one ball red and exactly one ball yellow, which ensures the inclusive disjunction in the problem statement. Additionally, this ensures that the three conditions are mutually exclusive, so to count the number of elements of $A$, we can count the occurrences of each of the three conditions and sum them. To find the number of occurrences of each condition, we multiply the number of choices for $\omega_1$ by the number of choices for $\omega_2$. We now find the probability of $A$ using the Laplace measure:
+\[\P(A) = \frac{|A|}{|\Omega|} = \frac{12\cdot5 + 5\cdot5 + 12\cdot 5}{231} = \frac{145}{231}.\]
+
+
+\section*{Exercise 2}
+\begin{problem}
+    Use the inclusion-exclusion formula to solve the previous example.
+\end{problem}
+\paragraph{}
+
+We define the subset $A\subseteq\Omega$ of instances where exactly one ball is red,
+\[A = \{\{\omega_1,\omega_2\} \in \Omega : \omega_1\in R, \omega_2\notin R\},\]
+and the subset $B\subset\Omega$ of instances where exactly one ball is yellow,
+\[B = \{\{\omega_1,\omega_2\} \in \Omega : \omega_1\in Y, \omega_2\notin Y\}.\]
+Note that
+\[A\cap B = \{\{\omega_1,\omega_2\} \in \Omega : \omega_1\in R, \omega_2\in Y\}.\]
+Then by the inclusion exclusion principle, we find the probability of $A\cup B$ by the Laplace measure:
+\begin{align*}
+    \P(A\cup B) 
+        &= \P(A) + \P(B) - \P(B\cap A) \\
+        &= \frac{|A|}{|\Omega|} + \frac{|B|}{|\Omega|} - \frac{|A\cap B|}{|\Omega|} \\
+        &= \frac{12\cdot 10}{231} + \frac{5\cdot 17}{231} - \frac{12\cdot 5}{231} \\
+        &= \frac{120 + 85 - 60}{231} \\
+        &= \frac{145}{231}.
+\end{align*}
+
+\newpage
+\section*{Exercise 3}
+\begin{problem}
+    We have two urns. Urn 1 has three green balls and one red ball. Urn 2 has two red balls and two yellow balls. We perform a two-step experiment. First, we choose an urn. For this, let $p\in[0,1]$. Urn 1 is chosen with probability $p$ and urn 2 with probability $1-p$. Then we select one ball uniformly at random (Laplace measure). What is the probability that we draw a red ball? State a reasonable probability space $(\Omega, \FF, \P)$ with the Laplace measure first. Explain which properties of probability measure, $\sigma$-algebra you are using, more rigorously than in the book of Anderson et. al.
+\end{problem}
+\paragraph{}
+
+Let 
+\begin{align*}
+    R &= \{r_1, r_2, r_3\}, \\
+    G &= \{g_1, g_2, g_3\}, \\
+    Y &= \{y_1, y_2\},
+\end{align*}
+be the sets of red, green, and yellow balls, respectively. Now let
+\begin{align*}
+    U_1 &= \{g_1, g_2, g_3, r_1\}, \\
+    U_2 &= \{r_2, r_3, y_1, y_2\},
+\end{align*}
+be the groupings of the balls into urns 1 and 2, respectively. We define our sample space
+\[\Omega = U_1\sqcup U_2,\]
+and our $\sigma$-algebra, $\FF = 2^\Omega$. Our probability measure $\P$ can be defined on the singletons of $\Omega$ as follows
+\[\P(\{x\}) = \begin{cases}
+    p/4 &\text{if } x\in U_1, \\
+    (1-p)/4 &\text{if } x\in U_2.
+\end{cases}\]
+The value of $\P$ on any subset of $\Omega$ can then be found by the sum of probabilities of the singletons of all the elements of the subset. By definition, $\P$ satisfies (P2) of the definition of a probability measure. Additionally, we find that
+\begin{align*}
+    \P(\Omega)
+        &= \sum_{x\in\Omega}\P(\{x\})  \\
+        &= \sum_{x\in U_1}\P(\{x\}) + \sum_{x\in U_2}\P(\{x\}) \\
+        &= \sum_{x\in U_1}\frac{p}4 + \sum_{x\in U_2}\frac{1-p}4 \\
+        &= p + (1-p) \\
+        &= 1,
+\end{align*}
+satisfying (P1) of the definition of a probability measure. Therefore $(\Omega, \FF, \P)$ is a probability space. Additionally, we see that $\P(U_1)=p$ and $\P(U_2)=1-p$, as well as $\P$ being uniform within each urn, as desired. Since $\Omega = U_1\sqcup U_2$, then by the law of total probability, the probability of selecting a red ball is given by
+\begin{align*}
+    \P(R)
+        &= \P(R|U_1)\P(U_1) + \P(R|U_2)\P(U_2)  \\[2mm]
+        &= \frac{\P(R\cap U_1)}{\P(U_1)}\P(U_1) + \frac{\P(R\cap U_2)}{\P(U_2)}\P(U_2) \\[2mm]
+        &= \P(\{r_1\}) + \P(\{r_2,r_3\}) \\[2mm]
+        &= \P(\{r_1\}) + \P(\{r_2\}) + \P(\{r_3\}) \\
+        &= \frac{p}4 + \frac{1-p}4 + \frac{1-p}4 \\
+        &= \frac{2-p}4.
+\end{align*}
+
+\section*{Exercise 4}
+\begin{problem}
+    California has a license plate system for cars (not including trucks) where the license consists of seven places. The first place is a number, the next three places are letters, and the last three are numbers.
+\end{problem}
+
+\subsection*{Exercise 4(a)}
+\begin{problem}
+    How many different California plates are possible?
+\end{problem}
+\paragraph{}
+
+Let $N$ denote the set of ten digits and let $L$ denote the set of twenty-six letters. The set of possible plates is
+\[A = N \times L \times L \times L \times N \times N \times N.\]
+Since the cardinality of a Cartesian product is the product of the cardinalities, we have
+\[|A| = |N|\cdot|L|\cdot|L|\cdot|L|\cdot|N|\cdot|N|\cdot|N| = 10\cdot26\cdot26\cdot26\cdot10\cdot10\cdot10 = 26^310^4 = 175760000.\]
+
+\subsection*{Exercise 4(b)}
+\begin{problem}
+    How many different California plates are possible if we assume that no letter or number can be repeated in a single license plate?
+\end{problem}
+\paragraph{}
+
+The number of possibilities for the first occurrence of a digit or letter is the same as before, but for each subsequence digit or letter, there are as many fewer possibilities as preceding occurrences of a digit or letter. In other words, the $n$th digit has $10-(n-1)$ possibilities, and the $n$th letter has $26-(n-1)$ possibilities. Therefore, we have
+\[10\cdot26\cdot25\cdot24\cdot9\cdot8\cdot7 = 78624000\]
+possible plates
+
+\section*{Exercise 5}
+\begin{problem}
+    You have 8 friends, of whom 5 will be invited to your party on Friday night.
+\end{problem}
+
+\subsection*{Exercise 5(a)}
+\begin{problem}
+    How many choices are there if 2 of the friends are feuding and will not attend together?
+\end{problem}
+\paragraph{}
+
+Let $F=\{f_1,\dots,f_8\}$ denote the set of friends with $f_i,f_j$ being the feuding friends. The set of all possible selections of five friends, irrespective of the feuding friends, is
+\[A = \{X\subseteq F : |X|=5\}.\]
+The set of possible selections, when taking into account the feuding friends, is
+\[B = \{X\in A : \lnot(f_i\in X \land f_j\in X)\}.\]
+In other words, $B$ is the subset of selections which do not include both $f_i$ and $f_j$, simultaneously. Now since $B\subseteq A$, then $B\sqcup(A"-B)=A$, which implies $|B|+|A"-B| = |A|$. Note that
+\[A"-B = \{X\in A : f_i\in X \land f_j\in X\},\]
+which has a bijection to the set
+\[C = \{Y\subseteq(F"-\{f_i,f_j\}) : |Y|=3\}\]
+by taking $X = Y\cup\{f_i,f_j\}$. We may therefore conclude that
+\[|B| = |A| - |A"-B| = |A|-|C| = {8\choose 5} - {6 \choose 3} = 36.\]
+
+
+\subsection*{Exercise 5(b)}
+\begin{problem}
+    How many choices if 2 of the friends will only attend together?
+\end{problem}
+\paragraph{}
+
+Let $F=\{f_1,\dots,f_8\}$ denote the set of friends with $f_i,f_j$ being the pair who will only attend together. The set of possible selections is
+\[A = \{X\subseteq F : |X|=5, (f_i\in X \iff f_j\in X)\}.\]
+If we let
+\[B = \{Y\subseteq(F"-\{f_i,f_j\}) : |Y|=5\},\]
+\[C = \{Z\subseteq(F"-\{f_i,f_j\}) : |Z|=3\},\]
+then there is a bijection between $A$ and $B\cup C$ where $X=Y$ and $X=Z\cup\{f_i,f_j\}$. Therefore,
+\[|A| = |B| + |C| = {6 \choose 5} + {6\choose 3} = 26.\]
+
+\section*{Exercise 6}
+\begin{problem}
+    Consider $\Omega = \{1,2,3,4,5,6\}$ again equipped with the Laplace measure and $\FF = 2^\Omega$ (We will have more interesting examples soon). Find events $A_1, A_2, A_3, B_1, B_2, B_3$ such that
+    \begin{itemize}
+        \item $\P(B_1|A_1) > \P(B_1)$,
+        \item $\P(B_2|A_2) < \P(B_2)$,
+        \item $\P(B_3|A_3) = \P(B_3)$.
+    \end{itemize}
+\end{problem}
+\paragraph{}
+
+Let $A_1=\{1\}$ and $B_1=\{1\}$, then
+\[\P(B_1 | A_1) = \frac{\P(B_1\cap A_1)}{\P(A_1)} = \frac{\P(\{1\})}{\P(\{1\})} = 1 > \frac16 = \P(B_1).\]
+Let $A_2=\{1\}$ and $B_2=\{2\}$, then
+\[\P(B_2 | A_2) = \frac{\P(B_2\cap A_2)}{\P(A_2)} = \frac{\P(\emptyset)}{\P(\{1\})} = 0 < \frac16 = \P(B_2).\]
+Let $A_3=\{2,4,6\}$ and $B_3=\{1,2\}$, then
+\[\P(B_3 | A_3) = \frac{\P(B_3\cap A_3)}{\P(A_3)} = \frac{\P(\{1,2\}\cap\{2,4,6\})}{\P(\{2,4,6\})} = \frac{\P(\{2\})}{\frac12} = \frac26 = \frac13 = \P(B_3).\]
+
+
+
+\end{document}

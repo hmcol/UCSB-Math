@@ -1,0 +1,532 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amsthm, amssymb}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}
+    {\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\mybox}}}
+
+% Default Commands
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+
+% Extra Commands
+\newcommand{\bd}{\partial}
+\newcommand{\conj}[1]{\overline{#1}}
+\newcommand{\pd}[3][1]{\ifx1#1{\frac{\partial #2}{\partial#3}}\else{\frac{\partial^{#1}#2}{\partial#3^{#1}}}\fi}
+\newcommand{\klim}{\lim\limits_{k \to \infty}}
+\newcommand{\od}[3][1]{\ifx1#1{\frac{d #2}{d #3}}\else{\frac{d^{#1}#2}{d #3^{#1}}}\fi}
+
+\begin{document}
+ 
+\title{Homework 6\\
+    \large MATH CS 122A Complex Analysis I
+}
+\author{Harry Coleman}
+\date{December 12, 2020}
+\maketitle
+
+\section{Exercise IV.8.6}
+\begin{problem}
+    Show that if $D$ is a domain with smooth boundary, and if $f(z)$ and $g(z)$ are analytic on $D \cup \bd D$, then
+    \[
+        \int_{\bd D} f(z) \conj{g(z)} \,dz = 2i \iint_D f(z) \conj{g'(z)} \,dx \,dy.
+    \]
+    Compare this formula with Exercise 1.4.
+\end{problem}
+
+\begin{proof}
+    Note that $\conj{g}$ is smooth on $D \cup \bd D$. Because $g$ is analytic, we have $g = u + iv$, where $u$ and $v$ are smooth complex-valued functions on $D \cup \bd D$, in the sense that $\R \subseteq \C$. Therefore, the complex conjugate of $g$, given by $\conj{g} = u - iv$, is also a smooth complex-valued function. Since $f$ is also a smooth complex-valued function on $D \cup \bd D$, so is the product $f \, \conj{g}$. Thus, we have
+    \[
+        \int_{\bd D} f(z) \conj{g(z)} \,dz 
+            = 2i \iint_{D} \pd{}{\conj{z}} \left( f(z) \conj{g(z)} \right) \,dx \,dy
+            = 2i \iint_{D} \left( f(z) \pd{\conj{g}}{\conj{z}}(z) + \conj{g(z)} \pd{f}{\conj{z}}(z) \right) \,dx \,dy.
+    \]
+    Because $f$ is analytic on $D$, then by complex form of the Cauchy-Riemann equations, we have
+    \[
+        \pd{f}{\conj{z}} = 0.
+    \]
+    And because $g$ is analytic on $D$, then the properties of the differential operators give us
+    \[
+         \pd{\conj{g}}{\conj{z}} = \conj{\pd{g}{z}} = \conj{g'}.
+    \]
+    Substituting these results, we obtain
+    \[
+        \int_{\bd D} f(z) \conj{g(z)} \,dz
+            = 2i \iint_{D} \left( f(z) \conj{g'(z)} + \conj{g(z)} \cdot 0 \right) \,dx \,dy
+            = 2i \iint_{D} f(z) \conj{g'(z)} \,dx \,dy.
+    \]
+    
+\end{proof}
+
+If we take $f(z) = 1$ and $g(z) = z$, then we obtain the formula from Exercise IV.1.4,
+\[
+    \int_{\bd D} \conj{z} \,dz = 2i \iint_{D} \pd{\conj{z}}{\conj{z}} \,dx \,dy = 2i \iint_{D} \,dx \,dy = 2i \operatorname{Area}(D).
+\]
+
+\newpage
+\section{Exercise V.2.8}
+\begin{problem}
+    Show that $\ds \sum \frac{z^k}{k^2}$ converges uniformly for $|z| < 1$.
+\end{problem}
+
+\begin{proof}
+    For $|z| < 1$, we bound the terms in this series by
+    \[
+        \left| \frac{z^k}{k^2} \right| = \frac{|z|^k}{k^2} \leq \frac{1}{k^2}.
+    \]
+    Since the series 
+    \[
+        \sum_{k=1}^\infty \frac{1}{k^2}
+    \]
+    converges, then the Weierstrass $M$-test tells us that $\ds \sum \frac{z^k}{k^2}$ converges uniformly on $\{|z| < 1\}$.
+    
+\end{proof}
+
+\section{Exercise V.2.9}
+\begin{problem}
+    Show that $\ds \sum \frac{z^k}{k}$ does not converge uniformly for $|z| < 1$.
+\end{problem}
+
+\begin{proof}
+    Denote by $f_n$ the partial sum function
+    \[
+        f_n(z) = \sum_{k=1}^n \frac{z^k}{k}.
+    \]
+    Assume, for contradiction, that the sequence $\{f_n\}$ does converge uniformly in $\{|z| < 1\}$ to the function
+    \[
+        f(z) = \sum_{k=1}^\infty \frac{z^k}{k}.
+    \]
+    That is, for all $\eps > 0$, there exists some $N \in \N$ such that if $n \geq N$ and $|z| < 1$, then
+    \[
+        |f_n(z) - f(z)| < \eps.
+    \]
+    For any $n \geq N$, we have
+    \[
+        |f_n(z) - f(z)|
+            = \left| \sum_{k=1}^n \frac{z^k}{k} - \sum_{k=1}^\infty \frac{z^k}{k} \right|
+            = \left| \sum_{k=n+1}^\infty \frac{z^k}{k} \right|.
+    \]
+    For $z = 1$, this is the tail of the harmonic series $\sum \frac1k$, which diverges to $+\infty$. Moreover, this function is continuous, so there exists some $\delta > 0$ such that for all $x \in \R$,
+    \[
+        |x - 1| < \delta \implies \sum_{k=n+1}^\infty \frac{x^k}{k} \geq \eps.
+    \]
+    Then for some $x \in (1-\delta, 1)$, we have $|x| < 1$, but $|f_n(x) - f(x)| \geq \eps$, which is a contradiction. Therefore, this series does not converge uniformly in $\{|z| < 1\}$.
+    
+\end{proof}
+
+\newpage
+\section{Exercise V.2.12}
+\begin{problem}
+    Let $f(z)$ be analytic on a domain $D$, and suppose $|f(z)| \leq M$ for all $z \in D$. Show that for each $\delta > 0$ and $m \geq 1$, $|f^{(m)}(z)| \leq m! M / \delta^m$ for all $z \in D$ whose distance from $\bd D$ is at least $\delta$. Use this to show that if $\{f_k(z)\}$ is a sequence of analytic functions on $D$ that converges uniformly to $f(z)$ on $D$, then for each $m$ the derivatives $f_k^{(m)}(z)$ converge uniformly to $f^{(m)}(z)$ on each subset of $D$ at least positive distance from $\bd D$.
+\end{problem}
+
+\begin{proposition}
+    Let $f(z)$ be analytic on a domain $D$, and suppose $|f(z)| \leq M$ for all $z \in D$. Additionally, let $\delta > 0$ and $m \geq 1$. Then for all $z \in D$ whose distance from $\bd D$ is at least $\delta$, we have
+    \[
+        \left| f^{(m)}(z) \right| \leq \frac{m!M}{\delta^m}.
+    \]
+\end{proposition}
+
+\begin{proof}
+    Suppose $z_0 \in D$ has a distance from $\bd D$ at least $\delta$, i.e., the domain $D$ contains the open disk $\{|z - z_0| < \delta\}$. Since $f$ is analytic and bounded on the open disk, then $f$ smoothly extends to the boundary of $\{|z - z_0| < \delta\}$. Thus, Cauchy's integral formula gives us
+    \[
+        f^{(m)}(z_0) = \frac{m!}{2\pi i} \oint_{|z - z_0| = \delta} \frac{f(z)}{(z - z_0)^{m + 1}} \,dz.
+    \]
+    Parameterizing the integral over this circle, we find
+    \begin{align*}
+        f^{(m)}(z_0) 
+            &= \frac{m!}{2\pi i} \int_0^{2\pi} \frac{f(\delta e^{i\theta} + z_0)}{(\delta e^{i\theta} + z_0 - z_0)^{m + 1}}\, i \delta e^{i\theta} \,d\theta \\[1em]
+            &= \frac{m!}{2\pi} \int_0^{2\pi} \frac{f(\delta e^{i\theta} + z_0)}{(\delta e^{i\theta})^m} \,d\theta.
+    \end{align*}
+    We estimate the modulus of the integrand,
+    \[
+        \left| \frac{f(\delta e^{i\theta} + z_0)}{(\delta e^{i\theta})^m} \right|
+            = \frac{\left| f(\delta e^{i\theta} + z_0) \right|}{\delta^m}
+            \leq \frac{M}{\delta^m}.
+    \]
+    Then by the $ML$-estimate, we have
+    \[
+        \left| f^{(m)}(z_0) \right|
+            \leq \frac{m!}{2\pi} \cdot \frac{M}{\delta^m} \cdot 2\pi
+            = \frac{m!M}{\delta^m}.
+    \]
+    
+\end{proof}
+
+\newpage
+\begin{proposition}
+    Let $\{f_k(z)\}$ be a sequence of analytic functions on $D$ that converges uniformly to $f(z)$ on $D$, then for each $m$ the derivatives $f_k^{(m)}(z)$ converge uniformly to $f^{(m)}(z)$ on each subset of $D$ at least positive distance from $\bd D$.
+\end{proposition}
+
+\begin{proof}
+    For each $k \in \N$, we define the function
+    \[
+        g_k(z) = f_k(z) - f(z),
+    \]
+    which is analytic on $D$. Let $\delta > 0$, $m \geq 1$, and $\eps > 0$. Because $f_k$ converges uniformly to $f$ on $D$, we may choose $N \in \N$ such that for all $n \geq N$ and $z \in D$,
+    \[
+        |g_n(z)| = |f_n(z) - f(z)| \leq \frac{\delta^m \eps}{m!}.
+    \]
+    For a given $n \geq N$, we apply Proposition 1 to $g_n$ and obtain
+    \[
+        \left| f_n^{(m)}(z) - f^{(m)}(z) \right| = \left| g_n^{(m)}(z) \right| \leq \frac{m!}{\delta^m} \cdot \frac{\delta^m \eps}{m!} = \eps,
+    \]
+    for all $z \in D$ whose distance from $\bd D$ is at least $\delta$.
+    
+\end{proof}
+
+\newpage
+\section{Exercise V.3.1}
+\begin{problem}
+    Find the radius of convergence of the following power series:
+\end{problem}
+
+\subsection{Exercise V.3.1(a)}
+\begin{problem}
+    \[
+        \sum_{k=0}^\infty 2^k z^k
+    \]
+\end{problem}
+\medskip
+
+The radius of convergence is given by
+\[
+    \klim \left| \frac{2^k}{2^{k+1}} \right| = \klim \frac12 = \frac12.
+\]
+
+\subsection{Exercise V.3.1(b)}
+\begin{problem}
+    \[
+        \sum_{k=0}^\infty \frac{k}{6^k} z^k
+    \]
+\end{problem}
+\medskip
+
+The radius of convergence is given by
+\[
+    \frac{1}{\klim \sqrt[k]{|k/6^k|}} = \klim \frac{6}{\sqrt[k]{k}} = \frac61 = 6.
+\]
+
+\subsection{Exercise V.3.1(c)}
+\begin{problem}
+    \[
+        \sum_{k=1}^\infty k^2 z^k
+    \]
+\end{problem}
+\medskip
+
+The radius of convergence is given by
+\[
+    \frac{1}{\klim \sqrt[k]{|k^2|}} = \frac{1}{\klim \left( \sqrt[k]{k} \right)^2} = \frac{1}{1^2} = 1.
+\]
+
+\newpage
+\subsection{Exercise V.3.1(d)}
+\begin{problem}
+    \[
+        \sum_{k=0}^\infty \frac{3^k z^k}{4^k + 5^k}
+    \]
+\end{problem}
+\medskip
+
+The radius of convergence is given by
+\[
+    \frac{1}{\klim \sqrt[k]{\left|\dfrac{3^k}{4^k + 5^k} \right|}}
+        = \frac{1}{\klim \dfrac{3}{\sqrt[k]{4^k + 5^k}}}
+        = \klim \frac{\sqrt[k]{4^k + 5^k}}{3}.
+\]
+We show that this limit exists by bounding it below and above. For any $k \in \N$, we have
+\[
+    \frac{\sqrt[k]{4^k + 5^k}}{3} \geq \frac{\sqrt[k]{5^k}}{3} = \frac53.
+\]
+Moreover, we have
+\[
+    \frac{\sqrt[k]{4^k + 5^k}}{3} \leq \frac{\sqrt[k]{5^k + 5^k}}{3} = \frac{5\sqrt[k]{2}}{3}.
+\]
+Now since
+\[
+    \klim \frac{5\sqrt[k]{2}}{3} = \frac53,
+\]
+then the radius of convergence is
+\[
+    \klim \frac{\sqrt[k]{4^k + 5^k}}{3} = \frac53.
+\]
+
+\subsection{Exercise V.3.1(e)}
+\begin{problem}
+    \[
+        \sum_{k=1}^\infty \frac{2^k z^{2k}}{k^2 + k}
+    \]
+\end{problem}
+\medskip
+
+Note that
+\[
+    \sum_{k=1}^\infty \frac{2^k z^{2k}}{k^2 + k} = \sum_{k=1}^\infty \frac{2^k}{k^2 + k} \left( z^2 \right)^k.
+\]
+Then the radius of convergence, with respect to $z^2$, is
+\[
+    \frac{1}{\klim \sqrt[k]{\left| \dfrac{2^k}{k^2 + k} \right|}}
+        = \frac{\klim \sqrt[k]{k} \cdot \sqrt[k]{k+1}}{2}
+        = \frac{1 \cdot 1}{2}
+        = \frac12.
+\]
+This means that the series converges when $\left| z^2 \right| < 1/2$, i.e., when $|z| < 1/\sqrt{2}$. Thus, the radius of convergence, with respect to $z$, is $1/\sqrt{2}$.
+
+\subsection{Exercise V.3.1(f)}
+\begin{problem}
+    \[
+        \sum_{k=1}^\infty \frac{z^{2k}}{4^k k^k}
+    \]
+\end{problem}
+\medskip
+
+Note that
+\[
+    \sum_{k=1}^\infty \frac{z^{2k}}{4^k k^k} = \sum_{k=1}^\infty \frac{1}{4^k k^k} \left( z^2 \right)^k.
+\]
+Then the radius of convergence, with respect to $z^2$, is
+\[
+    \frac{1}{\klim \sqrt[k]{\left| \dfrac{1}{4^k k^k} \right|}}
+        = \klim 4k
+        = +\infty.
+\]
+This means that the series converges when $\left| z^2 \right| < +\infty$, i.e., when $|z| < +\infty$. Thus, the radius of convergence, with respect to $z$, is also $+\infty$.
+
+\subsection{Exercise V.3.1(g)}
+\begin{problem}
+    \[
+        \sum_{k=1}^\infty \frac{k^k}{1 + 2^k k^k} z^k
+    \]
+\end{problem}
+\medskip
+
+The radius of convergence is given by
+\[
+    \frac{1}{\klim \sqrt[k]{\left| \dfrac{k^k}{1 + 2^k k^k}\right|}} = \klim \frac{\sqrt[k]{1 + 2^k k^k}}{k}.
+\]
+We show that this limit exists by bounding it below and above. For any $k \in \N$, we have
+\[
+    \frac{\sqrt[k]{1 + 2^k k^k}}{k} \geq \frac{\sqrt[k]{2^k k^k}}{k} = \frac{2k}{k} = 2.
+\]
+Moreover, we have
+\[
+    \frac{\sqrt[k]{1 + 2^k k^k}}{k} \leq \frac{\sqrt[k]{2^k k^k + 2^k k^k}}{k} = \frac{2k \sqrt[k]{2}}{k} = 2 \sqrt[k]{2}.
+\]
+Now since $\klim 2 \sqrt[k]{2} = 2$, then the radius of convergence is
+\[
+    \klim \frac{\sqrt[k]{1 + 2^k k^k}}{k} = 2.
+\]
+
+\subsection{Exercise V.3.1(h)}
+\begin{problem}
+    \[
+        \sum_{k=3}^\infty (\log k)^{k/2} z^k
+    \]
+\end{problem}
+\medskip
+
+The radius of convergence is given by
+\[
+    \frac{1}{\klim \sqrt[k]{\left|(\log k)^{k/2}\right|}} = \klim \frac{1}{\sqrt{\log k}} = 0.
+\]
+
+\subsection{Exercise V.3.1(i)}
+\begin{problem}
+    \[
+        \sum_{k=1}^\infty \frac{k! z^k}{k^k}
+    \]
+\end{problem}
+\medskip
+
+The radius of convergence is given by
+\[
+    \klim \left| \frac{k!}{k^k} \cdot \frac{(k+1)^{k+1}}{(k+1)!} \right|
+        = \klim \frac{(k+1)^k}{k^k}
+        = \klim \left( 1 + \frac1k \right)^k
+        = e.
+\]
+
+
+\newpage
+\section{Exercise V.3.3}
+\begin{problem}
+    Find the radius of convergence of the following series.
+\end{problem}
+
+\subsection{Exercise V.3.3(a)}
+\begin{problem}
+    \[
+        \sum_{n=0}^\infty z^{3^n} = z + z^3 + z^9 + z^{27} + z^{81} + \cdots,
+    \]
+\end{problem}
+\medskip
+
+For each $k \in \N$, we define a coefficient
+\[
+    a_k = \begin{cases}
+            1 & \text{if $k = 3^{n-1}$ for some $n \in \N$}, \\
+            0 & \text{otherwise}.
+        \end{cases}
+\]
+Then we can rewrite the series as a power series
+\[
+    \sum_{n=0}^\infty z^{3^n} = \sum_{k=0}^\infty a_k z^k,
+\]
+and the radius of convergence is given by
+\[
+    \frac{1}{\limsup\limits_{k \to \infty} \sqrt[k]{|a_k|}} = \frac{1}{1} = 1.
+\]
+
+\subsection{Exercise V.3.3(b)}
+\begin{problem}
+    \[
+        \sum_{p \text{ prime}} z^p = z^2 + z^3 + z^5 + z^7 + z^{11} + \cdots,
+    \]
+\end{problem}
+\medskip
+
+For each $k \in \N$, we define a coefficient
+\[
+    a_k = \begin{cases}
+            1 & \text{if $k$ prime}, \\
+            0 & \text{otherwise}.
+        \end{cases}
+\]
+Then we can rewrite the series as a power series
+\[
+    \sum_{p \text{ prime}} z^p = \sum_{k=0}^\infty a_k z^k,
+\]
+and the radius of convergence is given by
+\[
+    \frac{1}{\limsup\limits_{k \to \infty} \sqrt[k]{|a_k|}} = \frac{1}{1} = 1.
+\]
+
+\newpage
+\section{Exercise V.3.4}
+\begin{problem}
+    Show that the function defined by $f(z) = \sum z^{n!}$ is analytic on the open unit disk $\{|z| < 1\}$. Show that $|f(r \lambda)| \to +\infty$ as $r \to 1$ whenever $\lambda$ is a root of unity. \emph{Remark}. Thus $f(z)$ does not extend analytically to any larger open set than the open unit disk.
+\end{problem}
+
+\begin{proposition}
+    The function defined by $f(z) = \sum z^{n!}$ is analytic on the open unit disk $\{|z| < 1\}$.
+\end{proposition}
+
+\begin{proof}
+    For each $k \in \N$, we define a coefficient
+    \[
+        a_k = \begin{cases}
+            1 & \text{if $k = n!$ for some $n \in \N$}, \\
+            0 & \text{otherwise}.
+        \end{cases}
+    \]
+    Then $f(z)$ can be written as a power series
+    \[
+        f(z) = \sum_{n = 0}^\infty z^{n!} = \sum_{k = 0}^\infty a_k z^k,
+    \]
+    whose radius of convergence is given by
+    \[
+        \frac{1}{\limsup\limits_{k \to \infty} \sqrt[k]{|a_k|}} = \frac{1}{1} = 1.
+    \]
+    Thus, $f(z)$ is analytic on the open unit disk $\{|z| < 1\}$.
+    
+\end{proof}
+
+\begin{proposition}
+    If $\lambda$ is a root of unity, then $|f(r \lambda)| \to +\infty$ as $r \to 1$.
+\end{proposition}
+
+\begin{proof}
+    Suppose $\lambda^k = 1$ for some $k \in \N$. Note that for all $n \in \N$, if $n \geq k$, then $n!$ has a factor of $k$. Then for $r \in (0, 1)$,
+    \[
+        |f(r\lambda)| = \left| \sum_{n = 0}^\infty (r\lambda)^{n!} \right|
+            = \left| \sum_{n = 0}^{k-1} (r\lambda)^{n!} + \sum_{n = k}^\infty r^{n!}(\lambda^k)^{\frac{n!}{k}} \right|
+            = \left| \sum_{n = 0}^{k-1} (r\lambda)^{n!} + \sum_{n = k}^\infty r^{n!} \right|.
+    \]
+    The summation up to $k - 1$ is finite and $r$ is a positive real number. So
+    \[
+        \lim_{r \to 1} |f(r\lambda)| = C + \lim_{r \to 1} \sum_{n = 0}^\infty r^{n!},
+    \]
+    where $C$ is some constant accounting for the limit of the finite summation and the addition of the first $k$ terms of the infinite summation. Note that for each $r \in (0, 1)$, we have
+    \[
+        \sum_{n = 0}^\infty r^{n!} \leq \sum_{n = 0}^\infty r^n = \frac{1}{1 - r}.
+    \]
+    Thus, we obtain
+    \[
+        \lim_{r \to 1} |f(r\lambda)| 
+            = C + \sum_{n = 0}^\infty \lim_{r \to 1} r^{n!} 
+            = C + \sum_{n = 0}^\infty 1^{n!}
+            = +\infty.
+    \]
+    
+\end{proof}
+
+\newpage
+\section{Exercise V.3.5}
+\begin{problem}
+    What are the functions represented by the following power series?
+\end{problem}
+
+\subsection{Exercise V.3.5(a)}
+\begin{problem}
+    \[
+        \sum_{k=1}^\infty k z^k
+    \]
+\end{problem}
+\medskip
+
+First, we note that the radius of convergence is given by
+\[
+    \frac{1}{\klim \sqrt[k]{|k|}} = \frac11 = 1.
+\]
+Then, for $|z| < 1$, we have
+\begin{align*}
+    \sum_{k=1}^\infty k z^k 
+        &= z \sum_{k=1}^\infty k z^{k - 1} \\[1em]
+        &= z \left( \od{}{z}1 + \sum_{k=1}^\infty \od{}{z} z^k \right) \\[1em]
+        &= z \od{}{z} \sum_{k=0}^\infty z^k \\[1em]
+        &= z \od{}{z} \frac{1}{1 - z} \\[1em]
+        &= \frac{z}{(1 - z)^2}.
+\end{align*}
+    
+\newpage
+\subsection{Exercise V.3.5(b)}
+\begin{problem}
+    \[
+        \sum_{k=1}^\infty k^2 z^k
+    \]
+\end{problem}
+\medskip
+
+First, we note that the radius of convergence is given by
+\[
+    \frac{1}{\klim \sqrt[k]{|k^2|}} = \frac{1}{\klim \left( \sqrt[k]{k} \right)^2} = \frac{1}{1^2} = 1.
+\]
+Then, for $|z| < 1$, we have
+\begin{align*}
+    \sum_{k=1}^\infty k^2 z^k 
+        &= z \sum_{k=1}^\infty k \cdot  kz^{k - 1} \\[1em]
+        &= z \sum_{k=1}^\infty k\od{}{z} z^k \\[1em]
+        &= z \od{}{z} \sum_{k=1}^\infty kz^k \\[1em]
+        &= z \od{}{z} \frac{z}{(1 - z)^2} \\[1em]
+        &= \frac{z(1 + z)}{(1 - z)^3}.
+\end{align*}
+
+
+\end{document}

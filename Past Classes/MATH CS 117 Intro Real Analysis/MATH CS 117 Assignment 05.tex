@@ -1,0 +1,185 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow,enumitem}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Set Names
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+
+% Misc Characters
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\newcommand{\eps}{\varepsilon}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ang}{\langle}{\rangle}
+
+% Homework Sections
+\setlength{\fboxsep}{4pt}
+\newcommand{\generic}[2]{\section*{#1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\ex}[2]{\generic{Exercise #1}{#2}}
+\newcommand{\prob}[2]{\generic{Problem #1}{#2}}
+\newcommand{\ques}[2]{\generic{Question #1}{#2}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+% MATH CS 117 Intro to Real Analysis
+\newcommand{\ds}{\displaystyle}
+\newcommand{\seq}[1]{\left\{#1\right\}_{n=1}^\infty}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+ 
+\begin{document}
+ 
+\title{Assignment 5\\
+    \large MATH CS 117 Intro to Real Analysis}
+\author{Harry Coleman}
+\date{May 11, 2020}
+\maketitle
+
+\ques{1}{
+    \begin{enumerate}[label=(\alph*)]
+        \item Prove that any polynomial function is continuous on $\R$.
+        \item Let $p$ and $q$ be polynomial functions.  Let $\mathcal Z=\{x\in\R:q(x)=0\}$. Prove that $p/q$ is continuous on $\R\setminus\mathcal Z$.
+    \end{enumerate}
+}
+
+\subsection*{(a)}
+
+Let $p:\R\to\R$ be a polynomial function and let $a\in\R$. Since $p$ is a polynomial function, we have that $\ds\lim_{x\to a}p(x) = p(a)$. This is equivalent to $p$ being continuous at $a$. Thus $f$ is continuous on $\R$.
+
+\subsection*{(b)}
+
+Let $a\in\R\setminus\mathcal{Z}$. Since $p$ and $q$ are polynomial functions, we have
+\[\lim_{x\to a}p(x)=p(a) \quad\text{and}\quad \lim_{x\to a}q(x) = q(a).\]
+And since $q(a)\ne0$, this gives us
+\[\lim_{x\to a}(p/q)(x) = \lim_{x\to a}\frac{p(x)}{q(x)} = \frac{p(a)}{q(a)} = (p/q)(a).\]
+Thus $p/q$ is continuous at $a$, and therefore continuous on $\R\setminus\mathcal{Z}$
+
+\newpage
+\ques{2}{
+    Let $D\subset\R$.  Prove that the set
+    \[X=\{f:D\to\R:  \text{ $f$ is continuous on $D$}\}\]
+    is a vector space over $\R$.  (Define vector addition and scalar multiplication and show that $X$ is closed under these operations. Define the zero vector.   You don't need to verify all of the axioms.)
+}
+
+For any $\alpha\in\R$ and $f,g\in X$, we define the function $\alpha f + g$ for all $x\in D$ by
+\[(\alpha f + g)(x) = \alpha f(x) + g(x).\]
+Now let $a\in D$. We define the constant function $h:D\to\R$ by $h(x)=\alpha$ for all $x\in D$, so $h$ is continuous at $a$. Since $h$ and $f$ are continuous at $a$, we have $hf=\alpha f$ continuous at $a$. And since $g$ is also continuous at $a$, we have $\alpha f + g$ continuous at $a$. Thus $\alpha f + g$ is continuous on $D$, so $X$ is closed under addition and scalar multiplication.
+
+The zero vector is the zero function which maps all $x\in D$ to 0.
+
+
+\ques{3}{
+    Let $D\subset \R$.  Suppose that $f:D\to\R$  and that there exists a constant $M>0$ such that $|f(x)-f(y)|\le M|x-y|$, for all $x, y\in D$.  Prove that $f$ is uniformly continuous on $D$. (Such a function is said to be Lipschitz continuous on $D$.)
+}
+
+Let $\eps>0$ be given. Define $\delta=\eps/M$. Note that $\delta>0$ since $\eps,M>0$. Now if $x,y\in D$ and $|x-y|<\delta$, then
+\[|f(x)-f(y)| \leq M|x-y| < M\delta = \eps.\]
+Thus, $f$ is uniform continuous on $D$.
+
+\newpage
+\ques{4}{
+    Suppose that $f:\R\to\R$ satisfies $|f(x)-f(y)|\le \tfrac12|x-y|$, for all $x,y\in\R$.
+    \begin{enumerate}[label=(\alph*)]
+        \item Given an arbitrary point $x_0\in\R$, define a sequence $\seq{x_n}$ recursively by $x_n=f(x_{n-1})$,  $n\in\N$.  Prove that $\seq{x_n}$ is a Cauchy sequence.
+        \item Prove that there is a unique point $x\in\R$ such that $f(x)=x$.
+    \end{enumerate}
+}
+
+\subsection*{(a)}
+
+We first prove by induction on $k$ that for all $k\in\N$, $|x_{k+1} - x_k|\leq \ds\frac1{2^k}|x_1-x_0|$. For the base case,
+\[|x_2-x_1| = |f(x_1)-f(x_0)| \leq \frac12|x_1-x_0|.\]
+For the inductive step, we assume that for some $k\in\N$ that
+\[|x_{k+1} - x_k|\leq \ds\frac1{2^k}|x_1-x_0|.\]
+Then
+\[|x_{k+2}-x_{k+1}| = |f(x_{k+1} - f(x_k)| \leq \frac12|x_{k+1}-x_k| \leq \frac1{2^{k+1}}|x_1-x_0|,\]
+concluding the inductive step. Now let $\eps>0$ be given. We define $N\in\N$ such that
+\[2^{N-1} > \frac{|x_1-x_0|}{\eps}.\]
+So if $m>n\geq N$, then
+\begin{align*}
+    |x_m - x_n|
+        &= |x_m-x_{m-1}+x_{m-1}-x_{m-2}+x_{m-2}-\cdots - x_{n+1}+x_{n+1} - x_n| \\
+        &\leq |x_m-x_{m-1}| + |x_{m-1}-x_{m-2}| + \cdots + |x_{n+1}-x_n| \\
+        &\leq \frac1{2^{m-1}}|x_1-x_0| + \cdots + \frac1{2^n}|x_1-x_0| \\
+        &= \frac1{2^{n-1}}|x_1-x_0|\left(\frac1{2^{m-n}} + \cdots + \frac12 \right)\\
+        &\leq \frac1{2^{n-1}}|x_1-x_0|\cdot 1\\
+        &\leq \frac1{2^{N-1}}|x_1-x_0| \\
+        &\leq \frac\eps{|x_1-x_0|}|x_1-x_0| \\
+        &= \eps.
+\end{align*}
+Thus $\seq{x_n}$ is Cauchy.
+
+\subsection*{(b)}
+
+Since $\seq{x_n}$ is Cauchy, it converges to a limit $x$. Additonally, since $x_{n-1}\to x$ and $x_n=f(x_{n-1})$, then $x_n = f(x_{n-1})\to f(x)$. So since $x_n\to x$ and $x_n\to f(x)$, we have $f(x)=x$.
+
+\ques{5}{
+    Let $\Lambda$ be an arbitrary nonempty set.  Let $\{G_\lambda\}_{\lambda\in\Lambda}$ be a family of open sets in $\R$ indexed by $\Lambda$.  Prove that $\ds\bigcup_{\lambda\in\Lambda}G_\lambda$ is an open set.
+}
+
+Let $x\in\ds\bigcup_{\lambda\in\Lambda}G_\lambda$. Then there is some $\lambda_x\in\Lambda$ such that $x\in G_{\lambda_x}$. Since $G_{\lambda_x}$ is an open set, there is some neighborhood $U$ of $x$ such that $U\subseteq G_{\lambda_x} \subseteq \ds\bigcup_{\lambda\in\Lambda}G_\lambda$. Therefore, $\ds\bigcup_{\lambda\in\Lambda}G_\lambda$ contains a neighborhood of each of its points, so it is an open set.
+
+\ques{6}{
+    Show that  $\emptyset$ and $\R$ are open and closed.
+}
+
+Let $x\in\R$, then for any neighborhood $U$ of $x$, $U\subseteq\R$. So $\R$ is open, and since $\R'=\R\subseteq\R$, it is also closed. Since $\emptyset = \R\setminus\R$ and $\R$ is both open and closed, then $\emptyset$ is also both open and closed.
+
+\newpage
+\ques{7}{
+    \begin{enumerate}[label=(\alph*)]
+        \item \label{parta} Let $D\subset\R$.  Suppose that $f:D\to\R$ and $g:D\to\R$ are bounded and uniformly continuous on $D$. Prove that $f\cdot g$ is uniformly continuous on $D$.
+        \item Give a counterexample showing that boundedness is necessary in part \eqref{parta}.
+\end{enumerate}
+}
+
+\subsection*{(a)}
+
+Since $f$ and $g$ are bounded, then for all $x\in D$, $|f(x)|<M_1$ and $|g(x)|<M_2$ for some $M_1,M_2>0$. Define $M=\max\{M_1,M_2\}$. Let $\eps>0$ be given. Since $f$ and $g$ are uniformly continuous, choose $\delta_1,\delta_2 > 0$ such that for all $x,y\in D$,
+\[|x-y|<\delta_1 \implies |f(x)-f(y)| < \frac{\eps}{2M},\]
+\[|x-y|<\delta_2 \implies |g(x)-g(y)| < \frac{\eps}{2M}.\]
+Then define $\delta=\min\{\delta_1,\delta_2\}$. So if $x,y\in D$ and $|x-y|<\delta$, then
+\begin{align*}
+    |(f\cdot g)(x) - (f\cdot g)(y)|
+        &= |f(x)g(x) - f(y)g(y)| \\
+        &= |f(x)(g(x)-g(y)+g(y)) + (f(x)-f(y)-f(x))g(y)| \\
+        &= |f(x)(g(x)-g(y)) + f(x)g(y) + (f(x)-f(y))g(y) - f(x)g(y)| \\
+        &= |f(x)(g(x)-g(y)) + (f(x)-f(y))g(y)| \\
+        &\leq |f(x)||g(x)-g(y)| + |f(x)-f(y)||g(y)| \\
+        &< M\cdot\frac{\eps}{2M} + \frac{\eps}{2M}\cdot M \\
+        &= \eps.
+\end{align*}
+Thus, $f\cdot g$ is uniformly continuous.
+
+\subsection*{(b)}
+
+Let $f,g:\R\to\R$ be defined by $f(x)=g(x)=x$. Both are unbounded and uniformly continuous since for any $\eps>0$, we have that $|x-y|<\eps$ implies $|f(x)-f(y)|=|g(x)-g(y)|=|x-y|<\eps$ for all $x,y\in\R$. However, $f\cdot g$ is not uniformly continuous since $(f\cdot g)(x)= x^2$ which is not uniformly continuous.
+
+\newpage
+\ques{8}{
+    Prove that $K\subset\R$ is compact if and only if  every infinite subset in  $K$ has an accumulation point in $K$.
+}
+
+Suppose $K$ is compact, and therefore closed and bounded. Let $E\subseteq K$ be an infinite subset. Since $K$ is bounded, $E$ is also bounded. So since $E$ is a bounded infinite set, it has an accumulation point, which is in $K$ since $K$ is closed. Therefore every infinite subset in $K$ has an accumulation point in $K$.
+
+Suppose that every infinite subset of $K$ has an accumulation point in $K$. Let $x\in K'$. Pick a sequence $\seq{x_n}$ in $K\setminus\{x\}$ which converges to $x$. Then the set $\{x_n:n\in\N\}\subseteq K$ has its only accumulation point at $x$. And since it is an infinite subset of $K$, then it has an accumulation point in $K$. Therefore $x\in K$, and $K$ is closed. To prove $K$ is bounded, suppose to the contrary that $K$ is unbounded. Then we pick a point $x_0\in K$ and define a sequence $\seq{x_n}$ in $K$ by $|x_n| > |x_{n-1}| + 1$. The set $\{x_n: n\in\N\}\subseteq K$ is infinite, since all terms of the sequence are distinct. But it has no accumulation points since for each $x_n$, the neighborhood $(x_n-\frac12, x_n+\frac12)$ contains no points in the set $\{x_n: n\in\N\}$. However, since every infinite subset of $K$ has an accumulation point, this is a contradiction, so $K$ must be bounded. Since $K$ is closed and bounded, it is compact.
+
+
+\end{document}

@@ -1,0 +1,864 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{amsmath, amsthm, amssymb, physics}
+\usepackage{tikz}
+\usetikzlibrary{arrows,arrows.meta}
+
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{4pt}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\pfrac}[2]{\left(\frac{#1}{#2}\right)}
+
+% Extra Commands
+\newcommand{\bd}{\partial}
+\newcommand{\Log}{\operatorname{Log}}
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH CS 122B Homework 5}
+    \fancyhead[C]{February 28, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+
+\begin{pbox}[1 Exercise VII.4.1]
+    By integrating around the keyhole contour, show that
+    \[
+        \int_{0}^{\infty} \frac{x^{-a}}{1 + x} \dd{x} = \frac{\pi}{\sin(\pi a)}, \qquad 0 < a < 1.
+    \]
+\end{pbox}
+
+For $z = r e^{i\theta}$ with $\theta \in (0, 2\pi)$, we define a branch of the function
+\[
+    f(z)
+        = \frac{z^{-a}}{z + 1}
+        = \frac{r^{-a}e^{-i\theta a}}{z + 1}.
+\]
+Then $f(z)$ is meromorphic on the slit plane $\C \setminus [0, +\infty)$ with a simple pole at $z = -1$. We can smoothly extend $f(z)$ to the top and bottom edge of $(0, +\infty)$ in the usual way, i.e., by taking $\theta = 0$ on the top edge and $\theta = 2\pi$ on the bottom edge. Since $a > 0$, then $z^{-a}$ is unbounded around the origin, so we cannot extend it there.
+
+Assume $0 < \eps < 1 < R$ and consider the keyhole contour.
+\begin{drawing}
+    %\draw[help lines, color=gray, dashed] (-2.9,-2.9) grid (2.9,2.9);
+    
+    \draw[->, >=Triangle] (1.41,-1.41) arc (-45 : 45 : 2);
+    \draw[->, >=Triangle] (1.41,1.41) arc (45 : 135 : 2);
+    \draw[->, >=Triangle] (-1.41,1.41) arc (135 : 225 : 2);
+    \draw[->, >=Triangle] (-1.41,-1.41) arc (225 : 315 : 2);
+    
+    \draw[->, >=Triangle] (0.215, -0.125) arc (330 : 180 : 0.25);
+    \draw (0.215, -0.125) arc (330 : 30 : 0.25);
+    
+    \fill[fill=white] (2, 0) circle (0.12);
+    \draw (-2.5,0)--(2.5,0);
+    \draw (0,-2.5)--(0,2.5);
+    
+    \draw[fill=black] (2,0) circle (2pt) node[anchor=north west]{$R$};
+    \draw[fill=black] (-2,0) circle (2pt) node[anchor=north east]{$-R$};
+    
+    \draw[->, >=Triangle] (0.215, 0.125) -- (0.75, 0.125); \draw (0.75, 0.125) -- (2, 0.125);
+    \draw[->, >=Triangle] (2, -0.125) -- (1.25, -0.125); \draw (1.25, -0.125) -- (0.215, -0.125);
+    
+    \draw[] (1.75,1.75) node[]{$\Gamma_R$};
+    \draw[] (-0.4,0.4) node[]{$\gamma_\eps$};
+    \draw[] (0.75, 1) node[]{$D$};
+\end{drawing}
+Integrating over the boundary of $D$, we find
+\begin{align*}
+    \int_{\bd D} f(z) \dd{z}
+        &= \int_{\Gamma_R} f(z) \dd{z} + \int_{\gamma_\eps} f(z) \dd{z}
+            + \int_{\eps}^{R} \frac{x^{-a}}{1 + x} \dd{x} + \int_{R}^{\eps} \frac{x^{-a}e^{-i2\pi a}}{1 + x} \dd{x} \\
+        &= \int_{\Gamma_R} f(z) \dd{z} + \int_{\gamma_\eps} f(z) \dd{z}
+            + \qty(1 - e^{-i2\pi a})\int_{\eps}^{R} \frac{x^{-a}}{1 + x} \dd{x}.
+\end{align*}
+Since $f(z)$ is meromorphic in $D \cup \bd D$ with a simple pole at $-1 = e^{i\pi}$, then the residue theorem gives us
+\begin{align*}
+    \int_{\bd D} f(z) \dd{z}
+        &= i2\pi \Res[f(z), -1] \\
+        &= i2\pi \eval[(z + 1) f(z)|_{z=-1} \\
+        &= i2\pi \eval[r^{-a}e^{-i\theta a}|_{z = -1} \\
+        &= i2\pi \qty(1^{-a}e^{-i\pi a}) \\
+        &= i2\pi e^{-i\pi a}.
+\end{align*}
+For $z \in \Gamma_R$, so $z = Re^{i\theta}$ with $\theta \in [0, 2\pi]$, we find
+\[
+    |f(z)|
+        = \frac{R^{-a}|e^{-i\theta a}|}{|1 + z|}
+        \leq \frac{R^{-a}}{R - 1}.
+\]
+Then by the $ML$-estimate,
+\[
+    \qty|\int_{\Gamma_R} f(z) \dd{z}|
+        \leq \frac{R^{-a}}{R - 1} \cdot 2\pi R
+        \sim R^{-a}.
+\]
+And since $-a < 0$, then $R^{-a} \to 0$ as $R \to \infty$. For $z \in \gamma_\eps$, so $z = \eps e^{i\theta}$ with $\theta \in [0, 2\pi]$, we find
+\[
+    |f(z)|
+        = \frac{\eps^{-a}|e^{-i\theta a}|}{|1 + z|}
+        \leq \frac{\eps^{-a}}{1 - \eps}.
+\]
+Then by the $ML$-estimate,
+\[
+    \qty|\int_{\gamma_\eps} f(z) \dd{z}|
+        \leq \frac{\eps^{-a}}{1 - \eps} \cdot2\pi \eps
+        \sim \eps^{1-a}.
+\]
+And since $1-a > 0$, then $\eps^{1-a} \to 0$ as $\eps \to 0$. Now letting $R \to \infty$ and $\eps \to 0$ in our original equation, we find
+\[
+    i2\pi e^{-i\pi a} = \qty(1 - e^{-i2\pi a})\int_{0}^{\infty} \frac{x^{-a}}{1 + x} \dd{x}.
+\]
+Rearranging, we obtain
+\begin{align*}
+    \int_{0}^{\infty} \frac{x^{-a}}{1 + x} \dd{x}
+        &= \frac{i2\pi e^{-i\pi a}}{1 - e^{-i2\pi a}} \\
+        &= \frac{i2\pi}{e^{i\pi a} - e^{-i\pi a}} \\
+        &= \frac{i2\pi}{i2\sin(\pi a)} \\
+        &= \frac{\pi}{\sin(\pi a)}.
+\end{align*}
+
+
+
+
+
+
+
+
+\newpage
+\begin{pbox}[2 Exercise VII.4.3]
+    By integrating around the keyhole contour, show that
+    \[
+        \int_{0}^{\infty} \frac{\log x}{x^a(x+1)} \dd{x} = \frac{\pi^2 \cos(\pi a)}{\sin^2(\pi a)}, \qquad 0 < a < 1.
+    \]
+    \textit{Remark.} Check the result by differentiating the identity in Exercise 1.
+\end{pbox}
+
+For $z = re^{i\theta}$ with $r > 0$ and $\theta \in (0, 2\pi)$, we define a branch of the function
+\[
+    f(z)
+        = \frac{\log z}{z^a(z + 1)}
+        = \frac{\log r + i\theta}{r^a e^{i\theta a}(z + 1)}.
+\]
+Then $f(z)$ is meromorphic on the slit plane $\C \setminus [0, +\infty)$ with a simple pole at $z = -1$. We can smoothly extend $f(z)$ to the top and bottom edge of $(0, +\infty)$ in the usual way, i.e., by taking $\theta = 0$ on the top edge and $\theta = 2\pi$ on the bottom edge. But since the logarithm function has a pole at the origin, it cannot be extended there.
+
+Assume $0 < \eps < 1 < R$ and consider the keyhole contour.
+\begin{drawing}
+    %\draw[help lines, color=gray, dashed] (-2.9,-2.9) grid (2.9,2.9);
+    
+    \draw[->, >=Triangle] (1.41,-1.41) arc (-45 : 45 : 2);
+    \draw[->, >=Triangle] (1.41,1.41) arc (45 : 135 : 2);
+    \draw[->, >=Triangle] (-1.41,1.41) arc (135 : 225 : 2);
+    \draw[->, >=Triangle] (-1.41,-1.41) arc (225 : 315 : 2);
+    
+    \draw[->, >=Triangle] (0.215, -0.125) arc (330 : 180 : 0.25);
+    \draw (0.215, -0.125) arc (330 : 30 : 0.25);
+    
+    \fill[fill=white] (2, 0) circle (0.12);
+    \draw (-2.5,0)--(2.5,0);
+    \draw (0,-2.5)--(0,2.5);
+    
+    \draw[fill=black] (2,0) circle (2pt) node[anchor=north west]{$R$};
+    \draw[fill=black] (-2,0) circle (2pt) node[anchor=north east]{$-R$};
+    
+    \draw[->, >=Triangle] (0.215, 0.125) -- (0.75, 0.125); \draw (0.75, 0.125) -- (2, 0.125);
+    \draw[->, >=Triangle] (2, -0.125) -- (1.25, -0.125); \draw (1.25, -0.125) -- (0.215, -0.125);
+    
+    \draw[] (1.75,1.75) node[]{$\Gamma_R$};
+    \draw[] (-0.4,0.4) node[]{$\gamma_\eps$};
+    \draw[] (0.75, 1) node[]{$D$};
+\end{drawing}
+Integrating over the boundary of $D$, we find
+\[
+    \int_{\bd D} f(z) \dd{z}
+        = \int_{\Gamma_R} f(z) \dd{z}
+            + \int_{\gamma_\eps} f(z) \dd{z}
+            + \int_{\eps}^{R} \frac{\log x}{x^a(x + 1)} \dd{x}
+            + \int_{R}^{\eps} \frac{\log x + i2\pi}{x^ae^{i2\pi a}(x + 1)} \dd{x}
+\]
+Since $f(z)$ is meromorphic in $D \cup \bd D$ with a simple pole at $-1 = e^{i\pi}$, then the residue theorem gives us
+\begin{align*}
+    \int_{\bd D} f(z) \dd{z}
+        &= i2\pi \Res[f(z), -1] \\
+        &= i2\pi \eval[(z + 1) f(z)|_{z = -1} \\
+        &= i2\pi \eval[\frac{\log r + i\theta}{r^a e^{i\theta a}}|_{z = -1} \\
+        &= i2\pi \pfrac{\log 1 + i\pi}{1^a e^{i\pi a}} \\
+        &= -2\pi^2e^{-i\pi a}.
+\end{align*}
+For $z \in \Gamma_R$, so $z = Re^{i\theta}$ with $\theta \in [0, 2\pi]$, we find
+\[
+    |f(z)|
+        = \frac{|\log R + i\theta|}{R^a|z + 1|}
+        \leq \frac{\log R + 2\pi}{R^a(R - 1)}.
+\]
+Then by the $ML$-estimate,
+\[
+    \qty|\int_{\Gamma_R} f(z) \dd{z}|
+        \leq \frac{\log R + 2\pi}{R^a(R - 1)} \cdot 2\pi R
+        \sim R^{-a} \log R.
+\]
+And since $-a < 0$, then $R^{-a} \log R \to 0$ as $R \to \infty$. For $z \in \gamma_\eps$, so $z = \eps e^{i\theta}$ with $\theta \in [0, 2\pi]$, we find
+\[
+    |f(z)|
+        = \frac{|\log \eps + i\theta|}{\eps^a|z + 1|}
+        \leq \frac{\log \eps + 2\pi}{\eps^a(1 - \eps)}
+\]
+Then by the $ML$-estimate,
+\[
+    \qty|\int_{\gamma_\eps} f(z) \dd{z}|
+        \leq \frac{\log \eps + 2\pi}{\eps^a(1 - \eps)} \cdot2\pi \eps
+        \sim \eps^{1-a} \log\eps.
+\]
+And since $1 - a > 0$, then $\eps^{1-a} \log\eps \to 0$ as $\eps \to 0$. We rewrite the integral along the bottom edge of the branch cut to be
+\begin{align*}
+    \int_{R}^{\eps} \frac{\log x + i2\pi}{x^ae^{i2\pi a}(x + 1)} \dd{x}
+        &= -e^{-i2\pi a} \int_{\eps}^{R} \frac{\log x + i2\pi}{x^a(x + 1)} \dd{x} \\
+        &= -e^{-i2\pi a} \qty(\int_{\eps}^{R} \frac{\log x}{x^a(x + 1)} \dd{x} + i2\pi \int_{\eps}^{R} \frac{x^{-a}}{x + 1} \dd{x}).
+\end{align*}
+Letting $R \to \infty$ and $\eps \to 0$ in the original equation, we find
+\begin{align*}
+    -2\pi^2e^{-i\pi a}
+        &= \qty(1 - e^{-i2\pi a}) \int_{0}^{\infty} \frac{\log x}{x^a(x + 1)} \dd{x}
+            - i2\pi e^{-i2\pi a} \int_{0}^{\infty} \frac{x^{-a}}{(x + 1)} \dd{x} \\
+        &= \qty(1 - e^{-i2\pi a}) \int_{0}^{\infty} \frac{\log x}{x^a(x + 1)} \dd{x}
+            - i2\pi e^{-i2\pi a} \frac{\pi}{\sin(\pi a)}.
+\end{align*}
+Multiplying both sides by $e^{i\pi a}$ gives us
+\[
+    -2\pi^2
+        = \qty(e^{i\pi a} - e^{-i\pi a}) \int_{0}^{\infty} \frac{\log x}{x^a(x + 1)} \dd{x}
+            - \frac{i2\pi^2 e^{-i\pi a} }{\sin(\pi a)}.
+\]
+Rearranging, we obtain
+\begin{align*}
+    \int_{0}^{\infty} \frac{\log x}{x^a(x + 1)} \dd{x}
+        &= \frac{1}{e^{i\pi a} - e^{-i\pi a}}\left(\frac{i2\pi^2 e^{-i\pi a} }{\sin(\pi a)} - 2\pi^2\right) \\
+        &=  \frac{i2\pi^2}{i2\sin(\pi a)}\left(\frac{e^{-i\pi a}}{\sin(\pi a)} + i\right) \\
+        &=  \frac{\pi^2}{\sin^2(\pi a)}\left(e^{-i\pi a} + i\sin(\pi a)\right) \\
+        &=  \frac{\pi^2\cos(\pi a)}{\sin^2(\pi a)}.
+\end{align*}
+
+
+
+
+\newpage
+\begin{pbox}[3 Exercise VII.4.6]
+    Using residue theory, show that
+    \[
+        \int_{0}^{\infty} \frac{x^a \log x}{(1 + x)^2} \dd{x} = \frac{\pi \sin(\pi a) - a\pi^2 \cos(\pi a)}{\sin^2(\pi a)}, \qquad -1 < a < 1.
+    \]
+\end{pbox}
+
+For $z = re^{i\theta}$ with $r > 0$ and $\theta \in (0, 2\pi)$, we define a branch of the function
+\[
+    f(z)
+        = \frac{z^a \log z}{(1 + z)^2}
+        = \frac{r^ae^{i\theta a}(\log r + i\theta)}{(1 + z)^2}.
+\]
+Then $f(z)$ is meromorphic on the slit plane $\C \setminus [0, + \infty)$ with a double pole at $-1$. We can smoothly extend $f(z)$ to the top and bottom edge of $(0, +\infty)$ in the usual way, i.e., by taking $\theta = 0$ on the top edge and $\theta = 2\pi$ on the bottom edge. But if $a \leq 0$, then $z^a\log z$ is unbounded near the origin, so we cannot necessarily extend it there.
+
+Assume $0 < \eps < 1 < R$, and consider the keyhole contour.
+\begin{drawing}
+    %\draw[help lines, color=gray, dashed] (-2.9,-2.9) grid (2.9,2.9);
+    
+    \draw[->, >=Triangle] (1.41,-1.41) arc (-45 : 45 : 2);
+    \draw[->, >=Triangle] (1.41,1.41) arc (45 : 135 : 2);
+    \draw[->, >=Triangle] (-1.41,1.41) arc (135 : 225 : 2);
+    \draw[->, >=Triangle] (-1.41,-1.41) arc (225 : 315 : 2);
+    
+    \draw[->, >=Triangle] (0.215, -0.125) arc (330 : 180 : 0.25);
+    \draw (0.215, -0.125) arc (330 : 30 : 0.25);
+    
+    \fill[fill=white] (2, 0) circle (0.12);
+    \draw (-2.5,0)--(2.5,0);
+    \draw (0,-2.5)--(0,2.5);
+    
+    \draw[fill=black] (2,0) circle (2pt) node[anchor=north west]{$R$};
+    \draw[fill=black] (-2,0) circle (2pt) node[anchor=north east]{$-R$};
+    
+    \draw[->, >=Triangle] (0.215, 0.125) -- (0.75, 0.125); \draw (0.75, 0.125) -- (2, 0.125);
+    \draw[->, >=Triangle] (2, -0.125) -- (1.25, -0.125); \draw (1.25, -0.125) -- (0.215, -0.125);
+    
+    \draw[] (1.75,1.75) node[]{$\Gamma_R$};
+    \draw[] (-0.4,0.4) node[]{$\gamma_\eps$};
+    \draw[] (0.75, 1) node[]{$D$};
+\end{drawing}
+Integrating over the boundary of $D$, we find
+\[
+    \int_{\bd D} f(z) \dd{z}
+        = \int_{\Gamma_R} f(z) \dd{z} + \int_{\gamma_\eps} f(z) \dd{z}
+            + \int_{\eps}^{R} \frac{x^a \log x}{(1 + x)^2} \dd{x} + \int_{R}^{\eps} \frac{x^ae^{i2\pi a}(\log x + i2\pi)}{(1 + x)^2} \dd{x}
+\]
+Since $f(z)$ is meromorphic on $D \cup \bd D$ with a double pole at $-1 = e^{i\pi}$, then the residue theorem tells us
+\begin{align*}
+    \int_{\bd D} f(z) \dd{z}
+        &= i2\pi \Res[f(z), -1] \\
+        &= i2\pi \eval[\dv{z} (z + 1)^2 f(z)|_{z = -1} \\
+        &= i2\pi \eval[\dv{z} z^a \log z|_{z = -1} \\
+        &= i2\pi \eval[z^a \frac{1}{z} + a\frac{z^a}{z} \log z|_{z = -1} \\
+        &= i2\pi \eval[\frac{z^a}{z} (1 + a\log z)|_{z = -1} \\
+        &= i2\pi \left(\frac{e^{i\pi a}}{-1} \qty(1 + a\log e^{i\pi})\right) \\
+        &= -i2\pi (1 + ia\pi) e^{i\pi a}.
+\end{align*}
+For $z \in \Gamma_R$, so $z = Re^{i\theta}$ with $\theta \in [0, 2\pi]$, we find
+\begin{align*}
+    |f(z)|
+        = \frac{R^a|\log R + i\theta|}{|1 + z|^2}
+        \leq \frac{R^a(\log R + 2\pi)}{(R - 1)^2}.
+\end{align*}
+Then by the $ML$-estimate,
+\[
+    \qty|\int_{\Gamma_R} f(z) \dd{z}|
+        \leq \frac{R^a(\log R + 2\pi)}{(R - 1)^2} \cdot 2\pi R
+        \sim R^{a - 1}\log R.
+\]
+And since $a - 1 < 0$, then $R^{a-1}\log R \to 0$ as $R \to \infty$. For $z \in \gamma_\eps$, so $z = \eps e^{i\theta}$ with $\theta \in [0, 2\pi]$, we find
+\begin{align*}
+    |f(z)|
+        = \frac{\eps^a|\log \eps + i\theta|}{|1 + z|^2}
+        \leq \frac{\eps^a(\log \eps + 2\pi)}{(1 - \eps)^2}.
+\end{align*}
+Then by the $ML$-estimate,
+\[
+    \qty|\int_{\gamma_\eps} f(z) \dd{z}|
+        \leq \frac{\eps^a(\log\eps + 2\pi)}{(1 - \eps)^2} \cdot 2\pi \eps
+        \sim \eps^{1+a} \log\eps.
+\]
+And since $1 + a > 0$, then $\eps^{1+a}\log\eps \to 0$ as $\eps \to 0$. We rewrite the integral along the bottom edge of the branch cut to be
+\begin{align*}
+    \int_{R}^{\eps} \frac{x^ae^{i2\pi a}(\log x + i2\pi)}{(1 + x)^2} \dd{x}
+        &= -e^{i2\pi a} \int_{\eps}^{R} \frac{x^a(\log x + i2\pi)}{(1 + x)^2} \dd{x} \\
+        &= -e^{i2\pi a} \qty(\int_{\eps}^{R} \frac{x^a\log x}{(1 + x)^2} \dd{x} - i2\pi \int_{\eps}^{R} \frac{x^a}{(1 + x)^2} \dd{x}).
+\end{align*}
+Now taking the limit as $R \to \infty$ and $\eps \to 0$ in our original equation, we obtain
+\begin{align*}
+    -i2\pi (1 + ia\pi) e^{i\pi a}
+        &= (1 - e^{i2\pi a}) \int_{0}^{\infty} \frac{x^a\log x}{(1 + x)^2} \dd{x} - i2\pi  e^{i2\pi a} \int_{0}^{\infty} \frac{x^a}{(1 + x)^2} \dd{x} \\
+        &= (1 - e^{i2\pi a}) \int_{0}^{\infty} \frac{x^a\log x}{(1 + x)^2} \dd{x} - i2\pi  e^{i2\pi a} \frac{\pi a}{\sin(\pi a)}.
+\end{align*}
+Rearranging, we find
+\begin{align*}
+    \int_{0}^{\infty} \frac{x^a\log x}{(1 + x)^2} \dd{x}
+        &= \frac{1}{1 - e^{i2\pi a}} \left(-i2\pi (1 + ia\pi) e^{i\pi a} + \frac{i2a\pi^2 e^{i2\pi a}}{\sin(\pi a)}\right) \\
+        &= \frac{-i2\pi e^{i\pi a}}{1 - e^{i2\pi a}} \left(1 + ia\pi - \frac{a\pi e^{i\pi a}}{\sin(\pi a)}\right) \\
+        &= \frac{-i2\pi}{e^{-i\pi a} - e^{i\pi a}} \pfrac{\sin(\pi a) + ia\pi\sin(\pi a) - a\pi e^{i\pi a}}{\sin(\pi a)} \\
+        &= \frac{-i2\pi}{-i2\sin(\pi a)} \pfrac{\sin(\pi a) + a\pi\qty(i\sin(\pi a) - e^{i\pi a})}{\sin(\pi a)} \\
+        &= \frac{\pi}{\sin(\pi a)} \pfrac{\sin(\pi a) + a\pi(-\cos(\pi a))}{\sin(\pi a)} \\
+        &= \frac{\pi\sin(\pi a) - a\pi^2\cos(\pi a)}{\sin^2(\pi a)}.
+\end{align*}
+
+
+
+
+\newpage
+\begin{pbox}[4 Exercise VII4.7]
+    Show that
+    \[
+        \int_{0}^{\infty} \frac{x^{a-1}}{1 + x^b} \dd{x} = \frac{\pi}{b \sin(\pi a/b)}, \qquad 0 < a < b.
+    \]
+\end{pbox}
+
+Note that $b = 1$ is a particular case of Problem 1. If $b > 1$, then for $z = r e^{i\theta}$ with $\theta \in (0, 2\pi)$, we define a branch of the function
+\[
+    f(z)
+        = \frac{z^{a-1}}{1 + z^b}
+        = \frac{r^{a-1}e^{i\theta(a-1)}}{1 + r^b e^{i\theta b}}.
+\]
+Then $f(z)$ is meromorphic in the slit plane $\C \setminus [0, + \infty)$ with poles wherever $z^b = -1$. We can smoothly extend $f(z)$ to the top and bottom edge of $(0, +\infty)$ in the usual way, i.e., by taking $\theta = 0$ on the top edge and $\theta = 2\pi$ on the bottom edge. But if $a < 1$, then $z^{a-1}$ is unbounded near the origin, and we cannot necessarily extend it there.
+
+Assume $0 < \eps < 1 < R$ and consider the pie-slice domain.
+\begin{drawing}
+    %\draw[help lines, color=gray, dashed] (-1,-1) grid (5,3);
+    
+    \draw (-0.5,0)--(4.5,0);
+    \draw (0,-0.5)--(0,2.5);
+    
+    \draw[->, >=Triangle] (0, 0) -- (2.25, 0);
+    \draw[->, >=Triangle] (4, 0) arc (0 : 15 : 4);
+    \draw (4, 0) arc (0 : 30 : 4) node[midway, anchor = west]{$\Gamma_R$};;
+    \draw[->, >=Triangle] (3.5, 2) -- (1.75, 1);
+    \draw(0, 0) -- (3.5, 2);
+    
+    \draw[fill=black] (4,0) circle (2pt) node[anchor=north west]{$R$};
+    \draw[fill=black] (3.47,1.97) circle (2pt) node[anchor=south west]{$Re^{i2\pi/b}$};
+    
+    \draw (1, 0) arc (0 : 30 : 1) node[midway, anchor = west, yshift=2pt]{$\gamma_\eps$};
+    \draw[->, >=Triangle] (0.87, 0.5) arc (30 : 10 : 1);
+    
+    \draw[] (2.7, 0.75) node{$D$};
+\end{drawing}
+Integrating over the boundary of $D$, we find
+\[
+    \int_{\bd D} f(z) \dd{z}
+        = \int_{\Gamma_R} f(z) \dd{z} + \int_{\gamma_\eps} f(z) \dd{z}
+            +\int_{\eps}^{R} \frac{x^{a-1}}{1 + x^b} \dd{x}
+            + \int_{Re^{i2\pi/b}}^{\eps e^{i2\pi/b}} f(z) \dd{z}.
+\]
+Since $f(z)$ is meromorphic on $D \cup \bd D$ with a simple pole at $z_1 = e^{i\pi/b}$, then the residue theorem tells us
+\begin{align*}
+    \int_{\bd D} f(z) \dd{z}
+        &= i2\pi \Res[f(z), z_1] \\
+        &= i2\pi \eval[\frac{z^{a-1}}{\dv{z}(1 + z^b)}|_{z = z_1} \\
+        &= i2\pi \eval[\frac{z^{a-1}}{bz^{b-1}}|_{z = z_1} \\
+        &= i2\pi \eval[\frac{z^a}{bz^b}|_{z = e^{i\pi/b}} \\
+        &= i2\pi \pfrac{e^{i\pi a/b}}{be^{i\pi}} \\
+        &= \frac{-i2\pi e^{i\pi a/b}}{b}.
+\end{align*}
+For $z \in \Gamma_R$, so $z = Re^{i\theta}$ with $\theta \in [0, 2\pi/b]$, we find
+\[
+    |f(z)|
+        = \frac{|z|^{a-1}}{|1 + z^b|}
+        \leq \frac{R^{a-1}}{R^b - 1}.
+\]
+Then by the $ML$-estimate,
+\[
+    \qty|\int_{\Gamma_R} f(z) \dd{z}|
+        \leq \frac{R^{a-1}}{R^b - 1} \cdot \frac{2\pi}{b} R
+        \sim R^{a-b}.
+\]
+And since $a - b < 0$, then $R^{a-b} \to 0$ as $R \to \infty$. For $z \in \gamma_\eps$, so $z = \eps e^{i\theta}$ with $\theta \in [0, 2\pi/b]$, we find
+\[
+    |f(z)|
+        = \frac{|z|^{a-1}}{|1 + z^b|}
+        \leq \frac{\eps^{a-1}}{1 - \eps^b}.
+\]
+Then by the $ML$-estimate,
+\[
+    \qty|\int_{\gamma_\eps} f(z) \dd{z}|
+        \leq \frac{\eps^{a-1}}{1 - \eps^b} \cdot \frac{2\pi}{b} \eps
+        \sim \eps^a.
+\]
+And since $a > 0$, then $\eps^a \to 0$ as $\eps \to 0$. We parameterize the integral over the top segment by taking $z = x e^{i2\pi/b}$ for $x \in [\eps, R]$. Then $\dd{z} = e^{i2\pi/b} \dd{x}$ and we have
+\begin{align*}
+    \int_{Re^{i2\pi/b}}^{\eps e^{i2\pi/b}} f(z) \dd{z}
+        &= \int_{R}^{\eps} f(xe^{i2\pi/b}) e^{i2\pi/b} \dd{x} \\
+        &= - \int_{\eps}^{R} \frac{x^{a-1}e^{i2\pi(a-1)/b}}{1 + x^be^{i2\pi}} e^{i2\pi/b}\dd{x} \\
+        &= - e^{i2\pi a/b} \int_{\eps}^{R} \frac{x^{a-1}}{1 + x^b} \dd{x}.
+\end{align*}
+Letting $R \to \infty$ and $\eps \to 0$ in our original equation, we obtain
+\begin{align*}
+    \frac{-i2\pi e^{i\pi a/b}}{b}
+        &= \qty(1 - e^{i2\pi a/b}) \int_{0}^{\infty} \frac{x^{a-1}}{1 + x^b} \dd{x}.
+\end{align*}
+Rearranging, we find
+\begin{align*}
+    \int_{0}^{\infty} \frac{x^{a-1}}{1 + x^b} \dd{x}
+        &= \frac{-i2\pi e^{i\pi a/b}}{b\qty(1 - e^{i2\pi a/b})} \\
+        &= \frac{-i2\pi}{b\qty(e^{-i\pi a/b} - e^{i\pi a/b})} \\
+        &= \frac{-i2\pi}{b(-i2\sin(\pi a/b))} \\
+        &= \frac{\pi}{b\sin(\pi a/b)}.
+\end{align*}
+
+
+
+\newpage
+
+For $b < 1$, I was unable to determine the correct branch cut and/or contour to integrate over to prove the result. But the general result can be shown as a consequence of Problem 1 using real analysis techniques.
+
+Given $0 < a < b$, we want to show that the improper integral
+\[
+        \int_{0}^{\infty} \frac{x^{a-1}}{1 + x^b} \dd{x}
+            =\lim_{c \to \infty} \int_{0}^{c} \frac{x^{a-1}}{1 + x^b} \dd{x}
+\]
+exists and equals the value in question. We take $x = y^{1/b}$ and $\dd{x} = (1/b)y^{1/b - 1}\dd{y}$ for change of variables, giving us
+\begin{align*}
+    \int_{0}^{c} \frac{x^{a-1}}{1 + x^b} \dd{x}
+        &= \int_{0}^{c^b} \frac{y^{(a-1)/b}}{1 + y} \pfrac{y^{1/b-1}}{b} \dd{y} \\
+        &= \frac{1}{b} \int_{0}^{c^b} \frac{y^{a/b-1}}{1 + y} \dd{y} \\
+        &= \frac{1}{b} \int_{0}^{c^b} \frac{y^{-(1 - a/b)}}{1 + y} \dd{y}.
+\end{align*}
+We now find
+\begin{align*}
+    0 &< a < b \\
+    0 &< a/b < 1 \\
+    -1 &< a/b - 1 < 0 \\
+    0 &< 1 - a/b < 1.
+\end{align*}
+So as an instance of Problem 1, we have
+\begin{align*}
+    \int_{0}^{\infty} \frac{y^{-(1 - a/b)}}{1 + y} \dd{y}
+        &= \frac{\pi}{\sin(\pi(1 - a/b))} \\
+        &= \frac{\pi}{\sin(\pi - \pi a/b)} \\
+        &= \frac{\pi}{-\sin(-\pi a/b)} \\
+        &= \frac{\pi}{\sin(\pi a/b)}.
+\end{align*}
+Finally, since $b > 0$, then $c^b \to \infty$ as $c \to \infty$, so we obtain
+\begin{align*}
+    \int_{0}^{\infty} \frac{x^{a-1}}{1 + x^b} \dd{x}
+        &= \frac{1}{b} \lim_{c \to \infty} \int_{0}^{c^b} \frac{y^{-(1 - a/b)}}{1 + y} \dd{y} \\
+        &= \frac{1}{b} \int_{0}^{\infty} \frac{y^{-(1 - a/b)}}{1 + y} \dd{y} \\
+        &= \frac{\pi}{b\sin(\pi a/b)}.
+\end{align*}
+
+
+
+
+
+\newpage
+\begin{pbox}[5 Exercise VII.5.1]
+    Use the keyhole contour indented on the lower edge of the axis at $x=1$ to show that
+    \[
+        \int_{0}^{\infty} \frac{\log x}{x^a(x-1)} \dd{x} = \frac{2\pi^2}{1 - \cos (2\pi a)}, \qquad 0 < a < 1.
+    \]
+\end{pbox}
+
+For $z = re^{i\theta}$ with $r > 0$ and $\theta \in (0, 2\pi)$, we define a branch of the function
+\[
+    f(z)
+        = \frac{\log z}{z^a(z - 1)}
+        = \frac{\log r + i\theta}{r^ae^{i\theta a}(z - 1)}.
+\]
+Then $f(z)$ is analytic on the slit plane $\C \setminus [0, +\infty)$ and can be extended smoothly to the top and bottom edges of $(0, 1) \cup (1, +\infty)$. This branch of $\log z$ agrees with the principal branch $\Log z$ near the top edge of of the branch cut. And since $\Log z$ has a simple zero at $1$, then $(z - 1)^{-1}\Log z$ has a removable singularity at $z = 1$, implying that $f(z)$ can be extended smoothly to $1$ on the top edge, as well. However, this branch of $\log z$ agrees with $\Log z + i2\pi$ near the bottom edge of the branch cut, which is nonzero at $1$, implying $f(z)$ has a simple pole at $z = 1$ on the bottom edge.
+
+Assume $0 < \delta < 1 - \eps < 1 + \eps < R$, and consider the keyhole contour indented on the lower edge of the branch cut at $x = 1$.
+\begin{drawing}
+    %\draw[help lines, color=gray, dashed] (-2.9,-2.9) grid (2.9,2.9);
+    
+    \draw[->, >=Triangle] (1.41,-1.41) arc (-45 : 45 : 2);
+    \draw[->, >=Triangle] (1.41,1.41) arc (45 : 135 : 2);
+    \draw[->, >=Triangle] (-1.41,1.41) arc (135 : 225 : 2);
+    \draw[->, >=Triangle] (-1.41,-1.41) arc (225 : 315 : 2);
+    
+    \draw[->, >=Triangle] (0.215, -0.125) arc (330 : 180 : 0.25);
+    \draw (0.215, -0.125) arc (330 : 30 : 0.25);
+    
+    \fill[fill=white] (2, 0) circle (0.12);
+    \draw (-2.5,0)--(2.5,0);
+    \draw (0,-2.5)--(0,2.5);
+    
+    \draw[fill=black] (2,0) circle (2pt) node[anchor=north west]{$R$};
+    \draw[fill=black] (-2,0) circle (2pt) node[anchor=north east]{$-R$};
+    
+    \draw[->, >=Triangle] (0.215, 0.125) -- (0.75, 0.125); \draw (0.75, 0.125) -- (2, 0.125);
+    \draw[->, >=Triangle] (2, -0.125) -- (1.25, -0.125);
+    \draw (1.25, -0.125) -- (1, -0.125);
+    \draw (0.5, -0.125) -- (0.215, -0.125);
+    \draw[] (1, -0.125) arc (360 : 180 : 0.25) node[midway, anchor=north]{$C_\eps$};
+    \draw[->, >=Triangle] (1, -0.125) arc (360 : 240 : 0.25);
+    
+    \draw[] (1.75,1.75) node[]{$\Gamma_R$};
+    \draw[] (-0.4,0.4) node[]{$\gamma_\delta$};
+    \draw[] (0.75, 1) node[]{$D$};
+\end{drawing}
+Since $f(z)$ is analytic inside $D$ and extends smoothly to its boundary, Cauchy's integral theorem tells us that the integral over the boundary of $D$ is zero, so
+\begin{align*}
+    0
+        = \int_{\Gamma_R} f(z) \dd{z}
+        &+ \int_{\gamma_\delta} f(z) \dd{z}
+            + \int_{C_\eps} f(z) \dd{z}
+            + \int_{\delta}^{R} \frac{\log x}{x^a(x-1)} \dd{x} \\
+        &+ \int_{R}^{1+\eps} \frac{\log x + i2\pi}{x^a e^{i2\pi a}(x - 1)} \dd{x}
+            + \int_{1-\eps}^{\delta} \frac{\log x + i2\pi}{x^a e^{i2\pi a}(x - 1)} \dd{x}
+\end{align*}
+For $z \in \Gamma_R$, so $z = Re^{i\theta}$ with $\theta \in [0, 2\pi]$, we find
+\[
+    |f(z)|
+        = \frac{|\log R + i\theta|}{R^a|e^{i\theta a}||z - 1|}
+        \leq \frac{\log R  + 2\pi}{R^a(R - 1)}.
+\]
+Then by the $ML$-estimate,
+\[
+    \qty|\int_{\Gamma_R} f(z) \dd{z}|
+        \leq\frac{\log R  + 2\pi}{R^a(R - 1)} \cdot 2\pi R
+        \sim R^{-a}\log R.
+\]
+And since $-a < 0$, then $R^{-a}\log R \to 0$ as $R \to \infty$. For $z \in \gamma_\delta$, so $z = \delta e^{i\theta}$ with $\theta \in (0, 2\pi)$, we find
+\[
+    |f(z)|
+        = \frac{|\log \delta + i\theta|}{\delta^a|e^{i\theta a}||z - 1|}
+        \leq \frac{\log \delta  + 2\pi}{\delta^a(1 - \delta)}.
+\]
+Then by the $ML$-estimate,
+\[
+    \qty|\int_{\gamma_\delta} f(z) \dd{z}|
+        \leq \frac{\log \delta  + 2\pi}{\delta^a(1 - \delta)} \cdot 2\pi \delta
+        \sim \delta^{1-a} \log \delta.
+\]
+And since $1-a > 0$, then $\delta^{1-a} \log \delta \to 0$ as $\delta \to 0$. For the integral over $C_\eps$, we consider $z = re^{i\theta}$ for $r > 1$ and $\theta \in [\pi, 3\pi]$ and define a different branch of the function
+\[
+    g(z)
+        = \frac{\log z}{z^a(z - 1)}
+        = \frac{\log r + i\theta}{r^ae^{i\theta a}(z - 1)}.
+\]
+Then $f(z) = g(z)$ near the bottom edge of the branch cut, in particular on $C_\eps$. And since $g(z)$ has a simple pole at $1 = e^{i2\pi}$, then the fractional residue theorem tells us
+\begin{align*}
+    \lim_{\eps \to 0} \int_{C\eps} f(z) \dd{z}
+        &= \lim_{\eps \to 0} \int_{C\eps} g(z) \dd{z} \\
+        &= -\pi i \Res[g(z), 1] \\
+        &= -i\pi \eval[(z - 1) g(z)|_{z = 1} \\
+        &= -i\pi \eval[\frac{\log r + i\theta}{r^ae^{i\theta a}}|_{z = 1} \\
+        &= -i\pi \pfrac{\log 1 + i2\pi}{1^ae^{i2\pi a}} \\
+        &= 2\pi^2 e^{-i2\pi a}.
+\end{align*}
+Letting $\eps \to 0$ for the integrals over the bottom edge of the branch cut, their sum is
+\begin{align*}
+    \int_{R}^{\delta} \frac{\log x + i2\pi}{x^a e^{i2\pi a}(x - 1)} \dd{x}
+        &= -e^{-i2\pi a} \int_{\delta}^{R} \frac{\log x + i2\pi}{x^a(x - 1)} \dd{x} \\
+        &= -e^{-i2\pi a} \qty(\int_{\delta}^{R} \frac{\log x}{x^a (x - 1)} \dd{x} + i2\pi \int_{\delta}^{R} \frac{x^{-a}}{x - 1} \dd{x}).
+\end{align*}
+Denote by $I_R$ and $I_\delta$ the integrals over $\Gamma_R$ and $\gamma_\delta$, respectively. Letting $\eps \to 0$ in our original equation, we obtain
+\[
+    0 = I_R + I_\delta + 2\pi^2e^{-i2\pi a} 
+        + \qty(1 - e^{-i2\pi a})\int_{\delta}^{R} \frac{\log x}{x^a(x-1)} \dd{x}
+        - i2\pi e^{-i2\pi a} \int_{\delta}^{R} \frac{x^{-a}}{x - 1} \dd{x}.
+\]
+Rearranging and multiplying both sides by $e^{i2\pi a}$, we find
+\[
+    \qty(1 - e^{i2\pi a})\int_{\delta}^{R} \frac{\log x}{x^a(x-1)} \dd{x}
+        = 2\pi^2 - i2\pi \int_{\delta}^{R} \frac{x^{-a}}{x - 1} \dd{x} + e^{i2\pi a}(I_R + I_\delta).
+\]
+Taking the real part of both sides gives us
+\begin{align*}
+    \qty(1 - \Re e^{i2\pi a})\int_{\delta}^{R} \frac{\log x}{x^a(x-1)} \dd{x}
+        &= 2\pi^2 + \Re e^{i2\pi a}(I_R + I_\delta).
+\end{align*}
+Finally, letting $R \to 0$ and $\eps \to 0$, we obtain
+\begin{align*}
+    \int_{0}^{\infty} \frac{\log x}{x^a(x-1)} \dd{x}
+        = \frac{2\pi^2 + \Re e^{i2\pi a}(0)}{1 - \Re e^{i2\pi a}}
+        = \frac{2\pi^2}{1 - \cos(2\pi a)}.
+\end{align*}
+
+
+
+
+
+\newpage
+\begin{pbox}[6 Exercise VII.5.2]
+    Show using residue theory that
+    \[
+        \int_{-\infty}^{\infty} \frac{\sin(ax)}{x(x^2 + 1)} \dd{x} = \pi(1 - e^{-a}), \qquad a > 0.
+    \]
+    \textit{Hint.} Replace $\sin(az)$ by $e^{iaz}$, and integrate around the boundary of a half-disc indented at $z = 0$.
+\end{pbox}
+
+Define the complex function
+\[
+    f(z) = \frac{e^{iaz}}{z(z^2 + 1)}.
+\]
+Since $e^{iaz}$ is entire, then $f(z)$ is meromorphic on $\C$ with simple poles at $0$ and $\pm i$. Assume $0 < \eps < 1 < R$ and consider the upper half-disc indented at $0$.
+\begin{drawing}
+    %\draw[help lines, color=gray, dashed] (-2.9,-0.9) grid (2.9,2.9);
+    \draw (-2.5,0)--(2.5,0);
+    \draw (0,-0.5)--(0,2.5);
+    
+    \draw (2,0) arc (0 : 180 : 2);
+    \draw[->, >=Triangle] (2,0) arc (0 : 60 : 2) node[anchor=south west]{$\Gamma_R$};
+    
+    \draw[->, >=Triangle] (-2, 0) -- (-1, 0);
+    \draw[->, >=Triangle] (0, 0) -- (1, 0);
+    
+    \draw (-0.5, 0) arc (180 : 0 : 0.5);
+    \draw[->, >=Triangle] (-0.5, 0) arc (180 : 120 : 0.5) node[anchor=south east]{$C_\eps$};
+    
+    \draw[fill=black] (2,0) circle (2pt) node[anchor=north west]{$R$};
+    \draw[fill=black] (-2,0) circle (2pt) node[anchor=north east]{$-R$};
+    
+    \draw[] (0.75, 1) node[]{$D$};
+\end{drawing}
+Taking the integral of $f(z)$ over the boundary of $D$, we find
+\[
+    \int_{\bd D} f(z) \dd{z}
+        = \int_{\Gamma_R} f(z) \dd{z}
+            + \int_{C_\eps} f(z) \dd{z}
+            + \int_{-R}^{-\eps} \frac{e^{iax}}{x(x^2+1)} \dd{x}
+            + \int_{\eps}^{R} \frac{e^{iax}}{x(x^2+1)} \dd{x}.
+\]
+Since $f(z)$ is meromorphic in $D \cup \bd D$ with a simple pole at $i$, the residue theorem gives us
+\begin{align*}
+    \int_{\bd D} f(z) \dd{z}
+        &= i2\pi \Res[f(z), i] \\
+        &= i2\pi \eval[(z-i)f(z)|_{z=i} \\
+        &= i2\pi \eval[\frac{e^{iaz}}{z(z+i)}|_{z=i} \\
+        &= i2\pi \pfrac{e^{iai}}{i(i+i)} \\
+        &= \frac{2\pi e^{-a}}{2i} \\
+        &= -i\pi e^{-a}.
+\end{align*}
+For $z \in \Gamma_R$, we have $|z| = R$ and $z = x + iy$ with $y \geq 0$. And since $a > 0$, then $-ay \leq 0$, so
+\[
+    |f(z)|
+        = \frac{|e^{ia(x + iy)}|}{|z||z^2 + 1|}
+        = \frac{|e^{iax}|e^{-ay}}{R|z^2 + 1|}
+        \leq \frac{1}{R(R^2 - 1)}.
+\]
+Then by the $ML$-estimate,
+\[
+    \qty|\int_{\Gamma_R} f(z) \dd{z}|
+        \leq \frac{1}{R(R^2 - 1)} \cdot \pi R
+        \sim \frac{1}{R^2},
+\]
+and $1/R^2 \to 0$ as $R \to \infty$. Since $0$ is a simple pole of $f(z)$, then the fractional residue theorem tells us
+\begin{align*}
+    \lim_{\eps \to 0} \int_{C_\eps} f(z) \dd{z}
+        &= -\pi i \Res[f(z), 0] \\
+        &= -i\pi \eval[z f(z)|_{z=0} \\
+        &= -i\pi \eval[\frac{e^{iaz}}{z^2 + 1}|_{z=0} \\
+        &= -i\pi \pfrac{e^{ia0}}{0^2 + 1} \\
+        &= -i\pi.
+\end{align*}
+Letting $R \to \infty$ and $\eps \to 0$ in our original equation, we find
+\[
+    -i\pi e^{-a} = -i\pi + \int_{-\infty}^{0} \frac{e^{iax}}{x(x^2+1)} \dd{x} + \int_{0}^{\infty} \frac{e^{iax}}{x(x^2+1)} \dd{x}.
+\]
+Combining the two integrals to be the integral over $(-\infty, \infty)$ and rearranging, we obtain
+\[
+    \int_{-\infty}^{\infty} \frac{e^{iax}}{x(x^2+1)} \dd{x}
+        = i\pi(1 - e^{-a})
+\]
+Finally, taking the imaginary part of both sides gives us
+\[
+    \int_{-\infty}^{\infty} \frac{\sin(ax)}{x(x^2+1)} \dd{x}
+        = \pi(1 - e^{-a}).
+\]
+
+
+
+
+\newpage
+\begin{pbox}[7 Exercise VII.2.3]
+    Show using residue theory that
+    \[
+        \int_{-\infty}^{\infty} \frac{\sin(ax)}{x(\pi^2 - a^2 x^2)} \dd{x} = \frac{2}{\pi}, \qquad a > 0.
+    \]
+\end{pbox}
+
+Define the function
+\[
+    f(z)
+        = \frac{e^{iaz}}{z(\pi^2 - a^2z^2)}
+        = \frac{-e^{iaz}}{z \cdot a^2 (z - \pi/a) (z + \pi/a)},
+\]
+which is meromorphic in $\C$ with simple poles at $z_1 = 0$, $z_2 = \pi/a$, $z_3 = -\pi/a$. Assume that $0 < \eps < \pi/(2a) < 3\pi/(2a) < R$, and consider the upper half-disc indented at each pole.
+\begin{drawing}
+    %\draw[help lines, color=gray, dashed] (-2.9,-0.9) grid (2.9,2.9);
+
+    \draw (-2,0)--(2,0);
+    \fill[white] (0, 0) circle (0.25);
+    \fill[white] (-1, 0) circle (0.25);
+    \fill[white] (1, 0) circle (0.25);
+        
+    \draw (2,0) arc (0 : 180 : 2);
+    \draw[->, >=Triangle] (1.41, 1.41) -- ++ (-0.05, 0.05) node[anchor=south west]{$\Gamma_R$};
+    \draw[->, >=Triangle] (-1.41, 1.41) -- ++ (-0.05, -0.05);
+    
+    \draw (-0.25, 0) arc (180 : 0 : 0.25);
+    \draw (-1.25, 0) arc (180 : 0 : 0.25);
+    \draw (0.75, 0) arc (180 : 0 : 0.25);
+    
+    \draw[->, >=Triangle] (-1, 0.25) -- ++ (0.05,0) node[anchor=south]{$C_\eps^3$};
+    \draw[->, >=Triangle] (0, 0.25) -- ++ (0.05,0) node[anchor=south]{$C_\eps^1$};
+    \draw[->, >=Triangle] (1, 0.25) -- ++ (0.05,0) node[anchor=south]{$C_\eps^2$};
+    
+    \draw[->, >=Triangle] (-1.5, 0) -- ++ (0.05,0);
+    \draw[->, >=Triangle] (-0.5, 0) -- ++ (0.05,0);
+    \draw[->, >=Triangle] (0.5, 0) -- ++ (0.05,0);
+    \draw[->, >=Triangle] (1.75, 0) -- ++ (0.05,0);
+    
+    \draw[fill=black] (0, 0) circle (1pt) node[anchor=north]{$0$};
+    \draw[fill=black] (-1, 0) circle (1pt) node[anchor=north]{$\frac{-\pi}{a}$};
+    \draw[fill=black] (1, 0) circle (1pt) node[anchor=north]{$\frac{\pi}{a}$};
+    
+    \draw (2,0) node[anchor=north]{$R$};
+    \draw (-2,0) node[anchor=north, xshift=-4.5pt]{$-R$};
+    
+    \draw[] (0, 1.5) node[]{$D$};
+\end{drawing}
+Since $f(z)$ is analytic in $D \cup \bd D$, then Cauchy's integral theorem tells us that $\int_{\bd D} f(z) \dd{z} = 0$. Writing the integral over $\bd D$ as the sum of integrals over each segment and taking the limit as $\eps \to 0$, we find
+\begin{align*}
+    0 = \int_{\Gamma_R} f(z) \dd{z}
+        + \sum_{j=1}^{3} \lim_{\eps \to 0} \int_{C_\eps^j} f(z) \dd{z}
+        + \int_{-R}^R \frac{e^{iax}}{x(\pi^2 - a^2x^2)} \dd{x}
+\end{align*}
+For $z \in \Gamma_R$, we have $|z| = R$ and $z = x + iy$ with $y \geq 0$. And since $a > 0$, then $-ay \leq 0$, so
+\[
+    |f(z)|
+        = \frac{|e^{ia(x + iy)}|}{|z||\pi^2 - a^2z^2|}
+        = \frac{|e^{iax}|e^{-ay}}{R|\pi^2 - a^2z^2|}
+        \leq \frac{1}{R(a^2R^2 - \pi^2)}
+\]
+Then by the $ML$-estimate,
+\[
+    \qty|\int_{\Gamma_R} f(z) \dd{z}|
+        \leq \frac{1}{R(a^2R^2 - \pi^2)} \cdot \pi R
+        \sim \frac{1}{R^2},
+\]
+and $1/R^2 \to 0$ as $R \to \infty$. Since each $z_j$ is a simple pole for $f(z)$, we will apply the fractional residue theorem to each limit of the integral over $C_\eps^j$ as $\eps \to 0$. First, we find
+\begin{align*}
+    \lim_{\eps \to 0} \int_{C_\eps^1} f(z) \dd{z}
+        &= -\pi i \Res[f(z), z_1] \\
+        &= -i\pi \eval[(z - z_1) f(z)|_{z = z_1} \\
+        &= -i\pi \eval[\frac{e^{iaz}}{\pi^2 - a^2z^2}|_{z = 0} \\
+        &= -i\pi \pfrac{e^{ia0}}{\pi^2 - a^20^2} \\
+        &= \frac{-i}{\pi}.
+\end{align*}
+Recall that $z_2 = \pi/a$, so
+\begin{align*}
+    \lim_{\eps \to 0} \int_{C_\eps^2} f(z) \dd{z}
+        &= -\pi i \Res[f(z), z_2] \\
+        &= -i\pi \eval[(z - z_2) f(z)|_{z = z_2} \\
+        &= -i\pi \eval[\frac{-e^{iaz}}{z \cdot a^2 (z + \pi/a)}|_{z = z_2} \\
+        &= -i\pi \pfrac{-e^{i\pi}}{\pi(\pi + \pi)} \\
+        &= \frac{-i}{2\pi}.
+\end{align*}
+And $z_3 = -\pi/a$, so
+\begin{align*}
+    \lim_{\eps \to 0} \int_{C_\eps^3} f(z) \dd{z}
+        &= -\pi i \Res[f(z), z_3] \\
+        &= -i\pi \eval[(z - z_3) f(z)|_{z = z_3} \\
+        &= -i\pi \eval[\frac{-e^{iaz}}{z \cdot a^2 (z - \pi/a)}|_{z = z_3} \\
+        &= -i\pi \pfrac{-e^{-i\pi}}{-\pi(-\pi - \pi)} \\
+        &= \frac{-i}{2\pi}.
+\end{align*}
+Letting $R \to \infty$ in our original equation gives us
+\begin{align*}
+    0 &= \frac{-i}{\pi} - \frac{i}{2\pi} - \frac{i}{2\pi} + \int_{-\infty}^{\infty} \frac{e^{iax}}{x(\pi^2 - a^2x^2)} \dd{x}, \\
+    \frac{i2}{\pi} &= \int_{-\infty}^{\infty} \frac{e^{iax}}{x(\pi^2 - a^2x^2)} \dd{x}.
+\end{align*}
+And taking the imaginary part of both sides, we obtain
+\[
+    \int_{-\infty}^{\infty} \frac{\sin(ax)}{x(\pi^2 - a^2x^2)} \dd{x} = \frac{2}{\pi}.
+\]
+
+
+
+\end{document}

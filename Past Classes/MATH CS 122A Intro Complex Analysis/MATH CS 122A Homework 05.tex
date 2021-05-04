@@ -1,0 +1,513 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry} % proper margins
+\usepackage{enumitem} % custom numbering for lists
+\usepackage{amsmath} % align, cases, eqref, matrices, dots, roots, delimiters, math mode functions, mod, arrows
+\usepackage{amsthm} % theorems, proofs
+\usepackage{amssymb} % fancy letters, niche relations/negations
+\usepackage{mathrsfs} % much more loopy calligraphy font
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}
+    {\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\mybox}}}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand*{\defeq}{\mathrel{\vcenter{\baselineskip0.5ex \lineskiplimit0pt\hbox{\scriptsize.}\hbox{\scriptsize.}}}=}
+
+% Alternate Characters
+\let\eps\varepsilon % double curved, rather than single curve with midline
+\let\phi\varphi % single stroke loop, rather than vertical line through circle
+\let\emptyset\varnothing % circular, rather than tall
+
+% Named Sets
+\newcommand{\N}{\mathbb{N}} % natural numbers
+\newcommand{\Z}{\mathbb{Z}} % integers 
+\newcommand{\Q}{\mathbb{Q}} % rational numbers
+\newcommand{\R}{\mathbb{R}} % real numbers
+\newcommand{\C}{\mathbb{C}} % complex numbers
+
+% Fancy Characters
+\newcommand{\F}{\mathbb{F}} % arbitrary field
+\renewcommand{\P}{\mathbb{P}} % probability measure (apparently, sometimes prime numbers)
+\newcommand{\FF}{\mathcal{F}} % sigma algebra
+\newcommand{\BB}{\mathcal{B}} % Borel sigma algebra
+
+% Paired Delimiters
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil} % ceiling
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor} % floor
+\newcommand{\<}{\left\langle} % left angle bracket
+\renewcommand{\>}{\right\rangle} % right angle bracket
+
+% Functions
+\renewcommand{\Im}{\operatorname{Im}} % imaginary part of a complex number
+\renewcommand{\Re}{\operatorname{Re}} % real part of a complex number
+\newcommand{\Arg}{\operatorname{Arg}} % principal argument (angle) of complex number
+\newcommand{\Log}{\operatorname{Log}} % principal log of complex number
+
+% Simplified Notation
+\newcommand{\id}[1]{\operatorname{id_{\mathnormal{#1}}}} % identity operator
+\newcommand{\seq}[2][n]{\left\{#2\right\}_{#1\in\N}} % sequence
+\renewcommand{\d}[1]{\operatorname{d}\!#1} % differential operator
+\newcommand{\od}[3][1]{\ifx1#1{\frac{\d #2}{\d #3}}\else{\frac{\d^{#1}#2}{\d #3^{#1}}}\fi} % ordinary derivative
+\newcommand{\pd}[3][1]{\ifx1#1{\frac{\partial #2}{\partial#3}}\else{\frac{\partial^{#1}#2}{\partial#3^{#1}}}\fi} % partial derivative
+\newcommand{\intr}[1]{\accentset{\circ}{#1}} % interior of a set
+
+% Renaming
+\let\sm\setminus % set minus (difference)
+\let\clo\overline % closure of a set
+\let\conj\overline % conjugate of an object
+\let\eqc\overline % equivalence class of an object
+\let\teq\trianglelefteq % normal subgroup
+\let\iso\cong % isomorphic (groups)
+\let\bd\partial % boundary of a set
+
+% Notes
+% medskip for header-less paragraph
+% intertext{} for short text inside big display structure
+% dots is dynamic based on surroundings
+% dfrac and tfrac to force large or small fractions
+% operatorname for new operators instead of text
+% consider using nath; it seems to break most formatting and is not compatible with many packages
+
+\begin{document}
+ 
+\title{Homework 5\\
+    %\large MATH CS 121 Intro to Probability
+    %\large MATH 111A Intro to Abstract Algebra
+    \large MATH CS 122A Complex Analysis I
+    %\large MATH 118A Intro to Real Analysis
+    %\large MATH 104A Intro to Numerical Analysis
+}
+\author{Harry Coleman}
+\date{December 6, 2020}
+\maketitle
+
+\section{Exercise 4.3.5}
+\begin{problem}
+    Suppose that $D$ is a bounded domain with piecewise smooth boundary, and $f(z)$ is analytic on $D \cup \bd D$. Show that
+    \[\sup_{z \in \bd D}|\conj{z} - f(z)| \geq 2 \frac{\operatorname{Area}(D)}{\operatorname{Length}(\bd D)}.\]
+    Show that this estimate is sharp, and that in fact there exist $D$ and $f(z)$ for which equality holds. \emph{Hint}. Consider $\int_{\bd D}[\conj{z} - f(z)]\d{z}$, and use Exercise 4 in Section 1. 
+\end{problem}
+
+\begin{proof}
+    Because the function $\conj{z} - f(z)$ is continuous on the compact set $\bd D$, it is bounded on $\bd D$. Therefore, the supremum
+    \[\sup_{z \in \bd D}|\conj{z} - f(z)|\]
+    exists and has the property that
+    \[|\conj{z} - f(z)| \leq \sup_{z \in \bd D}|\conj{z} - f(z)|\]
+    for all $z \in \bd D$. Then the $ML$-inequality tells us that
+    \[\left| \int_{\bd D} (\conj{z} - f(z)) \d{z} \right| \leq \operatorname{Length}(\bd D) \cdot \sup_{z \in \bd D}|\conj{z} - f(z)|.\]
+    Now since $f$ is analytic on the bounded domain $D$ with piecewise smooth boundary, then we can apply Cauchy's theorem to find that
+    \[\left| \int_{\bd D} (\conj{z} - f(z)) \d{z} \right| = \left| \int_{\bd D} \conj{z} \d{z} - \int_{\bd D} f(z) \d{z} \right| = \left| \int_{\bd D} \conj{z} \d{z} \right|.\]
+    Using the result of Exercise 4.1.4, we have
+    \[\left| \int_{\bd D} \conj{z} \d{z} \right| = \left| 2i \operatorname{Area}(D) \right| = 2 \operatorname{Area}(D).\]
+    Substituting this result into the above inequality and dividing by $\operatorname{Length}(\bd D)$, we obtain the desired inequality.
+    
+    To show that this estimate is sharp, we let $D$ be the open unit disc and let $f$ be the zero function, i.e.,
+    \[D = B_1(0) = \{z \in \C : |z| < 1\}\]
+    and
+    \[f(z) = 0, \quad z \in \C.\]
+    Note that $D$ is a bounded domain with smooth boundary and $f(z)$ is analytic on $D \cup \bd D$, where
+    \[\bd D = \{z \in \C : |z| = 1\}\]
+    is the unit circle. Then for all $z \in \bd D$, we have
+    \[|\conj{z} - f(z)| = |\conj{z}| = |z| = 1.\]
+    The area of $D$ and the length of $\bd D$ are the area and circumference, respectively, of the unit circle. Thus,
+    \[2\frac{\operatorname{Area}(D)}{\operatorname{Length}(\bd D)} = 2\frac{\pi 1^2}{2 \pi 1} = 1,\]
+    and we see that equality holds, in this case.
+    
+\end{proof}
+
+\newpage
+\section{Exercise 4.3.6}
+\begin{problem}
+    Suppose $f(z)$ is continuous in the closed disk $\{|z| \leq R\}$ and analytic on the open disk $\{|z| < R\}$. Show that $\oint_{|z| = R} f(z) \d{z} = 0$. \emph{Hint}. Approximate $f(z)$ uniformly by $f_r(z) = f(rz)$. 
+\end{problem}
+
+\begin{proof}
+    Let $D = \{|z| < R\}$ and $\clo{D} = \{|z| \leq R\}$. For all $r \in (0, 1)$, we define the function $f_r(z)$ where
+    \[f_r(z) = f(rz), \quad z \in \clo{D}.\]
+    Since $f(z)$ is continuous on the compact set $\clo{D}$, then it is uniformly continuous. Let $\eps > 0$ be given, and pick $\delta \in (0, 1)$ such that
+    \[|z_1 - z_2| < \delta \implies |f(z_1) - f(z_2)| < \eps\]
+    for all $z_1, z_2 \in \clo{D}$. We now choose $r \in \left( 1 - \frac{\delta}{R}, 1 \right)$. Then for any $z \in \clo{D}$, we have
+    \[|z - rz| = |1 - r||z| \leq |1 - r|R < \delta.\]
+    This implies that for all $z \in \clo{D}$, we have
+    \[|f(z) - f_r(z)| = |f(z) - f(rz)| < \eps.\]
+    We derive the following equality of integrals using the parameterization of integration over a circle of a given radius:
+    \begin{align*}
+        \oint_{|z| = R} f_r(z) \d{z}
+            &= \oint_{|z| = R} f(rz) \d{z} \\
+            &= \int_0^{2\pi} f(r \cdot Re^{i\theta}) \cdot i R e^{i\theta} \d{\theta} \\
+            &= \frac{1}{r} \int_0^{2\pi} f(rRe^{i\theta}) \cdot i rR e^{i\theta} \d{\theta} \\
+            &= \frac{1}{r} \oint_{|z| = rR} f(z) \d{z}.
+    \end{align*}
+    Now since $rR < R$, then the circle $\{|z| = rR\}$ is a smooth curve in the open domain $D$. So Cauchy's theorem tells us that
+    \[\oint_{|z| = R} f_r(z) \d{z} = \frac{1}{r}\oint_{|z| = rR} f(z) \d{z} = 0.\]
+    We can now make the following estimation using the $ML$-inequality:
+    \begin{align*}
+        \left| \oint_{|z| = R} f(z) \d{z} \right|
+            &= \left| \oint_{|z| = R} f(z) \d{z} - \oint_{|z| = R} f_r(z) \d{z} \right| \\[1em]
+            &= \left| \oint_{|z| = R} (f_r(z) - f(z)) \d{z} \right| \\[1em]
+            &\leq \eps \cdot 2\pi R.
+    \end{align*}
+    Since this is true for all $\eps > 0$, then the modulus of the integral must be zero, giving us
+    \[\oint_{|z| = R} f(z) \d{z} = 0.\]
+    
+\end{proof}
+
+\newpage
+\section{Exercise 4.4.1}
+\begin{problem}
+    Evaluate the following integral, using the Cauchy integral formula:
+\end{problem}
+
+\subsection{Exercise 4.4.1(a)}
+\begin{problem}
+    \[\oint_{|z| = 2} \frac{z^n}{z - 1} \d{z}, \quad n \geq 0\]
+\end{problem}
+\medskip
+
+We assume $n \in \N$. Let $f(z) = z^n$, which is analytic on $\C$, containing the closed disc $\{|z| \leq 2\}$. Then Cauchy's integral formula tells us
+\[f(1) = \frac{1}{2 \pi i} \oint_{|z| = 2}  \frac{z^n}{z - 1} \d{z}.\]
+So
+\[\oint_{|z| = 2}  \frac{z^n}{z - 1} \d{z} = 1^n \cdot 2 \pi i = 2 \pi i.\]
+
+\subsection{Exercise 4.4.1(b)}
+\begin{problem}
+    \[\oint_{|z| = 1} \frac{z^n}{z - 2} \d{z}, \quad n \geq 0\]
+\end{problem}
+\medskip
+
+Let $f(z) = z^{n + 1}(z - 2)^{-1}$, which is analytic on $\C \setminus \{2\}$, containing the closed disc $\{|z| \leq 1\}$. Then Cauchy's integral formula tells us
+\[
+    f(0) = \frac{1}{2 \pi i} \oint_{|z| = 1}  \frac{z^{n + 1}(z - 2)^{-1}}{z - 0} \d{z} = \frac{1}{2 \pi i} \oint_{|z| = 1} \frac{z^n}{z - 2} \d{z}.
+\]
+So
+\[\oint_{|z| = 1}  \frac{z^n}{z - 2} \d{z} = 0^{n + 1}(0 - 2)^{-1} \cdot 2 \pi i = 0.\]
+
+
+\subsection{Exercise 4.4.1(c)}
+\begin{problem}
+    \[\oint_{|z| = 1} \frac{\sin z}{z} \d{z}\]
+\end{problem}
+\medskip
+
+Let $f(z) = \sin z$, which is analytic on $\C$, containing the closed disc $\{|z| \leq 1\}$. Then Cauchy's integral formula tells us
+\[f(0) = \frac{1}{2 \pi i} \oint_{|z| = 1} \frac{\sin z}{z - 0} \d{z}.\]
+So
+\[\oint_{|z| = 1} \frac{\sin z}{z} \d{z} = \sin 0 \cdot 2 \pi i = 0.\]
+
+
+\subsection{Exercise 4.4.1(d)}
+\begin{problem}
+    \[\oint_{|z| = 1} \frac{\cosh z}{z^3} \d{z}\]
+\end{problem}
+\medskip
+
+Let $f(z) = \cosh z$, which is analytic on $\C$, containing the closed disc $\{|z| \leq 1\}$. Then Cauchy's integral formula tells us
+\[f''(0) = \frac{2!}{2 \pi i} \oint_{|z| = 1} \frac{\cosh z}{(z - 0)^3} \d{z}.\]
+Note that $f''(z) = \cosh z$. So
+\[\oint_{|z| = 1} \frac{\cosh z}{z^3} \d{z} = \cosh 0 \cdot \pi i = \pi i.\]
+
+\subsection{Exercise 4.4.1(e)}
+\begin{problem}
+    \[\oint_{|z| = 1} \frac{e^z}{z^m} \d{z}, \quad -\infty < m < \infty\]
+\end{problem}
+\medskip
+
+We assume that $m \in \Z$. If $m \geq 1$, then we let $f(z) = e^z$, which is analytic on $\C$, containing the closed disc $\{|z| \leq 1\}$. Then Cauchy's integral formula tells us
+\[
+    f^{(m - 1)}(0) = \frac{(m - 1)!}{2 \pi i} \oint_{|z| = 1} \frac{e^z}{(z - 0)^m} \d{z}.
+\]
+Note that $f^{(k)}(z) = e^z$ for all $k \geq 0$. So
+\[
+    \oint_{|z| = 1} \frac{e^z}{z^m} \d{z} = e^0 \cdot \frac{2 \pi i}{(m - 1)!} = \frac{2 \pi i}{(m - 1)!}.
+\]
+If $m \leq 0$, then we let $f(z) = z^{(1 - m)}e^z$, which is analytic on $\C$, containing the closed disc $\{|z| \leq 1\}$. Then Cauchy's integral formula tells us
+\[
+    f(0) = \frac{1}{2 \pi i} \oint_{|z| = 1} \frac{z^{(1 - m)}e^z}{z - 0} \d{z} = \frac{1}{2 \pi i} \oint_{|z| = 1} \frac{e^z}{z^m} \d{z}.
+\]
+So
+\[
+    \oint_{|z| = 1} \frac{e^z}{z^m} \d{z} = 0^{(1 - m)}e^0 \cdot 2 \pi i = 0.
+\]
+
+\newpage
+\subsection{Exercise 4.4.1(f)}
+\begin{problem}
+    \[\oint_{|z - 1 - i| = 5/4} \frac{\Log z}{(z - 1)^2} \d{z}\]
+\end{problem}
+\medskip
+
+Let $f(z) = \Log z$, which is analytic on $\C \setminus \R_{\leq 0}$, containing the closed disc $\{|z - 1 - i| \leq 5/4\}$. Then Cauchy's integral formula tells us
+\[
+    f'(1) = \frac{1!}{2 \pi i} \oint_{|z - 1 - i| = 5/4} \frac{\Log z}{(z - 1)^2} \d{z}.
+\]
+Note that $f'(z) = 1/z$, where it exists. So
+\[
+    \oint_{|z - 1 - i| = 5/4} \frac{\Log z}{(z - 1)^2} \d{z} = \frac11 \cdot 2 \pi i = 2 \pi i.
+\]
+
+\subsection{Exercise 4.4.1(g)}
+\begin{problem}
+    \[\oint_{|z| = 1} \frac{ \d{z}}{z^2 (z^2 - 4) e^z}\]
+\end{problem}
+\medskip
+
+Let $f(z) = (z^2 - 4)^{-1}e^{-z}$, which is analytic on $\C \setminus \{-2, 2\}$, containing the closed disc $\{|z| \leq 1\}$. Then Cauchy's integral formula tells us
+\[
+    f'(0) = \frac{1!}{2 \pi i} \oint_{|z| = 1} \frac{(z^2 - 4)^{-1}e^{-z}}{(z - 0)^2} \d{z} = \frac{1!}{2 \pi i} \oint_{|z| = 1} \frac{ \d{z}}{z^2 (z^2 - 4) e^z}
+\]
+Note that $f'(z) = -(z^2 + 2z - 4)(z^2 - 4)^{-2} e^{-z}$, where it exists. So
+\[
+    \oint_{|z| = 1} \frac{ \d{z}}{z^2 (z^2 - 4) e^z} = \frac{-(0^2 + 2(0) - 4)}{(0^2 - 4)^2 e^0} \cdot 2 \pi i = \frac{\pi i}{2}.
+\]
+
+\newpage
+\subsection{Exercise 4.4.1(h)}
+\begin{problem}
+    \[\oint_{|z - 1| = 2} \frac{ \d{z}}{z (z^2 - 4) e^z}\]
+\end{problem}
+\medskip
+
+(\emph{Note.} Apparently, the edition of the textbook I have is the first edition, in which the problem asks you to integrate over the circle $\{|z - 1| = 3\}$. In the second edition it was changed to $\{|z - 1| = 2\}$. I spent a while on the first version of the problem before I learned this, and I could not figure out how to do it using Cauchy's integral formula. So I'm going to do the second version, here.)
+\medskip
+
+We first derive, by partial fraction decomposition, that
+\[
+    \frac{1}{z(z - 2)} = \frac{-1}{2z} + \frac{1}{2(z - 2)}.
+\]
+Then,
+\[
+    \oint_{|z - 1| = 2} \frac{ \d{z}}{z (z^2 - 4) e^z} = \frac{-1}{2} \oint_{|z - 1| = 2} \frac{ \d{z}}{z (z + 2) e^z} + \frac{1}{2} \oint_{|z - 1| = 2} \frac{ \d{z}}{(z - 2)(z + 2) e^z}
+\]
+We now define $f(z) = (z + 2)^{-1}e^{-z}$, which is analytic on $\C \setminus \{-2\}$, containing the closed disc $\{|z - 1| \leq 2\}$. Then Cauchy's integral formula tells us
+\begin{align*}
+    -f(0) + f(2)
+        &= \frac{-1}{2 \pi i} \oint_{|z - 1| = 2} \frac{(z + 2)^{-1}e^{-z}}{z - 0} \d{z} + \frac{1}{2 \pi i} \oint_{|z - 1| = 2} \frac{(z + 2)^{-1}e^{-z}}{z - 2} \d{z} \\[1em]
+        &= \frac{1}{\pi i} \left( \frac{-1}{2} \oint_{|z - 1| = 2} \frac{ \d{z}}{z (z + 2) e^z} + \frac{1}{2} \oint_{|z - 1| = 2} \frac{ \d{z}}{(z - 2)(z + 2) e^z} \right) \\[1em]
+        &= \frac{1}{\pi i} \oint_{|z - 1| = 2} \frac{ \d{z}}{z (z^2 - 4) e^z}.
+\end{align*}
+So
+\[
+    \oint_{|z - 1| = 2} \frac{ \d{z}}{z (z^2 - 4) e^z} = \left( \frac{-1}{(0 + 2)e^0} + \frac{1}{(2 + 2)e^2} \right) \cdot \pi i = \frac{- \pi i}{2} + \frac{\pi i}{4 e^2}.
+\]
+
+\newpage
+\section{Exercise 4.4.2}
+\begin{problem}
+    Show that a harmonic function is $C^\infty$, that is, a harmonic function has partial derivatives of all orders.
+\end{problem}
+
+\begin{proof}
+    Let $u(z)$ be a harmonic real-valued function defined on some domain of $\C$. Let $v(z)$ be a harmonic conjugate such that $f(z) = u(z) + iv(z)$ is a complex-valued analytic function on that domain. Now for some point $z_0$ in the domain of $u(z)$, we pick a neighborhood $D$ of $z_0$, whose closure is contained in the domain of $u(z)$. In particular, we choose $D$ to be some disc, so $D$ is a bounded domain with a piecewise smooth boundary. Then $f(z)$ is analytic on $\clo{D}$ and Cauchy's integral formula tells us that it has complex derivatives of all orders on $D$. Therefore for any $k \in \N$, we can find the $k$th partial derivatives of $f(z)$ on $D$, and
+    \[
+        \Re \pd[k]{f}{x}(z_0) = \pd[k]{u}{x}(z_0)  \isp{and}  \Im \pd[k]{f}{y}(z_0) = \pd[k]{u}{y}(z_0).
+    \]
+    Thus, the partial derivatives exist for all $k \in \N$ and $z_0$ in the domain of $u(z)$.
+    
+\end{proof}
+
+\newpage
+\section{Exercise 4.4.3}
+\begin{problem}
+    Use the Cauchy integral formula to derive the mean value property of harmonic functions, that
+    \[u(z_0) = \int_0^{2\pi} u \left( z_0 + \rho e^{i\theta} \right) \frac{\d{\theta}}{2\pi}, \quad z_0 \in D,\]
+    whenever $u(z)$ is harmonic in a domain $D$ and the closed disk $|z - z_0| \leq \rho$ is contained in $D$.
+\end{problem}
+
+\begin{proof}
+    Let $D \subseteq \C$ be a domain and $u(z) : D \to \R$ be a harmonic function. Let $z_0 \in D$ and let $\rho > 0$ be given such that the closed disc $\{|z - z_0| \leq \rho\}$ is contained in $D$. We now take a harmonic conjugate $v(z)$ in a domain containing the disc and which is contained in $D$. Then, the function $f(z) = u(z) + iv(z)$ is analytic on the closed disc, and we may apply Cauchy's integral theorem to obtain
+    \[
+        f(z_0) = \frac{1}{2 \pi i} \oint_{|z - z_0| = \rho} \frac{f(z)}{z - z_0} \d{z} = \frac{1}{2 \pi i} \oint_{|z| = \rho} \frac{f(z_0 + z)}{z} \d{z}.
+    \]
+    Parameterizing the circle, we find
+    \[
+        f(z_0) = \frac{1}{2 \pi i} \int_0^{2\pi} \frac{f(z_0 + \rho e^{i \theta})}{\rho e^{i \theta}} i \rho e^{i\theta} \d{\theta} = \int_0^{2\pi} f(z_0 + \rho e^{i \theta}) \frac{\d{\theta}}{2\pi}.
+    \]
+    Thus,
+    \[
+        u(z_0) = \Re f(z_0) = \int_0^{2\pi} u(z_0 + \rho e^{i \theta}) \frac{\d{\theta}}{2\pi}
+    \]
+    
+\end{proof}
+
+\newpage
+\section{Exercise 4.5.1}
+\begin{problem}
+    Show that if $u$ us a harmonic function on $\C$ that is bounded above, then $u$ is constant. \emph{Hint}. Express $u$ as the real part of an analytic function, and exponentiate.
+\end{problem}
+
+\begin{proof}
+    Let $u(z) : \C \to \R$ be a harmonic function which is bounded above; let $M \in\R$ such that $u(z) \leq M$ for all $z \in \C$. Take $v(z)$ to be a harmonic conjugate in the domain $\C$, then the function $f(z) = u(z) + iv(z)$ is entire. We now compose the entire function $e^z$ with $f(z)$ to obtain the entire function
+    \[
+        e^{f(z)} = e^{u(z) + iv(z)} = e^{u(z)}e^{i v(z)}.
+    \]
+    Because $u(z)$ is a real-valued function, we know $e^{u(z)}$ is real-valued and positive. Additionally, because the function $v(z)$ is real-valued, the image of $e^{iv(z)}$ is the unit circle. Therefore, the modulus of the function $e^{f(z)}$ is given by
+    \[
+        \left| e^{f(z)} \right| = \left| e^{u(z)} \right| \left| e^{v(z)} \right| = e^{u(z)}.
+    \]
+    And since the real exponential function is increasing, we have $e^{u(z)} \leq e^M$ for all $z \in \C$. Thus, the entire function $e^{f(z)}$ is bounded and, by Liouville's theorem, it is constant. In particular, we let $C$ be the complex number such that $e^{f(z)} = C$ for all $z \in \C$. Then for all $z \in \C$, we have
+    \[e^{u(z)} = \left| e^{f(z)} \right| = |C|.\]
+    Taking the real logarithm, we find that $u(z)$ is indeed constant, and given by
+    \[u(z) = \log |C|, \quad z \in \C.\]
+    
+\end{proof}
+
+\newpage
+\section{Exercise 4.5.3}
+\begin{problem}
+    A function $f(z)$ on the complex plane is \textbf{doubly periodic} if there are two periods $\omega_0$ and $\omega_1$ of $f(z)$ that do not lie on the same line the the origin (that is, $\omega_0$ and $\omega_1$ are linearly independent over the reals, and $f(z + \omega_0) = f(z + \omega_1) = f(z)$ for all complex numbers $z$). Prove that the only entire functions that are doubly periodic are the constants.
+\end{problem}
+
+\begin{proof}
+    Let $f(z)$ be a doubly periodic entire function with linearly independent periods $\omega_0$ and $\omega_2$. We first show that for all $z \in \C$, we have
+    \[
+        f(z + n\omega_i) = f(z), \quad n \in \N,\; i = 0, 1,
+    \]
+    by induction on $n$. The base case, $f(z + \omega_i) = f(z)$, is true by the assumption that $f(z)$ is doubly period with respect to $\omega_0$ and $\omega_1$. For the inductive step, we assume equality holds for some $n \in \N$. Applying both the base case and the inductive hypothesis, we find
+    \[
+        f(z + (n+1)\omega_i) = f(z + n\omega_i + \omega_i) = f(z + n\omega_i)  = f(z).
+    \]
+    Immediately following from this, we obtain the result for negative integers, by noticing
+    \[
+        f(z - n\omega_i) = f(z - n\omega_i + n\omega_i) = f(z).
+    \]
+    And applying this for both $\omega_1$ and $\omega_1$, we obtain the following result for all $a, b \in \Z$:
+    \[
+        f(z + a\omega_0 + b\omega_1) = f(z + a\omega_0) = f(z).
+    \]
+    
+    Since $\omega_0$ and $\omega_1$ are linearly independent in the complex plane (as a 2-dimensional real vector space), they form a basis. That is, for all $z \in \C$, we can express $z$ as a linear combination $z = \alpha\omega_0 + \beta\omega_1$ for some $\alpha, \beta \in \R$. We split $\alpha$ and $\beta$ into their integral and fractional parts, i.e., we let
+    \begin{align*}
+        a = \floor{\alpha}, &\quad a' = \alpha - a, \\
+        b = \floor{\beta}, &\quad b' = \beta - b.
+    \end{align*}
+    Then letting $z' = a'\omega_0 + b'\omega_1$, we have that
+    \[
+        f(z) = f(\alpha\omega_0 + \beta\omega_1) = f(a'\omega_0 + b'\omega_1 + a\omega_0 + b\omega_1) = f(z').
+    \]
+    In other words, for all $z \in \C$, we have $f(z) = f(z')$ for some $z'$ in the unit $(\omega_0, \omega_1)$-rectangle
+    \[
+        R = \{a\omega_0 + b\omega_1 : a, b \in [0, 1]\}.
+    \]
+    Now since $R$ is a compact subset of $\C$, and $f(z)$ is continuous on $R$, then $f(z)$ is bounded on $R$. Let $M \in \R$ such that $|f(z)| \leq M$ for all $z \in R$. Moreover, for all $z \in \C$, we have $f(z) = f(z')$ for some $z' \in R$, so
+    \[
+        |f(z)| = |f(z')| \leq M.
+    \]
+    Thus, $f(z)$ is a bounded entire function, and Liouville's theorem tells us it is constant.
+    
+\end{proof}
+
+\section{Exercise 4.6.1}
+\begin{problem}
+    Let $L$ be a line in the complex plane. Suppose $f(z)$ is a continuous complex-valued function on a domain $D$ that is analytic on $D \setminus L$. Show that $f(z)$ is analytic on $D$.
+\end{problem}
+
+\begin{proof}
+    We have the result that this is true when $L = \R$. Assuming $L \ne \R$, we will define a fractional linear transformation $g(z)$ which maps $L$ to $\R$. We can write $L$ in the following form
+    \[
+        L = z_0 + z_1\R = \{z_0 + z_1t : t \in \R\}
+    \]
+    for some $z_0, z_1 \in \C$. Here, the complex number $z_0$ is any point on the line $L$ and $z_1$ can be thought of as a vector parallel to $L$, indicating its slope. Then we define $g(z)$ to be the fractional linear transformation given by
+    \[
+        g(z) = \frac{z - z_0}{0z + z_1} = \frac{z - z_0}{z_1}.
+    \]
+    Note that $z_1 \ne 0$, because then we would have $L$ to be the single point $z_0$, and not a line. This definition of $g(z)$ gives us
+    \[
+        g(L) = \frac{L - z_0}{z_1} = \frac{(z_0 + z_1\R) - z_0}{z_1} = \R.
+    \]
+    Despite $g(z)$ being a fractional linear transformation, we can consider it to be a map of the complex plane to itself, instead of its one-point compactification, $\C \cup \{\infty\}$. This is because the coefficient of $z$ in the denominator of $g(z)$ is zero, meaning $g(z)$ maps $\infty$ to itself. Therefore, it is safe to say that $g(z)$ is an entire function on $\C$. Additionally, we can find an inverse for $g(z)$, which is also a fractional linear transformation, and it is given by
+    \[
+        g^{-1}(z) = z_0 + z_1z.
+    \]
+    
+    We assume $f(z)$ to be continuous on the domain $D$. Since $g^{-1}(z)$ is continuous on $\C$, then the composition $f(g^{-1}(z))$ will be continuous on the preimage of $D$ under $g^{-1}(z)$, i.e., continuous on the set
+    \[
+        (g^{-1})^{-1}(D) = g(D).
+    \]
+    Similarly, because $f(z)$ is analytic on $D \setminus L$ and the function $g^{-1}(z)$ is entire, then the composition $f(g^{-1}(z))$ is analytic on the preimage of $D \setminus L$ under $g^{-1}(z)$, i.e., analytic on the set
+    \[
+        (g^{-1})^{-1}(D \setminus L) = g(D \setminus L).
+    \]
+    Since $g(z)$ is bijective, then set difference is preserved and we have
+    \[
+        g(D \setminus L) = g(D) \setminus g(L) = g(D) \setminus \R.
+    \]
+    Lastly, we note that because $g(z)$ is bicontinuous, then the image of a domain under $g(z)$ is, again, a domain. To summarize, we have the function $f(g^{-1}(z))$ to be continuous on the domain $g(D)$ and analytic on $g(D) \setminus \R$. Therefore, $f(g^{-1}(z))$ is analytic on $g(D)$. We can now conclude that the composition
+    \[
+        f(g^{-1}(g(z))) = f(z)
+    \]
+    is analytic on the preimage of $g(D)$ under $g(z)$, i.e., analytic on the set
+    \[
+        g^{-1}(g(D)) = D.
+    \]
+    
+\end{proof}
+
+\newpage
+\section{Exercise 4.6.2}
+\begin{problem}
+    Let $h(t)$ be a continuous function on the interval $[a, b]$. Show that the Fourier transform
+    \[H(z) = \int_a^b h(t) e^{-itz} \d{t}\]
+    is an entire function that satisfies
+    \[|H(z)| \leq C e^{A|y|}, \quad z = x + iy \in \C,\]
+    for some constants $A, C > 0$. \emph{Remark}. An entire function satisfying such a growth restriction is called an \textbf{entire function of finite type}.
+\end{problem}
+
+\begin{proof}
+    Consider the projections $\pi_1(t, z) = t$ and $\pi_2(t, z) = z$. If we take $[a, b]$ to be the line segment on the real axis of the complex plane, then both of these projections are complex-valued functions. Moreover, they are both continuous, so their product
+    \[
+        \pi_1\pi_2(t, z) = tz
+    \]
+    is also continuous. Now since $e^{-iz}$ is a continuous function from the complex plane to itself, then the composition
+    \[
+        e^{-i\pi_1\pi_2}(t, z) = e^{-itz}
+    \]
+    is continuous. Assuming $h(t)$ to be a continuous complex-valued function, then the product
+    \[
+        he^{-i\pi_1\pi_2}(t, z) = h(t)e^{-itz}.
+    \]
+    We now fix some $t \in [a, b]$, and show that the function $h'(t, z)$ is entire. Since $t$ and $h(t)$ are constants with respect to $z$, then the exponential function
+    \[
+        h(t)e^{-itz}
+    \]
+    is indeed entire. Note that if $t = 0$ or $h(t) = 0$, then this function is constant, and trivially entire. Thus, we have that the function
+    \[
+        H(z) = \int_a^b h(t) e^{-itz} \d{t}
+    \]
+    is entire. Let $A \in \R$ such that $|t| \leq A$ for all $t \in [a,b]$. Since $h(t)$ is continuous on the compact interval, it is bounded. Let $C$ be a real number such that $|h(t)| \leq C$ for all $t \in [a, b]$. Then for all $t \in [a, b]$ and $z \in \C$, we have
+    \[
+        \left|h(t) e^{-itz} \right| \leq C \left| e^{-it(x + iy)} \right| = C \left| e^{-itx} \right| \left| e^{ty} \right|.
+    \]
+    Note that  $e^{-itx}$ is a point on the complex unit circle. Additionally, $ty \in \R$ so $e^{ty}$ is a positive real number. And since
+    \[
+        ty \leq |ty| \leq A|y|,
+    \]
+    then
+    \[
+        \left|h(t) e^{-itz} \right| \leq C e^{ty} \leq C e^{A|y|}.
+    \]
+    Therefore, we can bound $|H(z)|$ in the following way:
+    \begin{align*}
+        |H(z)| 
+            &= \left| \int_a^b h(t) e^{-itz} \d{t} \right| \\
+            &\leq \int_a^b \left| h(t) e^{-itz} \right| \d{t} \\
+            &\leq \int_a^b C e^{A|y|} \d{t} \\
+            &= (b-a) C e^{A|y|}.
+    \end{align*}
+    This is the desired result, as $A$ and $(b-a)C$ are positive real constants.
+    
+\end{proof}
+
+
+\end{document}

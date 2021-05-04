@@ -1,0 +1,200 @@
+\documentclass[11pt]{article}
+ 
+\usepackage[table]{xcolor}
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{mathtools}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{colortbl}
+\usepackage{verbatim}
+\usetikzlibrary{arrows, angles, quotes}
+\usepackage{framed}
+\usepackage{cancel}
+
+
+\lstset{basicstyle=\footnotesize}
+\usetikzlibrary{calc}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+ 
+\begin{document}
+ 
+\title{Homework 14,15\\
+    \large MATH CS128 Intro to Higher Mathematics}
+\author{Harry Coleman}
+\date{November 25, 2019}
+
+\maketitle
+
+\section*{Exercise 14.1}
+\fbox{
+    \parbox{\textwidth}{
+        Let $X = \{2, 3, 4, 6, 8, 12, 24\}$ and let R and S be the relations given by:
+        \begin{center}
+            $aRb$ if $a$ is a multiple of $b$,
+        \end{center}
+        Give the maximum and minimum of X with respect to this relation, if they exist. Give also any maximal and minimal elements in X.
+    }
+}
+\\
+
+In this set, 24 is maximal because there does not exist an element, $y$, in the set such that $24Ry$. Since 24 is the only maximal element, it is also the maximum.
+
+2 and 3 are both minimal elements because there does not exist an element, $y$, in the set such that $yR2$ or $yR3$. However, since neither $2R3$ or $3R2$, there is not a minimum for this set.
+
+
+\section*{Exercise 14.3}
+\fbox{
+    \parbox{\textwidth}{
+        Let $(X, \leq)$ be a partially ordered set. Assume that $X$ has a maximum element. Show that it is unique.
+    }
+}
+\\
+
+We'll let $x\in X$ be a maximum element. So
+\[\forall z\in X(z\leq x)\]
+We will show $x$ is unique by contradiction. First, we assume that $x$ is not unique. So we'll let $y\in X$ be a maximum element such that $y\ne x$. Since $y$ is a maximum,
+\[\forall z\in X(z \leq y)\]
+Since $x\in X$, we have
+\[x\leq y\]
+And from $x$ being a maximum, we also have
+\[y\leq z\]
+
+Since $\leq$ is antisymmetric,
+\[x=y\]
+But since we defined $y$ such that $y\ne x$, this is a contradiction. So $x$ is unique.
+
+
+\newpage
+\section*{Exercise 14.5}
+\fbox{
+    \parbox{\textwidth}{    
+        Let $(X, \leq)$ be a poset and assume that $X$ is a finite set. Show that every element of $X$ that is not minimal (resp. maximal) has an immediate predecessor (resp. successor).
+    }
+}
+\\
+
+We'll let $c$ be an arbitrary element in $X$ which is not minimal. So there exists some $x\in X$ such that $x\leq c$. If we assume that $c$ does not have an immediate predecessor, then for all $x\in X$ such that $x \leq c$, there must exist some $x_2\in X$ such that  $x\ne x_2$ and $x\leq x_2 \leq c$. And again, there must be some $x_3$ such that $x_2\ne x_3$ and $x_2 \leq x_3 \leq c$. Since $X$ is a finite set with say $n$ elements, we could repeat this process $n$ times to get
+\[x \leq x_2 \leq x_3 \leq \cdots \leq x_n \leq c\]
+However, because all of these are distinct elements, we have shown that there are $n+1$ distinct elements in $X$. This is a contradiction because we defined $X$ to have just $n$ elements. So $c$ must have an immediate predecessor. Similarly, we might assume that some element, $c$, which is not maximal does not have an immediate successor. So for all $x\in X$ such that $c\leq x$, there must exist some $x_2\in X$ such that $c\leq x_2 \leq x$. And repeat this $n$ times to find that we can have $n+1$ elements in $X$ such that
+\[c \leq x_n \leq x_{n-1} \leq \cdots \leq x_2 \leq x\]
+which is again a contradiction, so $c$ must have some immediate successor. So any element that is not minimal or not maximal in $X$ must have an immediate predecessor or successor, respectively.
+
+
+\section*{Exercise 14.6}
+\fbox{
+    \parbox{\textwidth}{
+        For the partially ordered set $P(A)$ with the relation $\subseteq$, where $A = \{a, b, c\}$, find an upper bound, least upper bound, a lower bound, and the greatest lower bound for the following subsets of $P(A)$.
+        \begin{itemize}
+            \item $B = \{\{a\}, \{a, b\}, \{a, b, c\}\};$
+            \item $B = \{\{a\}, \{c\}, \{a, c\}\};$
+            \item $B = \{\emptyset, \{a, b, c\}\};$
+            \item $B = \{\{a\}, \{b\}, \{c\}\}.$
+        \end{itemize}
+    }
+}
+\\
+
+\begin{itemize}
+    \item $B = \{\{a\}, \{a, b\}, \{a, b, c\}\}$
+    \begin{itemize}
+        \item \textbf{upper bound} $\{a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z\}$
+        \item \textbf{least upper bound} $\{a,b,c\}$
+        \item \textbf{lower bound} $\emptyset$
+        \item \textbf{greatest lower bound} $\{a\}$
+    \end{itemize}
+    \item $B = \{\{a\}, \{c\}, \{a, c\}\}$
+    \begin{itemize}
+        \item \textbf{upper bound} $\{a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z\}$
+        \item \textbf{least upper bound} $\{a,c\}$
+        \item \textbf{lower bound} $\emptyset$
+        \item \textbf{greatest lower bound} $\emptyset$
+    \end{itemize}
+    \item $B = \{\emptyset, \{a, b, c\}\}$
+    \begin{itemize}
+        \item \textbf{upper bound} $\{a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z\}$
+        \item \textbf{least upper bound} $\{a,b,c\}$
+        \item \textbf{lower bound} $\emptyset$
+        \item \textbf{greatest lower bound} $\emptyset$
+    \end{itemize}
+    \item $B = \{\{a\}, \{b\}, \{c\}\}$
+    \begin{itemize}
+        \item \textbf{upper bound} $\{a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z\}$
+        \item \textbf{least upper bound} $\{a,b,c\}$
+        \item \textbf{lower bound} $\emptyset$
+        \item \textbf{greatest lower bound} $\emptyset$
+    \end{itemize}
+\end{itemize}
+
+
+\section*{Exercise 15.1}
+\fbox{
+    \parbox{\textwidth}{    
+        Let $X = \N^+$ ordered by divisibility. Show that this is a lattice but not a complete lattice.
+    }
+}
+\\
+
+If we pick any two arbitrary elements $a,b$, we can find their least common multiple, $c$. Which, by definition is the smallest natural number such that $a|c$ and $b|c$. So this would be the least upper bound of the subset $\{a,b\}$, or the join of $a$ and $b$. We can also find their greatest common factor, which is the greatest natural number, $c$ such that $c|a$ and $c|b$. This would be the greatest lower bound of the subset $\{a.b\}$, or the meet of $a$ and $b$. Since we can always find the meet and join of two arbitrary elements of $N^+$, it is a lattice.
+
+To show this is not a complete lattice, we'll use contradiction. We'll assume that it is a complete lattice, therefore, any subset has a supremum. Consider the subset $X\subseteq X$. Since $X$ is a complete lattice, there must be some supremum of $X$, we'll call $c\in\N^+$. So for all $x\in X$, $x$ divides $c$. But since $c\in\N^+$, $(c+1)\in\N^+$ and $(c+1)\in X$. So $(c+1)$ divides $c$. This is a contradiction since no number divides a number smaller than itself. So $X$ is not a complete lattice.
+
+\section*{Exercise 15.2}
+\fbox{
+    \parbox{\textwidth}{    
+        Exercise 2 Show that the positive integers with their usual ordering form a lattice (not complete)
+    }
+}
+\\
+
+Consider two arbitrary elements $a,b \in \Z^+$. Since $\leq$ is a total order on $\Z$, either $a<b$ or $b<a$. Without loss of generality, we'll say $a\leq b$. Consider $b \leq b$, so $b$ is an upper bound of $\{a,b\}$. Since there is no positive integer $k$ such that $b\leq k leq b$, $b$ is the least upper bound, or the join, of $a$ and $b$. Likewise, since $a\leq a$, $a$ would be the meet of $a$ and $b$.
+
+To show $\Z^+$ is not a complete lattice, we'll use contradiction. Assuming $\Z^+$ is a complete lattice, there must be a supremum of any subset. Consider $\Z^+ \subseteq \Z^+$, so there is a positive integer $c$ that is the supremum of $Z^+$. Since $c+1$ is a positive integer, $c+1 < c$. This is a contradiction. So $\Z^+$ is not a complete lattice.
+
+\newpage
+\section*{Exercise 15.4}
+\fbox{
+    \parbox{\textwidth}{    
+        Let $(X, \preceq)$ be a lattice. Show that every finite subset of $X$ has an infimum and a supremum. (This result can be proven by induction on the number of elements of the subset).
+    }
+}
+\\
+
+It is trivial that a subset of 0, 1, or 2 elements has both an infimum and a supremum. The case of zero elements is vacuously true for infinity and negative infinity for the infimum and supremum, respectively. A subset of one element has that one element as both the infimum and supremum. And a subset of two elements, since we have a lattice, must have a meet and a join, which are the infimum and supremum, respectively.
+
+To show that any finite subset of $X$ has an infimum and a supremum, we'll use strong induction on the size of the subsets, $n$, taking $n=2$ to be our base case, already shown to be true. For the inductive step, we'll assume that for some $n > 2$, we have that any subset with $n$ elements has an infiumum and a supremum. Consider an arbitrary set $S$ with $n+1$ elements. We want to show that $S$ has an infimum and a supremum. If we let $x\in S$ be some arbitrary element, we would have
+\[S\setminus\{x\}\]
+as a subset of $(X, \preceq)$ with $n$ elements, so $S\setminus\{x\}$ has
+\begin{align*}
+    \text{infimum } & \alpha\in X \\
+    \text{supremum } & \beta\in X
+\end{align*}
+
+Since $X$ is a lattice, we can find
+\begin{align*}
+    \alpha^\prime &= x \wedge \alpha \\
+    \beta^\prime &= x \vee \beta
+\end{align*}
+and $\alpha^\prime$ is a lower bound for $S\setminus\{x\}$ and therefore $S$, and $\beta^\prime$ is an upper bound for $S\setminus\{x\}$ and therefore $S$. Since each is the greatest and least, respectively, of it's kind, they are the infimum and supremum of $S$.
+
+
+\section*{Exercise 15.5}
+\fbox{
+    \parbox{\textwidth}{    
+         Show that a complete lattice has a minimum and a maximum element.
+    }
+}
+\\
+
+Let $(X, \preceq)$ be a complete lattice. So all subsets of $X$ have an infimum and a supremum, which are each in $X$. Since $X \subseteq X$, then by the definition of a complete lattice, we must have an infimum and a supremum which are in $X$. And by definition must also be the minimum and maximum values for $X$, respectively.
+
+
+\end{document}

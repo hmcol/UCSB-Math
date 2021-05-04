@@ -1,0 +1,512 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{amsmath, amsthm, amssymb, physics}
+\usepackage[shortlabels]{enumitem}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Options
+\renewcommand{\thesubsection}{\thesection(\alph{subsection})}
+\allowdisplaybreaks
+\addtolength{\jot}{4pt}
+\theoremstyle{definition}
+
+% Default Commands
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+%\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\pfrac}[2]{\left(\frac{#1}{#2}\right)}
+
+% Extra Commands
+\newtheorem{theorem}{Theorem}
+\newcommand{\supnorm}[1]{\norm{#1}_{\infty}}
+\newcommand{\RR}{\mathcal{R}}
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH 118B Homework 8}
+    \fancyhead[C]{March 11, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+
+\begin{pbox}[1]
+    Suppose that $\{f_n\}_{n\in\N}$ and $\{g_n\}_{n\in\N}$ are defined on $E$, and:
+    \begin{enumerate}[(1)]
+    \item $\sum f_n$ has uniformly bounded partial sums.
+    \item $g_n \to 0$ uniformly on $E$.
+    \item $g_1(x) \ge g_2(x)\ge g_3(x) \ge \cdots$ for every $x\in E$.
+    \end{enumerate}
+    Prove that 
+    \begin{equation}
+    \sum_n f_n g_n
+    \end{equation}
+    converges uniformly on $E$. Use this result to show that 
+    \begin{equation}
+    \sum_{n=1}^\infty \frac{\sin nx}{n}
+    \end{equation}
+    converges uniformly on compact intervals of $(0,2\pi)$.
+    {\it Hint: Compare to Summation by Parts}.
+\end{pbox}
+
+\begin{proof}
+    Let the uniform norm for functions defined on $E$ be denoted by $\norm{\cdot}_\infty$. Define the partial sums $F_n = \sum_{k=1}^{n} f_n$ and $h_n = \sum_{k=1}^{n} f_k g_k$. Suppose $n, m \in \N$ with $n \geq m$, then we will estimate
+    \begin{align*}
+        \supnorm{h_n - h_m}
+            &= \supnorm{\sum_{k=m+1}^{n} f_k g_k} \\
+            &= \supnorm{\sum_{k=m+1}^{n} (F_k - F_{k-1}) g_k} \\
+            &= \supnorm{\sum_{k=m+1}^{n} F_k g_k - \sum_{k=m+1}^{n} F_{k-1} g_k} \\
+            &= \supnorm{F_n g_n + \sum_{k=m+1}^{n-1} F_k g_k - \sum_{k=m+1}^{n-1} F_k g_{k+1} - F_m g_{m+1}} \\
+            &\leq \supnorm{F_n g_n} + \supnorm{F_m g_{m+1}} + \supnorm{\sum_{k=m+1}^{n-1} F_k(g_k - g_{k+1})}.
+    \end{align*}
+    The sequence of partial sums $\{F_n\}_{n\in\N}$ is uniformly bounded, so there exists some $M \in \R$ such that $\supnorm{F_n} \leq M$. Therefore,
+    \begin{align*}
+        \supnorm{h_n - h_m}
+            &\leq M \qty\Big(\supnorm{g_n} + \supnorm{g_{m}}) + \supnorm{\sum_{k=m+1}^{n-1} F_k(g_k - g_{k+1})}.
+    \end{align*}
+    Now for a fixed $x \in E$, we find that
+    \begin{align*}
+        \abs{\sum_{k=m+1}^{n-1} F_k(x)\qty\big(g_k(x) - g_{k+1}(x))}
+            &\leq \sum_{k=m+1}^{n-1} \abs\big{F_k(x)} \abs\big{g_k(x) - g_{k+1}(x)} \\
+            &\leq M \sum_{k=m+1}^{n-1} \abs\big{g_k(x) - g_{k+1}(x)}.
+    \end{align*}
+    Since $g_k(x) \geq g_{k+1}(x)$ for all $k \in \N$, then we have the telescoping summation
+    \begin{align*}
+        \sum_{k=m+1}^{n-1} \abs\big{g_k(x) - g_{k+1}(x)}
+            &= \sum_{k=m+1}^{n-1} \qty\big(g_k(x) - g_{k+1}(x)) \\
+            &= g_{m+1}(x) - g_n(x) \\
+            &\leq \abs\big{g_{m+1}(x) - g_n(x)} \\
+            &\leq \supnorm{g_{m+1} - g_n}.
+    \end{align*}
+    So we have the inequality
+    \[
+        \abs{\sum_{k=m+1}^{n-1} F_k(x)\qty\big(g_k(x) - g_{k+1}(x))} \leq M\supnorm{g_{m+1} - g_n},
+    \]
+    for all $x \in E$, which implies that
+    \[
+        \supnorm{\sum_{k=m+1}^{n-1} F_k\qty\big(g_k - g_{k+1})} \leq M\supnorm{g_{m+1} - g_n}.
+    \]
+    Thus, we obtain
+    \begin{align*}
+        \supnorm{h_n - h_m}
+            &\leq M \qty\Big(\supnorm{g_n} + \supnorm{g_{m+1}} +\supnorm{g_{m+1} - g_n}) \\
+            &\leq 2M \qty\Big(\supnorm{g_n} + \supnorm{g_{m+1}}).
+    \end{align*}
+    Now given $\eps > 0$, since $g_n \to 0$ uniformly on $E$, there exists some $N \in \N$ such that $n \geq N$ implies $\supnorm{g_n} < \eps/(4M)$. So for all $n, m \in \N$ with $n, m \geq N$, we have
+    \[
+        \supnorm{h_n - h_m}
+            < 2M \qty(\frac{\eps}{4M} + \frac{\eps}{4M})
+            = \eps.
+    \]
+    That is, the sequence of partial sums $\{h_n\}_{n\in\N}$ is uniformly Cauchy and, therefore, uniformly convergent on $E$. 
+
+\end{proof}
+
+
+\newpage
+
+Consider a compact subinterval $[a, b] \subset (0, 2\pi)$. Define the sequences of functions on $[a, b]$ by
+\[
+    f_n(x) = \sin nx \isp{and} g_n(x) = \frac{1}{n}.
+\]
+Then we want to bound the partial sums
+\[
+    F_n(x)
+        = \sum_{k=1}^{n} f_k(x)
+        = \sum_{k=1}^{n} \sin kx.
+\]
+Allowing ourselves to employ complex numbers, we will use the fact that $e^{ix} = \cos x + i\sin x$ for real values of $x$. Then
+\begin{align*}
+    \sum_{k=1}^{n} \sin kx
+        &= \sum_{k=1}^{n} \frac{e^{ikx} - e^{-ikx}}{2i} \\
+        &= \frac{1}{2i}\qty(\sum_{k=1}^{n} e^{ikx} - \sum_{k=1}^{n} e^{-ikx}) \\
+        &= \frac{1}{2i}\qty(e^{ix}\sum_{k=0}^{n-1} \qty(e^{ix})^k - e^{-ix}\sum_{k=0}^{n-1} \qty(e^{-ix})^k) \\
+        &= \frac{1}{2i}\qty(e^{ix}\frac{1 - e^{inx}}{1 - e^{ix}} - e^{-ix}\frac{1 - e^{-inx}}{1 - e^{-ix}}) \\
+        &= \frac{1}{2i}\qty(\frac{1 - e^{inx}}{e^{-ix} - 1} - \frac{1 - e^{-inx}}{e^{ix} - 1}) \\
+        &= \frac{1}{2i} \pfrac{
+            \qty(1 - e^{inx})\qty(e^{ix} - 1) 
+            - \qty(1 - e^{-inx})\qty(e^{-ix} - 1)}
+            {\qty(e^{-ix} - 1)\qty(e^{ix} - 1)} \\
+        &= \frac{1}{2i} \pfrac{
+            \qty(e^{ix} - 1 - e^{i(n+1)x} + e^{inx}) 
+            - \qty(e^{-ix} - 1 - e^{-i(n+1)x} + e^{-inx})}
+            {e^0 - e^{-ix} - e^{ix} + 1} \\
+        &= \frac{1}{2i} \pfrac{\qty(e^{ix} - e^{-ix}) + \qty(e^{inx} - e^{-inx}) - \qty(e^{i(n+1)x} - e^{-i(n+1)x})}
+            {2 - \qty(e^{-ix} + e^{ix})} \\
+        &= \frac{1}{2i} \pfrac{i2\sin x + i2\sin nx - i2\sin((n+1)x)}{2 - 2\cos x} \\
+        &= \frac{\sin x + \sin nx - \sin((n+1)x)}{2 - 2\cos x}.
+\end{align*}
+Since $a, b \in (0, 2\pi)$, then
+\[
+    C = \max_{x \in [a, b]} \cos x = \max\{\cos a, \cos b\} < 1.
+\]
+So we can uniformly bound the partial sums inside $[a, b]$ by
+\[
+    |F_n(x)|
+        \leq \frac{3}{|2 - 2\cos x|}
+        \leq \frac{3}{2 - 2C}.
+\]
+And since the sequence of constant functions $g_n(x) = 1/n$ is decreasing and converges to zero uniformly, we conclude that
+\[
+    \sum_{n=1}^{\infty} f_n(x) g_n(x)
+        = \sum_{n=1}^{\infty} \frac{\sin nx}{n}
+\]
+converges uniformly in any compact subinterval of $(0, 2\pi)$.
+
+
+
+\newpage
+\begin{pbox}[2]
+    Suppose $f_n:(0,\infty)\to \R$, $n\in \N$, is a sequence of functions that is Riemann integrable on any interval $[a,b]$ for $0<a<b<\infty$. Assume that $f_n \to f$ uniformly on every compact set subset of $(0,\infty)$, and that there exists a nonnegative function $g:(0,\infty)\to \R$ such that 
+    \begin{equation}
+    |f_n(x)|\le g(x),\quad \forall\, x \in (0,+\infty),\ \forall\,n\in \N,
+    \end{equation}
+    and
+    \begin{equation}
+    \int_0^{\infty}g(x)\,dx < \infty.
+    \end{equation}
+    Show that 
+    \begin{equation}
+    \int_0^\infty f_n(x)\,dx,\quad \forall\,n\in \N,
+    \end{equation}
+    and
+    \begin{equation}
+    \int_0^\infty f(x)\,dx
+    \end{equation}
+    are convergent, and that 
+    \begin{equation}
+    \lim_{n\to \infty} \int_0^{\infty} f_n(x)\,dx = \int_0^{\infty} f(x)\,dx. 
+    \end{equation}
+\end{pbox}
+
+\begin{proof}
+    Define
+    \[
+        I = \int_{0}^{\infty} g(x) \dd{x} < \infty.
+    \]
+    Let $n \in \N$ and $[a, b] \subset (0, + \infty)$. Since $f_n \in \RR([a,b])$ and $|f_n(x)| \leq g(x)$ for all $x \in (0, +\infty)$, then we can bound the integral
+    \[
+        \int_{a}^{b} |f_n(x)| \dd{x}
+            \leq \int_{a}^{b} |f_n(x)| \dd{x}
+            \leq \int_{a}^{b} g(x) \dd{x}
+            \leq I.
+    \]
+    Since $|f_n|$ is nonnegative, then the limit of the integral as $a \to 0$ and $b \to \infty$ is increasing with respect to both limits. And since it is bounded above, the limits must converge, and we obtain
+    \[
+        \int_{0}^{\infty} |f_n(x)| \dd{x} \leq I.
+    \]
+    And since the improper integral converges absolutely, then the improper integral of $f_n$ over $(0, +\infty)$ is convergent for each $n \in \N$.
+    
+    Consider, again, the bound
+    \[
+        \int_{a}^{b} |f_n(x) \dd{x}| \leq I,
+    \]
+    which holds for all $[a, b] \subset (0, +\infty)$ and $n \in \N$. Since $f_n \to f$ uniformly on $[a, b]$, then $f \in \RR([a, b])$ and we can take the limit as $n \to \infty$, giving us
+    \[
+        \int_{a}^{b} |f(x)| \dd{x}
+            = \lim_{n \to \infty} \int_{a}^{b} |f_n(x)| \dd{x}
+            \leq I.
+    \]
+    And similar to the $f_n$'s, the fact that this bound holds for all $[a, b] \subset (0, +\infty)$ implies that the improper integral of $f$ over $(0, +\infty)$ converges.
+    
+    Now, given $\eps > 0$, since the improper integral of $g$ over $(0, +\infty)$ converges, there exists some subinterval $[a, b] \subset (0, +\infty)$ such that
+    \[
+        \abs{\int_{a}^{b} g(x) \dd{x} - \int_{0}^{\infty} g(x) \dd{x}} < \frac{\eps}{3}.
+    \]
+    Then for all $n \in \N$, we find
+    \begin{align*}
+        \abs{\int_{0}^{\infty} f_n(x) \dd{x} - \int_{a}^{b} f_n(x) \dd{x}}
+            &= \abs{\int_{0}^{a} f_n(x) \dd{x} + \int_{b}^{\infty} f_n(x) \dd{x}} \\
+            &\leq \int_{0}^{a} \abs{f_n(x)} \dd{x} + \int_{b}^{\infty} \abs{f_n(x)} \dd{x} \\
+            &\leq \int_{0}^{a} g(x) \dd{x} + \int_{b}^{\infty} g(x) \dd{x} \\
+            &= \int_{0}^{\infty} g(x) \dd{x} - \int_{a}^{b} g(x) \dd{x} \\
+            &< \frac{\eps}{3}.
+    \end{align*}
+    Since $|f_n(x)| \leq g(x)$ for all $n \in \N$, then letting $n \to \infty$, we obtain $|f(x)| \leq g(x)$. And we now find
+    \begin{align*}
+        \abs{\int_{a}^{b} f(x) \dd{x} - \int_{0}^{\infty} f(x) \dd{x}}
+            &= \abs{-\int_{0}^{a} f(x) \dd{x} - \int_{b}^{\infty} f(x) \dd{x}} \\
+            &\leq \int_{0}^{a} \abs{f(x)} \dd{x} + \int_{b}^{\infty} \abs{f(x)} \dd{x} \\
+            &\leq \int_{0}^{a} g(x) \dd{x} + \int_{b}^{\infty} g(x) \dd{x} \\
+            &= \int_{0}^{\infty} g(x) \dd{x} - \int_{a}^{b} g(x) \dd{x} \\
+            &< \frac{\eps}{3}.
+    \end{align*}
+    Since $f_n \to f$ uniformly on the compact subinterval $[a, b]$, then there exists some $N \in \N$ such that for all $n \geq N$ , we have
+    \[
+        \abs\big{f_n(x) - f(x)} < \frac{\eps}{3}(b - a),
+    \]
+    which implies
+    \[
+        \abs{\int_{a}^{b} f_n(x) \dd{x} - \int_{a}^{b} f(x) \dd{x}}
+            \leq \int_{a}^{b} \abs\big{f_n(x) - f(x)} \dd{x}
+            < \frac{\eps}{3}.
+    \]
+    So for all $n \in \N$ with $n \geq N$, we have
+    \begin{align*}
+        \abs{\int_{0}^{\infty} f_n(x) \dd{x} - \int_{0}^{\infty} f(x) \dd{x}}
+            &\leq \abs{\int_{0}^{\infty} f_n(x) \dd{x} - \int_{a}^{b} f_n(x) \dd{x}} \\
+                &\qquad + \abs{\int_{a}^{b} f_n(x) \dd{x} - \int_{a}^{b} f(x) \dd{x}} \\
+                &\qquad + \abs{\int_{a}^{b} f(x) \dd{x} - \int_{0}^{\infty} f(x) \dd{x}} \\
+            &< \frac{\eps}{3} + \frac{\eps}{3} + \frac{\eps}{3} \\
+            &= \eps.
+    \end{align*}
+    Therefore,
+    \[
+        \lim_{n \to \infty} \int_{0}^{\infty} f_n(x) \dd{x} = \int_{0}^{\infty} f(x) \dd{x}.
+    \]
+    
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[3]
+    In this problem you are asked to prove the following existence theorem for Ordinary Differential Equations:
+    \begin{pbox}[Theorem (Existence of Solutions)]
+        Consider $(x_0,y_0)\in \mathbb{R}\times \mathbb{R}^n$, and
+        $a,b>0$. Consider the set
+        \[
+        R = [x_0-a,x_0+a] \times [y_0-b,y_0+b],
+        \]
+        and a function $f:R\to \mathbb{R}$, with $f$ continuous. Let $M = \sup_R |f|$. Then
+        the Initial Value Problem 
+        \begin{equation}
+        \left \{ \begin{array}{l}
+            y'=f(x,y) \\
+            y(x_0)= y_0 \end{array} \right .
+        \end{equation}
+        admits a solution $\phi$, defined at least in the interval
+        $[x_0-\alpha, x_0+\alpha]$, with $\alpha=\min \{a, \frac{b}{M} \}$.
+    \end{pbox}
+\end{pbox}
+
+
+
+\begin{pbox}[(a)]
+    To prove the theorem, do the following: For $n\in \mathbb{N}$, define $h = \alpha/n$, and $x_i = x_0+i h$ for $i=0,1,\dots,n$. 
+    Define the piecewise continuous function $y_n$ by 
+    \begin{equation}
+    y_n(x) = \left \{ \begin{array}{lr}
+    y_0 + f(x_0,y_0)(x-x_0),& x \in [x_0,x_1],\\
+    y_n(x_i) + f(x_i,y_n(x_i)) (x-x_i),& x \in [x_i,x_{i+1}],\ \ i\ge 1.
+    \end{array} \right .
+    \end{equation}
+    Prove that the sequence of functions $\{y_n\}_{n\in\N}$ has a uniformly convergent subsequence, and that the limit solves the initial value problem.
+    {\it Hint: To show the last part, define the piecewise constant
+    \begin{equation}
+    g_n(x) = f(x_i,y_n(x_i)),\quad x\in [x_i,x_{i+1}),
+    \end{equation}
+    and show that 
+    \begin{equation}
+    y_n(x) = y_0 + \int_{x_0}^x g_n(t)\,dt.
+    \end{equation}
+    }
+\end{pbox}
+
+
+\begin{proof}
+    Fix $n \in \N$, so $x_i = x_0 + i\alpha/n$ for $i = 0, 1, \dots, n$. We will prove by induction on $i$, that for all $x \in [x_i, x_{i+1})$,
+    \[
+        y_n(x) = y_0 + \int_{x_0}^{x} g_n(t) \dd{t},
+    \]
+    where $g_n$ is defined as above. Additionally, we will take $g_n(x_n) = f(x_{n-1}, y_n(x_{n-1}))$, so that this expression will hold on $[x_0, x_0 + \alpha]$. For the base case, suppose $x \in [x_0, x_1)$. Then by the definition of $y_n$, we find
+    \begin{align*}
+        y_n(x)
+            &= y_0 + f(x_0, y_0)(x - x_0) \\
+            &= y_0 + \int_{x_0}^{x} f(x_0, y_n(x_0)) \dd{t} \\
+            &= y_0 + \int_{x_0}^{x} g_n(t) \dd{t}.
+    \end{align*}
+    Now suppose that the equality holds in some interval $[x_i, x_{i+1})$. Then for any $x \in [x_{i+1}, x_{i+2})$, the definition of $y_n$ gives us
+    \[
+        y_n(x) = y_n(x_{i+1}) + f(x_{i+1}, y_n(x_{i+1}))(x - x_{i+1}).
+    \]
+    Because $g_n$ is constantly $f(x_{i+1}, y_n(x_{i+1}))$ on the interval $[x_{i+1}, x]$, then we can rewrite this as the integral
+    \[
+         y_n(x) = y_n(x_{i+1}) + \int_{x_{i+1}}^{x} g_n(t) \dd{t}.
+    \]
+    Since $y_n$ is defined on the closed intervals, then the value of $y_n(x_{i+1})$ is given by the value of $y_n$ on the interval $[x_i, x_{i+1}]$, so
+    \begin{align*}
+        y_n(x)
+            &= y_n(x_i) + f(x_i, y_n(x_i))(x_{i+1} - x_i) + \int_{x_{i+1}}^{x} g_n(t) \dd{t} \\
+            &= y_n(x_i) + \int_{x_i}^{x_{i+1}} g_n(t) \dd{t} + \int_{x_{i+1}}^{x} g_n(t) \dd{t} \\
+            &= y_n(x_i) + \int_{x_i}^{x} g_n(t) \dd{t}.
+    \end{align*}
+    By induction hypothesis, we obtain
+    \begin{align*}
+        y_n(x)
+            &= y_0 + \int_{x_0}^{x_i} g_n(t) \dd{t} + \int_{x_i}^{x} g_n(t) \dd{t} \\
+            &= y_0 + \int_{x_0}^{x} g_n(t) \dd{t}.
+    \end{align*}
+    
+    Using this expression, we will deduce that $y_n$ is bounded. Since $g_n$ is always equal to some value of $f$, and $|f| \leq M$, then we must have $|g_n| \leq M$. So for all $x \in [x_0, x_0 + \alpha]$,
+    \begin{align*}
+        |y_n(x)|
+            &\leq |y_0| + \abs{\int_{x_0}^{x} g_n(t) \dd{t}} \\
+            &\leq |y_0| + \int_{x_0}^{x} |g_n(t)| \dd{t} \\
+            &\leq |y_0| + M|x - x_0| \\
+            &\leq |y_0| + M\alpha.
+    \end{align*}
+    And since the bound is independent of $n$, this implies that the sequence of functions $\{y_n\}_{n \in \N}$ is pointwise bounded on the interval $[x_0, x_0 + \alpha]$. Next, we will show that this sequence is equicontinuous on the same interval. Fix $n \in \N$. Then $y_n$ is linear on each interval $[x_i, x_{i+1}]$, so in particular it is differentiable on each open interval $(x_i, x_{i+1})$, and continuous at the boundary points. If $x \in (x_i, x_{i+1})$, then we find
+    \[
+        |y_n'(x)|
+            = |f(x_i, y_n(x_i))|
+            \leq M.
+    \]
+    However, $y_n$ is not necessarily differentiable at the points $x_0, \dots, x_n$. Let $u, v \in [x_0, x_0 + \alpha]$ with $u < v$. Suppose that $k, m \in \N$ such that
+    \[
+        x_{k-1} < u \leq x_k < x_{x+1} < \cdots < x_{k+m} \leq v < x_{k+m+1}.
+    \]
+    That is, the only $x_i$'s which lie between $u$ and $v$ are the points $x_k, \dots, x_{k+m}$. Then using triangle inequality, we find
+    \begin{align*}
+        |y_n(u) - y_n(v)| &\leq |y_n(u) - y_n(x_k)| + \sum_{j=k}^{k+m} |y_n(x_{j}) - y_n(x_{j+1})| + |y_n(x_{k+m}) - y_n(v)|.
+    \end{align*}
+    Applying the intermediate value theorem to each of the intervals, we choose the points
+    \[
+        c_0 \in (u, x_k), \quad c_1 \in (x_k, x_{k+1}), \quad \dots, \quad c_{m+1} \in (x_{k+m}, v)
+    \]
+    such that
+    \begin{align*}
+        y_n(u) - y_n(x_k) &= y_n'(c_0)(u - x_k), \\
+        y_n(x_k) - y_n(x_{x+1}) &= y_n'(c_1)(x_k - x_{x+1}), \\
+            & \vdots \\
+        y_n(x_{k+m}) - y_n(v) &= y_n'(c_{m+1})(x_{k+m} - v).
+    \end{align*}
+    And since $|y_n'| \leq M$, then we obtain
+    \begin{align*}
+        |y_n(u) - y_n(v)|
+            &\leq M\qty(|u - x_k| + \sum_{j=k}^{k+m} |x_{j} - x_{j+1}| + |x_{k+m} - v|) \\
+            &= M|u - v|.
+    \end{align*}
+    And this bound holds for all $n \in \N$ and $u, v \in [x_0, x_0 + \alpha]$. So given $\eps > 0$, we choose $\delta = \eps/M$. So if $|u - v| < \delta$, then
+    \[
+        |y_n(u) - y_n(v)|
+            \leq M|u - v|
+            \leq M\frac{\eps}{M}
+            = \eps.
+    \]
+    Hence, the sequence of functions $\{y_n\}_{n \in \N}$ is equicontinuous on the compact set $[x_0, x_0 + \alpha]$. Since we have also shown it to be pointwise bounded on this set, then the Arzela-Ascoli theorem tells us that it has a uniformly convergent subsequence.
+    
+    
+    
+    Let $\{y_{n_k}\}_{k \in \N}$ be a subsequence which converges uniformly to some function $y$ on the interval $[x_0, x_0 + \alpha]$. We will prove that $g_{n_k}(x) \to f(x, y(x))$ uniformly on the same interval. Let $\eps > 0$ be given. By the uniform continuity of $f$ on the compact set $R$, let $\delta_1 > 0$ such that for all $u, v \in R$,
+    \[
+        \norm{u - v} < \delta_1 \implies |f(u) - f(v)| < \frac{\eps}{2}.
+    \]
+    By the equicontinuity of $\{y_n\}_{n \in \N}$, let $\delta_2 > 0$ such that for all $n \in \N$ and $u, v \in [x_0, x_0 + \alpha]$,
+    \[
+        |u - v| < \delta_2 \implies |y_n(u) - y_n(v)| < \frac{\delta_1}{2}.
+    \]
+    Then if $u, v \in [x_0, x_0 + \alpha]$ with $|x - v| < \delta = \min\{\delta_1/2, \delta_2\}$,
+    \begin{align*}
+        \norm{(u, y_n(u)) - (v, y_n(v))}
+            &= \sqrt{(u - v)^2 + (y_n(u) - y_n(v))^2} \\
+            &\leq \sqrt{(\delta_1/2)^2 + (\delta_1/2)^2} \\
+            &= \frac{\delta_1}{\sqrt{2}} \\
+            &< \delta_1,
+    \end{align*}
+    which implies $|f(u, y_n(u)) - f(v, y_n(v))| < \eps/2$. By the uniform convergence $y_{n_k} \to y$, let $N \in \N$ such that
+    \[
+        x \in [x_0, x_0 + \alpha],\; k \geq N \implies |y_{n_k}(x) - y(x)| < \delta.
+    \]
+    And since
+    \begin{align*}
+        \norm{(x, y_{n_k}(x)) - (x, y(x))}
+            &= \sqrt{(x - x)^2 + (y_{n_k}(x) - y(x))^2} \\
+            &= |y_{n_k}(x) - y(x)|,
+    \end{align*}
+    then in fact,
+    \[
+        x \in [x_0, x_0 + \alpha],\; k \geq N \implies |f(x, y_{n_k}(x)) - f(x, y(x))| < \frac{\eps}{2}.
+    \]
+    Additionally, assume $N$ is large enough so that $\alpha/n_N < \delta$. Then for $k \geq N$ and any $x \in [x_0, x_0 + \alpha]$, we have $x \in [x_i, x_{i+1})$ for some $i$ (or if $x = x_n$, then take $i = n-1$). We know that $|x_i - x| < \delta$, so
+    \begin{align*}
+        |g_{n_k}(x) - f(x, y(x))|
+            &\leq |f(x_i, y_{n_k}(x_i) - f(x, y_{n_k}(x))| + |f(x, y_{n_k}(x)) - f(x, y(x))| \\
+            &< \frac{\eps}{2} + \frac{\eps}{2} \\
+            &= \eps.
+    \end{align*}
+    Thus, $g_{n_k}(x) \to f(x, y(x))$ uniformly on $[x_0, x_0 + \alpha]$. Recall that we have
+    \[
+        y_{n_k}(x) = y_0 + \int_{x_0}^{x} g_{n_k}(t) \dd{t},
+    \]
+    and taking the limit as $k \to \infty$, we obtain
+    \[
+        y(x)
+            = y_0 + \lim_{k \to \infty}\int_{x_0}^{x} g_{n_k}(t) \dd{t}
+            = y_0 + \int_{x_0}^{x} f(t, y(t)) \dd{t}.
+    \]
+    In the previous homework, we showed that this condition on $y$ is equivalent to it being a solution to the initial value problem.
+    
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[(b)]
+    Consider the IVP
+    \begin{eqnarray}
+    y'&=&\sqrt{|y|},\\
+    y(0)&=& 0.
+    \end{eqnarray}
+    Show that for any $c>0$, the function 
+    \begin{equation}
+    y_c(x) = \left \{ \begin{array}{lr}
+    0,&  x < c,\\
+    \frac{(x-c)^2}{4},& x\ge c
+    \end{array}\right .
+    \end{equation}
+    solves the initial value problem, showing that there exists infinitely many solutions.
+\end{pbox}
+
+If $x < c$, then
+\[
+    y_c'(x) = 0 = \sqrt{|0|} - \sqrt{|y(x)|}.
+\]
+If $x > c$, then
+\[
+    y_c'(x)
+        = \frac{x - c}{2}
+        = \sqrt{\qty(\frac{x-c}{2})^2}
+        = \sqrt{|y_c(x)|}.
+\]
+Note that both $y_c(x) \to 0$ and $y_c'(x) \to 0$ as $x \to c$ from both the left and right, so this is also a solution at $c$. Hence, $y_c$ solves the initial value problem for any $c > 0$.
+
+\begin{pbox}[(c)]
+    In the previous homework we studied Picard's Theorem, which guarantees the existence and {\bf uniqueness} of solutions. Does this example contradict Picard's Theorem? Explain.
+\end{pbox}
+
+No. In Picard's theorem, we had an additional condition on $f$ that was similar to Lipschitz continuity. In particular, the derivative of $f$ was bounded. In this case, The derivative of $\sqrt{|y|}$ around zero is unbounded, so that condition is not satisfied, and Picard's theorem does not guarantee uniqueness of the solution.
+
+
+\end{document}

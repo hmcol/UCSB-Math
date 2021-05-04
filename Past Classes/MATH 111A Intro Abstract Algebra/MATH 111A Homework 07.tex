@@ -1,0 +1,247 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry} % proper margins
+\usepackage{enumitem} % custom numbering for lists
+\usepackage{amsmath} % align, cases, eqref, matrices, dots, roots, delimiters, math mode functions, mod, arrows
+\usepackage{amsthm} % theorems, proofs
+\usepackage{amssymb} % fancy letters, niche relations/negations
+\usepackage{mathrsfs} % much more loopy calligraphy font
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}
+    {\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\mybox}}}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+
+% Alternate Characters
+\let\eps\varepsilon % double curved, rather than single curve with midline
+\let\phi\varphi % single stroke loop, rather than vertical line through circle
+\let\emptyset\varnothing % circular, rather than tall
+
+% Named Sets
+\newcommand{\N}{\mathbb{N}} % natural numbers
+\newcommand{\Z}{\mathbb{Z}} % integers 
+\newcommand{\Q}{\mathbb{Q}} % rational numbers
+\newcommand{\R}{\mathbb{R}} % real numbers
+\newcommand{\C}{\mathbb{C}} % complex numbers
+
+% Fancy Characters
+\newcommand{\F}{\mathbb{F}} % arbitrary field
+\renewcommand{\P}{\mathbb{P}} % probability measure (apparently, sometimes prime numbers)
+\newcommand{\FF}{\mathcal{F}} % sigma algebra
+\newcommand{\BB}{\mathcal{B}} % Borel sigma algebra
+
+% Paired Delimiters
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil} % ceiling
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor} % floor
+\newcommand{\<}{\left\langle} % left angle bracket
+\renewcommand{\>}{\right\rangle} % right angle bracket
+
+% Functions
+\renewcommand{\Im}{\operatorname{Im}} % imaginary part of a complex number
+\renewcommand{\Re}{\operatorname{Re}} % real part of a complex number
+\newcommand{\Arg}{\operatorname{Arg}} % principal argument (angle) of complex number
+
+% Simplified Notation
+\newcommand{\id}[1]{\operatorname{id_{\mathnormal{#1}}}} % identity operator
+\newcommand{\seq}[2][n]{\left\{#2\right\}_{#1\in\N}} % sequence
+\renewcommand{\d}[1]{\operatorname{d}\!#1} % differential operator
+\newcommand{\od}[3][1]{\ifnum#1=1{\frac{\d #2}{\d #3}}\else{\frac{\d^{#1}#2}{\d #3^{#1}}}\fi} % ordinary derivative
+\newcommand{\pd}[3][1]{\ifnum#1=1{\frac{\partial #2}{\partial#3}}\else{\frac{\partial^{#1}#2}{\partial#3^{#1}}}\fi} % partial derivative
+\newcommand{\intr}[1]{\accentset{\circ}{#1}} % interior of a set
+
+% Renaming
+\let\sm\setminus % set minus (difference)
+\let\clo\overline % closure of a set
+\let\conj\overline % conjugate of an object
+\let\eqc\overline % equivalence class of an object
+\let\teq\trianglelefteq % normal subgroup
+\let\iso\cong % isomorphic (groups)
+
+% Temp
+\newcommand{\KK}{\mathcal{K}}
+
+% Notes
+% medskip for header-less paragraph
+% intertext{} for short text inside big display structure
+% dots is dynamic based on surroundings
+% dfrac and tfrac to force large or small fractions
+% operatorname for new operators instead of text
+% consider using nath; it seems to break most formatting and is not compatible with many packages
+
+\begin{document}
+ 
+\title{Homework 7\\
+    %\large MATH CS 121 Intro to Probability
+    \large MATH 111A Intro to Abstract Algebra
+    %\large MATH CS 122A Complex Analysis I
+    %\large MATH 118A Intro to Real Analysis
+    %\large MATH 104A Intro to Numerical Analysis
+}
+\author{Harry Coleman}
+\date{November 25, 2020}
+\maketitle
+
+\section*{Q1}
+\begin{problem}
+    Prove that $D_{2n}$ has
+    \[\begin{cases}
+        \frac{n+3}{2} \text{ conjugacy classes,} &\text{if $n$ is odd}, \\
+        \frac{n}{2}+3 \text{ conjugacy classes,} &\text{if $n$ is even}.
+    \end{cases}\]
+\end{problem}
+
+\begin{proof}
+    Recall that
+    \[D_{2n} = \{1, r, \dots, r^{n-1}, s, sr, \dots, sr^{n-1}\}.\]
+    In any case, we have the conjugacy class of the identity $\eqc{1}=\{1\}$. We will first consider the conjugacy classes of the elements of $D_{2n}$ of the form $r^j$ with, $1 \leq j \leq n-1$. On one hand, if we conjugate $r^j$ with an element of the form $r^k$, with $0 \leq k \leq n-1$, then we obtain
+    \[r^kr^jr^{-k} = r^{k + j - k} = r^j.\]
+    On the other hand, if we conjugate $r^j$ with an element of the form $sr^k$, with $0 \leq k \leq n-1$, then we obtain
+    \[sr^kr^j(sr^k)^{-1} = sr^kr^jr^{-k}s^{-1} = sr^{k + j - k}s = sr^js = ssr^{-j} = r^{-j}.\]
+    Therefore, we have the conjugacy classes
+    \[\eqc{r^j} = \{r^{j}, r^{-j}\} \quad\text{for $j=1,\dots,n-1$.}\]
+    Each $\eqc{r^j}$ a set of two distinct elements of $D_{2n}$ unless $j \equiv -j \pmod{n}$, which is the case if and only if $j = n/2$. Since we can only have $r^j\in D_{2n}$ with $j=n/2$ if $n$ is even, then if $n$ is odd, there are exactly half as many conjugacy classes of the form $\eqc{r^j}$, as there are elements of the form $r^j$, with $j=1,\dots,n-1$. Moreover, they are given by
+    \[\{\eqc{r}, \dots, \eqc{r^{(n-1)/2}}\}.\]
+    If $n$ is even, then the conjugacy class $\eqc{r^{n/2}}$ has a single element, and all others have two elements. So there are $(n-2)/2 = n/2 - 1$ conjugacy classes of the form $\eqc{r^j}$ which have two elements. Thus, there are $n/2$ conjugacy classes of the form $\eqc{r^j}$, with $1 \leq j \leq n-1$. Moreover, they are given by
+    \[\{\eqc{r}, \dots, \eqc{r^{n/2}}\}.\]
+    
+    We now consider the conjugacy classes of the elements of $D_{2n}$ of the form $sr^{j}$, with $0\leq j \leq n-1$. On one hand, if we conjugate $s$ with an element of the form $r^k$, with $0 \leq k \leq n-1$, then we obtain
+    \[r^ksr^{-k} = sr^{-k}r^{-k} = sr^{-2k}.\]
+    On the other hand, if we conjugate $s$ with an element of the form $sr^k$, with $0 \leq k \leq n-1$, then we obtain
+    \[sr^ks(sr^{k})^{-1} = sr^ksr^{-k}s^{-1} = sr^kr^kss = sr^{2k}.\]
+    Therefore, we have the conjugacy class
+    \[\eqc{s} = \{sr^{\pm2k} : 0 \leq k \leq n-1\}.\]
+    We now do similarly for $sr$:
+    \[r^ksrr^{-k} = sr^{-k}rr^{-k} = sr^{-2k+1},\]
+    \[sr^ksr(sr^{k})^{-1} = sr^ksrr^{-k}s^{-1} = sr^kr^{-1}sr^{-k}s = sr^kr^{-1}r^kss  = sr^{2k-1}.\]
+    Therefore, we have the conjugacy class
+    \[\eqc{sr} = \{sr^{\pm(2k+1)} : 0 \leq k \leq n-1\}.\]
+    Since for every $j=0,\dots,n-1$, we either have $j = 2k$ or $j = 2k+1$ for some $0\leq k \leq n-1$, then we either have $sr^j \in \eqc{s}$ or $sr^j \in \eqc{sr}$. If $n$ is even, then for every even integer $\ell$, we have $\ell \equiv 2k \pmod{n}$ for some $0 \leq k \leq n-1$. Thus, 
+    \[\eqc{s} = \{sr^j : \text{$j$ is even}\}.\]
+    And for every odd integer $\ell$, we have $\ell \equiv 2k + 1 \pmod{n}$ for some $0 \leq k \leq n-1$. Thus,
+    \[\eqc{sr} = \{sr^j : \text{$j$ is odd}\},\]
+    which implies that $\eqc{s}$ and $\eqc{sr}$ are disjoint. Now if $n$ is odd, then we consider the element $sr^{2k}\in\eqc{s}$ with $k=(n-1)/2 + 1$. In this case,
+    \[sr^{2[(n-1)/2 + 1]} = sr^{n-1 + 2} = sr \in \eqc{sr},\]
+    which implies that $\eqc{s} = \eqc{sr}$ since they are not disjoint.
+    
+    In conclusion, the number of conjugacy classes in $D_{2n}$ is
+    \[\begin{cases}
+        |\{\eqc{1}, \eqc{r}, \dots, \eqc{r^{(n-1)/2}}, \eqc{s}\}| = 1 + \frac{n-1}2 + 1 = \frac{n+3}2, &\text{if $n$ is odd,} \\
+        |\{\eqc{1}, \eqc{r}, \dots, \eqc{r^{n/2}}, \eqc{s}, \eqc{sr}\}| = 1 + \frac n2 + 2 = \frac{n}2 + 3, &\text{if $n$ is even.}
+    \end{cases}\]
+    
+    
+\end{proof}
+
+\newpage
+\section*{Q2 Exercise 4.3.9}
+\begin{problem}
+    Show that $|C_{S_n}((12)(34))| = 8\cdot(n-4)!$ for all $n\geq 4$. Determine the elements in this centralizer explicitly. 
+\end{problem}
+
+\begin{proof}
+    Let $\sigma = (1\,2)(3\,4)$, then
+    \[C_{S_n}(\sigma) = \{\tau \in S_n : \tau\sigma\tau^{-1} = \sigma\}.\]
+    So $C_{S_n}(\sigma)$ is the elements $\tau \in S_n$ such that
+    \[(1\,2)(3\,4) = \tau(1\,2)(3\,4)\tau^{-1} = (\tau(1)\,\tau(2))(\tau(3)\,\tau(4)).\]
+    This implies that if $\tau \in C_{S_n}(\sigma)$, then $\tau$ maps the set $\{1, 2, 3, 4\}$ to itself and the set $\{5, \dots, n\}$ to itself. In other words, $\tau = \tau_1 \tau_2$ for some $\tau_1 \in S_4$ and $\tau_2 \in S_{\{5, \dots, n\}}$. Now since $\tau_2$ is disjoint from $\sigma$, then
+    \[\tau\sigma\tau^{-1} = \tau_1\tau_2\sigma(\tau_1\tau_2)^{-1} = \tau_1\tau_2\sigma\tau_2^{-1}\tau_1^{-1} = \tau_1\sigma\tau_2\tau_2^{-1}\tau_1^{-1} = \tau_1\sigma\tau_1^{-1}.\]
+    So $\tau \in C_{S_n}(\sigma)$ if and only if $\tau_1 \in C_{S_4}(\sigma)$. Moreover, for each $\tau_1 \in C_{S_4}(\sigma)$ and each $\tau_2 \in S_{\{5, \dots, n\}}$, we obtain a unique element $\tau_1 \tau_2 \in C_{S_n}(\sigma)$, and vice versa. Therefore, we have a bijection
+    \[C_{S_n}(\sigma) \leftrightarrow C_{S_4}(\sigma) \times S_{\{5, \dots, n\}},\]
+    which implies that
+    \[|C_{S_n}(\sigma)| = |C_{S_4}(\sigma)| \cdot |S_{\{5, \dots, n\}}|.\]
+    Since $|\{5,\dots,n\}| = n-4$, then $|S_{5,\dots,n}| = |S_{n-4}| = (n-4)!$. Suppose $\tau \in C_{S_4}(\sigma)$, then
+    \[(1\,2)(3\,4) = \sigma = \tau\sigma\tau^{-1} = (\tau(1)\,\tau(2))(\tau(3)\,\tau(4)).\]
+    There are four possibilities for $\tau(1)$, namely $\{1, 2, 3, 4\}$. Once $\tau(1)$ is chosen, then the choice of $\tau(2)$ is necessary, as the pair $\{\tau(1), \tau(2)\}$ must be either $\{1, 2\}$ or $\{3, 4\}$. Once $\tau(1)$ and $\tau(2)$ have been chosen, then there are two possibilities for $\tau(3)$, namely $\{1, 2, 3, 4\} \setminus \{\tau(1), \tau(2)\}$. And the choice of $\tau(4)$ follows, necessarily, as the last element. Thus,
+    \[|C_{S_4}(\sigma)| = 4 \cdot 2 = 8,\]
+    and we have
+    \[|C_{S_n}(\sigma)| = 8 \cdot (n-4)!.\]
+    Explicitly,
+    \[C_{S_4}(\sigma) = \{1,(12)(3)(4),(1)(2)(34),(12)(34),(13)(24),(14)(23),(1324),(1423)\},\]
+    and then
+    \[C_{S_n}(\sigma) = \{\tau_1\tau_2 : \tau_1\in C_{S_4}(\sigma), \tau_2 \in S_{5,\dots,n}\}.\]
+    
+\end{proof}
+
+\newpage
+\section*{Q3 Exercise 4.3.11}
+\begin{problem}
+    In each of the following (c),(d), determine whether $\sigma_1$ and $\sigma_2$ are conjugate. If they are, give an explicit permutation $\tau$ such that $\tau\sigma_1\tau^{-1} = \sigma_2$
+\end{problem}
+
+\subsection*{Exercise 4.3.11(c)}
+\begin{problem}
+    $\sigma_1 = (1\;5)(3\;7\;2)(10\;6\;8\;11)$ and $\sigma_2 = \sigma_1^3$
+\end{problem}
+\medskip
+
+The permutation $\sigma_1$ is given as a cycle decomposition. We now determine a cycle decomposition for $\sigma_2$.
+\begin{align*}
+    \sigma_2
+        &= \sigma_1^3 \\
+        &= [(1\;5)(3\;7\;2)(10\;6\;8\;11)]^3 \\
+        &= (1\;5)^3(3\;7\;2)^3(10\;6\;8\;11)^3 \\
+        &= (1\;5)(3)(7)(2)(10\;11\;8\;6) \\
+        &= (1\;5)(10\;11\;8\;6).
+\end{align*}
+Thus, $\sigma_1$ has cycle type $(1,3,4)$ and $\sigma_2$ has cycle type $(2,4)$, so the two are not conjugates.
+
+\subsection*{Exercise 4.3.11(d)}
+\begin{problem}
+    $\sigma_1 = (1\;3)(2\;4\;6)$ and $\sigma_2 = (3\;5)(2\;4)(5\;6)$
+\end{problem}
+\medskip
+
+The permutation $\sigma_1$ is given as a cycle decomposition. We now determine a cycle decomposition of $\sigma_2$:
+\[\sigma_2 = (3\;5)(2\;4)(5\;6) = (2\;4)(3\;5)(5\;6) = (2\;4)(3\;5\;6).\]
+Now, we see that $\sigma_1$ and $\sigma_3$ both have cycle type $(2,3)$, so they are conjugates. We now want the permutation $\tau$ such that
+\[\sigma_2 = \tau\sigma_1\tau^{-1} = \tau(1\;3)(2\;4\;6)\tau^{-1} = (\tau(1)\;\tau(3))(\tau(2)\;\tau(4)\;\tau(6)).\]
+Using the above cycle decomposition of $\sigma_2$, we construct the permutation $\tau$ by
+\begin{align*}
+    \tau(1) &= 2, & \tau(2) &= 3, \\
+    \tau(3) &= 4, & \tau(4) &= 5, \\
+     & & \tau(6) &= 6,
+\end{align*}
+and the choice of $\tau(5) = 1$ follows. Explicitly,
+\[\tau = (1\;2\;3\;4\;5)\]
+and, by construction, we have $\tau\sigma_1\tau^{-1} = \sigma_2$ and, 
+
+\newpage
+\section*{Q4 Exercise 4.3.19}
+\begin{problem}
+    Assume $H$ is a normal subgroup of $G$, $\KK$ is a conjugacy class of $G$ contained in $H$ and $x\in\KK$. Prove that $\KK$ is a union of $k$ conjugacy classes of equal size in $H$, where $k=|G : HC_G(x)|$. Deduce that a conjugacy class in $S_n$ which consists of even permutations is either a single conjugacy class under the action of $A_n$ or is a union of two classes of the same size in $A_n$. [Let $A=C_G(x)$ and $B=H$ so $A\cap B = C_H(x)$. Draw the lattice diagram associated to the Second Isomorphism Theorem and interpret the appropriate indices.]
+\end{problem}
+
+\begin{proof}
+    For this proof, we assume $G$ is finite. First note that $H \cap C_G(x) = C_H(x)$. And since $C_G(x) \leq G$ and $H \teq G$, then by the second isomorphism theorem, we have
+    \[HC_G(x)/H \iso C_G(x)/C_H(x).\]
+    This implies that
+    \[\frac{|HC_G(x)|}{|C_G(x)|} = \frac{|H|}{|C_H(x)|}.\]
+    Now since
+    \[k = [G : HC_G(x)] = \frac{|G|}{|HC_G(x)|},\]
+    then
+    \[k = \frac{|G|}{\frac{|H| |C_G(x)|}{|C_H(x)|}} = \frac{\frac{|G|}{|C_G(x)|}}{\frac{|H|}{|C_H(x)|}} = \frac{[G : C_G(x)]}{[H : C_H(x)]} = \frac{|G\cdot x|}{|H \cdot x|} = \frac{|K|}{|H\cdot x|}.\]
+    That is, the number of $H$ orbits in $K$ is equal to $k$ We now claim that $|H\cdot y|$ is the same for all $y\in G$. Let $y_1, y_2 \in G$, and consider the map
+    \begin{align*}
+        H\cdot y_1 &\to H\cdot y_2 \\
+        hy_1h^{-1} &\mapsto hy_2h^{-1}.
+    \end{align*}
+    We claim that this is a bijection. Clearly, it is a surjection, since for all $hy_2h^{-1} \in H\cdot y_2$, we have $hy_1h^{-1} \in H\cdot y_1$ and $hy_1h^{-1} \mapsto hy_2h^{-1}$. (It's actually probably not an injection because it isn't well defined, but we'll assume it is). Now for any $y\in K$, we consider the orbit $H\cdot y$, that is, the set
+    \[hyh^{-1} : h\in H\}.\]
+    Now since $y\in K$, then $x$ and $y$ are conjugates, so $H\cdot y \subseteq G\cdot y = G\cdot x$. Thus, every $H$ orbit of elements in $K$ is a subset of $K$. Thus, $K$ is the union of $k$ $H$ orbits (conjugacy classes in $H$) of equal size.
+    
+\end{proof}
+
+
+\end{document}

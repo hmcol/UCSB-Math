@@ -1,0 +1,401 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry} % proper margins
+\usepackage{enumitem} % custom numbering for lists
+\usepackage{amsmath} % align, cases, eqref, matrices, dots, roots, delimiters, math mode functions, mod, arrows
+\usepackage{amsthm} % theorems, proofs
+\usepackage{amssymb} % fancy letters, niche relations/negations
+\usepackage{mathrsfs} % much more loopy calligraphy font
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{0.98\textwidth}}
+    {\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\mybox}}}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+
+% Alternate Characters
+\let\eps\varepsilon % double curved, rather than single curve with midline
+\let\emptyset\varnothing % circular, rather than tall
+
+% Named Sets
+\newcommand{\N}{\mathbb{N}} % natural numbers
+\newcommand{\Z}{\mathbb{Z}} % integers 
+\newcommand{\Q}{\mathbb{Q}} % rational numbers
+\newcommand{\R}{\mathbb{R}} % real numbers
+\newcommand{\C}{\mathbb{C}} % complex numbers
+
+% Fancy Characters
+\newcommand{\F}{\mathbb{F}} % arbitrary field
+\renewcommand{\P}{\mathbb{P}} % probability measure (apparently, sometimes prime numbers)
+\newcommand{\FF}{\mathcal{F}} % sigma algebra
+
+% Paired Delimiters
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil} % ceiling
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor} % floor
+\newcommand{\<}{\left\langle} % left angle bracket
+\renewcommand{\>}{\right\rangle} % right angle bracket
+
+% Functions
+\renewcommand{\Im}{\operatorname{Im}} % imaginary part of a complex number
+\renewcommand{\Re}{\operatorname{Re}} % real part of a complex number
+\newcommand{\Arg}{\operatorname{Arg}} % principal argument (angle) of complex number
+
+% Simplified Notation
+\newcommand{\id}[1]{\operatorname{id_{\mathnormal{#1}}}} % identity operator
+\newcommand{\seq}[2][n]{\left\{#2\right\}_{#1\in\N}} % sequence
+\newcommand{\pdv}[3][1]{\ifnum#1=1{\frac{\partial #2}{\partial#3}}\else{\frac{\partial^{#1}#2}{\partial#3^{#1}}}\fi} % partial derivative
+\newcommand{\intr}[1]{\accentset{\circ}{#1}} % interior of a set
+
+% Renaming
+\let\sm\setminus % set minus (difference)
+\let\clo\overline % closure of a set
+\let\conj\overline % conjugate of an object
+\let\eqc\overline % equivalence class of an object
+\let\teq\trianglelefteq % normal subgroup
+\let\iso\cong % isomorphic (groups)
+
+
+\begin{document}
+ 
+\title{Homework 6\\
+    %\large MATH CS 121 Intro to Probability
+    %\large MATH 111A Intro to Abstract Algebra
+    %\large MATH CS 122A Complex Analysis I
+    \large MATH 118A Intro to Real Analysis
+    %\large MATH 104A Intro to Numerical Analysis
+}
+\author{Harry Coleman}
+\date{November 13, 2020}
+\maketitle
+
+\section*{Exercise 1}
+\begin{problem}
+    In a metric space $(X,d)$, assume that $x_n\to x$ and $y_n \to y$. Prove that 
+    \begin{equation}
+        d(x_n,y_n) \to d(x,y).
+    \end{equation}
+\end{problem}
+
+\begin{proof}
+    Let $\eps>0$ be given, and let $n_0\in\N$ such that
+    \[n\in\N, n\geq n_0 \implies d(x_n,x) < \eps \text{ and } d(y_n,y)<\eps.\]
+    If $n\geq n_0$, then by the triangle inequality,
+    \[d(x_n,y_n) \leq d(x_n,x) + d(x,y) + d(y_n,y) < \eps + d(x,y) + \eps = d(x,y) + 2\eps\]
+    and, similarly,
+    \[d(x,y) \leq d(x_n,x) + d(x_n,y_n) + d(y_n,y) < \eps + d(x_n,y_n) + \eps = d(x_n,y_n) + 2\eps.\]
+    The first of these two inequalities implies that
+    \[d(x_n,y_n) - d(x,y) < 2\eps,\]
+    and the second implies that
+    \[d(x,y) - d(x_n,y_n) < 2\eps.\]
+    These together give us
+    \[|d(x_n,y_n) - d(x,y)| < 2\eps,\]
+    so, indeed, $d(x_n,y_n) \to d(x,y)$.
+
+\end{proof}
+
+\newpage
+\section*{Exercise 2}
+\begin{problem}
+    Let $(X,d)$ be a metric space, and $E$ a subset of $X$. Prove that $p\in \overline{E}$ if and only if $\exists \{x_n\}_{n\in \mathbb{N}}\subseteq E$ such that $\lim _{n\to \infty} x_n = p$.
+\end{problem}
+
+\begin{proof}
+    Suppose $p\in\clo{E}$, then for all $\eps>0$, we have $B_\eps(p)\cap E \ne \emptyset$. For all $n\in\N$, let $x_n\in X$ such that
+    \[x_n \in B_{\frac1n}{(p)}\cap E.\]
+    Then $\seq{x_n}\subseteq E$ and for every $\eps>0$, picking $n_0\in\N$ such that $n_0>\frac1\eps$ gives us
+    \[n\in\N, n\geq n_0 \implies x_n\in B_{\frac1n}(p) \subseteq B_\eps(p) \implies d(x_n,p) < \eps.\]
+    Therefore, $x_n\to p$.
+    
+    Now suppose we have a sequence $\seq{x_n}\subseteq E$ converging to $p\in X$. For a given $\eps>0$, there exists some $n_0\in\N$ such that
+    \[n\in\N, n\geq n_0 \implies d(x_n,p) < \eps.\]
+    In particular, we have $d(x_{n_0},p)<\eps$, which implies that $x_{n_0}\in B_\eps(p)$. And since $x_{n_0}\in E$, then we have
+    \[x_{n_0} \in B_\eps(p)\cap E.\]
+    So for all $\eps>0$, we have $B_\eps(p)\cap E \ne \emptyset$, giving us $p\in\clo{E}$.
+    
+\end{proof}
+
+\newpage
+\section*{Exercise 3}
+\begin{problem}
+    Prove the following statements using the definition of limit:
+\end{problem}
+
+\subsection*{Exercise 3(a)}
+\begin{problem}
+    \begin{equation}
+        \lim_{n\to \infty} \frac{2n+1}{4n^2+1} = 0.
+    \end{equation}
+\end{problem}
+
+\begin{proof}
+    Let $\eps > 0$ be given. Without loss of generality, assume $\eps < 1$. Let $n_0\in\N$ such that $n_0 \geq \frac1\eps$. Now for any $n\in\N$ with $n\geq n_0$, we have
+    \begin{align*}
+        \left|\frac{2n+1}{4n^2 + 1}\right |
+            &= \frac{2n+1}{4n^2+1} \\
+            &\leq \frac{2n+1}{4n^2} \\
+            &= \frac{2n}{4n^2} + \frac{1}{4n^2} \\
+            &= \frac{1}{2n} + \frac{1}{4n^2} \\
+            &< \frac{1}{2}\eps + \frac{1}{4}\eps^2 \\
+            &< \frac{1}{2}\eps + \frac{1}{4}\eps \\
+            &= \frac34 \eps.
+    \end{align*}
+    Thus, we have the limit in question.
+    
+    
+\end{proof}
+
+\newpage
+\subsection*{Exercise 3(b)}
+\begin{problem}
+    If $\{x_n\}_{n\in\N}\subseteq \R$ is a sequence of nonnegative real numbers that converges to some $x\ge 0$, then 
+    \begin{equation}
+        \lim_{n\to\infty}\sqrt{x_n} = \sqrt{x}.
+    \end{equation}
+\end{problem}
+
+\begin{proof}
+    Let $\eps>0$ be given. Let $n_0\in\N$ such that for all $n\in\N$, if $n\geq n_0$ then $|x_n-x|<\eps$. Now for any $n\in\N$ with $n\geq n_0$, we have
+    \begin{align*}
+        \left| \sqrt{x_n} - \sqrt{x} \right|
+            &= \left| (\sqrt{x_n} - \sqrt{x}) \cdot \frac{\sqrt{x_n} + \sqrt{x}}{\sqrt{x_n} + \sqrt{x}}\right| \\
+            &= \left| \frac{x_n - x}{\sqrt{x_n} + \sqrt{x}}\right| \\
+            &= \frac{|x_n - x|}{\sqrt{x_n} + \sqrt{x}} \\
+            &\leq \frac{|x_n - x|}{\sqrt{x}} \\
+            &< \frac{1}{\sqrt{x}}\eps.
+    \end{align*}
+    Thus, we have the limit in question.
+
+\end{proof}
+
+\newpage
+\subsection*{Exercise 3(c)}
+\begin{problem}
+    \begin{equation}
+        \lim_{n\to \infty} \frac{\sqrt{4n^2+n+1}}{n+2} = 2.
+    \end{equation}
+\end{problem}
+
+\begin{proof}
+    It suffices to prove the following limit:
+    \[\lim_{n\to\infty}\frac{4n^2+n+1}{(n+2)^2} = 4.\]
+    If this is true, then by exercise 3(a), we would have
+    \[\lim_{n\to \infty} \frac{\sqrt{4n^2+n+1}}{n+2} = \lim_{n\to\infty}\sqrt{\frac{4n^2+n+1}{(n+2)^2}} = \sqrt{4} = 2.\]
+    Let $\eps>0$ be given. Without loss of generality, assume $\eps<1$. Let $n_0\in\N$ such that $n_0 \geq \frac1\eps$. Now for any $n\in\N$ with $n\geq n_0$, we have
+    \begin{align*}
+        \left| \frac{4n^2+n+1}{(n+2)^2} - 4 \right|
+            &= \frac{4n^2+n+1}{(n+2)^2} - 4 \\
+            &= \frac{4n^2+n+1}{n^2 + 4n + 4} - 4 \\
+            &= \frac{4+\frac1n+\frac1{n^2}}{1 + \frac4n + \frac4{n^2}} - 4 \\
+            &\leq 4+\frac1n+\frac1{n^2} - 4 \\
+            &= \frac1n+\frac1{n^2} \\
+            &< \eps + \eps^2 \\
+            &< \eps + \eps \\
+            &= 2\eps.
+    \end{align*}
+    Thus, we have the limit in question.
+    
+\end{proof}
+
+\newpage
+\section*{Exercise 4}
+\begin{problem}
+    Using theorems on limits, determine the convergence or divergence of the following sequences and find their limit, justifying your steps:
+\end{problem}
+
+\subsection*{Exercise 4(a)}
+\begin{problem}
+    \begin{equation}
+        x_n = \sqrt{n^2+1} - n, \quad n \ne 1.
+    \end{equation}
+\end{problem}
+
+\begin{proposition}
+    \[\lim_{n\to\infty} \sqrt{n^2+1} - n = 0.\]
+\end{proposition}
+
+\begin{proof}
+    Let $\eps>0$ be given. Let $n_0\in\N$ such that $n_0 \geq \frac1\eps$. Then for any $n\in\N$ with $n\geq n_0$, we have
+    \begin{align*}
+        | \sqrt{n^2+1} - n |
+            &= \left|(\sqrt{n^2+1} - n) \cdot\frac{\sqrt{n^2+1} + n}{\sqrt{n^2+1} + n}\right| \\
+            &= \left|\frac{n^2+1 - n^2}{\sqrt{n^2+1} + n}\right| \\
+            &= \left|\frac{1}{\sqrt{n^2+1} + n}\right| \\
+            &= \frac{1}{\sqrt{n^2+1} + n} \\
+            &\leq \frac{1}{n} \\
+            &< \eps.
+    \end{align*}
+    Thus, we have the limit in question.
+    
+\end{proof}
+
+\newpage
+\subsection*{Exercise 4(b)}
+\begin{problem}
+    \begin{equation}
+        x_n = \sqrt[3]{n^2+n}-\sqrt[3]{n^2+1},\quad n \ge 1.
+    \end{equation}
+\end{problem}
+
+\begin{proposition}
+    \[\lim_{n\to\infty} \sqrt[3]{n^2+n}-\sqrt[3]{n^2+1} = 0.\]
+\end{proposition}
+
+\begin{proof}
+    Let $\eps>0$ be given. Without loss of generality, assume $\eps<1$. Let $n_0\in\N$ such that $n_0 \geq 1/{\eps^3}$. Then for any $n\in\N$ with $n\geq n_0$, we have
+    \begin{align*}
+        |\sqrt[3]{n^2+n}-\sqrt[3]{n^2+1}| 
+            &= \left| ((n^2+n)^{1/3}-(n^2 + 1)^{1/3}) \cdot \frac{(n^2+n)^{2/3} + 2(n^2+n)^{1/3}(n^2+1)^{1/3} + (n^2+1)^{2/3}}{(n^2+n)^{2/3} + 2(n^2+n)^{1/3}(n^2+1)^{1/3} + (n^2+1)^{2/3}} \right| \\
+            &= \left|\frac{n^2+n-n^2 + 1}{(n^2+n)^{2/3}+2(n^2+n)^{1/3}(n^2+1)^{1/3} + (n^2+1)^{2/3}} \right| \\
+            &= \frac{n + 1}{(n^2+n)^{2/3}+2(n^2+n)^{1/3}(n^2+1)^{1/3} + (n^2+1)^{2/3}} \\
+            &\leq \frac{n + 1}{(n^2)^{2/3}+2(n^2)^{1/3}(n^2)^{1/3} + (n^2)^{2/3}} \\
+            &= \frac{n + 1}{4n^{4/3}} \\
+            &= \frac{n}{4n^{4/3}} + \frac{1}{4n^{4/3}} \\
+            &= \frac{1}{4n^{1/3}} + \frac{1}{4n^{4/3}} \\
+            &< \frac14\eps + \frac14\eps^4 \\
+            &< \frac14\eps + \frac14\eps \\
+            &= \frac12\eps.
+    \end{align*}
+    
+\end{proof}
+
+\newpage
+\subsection*{Exercise 4(c)}
+\begin{problem}
+    \begin{equation}
+        x_n = \frac{\sqrt{n^2+an+1}-\sqrt{n^2+bn+2}}{\sqrt{n^2+cn+3}-\sqrt{n^2+dn+4}},\quad n \ge 1,
+    \end{equation}
+    where $a,b,c,d>0$.
+\end{problem}
+
+\begin{proposition}
+    If $c-d\ne0$, then
+    \[\lim_{n\to\infty}x_n =
+        \begin{cases}
+            \frac{a-b}{c-d} &\text{if $c\ne d$,} \\
+            1 &\text{if $c=d$ and $a=b$,} \\
+            +\infty &\text{if $c=d$ and $a<b$,} \\
+            -\infty &\text{if $c=d$ and $b<a$.} \\
+        \end{cases}
+    \]
+\end{proposition}
+
+\begin{proof}
+    For any $n\in\N$, we have the following
+    \begin{align*}
+        x_n
+            &= \frac{\sqrt{n^2+an+1}-\sqrt{n^2+bn+2}}{\sqrt{n^2+cn+3}-\sqrt{n^2+dn+4}} \\
+            &= \frac{\sqrt{n}}{\sqrt{n}} \cdot \frac{\sqrt{n+a+\frac1n}-\sqrt{n+b+\frac2n}}{\sqrt{n+c+\frac3n}-\sqrt{n+d+\frac4n}} \\
+            &= \frac{\sqrt{n+a+\frac1n}-\sqrt{n+b+\frac2n}}{\sqrt{n+c+\frac3n}-\sqrt{n+d+\frac4n}}\cdot\frac{\sqrt{n+a+\frac1n}+\sqrt{n+b+\frac2n}}{\sqrt{n+a+\frac1n}+\sqrt{n+b+\frac2n}}\cdot\frac{\sqrt{n+c+\frac3n}+\sqrt{n+d+\frac4n}}{\sqrt{n+c+\frac3n}+\sqrt{n+d+\frac4n}} \\
+            &= \frac{n+a+\frac1n-n-b-\frac2n}{n+c+\frac3n-n-d-\frac4n}\cdot\frac{\sqrt{n+a+\frac1n}+\sqrt{n+b+\frac2n}}{\sqrt{n+c+\frac3n}+\sqrt{n+d+\frac4n}} \\
+            &= \frac{a-b -\frac1n}{c- d -\frac1n} \cdot \frac{\sqrt{n}}{\sqrt{n}} \cdot  \frac{\sqrt{1+\frac{a}n+\frac1{n^2}}+\sqrt{1+\frac{b}n+\frac2{n^2}}}{\sqrt{1+\frac{c}n+\frac3{n^2}}+\sqrt{1+\frac{d}n+\frac4{n^2}}} \\
+            &= \frac{a-b -\frac1n}{c- d -\frac1n} \cdot  \frac{\sqrt{1+\frac{a}n+\frac1{n^2}}+\sqrt{1+\frac{b}n+\frac2{n^2}}}{\sqrt{1+\frac{c}n+\frac3{n^2}}+\sqrt{1+\frac{d}n+\frac4{n^2}}}
+    \end{align*}
+    For any $k>0$, we have the following limits:
+    \[\lim_{n\to\infty} \frac kn = 0 \isp{and} \lim_{n\to\infty} \frac k{n^2} = 0.\]
+    Now by the arithmetic of limits, and assuming $c\ne d$, we find
+    \begin{align*}
+        \lim_{n\to\infty} x_n
+            &=  \frac{a-b -0}{c- d -0} \cdot  \frac{\sqrt{1+0+0}+\sqrt{1+0+0}}{\sqrt{1+0+0}+\sqrt{1+0+0}} \\
+            &=  \frac{a-b}{c- d } \cdot  \frac{\sqrt{1}+\sqrt{1}}{\sqrt{1}+\sqrt{1}} \\
+            &=  \frac{a-b}{c- d }.
+    \end{align*}
+    
+    Now suppose $c=d$, so
+    \begin{align*}
+        x_n 
+            &= \frac{a-b -\frac1n}{-\frac1n} \cdot  \frac{\sqrt{1+\frac{a}n+\frac1{n^2}}+\sqrt{1+\frac{b}n+\frac2{n^2}}}{\sqrt{1+\frac{c}n+\frac3{n^2}}+\sqrt{1+\frac{d}n+\frac4{n^2}}} \\
+            &= \frac{a-b}{-\frac1n} + \frac{-\frac1n}{-\frac1n} \cdot  \frac{\sqrt{1+\frac{a}n+\frac1{n^2}}+\sqrt{1+\frac{b}n+\frac2{n^2}}}{\sqrt{1+\frac{c}n+\frac3{n^2}}+\sqrt{1+\frac{d}n+\frac4{n^2}}} \\
+            &= ((b-a)n + 1) \cdot  \frac{\sqrt{1+\frac{a}n+\frac1{n^2}}+\sqrt{1+\frac{b}n+\frac2{n^2}}}{\sqrt{1+\frac{c}n+\frac3{n^2}}+\sqrt{1+\frac{d}n+\frac4{n^2}}}.
+    \end{align*}
+    Now by the arithmetic of limits, we have
+    \begin{align*}
+        \lim_{n\to \infty}x_n
+            &= (\lim_{n\to\infty}(b-a)n + 1) \cdot  \frac{\sqrt{1+0+0}+\sqrt{1+0+0}}{\sqrt{1+0+0}+\sqrt{1+0+0}} \\
+            &= \lim_{n\to\infty}(b-a)n + 1.
+    \end{align*}
+    Evidently, if $a=b$, then
+    \[\lim_{n\to \infty}x_n = \lim_{n\to\infty}0n + 1 = 0 + 1 = 1.\]
+    If $a<b$, then
+    \[\lim_{n\to \infty}x_n = +\infty,\]
+    and if $b<a$, then
+    \[\lim_{n\to \infty}x_n = -\infty.\]
+    
+\end{proof}
+
+\newpage
+\section*{Exercise 5}
+\begin{problem}
+    Consider the sequence defined recursively,
+    \begin{equation}
+        a_{n+1} = \frac{8}{2+a_n},
+    \end{equation}
+    where $a_1 > 1$. Determine its convergence or divergence and find its limit. 
+\end{problem}
+\medskip
+
+Supposing that this limit does exist, and equals $L$, we would have
+\[\lim_{n\to\infty} a_n = L \isp{and} \lim_{n\to\infty} a_{n+1} = L.\]
+By the definition of this sequence,
+\[L = \lim_{n\to\infty} a_{n+1} = \lim_{n\to\infty} \frac8{2+a_n} = \frac8{2 + \ds\lim_{n\to\infty} a_n} = \frac8{2+L}.\]
+Then
+\[0 = L^2 + 2L - 8 = (L-2)(L+4),\]
+which implies that $L=2$ or $L=-4$. Since $a_1>1$, and $a_n>0$ implies that $a_{n+1}>0$, we can conclude that $a_n>0$ for all $n\in\N$, which tells us that $L\geq 0$. We will now prove that the limit of this sequence is, in fact, 2.
+
+\begin{proposition}
+    \[\lim_{n\to\infty}a_n = 2.\]
+\end{proposition}
+
+\begin{proof}
+    Note that the proof is trivial if $a_1=2$, since $a_n=2$ implies that
+    \[a_{n+1} = \frac8{2+2} = \frac84 = 2,\]
+    then we would have $a_n=2$ for all $n\in\N$. Without loss of generality, we will assume $a_1\ne2$.
+    
+    We first show that for any $n\geq 3$. We have $a_n\in(1,4)$. Since $a_1>1$, we have
+    \[0 < \frac8{2+a_1} < \frac8{2+0} = 4,\]
+    so $a_2\in(0,4)$. We now find that
+    \[1 < \frac8{2+4} < \frac8{2+a_2} < \frac8{2+0} = 4,\]
+    so $a_3\in(1,4)$. Taking this as our base case for induction, we now suppose that $a_n\in(1,4)$, for some $n\in\N$. Then, we have
+    \[1 < \frac8{2+4} < \frac8{2+a_n} < \frac8{2+1} < 4,\]
+    which gives us $a_{n+1}\in(1,4)$. In particular, we will use the fact that $a_n> 1$ for $n\geq3$.
+
+    Now for any $n\in\N$ with $n\geq 3$, we have
+    \begin{align*}
+        \left| a_{n+1} - 2\right|
+            &= \left|\frac{8}{2+a_n} - 2\right| \\
+            &= \left|\frac{8 - 4 - 2a_n}{2+a_n} \right| \\
+            &= \frac{|4 - 2a_n|}{|2+a_n|} \\
+            &= \frac2{2+a_n}|a_n - 2| \\
+            &< \frac2{2+1}|a_n - 2| \\
+            &< \frac23|a_n - 2| \\
+            &<\left(\frac23\right)^{n-1}|a_2 -2|
+    \end{align*}
+    Recall that $a_1\ne 2$, so
+    \[a_2 \ne \frac8{2+2} = \frac84 = 2.\]
+    Therefore, $|a_2-2|>0$.
+    
+    Let $\eps>0$ be given. Let $n_0\in\N$ such that $n_0\geq 3$ and $\ds\left(\frac23\right)^{n_0-1} < \eps$. Note that such an $n_0$ may be chosen since
+    \[\lim_{n\to\infty}\alpha^n = 0 \quad\text{for all $\alpha\in(0,1)$.}\]
+    Now for any $n\in\N$ with $n\geq n_0$, we have
+    \begin{align*}
+        \left| a_{n+1} - 2\right|
+            &<\left(\frac23\right)^{n-1}|a_2 -2| \\
+            &< |a_2 -2| \eps.
+    \end{align*}
+    Thus, we have the desired limit.
+    
+    
+\end{proof}
+
+
+\end{document}

@@ -1,0 +1,103 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage{subcaption}
+\usepackage{framed}
+\usepackage[table]{xcolor}
+\usepackage{colortbl, multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym}
+\usepackage{mathrsfs, mathtools}
+\usepackage{tikz,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\usepackage{graphicx}
+
+% custom commands
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\p}{^{\prime}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+ 
+\begin{document}
+ 
+\title{Generalized Pigeonhole\\
+    \large MATH CS 101B Problem Solving II}
+\author{Harry Coleman}
+\date{January 16, 2020}
+
+\maketitle
+
+\section*{Problem 7}
+\fbox{
+    \parbox{\textwidth} {
+        A bag contains 100 apples, 100 bananas, 100 oranges, and 100 pears. If I pick one piece of fruit out of the bag every minute, how long will it be before I am assured of having picked at least a dozen pieces of fruit of the same kind?
+    }
+}
+\\
+
+After 45 minutes, we can be assured to have picked at least 12 fruit of the same kind. Since after such time, we would have picked 45 fruits from 4 types, so by the generalized pigeonhole, we would have picked at least $\ceil{45/4}=12$ fruit of the same type. If we only picked 44 fruits, we would only be assured to have picked $\ceil{44/4}=11$ fruits of the same type.
+
+
+\section*{Problem 9 }
+\fbox{
+    \parbox{\textwidth} {
+        Ten points are given within a square of unit size. Prove that at we can always find two of them that are closer to each other than 0.48 and we can always find three which can be covered by a disk of radius 1/2.
+    }
+}
+\\
+
+Consider partitioning the unit square into nine sub-squares with side length 1/3. The diagonal of each of these sub-sqaures is
+\[\frac{\sqrt{2}}{3} = 0.47\dots < 0.48,\]
+so two points in the same sub-square are closer to each other than 0.48. Since we have 10 points and 9 sub-squares, then by the generalized pigeonhole principle, at least one sub-square contains at least $\ceil{10/9}=2$ points, which are closer to eachother than 0.48.
+
+We now consider partitioning the square into four sub-squares of side length 1/2. The diagonal of each of these sub-squares is
+\[\frac{\sqrt{2}}{2} = 0.70\dots<1,\]
+which is less than the diameter of a circle with radius 1/2. This means that 3 points in the same sub-square could be covered by a circle of radius 1/2. With 10 points and 4 sub-squares, then by the generalized pigeonhole principle, at least one sub-square contains at least $\ceil{10/4}=3$ points, which can be covered by a disk of radius 1/2. 
+
+\newpage
+\section*{Problem 10}
+\fbox{
+    \parbox{\textwidth} {
+        Forty one rooks are places on a $10\times10$ chessboard. Prove that there must exist five rooks, none of which will attack each other.
+    }
+}
+\\
+
+Consider the following labeling of a $10\times10$ chessboard:
+\begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+        \hline
+        1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\
+        \hline
+        10 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\
+        \hline
+        9 & 10 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\
+        \hline
+        8 & 9 & 10 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\
+        \hline
+        7 & 8 & 9 & 10 & 1 & 2 & 3 & 4 & 5 & 6 \\
+        \hline
+        6 & 7 & 8 & 9 & 10 & 1 & 2 & 3 & 4 & 5 \\
+        \hline
+        5 & 6 & 7 & 8 & 9 & 10 & 1 & 2 & 3 & 4 \\
+        \hline
+        4 & 5 & 6 & 7 & 8 & 9 & 10 & 1 & 2 & 3 \\
+        \hline
+        3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 1 & 2 \\
+        \hline
+        2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 1 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+Each row and column contains each number 1 through 10 exactly once. Since no number appears on the same row or column more than once, any two rooks on squares of the same number cannot attack each other. Consider each set of squares labeled with the same number to be groups. Since we have 41 rooks and 10 groups, then by the generalized pigeonhole principle, at least one group contains at least $\ceil{41/10} = 5$ rooks. Those five rooks which are in the same group are on squares of the same number, and therefore cannot attack each other.
+
+
+\end{document}

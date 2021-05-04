@@ -1,0 +1,454 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,colortbl,multirow,enumitem}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools,babel}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\mybox}
+\newenvironment{problem}
+    {\begin{lrbox}{\mybox}\begin{minipage}{\textwidth-10pt}}
+    {\end{minipage}\end{lrbox}\framebox[6.5in]{\usebox{\mybox}}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+% Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\seq}[2]{\left\{#1\right\}_{#2=1}^\infty}
+\newcommand{\clo}[1]{\overline{#1}}
+\newcommand{\conj}[1]{\overline{#1}}
+\newcommand{\eqc}[1]{\overline{#1}}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ang}{\langle}{\rangle}
+
+% Sets
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+
+% Misc Characters
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\let\eps\varepsilon
+\let\emptyset\varnothing
+
+% Functions
+\newcommand{\id}[1]{\mathsf{id}_{#1}}
+
+% Babel Shorthands
+\useshorthands*{"}
+\defineshorthand{"-}{\setminus}
+
+% Probability
+\newcommand{\FF}{\mathcal{F}}
+\renewcommand{\P}{\mathbb{P}}
+
+% Complex Analysis
+\renewcommand{\Im}{\text{Im }}
+\renewcommand{\Re}{\text{Re }}
+\newcommand{\Arg}{\text{Arg }}
+\newcommand{\pdv}[3][1]{\ifnum#1=1{\frac{\partial #2}{\partial#3}}\else{\frac{\partial^{#1}#2}{\partial#3^{#1}}}\fi}
+
+
+\begin{document}
+ 
+\title{Homework 3\\
+    %\large MATH CS 121 Intro to Probability
+    \large MATH CS 122A Complex Analysis I
+    %\large MATH 118A Intro to Real Analysis
+    %\large MATH 111A Intro to Abstract Algebra
+    %\large MATH 104A Intro to Numerical Analysis
+}
+\author{Harry Coleman}
+\date{November 4, 2020}
+\maketitle
+
+\section*{Exercise 2.2.4}
+\begin{problem}
+    Suppose $f(z) = az^2 + bz\conj{z} + c\conj{z}^2$, where $a$, $b$, and $c$ are fixed complex numbers. By differentiating $f(z)$ by hand, show that $f(z)$ is complex differentiable at $z$ if and only if $bz+2c\conj{z}=0$. Where is $f(z)$ analytic?
+\end{problem}
+
+\begin{proposition}
+    $f(z)$ is complex differentiable at $z$ if and only if $bz+2c\conj{z}=0$.
+\end{proposition}
+
+\begin{proof}
+    For some $z\in\C$, $f$ is complex differentiable at $z$ if and only if the following limit exists:
+    \begin{align}
+        \lim_{\Delta z \to 0}\frac{f(z+\Delta z) - f(z)}{\Delta z}
+            &= \lim_{\Delta z \to 0}\frac{a(z+\Delta z)^2 + b(z+\Delta z)\left(\conj{z+\Delta z}\right) + c\left(\conj{z+\Delta z}\right)^2 - (az^2 + bz\conj{z} + c\conj{z}^2)}{\Delta z} \nonumber\\ 
+            &= \lim_{\Delta z \to 0}\frac{2az\Delta z + a(\Delta z)^2 + b\conj{z}\Delta z + bz\conj{\Delta z} + b\Delta z \conj{\Delta z} + 2c\conj{z}\conj{\Delta z} + c\left(\conj{\Delta z}\right)^2}{\Delta z} \nonumber\\ 
+            &= \lim_{\Delta z \to 0}\left[2az + b\conj{z} + a\Delta z + b\conj{\Delta z} + \frac{(\conj{\Delta z})^2}{\Delta z} + (bz + 2c\conj z)\frac{\conj{\Delta z}}{\Delta z}\right].
+    \end{align}
+    Since $|\Delta z| = |\conj{\Delta z}|$, we have
+    \[\left|\frac{(\conj{\Delta z})^2}{\Delta z}\right| = \frac{|\conj{\Delta z}|^2}{|\Delta z|} = \frac{|\Delta z|^2}{|\Delta z|} = |\Delta z|,\]
+    which implies that
+    \[\lim_{\Delta z \to 0} \frac{(\conj{\Delta z})^2}{\Delta z} = 0.\]
+    Now since
+    \[\lim_{\Delta z \to 0}\left(2az + b\conj{z} + a\Delta z + b\conj{\Delta z} + \frac{(\conj{\Delta z})^2}{\Delta z}\right)\]
+    exists (and equals $2az + b\conj{z}$), then (1) exists if and only if
+    \begin{equation}\lim_{\Delta z \to 0}(bz + 2c\conj z)\frac{\conj{\Delta z}}{\Delta z}\end{equation}
+    exists. Note that
+    \[\lim_{\Delta z \to 0}\frac{\conj{\Delta z}}{\Delta z}\]
+    does not exist because approaching along the real axis gives
+    \[\lim_{\Delta z \to 0}\frac{\conj{\Delta z}}{\Delta z} = \lim_{\Delta z \to 0}\frac{\Delta z}{\Delta z} = 1,\]
+    and approaching on the imaginary axis gives
+    \[\lim_{\Delta z \to 0}\frac{\conj{\Delta z}}{\Delta z} = \lim_{\Delta z \to 0}\frac{-\Delta z}{\Delta z} = -1.\]
+    Therefore, (2) exists if and only if
+    \[bz+2c\conj{z} = 0,\]
+    and, in which case,
+    \[f'(z) =  \lim_{\Delta z \to 0}\frac{f(z+\Delta z) - f(z)}{\Delta z} = 2az + b\conj{z}.\]
+    
+\end{proof}
+
+(Note: I'm fairly confident this next part is wrong, because the condition $bz+2c\conj{z}=0$ is something like a line and there are counterexamples to the result, but I couldn't really figure out the proper solution.)
+\begin{proposition}
+    $f$ is nowhere analytic if $b\ne0$ and $f$ is analytic everywhere if $b=0$.
+\end{proposition}
+
+\begin{proof}
+    Suppose $f$ is complex differentiable at some $z\in\C$. Then $f$ will be analytic at $z$ if $f'$ exists in an open ball around $z$ and is continuous at $z$. Since $f$ is complex differentiable at $z$, then $bz+2c\conj{z} = 0$, and we have the following:
+    \begin{align*}
+        f(z)
+            &= az^2 + bz\conj{z} + c\conj{z}^2 \\
+            &= az^2 + \frac12(2bz + 2c\conj{z})\conj{z} \\
+            &= az^2 + \frac12(bz + bz + 2c\conj{z})\conj{z} \\
+            &= az^2 + \frac12(bz + 0)\conj{z} \\
+            &= az^2 + \frac12bz\conj{z}.
+    \end{align*}
+    If $b=0$, then $f(z) = az^2$, which is analytic everywhere. We now assume $b\ne0$. Again since $f$ is complex differentiable at $z$, the following limit exists:
+    \begin{align}
+        f'(z)
+            &= \lim_{\Delta z \to 0}\frac{f(z+\Delta z) - f(z)}{\Delta z} \nonumber\\
+            &= \lim_{\Delta z \to 0}\frac{a(z+\Delta z)^2 + \dfrac12b(z+\Delta z)\left(\conj{z+\Delta z}\right) - (az^2 + \dfrac12bz\conj{z})}{\Delta z} \nonumber\\ 
+            &= \lim_{\Delta z \to 0}\frac{2az\Delta z + a(\Delta z)^2 + \dfrac12b\conj{z}\Delta z + \dfrac12bz\conj{\Delta z} + \dfrac12b\Delta z \conj{\Delta z}}{\Delta z} \nonumber\\ 
+            &= \lim_{\Delta z \to 0}\left[2az + \dfrac12b\conj{z} + a\Delta z + \dfrac12b\conj{\Delta z} + \frac12bz\frac{\conj{\Delta z}}{\Delta z}\right]. 
+    \end{align}
+    Now since
+    \[\lim_{\Delta z \to 0}\left(2az + \dfrac12b\conj{z} + a\Delta z + \dfrac12b\conj{\Delta z}\right)\]
+    exists (and equals $2az + \frac12b\conj{z}$) and (3) exists, then we must have
+    \[\lim_{\Delta z \to 0}\frac12bz\frac{\conj{\Delta z}}{\Delta z}\]
+    to exist. However, since
+    \[\lim_{\Delta z \to 0}\frac{\conj{\Delta z}}{\Delta z}\]
+    does not exist and $b\ne0$, we must have $z=0$. Then we can conclude that $f$ is differentiable only at zero. And since $f'$ does not exist in any ball around zero (except for at zero), $f$ is not analytic at zero, and therefore analytic nowhere.
+    
+\end{proof}
+
+\newpage
+\section*{Exercise 2.4.10}
+\begin{problem}
+    For smooth functions $g$ and $h$ defined on a bounded domain $U$, we define the \textbf{Dirichlet form} $D_U(g,h)$ by
+    \[D_U(g,h) = \int\int_U\left[\pdv{g}{x}\conj{\pdv{h}{x}} + \pdv{g}{y}\conj{\pdv{h}{y}}\right]dxdy.\]
+    Show that if $z=f(\zeta)$ is a one-to-one analytic function from the bounded domain $V$ onto $U$, then
+    \[D_U(g,h) = D_V(g\circ f, h\circ f).\]
+    \textit{Remark.} This shows that the Dirichlet form is a ``conformal invariant''.
+\end{problem}
+
+\begin{proof}
+    Consider $f,g,h$ to be a functions which map $\R^2\to\R^2$, with
+    \begin{align*}
+        f(x,y) &= (u(x,y),v(x,y)), \\
+        (g\circ f)(x,y) &= g(u,v),\\
+        (h\circ f)(x,y) &= h(u,v).
+    \end{align*}
+    We first solve for the following partial derivatives:
+    \begin{align*}
+        \pdv{g}{x} &= \pdv{g}{u}\pdv{u}{x} + \pdv{g}{v}\pdv{v}{x}, & \pdv{h}{x} &= \pdv{h}{u}\pdv{u}{x} + \pdv{h}{v}\pdv{v}{x}, \\
+        \pdv{g}{y} &= \pdv{g}{u}\pdv{u}{y} + \pdv{g}{v}\pdv{v}{y}, & \pdv{h}{y} &= \pdv{h}{u}\pdv{u}{y} + \pdv{h}{v}\pdv{v}{y}.
+    \end{align*}
+    Now since $f$ is analytic, we have the Cauchy-Riemann conditions,
+    \[\pdv{u}{x} = \pdv{v}{y}, \qquad \pdv{u}{y} = -\pdv{v}{x},\]
+    which we use to find equivalent forms of the following partial derivatives:
+    \begin{align*}
+        \pdv{g}{y} &= -\pdv{g}{u}\pdv{v}{x} + \pdv{g}{v}\pdv{u}{x}, & \pdv{h}{y} &= -\pdv{h}{u}\pdv{v}{x} + \pdv{h}{v}\pdv{u}{x}.
+    \end{align*}
+    Note that since $u$ and $v$ are simply components of $f$, their conjugates are equal to themselves. We now solve for the following products:
+    \begin{align*}
+        \pdv{g}{x}\conj{\pdv{h}{x}}
+            &= \left(\pdv{g}{u}\pdv{u}{x} + \pdv{g}{v}\pdv{v}{x}\right)\left(\conj{\pdv{h}{u}}\pdv{u}{x} + \conj{\pdv{h}{v}}\pdv{v}{x}\right) \\
+            &= \pdv{g}{u}\conj{\pdv{h}{u}}\left(\pdv{u}{x}\right)^2 + \left(\pdv{g}{u}\conj{\pdv{h}{v}} + \pdv{g}{v}\conj{\pdv{h}{u}}\right)\pdv{u}{x}\pdv{v}{x} + \pdv{g}{v}\conj{\pdv{h}{v}}\left(\pdv{v}{x}\right)^2,
+    \end{align*}
+    \begin{align*}
+        \pdv{g}{y}\conj{\pdv{h}{y}}
+            &= \left(-\pdv{g}{u}\pdv{v}{x} + \pdv{g}{v}\pdv{u}{x}\right)\left(-\conj{\pdv{h}{u}}\pdv{v}{x} + \conj{\pdv{h}{v}}\pdv{u}{x}\right) \\
+            &= \pdv{g}{u}\conj{\pdv{h}{u}}\left(\pdv{v}{x}\right)^2 - \left(\pdv{g}{u}\conj{\pdv{h}{v}} + \pdv{g}{v}\conj{\pdv{h}{u}}\right)\pdv{u}{x}\pdv{v}{x} + \pdv{g}{v}\conj{\pdv{h}{v}}\left(\pdv{u}{x}\right)^2.
+    \end{align*}
+    Finally, we solve for their sum:
+    \begin{align*}
+        \pdv{g}{x}\conj{\pdv{h}{x}} + \pdv{g}{y}\conj{\pdv{h}{y}} 
+            &= \pdv{g}{u}\conj{\pdv{h}{u}}\left(\left(\pdv{u}{x}\right)^2 + \left(\pdv{v}{x}\right)^2\right) + \pdv{g}{v}\conj{\pdv{h}{v}}\left(\left(\pdv{u}{x}\right)^2 + \left(\pdv{v}{x}\right)^2\right) \\
+            &= \left(\pdv{g}{u}\conj{\pdv{h}{u}} + \pdv{g}{v}\conj{\pdv{h}{v}}\right)\left(\left(\pdv{u}{x}\right)^2 + \left(\pdv{v}{x}\right)^2\right).
+    \end{align*}
+    Substituting into the Dirichlet form, we have
+    \[D_V(g\circ f, h\circ f) = \int\int_V\left(\pdv{g}{u}\conj{\pdv{h}{u}} + \pdv{g}{v}\conj{\pdv{h}{v}}\right)\left(\left(\pdv{u}{x}\right)^2 + \left(\pdv{v}{x}\right)^2\right)dxdy.\]
+    Notice that the Cauchy-Riemann conditions give us the following Jacobian of the change of variables from $(x,y)$ to $(u,v)$:
+    \[
+        \pdv{(u,v)}{(x,y)} = 
+        \begin{vmatrix}
+            \ds\pdv{u}{x} & \ds\pdv{u}{y} \\[1em]
+            \ds\pdv{v}{x} & \ds\pdv{v}{y}
+        \end{vmatrix}
+        =
+        \begin{vmatrix}
+            \ds\pdv{u}{x} & -\ds\pdv{v}{x} \\[1em]
+            \ds\pdv{v}{x} & \phantom{-}\ds\pdv{u}{x}
+        \end{vmatrix}
+        =
+        \left(\pdv{u}{x}\right)^2 + \left(\pdv{v}{x}\right)^2.
+    \]
+    We now conclude that
+    \begin{align*}
+        D_V(g\circ f, h\circ f)
+            &= \int\int_V\left(\pdv{g}{u}\conj{\pdv{h}{u}} + \pdv{g}{v}\conj{\pdv{h}{v}}\right)\left|\pdv{(u,v)}{(x,y)}\right|dxdy \\
+            &= \int\int_U\left(\pdv{g}{u}\conj{\pdv{h}{u}} + \pdv{g}{v}\conj{\pdv{h}{v}}\right)dudv \\
+            &= D_U(g, h).
+    \end{align*}
+    
+\end{proof}
+
+\newpage
+\section*{Exercise 1.3.2}
+\begin{problem}
+    If the point $P$ on the sphere corresponds to $z$ under the stereographic projection, show that the antipodal point $-P$ on the sphere corresponds to $-1/\conj{z}$.
+\end{problem}
+
+\begin{proof}
+    Let $P = (X,Y,Z)$ (so $X^2+Y^2+Z^2 =1$), then
+    \[z = \frac{X + iY}{1-Z}.\]
+    Now consider the point $-1/\conj{z}$, which is given by
+    \begin{align*}
+        \frac{-1}{\conj{z}}
+            &= \frac{-1}{\left(\dfrac{X-iY}{1-Z}\right)} \\
+            &= \frac{-1}{\left(\dfrac{X-iY}{1-Z}\right)} \cdot \frac{X+iY}{X+iY}\\
+            &= \frac{-X-iY}{\left(\dfrac{X^2+Y^2}{1-Z}\right)} \\
+            &= \frac{-X-iY}{\left(\dfrac{1-Z^2}{1-Z}\right)} \\
+            &= \frac{-X-iY}{\left(\dfrac{(1+Z)(1-Z)}{1-Z}\right)} \\
+            &= \frac{(-X)+i(-Y)}{1-(-Z)}.
+    \end{align*}
+    Therefore, $-1/\conj{z}$ corresponds to the point $-P=(-X,-Y,-Z)$ on the sphere under the stereographic projection.
+    
+\end{proof}
+
+\newpage
+\section*{Exercise 1.3.4}
+\begin{problem}
+    Show that a rotation of the sphere $180^\circ$ about the $X$-axis corresponds under stereographic projection to the inversion $z\mapsto 1/z$ of $\C$.
+\end{problem}
+
+\begin{proof}
+    First note that for any $z=x+iy\in\C$, $z\ne 0$, we have
+    \[\frac1z = \frac{x-iy}{x^2+y^2},\]
+    since
+    \[(x+iy)\frac{x-iy}{x^2+y^2} = \frac{x^2+y^2}{x^2+y^2} = 1.\]
+    Secondly, for any point $P=(X,Y,Z)\in S^2$, a rotation of $180^\circ$ about the $X$-axis produces the point $P'=(X,-Y,-Z)$. Let $z=x+iy\in\C$, $z\ne0$. Under the stereographic projection, $z$ corresponds to the point $P\in S^2$ where
+    \[P = \left(\frac{2x}{|z|^2+1}, \frac{2y}{|z|^2+1}, \frac{|z|^2-1}{|z|^2+1}\right).\]
+    Under a rotation of $180^\circ$ degrees about the $X$-axis, $P$ maps to the point $P'\in S^2$ where
+    \[P' = \left(\frac{2x}{|z|^2+1}, \frac{-2y}{|z|^2+1}, \frac{-(|z|^2-1)}{|z|^2+1}\right).\]
+    Finally, under the stereographic projection, $P'$ corresponds to the point $z'\in\C$ where
+    \begin{align*}
+        z'
+            &= \frac{\dfrac{2x}{|z|^2+1} + i\dfrac{-2y}{|z|^2+1}}{1-\dfrac{-(|z|^2-1)}{|z|^2+1}} \\[1em]
+            &= \frac{\dfrac{2x}{|z|^2+1} - i\dfrac{2y}{|z|^2+1}}{1+\dfrac{|z|^2-1}{|z|^2+1}} \cdot \frac{|z|^2+1}{|z|^2+1}\\[1em]
+            &= \frac{2x - i2y}{|z|^2+1+|z|^2-1}\\[1em]
+            &= \frac{2x - i2y}{2|z|^2}\\[1em]
+            &= \frac{x - iy}{x^2 + y^2} \\[1em]
+            &= \frac1z.
+    \end{align*}
+    
+\end{proof}
+
+\newpage
+\section*{Exercise 2.7.1}
+\begin{problem}
+    Compute explicitly the fractional linear transformations determined by the following correspondences of triples:
+\end{problem}
+
+\subsection*{Exercise 2.7.1(a)}
+\begin{problem}
+    \[(1+i, 2, 0)\mapsto(0, \infty, i-1)\]
+\end{problem}
+\medskip
+
+Let
+\[f(z) = \frac{az+b}{cz+d}\]
+be the unique fractional linear transformation which maps the given correspondence of triples. Then
+\begin{align*}
+    \frac{a(1+i)+b}{c(1+i)+d} = 0 &\implies a(1+i) + b = 0, \\
+    f(2) = \infty &\implies \frac{-d}{c} = 2, \\
+    \frac{a(0)+b}{c(0)+d} = i-1 &\implies b = -d + id.
+\end{align*}
+Without loss of generality, we assume that $c=1$, so
+\begin{align*}
+    \frac{-d}{c} = 2 &\implies d = -2, \\
+    b = -(d) + id &\implies b = 2 - i2, \\
+    a(1+i) + b = 0 &\implies a = \frac{-2+i2}{1+i}.
+\end{align*}
+
+\subsection*{Exercise 2.7.1(b)}
+\begin{problem}
+    \[(0, 1, \infty)\mapsto(1, 1+i, 2)\]
+\end{problem}
+\medskip
+
+Let
+\[f(z) = \frac{az+b}{cz+d}\]
+be the unique fractional linear transformation which maps the given correspondence of triples. Then
+\begin{align*}
+    \frac{a(0)+b}{c(0)+d} = 1 &\implies b=d, \\
+    \frac{a(1)+b}{c(1)+d} = 1+i &\implies a+b = (c+d)(1+i), \\
+    f(\infty) = 2 &\implies \frac{a}{c} = 2.
+\end{align*}
+Without loss of generality, we assume that $c=1$, so
+\begin{align*}
+    \frac{a}{c} &\implies a=2, \\
+    b=d,\, a+b = (c+d)(1+i) &\implies b = d = -1-i.
+\end{align*}
+
+\subsection*{Exercise 2.7.1(c)}
+\begin{problem}
+    \[(\infty, 1+i, 2)\mapsto(0, 1, \infty)\]
+\end{problem}
+\medskip
+
+Let
+\[f(z) = \frac{az+b}{cz+d}\]
+be the unique fractional linear transformation which maps the given correspondence of triples. Then
+\begin{align*}
+    f(\infty) = 0 &\implies \frac{a}{c} = 0, \\
+    \frac{a(1+i)+b}{c(1+i)+d} = 1 &\implies a(1+i)+b = c(1+i)+d, \\
+    f(2) = \infty &\implies \frac{-d}{c} = 2.
+\end{align*}
+Without loss of generality, we assume that $c=1$, so
+\begin{align*}
+    \frac{-d}{c} = 2 &\implies d = -2, \\
+    \frac{a}{c} = 0 &\implies a=0, \\
+    a(1+i)+b = c(1+i)+d &\implies b = -1+i.
+\end{align*}
+
+\subsection*{Exercise 2.7.1(d)}
+\begin{problem}
+    \[(-2, i, 2)\mapsto(1-2i, 0, 1+2i)\]
+\end{problem}
+\medskip
+
+Let
+\[f(z) = \frac{az+b}{cz+d}\]
+be the unique fractional linear transformation which maps the given correspondence of triples. Then
+\begin{align*}
+    \frac{a(-2)+b}{c(-2)+d} = 1-2i &\implies -2a + b = (-2c+d)(1-2i), \\
+    \frac{a(i)+b}{c(i)+d} = 0 &\implies b = -ai, \\
+    \frac{a(2)+b}{c(2)+d} = 1+2i &\implies 2a + b = (2c+d)(1+2i).
+\end{align*}
+Without loss of generality, we assume that $c=1$, so
+\begin{align*}
+    -2a + b = (-2c+d)(1-2i),\, b = -ai,\, 2a + b = (2c+d)(1+2i) &\implies a = -1 + i3, \\
+    b = -ai &\implies b = -3 + i, \\
+    2a + b = (2c+d)(1+2i) &\implies d=-3-i3.
+\end{align*}
+
+\subsection*{Exercise 2.7.1(e)}
+\begin{problem}
+    \[(1, 2, \infty)\mapsto(0, 1, \infty)\]
+\end{problem}
+\medskip
+
+Let
+\[f(z) = \frac{az+b}{cz+d}\]
+be the unique fractional linear transformation which maps the given correspondence of triples. Then
+\begin{align*}
+    \frac{a(1)+b}{c(1)+d} = 0 &\implies a+b = 0, \\
+    \frac{a(2)+b}{c(2)+d} = 1 &\implies 2a+ b = 2c + d, \\
+    f(\infty) = \infty &\implies c=0.
+\end{align*}
+Without loss of generality, we assume that $d=1$, so
+\begin{align*}
+    a+b = 0,\, 2a+ b = 2c + d  &\implies a= 1, \\
+    a+b=0 &\implies b = -1.
+\end{align*}
+
+\subsection*{Exercise 2.7.1(f)}
+\begin{problem}
+    \[(0, \infty, i)\mapsto(0, 1, \infty)\]
+\end{problem}
+\medskip
+
+Let
+\[f(z) = \frac{az+b}{cz+d}\]
+be the unique fractional linear transformation which maps the given correspondence of triples. Then
+\begin{align*}
+    \frac{a(0)+b}{c(0)+d} = 0 &\implies \frac{b}{d}=0, \\
+    f(\infty) = 1 &\implies \frac{a}{c} = 1, \\
+    f(i) = \infty &\implies \frac{-d}{c} = i.
+\end{align*}
+Without loss of generality, we assume that $c=1$, so
+\begin{align*}
+    \frac{a}{c} = 1 &\implies a = 1, \\
+    \frac{-d}{c} = i &\implies d= - i, \\
+    \frac{b}{d}=0 &\implies b=0.
+\end{align*}
+
+\subsection*{Exercise 2.7.1(g)}
+\begin{problem}
+    \[(0, 1, \infty)\mapsto(0, \infty, i)\]
+\end{problem}
+\medskip
+
+Let
+\[f(z) = \frac{az+b}{cz+d}\]
+be the unique fractional linear transformation which maps the given correspondence of triples. Then
+\begin{align*}
+    \frac{a(0)+b}{c(0)+d} = 0 &\implies \frac{b}{d} = 0, \\
+    f(1) = \infty &\implies \frac{-d}{c} = 1, \\
+    f(\infty) = i &\implies \frac{a}{c} = i.
+\end{align*}
+Without loss of generality, we assume that $c=1$, so
+\begin{align*}
+    \frac{a}{c} = i &\implies a=i, \\
+    \frac{-d}{c} = 1 &\implies d = -1, \\
+    \frac{b}{d} = 0 &\implies b=0, \\
+\end{align*}
+
+\subsection*{Exercise 2.7.1(h)}
+\begin{problem}
+    \[(1, i, -1)\mapsto(1, 0, -1)\]
+\end{problem}
+\medskip
+
+Let
+\[f(z) = \frac{az+b}{cz+d}\]
+be the unique fractional linear transformation which maps the given correspondence of triples. Then
+\begin{align*}
+    \frac{a(1)+b}{c(1)+d} = 1 &\implies a+b = c+d, \\
+    \frac{a(i)+b}{c(i)+d} = 0 &\implies ai + b = 0, \\
+    \frac{a(-1)+b}{c(-1)+d} = -1 &\implies -a + b = c -d.
+\end{align*}
+Without loss of generality, we assume that $c=1$, so
+\begin{align*}
+    a+b = c+d,\, -a + b = c -d  &\implies b = 1, \\
+    ai + b = 0 &\implies a = i, \\
+    a+b = c+d &\implies d = i.
+\end{align*}
+
+
+\end{document}

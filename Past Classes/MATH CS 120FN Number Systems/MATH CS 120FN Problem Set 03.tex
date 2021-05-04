@@ -1,0 +1,97 @@
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{colortbl}
+
+\lstset{basicstyle=\footnotesize}
+\usetikzlibrary{calc}
+
+ 
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{question}[2][Question]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+ 
+\begin{document}
+ 
+\title{Problem Set 3\\
+    \large CS120FN Number Systems}
+\author{Harry Coleman}
+\date{October 8, 2019}
+
+\maketitle
+
+\section*{Problem 4}
+\fbox{
+    \parbox{\textwidth}{
+        If $p,q$ are distinct odd primes, show that $p^nq^m$ is never a perfect number for any values of $n,m$. 
+    }
+}
+\\
+
+First, we will assume $p^nq^m$ is a perfect number, so
+\[p^nq^m = (p^0 + p^1 + p^2 + ... + p^{n})(q^0 + q^1 + q^2 + ... + q^{m})\]
+
+Using the formula for the sum of a geometric series,
+\[a_0 \left(\frac{1-r^n}{1-r}\right)\]
+where $a_0$ is the first term, $r$ is the common ratio, and $n$ is the number of terms, we can say
+\begingroup
+\addtolength{\jot}{7pt}
+\begin{align}
+    \nonumber p^nq^m      &= \frac{1-p^{n+1}}{1-p} \cdot \frac{1-q^{m+1}}{1-q} - p^nq^m \\
+    \nonumber 2p^nq^m     &= \frac{1-p^{n+1}}{1-p} \cdot \frac{-1}{-1} \cdot \frac{1-q^{m+1}}{1-q} \cdot \frac{-1}{-1} \\
+    \nonumber 2p^nq^m     &= \frac{p^{n+1}-1}{p-1} \cdot \frac{q^{m+1}-1}{q-1} \\
+    \nonumber 2p^nq^m(p-1)(q-1)                   &= p^{n+1}q^{m+1} - p^{n+1} - q^{m+1} + 1 \\
+    \nonumber 2p^nq^m(p-1)(q-1)-p^{n+1}q^{m+1}    &= - p^{n+1} - q^{m+1} + 1 \\
+    \nonumber p^nq^m[2(p-1)(q-1) - pq]            &= - p^{n+1} - q^{m+1} + 1 \\
+    \nonumber p^nq^m[2pq - 2p - 2q + 2 - pq]      &= - p^{n+1} - q^{m+1} + 1 \\
+    p^nq^m[pq + 2 - 2(p + q)]           &= - p^{n+1} - q^{m+1} + 1 \label{posneg}
+\end{align}
+\endgroup
+
+Because $p$ and $q$ are distinct odd primes, the least values they could be are 3 and 5. If either $n$ or $m$ are negative, 
+\begin{align*}
+    p^{-n}q^m &= \frac{q^m}{p^n} \\
+    p^nq^{-m} &= \frac{p^n}{q^m} \\
+    p^{-n}q^{-m} &= \frac{1}{p^nq^m}
+\end{align*}
+none of the fractions will reduce to integers since $p^n$ and $q^m$ have no common divisors other than 1. So $n,m>0$. With this in mind, we know that the right side of equation \ref{posneg} must be negative. Since $p^nq^m$ must be positive, the sign of the left side is the same as the sign of the expression $[pq + 2 - 2(p+q)]$, which we will call $A$. So we need to find the sign of $A$.
+
+$A$ has two positive terms, $pq$ and $2$, and one negative term, $-2(p+q)$. The whole expression is positive if the sum of the positive terms is greater than the absolute value of the negative term, and negative if the sum of the positive terms is less than the absolute value of the negative term.
+
+In order to show that $pq +2$ is greater than 2(p+q) for all possible values of $p$ and $q$ in this situation, we will use induction. (Notice p and q are essentially interchangeable in this formula. So for the following process, know that it could be repeated with $p$ and $q$ swapped.) First, we will prove the base case. The least values that $p$ and $q$ could be are $3$ and $5$. We will check if these values work.
+\begin{align*}
+   (3)(5) + 2 &> 2(3+5) \\
+    15 + 2 &> 2(8) \\
+    17 &> 16
+\end{align*}
+Next, we will assume that
+\[pq + 2 > 2(p+q)\]
+for some odd $p,q \geq 3$ and $p \ne q$.  We will now check to see if the above is true for $p+1$.
+\begin{align*}
+    (p+1)q + 2 &> 2((p+1)+q) \\
+    pq + 2 + q &> 2(p+q) + 2
+\end{align*}
+
+So we see the left side increase by $q$ and the right side increase by 2. Since $q \geq 3$, the inequality is still true. So if
+\[pq + 2 > 2(p+q)\]
+and either $p$ or $q$ is increased by 1, then it is still true. 
+
+Therefore, for all odd $p,q \geq 3$ and $p \ne q$, $pq + 2 > 2(p+q)$. Thus, our expression $A$ must be positive. With $A$ positive, the left side of equation \ref{posneg} must be positive. This, however, is a contradiction with our right side being negative. Therefore, our assumption cannot be true. So if $p,q$ are distinct odd primes, $p^nq^m$ is never a perfect number for any values of $n,m$.
+    
+
+\end{document}
+

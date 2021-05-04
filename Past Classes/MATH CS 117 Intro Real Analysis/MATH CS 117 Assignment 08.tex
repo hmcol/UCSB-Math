@@ -1,0 +1,312 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow,enumitem}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Set Names
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\RR}{\mathcal{R}}
+
+% Misc Characters
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\newcommand{\eps}{\varepsilon}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ang}{\langle}{\rangle}
+
+% Homework Sections
+\setlength{\fboxsep}{4pt}
+\newcommand{\generic}[2]{\section*{#1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\ex}[2]{\generic{Exercise #1}{#2}}
+\newcommand{\prob}[2]{\generic{Problem #1}{#2}}
+\newcommand{\ques}[2]{\generic{Question #1}{#2}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+% MATH CS 117 Intro to Real Analysis
+\newcommand{\ds}{\displaystyle}
+\newcommand{\seq}[1]{\left\{#1\right\}_{n=1}^\infty}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\def\upint{\mathchoice%
+    {\mkern13mu\overline{\vphantom{\intop}\mkern7mu}\mkern-20mu}%
+    {\mkern7mu\overline{\vphantom{\intop}\mkern7mu}\mkern-14mu}%
+    {\mkern7mu\overline{\vphantom{\intop}\mkern7mu}\mkern-14mu}%
+    {\mkern7mu\overline{\vphantom{\intop}\mkern7mu}\mkern-14mu}%
+  \int}
+\def\lowint{\mkern3mu\underline{\vphantom{\intop}\mkern7mu}\mkern-10mu\int}
+ 
+\begin{document}
+ 
+\title{Assignment 8\\
+    \large MATH CS 117 Intro to Real Analysis}
+\author{Harry Coleman}
+\date{June 1, 2020}
+\maketitle
+
+\begin{enumerate}
+
+\item
+Let $a<b$.  Suppose that $f:[a,b]\to\R$ is differentiable on $[a,b]$ and
+that $f'(x)=f(x)$, for all $x\in[a,b]$.  Use only the results of this course to prove that
+\[f(b)-f(a)=\int_a^bfdx.\]
+
+\begin{proof}
+    Since $f$ is differentiable on $[a,b]$, then $f$ is continuous on $[a,b]$. Since $f$ is continuous on $[a,b]$, then it is Riemann integrable on $[a,b]$, $f\in\RR([a,b])$. Then by the fundamental theorem of calculus, $f(b)-f(a)=\int_a^bfdx$.
+    
+\end{proof}
+
+
+\item
+Let  $I\subset\R$ be any closed bounded interval.  Let $f:I\to\R$ be a bounded function, and define 
+\[M=\sup\limits_I f=\sup\{f(x):x\in I\}\isp{and } m=\inf\limits_I f=\inf \{f(x):x\in I\}.\]
+
+\begin{enumerate}
+
+\item
+Prove that
+\[|f(x)-f(y)|\le M-m,\isp{and} x,y\in I.\]
+($M-m$ is called the oscillation of $f$ on $I$.)
+
+\begin{proof}
+    Let $x,y\in I$. Then by definition of $m$ and $M$, we have 
+    \[m\leq f(x) \leq M \isp{and} m\leq f(y) \leq M.\]
+    Subtracting $m$ from all sides of both of inequalities and multiplying the right inqeuality by $-1$, we obtain
+    \[0\leq f(x)-m \leq M-m \isp{and} -(M-m)\leq m-f(y) \leq 0.\]
+    Adding these together, we find
+    \[-(M-m) \leq f(x)-f(y) \leq M-m,\]
+    which implies $|f(x)-f(y)|\leq M-n$.
+    
+\end{proof}
+
+\item
+Prove that if  $\alpha\in\R$ is any number such that
+\[|f(x)-f(y)|\le \alpha ,\isp{and} x,y\in I,\]
+then $\alpha\ge M-m$.
+
+\begin{proof}
+    Suppose $\alpha\in\R$ is such that
+    \[|f(x)-f(y)|\le \alpha ,\isp{and} x,y\in I.\]
+    We now construct two sequences $\seq{x_n}$ and $\seq{y_n}$ in $I$ such that 
+    \[f(x_n) \in \left[M-\frac1n, M\right]\cap f(I) \isp{and} f(y_n)\in \left[m,m+\frac1n\right]\cap f(I).\]
+    We can define these sequences in this way as $M$ and $m$ are given as the supremum and infimum of $f(I)$, respectively, so we can find points in $I$ with their image under $f$ arbitrarily close to either. This construction gives us $f(x_n)\to M$ and $f(y_n)\to m$ as $n\to\infty$. Then by assumption, we have
+    \[|f(x_n)-f(y_n)| \leq \alpha,\]
+    for all $n\in\N$. So now letting $n\to\infty$, we find
+    \[|M-m| \leq \alpha.\]
+    And since $m\leq M$, we in fact have $M-n\leq \alpha$.
+    
+\end{proof}
+
+\item
+Prove that if $S_j$, $j=1,2$, are two Riemann sums for $f$ relative to some partition $P$
+of $[a,b]$, then
+\[|S_1-S_2|\le U(P,f)-L(P,f).\]
+
+\begin{proof}
+    Suppose $S_1,S_2$ are Riemann sums for $f$ associated with the partition $P$ of $[a,b]$. Then for each we have
+    \[L(P,f) \leq S_1 \leq U(P,f) \isp{and} L(P,f) \leq S_2 \leq U(P,f).\]
+    Multiplying the right inequality by $-1$ and adding both together, we find
+    \[L(P,f)-U(P,f) \leq S_1-S_2 \leq U(P,f)-L(P,f).\]
+    This implies $|S_1-S_2|\leq U(P,f)-L(P,f)$.
+    
+\end{proof}
+
+\end{enumerate}
+
+\newpage
+\item
+Let $f_j:[a,b]\to\R$ be bounded functions, $j=1,2$.\
+\begin{enumerate}
+
+\item
+If $I\subset[a,b]$ is any closed subinterval, prove that
+\[\sup_I(f_1+f_2)\le \sup_If_1+\sup_I f_2.\]
+
+\begin{proof}
+    Suppose $I\subseteq[a,b]$ is a closed subinterval. Since $f_1$ and $f_2$ are bounded functions on $[a,b]$, their are likewise bounded on $I$, so their supremums with respect to $I$ exist. This means that for all $x\in I$, we have
+    \[f_1(x)\leq \sup_If_1 \isp{and} f_2(x)\leq \sup_If_2,\]
+    which implies
+    \[f_1(x)+f_2(x)\leq \sup_If_1 + \sup_If_2.\]
+    Then since $\ds(\sup_If_1 + \sup_If_2)$ is an upper bound for the set $\{f_1(x)+f_2(x):x\in I\}$, it is no less than the supremum of the set. That is,
+    \[\sup_I(f_1+f_2)\le \sup_If_1+\sup_I f_2.\]
+    
+\end{proof}
+
+\item
+Let $P$ be any partition of $[a,b]$.  Prove that
+\[U(P,f_1+f_2)\le U(P,f_1)+U(P,f_2).\]
+
+\begin{proof}
+    By definition, we have
+    \[U(P,f_1+f_2) = \sum_{i=1}^n\sup_{[x_{i-1},x_i]}(f_1+f_2)(x_i-x_{i-1}).\]
+    Now since $[x_{i-1},x_i]\subseteq[a,b]$ is a closed subinterval for each $i$, we have
+    \begin{align*}
+        U(P,f_1+f_2) 
+            &\leq \sum_{i=1}^n\left(\sup_{[x_{i-1},x_i]}f_1+\sup_{[x_{i-1},x_i]}f_2\right)(x_i-x_{i-1}) \\
+            &= \sum_{i=1}^n\sup_{[x_{i-1},x_i]}f_1(x_i-x_{i-1})+\sum_{i=1}^n\sup_{[x_{i-1},x_i]}f_2(x_i-x_{i-1}) \\
+            &= U(P,f_1) + U(P,f_2).
+    \end{align*}
+    
+\end{proof}
+
+\newpage
+\item\label{partb}
+Prove that
+\[\upint_a^b(f_1+f_2)dx\le \upint_a^bf_1dx+\upint_a^bf_2dx.\]
+
+\begin{proof}
+    Define
+    \[U_1 = \upint_a^bf_1dx \isp{and} U_2 = \upint_a^bf_2dx \isp{and} U_3=\upint_a^b(f_1+f_2)dx.\]
+    We construct two sequences $\seq{P_n}$ and $\seq{Q_n}$ whose terms are partitions of $[a,b]$ such that
+    \[U(P_n,f_1)\in\left[U_1, U_1+\frac1n\right] \isp{and} U(Q_n,f_2)\in\left[U_2, U_2+\frac1n\right].\]
+    This is possible as $U_1$ and $U_2$ are defined as the infimums of the functions $U(-,f_1)$ and $U(-,f_2)$ over all partitions, respectively, and we can always find partitions whose images under these functions are arbitrarily close to the infimums. This construction gives us
+    \[U(P_n,f_1) \to U_1 \isp{and} U(Q_n,f_2) \to U_3.\]
+    In a similar manner, we define a third sequence $\seq{R_n}$ of partitions of $[a,b]$ such that
+    \[U(R_n,f_1+f_2)\in\left[U_3, U_3+\frac1n\right].\]
+    And similarly, $U(R_n,f_1+f_2) \to U_3$. Now for each $n\in\N$, we define the partition
+    \[S_n = P_n\cup Q_n\cup R_n\]
+    of $[a,b]$. Since $S_n$ is a refinement of the three partitions, we have
+    \begin{alignat*}{6}
+        U_1 &\leq&\,\,& U(S_n,f_1) &&\leq&\,\,& U(P_n,f_1) &&\to&\,\,&U_1, \\
+        U_2 &\leq&& U(S_n,f_2) &&\leq&& U(Q_n,f_2) &&\to&&U_2, \\
+        U_3 &\leq&& U(S_n,f_1+f_2) &&\leq&& U(R_n,f_1+f_2) &&\to&&U_3.
+    \end{alignat*}
+    So we have
+    \begin{align*}
+       U(S_n,f_1) &\to U_1, \\
+       U(S_n,f_2) &\to U_2, \\
+       U(S_n,f_1+f_2) &\to U_3.
+    \end{align*}
+    Then from part 3b, we have
+    \[U(S_n,f_1+f_2) \leq U(S_n,f_1) + U(S_n,f_2).\]
+    And letting $n\to\infty$, we obtain the desired result
+    \[U_3 = U_1 + U_2.\]
+     
+    
+\end{proof}
+
+\item
+Suppose that $f_j\in\RR([a,b])$, $j=1,2$.  Use part \eqref{partb} and the analogous statement for the
+lower Riemann integrals to prove that $f_1+f_2\in \RR([a,b])$ and
+\[\int_a^b(f_1+f_2)dx = \int_a^bf_1dx+\int_a^bf_2dx.\]
+
+\begin{proof}
+    Since $f_1,f_2\in\RR([a,b])$, then
+    \[\int_a^bf_1dx = \upint_a^bf_1dx \isp{and} \int_a^bf_2dx = \upint_a^bf_2dx.\]
+    Then by part 3c and the analogous statement for the lower Riemann integral, we have
+    \[\int_a^bf_1dx+\int_a^bf_2dx \leq \lowint_a^b(f_1+f_2)dx \leq \upint_a^b(f_1+f_2)dx\leq \int_a^bf_1dx+\int_a^bf_2dx.\]
+    This implies that the lower and upper Riemann integrals for $f_1+f_2$ are equal, and that in fact
+    \[\int_a^b(f_1+f_2)dx = \int_a^bf_1dx+\int_a^bf_2dx.\]
+
+\end{proof}
+
+\end{enumerate}
+
+\item
+Suppose that $f\in C([a,b])$.  Let 
+\[M=\sup\limits_{[a,b]}f\isp{and} m=\inf\limits_{[a,b]}f.\]
+
+\begin{enumerate}
+
+\item
+Use the fact that
+\[m(b-a)\le L(P,f)\le U(P,f)\le M(b-a),\]
+for every partition $P$ to prove that
+\[m\le \frac1{b-a}\int_a^bfdx\le M.\]
+
+\begin{proof}
+    Since $f$ is continuous on a closed bounded interval, it is therefore Riemann integrable, so it's lower and upper Riemann integrals are equal. Then by definition of the lower and upper Riemann integrals as the supremum and infimum of $L(P,f)$ and $U(P,f)$ over all partitions $P$, respectively, we have for any partitcular partition $P$,
+    \[m(b-a)\le L(P,f) \le \int_a^bfdx \le U(P,f)\le M(b-a).\]
+    Now since $a<b$, this implies
+    \[m\le \frac1{b-a}\int_a^bfdx\le M.\]
+    
+\end{proof}
+
+\item
+Prove that there exists a point $c\in[a,b]$ such that
+\[f(c)=\frac1{b-a}\int_a^bfdx.\]
+
+\begin{proof}
+    Since $f$ is continuous on a $[a,b]$, there exist $m,M$ such that $f([a,b])=[m,M]$. In other words, for some $x,y\in[a,b]$, $f(x)=m$ and $f(y)=M$. Then by part 4a, we have
+    \[f(x)\le \frac1{b-a}\int_a^bfdx\le f(y).\]
+    Then by the intermediate value theorem, there exists a point $c\in[a,b]$, in particular on the interval between $x$ and $y$, such that
+    \[f(c) = \frac1{b-a}\int_a^bfdx.\]
+    
+\end{proof}
+
+\end{enumerate}
+
+\newpage
+\item
+Let $f\in\RR([a,b])$, and suppose that  $g:[a,b]\to\R$ satisfies $g(x)=f(x)$, for
+all $x\in[a,b)$.  Prove that $g\in\RR([a,b])$ and
+$\int_a^bfdx=\int_a^bgdx$.
+(The same result is true if $f=g$ except for any single point in $[a,b]$.
+From there one can prove the result if $f=g$ except for finitely many points, by induction.)
+
+\begin{proof}
+    Let $P$ be a partition of $[a,b]$. Consider
+    \begin{align*}
+        L(P,g)
+            &= \sum_{i=1}^m\inf_{[x_{i-1},x_i]}g(x_i-x_{i-1}) \\
+            &= \sum_{i=1}^{m-1}\inf_{[x_{i-1},x_i]}g(x_i-x_{i-1}) + \inf_{[x_{m-1},b]}g(b-x_{m-1}).
+    \end{align*}
+    Notice that $f$ and $g$ are identical in the above formula except for the final term, so we may replace $g$ with $f$ in the summation:
+    \begin{align*}
+        L(P,g)
+            &= \sum_{i=1}^{m-1}\inf_{[x_{i-1},x_i]}f(x_i-x_{i-1}) + \inf_{[x_{m-1},b]}g(b-x_{m-1}) \\
+            &= L(P,f)-\inf_{[x_{m-1},b]}f(b-x_{m-1})+ \inf_{[x_{m-1},b]}g(b-x_{m-1}) \\
+            &= L(P,f) + (\inf_{[x_{m-1},b]}g -\inf_{[x_{m-1},b]}f)(b-x_{m-1}).
+    \end{align*}
+    Similarly,
+    \[U(P,g) = U(P,f) + (\sup_{[x_{m-1},b]}g -\sup_{[x_{m-1},b]}f)(b-x_{m-1}).\]
+    Note that both are true for all partitions of $[a,b]$. We now construct a sequence of partitions, $\seq{P_n}$ such that $P_n$ has $n$ intervals each of size $\frac1n$. In particular,
+    \[[x_{i-1},x_i] = \left[a+\frac{i-1}nb, a+\frac{i}nb\right],\]
+    for all $n\in\N$. We now construct a second sequence $\seq{Q_n}$ of partitions of $[a,b]$ such that
+    \[U(Q_n,f)-L(Q_n,f)<\frac1n,\]
+    for all $n\in\N$. We can always find such partitions since $f\in\RR([a,b])$. And we define a final sequence $\seq{S_n}$ by $S_n = P_n\cup Q_n$ for all $n\in\N$. Then $\seq{S_n}$ is such that
+    \[U(S_n,f)-L(S_n,f) \to 0,\]
+    \[b-x_{n-i} \to 0,\]
+    as $n\to\infty$. Then taking the equations solved for above, we have
+    \begin{align*}
+        U(S_n,g) - L(S_n,g)
+            &= U(S_n,f) - L(S_n,f) \\
+            &+ (\sup_{[x_{n-1},b]}g-\sup_{[x_{n-1},b]}f)(b-x_{n-1}) \\
+            &- (\inf_{[x_{n-1},b]}g-\inf_{[x_{n-1},b]}f)(b-x_{n-1}).
+    \end{align*}
+    And now letting $n\to\infty$, we find
+    \begin{align*}
+        U(S_n,g) - L(S_n,g)
+            &\to 0 + (g(b)-f(b))0 - (g(b)-f(b))0 = 0.
+    \end{align*}
+    By definition of limit, for any $\eps>0$, there exists a partition $P$ of $[a,b]$ such that
+    \[U(P,g) - L(P,g) < \eps.\]
+    So $g$ is Riemann integrable. In particular, note that since
+    \[U(S_n,g) = U(S_n,f) + (\sup_{[x_{m-1},b]}g -\sup_{[x_{n-1},b]}f)(b-x_{n-1}),\]
+    if we let $n\to\infty$, we find
+    \[\int_a^bgdx = \int_a^bfdx.\]
+    
+\end{proof}
+
+\end{enumerate}
+
+
+
+
+\end{document}

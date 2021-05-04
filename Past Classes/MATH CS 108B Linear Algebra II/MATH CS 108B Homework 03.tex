@@ -1,0 +1,190 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Set Names
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+
+% Misc Characters
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\newcommand{\eps}{\varepsilon}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+% Homework Sections
+\setlength{\fboxsep}{4pt}
+\newcommand{\generic}[2]{\section*{#1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\ex}[2]{\generic{Exercise #1}{#2}}
+\newcommand{\prob}[2]{\generic{Problem #1}{#2}}
+\newcommand{\ques}[2]{\generic{Question #1}{#2}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+% MATH CS 117 Intro to Real Analysis
+\newcommand{\ds}{\displaystyle}
+\newcommand{\seq}[1]{\left\{#1\right\}_{n=1}^\infty}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+
+% MATH CS 108B Lineary Algebra II
+\newcommand{\conj}{\text{conj}}
+\newcommand{\ov}[1]{\overline{#1}}
+ 
+\begin{document}
+ 
+\title{Homework 3\\
+    \large MATH CS 108B Linear Algebra II}
+\author{Harry Coleman}
+\date{April 13, 2020}
+\maketitle
+
+\ex{11}{
+     Let $\phi$ be a non-degenerate bilinear form on a finite-dimensional vector space $V$ . What can we say about a matrix representation of $\phi$ if $\phi$ is bilinear?
+}
+
+Let $A\in\F^{n\times n}$ be the matrix representation of $\phi$, that is,
+\[\phi(u,v) = [v]_\beta^TA[u]_\beta\]
+for all $u,v\in V$ and some basis $\beta$ for $V$. We claim that $A$ is invertible. Suppose, to the contrary, that $A$ is not invertible. Then, there is some $x\in\F^n$ such that $x\ne0$ and $Ax=0$. So for all $y\in\F^n$, $y^TAx = 0$. Since the function which maps vectors in $V$ to their $\beta$ bases vectors in $\F^n$ is an isomorphism, if we let $u\in V$ such that $[u]_\beta = x$, then for all $v\in V$, $[v]^T_\beta A[u]_\beta = 0$. However, since $u$ is nonzero, this tells us that $\phi$ is degenerate, which is a contradition. Therefore, $A$ is invertible.
+
+
+\ex{12}{
+    Let $\F$ be a field with a conjugation map, conj. Show that, if $m \in \F$ and $m \ne 0$, then
+    \[\conj(-m) = -\conj(m), \quad\text{and}\quad \conj(m^{-1}) = \conj(m)^{-1}.\]
+}
+
+Let $m\in\F$, $m\ne0$. By the properties of conjugate maps,
+\begin{align*}
+    \conj(-m)   &= \conj(-m) + \conj(m) - \conj(m) \\
+                &= \conj(-m+m) - \conj(m) \\
+                &= \conj(0) - \conj(m) \\
+                &= 0 - \conj(m) \\
+                &= -\conj(m).
+\end{align*}
+
+Similarly,
+\begin{align*}
+    \conj(m^{-1})   &= \conj(m^{-1}) \cdot \conj(m) \cdot \conj(m)^{-1} \\
+                    &= \conj(m^{-1} \cdot m) \cdot \conj(m)^{-1} \\
+                    &= \conj(1) \cdot \conj(m)^{-1}\\
+                    &= 1\cdot \conj(m)^{-1} \\
+                    &= \conj(m)^{-1}.
+\end{align*}
+
+\ex{13}{
+    Let $\F$ be a field with a nontrivial conjugation map and assume that char$(\F) \ne 2$. Show that every element $z \in \F$ can be written uniquely as $z = x + jy$ for some $x, y \in \{z \in \F : z = \ov{z}\}$.
+}
+
+Let $z\in\F$ and $j\in\F$ such that $\ov{j} = -j$. We define
+\begin{align*}
+    x &= (z + \ov{z})/2, \\
+    y &= (z - \ov{z})/(2j).
+\end{align*}
+We claim that $x,y\in\{z\in\F:z=\ov{z}\}$ and $x+yj=z$. First, consider the conjugate of $x$,
+\begin{align*}
+    \ov{x}  &= \ov{(z+\ov{z})/2} \\
+            &= \ov{(z+\ov{z})}/\ov{2} \\
+            &= (\ov{z} + \ov{\ov{z}})/2 \\
+            &= (\ov{z} + z)/2 \\
+            &= x.
+\end{align*}
+Similarly,
+\begin{align*}
+    \ov{y}  &= \ov{(z-\ov{z})/(2j)} \\
+            &= \ov{(z-\ov{z})}/\ov{(2j)} \\
+            &= (\ov{z} - \ov{\ov{z}})/(\ov{2}\cdot\ov{j}) \\
+            &= (\ov{z} - z)/(-2j) \\
+            &= (z-\ov{z}/(2j) \\
+            &= y.
+\end{align*}
+So $x=\ov{x}$ and $y=\ov{y}$. We now show that $x+yj=z$,
+\begin{align*}
+    x + yj  &= (z + \ov{z})/2 + [(z - \ov{z})/(2j)]j \\
+            &= (z + \ov{z})/2 + (z - \ov{z})/2 \\
+            &= (z + \ov{z} + z - \ov{z})/2 \\
+            &= (2z)/2 \\
+            &= z.
+\end{align*}
+In order to show that this representation of $z$ is unique, we let $x_1,x_2,y_1,y_3 \in\{z\in\F:z=\ov{z}\}$ and 
+\begin{align*}
+    x_1 + y_1j                  &= x_2 + y_2j = z, \\
+    (x_1 - x_2) - (y_1-y_2)j    &= 0.
+\end{align*}
+Since $\ov0=0$,
+\begin{align*}
+    \ov{(x_1 - x_2) + (y_1-y_2)j}   &= (x_1 - x_2) + (y_1-y_2)j, \\
+    (x_1-x_2) - (y_1-y_2)j          &= (x_1 - x_2) + (y_1-y_2)j, \\
+    2(y_1-y_2)j                     &= 0, \\
+    y_1-y_2                         &= 0, \\
+    y_1                             &= y_2.
+\end{align*}
+We then substitute to find
+\begin{align*}
+    x_1 + y_1j  &= x_2 + y_1j, \\
+    x_1         &= x_2. \\
+\end{align*}
+So $x_1=x_2$ and $y_1=y_2$. Therefore the representation of $z=x+yj$ where $x,y\in\{z\in\F:z=\ov{z}\}$ is unique. Note that this only works if char$(\F)\ne2$ since it requires the multiplicative inverse of 2, which does not exist if $2=0$, such as in a characteristic 2 field.
+
+
+\ex{14}{
+    Let $V = \F^n$, where $\F$ is a field with conjugation. Let $A \in \F^{n\times n}$. Show $\phi : V \times V \to \F$ given by
+    \[\phi(v, w) = w^*Av,\]
+    is a sesquilinear form, where $w^w = \ov{w}^T$.
+}
+
+Let $\alpha\in\F$, $v_1,v_2,w\in\F^n$. Consider
+\begin{align*}
+    \phi(\alpha v_1 + v_2, w)   &= w^*A(\alpha v_1 + v_2 \\
+                                &= \alpha(w^*Av_1) + w^*Av_2 \\
+                                &= \alpha\phi(v_1,w) + \phi(v_2,w).
+\end{align*}
+So $\phi$ is linear in the first argument. Now let $\alpha\in\F$, $v,w_1,w_2\in\F^n$, and consider
+\begin{align*}
+    \phi(v, \alpha w_1 + w_2)   &= (\alpha w_1 + w_2)^*Av \\
+                                &= (\ov\alpha w_1^* + w_2^*)Av \\
+                                &= \ov\alpha(w_1^*Av) + w_2^*Av \\
+                                &= \ov\alpha\phi(v,w_1) + \phi(v,w_2).
+\end{align*}
+So $\phi$ is conjugate linear in the second argument. Therefore, $phi$ is sesquilinear.
+
+
+\ex{15}{
+    Associated with symmetric bilinear forms are functions called quadratic forms. Given a vector space $V$, a function $K : V \to \F$ is called a quadratic form if there exists a symmetric bilinear form $H$ such that
+    \[K(x) = H(x, x), \quad\text{for all } x \in V.\]
+    Show that, if $char(\F) \ne 2$, then there is a one-to-one correspondence between symmetric bilinear forms and quadratic forms
+}
+
+By the definition of a quadratic form, there is a clear surjection from the set of symmetric bilinear forms to the set of quadratic forms, since each quadratic form must correspond to some symmetric bilinear form. To show that that is a one-to-one correspondence, we must show that each quadratic form corresponds to exactly one symmetric bilinear form. In other words, If we have a quadratic form $K$ and two symmetric bilinear forms $G,H$ such that
+\[K(x) = G(x,x) = H(x,x) \quad\text{for all } c\in V,\]
+then it must be the case that $G=H$.
+
+Let $K$ be a quadratic form and $G,H$ be symmetric bilinear forms such that
+\[K(x) = G(x,x) = H(x,x) \quad\text{for all } c\in V.\]
+Let $x,y\in V$ and consider
+\[G(x+y, x+y) = H(x+y,x+y).\]
+We expand both sides by the bilinearity of $G$ and $H$ to find
+\[G(x,x) + G(x,y) + G(y,x) + G(y,y) = H(x,x) + H(x,y) + H(y,x) + H(y,y).\]
+Since $G(x,x)=H(x,x)$ for all $x\in V$, we have
+\[G(x,y) + G(y,x) = H(x,y) + H(y,x).\]
+Since $G$ and $H$ are symmetric, 
+\[2G(x,y) = 2H(x,y).\]
+Now since char$(\F)\ne 2$, $2\ne 0$ so
+\[G(x,y) = H(x,y).\]
+Therefore, $G=H$. So there is a one-to-one correspondence between the quadratic forms and the symmetric bilinear forms.
+\end{document}

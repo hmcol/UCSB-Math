@@ -1,0 +1,268 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{kantlipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[labelfont=it]{caption}
+\usepackage[table]{xcolor}
+\usepackage{subcaption,framed,colortbl,multirow,enumitem}
+\usepackage{amsmath,amsthm,amssymb,wasysym,mathrsfs,mathtools}
+\usepackage{tikz,graphicx,pgf,pgfplots}
+\usetikzlibrary{arrows, angles, quotes, decorations.pathreplacing, math, patterns, calc}
+\pgfplotsset{compat=1.16}
+
+% Set Names
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+
+% Misc Characters
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\newcommand{\eps}{\varepsilon}
+
+% Paired Delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ang}{\langle}{\rangle}
+
+% Homework Sections
+\setlength{\fboxsep}{4pt}
+\newcommand{\generic}[2]{\section*{#1}\begin{center}\framebox{\begin{minipage}{\textwidth-10pt}#2\end{minipage}}\end{center}}
+\newcommand{\ex}[2]{\generic{Exercise #1}{#2}}
+\newcommand{\prob}[2]{\generic{Problem #1}{#2}}
+\newcommand{\ques}[2]{\generic{Question #1}{#2}}
+
+% Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+% MATH CS 117 Intro to Real Analysis
+\newcommand{\ds}{\displaystyle}
+\newcommand{\seq}[1]{\left\{#1\right\}_{n=1}^\infty}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+ 
+\begin{document}
+ 
+\title{Assignment 5\\
+    \large MATH CS 120FG Graph Theory II}
+\author{Harry Coleman}
+\date{May 27, 2020}
+\maketitle
+
+\ex{1}{
+    Verify that if $G$ is a simple graph with incidence matrix $M$ and Laplacian $L$, then
+    \[L = MM^T.\]
+}
+
+Suppose $G$ has $n$ vertices and $m$ edges, so
+\[V-\{v_1,\dots,v_n\}, \quad\text{and}\quad E=\{e_1,\dots,e_m\}.\]
+The Laplacian matrix $L$ is the $n\times n$ is given by
+\[L=D-A.\]
+The $n\times n$ matrix $D$ is the diagional matrix defined by
+\[D_{ii} = \deg(v_i),\]
+and the $n\times n$ matrix $A$ is defined by
+\[A_{ij} = 
+    \begin{cases}
+        1 &\text{if } v_i\sim v_j, \\
+        0 &\text{otherwise.}
+    \end{cases}
+\]
+This means that $L$ is defined by
+\[L_{ij} = 
+    \begin{cases}
+        \deg(v_i)   &\text{if } i=j, \\
+        -1          &\text{if } v_i\sim v_j, \\
+        0           &\text{otherwise.}
+    \end{cases}
+\]
+We assign arbitrary orientations to the edges of $G$. In particular, for each edge $e_k\in E$ incident to vertices $v_i,v_j$, we define one vertex to be the source, $s(e_k)=v_i$, and the other to be the target, $t(e_k)=v_j$. We now consider the $n\times m$ incidence matrix $M$ defined by
+\[M_{ik} = 
+    \begin{cases}
+        -1  &\text{if } s(e_k)=v_i, \\
+        1   &\text{if } t(e_k)=v_i, \\
+        0   &\text{otherwise.}
+    \end{cases}
+\]
+
+We now consider the product $MM^T$:
+\[(MM^T){ij} = \sum_{k=1}^mM_{ik}M^T_{kj} = \sum_{k=1}^mM_{ik}M_{jk}.\]
+If $i=j$, then $M_{ik}M_{jk}$ will be 1 if $e_k$ is incident to $v_i$ (source or target) and 0 otherwise. So taking the sum over all edges, we get the number of edges incident to $v_i$, which is $\deg(v_i)$. If $i\ne j$, then $M_{ik}M_{jk}$ will be zero for all $k$ except when $e_k$ is an edge between $v_i$ and $v_j$, in which case $M_{ik}M_{jk}=-1$. Since $G$ is simple, there can be at most one edge between two vertices, so summing over all edges gives $-1$ if $i\sim j$ and 0 otherwise. In conclusion,
+\[(MM^T)_{ij} = 
+    \begin{cases}
+        \deg(v_i)   &\text{if } i=j, \\
+        -1          &\text{if } v_i\sim v_j, \\
+        0           &\text{otherwise,}
+    \end{cases}
+\]
+which is precisely $L_{ij}$. So $L=MM^T$.
+
+
+\newpage
+\ex{2}{
+    Calculate $\kappa(Q_n)$ for the hypercube $Q_n$ using the eigenvalues of the adjacency matrix of $Q_n$.
+}
+
+If we let $L$ be the Laplacian of $Q_n$ and $A$ be the adjacency matrix of $Q_n$, then $L = nI - A$. We want to calculate $\kappa(Q_n)$, which is given by
+\[\kappa(Q_n) = \frac1{2^n}\prod_{v\in\Z_2^n\setminus\{w\}}\mu_v,\]
+where $\mu_v$ are the eigenvalues of $L$ indexed by the vertices of $Q_n$, and $\mu_w=0$. In particular, $\mu_v\in\sigma(L)$ if and only if $\det(\mu_vI-L)=0$. And since
+\[\det(\mu_vI-L) = \det(\mu_vI - (nI-A)) = \det(A-(\mu_v+n)I).\]
+Now let $\lambda_v$ denote the eigenvalues of $A$ indexed by the vertices of $Q_n$. Then $\det(A-(\mu_v+n)I)=0$ if and only if $\mu+n\in\sigma(A)$, that is, $\mu_v+n=\lambda_v$ for some $\lambda_v$. Now since $\lambda_v=n-2\omega(v)$, where $\omega(v)$ is the number of 1's in $v$,
+\begin{align*}
+    \kappa(Q_n)
+        &= \frac1{2^n}\prod_{v\in\Z_2^n\setminus\{w\}}(\lambda_v-n) \\
+        &= \frac1{2^n}\prod_{v\in\Z_2^n\setminus\{w\}}(n-2\omega(v)-n) \\
+        &= \frac1{2^n}\prod_{v\in\Z_2^n\setminus\{w\}}2\omega(v).
+\end{align*}
+Notice that if $\mu_w=0$, then $2\omega(v)=0$, so $w$ is all zeros. For each $k=1,\dots,n$, there are ${n \choose k}$ vertices $v\in\Z_2^n$ such that $\omega(v)=k$. So we can rewrite the above sum more explicitly as
+\begin{align*}
+    \kappa(Q_n)
+        &= \frac1{2^n}\prod_{k=1}^n(2k)^{n \choose k}.
+\end{align*}
+
+
+\newpage
+\ex{3}{
+    Take $K_n$ and delete one edge to form $G$. Use the Matrix-Tree Theorem to calculate $\kappa(G)$.
+}
+
+Suppose from $G$ we delete the edge connecting vertices $v_i$ and $v_j$. Let $L$ be the Laplacian matrix of $K_n$ and $L'$ be the Laplacian matrix of $G$. Then
+\[L'_{k\ell} =
+    \begin{cases}
+        L_{k\ell}-1 &\text{if } k\ell=ii \text{ or } k\ell=jj, \\
+        L_{k\ell}+1 &\text{if } k\ell=ij \text{ or } k\ell=ji, \\
+        L_{k\ell} &\text{otherwise.}
+    \end{cases}
+\]
+This characterization of $L'$ comes from the fact that the vertices $v_i,v_j$ have one less degree in $G$ than in $K_n$, and are not adjacent to each other in $G$. We denote by $L_0$ and $L'_0$, respectively, the minor matrices of $L$ and $L'$ obtained by removing the $j$th row and column. Note that $L_0$ and $L'_0$ only differ in the $ii$th element, with $(L'_0)_{ii} = (L_0)_{ii}-1 = n-2$. Then the matrix-tree theorem gives us that,
+\[\kappa(G) = \det(L'_0).\]
+Applying cofactor expansion along the $i$th row, we find
+\begin{align*}
+    \kappa(G)
+        &= \sum_{m=1}^{n-1}(L'_0)_{im}(-1)^{i+m}\det(L'_0(i|m)) \\
+        &= \sum_{m=1,m\ne i}^{n-1}(L'_0)_{im}(-1)^{i+m}\det(L'_0(i|m)) + (L'_0)_{ii}(-1)^{i+i}\det(L'_0(i|i))\\
+        &= \sum_{m=1,m\ne i}^{n-1}(L'_0)_{im}(-1)^{i+m}\det(L'_0(i|m)) + (n-2)\det(L'_0(i|i)).
+\end{align*}
+Notice now that since $L_0$ and $L'_0$ differ only at the $ii$th element, $L'_0(i|m)=L_0(i|m)$ for all $m$, and $(L'_0)_{im}=(L_0)_{im}$ for all $m\ne i$. So
+\begin{align*}
+    \kappa(G)
+        &= \sum_{m=1,m\ne i}^{n-1}(L_0)_{im}(-1)^{i+m}\det(L_0(i|m)) + (n-2)\det(L_0(i|i))\\
+        &= \det(L_0)-(L_0)_{ii}(-1)^{i+i}\det(L_0(i|i)) + (n-2)\det(L_0(i|i))\\
+        &= n^{n-2}-(n-1)\det(L_0(i|i)) + (n-2)\det(L_0(i|i)).
+\end{align*}
+We now notice that $L_0(i|i)=nI_{n-2}-J_{n-2}$, which has similar eigenvalues to $J_{n-2}$, but shifted by $n$. So
+\begin{align*}
+    \kappa(G)
+        &= n^{n-2}-(n-1)2n^{n-3} + (n-2)2n^{n-3}\\
+        &= n\cdot n^{n-3}-2n^{n-3} \\
+        &= (n-2)n^{n-3}.
+\end{align*}
+
+
+\newpage
+\ex{4}{
+    Let $p \geq 5$ and let $G_p$ be the graph with vertex set $\Z_p$ and edges $\{i,i+1\}$ and $\{i,i + 2\}$ for $i \in\Z_p$. Show that $\kappa(G) = pF_p^2$ where $F_p$ is the $p$th Fibonacci number (with $F_1 = 1$ and $F_2 = 1$).
+}
+
+The minor of the laplactian of $G_p$ is given by the $(p-1)\times(p-1)$ matrix
+\[L_0 =
+    \begin{bmatrix}
+        4 & -1 & -1 & 0 & \cdots & 0 & -1 \\
+        -1 & \ddots & \ddots & \ddots & \ddots & & 0 \\
+        -1 & \ddots & \ddots & \ddots & \ddots & \ddots & \vdots \\
+        0 & \ddots & \ddots & \ddots & \ddots & \ddots & 0 \\
+        \vdots & \ddots & \ddots & \ddots & \ddots & \ddots & -1 \\
+        0 & & \ddots & \ddots & \ddots & \ddots & -1 \\
+        -1 & 0 & \cdots & 0 & -1 & -1 & 4 \\
+    \end{bmatrix}
+\]
+I think the way to go about this would be to do cofactor expansion a few times until matrix structures start to repeat, at which point you get a recurrence relation that would solve to be $pF_p^2$ or something equivalent. I was unable to do this.
+
+
+
+
+\ex{5}{
+    Take $K_n$ and for $1 \leq m \leq n$, form $K_n - K_m$ by deleting a copy of the edges of $K_m$ from $K_n$. Calculate $\kappa(K_n - K_m)$.
+}
+
+The Laplacian of $K_n-K_m$ is given by
+\[L=
+    \begin{bmatrix}
+        a      & -1     & \cdots & -1     & -1     & \cdots & \cdots & -1     \\
+        -1     & \ddots & \ddots & \vdots & \vdots & \ddots &        & \vdots \\
+        \vdots & \ddots & \ddots & -1     & \vdots &        & \ddots & \vdots \\
+        -1     & \cdots & -1     & a      & -1     & \cdots & \cdots & -1     \\
+    
+        -1     & \cdots & \cdots & -1     & b      & 0      & \cdots & 0      \\
+        \vdots & \ddots &        & \vdots & 0      & \ddots & \ddots & \vdots \\
+        \vdots &        & \ddots & \vdots & \vdots & \ddots & \ddots & 0      \\
+        -1     & \cdots & \cdots & -1     & 0      & \cdots & 0      & b      \\
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        aI_{n-m}-J_{n-m}   & -J_{n-m,m} \\
+        -J_{m,n-m} & bI_{m}
+    \end{bmatrix}
+\]
+where $a=n-1$ and $b=n-m-1$. We obtain the minor matrix
+\[L_0 =
+    \begin{bmatrix}
+        aI_{n-m}-J_{n-m}   & -J_{n-m,m-1} \\
+        -J_{m-1,n-m} & bI_{m-1}
+    \end{bmatrix}
+\]
+by removing the last row and column from $L$. The block $B_0$ is the same form as $B$, but with size $(m-1)\times(m-1)$. To make calculating the determinant of this matrix easier, we perform row operations which do no change the value of the determinant to simplify $L_0$. In particular we add $1/b$ times each of the lower rows to each of the upper rows to eliminate the upper right block. this gives us the matrix
+\[L_0' =
+    \begin{bmatrix}
+        aI_{n-m}-(\frac{m}{b}+1)J_{n-m}   & 0 \\
+        -J_{m-1,n-m} & bI_{m-1}
+    \end{bmatrix}.
+\]
+So then
+\begin{align*}
+    \kappa (K_n-K_m)
+        &= \det(L_0')\\
+        &= \det\left(aI_{n-m}-\left(\frac{m}{b}+1\right)J_{n-m}\right)\det(bI_{m-1}) \\
+        &= \det\left(\left(\frac{m}{b}+1\right)\left(\frac{ab}{m+b}I_{n-m}-J_{n-m}\right)\right)b^{m-1} \\
+        &= b^{m-1}\left(\frac{m}{b}+1\right)^{n-m}\det\left(\frac{ab}{m+b}I_{n-m}-J_{n-m}\right) \\
+\end{align*}
+Since $J_{n-m}$ has eigenvalues 0 with multiplicity $n-m-1$ and $n-m$ with multiplicity $1$, then the matrix inside the determinant has eigenvalues $\frac{ab}{m+b}$ with multiplicity $n-m-1$ and $\frac{ab}{m+b}-n+m$ with multiplicity 1. So now
+\begin{align*}
+    \kappa (K_n-K_m)
+        &= b^{m-1}\left(\frac{m}{b}+1\right)^{n-m}\left(\frac{ab}{m+b}\right)^{n-m-1}\left(\frac{ab}{m+b}-n+m\right) \\
+        &= b^{m-2}a^{n-m-1}[ab-n(m+b)+m(m+b)] \\
+        &= (n-m-1)^{m-2}(n-1)^{n-m-1}[(n-1)(n-m-1) \\
+            &\quad-n(m+n-m-1)+m(m+n-m-1)] \\
+        &= (n-m-1)^{m-2}(n-1)^{n-m-1}[(n-1)(n-m-1)-n(n-1)+m(n-1)] \\
+        &= (n-m-1)^{m-2}(n-1)^{n-m-1}(n-1)[n-m-1-n+m] \\
+        &= (n-m-1)^{m-2}(n-1)^{n-m} \\
+\end{align*}
+
+
+\ex{6}{
+    Let $G$ be a finite graph on $n$ vertices with Laplacian matrix $L(G)$. Let $G'$ be obtained from $G$ by adding a new vertex and joining it to all vertices of $G$. Express $\kappa(G')$ in terms of the eigenvalues of $L(G)$.
+}
+
+By the definition of $G'$, we have
+\[L(G') = 
+    \begin{bmatrix}
+        L(G)+I & -1 \\
+        -1 & n
+    \end{bmatrix}.
+\]
+Then
+\begin{align*}
+    \kappa(G')
+        &= \det(L_0(G')) \\
+        &= \det(L(G) + I) \\
+        &= \lambda_1\cdots\lambda_{n-1},
+\end{align*}
+where $\lambda_1,\dots,\lambda_{n-1}$ are the nonzero eigenvalues of $L(G)+I$. To find them, we let $\mu_1,\dots,\mu_{n-1}$ be the nonzero eigenvalues of $L(G)$. Then
+\[\det(xI-(L(G)+I)) = \det((x-1)I-L(G))\]
+equals zero if and only if $x-1$ is an eigenvalue of $L(G)$. So in fact $\mu_1+1,\dots,\mu_{n-1+1}$ are the eigenvalues of $L(G)+I$. So
+\[\kappa(G') = (\mu_1+1)\cdots(\mu_{n-1}+1).\]
+
+
+\end{document}
