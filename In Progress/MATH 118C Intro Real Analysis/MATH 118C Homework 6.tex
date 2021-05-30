@@ -1,0 +1,505 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows,arrows.meta}
+
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Theorem Environments
+%\theoremstyle{definition}
+%\newtheorem{proposition}{Proposition}
+%\newtheorem{lemma}{Lemma}
+
+% Options
+\allowdisplaybreaks
+%\addtolength{\jot}{4pt}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+
+% Extra Commands
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\y}{\mathbf{y}}
+
+\newcommand{\dd}[1]{\,\mathrm{d}#1}
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+\newcommand{\mdet}[1]{\begin{vmatrix}#1\end{vmatrix}}
+
+\newcommand{\pdv}[1]{\frac{\partial}{\partial #1}}
+
+\newcommand{\jac}[2]{\frac{\partial(#1)}{\partial(#2)}}
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH 118C Homework 6}
+    \fancyhead[C]{May 21, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+
+\begin{pbox}[Exercise 10.9]
+    Define $(x,y)=T(r,\theta)$ on the rectangle
+    \[
+        0 \leq r \leq a, \qquad 0 \leq \theta \leq 2\pi
+    \]
+    by the equations
+    \[
+        x = r\cos{\theta}, \qquad y = r\sin{\theta}.
+    \]
+    Show
+\end{pbox}
+
+\begin{pbox}
+    that $T$ maps this rectangle onto the closed disc $D$ with center at $(0,0)$ and radius $a$,
+\end{pbox}
+
+\begin{proof}
+    By definition, $T(r, \theta)$ is the point of $\R^2$ with magnitude $r$ and angle $\theta$ to the positive $x$-axis. Since $0 \leq r \leq a$, then the maximum magnitude of $T(r, \theta)$ is $a$, i.e, the image of $T$ is contained in $D$. Moreover, since the angle $\theta$ of any point can be chosen such that $0 \leq \theta \leq 2\pi$, then all possible points with radius at most $a$ are attained by $T$. In other words, $D$ is contained in the image of $T$. Hence, the image of $T$ is precisely $D$.
+
+\end{proof}
+
+\begin{pbox}
+    that $T$ is one-to-one in the interior of the rectangle,
+\end{pbox}
+
+\begin{proof}
+    Let $(r_1, \theta_1)$ and $(r_2, \theta_2)$ be two points in the interior of the rectangle such that $T(r_1, \theta_1) = T(r_2, \theta_2)$. Then
+    \[
+        r_1 = |T(r_1, \theta_1)| = |T(r_2, \theta_2)| = r_2.
+    \]
+    Since $\theta_1$ and $\theta_2$ refer to the same direction, then their difference must be some multiple of $2\pi$. But since $0 < \theta_1 < 2\pi$ and $0 < \theta_2 < 2\pi$, then there difference must be zero, i.e., $\theta_1 = \theta_2$. Hence, $(r_1, \theta_1) = (r_2, \theta_2)$, so $T$ is injective in the interior of the rectangle.
+
+\end{proof}
+
+\begin{pbox}
+    and that $J_T(r,\theta) = r$.
+\end{pbox}
+
+\begin{proof}
+    \[
+        J_T(r,\theta)
+            = \mdet{\pdv{r} r\cos\theta & \pdv{\theta} r\cos\theta \\ \pdv{r} r\sin\theta & \pdv{\theta} r\sin\theta}
+            = \mdet{\cos\theta & -r\sin\theta \\ \sin\theta & r\cos\theta}
+            = r\cos^2\theta + r\sin^2\theta
+            = r.
+    \]
+\end{proof}
+
+\newpage
+\begin{pbox}
+    If $f \in C(D)$, prove the formula for integration in polar coordinates:
+    \[
+        \int_D f(x,y) \dd{x}\dd{y} = \int_{0}^{a} \int_{0}^{2\pi} f(T(r,\theta))r \dd{\theta} \dd{r}.
+    \]
+    
+    \textit{Hint}: Let $D_0$ be the interior of $D$, minus the interval from $(0,0)$ to $(0,a)$. As it stands, Theorem 10.9 applies to continuous functions $f$ whose support lies in $D_0$. To remove this restriction, proceed as in Example 10.4.
+\end{pbox}
+
+\begin{proof}
+    Consider the complement of $D_0$, denoted by $D_0^C$. Define the distance function
+    \[
+        h(\x) = d(\x, D_0^C) = \inf_{\y \in D_0^C} |\x - \y|,
+    \]
+    which is continuous on $\R^2$ with $h(\x) = 0$ for all $\x \in D_0^C$. Now, for each $\delta > 0$, we define the piecewise function
+    \[
+        \phi_\delta(t) =
+        \begin{cases}
+            1 &\text{if } t \geq \delta, \\
+            \dfrac{t}{\delta} &\text{otherwise},
+        \end{cases}
+    \]
+    and
+    \[
+        f_\delta(\x) = \phi_\delta(h(\x))f(\x).
+    \]
+    Then $f_\delta$ is a continuous function on $\R^2$, with support inside $D_0$. Moreover, $f_\delta(\x) = f(\x)$ whenever $h(\x) \geq \delta$, and $|f_\delta(\x)| \leq |f(\x)|$ otherwise. Applying Theorem 10.9 to $f_\delta$, we obtain
+    \[
+        \int_{\R^2} f_\delta(\x) \dd{\x} 
+            = \int_{\R^2} f_\delta(T(\x)) |J_T(\x)| \dd{\x}
+            = \int_{\R^2} f_\delta(T(\x)) r \dd{\x}
+        \tag{1}
+    \]
+    We can extend $f$ to a (not necessarily continuous) function on $\R^2$ by defining $f(\x) = 0$ for all $\x \in D^C$, so that its support remains in $D$. Let $I \subseteq \R^2$ be the $2$-cell defined by $-a \leq x_i \leq a$ for $i = 1, 2$. Then the support of both $f$ and $f_\delta$ is contained in $I$. We compare their integrals:
+    \begin{align*}
+        \left| \int_{D} f_\delta(\x) \dd{\x} - \int_{D} f(\x) \dd{\x} \right|
+            &= \left| \int_{I} [f_\delta(\x) - f(\x)] \dd{\x} \right| \\
+            &= \left| \int_{-a}^{a} \int_{-a}^{a} [f_\delta(x, y) - f(x, y)] \dd{y} \dd{x} \right| \\
+            &\leq \int_{-a}^{a} \int_{-a}^{a} |f_\delta(x, y) - f(x, y)| \dd{y} \dd{x}
+    \end{align*}
+    For a fixed $x \in [-a, a]$, the integrand is potentially nonzero only along the curve
+    \[
+        I = \{y \in \R : 0 < h(x, y) < \delta\} (\cup \{0\} \text{ if } x \geq 0).
+    \]
+    For $x < 0$, $I$ can be described as the intersection of a vertical line with the annulus of $\R^2$ with inner radius $a - \delta$ and outer radius $a$. And if $x \geq 0$, then $I$ also includes the segment from $(x, -\delta)$ to $(x, \delta)$. So the length of $I$ is bound by $2\delta$ plus the maximum length of a vertical line intersected with the described annulus, given by
+    \[
+        2\sqrt{a^2 - (a - \delta)^2}
+            = 2\sqrt{2a\delta - \delta^2}
+            \leq C\sqrt{\delta},
+    \]
+    for some constant $C > 0$. Geometrically, the maximum length of the intersection of a vertical line and an annulus is as follows:
+    \begin{drawing}
+        \draw[] (0, 0) circle (1.5);
+        \draw[] (0, 0) circle (1.05);
+        
+        \draw[thick] (-45 : 1.5) -- (45 : 1.5);
+    \end{drawing}
+    Solving for the length of this segment gives the above formula. Hence, the length of $I$ is bound by
+    \[
+        2\delta + C\sqrt{\delta}
+            = (2\sqrt{\delta} + C)\sqrt{\delta}
+            \leq (2 + C)\sqrt{\delta},
+    \]
+    assuming without loss of generality that $\delta < 1$. Therefore, 
+    \[
+        \int_{-a}^{a} |f_\delta(x, y) - f(x, y)| \dd{y}
+            = \int_{I} |f_\delta(x, y) - f(x, y)| \dd{y}
+            \leq \|f\|(2 + C)\sqrt{\delta},
+    \]
+    so we obtain
+    \[
+        \left| \int_{D} f_\delta(\x) \dd{\x} - \int_{D} f(\x) \dd{\x} \right|
+            \leq \int_{-a}^{a} \|f\|(2 + C)\sqrt{\delta} \dd{x}
+            = 2a\|f\|(2 + C)\sqrt{\delta}.
+        \tag{2}
+    \]
+
+    We now compare the following integrals:
+    \begin{align*}
+        \left| \int_{\R^2} f_\delta(T(\x)) r \dd{\x} - \int_{\R^2} f(T(\x)) r \dd{\x} \right|
+            &= \left| \int_{\R^2} [f_\delta(T(\x)) - f(T(\x))] r \dd{\x} \right| \\
+            &= \left| \int_{0}^{a} \int_{0}^{2\pi} [f_\delta(T(r, \theta)) - f(T(r, \theta))]r \dd{\theta} \dd{r} \right| \\
+            &\leq \int_{0}^{a} \int_{0}^{2\pi} |f_\delta(T(r, \theta)) - f(T(r, \theta))|r \dd{\theta} \dd{r}.
+    \end{align*}
+    We consider this integral in three parts:
+    \[
+        \left(\int_{0}^{\sqrt{\delta}} + \int_{\sqrt{\delta}}^{a - \delta} + \int_{a - \delta}^{a} \right)\int_{0}^{2\pi} |f_\delta(T(r, \theta)) - f(T(r, \theta))|r \dd{\theta} \dd{r},
+    \]
+    For $r \leq \sqrt{\delta}$ and $a - \delta \leq r \leq a$, 
+    \[
+        \int_{0}^{2\pi} |f_\delta(T(r, \theta)) - f(T(r, \theta))|r \dd{\theta}
+            \leq 2\pi\|f\|\delta,
+    \]
+    then
+    \[
+        \left(\int_{0}^{\sqrt{\delta}} + \int_{a - \delta}^{a} \right) 2\pi\|f\|\delta \dd{r}
+            = 2\pi\|f\|(\delta^{3/2} + \delta^2)
+            \leq 4\pi\|f\|\delta.
+    \]
+    For $\sqrt{\delta} < r < a - \delta$, the integrand is possibly nonzero only for values of $\theta$ such that $T(r, \theta)$ lies in the strip of width $2\delta$ around the positive $x$-axis. In which case,
+    \[
+        \sin \theta = \frac{\delta}{r} \leq \frac{\delta}{\sqrt{\delta}} = \sqrt{\delta}.
+    \]
+    So the integrand is bound by
+    \[
+        \int_{-\arcsin\sqrt{\delta}}^{\arcsin\sqrt{\delta}} |f_\delta(T(r, \theta)) - f(T(r, \theta))|r \dd{\theta}
+            \leq 2r\|f\|\arcsin\sqrt{\delta},
+    \]
+    then
+    \[
+        \int_{\sqrt{\delta}}^{a - \delta} 2r\|f\|\arcsin\sqrt{\delta} \dd{r} \leq 2a^2\|f\|\arcsin\sqrt{\delta}.
+    \]
+    Therefore, we obtain
+    \[
+        \left| \int_{\R^2} f_\delta(T(\x)) r \dd{\x} - \int_{\R^2} f(T(\x)) r \dd{\x} \right|
+            \leq 4\pi\|f\|\delta + 2a^2\|f\|\arcsin\sqrt{\delta}.
+        \tag{3}
+    \]
+
+    Combining (1), (2), and (3), we find
+    \begin{align*}
+        \left| \int_{D}\!\! f - \int_{\R^2}\!\! (f \circ T)r \right|
+            &\leq \left| \int_{D}\!\! f - \int_{D}\!\! f_\delta \right|
+                    + \left| \int_{D}\!\! f_\delta - \int_{\R^2}\!\! (f_\delta \circ T)r \right|
+                    + \left| \int_{\R^2}\!\! (f_\delta \circ T)r - \int_{\R^2}\!\! (f \circ T)r \right| \\
+            &\leq 2a\|f\|(2 + C)\sqrt{\delta} + 0 +  4\pi\|f\|\delta + 2a^2\|f\|\arcsin\sqrt{\delta}.
+    \end{align*}
+    Since this holds for all $\delta > 0$, then letting $\delta \to 0$, we obtain
+    \[
+        \int_{D} f = \int_{\R^2} (f \circ T)r.
+    \]
+    This is precisely the desired result
+    \[
+        \int_D f(x,y) \dd{x}\dd{y} = \int_{0}^{a} \int_{0}^{2\pi} f(T(r,\theta))r \dd{\theta} \dd{r}.
+    \]
+
+
+
+\end{proof}
+
+
+
+
+
+\newpage
+\begin{pbox}[Exercise 10.10]
+    Let $a\to \infty$ in Exercise 9 and prove that
+    \[
+        \int_{\R^2} f(x,y) \dd{x} \dd{y} = \int_{0}^{\infty} \int_{0}^{2\pi} f(T(r,\theta))r \dd{\theta} \dd{r},
+    \]
+    for continuous functions $f$ that decrease sufficiently rapidly as $|x|+|y|\to \infty$. (Find a more precise formulation.) 
+\end{pbox}
+
+We prove the result for functions $f \in C(\R^2)$ for which there exist constants $b > 1$, $C, R > 0$ such that $|f(\x)| \leq C|\x|^{-b}$ for all $|\x| \geq R$.
+
+\begin{proof}
+    Applying Exercise 9, we find
+    \begin{align*}
+        \int_{\R^2} f(\x) \dd{\x}
+            &= \lim_{R \to \infty} \int_{|\x| \leq R} f(\x) \dd{\x} \\
+            &= \lim_{R \to \infty} \int_{0}^{R} \int_{0}^{2\pi} f(T(r,\theta))r \dd{\theta} \dd{r} \\
+            &= \int_{0}^{\infty} \int_{0}^{2\pi} f(T(r,\theta))r \dd{\theta} \dd{r}.
+    \end{align*}
+
+\end{proof}
+
+
+
+\begin{pbox}
+    Apply this to
+    \[
+        f(x,y) = \exp(-x^2-y^2)
+    \]
+    to derive formula (101) of Chap. 8, i.e.
+    \[
+        \int_{-\infty}^{\infty} e^{-s^2} \dd{s} = \sqrt{\pi}.
+    \]
+\end{pbox}
+
+\begin{proof}
+    Given that $f$ decreases sufficiently rapidly, we apply the above result to obtain
+    \begin{align*}
+        \int_{\R^2} f(x, y) \dd{x} \dd{y} &= \int_{0}^{\infty} \int_{0}^{2\pi} f(T(r,\theta))r \dd{\theta} \dd{r} \\
+        \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} e^{-x^2 - y^2} \dd{x} \dd{y} &= \int_{0}^{\infty} \int_{0}^{2\pi} e^{-r^2\cos^2\theta - r^2\sin^2\theta}r \dd{\theta} \dd{r} \\
+        \int_{-\infty}^{\infty} e^{-x^2} \dd{x} \int_{-\infty}^{\infty} e^{-y^2} \dd{y} &= \int_{0}^{\infty} \int_{0}^{2\pi} re^{-r^2} \dd{\theta} \dd{r} \\
+        \left(\int_{-\infty}^{\infty} e^{-s^2} \dd{s}\right)^2 &= 2\pi \int_{0}^{\infty} re^{-r^2} \dd{r}.
+    \end{align*}
+    Take $u = e^{-r^2}$ for change of variables, then $\dd{u} = -2re^{-r^2} \dd{r}$, so
+    \[
+        \left(\int_{-\infty}^{\infty} e^{-s^2} \dd{s}\right)^2 
+            = 2\pi \int_{1}^{0} \frac{-1}{2} \dd{u}
+            = \pi.
+    \]
+    Hence,
+    \[
+        \int_{-\infty}^{\infty} e^{-s^2} \dd{s} = \sqrt{\pi}.
+    \]
+
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[Exercise 10.14]
+    Prove formula (46), i.e. 
+    \[
+        \eps(j_1,\dots,j_k) = s(j_1,\dots,j_k),
+    \]
+    where $s$ is as in Definition 9.33, i.e.
+    \[
+        s(j_1,\dots,j_n) = \prod_{p<q} \operatorname{sgn}(j_q-j_p).
+    \]
+\end{pbox}
+
+\begin{proof}
+    Let $J$ be the $k$ tuple with the entries $j_1, \dots, j_k$ in increasing order. The $k$-form
+    \[
+        \dd{x_{j_1}} \wedge \cdots \wedge \dd{x_{j_k}}
+    \]
+    can be obtained from the basic $k$-form $\dd{x_J}$ after a finite number of interchanges of adjacent pairs. We perform induction on the number of adjacent interchanges $n$, to prove that
+    \[
+        \eps(j_1,\dots,j_k) = s(j_1,\dots,j_k) = (-1)^n.
+    \]
+
+    If $j_1 < j_2 < \cdots < j_k$, then $J = (j_1, \dots, j_k)$ corresponds to the basic $k$-form
+    \[
+        \dd{x_J} = \dd{x_{j_1}} \wedge \cdots \wedge \dd{x_{j_k}}.
+    \]
+    That is, $\eps(j_1, \dots, j_k) = 1$. Moreover, since $j_p < j_q$ for all $p < q$, then
+    \[
+        s(j_1,\dots,j_n)
+            = \prod_{p<q} \operatorname{sgn}(j_q-j_p)
+            = \prod_{p<q} 1
+            = 1.
+    \]
+    This proves the base case of zero interchanges with $1 = (-1)^0$.
+
+    For the inductive hypothesis, assume that the result holds for any $k$-form obtained from $\dd{x_J}$ by $n-1$ or fewer adjacent interchanges. Then given a $k$-form $\dd{x_{j_1}} \wedge \cdots \wedge \dd{x_{j_k}}$ obtained from the basic $k$-form $\dd{x_J}$ after $n$ adjacent interchanges, then there is some $k$-form
+    \[
+        \dd{x_{j_1}} \wedge \cdots \wedge \dd{x_{j_{i+1}}} \wedge \dd{x_{j_i}} \wedge \cdots \wedge \dd{x_{j_k}}
+    \]
+    which can be obtained from $\dd{x_J}$ by $n - 1$ adjacent interchanges. Then
+    \begin{align*}
+        \eps(j_1, \dots, j_k) \dd{x_J}
+            &= \dd{x_{j_1}} \wedge \cdots \wedge \dd{x_{j_k}} \\
+            &= -(\dd{x_{j_1}} \wedge \cdots \wedge \dd{x_{j_{i+1}}} \wedge \dd{x_{j_i}} \wedge \cdots \wedge \dd{x_{j_k}}) \\
+            &= -\eps(j_1, \dots, j_{i+1}, j_i, \dots, j_k) \dd{x_J}.
+    \end{align*}
+    Applying the inductive hypothesis, we obtain
+    \[
+        \eps(j_1, \dots, j_k)
+            = -\eps(j_1, \dots, j_{i+1}, j_i, \dots, j_k)
+            = -s(j_1, \dots, j_{i+1}, j_i, \dots, j_k)
+            = -(-1)^{n-1}.
+    \]
+    The only difference in the expressions for $s(j_1, \dots, j_k)$ and $s(j_1, \dots, j_{i+1}, j_i, \dots, j_k)$ is that the former includes the factor $\operatorname{sgn}(j_{i+1} - j_i)$, while the latter includes the factor $\operatorname{sgn}(j_i - j_{i+1})$. That is,
+    \[
+        s(j_1, \dots, j_{i+1}, j_i, \dots, j_k)
+            = \frac{\operatorname{sgn}(j_i - j_{i+1})}{\operatorname{sgn}(j_{i+1} - j_i)} s(j_1, \dots, j_k)
+            = -s(j_1, \dots, j_k),
+    \]
+    so in fact $\eps(j_1, \dots, j_k) = s(j_1, \dots, j_k) = (-1)^n$. This completes the induction.
+    
+
+\end{proof}
+
+
+\newpage
+\begin{pbox}[Exercise 10.15]
+    If $\omega$ and $\lambda$ are $k-$ and $m-$forms, respectively, prove that
+    \[
+        \omega \wedge \lambda = (-1)^{km} \lambda \wedge \omega.
+    \]
+\end{pbox}
+
+\begin{proof}
+    If $\omega$ and $\lambda$ are basic forms.
+    \[
+        \omega \wedge \lambda
+            = \dd{x_{i_1}} \wedge \cdots \wedge \dd{x_{i_k}} \wedge \dd{x_{j_1}} \wedge \cdots \wedge \dd{x_{j_m}}.
+    \]
+    We can perform $k$ adjacent interchanges to move $\dd{x_{j_1}}$ to the front. From Exercise 10.14, this gives us
+    \[
+        (-1)^k\omega \wedge \lambda
+            = \dd{x_{j_1}} \wedge \dd{x_{i_1}} \wedge \cdots \wedge \dd{x_{i_k}} \wedge \dd{x_{j_2}} \wedge \cdots \wedge \dd{x_{j_m}}.
+    \]
+    Repeating this for all $m$ of the $1$-form components of $\lambda$, we obtain
+    \[
+        (-1)^{km}\omega \wedge \lambda
+            = \dd{x_{j_1}} \wedge \cdots \wedge \dd{x_{j_m}} \wedge \dd{x_{i_1}} \wedge \cdots \wedge \dd{x_{i_k}}
+            = \lambda \wedge \omega.
+    \]
+
+    For general $k$- and $m$-forms, we simply apply this result termwise.
+
+\end{proof}
+
+
+\newpage
+\begin{pbox}[Exercise 10.22]
+    As in Example 10.37, define $\zeta$ in $\R^3\setminus \{0\}$ by
+    \[\zeta = \frac{x\dd{y} \wedge \dd{z} + y\dd{z}\wedge \dd{x} + z\dd{x} + \dd{y}}{r^3}\]
+    where $r=(x^2+y^2+z^2)^{1/2}$, let $D$ be the rectangle given by $0\leq u \leq \pi$, $0\leq v\leq 2\pi$, and let $\Sigma$ be the 2-surface in $\R^3$, with parameter domain $D$, given by
+    \[x=\sin{u}\cos{v}, \qquad y=\sin{u}\sin{v}, \qquad z=\cos{u}.\]
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Prove that $\dd{\zeta} = 0$ in $\R^3\setminus \{0\}$.
+\end{pbox}
+
+\begin{proof}
+    Write
+    \[
+        \zeta = \frac{x}{r^3} \dd{y} \wedge \dd{z} + \frac{y}{r^3} \dd{z} \wedge \dd{x} + \frac{z}{r^3} \dd{x} \wedge \dd{y}.
+    \]
+    Taking the derivative, each term of $\zeta$ will be the exterior product of the sum of three $1$-forms and a $2$-form. Only the $1$ form which is distinct from both $1$-forms in the $2$-form will produce a nonzero term. So
+    \begin{align*}
+        \dd{\zeta}
+            &= D_x \frac{x}{r^3} \dd{x} \wedge \dd{y} \wedge \dd{z} 
+                + D_y \frac{y}{r^3} \dd{y} \wedge \dd{z} \wedge \dd{x} 
+                + D_z \frac{z}{r^3} \dd{z} \wedge \dd{x} \wedge \dd{y} \\
+            &= \left(D_x \frac{x}{r^3} + D_y \frac{y}{r^3} + D_z \frac{z}{r^3}\right) \dd{x} \wedge \dd{y} \wedge \dd{z} \\
+            &= \left(\frac{-2x^2 + y^2 + z^2}{r^5} + \frac{x^2 - 2y^2 + z^2}{r^5} + \frac{x^2 + y^2 - 2z^2}{r^5}\right) \dd{x} \wedge \dd{y} \wedge \dd{z} \\
+            &= 0 \dd{x} \wedge \dd{y} \wedge \dd{z} \\
+            &= 0.
+    \end{align*}
+
+\end{proof}
+
+
+\newpage
+\begin{pbox}[(b)]
+    Let $S$ denote the restriction of $\Sigma$ to a parameter domain $E\subseteq D$. Prove that
+    \[\int_S \zeta = \int_E \sin{u} \dd{u}\dd{v} = A(S),\]
+    where $A$ denotes area, as in Sec. 10.43. Note that this contains (115) as a special case.
+\end{pbox}
+
+\begin{proof}
+    \begin{align*}
+        \int_S \zeta
+            &= \int_E \left(\frac{x}{r^3} \jac{y, z}{u, v} + \frac{y}{r^3} \jac{z, x}{u, v} + \frac{z}{r^3} \jac{x, y}{u, v} \right) \dd{u} \dd{v} \\
+            &= \int_E \left(\frac{x}{r^3} (\sin^2 u \cos v) + \frac{y}{r^3} (\sin^2 u \sin v) + \frac{z}{r^3} (\cos u \sin u) \right) \dd{u} \dd{v} \\
+            &= \int_E \frac{\sin^3 u \cos^2 v + \sin^3 u \sin^2 v + \cos^2 u \sin u}{(\sin^2u\cos^2v + \sin^2u\sin^2v + \cos^2u)^{3/2}} \dd{u} \dd{v} \\
+            &= \int_E \frac{\sin^3 u + \cos^2 u \sin u}{(\sin^2u + \cos^2u)^{3/2}} \dd{u} \dd{v} \\
+            &= \int_E \sin u \dd{u} \dd{v} \\
+    \end{align*}
+\end{proof}
+
+\begin{pbox}[(c)]
+    Suppose $g,h_1,h_2,h_3 \in C^2([0,1])$ with $g>0$. Let $(x,y,z)=\Phi(s,t)$ define a 2-surface $\Phi$, with parameter domain $I^2$, by
+    \[x=g(t)h_1(s), \qquad y=g(t)h_2(s), \qquad z=g(t)h_3(s).\]
+    Prove that
+    \[\int_{\Phi}\zeta = 0,\]
+    directly from (35).
+    
+    Note the shape of the range of $\Phi$: For fixed $s$, $\Phi(s,t)$ runs over an interval on a line through 0. The range of $\Phi$ thus lies in a ``cone'' with vertex at the origin.
+\end{pbox}
+
+\begin{pbox}[(d)]
+    Let $E$ be a closed rectangle in $D$, with edges parallel to those of $D$. Suppose $f\in C^2(D), f>0$. Let $\Omega$ be the 2-surface with parameter domain $E$, defined by
+    \[\Omega(u,v)=f(u,v)\Sigma(u,v).\]
+    Define $S$ as in $(b)$ and prove that
+    \[\int_\Omega \zeta = \int_S \zeta = A(S).\]
+    (Since $S$ is the ``radial projection'' of $\Omega$ into the unit sphere, this result makes it reasonable to call $\int_\Omega \zeta$ the ``solid angle'' subtended by the range of $\Omega$ at the origin.)
+    
+    \textit{Hint:} Consider the 3-surface $\Psi$ given by
+    \[\Psi(t,u,v) = [1-t + tf(u,v)]\Sigma(u,v),\]
+    where $(u,v)\in E, 0\leq t\leq 1$. For fixed $v$, the mapping $(t,u)\to \Psi(t,u,v)$ is a 2-surface $\Phi$ to which (c) can be applied to show that $\int_\Phi \zeta = 0$. The same thing holds when $u$ is fixed. By (a) and Stokes' theorem,
+    \[\int_{\partial \Psi} \zeta = \int_\Phi \dd{\zeta} = 0.\]
+\end{pbox}
+
+
+\begin{pbox}[]
+    Deduce the Stokes and divergence theorems in calculus from the general stokes theorem.
+\end{pbox}
+
+
+\end{document}

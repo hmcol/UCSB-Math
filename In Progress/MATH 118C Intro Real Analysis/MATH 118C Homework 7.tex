@@ -1,0 +1,310 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Theorem Environments
+%\theoremstyle{definition}
+%\newtheorem{proposition}{Proposition}
+%\newtheorem{lemma}{Lemma}
+
+% Options
+%\allowdisplaybreaks
+%\addtolength{\jot}{4pt}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+
+% Extra Commands
+\newcommand{\RR}{\mathcal{R}}
+\newcommand{\EE}{\mathcal{E}}
+\newcommand{\MM}{\mathfrak{M}}
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH 118C Homework 7}
+    \fancyhead[C]{May 28, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+\begin{pbox}[1]
+    Show that any open subset in $\R^n$ can be written as a disjoint union of rectangles, and consequently, any open subset is Lebesgue measurable.
+\end{pbox}
+
+In order to show Lebesgue measurability, we specifically want a \textit{countable} union of rectangles; otherwise, each point $u \in \R^n$ could be identified with a trivial closed rectangle $R_u = \{x \in \R : u_i \leq x_i \leq u_i\} = \{u\}$. In which case, any subset $U \subseteq \R^n$ could be written as the disjoint union of rectangles $U = \bigcup_{u \in U} R_u$.
+
+To prove the countable case, we use the same technique as Stein Theorem 1.4.
+
+\begin{proof}
+    For each $a \in \Z^n$ and $k \in \Z_{\geq 0}$, define the rectangle
+    \[
+        R_{a,k} = \{x \in \R^n : a_i \leq 2^k x_i < a_i + 1\},
+    \]
+    whose lower vertex is at $a/2^k$ and has side length $1/2^k$. Then, the collection $\RR_k = \{R_{a,k}\}_{a \in \Z^n}$ forms a partition of $\R^n$ into countably many rectangles. Moreover, the rectangle $R_{a, k}$ is partitioned by the set of $2^n$ rectangles
+    \[
+        \{R_{2a+s, k+1} : s \in \{0, 1\}^n\}.
+    \]
+    In particular, each rectangle of $\RR_{k+1}$ is contained in exactly one rectangle of $\RR_k$, meaning that $\RR_{k+1}$ is a refinement of $\RR_k$ (as a partition of $\R^n$) into rectangles of exactly half the side length. We will use this fact to make increasingly precise approximations of an open set. 
+
+    Given an open subset $U \subseteq \R^n$, define $U_0 = U$ and denote the the collection of unit rectangles contained in $U_0$ by
+    \[
+        A_0 = \{R \in \RR_0 : R \subseteq U_0\}.
+    \]
+    We consider $\bigcup A_0$ (used as a set-theoretic shorthand for $\bigcup_{R \in A_0} R$) to be our first approximation of $U$, with a ``resolution'' of $1$. Since $\RR_0$ is a countable set of disjoint rectangles, so is $A_0 \subseteq \RR_0$. Intentionally, this approximation is a subset of $U$, as will be the case for further approximations, as we approach $U$ from below.
+    
+    For the second approximation of $U$, define $U_1 = U_0 \setminus \bigcup A_0$, which is the subset of $U_0$ that failed to be captured by the first approximation. Then
+    \[
+        A_1 = \{R \in \RR_1 : R \subseteq U_1\}
+    \]
+    is a set of rectangles of side length $1/2$, each fully contained in $U_1$. Then $\bigcup(A_0 \cup A_1)$ is our second approximation of $U$, with a resolution of $1/2$. By construction, $U_0$ and $U_1$ are disjoint, so the rectangles of $A_0$ and $A_1$ are also disjoint.
+    
+    The inductive construction follows. For all $k \geq 1$, define $U_k = U_{k-1} \setminus \bigcup A_{k-1}$ and
+    \[
+        A_k = \{R \in \RR_k : R \subseteq U_k\}.
+    \]
+    Interpreted, $U_k$ is the subset of $U$ which is not captured by any approximation down to a resolution of $1/2^{k-1}$, and $\bigcup A_k$ is the approximation of $U_k$ with a resolution of $1/2^k$. Then an approximation of all of $U$ with a resolution of $1/2^k$ is given by $\bigcup(A_0 \cup \cdots \cup A_k)$, which is a disjoint union of countably many rectangles, contained in $U$. 
+    
+    As the limiting case of these successive approximations, define
+    \[
+        A = \bigcup_{k = 0}^{\infty} A_k = A_0 \cup A_1 \cup A_2 \cup \cdots,
+    \]
+    which is a countable union of sets, each containing countably many rectangles; therefore, $A$ is a countable. Moreover, we know that $A$ is a disjoint set of rectangles; since any pair of overlapping rectangles would need to occur at some finite stage, but by construction $A_0 \cup \cdots \cup A_k$ is a disjoint set of rectangles for all $k \in \Z_{\geq0}$. Also by construction, we know $\bigcup A \subseteq U$, since each finite step is a subset of $U$.
+
+
+    It remains to show $U \subseteq \bigcup A$. For any $x \in U$, there is some $\delta > 0$ such that $B_\delta(x) \subseteq U$. For $k \in \Z_{\geq0}$, the diagonal of any rectangle $R \in \RR_k$ is given by $\sqrt{n}/2^k$. If we choose $k$ such that $\sqrt{n}/2^k < \delta$, then (using the fact that $\RR_k$ is a partition of $R^n$) the rectangle $R \in \RR_k$ containing $x$ is entirely contained in $B_\delta(x)$, in turn contained in $U$. In particular, this shows the existence of a nonnegative integer $k$, for which the unique rectangle of $\RR_k$ containing $x$ is also contained in $U$. Therefore, it makes sense to define the minimum such integer:
+    \[
+        N = \min\{k \in \Z_{\geq0} : x \in R \subseteq U \text{ for some } R \in \RR_k\}.
+    \]
+
+    By construction, we know that $x \in U_N$, since the rectangles of $\RR_0, \dots, \RR_{N-1}$ containing $x$ are not contained in $U$ (i.e., $x$ is not captured by any approximation of $U$ down to a resolution of $1/2^{k-1}$). By definition, there is some $R \in \RR_N$ such that $x \in R \subseteq U$. For any other point $y \in R$, the unique rectangles of $\RR_0, \dots, \RR_{N-1}$ containing $y$ are precisely the same as those containing $x$, implying that $y \in U_N$ for the same reasons. Hence, $R \subseteq U_N$, meaning that $R$ is one of the rectangles used in the approximation of $U_N$, i.e., $R \in A_N$. And since $A_N \subseteq A$,
+    \[
+        x \in R \subseteq \textstyle\bigcup A_N \subseteq \bigcup A.
+    \]
+    Thus, $U \subseteq \bigcup A$, implying equality: $U = \bigcup A$. As previously noted, $A$ is a countable set of disjoint rectangles, so this gives $U$ as the union of countably many disjoint rectangles.
+
+    Since rectangles are elementary open sets, this gives $U$ as the union of countably many finitely Lebesgue measurable sets; hence, $U$ is Lebesgue measurable.
+
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[2]
+    Show that $R^n$ is Lebesgue measurable, and therefore any closed subset is Lebesgue measurable.
+\end{pbox}
+
+\begin{proof}
+    For any elementary set $A \in \EE$, trivially, there is a sequence $\{A_n = A\}$ of elementary sets such that
+    \[
+        d(A_n, A) = d(A, A) = 0 \xrightarrow{n \to \infty} 0.
+    \]
+    That is, $A$ (and therefore any elementary set) is finitely Lebesgue measurable. For each $k \in \N$, define the rectangle
+    \[
+        R_k = \{x \in \R^n : -n < x_i < n\},
+    \]
+    which is an elementary set and, therefore, a finitely Lebesgue measurable set. Then 
+    \[
+        \R^n = \bigcup_{k \in \N} R_k
+    \]
+    is a countable union of finitely Lebesgue measurable sets. By definition, this shows $\R^n$ to be a Lebesgue measurable set, i.e., $\R^n \in \MM(m)$.
+
+    If $E \subseteq \R^n$ is closed, then $E^C \subseteq \R^n$ is open. Since $\MM(m)$ is a $\sigma$-ring, containing $E^C$ and $\R^n$,
+    \[
+        E = \R^n \setminus E^C \in \MM(m).
+    \]
+    Equivalently, $E$ is Lebesgue measurable.
+
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[3]
+    Prove that for any Lebesgue measurable $E$, any $\eps > 0$, there exists an open set $G$, a closed set $F$, such that $F \subseteq E \subseteq G$ and $m(G \setminus F) < \eps$.
+\end{pbox}
+
+\begin{proof}
+    We first prove the result for finitely Lebesgue measurable sets. Let $A$ be finitely Lebesgue measurable and $\eps > 0$. There exists a sequence $\{A_n\}$ of elementary sets such that $A_n \to A$; choose $N \in \N$ such that $d(A_N , A) < \eps$. Then $S(A_N, A)$ and $A_N \cap A$ are disjoint, with the union containing $A$. So
+    \begin{align*}
+        m(A)
+            &\leq m(S(A_N, A) \cup (A_N \cap A)) \\
+            &= m(S(A_N, A)) + m(A_N \cap A) \\
+            &= d(A_N, A) + m(A_N \cap A) \\
+            &\leq \eps + m(A_N).
+    \end{align*}
+    By definition of the Lebesgue outer measure, there is a countable open cover $\{A_j\}$ of $A$ by open elementary sets such that
+    \[
+        m(A) \leq \sum_{j=1}^{\infty} m(A_j) < m(A) + \eps.
+    \]
+    Then $G = \bigcup_{j=1}^{\infty} A_j$ is an open set containing $A$, with
+    \[
+        m(G \setminus A) = m(G) - m(A) \leq \sum_{j=1}^{\infty} m(A_j) - m(A) < \eps.
+    \]
+
+    Now, for any lebesgue measurable $E$ and $\eps > 0$, we can write $E = \bigcup_{j=1}^{\infty} A_j$, where each $A_j$ is a finitely Lebesgue measurable. For each $j \in \N$, by the above result, there is some open set $G_j \supseteq A_j$ such that $m(G_j \setminus A_j) < \eps/2^j$. Then $G = \bigcup_{j=1}^{\infty} G_j$ is an open set containing $E$ with
+    \[
+        m(G \setminus E) 
+            \leq \sum_{j=1}^{\infty} m(G_j \setminus E)
+            \leq \sum_{j=1}^{\infty} m(G_j \setminus A_j)
+            < \sum_{j=1}^{\infty} \frac{\eps}{2^j}
+            = \eps.
+    \]
+
+    Since $\R^n$ is Lebesgue measurable, then so is $E^C = \R^n \setminus E$. Then there is some open set $H$ containing $E^C$ such that $m(E^C \setminus H) < \eps$. Note that
+    \[
+        E^C \setminus H = E^C \cap H^C  = H^C \setminus E.
+    \]
+    Take $F = H^C$, which is a closed set contained in $E$. Then
+    \[
+        G \setminus F
+            = ((G \setminus E) \cup E) \setminus F
+            = (G \setminus E) \setminus F \cup (E \setminus F)
+            = (G \setminus E) \cup (E \setminus F),
+    \]
+    so
+    \[
+        m(G \setminus F) = m(G \setminus E) + m(E \setminus F) < \eps + \eps = 2\eps.
+    \]
+
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[4]
+    Prove that if $E \subset \R^n$ is a Lebesgue measurable subset, $x \in \R^n$, then $x + E$ is Lebesgue measurable and $m(E) = m(x + E)$.
+\end{pbox}
+
+\begin{proof}
+    Let $c \in \R^n$.
+
+    Suppose $R \subseteq \R^n$ is the rectangle defined by the opposite vertices $a, b \in \R^n$, i.e.,
+    \[
+        R = \{x \in \R^n : a_i \leq x_i \leq b_i\}.
+    \]
+    (Note that $R$ need not be a closed rectangle as written above, any combination of `$<$' and `$\leq$' is proved in the same way.) Then we have
+    \begin{align*}
+        c + R
+            &= \{c + x : x \in R\} \\
+            &= \{x \in \R^n : x - c \in R\} \\
+            &= \{x \in \R^n : a_i \leq x_i - c_i \leq b_i\} \\
+            &= \{x \in \R^n : (a+c)_i \leq x_i \leq (b+c)_i\}.
+    \end{align*}
+    In other words, $c + R$ is the rectangle defined by the opposite vertices $a+c$ and $b+c$. Moreover,
+    \[
+        m(c + R)
+            = \prod_{j=1}^{n} [(b+c)_j - (a+c)_j]
+            = \prod_{j=1}^{n} [b_j - a_j]
+            = m(R).
+    \]
+
+    For any elementary set $A \in \EE$, we have $A = \bigcup_{j=1}^{k} R_j$ where each $R_j$ is a rectangle. Then
+    \[
+        c + A = c + \bigcup_{j=1}^{k}R_j = \bigcup_{j=1}^{k}(c + R_j),
+    \]
+    where each $c + R_j$ is a rectangle, implying that $c + A \in \EE$. Without loss of generality, we may assume that the rectangles $R_1, \dots, R_k$ are disjoint. In which case, the rectangles $c + R_1, \dots, c + R_j$ are also disjoint, and we obtain
+    \[
+        m(c + A) = \sum_{j=1}^{k} m(c + R_j) = \sum_{j=1}^{k} m(R_j) = m(A).
+    \]
+
+    For any finitely Lebesgue measurable subset $A \subseteq \R^n$, there is some sequence $\{A_k\}$ of elementary sets such that $A_k \to A$. Then $\{c + A_k\}$ is a sequence of elementary sets, and we claim $c + A_k \to c + A$. For each $k \in \N$,
+    \[
+        d(c + A_k, c + A) = m^*(S(c + A_k, c + A)) = m^*(c + S(A_k, A)).
+    \]
+    The first equality follows by definition and the second follows simply by expanding the symmetric difference in a set-theoretic manner. For any countable cover $\{B_j\}$ of $S(A_k, A)$ by open elementary sets, $\{c + B_j\}$ is countable cover of $c + S(A_k, A)$ by open elementary sets, with
+    \[
+        m^*(c + S(A_k, A)) \leq \sum_{j=1}^{\infty} m(c + B_j) = \sum_{j=1}^{\infty} m(B_j).
+    \]
+    Taking the infimum over all covers of $S(A_k, A)$ by open elementary sets, we obtain
+    \[
+        m^*(c + S(A_k, A)) \leq m^*(S(A_k, A))
+    \]
+    By the same reasoning,
+    \[
+        m^*(S(A_k, A)) = m^*(-c + c + S(A_k, A)) \leq m^*(c + S(A_k, A)),
+    \]
+    giving us
+    \[
+        d(c + A_k, c + A) = m^*(c + S(A_k, A)) = m^*(S(A_k, A)) = d(A_k, A).
+    \]
+    Taking the limit as $k \to \infty$, we conclude that $c + A_k \to c + A$. In other words, $c + A$ is finitely Lebesgue measurable, with
+    \[
+        m(c + A) = \lim_{k \to \infty} m(c + A_k) = \lim_{k \to \infty} m(A_k) = m(A).
+    \]
+
+    Lastly, if $A \subseteq \R^n$ is a Lebesgue measurable set, then $A = \bigcup_{k=1}^{\infty} A_k$ where each $A_k$ is finitely Lebesgue measurable. Then
+    \[
+        c + A = c + \bigcup_{k=1}^{\infty} A_k = \bigcup_{k=1}^{\infty} (c + A_k),
+    \]
+    where each $c + A_k$ is finitely Lebesgue measurable, implying $c + A$ is Lebesgue measurable. Without loss of generality, we may assume that sets $c + A_k$ are all disjoint (if not, simply define $A_1' = A_1$ and $A_k' = A_k \setminus A_{k-1}'$ for $k \geq 1$; then all $A_k'$ are disjoint and finitely Lebesgue measurable). In which case, we obtain
+    \[
+        m(c + A) = \sum_{k=1}^{\infty} m(c + A_k) = \sum_{k=1}^{\infty} m(A_k) = m(A).
+    \]
+
+
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[5]
+    Prove that the set of all Lebesgue measure $0$ subsets is a $\sigma$-ring.
+\end{pbox}
+
+\begin{proof}
+    Suppose $A, B \in \MM(m)$ with $m(A) = m(B) = 0$. First,
+    \[
+        0 \leq m(A \cup B) \leq m(A \cup B) + m(A \cap B) = m(A) + m(B) = 0,
+    \]
+    implying that $m(A \cup B) = 0$. Second, $A \setminus B \subseteq A$ implies
+    \[
+        0 \leq m(A \setminus B) \leq m(A) = 0,
+    \]
+    so $m(A \setminus B) = 0$. This proves that the set of all Lebesgue measure $0$ subsets is a ring of sets.
+
+    If $A_n$ is a Lebesgue measure $0$ set for all $n \in \N$, define $A = \bigcup_{n=1}^{\infty} A_n$ (which is a Lebesgue measurable set), and we find
+    \[
+        0 \leq m(A) \leq \sum_{n=1}^{\infty} m(A) = \sum_{n=1}^{\infty} 0 = 0.
+    \]
+    Hence, $m(A) = 0$.
+
+\end{proof}
+
+
+\end{document}

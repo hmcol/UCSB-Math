@@ -1,0 +1,320 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{proposition}{Proposition}
+%\newtheorem{lemma}{Lemma}
+
+% Options
+%\allowdisplaybreaks
+%\addtolength{\jot}{4pt}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+
+% Extra Commands
+\newcommand{\Vp}{V_{\mathrm{p}}}
+\newcommand{\Va}{V_{\mathrm{a}}}
+
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\teq}{\trianglelefteq}
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\blow}{\widetilde}
+
+\DeclareMathOperator{\codim}{codim}
+\newcommand{\init}{\mathrm{in}}
+
+\newcommand{\belt}[2]{\big((#1), [#2]\big)}
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH 120AG Homework 8}
+    \fancyhead[C]{May 24, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+
+\begin{pbox}[Exercise 9.17]
+    Let $\blow{\A^3}$ be the blowup of $\A^3$ at the line $V(x_1, x_2) \isom \A^1$. Show that its exceptional set is isomorphic to $\A^1 \times \P^1$.
+\end{pbox}
+
+\begin{proof}
+    Define $U = \A^3 \setminus V(x_1, x_2)$, then $U$ is an open subset of $\A^3$. Since $\A^3$ is irreducible and of dimension $3$, and $\clo{U} = \A^3$, then $U$ is also irreducible and of dimension $3$. Then $U \isom \Gamma_f$, where $f$ is the morphism
+    \begin{align*}
+        f : U &\to \P^1, \\
+            (x_1, x_2, x_3) &\mapsto [x_1 : x_2].
+    \end{align*}
+    So $\Gamma_f \subseteq \A^3 \times \P^1$ is irreducible and dimension $3$, implying that its closure $\blow{\A^3} = \clo{\Gamma_f}$ in $\A^3 \times \P^1$ is also irreducible and of dimension $3$.
+
+    Define $Y = \{(x, y) \in \A^3 \times \P^1 \mid x_1y_2 = x_2y_1\}$, then Lemma 9.13 tells us that $\blow{\A^3} \subseteq Y$. Define the following open subsets of $Y$:
+    \[
+        U_1 = \{(x, y) \in Y \mid y_1 \ne 0\}
+        \isp{and}
+        U_2 = \{(x, y) \in Y \mid y_2 \ne 0\}.
+    \]
+    Then there are isomorphisms
+    \begin{align*}
+        \A^3 &\xrightarrow{\sim} U_1, 
+            & \A^3 &\xrightarrow{\sim} U_2, \\
+        (x_1, y_2, x_3) &\mapsto \belt{x_1, x_1y_2, x_3}{1 : y_2},
+            & (y_1, x_2, x_3) &\mapsto \belt{x_2y_1, x_2, x_3}{y_1 : 1}.
+    \end{align*}
+    So $\{U_1, U_2\}$ is an open cover of $Y$ with $U_1 \cap U_2 \ne \emptyset$, and both $U_1, U_2$ irreducible and of dimension $3$, implying that $Y$ is irreducible and of dimension $3$.
+
+    Since $\blow{\A^3} \subseteq Y$ and both are irreducible closed subsets of $\A^3 \times \P^1$ of dimension $3$, then we must have $\blow{\A^3} = Y$. Where $\pi : \blow{\A^3} \to \A^3$ is the natural projection,
+    \begin{align*}
+        \pi^{-1}(V(x_1, x_2))
+            &= \{(x, y) \in \blow{\A^3} \mid x_1 = x_2 = 0\} \\
+            &= \{(x, y) \in \A^3 \times \P^1 \mid x_1y_2 = x_2y_1 \text{ and } x_1 = x_2 = 0\} \\
+            &= \{\belt{0, 0, x_3}{y_1 : y_2} \in \A^3 \times \P^1\} \\
+            &\isom \A^1 \times \P^1.
+    \end{align*}
+
+\end{proof}
+
+
+\newpage
+\begin{pbox}
+    When do the strict transforms of two lines in $\A^3$ through $V(x_1, x_2)$ intersect in the blowup?
+\end{pbox}
+
+Trivially, two lines which coincide will intersect in the blowup, so we will only consider distinct pairs of lines. Additionally, the line $V(x_1, x_2)$ has empty intersection with $U$, and therefore an empty strict transform.
+
+\begin{proposition}
+    Let $L_1, L_2 \subseteq \A^3$ be distinct lines, each intersecting $V(x_1, x_2)$ exactly once. Then $\blow{L_1}$ and $\blow{L_2}$ intersect if and only if
+    \begin{itemize}
+        \item[(i)] $L_1$, $L_2$, and $V(x_1, x_2)$ are coplanar,
+        \item[(ii)] $L_1$ and $L_2$ are not parallel.
+    \end{itemize}
+\end{proposition}
+
+\begin{proof}
+    for some nonzero $a, b \in K^3$ and $c_3, d_3 \in K$, the lines $L_1, L_2 \subseteq \A^3$ can be parameterized by
+    \begin{align*}
+        h_1 : \A^1 &\to L_1,        &               h_2 : \A^1 &\to L_2, \\
+            t &\mapsto (t a_1, t a_2, t a_3 + c_3),   &   t &\mapsto (t b_1, t b_2, t b_3 + d_3).
+    \end{align*}
+    By assumption, $(a_1, a_2)$ and $(b_1, b_2)$ are nonzero and $L_1, L_2$ intersect the $x_3$-axis at $c = (0, 0, c_3), d = (0, 0, d_3)$, respectively.
+
+    The strict transform $\blow{L_1}$ is the closure in $\blow{\A^3}$ of the graph
+    \[
+        \Gamma_{f|_{L_1 \cap U}}
+            = \{\big(h_1(t), [ta_1 : ta_2]\big) \mid t \in K^\times\}
+            = (L_1 \setminus \{c\}) \times \{[a_1 : a_2]\}.
+    \]
+    Every point $(x, y)$ in this graph satisfies $y_1 = a_1$ and $y_2 = a_2$, which must therefore also be satisfied for every point in $\blow{L_1}$. Then we deduce that $\blow{L_1} = L_1 \times \{[a_1 : a_2]\}$, and also $\blow{L_2} = L_2 \times \{[b_1 : b_2]\}$.
+
+    Then $\blow{L_1}$ and $\blow{L_2}$ have nonempty intersection if and only if $[a_1 : a_2] = [b_1 : b_2]$ and $L_1 \cap L_2 \ne \emptyset$. The condition that $[a_1 : a_2] = [b_1 : b_2]$ is equivalent to the projections of $L_1$ and $L_2$ onto the $x_1x_2$-plane being equal, which is equivalent to (i). The condition that $L_1 \cap L_2 \ne \emptyset$ is equivalent to (ii), when $L_1$ and $L_2$ are coplanar. Thus, $\blow{L_1}$ and $\blow{L_2}$ have nonempty intersection if and only if both (i) and (ii) are satisfied.
+
+
+\end{proof}
+
+\begin{pbox}
+    What is therefore the geometric meaning of the points in the exceptional set (corresponding to Example 9.14 in which the points of the exceptional set correspond to the directions through the blown-up point)?
+\end{pbox}
+
+The points in the exceptional set can be seen as directions perpendicular to the $x_3$-axis.
+
+
+\newpage
+\begin{pbox}[Exercise 9.21]
+    (Computation of tangent cones). Let $J \teq K[x_1, \dots, x_n]$ be an ideal, and assume that the corresponding affine variety $X = V(J) \subseteq \A^n$ contains the origin. Consider the blowup $\blow{X} \subseteq \blow{\A^n} \subseteq \A^n \times \P^{n-1}$ at $x_1, \dots, x_n$, and denote the homogenous coordinates of $\P^{n-1}$ by $y_1, \dots, y_n$.
+\end{pbox}
+
+\begin{pbox}[(a)]
+    By Example 9.14 we know that $\blow{\A^n}$ can be covered by affine spaces, with one coordinate patch being
+    \begin{align*}
+        \A^n &\to \blow{\A^n} \subseteq \A^n \times \P^{n-1}, \\
+        (x_1, y_2, \dots, y_n) &\mapsto \belt{x_1, x_1y_2, \dots, x_1y_n}{1 : y_2 : \dots : y_n}.
+    \end{align*}
+    Prove that on this coordinate patch the blowup $\blow{X}$ is given as the zero locus of the polynomials
+    \[
+        \frac{f(x_1, x_1y_2, \dots, x_1y_n)}{x_1^{\min\deg f}}
+    \]
+    for all nonzero $f \in J$, where $\min\deg f$ denotes the smallest degree of a monomial in $f$.
+\end{pbox}
+
+\begin{proof}
+    Let $\phi_1$ be the coordinate patch and $U_1 = \phi_1(\A^n)$, then $\phi_1$ is an isomorphism $\A^n \xrightarrow{\sim} U_1$. For each $f \in J$, denote
+    \[
+        f^\star = \frac{f(x_1, x_1y_2, \dots, x_1y_n)}{x_1^{\min\deg f}} \in K[x_1, y_2, \dots, y_n].
+    \]
+    We claim that $\blow{X} \cap U_1 = \phi_1(\Va(f^\star \mid f \in J))$.
+    
+    Given $(x, y) \in (\blow{X} \cap U_1) \setminus (\{0\} \times \P^{n-1})$, the fact that $(x, y) \in U_1$ implies
+    \[
+        (x, y) = \belt{x_1, x_1y_2, \dots, x_1y_n}{1 : y_2 : \dots : y_n}.
+    \]
+    Since $x \in X = \Va(J)$, then
+    \[
+        f(x_1, x_1y_2, \dots, x_1y_n) = f(x) = 0
+    \]
+    for all $f \in J$. Since $x \ne 0$, in particular $x_1 \ne 0$. Then $(x_1, y_2, \dots, y_n) \in \A^n$ with
+    \[
+        f^\star(x_1, y_2, \dots, y_n)
+            = \frac{f(x_1, x_1y_2, \dots, x_1y_n)}{x_1^{\min\deg f}}
+            = 0
+    \]
+    for all $f \in J$, implying $(x_1, y_2, \dots, y_n) \in \Va(f^\star \mid f \in J)$. Moreover,
+    \[
+        \phi_1(x_1, y_2, \dots, y_n)
+            = \belt{x_1, x_1y_2, \dots, x_1y_n}{1 : y_2 : \dots : y_n}
+            = (x, y).
+    \]
+    Therefore $(x, y) \in \phi_1(\Va(f^\star \mid f \in J))$, which gives us
+    \[
+        (\blow{X} \cap U_1) \setminus (\{0\} \times \P^{n-1}) \subseteq \phi_1(\Va(f^\star \mid f \in J)).
+    \]
+    Since $\phi_1$ is an isomorphism, then $\phi_1(\Va(f^\star \mid f \in J))$ is a closed subset of $U_1$.
+
+    I believe that the closure of $(\blow{X} \cap U_1) \setminus (\{0\} \times \P^{n-1})$ in $U_1$ is precisely $\blow{X} \cap U_1$. I think it can be supported by writing
+    \begin{align*}
+        (\blow{X} \cap U_1) \setminus (\{0\} \times \P^{n-1})
+            &= (\blow{X} \cap U_1) \setminus (\pi^{-1}(0) \cap U_1) \\
+            &= (\blow{X} \setminus \pi^{-1}(0)) \cap U_1 \\
+            &= \Gamma \cap U_1,
+    \end{align*}
+    where $\Gamma$ is the graph whose closure in $X \times \P^{n-1}$ is $\blow{X}$ (from Construction 9.9 for blowups). It seems fairly natural to me that the closure of $\Gamma \cap U_1$ in $U_1$ would be $\blow{X} \cap U_1$, but I am unsure of how to justify this. Taking this result for granted, we conclude that
+    \[
+        \blow{X} \cap U_1 \subseteq \phi_1(\Va(f^\star \mid f \in J)).
+    \]
+
+    Given $(x, y) \in \phi_1(\Va(f^\star \mid f \in J))$, we know
+    \[
+        (x, y) = \belt{x_1, x_1y_2, \dots, x_1y_n}{1 : y_2 : \dots : y_n} \in U_1.
+    \]
+    Then for all $f \in J$,
+    \[
+        f(x) = x_1^{\min\deg f}f^\star(x_1, y_2, \dots, y_n) = 0,
+    \]
+    implying $x \in X$. And if $x \ne 0$, then $(x, y) \in \Gamma \subseteq \blow{X}$, so
+    \[
+        \phi_1(\Va(f^\star \mid f \in J)) \setminus (\Va(x_1) \times \P^{n-1}) \subseteq \blow{X} \cap U_1.
+    \]
+    Again, I believe that the closure of the left-hand side in $U_1$ is $\phi_1(\Va(f^\star \mid f \in J))$, but I did not prove it. If this is the case, then this proves the opposite inclusion and we may deduce that $\blow{X} \cap U_1 = \phi_1(\Va(f^\star \mid f \in J))$.
+
+\end{proof}
+
+
+\newpage
+\begin{pbox}[(b)]
+    Prove that the exceptional set of $\blow{X}$ is
+    \[
+        \Vp(f^\init \mid f \in J) \subseteq \{0\} \times \P^{n-1},
+    \]
+    where $f^\init$ is the \textit{initial} term of $f$, i.e., the sum of all monomials in $f$ of smallest degree. Consequently, the tangent cone of $X$ at the origin is
+    \[
+        C_0X = \Va(f^\init \mid f \in J) \subseteq \A^n.
+    \]
+\end{pbox}
+
+\begin{proof}
+    Given $(0, y) \in \{0\} \times \Vp(f^\init \mid f \in J)$, we assume without loss of generality that $y_1 = 1$. Then $(0, y_2, \dots, y_n) \in \A^n$ with $\phi_1(0, y_2, \dots, y_n) = (0, y)$. Given $f \in J$, the polynomial $f^\init$ is precisely the homogeneous component of $f$ of degree $\min\deg f$. Then
+    \[
+        f(x_1, x_1y_2, \dots, x_1y_n) = x_1^{\min\deg f}f^\init(1, y_2, \dots, y_n) + x_1^{d + \min\deg f}g,
+    \]
+    for some $g \in K[x_1, y_2, \dots, y_n]$ and $d > 0$. Then
+    \[
+        f^\star 
+            = \frac{f(x_1, x_1y_2, \dots, x_1y_n)}{x_1^{\min\deg f}}
+            = f^\init(1, y_2, \dots, y_n) + x_1^dg,
+    \]
+    so $y \in \Vp(f^\init \mid f \in J)$ implies
+    \[
+        f^\star(0, y_2, \dots, y_n) = f^\init(1, y_2, \dots, y_n) = f^\init(y) = 0.
+    \]
+    Therefore, $(0, y_2, \dots, y_n) \in \Va(f^\star \mid f \in J)$, giving us
+    \[
+        (0, y) \in \phi_1(\Va(f^\star \mid f \in J)) = \blow{X} \cap U_1 \subseteq \blow{X}.
+    \]
+    And since $\pi((0, y)) = 0$, then in fact $(0, y) \in \pi^{-1}(0)$, implying
+    \[
+        \{0\} \times \Vp(f^\init \mid f \in J) \subseteq \pi^{-1}(0).
+    \]
+
+    Now, given $(0, y) \in \pi^{-1}(0)$, we assume without loss of generality that $y_1 = 1$. Then \[
+        (0, y) \in \blow{X} \cap U_1 = \phi_1(\Va(f^\star \mid f \in J)),
+    \]
+    so
+    \[
+        (0, y) = \phi_1(0, y_2, \dots, y_n) = \big(0, [1 : y_2 : \cdots : y_n]\big),
+    \]
+    where $f^\star(0, y_2, \dots, y_n) = 0$ for all $f \in J$. By the same argument as above, we have
+    \[
+        f^\init(y) = f^\init(1, y_2, \dots, y_n) = f^\star(0, y_2, \dots, y_n) = 0,
+    \]
+    so $y \in \Vp(f^\init \mid f \in J)$. Therefore, we obtain the opposite inclusion, which proves
+    \[
+        \pi^{-1}(0) = \{0\} \times \Vp(f^\init \mid f \in J).
+    \]
+    
+\end{proof}
+
+It follows immediately that
+\[
+    C_0X = C(\pi^{-1}(0)) = C(\Vp(f^\init \mid f \in J)) = \Va(f^\init \mid f \in J) \subseteq \A^n.
+\]
+
+
+
+\newpage
+\begin{pbox}[(c)]
+    If $J = \<f\>$ is a principal ideal prove that $C_0X = \Va(f^\init)$. However, for a general ideal $J$ show that $C_0X$ is in general not the zero locus of the initial terms of a set of generators for $J$.
+\end{pbox}
+
+\begin{proof}
+    The initial term operator $(-)^\init$ distributes over multiplication, i.e., $(gh)^\init = g^\init h^\init$ for all polynomials $g, h \in K[x_1, \dots, x_n]$. This is because the initial term of a polynomial is a homogeneous component, and the smallest degree homogeneous component of $gh$ is precisely the product of the smallest degree homogeneous components of $g$ and $h$.
+    
+    Then, since $\<f\> = \{fg \mid g \in K[x_1, \dots, x_n]\}$,
+    \[
+        C_0X = \Va((fg)^\init \mid g \in K[x_1, \dots, x_n]) = \Va(f^\init g^\init \mid g \in K[x_1, \dots, x_n]).
+    \]
+    It can be seen that
+    \[
+        \<f^\init g^\init \mid g \in K[x_1, \dots, x_n]\> = \{f^\init g \mid g \in K[x_1, \dots, x_n]\} = \<f^\init\>,
+    \]
+    so in fact $C_0X = \Va(f^\init)$.
+
+\end{proof}
+
+\end{document}

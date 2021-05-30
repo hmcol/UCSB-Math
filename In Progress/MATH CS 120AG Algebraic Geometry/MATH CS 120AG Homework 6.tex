@@ -1,0 +1,197 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Theorem Environments
+%\theoremstyle{definition}
+%\newtheorem{proposition}{Proposition}
+%\newtheorem{lemma}{Lemma}
+
+% Options
+%\allowdisplaybreaks
+%\addtolength{\jot}{4pt}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+
+% Extra Commands
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\teq}{\trianglelefteq}
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\Ip}{I_{\mathrm{p}}}
+\newcommand{\Vp}{V_{\mathrm{p}}}
+\newcommand{\Va}{V_{\mathrm{a}}}
+\newcommand{\rad}{\sqrt}
+\DeclareMathOperator{\codim}{codim}
+\newcommand{\Kx}[2]{K[x_{#1}, \dots, x_{#2}]}
+\newcommand{\sepline}{\rule{\textwidth}{0.4pt}}
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH 120AG Homework 6}
+    \fancyhead[C]{May 9, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+
+\begin{pbox}[Exercise 6.28]
+    Let $L_1, L_2 \subset \P^3$ be two disjoint lines (i.e. $1$-dimensional linear subspaces in the sense of Example 6.12(b)), and let $a \in \P^3 \setminus (L_1 \cup L_2)$. Show that there is a unique line $L \subset \P^3$ through $a$ that intersects both $L_1$ and $L_2$.
+\end{pbox}
+
+\paragraph{Construction.} Let $L \subset \P^3$ be a line not containing $a$. Taking for granted that the results of dimension carry over from affine varieties, we can write $L = \Vp(f_1, f_2)$ for some homogenous linear polynomials $f_1, f_2 \in \Kx{0}{3}$. Moreover, $f_1$ and $f_2$ are linearly independent; otherwise their ideals would be equal and $L$ would be the zero locus of a single polynomial, which is not the case. We consider the cone over $L$, given by
+\[
+    C(L) = C(\Vp(f_1, f_2)) = \Va(f_1, f_2) \subset \A^4.
+\]
+As a subset of the vector space $K^4$, we see that $C(L)$ is a $2$-dimensional linear subspace. Let $A \in M_{2 \times 4}(K)$ be the $2 \times 4$ matrix with entries in $K$, such that the entry $a_{ij}$ is the coefficient in $f_i$ of $x_{j-1}$. Then for all $v \in K^4$, we have $f_1(v) = f_2(v) = 0$ if and only if $Av = 0$. That is, $C(L)$ is precisely $\ker A$, which is a $2$-dimensional linear subspace of $K^4$ since the linear independence of $f_1$ and $f_2$ means  that the rank of $A$ is $2$.
+
+By construction of the projective space $\P^3$, it is natural to interpret $C(a)$ as a $1$-dimensional linear subspace of $K^4$. And since $a \notin L = \Vp(f_1, f_2)$, then $Av \ne 0$ for all nonzero $v \in C(a)$, which means $C(a) \cap C(L) = \{0\}$. This implies that the linear subspace $H = C(a) + C(L)$ of $K^4$ has
+\[
+    \dim_K H = \dim_K C(a) + \dim_K C(L) = 3.
+\]
+In particular, $H$ is a hyperplane in $K^4$.
+
+\sepline
+
+\begin{proof}
+    Let $H_1, H_2 \subset K^4$ be the hyperplanes obtained from applying the above construction to $L_1$, $L_2$, respectively. We interpret $C(L_1)$ and $C(L_2)$ as $2$-dimensional linear subspaces of $K^4$, then their intersection is also a linear subspace of $K^4$. Since $L_1$ and $L_2$ are disjoint, then we must have $C(L_1) \cap C(L_2) = \{0\}$; otherwise their intersection would contain a $1$-dimensional linear subspace of $K^4$, corresponding (under projectivization) to a point in the intersection of $L_1$ and $L_2$.
+    
+    Therefore,
+    \[
+        H_1 + H_2 \supset C(L_1) + C(L_2) = K^4,
+    \]
+    which implies $\dim_K(H_1 + H_2) = 4$. Let $W = H_1 \cap H_2$, which is a linear subspace of $K^4$ with
+    \[
+        \dim_K W = \dim_K H_1 + \dim_K H_2 - \dim_K(H_1 + H_2) = 2.
+    \]
+    By the constructions of $H_1$ and $H_2$, we know $C(a) \subset W$, implying that $a \in \P(W)$. Since $\dim_K C(L_1) = 2$ and $\dim_K H_2 = 3$, then $\dim_K (C(L_1) \cap H_2) \geq 1$. And since
+    \[
+        C(L_1) \cap H_2 \subset C(L_1) \cap H_2 = W,
+    \]
+    then the intersection of $C(L_1)$ and $W$ is at least dimension $1$, and the same can be said of $C(L_2)$ and $W$. That is, the projectivization $\P(W)$ intersects both $L_1$ and $L_2$.
+    
+    As a $2$-dimensional linear subspace of $K^4$, $W$ can be written as $W = \ker A$ for some $A \in M_{2 \times 4}(K)$. Then we define the homogeneous linear polynomials $f_1, f_2 \in \Kx{0}{3}$, where the coefficient in $f_i$ of $x_{j-1}$ is the entry $a_{ij}$ of $A$, so
+    \[
+        W = \ker A = \Va(f_1, f_2).
+    \]
+    Let $L = \P(W)$, so
+    \[
+        L = \P(\Va(f_1, f_2)) = \Vp(f_1, f_2).
+    \]
+    Since $f_1, f_2$ are homogeneous degree $1$, then $L$ is a linear subspace of $\P^3$. And since $W$ is a cone in $K^4$ of dimension $2$, then $L$ has dimension $1$ in $\P^3$. That is, $L$ is a line in $\P^3$ through $a$ and intersecting both $L_1$ and $L_2$.
+
+    To show that $L$ is the unique such line, suppose that $L' \subset \P^3$ is a line through $a$ and intersecting both $L_1$ and $L_2$. We consider the cone $C(L')$ as a subset of $K^4$, in fact a $2$-dimensional linear subspace. Since $a \in L'$, then we know $C(a) \subset C(L')$. Similarly, since $L_1 \cap L' \ne \emptyset$, then $C(L_1)$ and $C(L')$ have nontrivial intersection. Any nonzero vector in $C(a)$ is linearly independent with any vector in $C(L_1)$. Choosing a vector from $C(a)$ and one from $C(L_1) \cap C(L')$, we obtain two linearly independent vectors in $C(L')$. Since $\dim_K C(L') = 2$, then these form a basis for $C(L')$, implying that
+    \[
+        C(L') \subset C(a) + C(L_1) = H_1.
+    \]
+    By the same argument, $C(L') \subset H_2$. Therefore, $C(L') \subset H_1 \cap H_2 = W$. Since both $C(L')$ and $W$ are $2$-dimensional linear subspaces of $K^4$, then they must be equal. Hence, $C(L') = W = C(L)$, so in fact $L' = L$.
+    
+
+\end{proof}
+
+
+\begin{pbox}
+    Is the corresponding statement for lines and points in $\A^3$ true as well?
+\end{pbox}
+
+No, in $\A^3$, we could choose $L_1$ and $L_2$ to be a pair of parallel lines and $a$ to be a point not coplanar with those lines. Then no single line in $\A^3$ could pass through all three items.
+
+
+
+
+\newpage
+\begin{pbox}[Exercise 7.13]
+    Let $X \subset \P^2$ be a cubic curve. Moreover, let $U \subset X \times X$ be the set of all $(a, b) \in X \times X$ such that $a \ne b$ and the unique line through the two points $a$ and $b$ meets $X$ in exactly three distinct points; we will denote the third one by $f(a, b) \in X$.
+
+    Show that $U \subset X \times X$ is open, and that $f : U \to X$ is a morphism.
+\end{pbox}
+
+\begin{proof}
+    Given a pair $(a, b) \in X \times X$, we parameterize the line passing through $a$ and $b$ by
+    \[
+        L = \{[p_0(t), p_1(t), p_2(t)] : t \in K\} \subset \P^3,
+    \]
+    where $p_j(t) = (1 - t)a_j + tb_j$ for $j = 0, 1, 2$. (This misses a certain point at infinity, depending on the particular representative coordinates of $a$ and $b$. I think this can be fixed by considering two parameterizations, simultaneously, and adjusting the following argument, accordingly.) Suppose that $X = \Vp(g)$, where $g \in K[x_1, x_2, x_3]$ is a homogeneous cubic polynomial. Then the composition
+    \[
+        h(t) = g(p_0(t), p_1(t), p_2(t)) \in K[t]
+    \]
+    is an inhomogeneous cubic polynomial, whose coefficients are determined by $a$ and $b$. We know that $h$ has roots at $t = 0, 1$, which parameterize the points $a$ and $b$, respectively, in $L$. And $h$ has a third root, distinct from $0$ and $1$, if and only if $L$ intersects $X$ at some third point distinct from $a$ and $b$. Let $c_0, \dots, c_3 \in K$ be the coefficients of $h$, i.e.,
+    \[
+        h(t) = c_0 + c_1t + c_2t^2 + c_3t^3.
+    \]
+    The discriminant of $h$ is given by
+    \[
+        \operatorname{Disc}_t(h) = c_1^2c_2^2 - 4c_1^3c_3 - 4c_0c_2^3 - 27c_0^2c_3^2 + 18c_0c_1c_2c_3,
+    \]
+    and has the property of being equal to zero if and only if $h$ has a multiple root. Notice that we can consider the discriminant as a function of the coefficients of $h$; in particular, define the polynomial $d \in K[x_0, x_1, x_2, x_3]$ such that $\operatorname{Disc}_t(h) = d(c_0, c_1, c_2, c_3)$. Moreover, we see that $d$ is in fact a homogenous polynomial of degree $4$.
+
+    Recall that $p_j(t) = (1 - t)a_j + tb_j$, which can be considered as a homogeneous linear polynomial in terms of $a_j$ and $b_j$. Explicitly, for a fixed $t$, we define
+    \[
+        q_j = (1-t)x_j + ty_j \in K[x_0, x_1, x_2, y_0, y_1, y_2],
+    \]
+    for $j = 0, 1, 2$. Then the composition
+    \[
+        g(q_0, q_1, q_2) \in K[x_0, x_1, x_2, y_0, y_1, y_2]
+    \]
+    is a homogeneous polynomial of degree $4$. Separating the terms by $t$, we find that the coefficients of $h$ are each homogeneous polynomials of degree $4$ in the same ring. Lastly, composing with $d$, we obtain a homogeneous polynomial of degree $8$. Therefore, we conclude that the discriminant of $h$ is a homogenous polynomial on $X \times X$, denote it by $u \in K[x_0, x_1, x_2, y_0, y_1, y_2]$.
+
+    Then for all $(a, b) \in X \times X$ with $a \ne b$, we know that the unique line through $a$ and $b$ intersects $X$ in exactly three distinct points if and only if $u(a, b) \ne 0$. Additionally, our construction ensures that if $a = b$, then we still have $u(a, b) = 0$. Thus,
+    \[
+        U = (X \times X) \setminus  \Vp(u),
+    \]
+    which is an open subset of $X \times X$.
+
+\end{proof}
+
+(Not sure if the following would be the correct route, but it feels close to working.)
+
+To show that $f : U \to X$ is a morphism, we show that its components are locally fractions of homogeneous polynomials of the same degree. For $(a, b) \in U$, we know that the discriminant of the related $h$ is $u(a, b) \ne 0$. That is, $h$ has exactly the roots $0, 1, t_c$, where $t_c \in K$ depends on $a$ and $b$ such that
+\[
+    f(a, b) = [p_0(t_c), p_1(t_c), p_2(t_c)].
+\]
+We can (maybe) find $t_c$ in terms of the determinant by
+\[
+    u(a, b) = c_3^4(0 - 1^2)(1 - t_c)^2(t_c - 0)^2
+        = c_3^4(1 - t_c)^2t_c^2.
+\]
+Recall that $u$ is a homogenous polynomial of degree $8$ and $c_3^4$ is a homogeneous polynomial of degree of $4$. The last thing necessary would be a way to solve for $t_c$ while keeping homogeneity, then composing with the homogenous linear polynomials $p_j$ to obtain $f$ as being a coordinate-wise regular function on $U$.
+
+
+\end{document}

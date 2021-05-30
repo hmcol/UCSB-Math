@@ -1,0 +1,178 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Theorem Environments
+%\theoremstyle{definition}
+%\newtheorem{proposition}{Proposition}
+%\newtheorem{lemma}{Lemma}
+
+% Options
+%\allowdisplaybreaks
+%\addtolength{\jot}{4pt}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+
+% Extra Commands
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+\newcommand{\mdet}[1]{\begin{vmatrix}#1\end{vmatrix}}
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH 118C Midterm}
+    \fancyhead[C]{May 6, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+\section*{1}
+
+\begin{proof}
+    In particular, as $f$ is continuous on $\R$, it is continuous on the compact interval $[-\pi, \pi]$ and, therefore, Lipschitz continuous on $[-\pi, \pi]$. Moreover, since $f$ has a period of $2\pi$ and is continuous, then it is Lipschitz on all of $\R$. So there exists some $M > 0$ such that
+    \[
+        |f(x) - f(y)| \leq M|x - y|
+    \]
+    for all $x, y \in \R$. Then for any $x_0 \in \R$, we have
+    \[
+        |f(x_0 + t) - f(x_0)| \leq M|t|
+    \]
+    for all $t \in \R$. This condition implies that $s_n(f; x_0) \to f(x_0)$ as $n \to \infty$, i.e.,
+    \[
+        f(x_0)
+            = \sum_{n = -\infty}^{\infty} c_n e^{inx_0}
+            = \sum_{n = -\infty}^{\infty} 0 e^{inx_0}
+            = 0.
+    \]
+
+\end{proof}
+
+
+\newpage
+\section*{2}
+
+\section*{2(a)}
+
+\begin{proof}
+    We first assume that both $x$ and $y$ are nonzero. The derivative of $F$ at $(x, y)$ is given by
+    \[
+        [F'(x, y)]
+            = \mat{(D_1F_1)(x, y) & (D_2F_1)(x, y) \\ (D_1F_2)(x, y) & (D_2F_2)(x, y)}
+            = \mat{2x & -2y \\ 2x & 2y},
+    \]
+    so the Jacobian is
+    \[
+        J_F(x, y)
+            = \det F'(x, y) 
+            = (2x)(2y) - (2x)(-2y)
+            = 4xy + 4xy
+            = 8xy
+    \]
+    Since, $x \ne 0$ and $Y \ne 0$, then $J_f(x, y) \ne 0$. In which case, $F'(x, y)$ is invertible, so the implicit function theorem implies the existence of a neighborhood of $(x, y)$ on which $F$ is injective.
+
+\end{proof}
+
+\section*{2(b)}
+
+No.
+
+Consider $F$ along the $x$-axis, i.e., where $y = 0$. We have
+\[
+    F_1(x, 0) = x^2 \isp{and} F_2(x, 0) = 0.
+\]
+Then any neighborhood of $(0, 0)$ contains the points $(\pm\delta, 0)$ for some $\delta > 0$. Then
+\[
+    F(\delta, 0) = (\delta^2, 0) = F(-\delta, 0).
+\]
+Therefore, $F$ is not injective on any neighborhood of $(0, 0)$.
+
+
+\newpage
+\section*{3}
+
+Since $F$ is continuously differentiable the map $B^n \to \R$ which maps $x \mapsto \|F'(x)\|$ is a continuous function. Since it is a continuous function on the compact set $B^n$, then it attains a maximum at some point $a \in B^n$. Define $\delta = \|F'(a)\| < 1$. Then $\|F'(x)\| \leq \delta$ for all $x \in B^n$. Since $B^n$ is a convex set on which $F$ is continuously differentiable, then we deduce that
+\[
+    |F(x) - F(y)| \leq \delta|x - y|
+\]
+for all $x, y \in B^n$. Since $\delta < 1$, this means that $F$ is a contraction mapping on $B^n$. Therefore, there exists a fixed point $x_0 \in B^n$ of $F$, i.e., $F(x_0) = x_0$.
+
+\newpage
+\section*{4}
+
+\section*{4(a)}
+
+Let $U \subseteq \R^n$ be an open subset and $F : U \to \R^n$ be a continuously differentiable function. If $x_0 \in U$ with $J_F(x_0) \ne 0$, then there exists an open neighborhood $V$ of $x_0$ on which $F$ is injective. Moreover, if we define $W = F(V)$ and $G = F^{-1}|_{W}$, then $G : W \to V$ is a continuously differentiable function.
+
+\section*{4(b)}
+
+Let $U \subseteq \R^{n+m}$ be an open subset and $F : U \to \R^m$ be a continuously differentiable.
+
+Assume $F =(F_1, \dots, F_m)$, define
+\[
+    A_x = \mat{D_1F_1 & \cdots & D_n F_1 \\ \vdots & & \vdots \\ D_1F_m & \cdots & D_nF_m}
+    \isp{and}
+    A_y = \mat{D_{n+1}F_1 & \cdots & D_m F_1 \\ \vdots & & \vdots \\ D_{n+1}F_m & \cdots & D_mF_m},
+\]
+then $[F'] = \mat{A_x & A_y}$.
+
+
+If $(x_0, y_0) \in U$ such that $F(x_0, y_0) = 0$ and $\det A_x \ne 0$, then there exists open neighborhoods $V$ of $(x_0, y_0$ and $W$ of $y_0$ such that for every $y \in W$, there exists a unique $x \in \R^n$ with $(x, y) \in V$ and $F(x, y) = 0$.
+
+Moreover, we can define a map $G : W \to \R^n$ such that $(G(y), y) \in V$ and $F(G(y), y) = 0$ for all $y \in W$. Then $G$ is continuously differentiable with $G'(y_0) = -(A_x)^{-1}A_y$.
+
+
+\section*{4(c)}
+
+\begin{proof}
+    Given a continuously differentiable function $F : U \to \R^n$ with $U \subseteq \R^n$ open, we extend $F$ to a function $(F, I) : \R^{2n} \to \R$ by $(x, y) \mapsto (F(x), y)$. Then for each point $x_0 \in U$ with $J_F(x_0) \ne 0$, this is condition $\det A_x \ne 0$ for the implicit function theorem. Then the local function $G$ from the implicit function theorem is precisely a local inverse of $F$.
+
+\end{proof}
+
+
+
+
+\newpage
+\section*{5}
+
+\begin{proof}
+    If $n \leq m$, then we can project $F$ onto the first $n$ coordinates, giving us a continuously differentiable map $U \to V \cap \R^n$. Then using the inverse function theorem, we can construct a local inverse for each point in $U$ of this map. However, since we already have a global inverse $F^{-1}$, then we could not have $n < m$, since the projection of $F$ is locally bijective $U \to V \cap \R^n$. If $m \leq n$, we make the same argument for $F^{-1}$, implying that we must have $n = m$.
+
+\end{proof}
+
+\end{document}

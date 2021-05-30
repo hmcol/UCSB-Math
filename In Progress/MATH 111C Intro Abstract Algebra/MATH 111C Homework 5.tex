@@ -1,0 +1,218 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Theorem Environments
+%\theoremstyle{definition}
+%\newtheorem{proposition}{Proposition}
+%\newtheorem{lemma}{Lemma}
+
+% Options
+%\allowdisplaybreaks
+%\addtolength{\jot}{4pt}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+
+% Extra Commands
+\DeclareMathOperator{\Gal}{Gal}
+\DeclareMathOperator{\ch}{char}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\divides}{\mid}
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH 111C Homework 5}
+    \fancyhead[C]{May 15, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+\begin{pbox}[Q1]
+    Prove the following statements.
+\end{pbox}
+
+\begin{pbox}[(a)]
+    $\clo{\Q}/\Q$ is Galois.
+\end{pbox}
+
+\begin{proof}
+    Since $\ch\Q = 0$, then every algebraic extension of $\Q$ is separable; in particular, $\clo{\Q}/\Q$ is separable. Given any $\alpha \in \clo{\Q}$,
+    \[
+        m_{\alpha, \Q}(x) \in \Q[x] \subseteq \clo{\Q}[x].
+    \]
+    Since $\clo{\Q}$ is algebraically closed, $m_{\alpha, \Q}(x)$ splits completely over $\clo{\Q}[x]$. Therefore, $\clo{\Q}/\Q$ is normal, hence, Galois.
+
+\end{proof}
+
+\begin{pbox}[(b)]
+    If $F$ is a finite field, then every algebraic extension of $F$ is Galois.
+\end{pbox}
+
+\begin{proof}
+    Let $K/F$ be an algebraic extension. Given $\alpha \in K$, $F(\alpha)/F$ is a finite extension.
+    
+    Since finite fields are perfect, then $F(\alpha)/F$ is separable. So $\alpha$ is separable over $F$, implying $K/F$ is separable. 
+
+    Since $F$ is finite, then $F \isom \F_{p^n}$ for some prime $p$ and positive integer $n$. Likewise, $F(\alpha) \isom \F_{p^{m}}$ for some multiple $m$ of $n$. Then $\F_{p^m}/\F_{p^n}$ and $\F_{p^n}/\F_p$ are algebraic extensions, with $\F_{p^m}$ defined to be the splitting field of $x^{p^m} - x$ over $\F_p$. Therefore, $\F_{p^m}/\F_p$ is a normal extension, implying that $\F_{p^m}/\F_{p^n}$ is also normal (by Q2(a)). Correspondingly, $F(\alpha)/F$ is normal, which means that $m_{\alpha, F}(x)$ splits completely over $(F(\alpha))[x] \subseteq K[x]$. Hence, $K/F$ is normal.
+
+    As a separable and normal extension, $K/F$ is Galois.
+
+\end{proof}
+
+\begin{pbox}[(c)]
+    $\clo{\F_p(t)}/\F_p(t)$ is not Galois.
+\end{pbox}
+
+\begin{proof}
+    We claim that $\clo{\F_p(t)}/\F_p(t)$ is not separable; in particular, that $x^p - t$ is irreducible in $(\F_p(t))[x]$, yet is not separable. Clearly, $x^p - t$ is not separable, since if $\alpha \in \clo{\F_p(t)}$ is a root, then
+    \[
+        x^p - t = x^p - \alpha^p = (x - \alpha)^p.
+    \]
+    We can consider $\F_p(t)$ to be the field of fractions for the UFD $\F_p[t]$. Then $x^p - t \in (\F_p[t])[x]$ and the gcd of its coefficients is $1$, implying that $x^p - t$ is irreducible in $(\F_p(t))[x]$ if and only if it is irreducible in $(\F_p[t])[x]$. And indeed, Eisenstein's criterion tells us that $x^p - t$ is irreducible in $(\F_p[t])[x]$, since all the coefficients are in the prime ideal $(t)$ of $\F_p[t]$, but $t \notin (t)^2$. Hence, $x^p - t$ is a monic irreducible polynomial in $(\F_p(t))[x]$, so it is the minimal polynomial of $\alpha$ over $\F_p(t)$. Thus, $\clo{\F_p(t)}/\F_p(t)$ is not Galois.
+
+\end{proof}
+
+\newpage
+\begin{pbox}[Q2]
+    Let $K/F$ and $L/K$ be algebraic extensions.
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Show that if $L/F$ is normal, then $L/K$ is normal.
+\end{pbox}
+
+\begin{proof}
+    Assume $L/F$ is normal. Given $\alpha \in L$, consider $m_{\alpha, K}(x) \in K[x]$. Since $m_{\alpha, F}(x) \in F[x] \subseteq K[x]$ and has $\alpha$ as a root, then $m_{\alpha, K}(x)$ divides $m_{\alpha, F}(x)$. Since $m_{\alpha, F}(x)$ splits completely in $L[x]$, then $L$ contains all the roots of $m_{\alpha, F}(x)$, which includes all the roots of $m_{\alpha, K}(x)$. Therefore, $m_{\alpha, K}(x)$ splits completely in $L[x]$, implying $L/K$ is normal.
+
+\end{proof}
+
+\begin{pbox}[(b)]
+    Show that if $L/F$ is Galois, then $L/K$ is Galois.
+\end{pbox}
+
+\begin{proof}
+    Assume $L/F$ is Galois. In particular, $L/F$ is normal, so Q1(a) gives $L/K$ is normal. Moreover, $L/F$ is separable, which is the case if and only if $L/K$ and $K/F$ are separable. Therefore, $L/K$ is separable and normal, hence, Galois.
+
+\end{proof}
+
+
+\newpage
+\begin{pbox}[Q3]
+    Let $\zeta_p = e^{2\pi i /p}$, a primitive $p$-th root of unity. Show that $\Q(\zeta_p)/\Q$ is Galois and $\Gal(\Q(\zeta_p)/\Q) \isom (\Z/p\Z)^\times$.
+\end{pbox}
+
+\begin{proof}
+    Since $\Q(\zeta_p)$ is the splitting field of the separable polynomial $x^p - 1$ over $\Q$, then $\Q(\zeta_p)/\Q$ is Galois, so
+    \[
+        |\Gal(\Q(\zeta_p)/\Q)| = [\Q(\zeta_p) : \Q)] = p - 1.
+    \]
+    An automorphism of $\Q(\zeta_p)$ fixing $\Q$ is completely determined by the image of $\zeta_p$, which must be another primitive root of unity. Consider the map
+    \begin{align*}
+        \phi :  (\Z/p\Z)^\times &\to \Gal(\Q(\zeta_p)/\Q) \\
+            \eqc{n} &\mapsto (\sigma_n : \zeta_p \mapsto \zeta_p^n).
+    \end{align*}
+    We check that this map is well-defined on the equivalence classes. If $\eqc{n} = \eqc{m}$, then $n = m + pq$ for some integer $q$. Then
+    \[
+        \zeta_p^n = \zeta_p^{m + pq} = e^{2\pi i m/p + 2\pi i pq/p} = \zeta_p^m,
+    \]
+    so $\phi(\eqc{n}) = \sigma_n = \sigma_m = \phi(\eqc{m})$. This map is also well-defined in the codomain, since $\zeta_p^n$ is a primitive root of unity for $1 \leq n \leq p - 1$, which is the case if and only if $\eqc{n} \in (\Z/p\Z)^\times$; that is, each $\sigma_n$ does in fact define an automorphism on $\Q(\zeta_p)$ fixing $\Q$. We claim $\phi$ is an isomorphism of groups.
+
+    First, $\phi$ is a bijection. As previously mentioned, an element of $\Gal(\Q(\zeta_p)/\Q)$ is completely determined by the image of $\zeta_p$, which must be another primitive root of unity. All primitive roots of unity are of the form $\zeta_p^n$ for $n = 1, \dots, p - 1$, and the corresponding automorphism is given by $\phi(\eqc{n})$. Hence, $\phi$ is surjective. Since both sets are finite and of the same size, then in fact $\phi$ is a bijection.
+
+    Lastly, $\phi$ is a group homomorphism:
+    \[
+        \phi(nm)
+            = \phi(mn)
+            = \left(\sigma_{mn} : \zeta_p \mapsto \zeta_p^{mn}\right) 
+            = \left(\sigma_n \circ \sigma_m : \zeta_p \mapsto (\zeta_p^m)^n\right) 
+            = \phi(n) \circ \phi(m).
+    \]
+    Thus, $\phi$ is in fact an isomorphism of groups.
+
+\end{proof}
+
+
+\newpage
+\begin{pbox}[Q4]
+    Show that $\Q(\sqrt{2} + \sqrt{5})/\Q$ is Galois and $\Gal(\Q(\sqrt{2} + \sqrt{5})/\Q) \isom \Z/2\Z \times \Z/2\Z$.
+\end{pbox}
+
+\begin{proof}
+    Let $K = \Q(\sqrt{2} + \sqrt{5})$. Since $K = \Q(\sqrt{2}, \sqrt{5})$ is the splitting fields of the separable polynomial $(x^2 - 2)(x^2 - 5)$ over $\Q$, then $K/\Q$ is Galois. Any automorphism on $K$ fixing $\Q$ is completely determined by the images of $\sqrt{2}$ and $\sqrt{5}$, which must map to $\pm\sqrt{2}$ and $\pm\sqrt{5}$, respectively; there are four such maps. Define the map
+    \begin{align*}
+        \phi :  \Z/2\Z \times \Z/2\Z &\to \Gal(K/\Q) \\
+            (\eqc{a}, \eqc{b}) &\mapsto \sigma_{a, b} : 
+                \begin{cases}
+                    \sqrt{2} \mapsto (-1)^a\sqrt{2} \\
+                    \sqrt{3} \mapsto (-1)^b\sqrt{3}
+                \end{cases}
+    \end{align*}
+    Then $\phi$ is well-defined with respect to both the equivalence classes and the codomain. This map is surjective, as all possible automorphisms of $K$ fixing $\Q$, as described above, are attained. And since the both sets are of the same size, $\phi$ is a bijection. Lastly, $\phi$ is a group homomorphism:
+    \begin{align*}
+        \phi((a, b) + (c, d)) 
+            &= \phi((c + a, d + b)) \\
+            &= \sigma_{c + a, d + b} :
+                \begin{cases}
+                    \sqrt{2} \mapsto (-1)^{c + a}\sqrt{2} \\
+                    \sqrt{3} \mapsto (-1)^{d + b}\sqrt{3}
+                \end{cases} \\
+            &= \sigma_{a, b} \circ \sigma_{c, d} :
+                \begin{cases}
+                    \sqrt{2} \mapsto (-1)^c(-1)^a\sqrt{2} \\
+                    \sqrt{3} \mapsto (-1)^d(-1)^b\sqrt{3}
+                \end{cases} \\
+            &= \phi((a, b)) \circ \phi((c, d)).
+    \end{align*}
+    Hence, $\phi$ is an isomorphism of groups.
+
+\end{proof}
+
+
+\newpage
+\begin{pbox}[Q5 Problem 14.2.13]
+    Prove that if the Galois group of the splitting field of a cubic over $\Q$ is the cyclic group of order $3$, then all the roots of the cubic are real. 
+\end{pbox}
+
+\begin{proof}
+    Suppose $K$ is the splitting field of a cubic polynomial in $\Q[x]$, then $K = \Q(\alpha_1, \alpha_2, \alpha_3)$, where the $\alpha$'s (not necessarily distinct) are the roots of the cubic polynomial. Assume, for contradiction, that not all the $\alpha$'s are real, yet $\Gal(K/\Q) \isom \Z/3\Z$. Then without loss of generality we can assume $\alpha_1$ is real and $\alpha_2, \alpha_3$ are complex conjugates (in particular not entirely real). Then $\Q(\alpha_1)$ is a strict subfield of $K$ and a nontrivial field extension of $\Q$. By the fundamental theorem of Galois theory, $\Q(\alpha_1)$ corresponds to a strict nontrivial subgroup of $\Gal(K/\Q) \isom \Z/3\Z$. But $\Z/3\Z$ has no such subgroups, so this is a contradiction.
+
+\end{proof}
+
+\end{document}

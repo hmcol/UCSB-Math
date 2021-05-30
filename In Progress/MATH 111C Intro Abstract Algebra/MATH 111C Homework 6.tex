@@ -1,0 +1,356 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+%\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+
+% Options
+%\allowdisplaybreaks
+%\addtolength{\jot}{4pt}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+
+% Extra Commands
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Gal}{Gal}
+\newcommand{\teq}{\trianglelefteq}
+\newcommand{\inc}{\hookrightarrow}
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH 111C Homework 6}
+    \fancyhead[C]{May 21, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+
+\begin{pbox}[Q1 Problem 14.2.15]
+    (\textit{Biquadratic Extensions}) Let $F$ be a field of characteristic $\ne 2$.
+\end{pbox}
+
+In particular, $\operatorname{char}F \ne 2$ implies that $2 = 1_F + 1_F \in F^\times$; this fact will be used implicitly in the following proofs. 
+
+\begin{pbox}[(a)]
+    If $K = F(\sqrt{D_1}, \sqrt{D_2})$ where $D_1, D_2 \in F$ have the property that none of $D_1$, $D_2$, or $D_1D_2$ is a square in $F$, prove that $K/F$ is a Galois extension with $\Gal(K/F)$ isomorphic to the Klein $4$-group.
+\end{pbox}
+
+\begin{proof}
+    Since $K$ is a splitting field for the separable polynomial $(x^2 - D_1)(x^2 - D_2) \in F[x]$, then $K/F$ is a Galois extension. An automorphism of $K = F(\sqrt{D_1}, \sqrt{D_2})$ fixing $F$ (i.e., an element of $\Gal(K/F)$) is completely determined by the images of $\sqrt{D_1}$ and $\sqrt{D_2}$. Moreover, each must map to a root of its minimal polynomial over $F$, i.e.,
+    \[
+        \sqrt{D_1} \mapsto \pm\sqrt{D_1} \isp{and} \sqrt{D_2} \mapsto \pm\sqrt{D_2}.
+    \]
+    There are four such maps, namely $\id_K, \sigma, \tau, \sigma\tau$, where $\sigma$ and $\tau$ are maps from $K$ to itself defined by
+    \[
+        \sigma : \begin{cases}
+            \sqrt{D_1} \mapsto -\sqrt{D_1}, \\
+            \sqrt{D_2} \mapsto \sqrt{D_2},
+        \end{cases}
+        \isp{and}
+        \tau : \begin{cases}
+            \sqrt{D_1} \mapsto \sqrt{D_1}, \\
+            \sqrt{D_2} \mapsto -\sqrt{D_2}.
+        \end{cases}
+    \]
+    We will show that there are four distinct elements of $\Gal(K/F)$, proving that the above four maps are in fact automorphisms of $K$ fixing $F$.
+
+    Since $K/F$ is Galois,
+    \[
+        |\Gal(K/F)| = [K : F] = [K : F(\sqrt{D_1})][F(\sqrt{D_1}) : F] = [K : F(\sqrt{D_1})] \cdot 2.
+    \]
+    We claim that $[K : F(\sqrt{D_1})] = 2$, and will prove this by showing that the minimal polynomial of $\sqrt{D_2}$ over $F(\sqrt{D_1})$ is the same as the minimal polynomial over $F$, i.e.,
+    \[
+        m_{\sqrt{D_2}, F(\sqrt{D_1})}(x) = m_{\sqrt{D_2}, F}(x) = x^2 - D_2.
+    \]
+    Since the minimal polynomial over $F(\sqrt{D_1})$ divides $x^2 - D_2$, it suffices to show that $\sqrt{D_2} \notin F(\sqrt{D_1})$. Suppose to the contrary that $D_2$ is the square of some $a + b\sqrt{D_1} \in F(\sqrt{D_1})$ for $a, b \in F$, then
+    \[
+        D_2 = (a + b\sqrt{D_1})^2 = a^2 + 2ab\sqrt{D_1} + b^2D_1.
+    \]
+    It cannot be the case that $a = 0$; otherwise $D_2 = b^2D_1$, implying that
+    \[
+        D_1D_2 = D_1(b^2D_1) = (bD_1)^2
+    \]
+    is a square in $F$, which is false by assumption. Similarly, it cannot be the case that $b = 0$; otherwise $D_2 = a^2$ is a square in $F$. Therefore, with $a, b, D_2 \in F$ nonzero, we find that
+    \[
+        \sqrt{D_1} = \frac{D_2 - a^2 - b^2D_2}{2ab} \in F,
+    \]
+    which is a contradiction. Hence, $\sqrt{D_2} \notin F(\sqrt{D_1})$, so indeed
+    \[
+        |\Gal(K/F)| = [K : F(\sqrt{D_1})] \cdot 2 = 4.
+    \]
+
+    From this, we deduce that $\Gal(K/F) = \{\id_K, \sigma, \tau, \sigma\tau\}$, where $\sigma$ and $\tau$ are as above. There is now an obvious isomorphism 
+    \begin{align*}
+        \Gal(K/F) &\xrightarrow{\sim} \Z/2\Z \times \Z/2\Z \\
+            \sigma &\mapsto (1, 0) \\
+            \tau &\mapsto (0, 1).
+    \end{align*}
+    That is, $\Gal(K/F)$ is isomorphic to the Klein $4$-group.
+
+\end{proof}
+
+\begin{pbox}[(b)]
+    Conversely, suppose that $K/F$ is a Galois extension with $\Gal(K/F)$ isomorphic to the Klein $4$-group. Prove that $K = F(\sqrt{D_1}, \sqrt{D_2})$ where $D_1, D_2 \in F$ have the property that none of $D_1$, $D_2$, or $D_1D_2$ is a square in $F$.
+\end{pbox}
+
+\begin{lemma}
+    If $L/F$ is a field extension with $[L : F] = 2$, then $L = F(\sqrt{D})$ for some $D \in F$ such that $m_{\sqrt{D}, F} = x^2 - D \in F[x]$.
+\end{lemma}
+
+\begin{proof}
+    For any element $\alpha \in L \setminus F$, the degree of the minimal polynomial of $\alpha$ over $F$ must divide $[L : F] = 2$, snd since $\alpha \notin F$, then the degree must be exactly $2$. Then
+    \[
+        m_{\alpha, F}(x) = x^2 + bx + c \in F[x],
+    \]
+    which we can rewrite to be
+    \[
+        \left(x + \tfrac{b}{2}\right)^2 - \left(\tfrac{b^2}{4} - c\right) \in F[x].
+    \]
+    Define $D = \tfrac{b^2}{4} - c \in F$, then
+    \[
+        D = \left(\alpha + \tfrac{b}{2}\right)^2.
+    \]
+    Naturally, we define $\sqrt{D} = \alpha + \tfrac{b}{2}$, which is an element of $L$, but not of $F$, with
+    \[
+        m_{\sqrt{D}, F} = x^2 - D \in F[x].
+    \]
+    The fact that $x^2 - D$ is irreducible in $F[x]$ can be seen by that fact that its roots are precisely $\pm\sqrt{D} \notin F$. Since $F(\sqrt{D})/F$ is a subextension of $L/F$ of degree $2$, and $[L : F] = 2$, then we must have $L = F(\sqrt{D})$. 
+
+\end{proof}
+
+\newpage
+Denote by $Z_2$ the cyclic group of 2 elements: $\Z/2\Z$. We now prove the main result.
+
+\begin{proof}
+    Given that $\Gal(K/F)$ is isomorphic to the Klein $4$-group ($Z_2 \times Z_2$), then there is a normal subgroup $H \teq \Gal(K/F)$ isomorphic to $Z_2$ (explicitly, we could take $H \isom Z_2 \times \{0\}$, under the same isomorphism which gives us $\Gal(K/F) \isom Z_2 \times Z_2$). By the fundamental theorem of Galois theory, this corresponds to a Galois extension $K^H/F$, where $K^H$ is the subfield of $K$ fixed by $H$. Then
+    \[
+        \Gal(K^H/F) \isom \Gal(K/F)/H \isom (Z_2 \times Z_2)/(Z_2\times \{0\}) \isom Z_2,
+    \]
+    from which we deduce that
+    \[
+        [K^H : F] = |\Gal(K^H/F)| = |Z_2| = 2.
+    \]
+    By Lemma 1, $K^H = F(\sqrt{D_1})$ for some $D_1 \in F$. In particular, $D_1$ is not a square in $F$, since the only roots of $m_{\sqrt{D_1}, F}(x) = x^2 - D_1$ are $\pm\sqrt{D_1} \notin F$.
+
+    Since we also have
+    \[
+        [K : K^H] = |H| = |Z_2 \times \{0\}| = 2,
+    \]
+    then, by Lemma 1, $K = K^H(\sqrt{\beta})$ for some $\beta \in K^H$ such that $m_{\sqrt{\beta}, K^H}(x) = x^2 - \beta \in K^H[x]$. Since $K^H = F(\sqrt{D_1})$, then $\beta = a + b\sqrt{D_1}$ for some $a, b \in F$. We now write
+    \[
+        m_{\sqrt{\beta}, K^H}(x) = \left(x - \tfrac{b}{2}\sqrt{D_1}\right)^2 - \left(\tfrac{b^2}{4}D_1 - a\right).
+    \]    
+    Define $D_2 = \tfrac{b^2}{4}D_1 - a \in F$, then
+    \[
+        D_2 = \left(\sqrt{\beta} - \tfrac{b}{2}\sqrt{D_1}\right)^2.
+    \]
+    Naturally, we define $\sqrt{D_2} = \sqrt{\beta} - \tfrac{b}{2}\sqrt{D_1}$, which is an element of $K$, but not $K^H \supseteq F$, with
+    \[
+        m_{\sqrt{D_2}, K^H}(x) = x^2 - D_2 \in F[x].
+    \]
+    The fact that $x^2 - D_2$ is irreducible in $K^H[x]$ follows from the fact that its only roots are $\pm\sqrt{D_2} \notin K^H$. In particular, $D_2$ is not a square in $F$. Since $K^H(\sqrt{D_2})/K^H$ is a degree $2$ subextension of $K/K^H$ and $[K : K^H] = 2$, then we must have
+    \[
+        K = K^H(\sqrt{D_2}) = F(\sqrt{D_1}, \sqrt{D_2}).
+    \]
+
+    It remains to show that $D_1D_2$ is not a square in $F$. The the only roots of $x^2 - D_1D_2 \in F[x]$ are $\pm\sqrt{D_1}\sqrt{D_2} \in K$. If it were the case that $\sqrt{D_1}\sqrt{D_2} = a$ for some $a \in F$, then we would have
+    \[
+        \sqrt{D_2} = (\sqrt{D_1})^{-1}a \in F(\sqrt{D_1}) = K^H,
+    \]
+    which is not the case. Hence, neither $D_1$, $D_2$, nor $D_1D_2$ is a square in $F$.
+
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[Q2]
+    Let $K/F$ be a separable finite extension. Show that $K$ has finitely many subfields containing $F$.
+\end{pbox}
+
+\begin{proof}
+    Fix an algebraic closure $\clo{F} = \clo{K}$ of $F$ containing $K$. Since $K/F$ is a finite extension, then $K = F(\alpha_1, \dots, \alpha_n)$ for some algebraic elements $\alpha_1, \dots, \alpha_n \in K$. Define $S \subseteq \clo{F}$ to be the set of all roots in $\clo{F}$ of the minimal polynomials $m_{\alpha_j, F}(x)$ for $j = 1, \dots, n$. Since $K$ is separable, $F(S)$ is a Galois closure of $K$ over $F$. In particular, $S$ is a finite set, so
+    \[
+        [F(S) : F] = |\Gal(F(S)/F)|
+    \]
+    is finite. Therefore, $\Gal(F(S)/F)$ has finitely many subgroups.
+
+    Every subfield of $K$ containing $F$ is a subextension of $F(S)/F$, so there are at least as many subextensions of $F(S)/F$ as there are subfields of $K$ containing $F$. Since the subextensions of $F(S)/F$ correspond bijectively (by the fundamental theorem of Galois theory) to the subgroups of $\Gal(F(S)/F)$, then there are finitely many subextensions of $F(S)/F$. Hence, there are finitely many subfields of $K$ containing $F$.
+
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[Q3]
+    Let $K$ be the Galois closure of $\Q(\sqrt{1 + \sqrt{3}})$.
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Show that $[K : \Q] = 8$.
+\end{pbox}
+
+\begin{proof}
+    The polynomial $f(x) = x^4 - 2x^2 - 2$ is irreducible in $\Q[x]$, by Eisenstein's criterion, and has $\sqrt{1 + \sqrt{3}}$ as a root; so $f(x)$ is the minimal polynomial of $\sqrt{1 + \sqrt{3}}$ over $\Q$. Note that $f(x)$ is indeed separable, with the four distinct roots $\pm\sqrt{1 \pm \sqrt{3}} \in \clo{\Q}$, so the definition of $K$ as a Galois closure over $\Q$ makes sense. 
+    
+    We now consider the field $F = \Q(\sqrt{3})$ and define $D_1 = 1 + \sqrt{3}$ and $D_2 = 1 - \sqrt{3}$, which are elements of $F$. It can be seen that $F$ is a subfield of $K$ containing $\Q$, so $K/F$ is a Galois extension with
+    \[
+        K = \Q(\pm\sqrt{D_1}, \pm\sqrt{D_2}) = F(\sqrt{D_1}, \sqrt{D_2}).
+    \]
+    In order to apply Q1(a), we must check that none of $D_1$, $D_2$, or $D_1D_2$ are squares in $F$. For any $a + b\sqrt{3} \in F$, we have
+    \[
+        (a + b\sqrt{3})^2 = a^2 + 2ab\sqrt{3} + b^23 = (a^2 + 3b^2) + 2ab\sqrt{3}.
+    \]
+    One can check that no values of $a, b \in \Q$ will yield $D_1$, $D_2$, or $D_1D_2$.
+
+    Applying Q1(a), we find $\Gal(K/F) \isom \Z/2\Z \times \Z/2\Z$, so
+    \[
+        [K : F] = |\Gal(K/F)| = |\Z/2\Z \times \Z/2\Z| = 4.
+    \]
+    Recall that $F = \Q(\sqrt{3})$, and we have seen that $[\Q(\sqrt{3}) : \Q] = 2$. Then
+    \[
+        [K : Q] = [K : F][F : \Q] = 4 \cdot 2 = 8.
+    \]
+
+    
+\end{proof}
+
+\begin{pbox}[(b)]
+    Show that $\Gal(K/\Q)$ is not commutative.
+\end{pbox}
+
+This proof uses the result of (d), the proof of which does not rely on this result.
+
+\begin{proof}
+    From (d), $\Gal(K/\Q) \isom D_8$, and we know that the dihedral group $D_{2n}$ is non-abelian for $n \geq 3$. In particular, $sr = r^{n-1}s \ne rs$ when $n \geq 3$. Where $\sigma, \tau \in \Gal(K/\Q)$ as in (d), we can say more specifically that $\sigma\tau = \tau^3\sigma \ne \tau\sigma$. Hence, $\Gal(K/\Q)$ is non-abelian.
+
+\end{proof}
+
+\begin{pbox}[(c)]
+    Show that $\Gal(K/\Q)$ has a normal subgroup isomorphic to $\Z/2\Z \times \Z/2\Z$.
+\end{pbox}
+
+\begin{proof}
+    As in part (a), we have $F = \Q(\sqrt{3})$, so $F/\Q$ is a Galois extension (as the splitting field of the separable polynomial $x^2 - 3$). In particular, $F/\Q$ is a Galois subextension of the Galois extension $K/\Q$; the fundamental theorem of Galois theory implies $\Gal(K/F) \teq \Gal(K/\Q)$. And, from part (a), we know that $\Gal(K/F)$ is isomorphic to the Klein $4$-group.
+
+\end{proof}
+
+
+\newpage
+\begin{pbox}[(d)]
+    Show that $\Gal(K/\Q) \isom D_8$.
+\end{pbox}
+
+\begin{proof}
+    We will use the fact that $|\Gal(K/\Q)| = [K : \Q] = 8$ to characterize the elements of $\Gal(K/\Q)$. Any automorphism of $K$ fixing $\Q$ is completely determined by the images of
+    \[
+        \sqrt{D_1} = \textstyle\sqrt{1 + \sqrt{3}} \isp{and} \sqrt{D_2} = \sqrt{1 - \sqrt{3}}.
+    \]
+    Moreover, such an automorphism must permute the roots of irreducible polynomials in $\Q[x]$; in particular $x^4 - 2x^2 - 2$, which has the four roots $\pm\sqrt{D_1}, \pm\sqrt{D_2}$. 
+    
+    Given $\sigma \in \Gal(K/\Q)$, we know that $\sigma(-\alpha) = - \sigma(\alpha)$ for all $\alpha \in K$. From the fact that $\sqrt{D_2} \ne \pm\sqrt{D_1}$, it follows that $\sigma(\sqrt{D_2}) \ne \pm\sigma(\sqrt{D_1})$. In other words,
+    \begin{align*}
+        \sigma : \sqrt{D_1} \mapsto \pm\sqrt{D_1} \quad&\implies\quad \sigma: \sqrt{D_2} \mapsto \pm\sqrt{D_2}, \\
+        \sigma : \sqrt{D_1} \mapsto \pm\sqrt{D_2} \quad&\implies\quad \sigma: \sqrt{D_2} \mapsto \pm\sqrt{D_1}.
+    \end{align*}
+    This means that $\sigma$ can map $\sqrt{D_1}$ to any of the four options $\pm\sqrt{D_1}, \pm\sqrt{D_2}$, which determines the image of $-\sqrt{D_1}$. Once the images of $\pm\sqrt{D_1}$ is determined, $\sigma$ must map $\sqrt{D_2}$ to one of the two remaining options, which then determines the whole of sigma.
+    
+    From this, we deduce that there are eight possible automorphisms of $K$ fixing $\Q$ which permute the roots of $x^4 - 2x - 2$. Since $|\Gal(K/\Q)| = 8$, then $\Gal(K/\Q)$ is precisely the set of all those eight possible maps described in the previous paragraph. Define the following automorphism of $K$ fixing $\Q$:
+    \[
+        \sigma : \begin{cases}
+            \sqrt{D_1} \mapsto \sqrt{D_2}, \\
+            \sqrt{D_2} \mapsto \sqrt{D_1}. 
+        \end{cases}
+        \isp{and}
+        \tau : \begin{cases}
+            \sqrt{D_1} \mapsto \sqrt{D_2}, \\
+            \sqrt{D_2} \mapsto -\sqrt{D_1}. 
+        \end{cases}
+    \]
+    One can check that $\Gal(K/\Q) = \<\sigma, \tau\>$, i.e., all possible automorphisms of $K$ fixing $\Q$ can be written as a composition of finitely many copies of $\sigma$ and $\tau$. Moreover, it can be seen that $\tau^4 = \sigma^2 = (\sigma\tau)^2 = \id_K$, which suggests a natural choice of isomorphism
+    \begin{align*}
+        \Gal(K/\Q) &\xrightarrow{\sim} D_8 \\
+            \sigma &\mapsto s \\
+            \tau &\mapsto r.
+    \end{align*}
+
+
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[Q4]
+    Show that if $K/\Q$ is a finite Galois extension with $\Gal(K/\Q) \isom S_3$, then $K$ is the splitting field for some irreducible cubic polynomial in $\Q[x]$.
+\end{pbox}
+
+\begin{proof}
+    Representing $S_3$ as the set of permutations on three elements, we have
+    \[
+        S_3 = \{\id, (1\,2), (1\,3), (2\,3), (1\,2\,3), (1\,3\,2)\}.
+    \]
+    Let $\sigma, \tau \in \Gal(K/\Q)$ correspond to $(1\,2\,3), (1\,2) \in S_3$, respectively, under some fixed isomorphism of $\Gal(K/\Q) \isom S_3$. Then $\Gal(K/\Q) = \<\sigma, \tau\>$, and $\<\sigma\>$ is the only normal subgroup. We consider the non-normal subgroup $\<\tau\> = \{\id_K, \tau\}$, and the corresponding fixed field $K^{\<\tau\>}$. Since $K^{\<\tau\>}$ is a subfield of $K$ containing $\Q$, then $K^{\<\tau\>}/\Q$ is a non-Galois subextension of $K/\Q$; in particular, $K^{\<\tau\>}/\Q$ is separable but not normal.
+
+    We see that $K^{\<\tau\>}/\Q$ is a finite extension and compute its degree to be 
+    \[
+        [K^{\<\tau\>} : \Q]
+            = \frac{[K : \Q]}{[K : K^{\<\tau\>}]}
+            = \frac{|\Gal(K/\Q)|}{|\<\tau\>|}
+            = \frac{|S_3|}{2}
+            = \frac{6}{2}
+            = 3.
+    \]
+    As a finite separable extension, the primitive element theorem implies that $K^{\<\tau\>} = \Q(\alpha)$ for some $\alpha \in K^{\<\tau\>}$. Then
+    \[
+        \deg m_{\alpha, \Q}(x) = [\Q(\alpha) : \Q] = [K^{\<\tau\>} : \Q] = 3,
+    \]
+    which means that $m_{\alpha, \Q}(x)$ is an irreducible cubic polynomial in $\Q[x]$. Since $\Q(\alpha)/\Q$ is a separable non-normal extension, then $m_{\alpha, \Q}(x)$ is separable but does not split over $\Q(\alpha)$. However,  $m_{\alpha, \Q}(x)$ does split in $K[x]$ (because $K/\Q$ is Galois), so there is a splitting field of $m_{\alpha, \Q}(x)$ which is a subfield of $K$ strictly containing $\Q(\alpha)$.
+    
+    If $E$ is a subfield of $K$ containing $\Q(\alpha)$, then $[\Q(\alpha) : \Q] = 3$ must divide $[E : \Q]$ which, in turn, must divide $[K : \Q] = 6$. Therefore, $[E : \Q]$ must be either $3$, in which case $E = \Q(\alpha)$, or $6$, in which case $E = K$.
+
+    Since the splitting field of $m_{\alpha, \Q}(x)$ is a subfield of $K$ strictly containing $\Q(\alpha)$ (i.e., $\ne \Q(\alpha)$), we conclude that $K$ is the splitting field of the irreducible cubic polynomial $m_{\alpha, \Q}(x) \in \Q[x]$.
+
+\end{proof}
+
+\end{document}
