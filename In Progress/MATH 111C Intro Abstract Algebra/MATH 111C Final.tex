@@ -1,0 +1,203 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Theorem Environments
+%\theoremstyle{definition}
+%\newtheorem{proposition}{Proposition}
+%\newtheorem{lemma}{Lemma}
+
+% Options
+%\allowdisplaybreaks
+%\addtolength{\jot}{4pt}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+
+% Extra Commands
+\newcommand{\F}{\mathbb{F}}
+
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\Gal}{Gal}
+\DeclareMathOperator{\Aut}{Aut}
+\newcommand{\teq}{\trianglelefteq}
+\newcommand{\inc}{\hookrightarrow}
+
+\DeclareMathOperator{\Emb}{Emb}
+
+\newcommand{\tsqrt}[1]{{\textstyle\sqrt{#1}}}
+\newcommand{\pfrac}[2]{\left(\frac{#1}{#2}\right)}
+
+
+\newcommand\myprod[2]{
+    \begin{array}[t]{@{}l@{}}
+        {\displaystyle\prod #2} \\[-3pt] \scriptstyle #1 
+    \end{array}
+}
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH 111C Final}
+    \fancyhead[C]{June 10, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+
+
+\section*{1}
+
+
+\subsection*{a}
+
+Since $K \subseteq \Q(\zeta_n)$, then the characteristic of $K$ is $0$, so $K$ must contain $\Q$, i.e., $K/\Q$ is a subextension of $\Q(\zeta_n)/\Q$, so
+\[
+    \Gal(\Q(\zeta_n)/K) \leq \Gal(\Q(\zeta_n)/\Q) \isom (\Z/n\Z)^\times.
+\]
+Since $(\Z/n\Z)^\times$ is abelian, every subgroup is normal, so $\Gal(\Q(\zeta_n)/K)$ is a normal subgroup. Hence $K/\Q$ is Galois by the fundamental theorem.
+
+\subsection*{b}
+
+Moreover, the fundamental theorem gives us
+\[
+    \Gal(K/\Q) \isom \Gal(\Q(\zeta_n)/\Q) / \Gal(\Q(\zeta_n)/K)
+\]
+and the quotient of an abelian group is, again, abelian.
+
+
+
+
+\newpage
+\section*{2}
+
+\subsection*{a}
+
+
+The polynomial $x^4 - 2x^2 + 20 \in \Q[x]$ has $\alpha$ as a root, so has the minimal polynomial of $\alpha$ over $\Q$ as a factor. In particular, $\deg m_{\alpha, \Q}(x) \leq 4.$
+
+Since $\alpha^2 - 5 = \sqrt{5}$, then we know $\sqrt{5} \in \Q(\alpha)$. Then $\Q(\sqrt{5}) \subseteq \Q(\alpha)$, so
+\[
+    [\Q(\alpha) : \Q] = [\Q(\alpha) : \Q(\sqrt{5})][\Q(\sqrt{5}) : \Q] = [\Q(\alpha) : \Q(\sqrt{5})] \cdot 2.
+\]
+So $2 \mid [\Q(\alpha) : \Q]$, and we already have $[\Q(\alpha) : \Q] \leq 4$. So the degree is either $2$ or $4$. We claim that $\alpha \notin \Q(\sqrt{5})$, which will imply $[\Q(\alpha) : \Q(\sqrt{5})] > 1$, from which it then follows that $[\Q(\sqrt{5}) : \Q] = 4$. If this is the case, then $m_{\alpha, \Q}(x) = x^4 - 2x^2 + 20$.
+
+Suppose to the contrary that $\alpha \in \Q(\sqrt{5})$ so $\alpha = a + b\sqrt{5}$ for some $a, b \in \Q$.
+
+\subsection*{b}
+
+
+
+
+\newpage
+\section*{3}
+
+\subsection*{a}
+
+As the splitting field of $x^4 - 5x^2 + 6 = (x^2 - 2)(x^2 - 3)$, a separable polynomial in $\Q[x]$, we have that $K/\Q$ is Galois
+
+\subsection*{b}
+
+The roots of the above polynomial are $\pm\sqrt{2}$, $\pm\sqrt{3}$, so in particular we know $K = \Q(\sqrt{2}, \sqrt{3})$. Since $\sqrt{2}, \sqrt{3}, \sqrt{6}$ are all not squares in $\Q$, then $K$ is a biquadratic extension, so its Galois group is isomorphic to the Klein $4$-group.
+
+\subsection*{c}
+
+The Klein $4$-group has the subgroups $0 \times 0$, $\Z/2\Z \times 0$, $0 \times \Z/2\Z$, and itself. By the fundamental theorem on $\Gal(K/\Q)$, these correspond to the fixed subfields $K$, $\Q(\sqrt{3})$, $\Q(\sqrt{2})$, and $\Q$, respectively.
+
+
+
+\newpage
+\section*{4}
+
+\subsection*{a}
+
+Let $S \subseteq \clo{\Q}$ be the set of roots in $\clo{\Q}$ of the polynomial $f(x)$, then as the splitting field of $f(x)$, we know $K = \Q(S)$. In particular, for any $\alpha \in S$, the extension $\Q(\alpha)/\Q$ is a subextension of $K/\Q$, and is the fixed field of some subgroup of $\Gal(K/\Q)$, by the fundamental theorem.
+
+Since $\Gal(K/\Q)$ is abelian, then every subgroup is a normal subgroup, which implies that $\Q(\alpha)/\Q$ is a Galois extension. In particular, it is a normal extension, so $m_{\alpha, \Q}(x)$ splits completely in $(\Q(\alpha))[x]$. Since $\alpha$ is a root of the irreducible polynomial $f(x)$, then we must have $m_{\alpha, \Q}(x) = af(x)$ for some $a \in \Q^\times$. Therefore, $f(x) = a^{-1}m_{\alpha, \Q}(x)$ also splits over $\Q(\alpha)$, so $\Q(\alpha)$ must contain its splitting field $K$. This implies
+\[
+    [K : \Q] \leq [\Q(\alpha) : \Q] = \deg m_{\alpha, \Q}(x) = \deg f(x) = n.
+\]
+Since $\alpha \in K$, then $\Q(\alpha) \subseteq K$, so $n = [\Q(\alpha) : \Q] \leq [K : \Q]$, hence $[K : \Q] = n$.
+
+\subsection*{b}
+
+If $f(x)$ is not irreducible, then we cannot necessarily deduce that it splits over any given $\Q(\alpha)$, as the minimal polynomial of $\alpha$ will simply divide, but may not equal, $f(x)$.
+
+
+
+
+\newpage
+\section*{5}
+
+We know that $K/\F_7$ is a finite extension, so we must have $K = \F_{7^d}$ for some $d \in \Z_{>0}$. Then
+\[
+    \Gal(K / \F_7) = \Gal(\F_{7^d}/\F_7) \isom \Z/d\Z.
+\]
+Since $\F_{7^2} = \F_{49} \subseteq K = \F_{7^d}$, then we know $2 \mid d$.
+
+One can check that $x^3 - \eqc{2}$ has no roots in $\F_7$, so it is irreducible in $\F_y[x]$. So if $\alpha \in \clo{\F_7}$ is a root of $x^3 - \eqc{2}$, then $m_{\alpha, \F_7}(x) = x^3 - \eqc{2}$, so
+\[
+    [\F_7(\alpha) : \F_7] = \deg m_{\alpha, \F_7}(x) = \deg(x^3 - \eqc{2}) = 3.
+\]
+Moreover, $\F_7(\alpha)$ must be contained in the splitting field of $x^3 - \eqc{2}$, which is $K$, so
+\[
+    d = [K : \F_7] = [K : \F_7(\alpha)][\F_7(\alpha) : \F_7] = [K : \F_7(\alpha)] \cdot 3,
+\]
+implying $3 \mid d$.
+
+As the splitting field of a degree $3$ polynomial over $\F_{7^2}$, the degree of $K$ over $\F_{7^2}$ is at most $3! = 6$, and
+\[
+    [K : \F_7] = [K : \F_{7^2}][\F_{7^2} : \F] = [K : \F_{7^2}] \cdot 2.
+\]
+And we know that $3 \mid [K : \F_7]$, so $[K : \F_{7^2}]$ is either $6$ or $12$.
+
+Since both $2$ and $3$ divide $d = [K : \F_7] \leq 6$, then it must be exactly $6$. Hence,
+\[
+    \Gal(K / \F_7) = \Gal(\F_{7^6}/\F_7) \isom \Z/6\Z.
+\]
+
+
+\newpage
+\section*{6}
+
+Each $\Q$-embedding $\sigma : K \inc \clo{\Q}$ can be extended (not necessarily uniquely) to a $\Q$-embedding $\tilde{\sigma} : L \inc \clo{\Q}$ such that $\tilde{\sigma}|_K - \sigma$. As $L/\Q$ is Galois, therefore normal, $\tilde{\sigma}(L) = L$, and since $\tilde{\sigma}|_\Q = \sigma|_\Q = \id_{\Q}$, then we have $\tilde{\sigma} \in \Gal(L/\Q)$.
+
+Since $K/\Q$ is finite, it is separable, so $[K : \Q] = n$ is the number of $\Q$-embeddings from $K \to \clo{\Q}$.
+
+
+\end{document}

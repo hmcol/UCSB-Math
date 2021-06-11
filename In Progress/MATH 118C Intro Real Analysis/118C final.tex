@@ -1,0 +1,163 @@
+% Exam Template for UMTYMP and Math Department courses
+%
+% Using Philip Hirschhorn's exam.cls: http://www-math.mit.edu/~psh/#ExamCls
+%
+% run pdflatex on a finished exam at least three times to do the grading table on front page.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% These lines can probably stay unchanged, although you can remove the last
+% two packages if you're not making pictures with tikz.
+\documentclass[11pt, addpoints]{exam}
+\RequirePackage{amssymb, amsfonts, amsmath, latexsym, verbatim, xspace, setspace,cancel}
+\usepackage[shortlabels]{enumitem}
+\RequirePackage{tikz, pgfplots, pgflibraryplotmarks,comment}
+% By default LaTeX uses large margins.  This doesn't work well on exams; problems
+% end up in the "middle" of the page, reducing the amount of space for students
+% to work on them.
+\usepackage[margin=1in]{geometry}
+
+
+\pgfplotsset{soldot/.style={color=blue,only marks,mark=*}} \pgfplotsset{holdot/.style={color=blue,fill=white,only marks,mark=*}}
+
+
+% Here's where you edit the Class, Exam, Date, etc.
+\newcommand{\class}{Math 118C}
+\newcommand{\term}{Spring 2021}
+\newcommand{\examnum}{Final Exam}
+%\newcommand{\examdate}{07/17/2021}
+\newcommand{\timelimit}{120 Minutes (or per DSP letter)}
+
+% For an exam, single spacing is most appropriate
+\singlespacing
+% \onehalfspacing
+% \doublespacing
+
+% For an exam, we generally want to turn off paragraph indentation
+\parindent 0ex
+
+\begin{document} 
+
+% These commands set up the running header on the top of the exam pages
+\pagestyle{head}
+\firstpageheader{}{}{}
+\runningheader{\class}{\examnum}{Page \thepage\ of \numpages}
+\runningheadrule
+
+\begin{flushright}
+\begin{tabular}{p{2.8in} r l}
+\textbf{\class} & \textbf{Name:} & \makebox[2in]{\hrulefill}\\
+\textbf{\term} & \textbf{PERM Number:} & \makebox[2in]{\hrulefill}\\
+\textbf{\examnum} &&\\
+%\textbf{Due date: \examdate} &&\\
+\textbf{Time Limit: \timelimit} &&\\
+\end{tabular}\\
+\end{flushright}
+\rule[1ex]{\textwidth}{.1pt}
+
+\begin{itemize}
+
+\item Submit your work on GradeScope within 20 minutes from the end of the exam time indicated above. If you have submitted a DSP letter, this submission window also extends accordingly for you.
+
+\item This is a closed-book exam, you should work independently. In particular, you should not discuss these questions with anyone nor seek help from any internet sources. Violations of academic integrity will be reported. 
+
+
+
+\item If you want any clarification during the exam, ask the instructor over Zoom. Zoom ID: 426 530 1130.
+
+
+\item Organize your work, in a reasonably neat and coherent way. Work scattered all over a page without a clear ordering will receive very little credit.
+
+\item This exam contains \numpages\ pages (including this cover page) and
+\numquestions\ problems. 
+
+
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+%Do not write in the table to the right.
+%\end{minipage}
+%\hfill
+%\begin{minipage}[t]{2.3in}
+%\vspace{0pt}
+%\cellwidth{3em}
+%\gradetablestretch{2}
+%\vqword{Problem}
+  % required here by exam.cls, even though questions haven't started yet.	
+%\gradetable[v]%[pages]  % Use [pages] to have grading table by page instead of question
+
+
+\newpage % End of cover page
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% See http://www-math.mit.edu/~psh/#ExamCls for full documentation, but the questions
+% below give an idea of how to write questions [with parts] and have the points
+% tracked automatically on the cover page.
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{questions}
+
+\question[20]
+Define $r := \sqrt{x_1^2+x_2^2+x_3^2}$. Let $\omega := (\frac{1}{r})^3 (x_3 dx_1 \wedge dx_2 - x_2 dx_1 \wedge dx_3 + x_1 dx_2 \wedge dx_3)$ be a 2-form on $\mathbb R^3\setminus (0,0,0).$
+
+\begin{parts}
+\part Show that $d\omega = 0.$
+
+\vfill
+
+\part Let $B:=\{(x_1, x_2, x_3): (x_1-2)^2+x_2^2+x_3^2=3\}$ be a sphere in $\mathbb R^3,$ find the integral $\int_B \omega.$
+
+\vfill
+
+\end{parts}
+\newpage
+
+\question[15] Suppose that 
+
+\newpage
+
+\question[20]
+Let $D$ be the closed unit disk in $\mathbb R^2$ and $f$ be a continuous function on $D.$ Show that for any $\epsilon >0,$ there exists a number $n$ and functions $f_1, f_2, \ldots, f_n$ such that $f=f_1+\ldots+f_n$ on $D$ and the support of $f_i$ has Lebesgue measure less than $\epsilon,$ for any $i =1, \ldots, n.$ State any theorem you use.
+\newpage
+
+
+
+
+
+\question[20] 
+
+Prove that a subset $E$ of $\mathbb R^n$ is Lebesgue measurable if and only if for any $\epsilon >0,$ there exists an open set $U\subset \mathbb R^n$ such that $E\subset U$ and $m(U\setminus E)<\epsilon.$
+
+
+\newpage
+
+\question[20]
+Let $\{f_n\}$ be a sequence of measurable functions and define $f:=\liminf_n f_n.$ Is $f$ measurable? If yes, justify your answer. If no, give a counterexample.
+
+\newpage
+
+
+\question[15]
+
+ Let $\{f_n\}$ be a uniformly convergent and uniformly bounded sequence of Lebesgue integrable functions on $\mathbb R^1$ and let $f:=\lim_n f_n$ be the limit. Is it true that $$\lim_n \int_{\mathbb R^1} f_n dm = \int_{\mathbb R^1} f dm ?$$ If yes, justify your answer. If no, give a counterexample. All integrals are Lebesgue integrals.
+
+
+
+
+\end{questions}
+
+
+\end{document}

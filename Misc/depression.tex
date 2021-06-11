@@ -992,4 +992,124 @@ Taking the projection and composing with isomorphisms, we obtain a ring homomorp
 
 
 
+\section{please stop spending unnecessary time on trivial things, it is never worth it}
+
+Since , then this definition gives us . However, we can now write
+    This gives us an alternative representation of $f$, given by
+    \[
+        f
+            = hF + kG + (\ell FG - \ell FG)
+            = (h - \ell G)F + (k + \ell F)G.
+    \]
+    However, $\LP(h) = \ell G_n = \LP(\ell G)$, which means that $h - \ell G$ is a polynomial of degree strictly less than that of $h$, contradicting the fact that $\deg h$ is minimal.
+
+
+    Therefore, 
+
+
+
+
+
+
+
+
+    By definition, $f \in \<F, G\>$ implies that $f = hF + kG$, for some $h, k \in K[x, y]$. If it is the case that $\deg(hF) \ne \deg(kG)$, then the leading part of $f$ is simply the leading part of either $hF$ or $kG$, whichever has the greater degree. Then we have
+    \[
+        d 
+            = \deg f
+            = \max\{\deg(hF),\; \deg(kG)\}
+            = \max\{\deg h + m,\; \deg k + n\},
+    \]
+    and the result immediately follows. On the other hand, if $\deg(hF) = \deg(kG)$, then $f$ will have the very same degree if and only if $\LP(f) = \LP(hF) + \LP(kG) \ne 0$. In which case, we in fact have equality: $\deg h = d - m$ and $\deg k = d - n$.
+
+    In the case that $\deg(hF) \ne \deg(kG)$, then trivially have $\LP(hF) + \LP(kG) \ne 0$
+
+    Now assume that $h$ and $k$ have been chosen such that $\deg h$ is minimized. If $\deg(hF) \ne \deg(kG)$, then the result follows as above.  Assuming that the result does not hold, we must have
+    \[
+        \deg f < \deg(hF) = \deg(kG)
+    \]
+
+    
+    
+    If we have $\deg(hF) > \deg(kG)$, then the leading part of $f$ is precisely the leading part of $hF$. In which case,
+    \[
+        d = \deg f = \deg(hF) = \deg h + \deg F = d + m,
+    \]
+    which implies $\deg h = d - m$. Moreover,
+    \[
+        d = \deg f = \deg(hF) > \deg(kG) = \deg k + \deg G = d + n,
+    \]
+    implying that $\deg k > d - n$. The result follows by similar argument if $\deg(kG) > \deg(hF)$.
+
+    The only case where we don't have 
+
+    \[
+        \deg h = \deg f - \deg F \isp{and} \deg k < \deg f - \deg G.
+    \]
+
+    In particular, we choose $h$ such that $\deg h$ is minimized, and show that the result follows. 
+
+
+\section{i mean this one actually turned out pretty good so idk}
+
+there is a surjective $K$-linear map
+    \begin{align*}
+        \psi : \KK_{d - m - n} &\longrightarrow \ker \phi, \\
+        \ell &\longmapsto (\ell G, -\ell F).
+    \end{align*}
+    Trivially, $\ell \in \ker \psi$ implies $\ell G = 0$, so $\ell = 0$, giving us $\ker \psi = 0$. Hence, $\psi$ is a $K$-linear isomorphism; in particular,
+    \[
+        \dim_K \ker \phi
+            = \dim_K \dom \psi
+            = \binom{d-m-n+2}{2}
+    \]
+
+    Consider, also, the $K$-linear map given by the natural projection
+    \[
+        \pi : \KK_d \longrightarrow K[x, y] / \<F, G\>.
+    \]
+    Since $\im \phi \subseteq \<F, G\> = \ker \pi$, then we have
+    \[
+        \dim_K \im \phi \leq \dim_K \ker \pi = \dim_K \dom \pi - \dim_K \im \pi.
+    \]
+
+    By the rank-nullity theorem of linear algebra, we have
+    \[
+        \binom{d-m+2}{2} + \binom{d-n+2}{2} = \dim_K \dom \phi = \dim_K \im \phi + \dim_K \ker \phi.
+    \]
+
+
+    \begin{align*}
+        \dim_K \im \pi
+            &\leq \dim_K \dom \pi - \dim_K \im \phi \\
+            &= \dim_K \dom \pi - (\dim_K \dom \phi - \dim_K \ker \phi) \\
+            &= \dim_K \dom \pi - \dim_K \dom \phi + \dim_K \dom \psi \\
+            &= \binom{d+2}{2} - \binom{d-m+2}{2} - \binom{d-n+2}{2} + \binom{d-m-n+2}{2} \\
+            &= mn.
+    \end{align*}
+
+    
+
+    \begin{center}
+        \begin{tikzcd}
+            0 \ar[r] &
+            \KK_{d-m-n} \ar[r, "\psi"] &
+            \KK_{d-m} \times \KK_{d-n} \ar[r, "\phi"] &
+            \KK_d \ar[r, "\pi"] &
+            K[x, y] / \<F, G\> \ar[r] &
+            0
+        \end{tikzcd}
+    \end{center}
+    \[
+        \psi : \ell \mto (\ell G, -\ell F)
+        \isp{and}
+        \phi : (h, k) \mto hF + kG.
+    \]
+    \begin{itemize}
+        \item $\pi$ surjective ok
+        \item $\im \phi = \ker \pi$ ok
+        \item $\im \psi = \ker \phi$ ok
+        \item $\ker \psi = 0$ ok
+    \end{itemize}
+
 \end{document}

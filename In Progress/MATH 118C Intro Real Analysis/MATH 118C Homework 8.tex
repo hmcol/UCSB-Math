@@ -1,0 +1,256 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Theorem Environments
+%\theoremstyle{definition}
+%\newtheorem{proposition}{Proposition}
+%\newtheorem{lemma}{Lemma}
+
+% Options
+%\allowdisplaybreaks
+%\addtolength{\jot}{4pt}
+
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+
+% Extra Commands
+\newcommand{\dd}[1]{\,\mathrm{d}#1}
+
+\newcommand{\of}[1]{\!\left(#1\right)}
+
+\newcommand{\longlimit}[2]{
+    {
+        \def\arraystretch{0}
+        \begin{array}[t]{@{}l@{}}
+            \displaystyle{#2} \\[8.5pt] \scriptstyle{#1}
+        \end{array}
+    }
+}
+
+\newcommand{\intw}[1]{
+    \int_{\rlap{$\scriptstyle{#1}$}\hspace{1ex}}
+}
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH 118C Homework 8}
+    \fancyhead[C]{June 6, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+\begin{pbox}[1 Exercise 11.1]
+    If $f \geq 0$ and $\int_E f \dd{\mu} = 0$, prove that $f(x)=0$ almost everywhere on $E$. \textit{Hint:} Let $E_n$ be the subset of $E$ on which $f(x) > 1/n$. Write $A = \bigcup E_n$. Then $\mu(A) = 0$ if and only if $\mu(E_n) = 0$ for every $n$.
+\end{pbox}
+
+\begin{proof}
+    Since $f$ is a measurable function, $\{x : f(x) \geq \tfrac{1}{n}\}$ is a measurable set, for all $n \in \N$. Then the intersection of measurable sets
+    \[
+        E_n 
+            = \{x : f(x) \geq \tfrac{1}{n}\} \cap E
+            = \{x \in E : f(x) \geq \tfrac{1}{n}\}
+    \]
+    is measurable, and the countable union
+    \[
+        A
+            = \bigcup_{n=1}^{\infty} E_n
+            = \{x \in E : f(x) > 0\}
+    \]
+    is the measurable subset of $E$ on which $f$ is nonzero. For each $n \in \N$, Theorem 11.24 (i.e., additivity of integration over measurable sets) and Remark 11.23(b) give us
+    \[
+        \int_E f \dd{\mu}
+            = \int_{E_n} f \dd{\mu} + \int_{E \setminus E_n} f \dd{\mu}
+            \geq \frac{1}{n} \mu(E_n) + 0,
+    \]
+
+    
+    so
+    \[
+        \mu(E_n) \leq n\int_E f \dd{\mu} = n \cdot 0 = 0.
+    \]
+    Therefore, $\mu(E_n) = 0$, and we obtain
+    \[
+        \mu(A) 
+            \leq \sum_{n=1}^{\infty} \mu(E_n)
+            = \sum_{n=1}^{\infty} 0
+            = 0.
+    \]
+    Hence $\mu(A) = 0$, which is to say that $f$ is nonzero on a measure zero subset of $E$, i.e., $f$ is zero almost everywhere on $E$.
+
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[2 Exercise 11.2]
+    If $\int_A f \dd{\mu} = 0$ for every measurable subset $A$ of a measurable set $E$, then $f(x) = 0$ almost everywhere on $E$.
+\end{pbox}
+
+\begin{proof}
+    Since $f$ is measurable, $\{x : f(x) \geq 0\}$ is a measurable. Therefore, the intersection
+    \[
+        A = \{x : f(x) \geq 0\} \cap E = \{x \in E : f(x) \geq 0\}
+    \]
+    is a measurable subset of $E$, implying $\int_A f \dd{\mu} = 0$. Moreover, $A$ is precisely subset of $E$ on which $f$ is nonnegative, so we may apply Exercise 1 to deduce that $f$ is zero almost everywhere on $A$.
+
+    Similarly,
+    \[
+        B = \{x : f(x) \leq 0\} \cap E = \{x \in E : f(x) \leq 0\}
+    \]
+    is the measurable subset of $E$ on which $f$ is nonpositve. Then $-f$ is a measurable function, and is nonnegative on $B$. Remark 11.23(d) gives us
+    \[
+        \int_B -f \dd{\mu} = - \int_B f \dd{\mu} = -1 \cdot 0 = 0.
+    \]
+    From Exercise 1, $-f$ is zero almost everywhere on $B$ and, therefore, so is $f$. 
+    
+    By construction, $E = A \cup B$, so the subset of $E$ on which $f$ is nonzero is given by
+    \[
+        E \setminus f^{-1}(0) = (A \setminus f^{-1}(0)) \cup (B \setminus f^{-1}(0)).
+    \]
+    (We may consider a singleton as a closed interval, i.e., $\{0\} = [0, 0]$, so the preimage under $f$ is a measurable set.) Taking the measure, we find
+    \[
+        \mu\of{E \setminus f^{-1}(0)}
+            = \mu\of{A \setminus f^{-1}(0)} + \mu\of{B \setminus f^{-1}(0)}
+            = 0 + 0
+            = 0.
+    \]
+    In other words, $f$ is zero almost everywhere on $E$.
+
+\end{proof}
+
+
+\newpage
+\begin{pbox}[3 Exercise 11.3]
+    If $\{f_n\}$ is a sequence of measurable functions, prove that the set of points $x$ at which $\{f_n(x)\}$ converges is measurable.
+\end{pbox}
+
+\begin{proof}
+    By Theorem 11.17, the functions
+    \[
+        \underline{f}(x) = \liminf_{n \to \infty} f_n(x)
+        \isp{and}    
+        \overline{f}(x) = \limsup_{n \to \infty} f_n(x) 
+    \]
+    are measurable, so the intersection 
+    \[
+        E = \{x : -\infty < \underline{f}(x)\} \cap \{x : \overline{f}(x) < +\infty\}
+    \]
+    is a measurable set. Explicitly, $E$ is the set of points $x$ for which both the pointwise inferior and superior limits of $\{f_n(x)\}$ are finite. It can then be seen that $\{f_n(x)\}$ converges if and only if $x \in E$ and  $\underline{f}(x) = \overline{f}(x)$; in which case, $f_n(x) \to \underline{f}(x) = \overline{f}(x)$.
+
+    Define the function $g = \underline{f} - \overline{f}$ on $E$, which is measurable on $E$, by Theorem 11.18. Then the preimage
+    \[
+        g^{-1}([0, 0]) = \{x \in E : g(x) = 0\} = \{x \in E : \underline{f} = \overline{f}\}
+    \] 
+    is measurable and is precisely the set of points $x$ at which $\{f_n(x)\}$ converges.
+
+\end{proof}
+
+
+
+
+\newpage
+\begin{pbox}[4 Exercise 11.4]
+    If $f \in L(\mu)$ on $E$ and $g$ is bounded and measurable on $E$, then $fg \in L(\mu)$ on $E$.
+\end{pbox}
+
+\begin{proof}
+    By Theorem 11.18, $fg$ is measurable on $E$, so we must check that its integral over $E$ is finite. Define $M = \sup_E |g|$, so $-M \leq g \leq M$ on $E$. Then $\pm Mf$ are integrable functions such that, on $E$, we have
+    \[
+        -Mf \leq fg \leq Mf.
+    \]
+    Applying Remarks 11.23(b) and (d), we obtain
+    \[
+        -M\int_M f \dd{\mu} 
+            = \int_E -Mf \dd{\mu} 
+            \leq \int_E fg \dd{\mu}
+            \leq \int_E Mf \dd{\mu}
+            = M\int_E f \dd{\mu}.
+    \]
+    Since $M$ and $\int_E f \dd{\mu}$ is finite, then so is $\int_E fg \dd{\mu}$, hence $fg \in L(\mu)$ on $E$.
+
+\end{proof}
+
+
+\newpage
+\begin{pbox}[5 Exercise 11.5]
+    Put
+    \[
+        \begin{array}{r@{\,}lr}
+            g(x)        &= \left\{\begin{array}{@{}l} 0 \\ 1 \end{array}\right. 
+                            & \begin{array}{r@{}} 
+                                (0\leq x \leq \frac{1}{2}),\\
+                                (\frac{1}{2} < x \leq 1),
+                            \end{array} \\
+            f_{2k}(x)   &= g(x) &  (0 \leq x \leq 1),\\
+            f_{2k+1}(x) &= g(1-x) & \hfill (0 \leq x \leq 1).
+        \end{array}
+    \]
+    
+    Show that
+    \[\liminf_{n \to \infty} f_n(x) = 0 \qquad (0\leq x\leq 1),\]
+    but
+    \[\int_0^1 f_n(x) \dd{x} = \frac{1}{2}.\]
+    [Compare with (77).]
+\end{pbox}
+
+\begin{proof}
+    For all $n \in \N$, $f_n \geq 0$, i.e., $\liminf f_n(x) \geq 0$ for all $x \in [0, 1]$. So for a given $x$, we have equality if there exist infinitely many $n \in \N$ such that $f_n(x) = 0$. If $x \in [0, \frac{1}{2}]$, there are infinitely many even $n \in \N$, so that $f_n(x) = 0$. If $x \in (\frac{1}{2}, 1]$, there are infinitely many odd $n \in \N$, so that $f_n(x) = 0$. Hence, $\liminf f_n(x) = 0$ for all $x \in [0, 1]$.
+
+    If $n \in \N$ is even, then $f_n = \chi_{[0, \frac{1}{2}]}$ (indicator function), so
+    \[
+        \int_0^1 f_n(x) \dd{x}
+            = \int_{[0, 1]} \chi_{[0, \frac{1}{2}]} \dd{m}
+            = m\of{[0, \tfrac{1}{2})}
+            = \frac{1}{2} - 0
+            = \frac{1}{2}.
+    \]
+    If $n \in \N$ is odd, then $f_n = \chi_{(\frac{1}{2}, 1]}$, so
+    \[
+        \int_0^1 f_n(x) \dd{x}
+            = \int_{[0, 1]} \chi_{(\frac{1}{2}, 1]} \dd{m}
+            = m\of{(\tfrac{1}{2}, 1]}
+            = 1 - \frac{1}{2}
+            = \frac{1}{2}.
+    \]
+
+\end{proof}
+
+\end{document}

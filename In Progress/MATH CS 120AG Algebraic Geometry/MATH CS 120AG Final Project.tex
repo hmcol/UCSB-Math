@@ -1,0 +1,506 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb, mathrsfs, tikz-cd}
+
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{construction}[theorem]{Construction}
+\newtheorem{notation}[theorem]{Notation}
+
+\newenvironment{btheorem}{\begin{fullbox}\begin{theorem}}{\end{theorem}\end{fullbox}}
+\newenvironment{blemma}{\begin{fullbox}\begin{lemma}}{\end{lemma}\end{fullbox}}
+\newenvironment{bproposition}{\begin{fullbox}\begin{proposition}}{\end{proposition}\end{fullbox}}
+
+\newenvironment{bdefinition}{\begin{fullbox}\begin{definition}}{\end{definition}\end{fullbox}}
+\newenvironment{bnotation}{\begin{fullbox}\begin{notation}}{\end{notation}\end{fullbox}}
+
+% Options
+%\allowdisplaybreaks
+%\addtolength{\jot}{4pt}
+
+% Default Commands
+\newcommand{\isp}[1]{\qquad\text{#1}\qquad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+
+% Extra Commands
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\renewcommand{\O}{\mathscr{O}}
+
+\newcommand{\teq}{\trianglelefteq}
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\blow}{\widetilde}
+
+\newcommand{\Vp}{V_{\mathrm{p}}}
+\newcommand{\Va}{V_{\mathrm{a}}}
+
+\DeclareMathOperator{\codim}{codim}
+\DeclareMathOperator{\Hom}{Hom}
+\renewcommand{\Im}{\operatorname{Im}}
+
+\newcommand{\longlimit}[2]{
+    {
+        \def\arraystretch{0}
+        \begin{array}[t]{@{}l@{}}
+            \displaystyle{#2} \\[8.5pt] \scriptstyle{#1}
+        \end{array}
+    }
+}
+
+\newcommand{\longprod}[2]{\longlimit{#1}{\prod #2}}
+\newcommand{\longsum}[2]{\longlimit{#1}{\sum #2}}
+
+\DeclareMathOperator{\LP}{LP}
+
+\newcommand{\KK}{\mathbf{K}}
+
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\im}{im}
+
+\newcommand{\dto}[1][]{\overset{#1}{\longrightarrow}}
+\newcommand{\mto}{\longmapsto}
+
+\newcommand{\ui}{\mathrm{i}}
+
+% Document Info
+\title{\vspace{-0.5in}B\'ezout's Theorem\\
+    \large MATH CS 120AG Final Project
+}
+\author{Harry Coleman}
+\date{June 8, 2021}
+
+% Begin Document
+\begin{document}
+\maketitle
+
+\section{Introduction}
+
+Take $K$ to be an algebraically closed ground field. The fundamental theorem of algebra tells us that for any nonconstant $f \in K[x]$, the number of roots of $f$ in $K$, counted with multiplicity, equal to its degree. Geometrically, the roots of $f$ are the intersections of its graph with the $x$-axis in the affine plane. The graph of $f$ is precisely the zeros in $\A^2$ of the polynomial $f - y \in K[x, y]$, and the $x$-axis is the zeros of $y \in K[x, y]$. It is then rather uninformative to state that the number of intersections of these two sets, counted with multiplicity, is still $\deg(f - y) \cdot \deg y = \deg f$.
+
+To begin generalizing this notion, we will ask of a pair of polynomials in $K[x, y]$, when it is true that their number of intersections, counted with multiplicity, is precisely the product of their degrees. There are more general questions to ask, along similar lines, such as when $K$ is not algebraically closed, or if we were to consider polynomials in more variables. To keep things simple, we will focus on bivariate polynomials over an algebraically closed field. In order to state the result properly, towards the end, we will consider zeros of polynomials in the projective plane $\P^2$, but most work will be done in the affine setting.
+
+\section{Background}
+
+We will take for granted some introductory knowledge of algebraic geometry, such as a few basic results about affine and projective varieties. Some new notation will be introduced for the ease of working on this particular problem. The first simplification we will make is the identification of polynomials and their zero loci.
+
+\begin{bdefinition}
+    An \textbf{(affine) curve} is a nonconstant polynomial $F \in K[x, y]$ modulo units, i.e., modulo the equivalence relation $F \sim G$ if $F = \lambda G$ for some $\lambda \in K^\times$. 
+
+    The \textbf{degree} of a curve is its degree as a polynomial, denoted $\deg F$.
+        
+    The \textbf{(irreducible) components} of a curve $F$ are simply its irreducible components as a polynomial.
+\end{bdefinition}
+
+Taking the zero locus of a curve $F \in K[x, y]$ is well-defined with respect to the equivalence relation imposed on curves. That is $F(a) = 0$ if and only if $\lambda F(a) = 0$ for all $\lambda \in K^\times$. Therefore, one can regard the equivalence classes of curves to be the equivalence classes of polynomials which induce the same zero locus. It may then seem natural to make explicit this correspondence.
+
+\begin{bnotation}
+    We will sometimes write
+    \begin{itemize}
+        \item[(a)] $a \in F$ instead of $a \in V(F)$, i.e., $F(a) = 0$;
+        \item[(b)] $F \cap G$ instead of $V(F, G)$ for the points that lie on both $F$ and $G$;
+        \item[(c)] $F \cup G$ for the curve $FG$;
+        \item[(d)] $G \subseteq F$ instead of $G \mid F$.
+    \end{itemize}
+\end{bnotation}
+
+From algebraic geometry, we know that the sheaf $\O_X$ of an affine variety $X$, admits a stalk $\O_{X, a}$ at a point $a \in X$, which is isomorphic to the localization $A(X)_{I(a)}$ of the coordinate ring $A(X)$ at the maximal ideal $I(a) \teq A(X)$. The stalk is a local ring, in the sense that it has a unique maximal ideal $I_a \teq \O_{X, a}$.
+
+This stalk will be a useful when looking at the intersections of curves, as we will be exclusively interested in the behavior around the point of intersection. However, the full generality of the sheaf of regular functions is not necessary for our purposes, so we will define a more lightweight version.
+
+\begin{bdefinition}
+    Let $a \in \A^2$ be a point. The \textbf{local ring} of $\A^2$ at $a$ is defined as
+    \[
+        \O_a 
+            = \left\{\frac{g}{f} : f, g \in K[x, y] \text{ with } f(a) \ne 0 \right\}
+            \subseteq K(x, y)
+    \]
+    The evaluation map $\O_a \to K$, given by $\frac{g}{f} \mapsto \frac{g(a)}{f(a)}$ is a well-defined ring homomorphism. Its kernel will be denoted by
+    \[
+        I_a = \{\phi \in \O_a \mid \phi(a) = 0\},
+    \]
+    which is the unique maximal ideal in $\O_a$.
+\end{bdefinition}
+
+There is a natural embedding $K[x, y] \inc \O_a$, which maps $f \mapsto \frac{f}{1}$, and we will generally consider $K[x, y] \subseteq \O_a$, under this embedding. With this, we can now define one of the key ingredients for B\'ezout's lemma, which is the multiplicity of the intersection of two curves. In the case of univariate polynomials, it was simply a matter of decomposing into linear factors. Although $K[x, y]$ is a unique factorization domain, it is not a not a Euclidean domain, so we should not expect an arbitrary polynomial to decompose into linear factors. Hence, the definition of intersection multiplicity in $K[x, y]$ is a less obvious construction.
+
+\begin{bdefinition}
+    The \textbf{intersection multiplicity} of two curves $F$ and $G$ at a point $a \in \A^2$ is defined to be
+    \[
+        \mu_a(F, G) = \dim \O_a / \<F, G\> 
+        \quad \in \N \cup \{\infty\}.
+    \]
+    (For any suitable space, $\dim X$ will always refer to the dimension of $X$ as a $K$-vector space.)
+\end{bdefinition}
+
+
+\begin{bproposition}\label{unproved}(Not proved here)
+    Let $F$ and $G$ be curves and $a \in \A^2$.
+    \begin{itemize}
+        \item $\mu_a(F, G) \geq 1$ if and only if $a \in F \cap G$.
+        \item If $F$ and $G$ are coprime, then $F \cap G$ and $\mu_a(F, G)$ are finite. 
+    \end{itemize}
+\end{bproposition}
+
+\section{Proof}
+
+\begin{blemma}\label{power-in-ideal}
+    Let $F$ and $G$ be coprime curves and $a \in F \cap G$. Then for $h \in K[x, y]$ such that $h(a) = 0$, we have $h^n \in \<F, G\> \teq \O_a$ for some $n \in \N$.
+\end{blemma}
+
+\begin{proof}
+    As $F$ and $G$ are coprime, put $m = \mu_a(F, G) < \infty$, by Proposition \ref{unproved}. Then we have a descending chain of ideals in $\O_a$:
+    \[
+        \O_a = \<F, G, h^0\>
+            \supseteq \<F, G, h^1\>
+            \supseteq \cdots
+            \supseteq \<F, G, h^m\>
+            \supseteq \<F, G\>.
+    \]
+    Taking the quotient of the local ring $\O_a$ by these ideal, we obtain the inequalities
+    \[
+        0
+            = \dim \O_a / \O_a
+            \leq \dim \O_a / \<F, G, h^1\>
+            \leq \cdots
+            \leq \dim \O_a / \<F, G, h^m\>
+            \leq \dim \O / \<F, G\>
+            = m.
+    \]
+    Since there are $m + 2$ quotients over $m + 1$ possible dimensions, we must have some adjacent pair equal, i.e.,
+    \[
+        \dim \O_a / \<F, G, h^n\> = \dim \O_a / \<F, G, h^{n + 1}\>
+    \]
+    for some $n \in \N$. In which case, $\<F, G, h^n\> = \<F, G, h^{n + 1}\>$, so for some $\alpha, \beta, \gamma \in \O_a$,
+    \[
+        h^n = \alpha F + \beta G + \gamma h^{n+1}
+        \implies
+        h^n(1 - \gamma h) = \alpha F + \beta G \in \<F, G\>.
+    \]
+    Since $h(a) = 0$, then $1 - \gamma(a)h(a) = 1$, so $1 - \gamma h \in \O_a^\times$. Hence, $h^n \in \<F, G\> \teq \O_a$.
+
+\end{proof}
+
+
+
+
+\begin{blemma}\label{poly-rep}
+    Let $F$ and $G$ be coprime curves and $a \in \A^2$ be any point. Then every element of $\O_a / \<F, G\>$ has a polynomial representation.
+\end{blemma}
+
+\begin{proof}
+    If $a \notin F$, then $F(a) \ne 0$. That is, $F \in \O_a^\times$, implying $\<F, G\> = \O_a$. Therefore,
+    \[
+        \O_a/\<F, G\> = \O_a/\O_a = \{0\},
+    \]
+    where the result is trivially true of $0 \in K[x, y]$. The same is true of $a \notin G$.
+
+    Suppose now that $a \in F \cap G$. By definition, every element of $\O_a / \<F, G\>$ is of the form $\frac{g}{f}$, where $g, f \in K[x, y]$ and $f(a) \ne 0$. Without loss of generality, we may assume $f(a) = 1$; otherwise, $f(a)^{-1} \in K^\times$ and we could write
+    \[
+        \frac{g}{f} = \frac{f(a)^{-1} g}{f(a)^{-1} f},
+    \]
+    where $f(a)^{-1} f(a) = 1$.
+
+    We first find a polynomial representation for $\frac{1}{f} \in \O_a / \<F, G\>$. Define $h = 1 - f \in K[x, y]$, so
+    \[
+        \frac{1}{f} 
+            = \frac{1}{1 - h}.
+    \]
+    And $h(a) = 1 - f(a) = 0$, so Lemma \ref{power-in-ideal} tells us that $h^n \in \<F, G\>$ for some $n \in \N$. In other words, $h^n = 0$ in $\O_a / \<F, G\>$, where we now have
+    \[
+        \frac{1}{f}
+            = \frac{1}{1 - h}
+            = \frac{1 + h + h^2 + \cdots + h^{n-1}}{1 - h^n}
+            = 1 + h + h^2 + \cdots + h^{n-1}.
+    \]
+    Therefore, we obtain, in $\O_a / \<F, G\>$, the polynomial representation
+    \[
+        \frac{g}{f} = g(1 + h + h^2 + \cdots + h^{n-1}).
+    \]
+
+
+\end{proof}
+
+
+
+
+
+\begin{blemma}\label{KqFG-isom}
+    Let $F$ and $G$ be coprime curves and consider the natural ring homomorphism
+    \[
+        \Phi : K[x, y] / \<F, G\> \longrightarrow \longprod{a \in F \cap G}{\O_a / \<F, G\>},
+    \]
+    which sends the equivalence class of a polynomial $f \in K[x, y]$ to the class of $f \in \O_a$, in each factor $\O_a / \<F, G\>$. Then $\Phi$ is an isomorphism
+    
+    In particular, we have
+    \[
+        \dim K[x, y] / \<F, G\> = \longsum{a \in F \cap G}{\mu_a(F, G)} < \infty.
+    \]
+\end{blemma}
+
+
+
+\begin{proof}
+    We first prove surjectivity. Suppose $F \cap G = \{a_0, \dots, a_m\}$ and put $a_j = (x_j, y_j)$. Define the polynomial
+    \[
+        f
+            = \prod_{x_j \ne x_0} \frac{x - x_j}{x_0 - x_j} \cdot \prod_{y_j \ne y_0} \frac{y - y_j}{y_0 - y_j}
+            \quad \in K[x, y].
+    \]
+    This is similar to a Lagrange basis polynomial, with $f(a_0) = 1$ and $f(a_j) = 0$ for $j = 1, \dots, m$. In particular, $f \in \O_{a_0}^\times$ but $f \in I_{a_j}$ for $j \ne 0$. By Lemma \ref{power-in-ideal}, we can choose $n \in \N$ large enough so that $f^n \in \<F, G\>$ in all the stalks $\O_{a_1}, \dots, \O_{a_m}$, i.e., $f^n = 0$ in $\O_{a_j} / \<F, G\>$ for $j \ne 0$.
+
+    For an arbitrary $\phi \in \O_{a_0}$, Lemma \ref{poly-rep} gives us a polynomial representation $g \in K[x, y]$ of the element $\phi\frac{1}{f^n} \in \O_{a_0} / \<F, G\>$. Then $gf^n \in K[x, y]$ with the $a_0$-component of $\Phi(gf^n)$ given by
+    \[
+        g \cdot f^n 
+            = \phi \tfrac{1}{f^n} \cdot f^n
+            = \phi
+        \quad \in \O_{a_0} / \<F, G\>.
+    \]
+    Moreover, for $j \ne 0$, the $a_j$-component of $\Phi(f^n)$ is given by
+    \[
+        g \cdot f^n = g \cdot 0 = 0
+        \quad \in \O_{a_j} / \<F, G\>.
+    \]
+    Hence, $\Phi(gf^n) = (\phi, 0, \dots, 0)$. That is, $\Phi$ to be surjective on the subset of $\prod_{a} \O_{a} / \<F, G\>$ with zeros in all but the $a_0$-component. Repeating the same argument for each of  components in the codomain, we deduce $\Phi$ is surjective on elements with zeros in all but one component.
+
+    Given any $\phi \in \prod_{a} \O_{a} / \<F, G\>$, we can write it as $\phi = \phi_0 + \cdots + \phi_m$, where each $\phi_j$ has zeros in all but the $a_j$-component (these are essentially the coordinates of $\phi$). Then, for $j = 0, \dots, m$, there exists $f_j \in K[x, y] / \<F, G\>$ such that the $a_j$-component of $\Phi(f_j)$ is precisely $\phi_j$. Hence, we have an element $f = f_0 + \cdots + f_m$ in the domain of $\Phi$, with
+    \[
+        \Phi(f) = \Phi(f_0 + \cdots + f_m) = \phi_0 + \cdots + \phi_m = \phi.
+    \]
+    This proves $\Phi$ is surjective
+
+    To see that $\Phi$ is injective, we will show its kernel is trivial. Suppose $f \in \ker\Phi$, then define
+    \[
+        J = \{g \in K[x, y] : gf \in \<F, G\>\}.
+    \]
+    We claim that $V(J) = \emptyset$. Suppose, for contradiction, that there exists a point $a \in V(J)$. In particular, $F(a) = G(a) = 0$ so $a \in F \cap G$, corresponding to some component in the codomain of $\Phi$. Then $f \in \ker\Phi$ implies $f = 0 \in \O_{a} / \<F, G\>$. That is, for some $p_j, q_j, \in K[x, y]$ with $q_j(a) \ne 0$, $j = 1, 2$, we have
+    \[
+        f = \frac{p_1}{q_1}F + \frac{p_2}{q_2}G
+        \quad \in \O_a
+    \]
+    Put $q = q_1q_2 \in K[x, y]$, then we must have $q(a) = q_1(a)q_2(a) \ne 0$. However,
+    \[
+        qf = p_1q_2 F + p_2q_1 G \quad \in \<F, G\>,
+    \]
+    which implies $q \in J$. By assumption, $a \in V(J)$, so we must have $q(a) = 0$, which is a contradiction. Hence, $V(J) = \emptyset$.
+    
+    By the affine Nullstellensatz, we have
+    \[
+        \sqrt{J} = I(V(J)) = I(\emptyset) = K[x, y].
+    \]
+    In particular, $1 \in K[x, y] = \sqrt{J}$, implying $1 = 1^n \in J$ for some $n \in \N$. By the construction of $J$, this means $f = 1f \in \<F, G\>$. That is, $f = 0 \in K[x, y] / \<F, G\>$. Hence, $\ker \Phi = 0$, so $\Phi$ is injective, and therefore an isomorphism.
+
+    Since $F$ and $G$ are coprime, Proposition \ref{unproved} tells us that $\mu_a(F, G) < \infty$ for all $a \in F \cap G$, which contains only finitely many points. Hence, as a finite sum of finite terms,
+    \[
+        \dim K[x, y] / \<F, G\> = \longsum{a \in F \cap G}{\mu_a(F, G)} < \infty.
+    \]
+
+\end{proof}
+
+
+
+\newpage
+
+For a polynomial $f$ of degree $d$, we write $\LP(f) = f_d$ to denote the leading part of $f$, i.e., the degree-$d$ part of $f$.
+
+\begin{blemma}\label{LT-coprime-rep}
+    Let $F$ and $G$ be curves, such that their leading parts $\LP(F)$ and $\LP(G)$ are coprime. Then every $f \in \<F, G\>$ can be written as $f = hF + kG$, for some $h, k \in K[x, y]$ with
+    \[
+        \deg h \leq \deg f - \deg F \isp{and} \deg k \leq \deg f - \deg G.
+    \]
+\end{blemma}
+
+
+
+\begin{proof}
+    Choose $h, k \in K[x, y]$ such that $f = hF + kG$ and $\deg h$ is minimized. If it is the case that $\LP(hF) + \LP(kG) \ne 0$, then we  have
+    \[
+        d 
+            = \deg f
+            = \max\{\deg(hF),\; \deg(kG)\}
+            = \max\{\deg h + m,\; \deg k + n\},
+    \]
+    from which the result immediately follows.
+
+    For contradiction, assume $\LP(hF) + \LP(kG) = 0$, then in particular
+    \[
+        \LP(h) F_m = \LP(hF) = -\LP(kG) = -\LP(k)G_n.
+    \]
+    Since $F_m$ and $G_n$ have no common component, must have $G_n \mid \LP(h)$ and $F_m \mid \LP(k)$. Then there is a homogeneous polynomial $\ell \in K[x, y]$ such that
+    \[
+        \LP(h) = \ell G_n \isp{and} \LP(k) = -\ell F_m.
+    \]
+    Define $h' = h - \ell G$ and $k' = k + \ell G$, which gives us the alternative representation
+    \[
+        f
+            = hF + kG + (\ell FG - \ell FG)
+            = (h - \ell G)F + (k + \ell F)G
+            = h'F + k'G.
+    \]
+    However, since $\LP(h) = \ell G_n = \LP(\ell G)$, then we also have $\deg h' < \deg h$, a contradiction.
+
+\end{proof}
+
+
+
+\begin{bproposition}\label{exact-4-sequence}
+    If the sequence of linear maps
+    \begin{center}
+        \begin{tikzcd}
+            0 \ar[r] &
+            A \ar[r, "f"] &
+            B \ar[r, "g"] &
+            C \ar[r, "h"] &
+            D \ar[r] &
+            0
+        \end{tikzcd}
+    \end{center}
+    is exact, then $\dim A - \dim B + \dim C - \dim D = 0$.
+\end{bproposition}
+
+\begin{proof}
+    By definition, we have
+    \[
+        0 = \ker f, \quad \im f = \ker g, \quad \im g = \ker h, \quad \im h = D.
+    \]
+    With the rank-nullity theorem from linear algebra, we compute
+    \begin{alignat*}{2}
+        \dim A
+            &= \dim \im f   &&+ \dim \ker f \\
+            &= \dim \ker g  &&+ \dim 0 \\
+            &= \dim B       &&- \dim \im g \\
+            &= \dim B       &&- \dim \ker h \\
+            &= \dim B       &&- (\dim C - \dim \im h) \\
+            &= \dim B       &&- \dim C + \dim D.
+    \end{alignat*}
+
+\end{proof}
+
+
+\begin{blemma}\label{dim-prod-deg}
+    If $F$ and $G$ are coprime curves such that $\LP(F)$ and $\LP(G)$ are also coprime,
+    \[
+        \dim K[x, y] / \<F, G\> = \deg F \cdot \deg G.
+    \]
+\end{blemma}
+
+\begin{proof}
+    Put $m = \deg F$ and $n = \deg G$.
+
+    For $r \in \N$, let $\KK_r = \{f \in K[x, y] : \deg f \leq r\}$ be the $K$-linear subspace of $K[x, y]$, consisting of polynomials with degree at most $r$. The dimension of this space is $\dim \KK_r = \binom{r + 2}{2}$.
+
+    For an integer $d \geq m + n$, consider the sequence of $K$-linear maps
+    \begin{center}
+        \begin{tikzcd}
+            0 \ar[r] &
+            \KK_{d-m-n} \ar[r, "\psi"] &
+            \KK_{d-m} \times \KK_{d-n} \ar[r, "\phi"] &
+            \KK_d \ar[r, "\pi"] &
+            K[x, y] / \<F, G\> \ar[r] &
+            0,
+        \end{tikzcd}
+    \end{center}
+    where $\psi : \ell \mapsto (\ell G, -\ell F)$,  $\phi : (h, k) \mapsto hF + kG$, and $\pi$ is a restriction of the natural projection. We claim that this sequence is exact, for sufficiently large $d \in \N$.
+
+    It is easy to see that $\ker \psi = 0$. If $\ell \in \ker \psi$, then $(\ell G, -\ell F) = (0, 0)$. In particular, $\ell G = 0$ implies $\ell = 0$, since $G$ is nonzero and $\KK_{d-m} \subseteq K[x, y]$ is an integral domain.
+    
+    We have $\im \psi \subseteq \ker \phi$, since $\phi(\ell G, -\ell F) = \ell GF - \ell F G = 0$. To show the opposite inclusion, let $(h, k) \in \ker \phi$, so $hF = -kG$. Since $F$ and $G$ have no common component, then we must have $G \mid h$ and $F \mid k$. Then there exists $\ell \in K[x, y]$ such that $h = \ell G$ and $k = -\ell F$. In particular, $h \in \KK_{d-m}$ gives us
+    \[
+        \deg \ell = \deg h - \deg G = \deg h - n \leq d - m - n,
+    \]
+    which implies $\ell \in \KK_{d-m-n}$ with $\psi(\ell) = (h, k)$. Hence, $\im \psi = \ker \phi$.
+
+    We have $\im \phi \subseteq \ker \pi$, since $\phi(h, k) = hF + kG \in \<F, G\>$. Given any $f \in \ker \pi$, we must have $f \in \<F, G\>$ with $\deg f \leq d$. Since the leading terms of $F$ and $G$ have no common component, then Lemma \ref{LT-coprime-rep} applies. Hence, $f = hF + kG$ for some $h, k \in K[x, y]$ such that $\deg h \leq d - m$ and $\deg k \leq d - n$. That is, $(h, k) \in \KK_{d-m} \times \KK_{d-n}$ with $\phi(h, k) = f$. Hence, $\im \phi = \ker \pi$.
+
+    From Lemma \ref{KqFG-isom}, $\dim K[x, y] / \<F, G\> < \infty$, so there exists a finite subset $S \subseteq K[x, y]$, whose equivalence classes form a generating set of $K[x, y] / \<F, G\>$ over $K$. Then every element in the quotient has a representative as a $K$-linear combination of the polynomials in $S$. If we assume $d \geq \max_{f \in S} \deg f$, then $\KK_d$ contains $S$ and, therefore, the $K$-linear span of $S$. This says that every element of $K[x, y] / \<F, G\>$ has a representative in $\KK_d$, i.e., $\pi$ is surjective.
+
+    This proves that the sequence is exact, so Proposition \ref{exact-4-sequence} gives us
+    \begin{align*}
+        \dim K[x, y] / \<F, G\>
+            &= \dim \KK_d - \dim (\KK_{d-m} \times \KK_{d-n}) + \dim \KK_{d-m-n} \\
+            &= \binom{d+2}{2} - \binom{d-m+2}{2} - \binom{d-n+2}{2} + \binom{d-m-n+2}{2} \\
+            &= mn.
+    \end{align*}
+
+\end{proof}
+
+
+
+
+\begin{bproposition}\label{homog-linear-factor}
+    Every homogeneous polynomial in $K[x, y]$ can be written as a product of linear polynomials.
+\end{bproposition}
+
+\begin{proof}
+    Let $f \in K[x, y]$ and $d = \deg f$. Then
+    \[
+        f
+            = \sum_{i = 0}^{d} c_i x^i y^{d - i}
+            = y^d \sum_{i = 0}^{d} c_i \big(\tfrac{x}{y}\big)^i,
+    \]
+    where $c_i \in K$. The summation can be considered as a univariate inhomogeneous polynomial in $K[\frac{x}{y}]$. As $K$ is algebraically closed, there is a decomposition into $d$ linear factors:
+    \[
+        f
+            = y^d \prod_{i = 1}^{d} \left(a_i\tfrac{x}{y} + b_i \right)
+            = \prod_{i = 1}^{d} (a_ix  + b_iy).
+    \] 
+\end{proof}
+
+
+\begin{btheorem}(B\'ezout's Theorem)
+    If $F$ and $G$ are coprime projective curves, then
+    \[
+        \longsum{a \in F \cap G}{\mu_a(F, G)} = \deg F \cdot \deg G.
+    \]
+\end{btheorem}
+
+\begin{proof}
+    Since $K$ is infinite, we can find some line $L \subseteq \P^2 \setminus (F \cap G)$. Then we can perform a projective coordinate transformation on $\P^2$, which sends $L$ to the line $\Vp(z)$ at infinity. Afterwords, $F \cap G$ is contained in the affine part of $\P^2$, i.e., $z$ is not a factor of $F$ or $G$, so $\deg F = \deg F^\ui$ and $\deg G = \deg G^\ui$. Then $F^\ui$ and $G^\ui$ are affine curves with no common component; otherwise the homogenization of that common component would be a common component of $F$ and $G$.
+
+    Since $z$ does not divide $F$ nor $G$, the points at infinity contained in these curves are given by the leading parts $\LP(F^\ui)$ and $\LP(G^\ui)$, respectively. But since $F \cap G$ is entirely contained in the affine part of $\P^2$, the leading parts are homogenous polynomials in $K[x, y]$ with no common roots. By Proposition \ref{homog-linear-factor}, we can decompose $\LP(F^\ui)$ and $\LP(G^\ui)$ into linear factors. However, any common linear factor would correspond to a common root, hence $\LP(F^\ui)$ and $\LP(G^\ui)$ have no common components.
+
+    From Lemmas \ref{KqFG-isom} and \ref{dim-prod-deg}, applied to $F^\ui$ and $G^\ui$, we obtain
+    \[
+        \longsum{a \in F^\ui \cap G^\ui}{\mu_a(F^\ui, G^\ui)}
+            = \dim K[x, y] / \<F^\ui, G^\ui\> 
+            = \deg F^\ui \cdot \deg G^\ui.
+            = \deg F \cdot \deg G.
+    \]
+    Since all the points of $F \cap G$ are in the affine part of $\P^2$, where $F$ and $G$ agree with $F^\ui$ and $G^\ui$, then $F^\ui \cap G^\ui$ are simply the affine coordinates of the points in $F \cap G$. And for points in the affine part of $\P^2$, we have $\mu_{[a_1 : a_2 : 1]}(F, G) = \mu_{(a_1, a_2)}(F^\ui, G^\ui)$. So in fact,
+    \[
+        \longsum{a \in F \cap G}{\mu_a(F, G)}
+            = \longsum{a \in F^\ui \cap G^\ui}{\mu_a(F^\ui, G^\ui)}
+            = \deg F \cdot \deg G.
+    \]
+
+\end{proof}
+
+
+\end{document}

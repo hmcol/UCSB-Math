@@ -1,0 +1,209 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Theorem Environments
+%\theoremstyle{definition}
+%\newtheorem{proposition}{Proposition}
+%\newtheorem{lemma}{Lemma}
+
+% Options
+%\allowdisplaybreaks
+%\addtolength{\jot}{4pt}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+
+% Extra Commands
+\newcommand{\dd}[1]{\,\mathrm{d}#1}
+\newcommand{\DD}[1]{\,\mathrm{D}#1}
+\newcommand{\pdv}[1]{\frac{\partial}{\partial #1}}
+
+
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+\newcommand{\mdet}[1]{\begin{vmatrix}#1\end{vmatrix}}
+\newcommand{\jac}[2]{\frac{\partial(#1)}{\partial(#2)}}
+
+\newcommand{\of}[1]{\!\left(#1\right)}
+
+\newcommand{\RR}{\mathcal{R}}
+\newcommand{\EE}{\mathcal{E}}
+\newcommand{\MM}{\mathfrak{M}}
+
+\newcommand{\bd}{\partial}
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH 118C Final}
+    \fancyhead[C]{June 8, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+This one is bad. Don't look please.
+
+\newpage
+\begin{pbox}[1]
+    Define $r := \sqrt{x_1^2+x_2^2+x_3^2}$. Let $\omega := (\frac{1}{r})^3 (x_3 dx_1 \wedge dx_2 - x_2 dx_1 \wedge dx_3 + x_1 dx_2 \wedge dx_3)$ be a 2-form on $\mathbb R^3\setminus (0,0,0).$
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Show that $d\omega = 0.$
+\end{pbox}
+
+Note that
+\[
+    (\dd{x_i} \wedge \dd{x_j}) \wedge \dd{x_i}
+        = -(\dd{x_i} \wedge \dd{x_i}) \wedge \dd{x_j}
+        = 0,
+\]
+so if $\{i, j, k\} = \{1, 2, 3\}$, then
+\begin{align*}
+    \dd{\of{\frac{x_i}{r^3}}} \wedge \dd{x_j} \wedge \dd{x_k}
+        &= \DD_i\frac{x_i}{r^3} \dd{x_i} \wedge \dd{x_j} \wedge \dd{x_k}
+            + \DD_j\frac{x_i}{r^3} \dd{x_j} \wedge \dd{x_j} \wedge \dd{x_k}
+            + \DD_k\frac{x_i}{r^3} \dd{x_k} \wedge \dd{x_j} \wedge \dd{x_k} \\
+        &= \DD_i\frac{x_i}{r^3} \dd{x_i} \wedge \dd{x_j} \wedge \dd{x_k} + 0 + 0.
+\end{align*}
+Then
+\begin{align*}
+    \dd{\omega}
+        &= \dd{\of{\frac{x_3}{r^3}}} \wedge \dd{x_1} \wedge \dd{x_2}
+            + \dd{\of{\frac{x_2}{r^3}}} \wedge \dd{x_1} \wedge \dd{x_3}
+            + \dd{\of{\frac{x_1}{r^3}}} \wedge \dd{x_2} \wedge \dd{x_3} \\
+        &= \DD_3 \frac{x_3}{r^3} \dd{x_3} \wedge \dd{x_1} \wedge \dd{x_2}
+            - \DD_2 \frac{x_2}{r^3} \dd{x_2} \wedge \dd{x_1} \wedge \dd{x_3}
+            + \DD_1 \frac{x_1}{r^3} \dd{x_1} \wedge \dd{x_2} \wedge \dd{x_3} \\
+        &= \left(\DD_1 \frac{x_1}{r^3} 
+            + \DD_2 \frac{x_2}{r^3} 
+            + \DD_3 \frac{x_3}{r^3}\right) \dd{x_1} \wedge \dd{x_2} \wedge \dd{x_3} \\
+        &= \left(\frac{-2x_1^2 + x_2^2 + x_3^2}{r^5} 
+            + \frac{x_1^2 - 2x_2^2 + x_3^2}{r^5}
+            + \frac{x_1^2 + x_2^2 - 2x_3^2}{r^5}\right) \dd{x_1} \wedge \dd{x_2} \wedge \dd{x_3} \\
+        &= 0 \dd{x_1} \wedge \dd{x_2} \wedge \dd{x_3} \\
+        &= 0.
+\end{align*}
+
+
+\begin{pbox}[(b)]
+    Let $B:=\{(x_1, x_2, x_3): (x_1-2)^2+x_2^2+x_3^2=3\}$ be a sphere in $\mathbb R^3,$ find the integral $\int_B \omega.$
+\end{pbox}
+
+
+
+
+
+\newpage
+\begin{pbox}[2]
+    
+\end{pbox}
+
+Note that $y = Ix = x$ and $\det(I)$, so
+\[
+    \dd{y} = \dd{x} = \det(I)\dd{x}.
+\]
+
+
+
+The wedge product satisfies the multilinearity and alternating of the determinant, which uniquely characterizes it
+
+
+\newpage
+\begin{pbox}[3]
+    Let $D$ be the closed unit disk in $\mathbb R^2$ and $f$ be a continuous function on $D.$ Show that for any $\epsilon >0,$ there exists a number $n$ and functions $f_1, f_2, \ldots, f_n$ such that $f=f_1+\ldots+f_n$ on $D$ and the support of $f_i$ has Lebesgue measure less than $\epsilon,$ for any $i =1, \ldots, n.$ State any theorem you use.
+\end{pbox}
+
+Given $\eps > 0$, choose $n \in \N$ with $n > 4\pi/\eps$. For $k = 0, \dots, n - 1$, define the open annulus
+\[
+    A_k = \{x \in \R^2 : \tfrac{k - 1}{n} < |x| <  \tfrac{k + 1}{n} \},
+\]
+Area in $\R^2$ coincides with the Lebesgue measure. By construction, for all $k$,
+\[
+    m(A_k)
+        \leq m(A_{n-1}))
+        = \pi\left((\tfrac{n}{n})^2 - (\tfrac{n-2}{n})^2\right)
+        = \pi\left(\tfrac{4}{n} - \tfrac{4}{n^2}\right)
+        = \tfrac{4\pi}{n}(1 - \tfrac{1}{n})
+        \leq \tfrac{4\pi}{n}
+        < \eps.
+\]
+
+The collection $\{A_k\}_{k = 0}^{n}$ forms an open cover of the unit disc in $\R^2$. Then there exists a partition of unity $\{\psi_j\}_{j=1}^{m}$ with each $\psi_j$ having its support contained in some $A_k$. Define $f_j = \psi_j f$, then  $f = f_1 + \dots + f_m$ and each $f_j$ has its support in some $A_k$, in particular, the support of $f_j$ has Lebesgue measure at most $m(A_k) < \eps$.
+
+
+\newpage
+\begin{pbox}[5]
+    Prove that a subset $E$ of $\mathbb R^n$ is Lebesgue measurable if and only if for any $\epsilon >0,$ there exists an open set $U\subset \mathbb R^n$ such that $E\subset U$ and $m(U\setminus E)<\epsilon.$
+\end{pbox}
+
+We know that $m$ is regular on Lebesgue measurable sets, i.e., there exists an open set $U \subseteq \R^n$ containing $E$ such that $m(U \setminus E) < \eps$.
+
+If such a $U$ exists, then $U$ and $U \setminus E$ are measurable, so $U \setminus (U \setminus E) = E$ is measurable.
+
+
+
+
+\newpage
+\begin{pbox}[5]
+    Let $\{f_n\}$ be a sequence of measurable functions and define $f:=\liminf_n f_n.$ Is $f$ measurable? If yes, justify your answer. If no, give a counterexample.
+\end{pbox}
+
+Yes.
+
+Define $g_n = -f_n$ measurable for all $n \in \N$, then we have that $g = \limsup_n g_n$ is measurable function. Therefore, so is $f = \liminf_n f_n = -\limsup_n g_n = -g$.
+
+\newpage
+\begin{pbox}[6]
+    Let $\{f_n\}$ be a uniformly convergent and uniformly bounded sequence of Lebesgue integrable functions on $\mathbb R^1$ and let $f:=\lim_n f_n$ be the limit. Is it true that $$\lim_n \int_{\mathbb R^1} f_n dm = \int_{\mathbb R^1} f dm ?$$ If yes, justify your answer. If no, give a counterexample. All integrals are Lebesgue integrals.
+\end{pbox}
+
+No
+\[
+    f_n(x) = \begin{cases}
+        1/n & 0 \leq x \leq n, \\
+        0 &\text{otherwise}.
+    \end{cases}
+\]
+Then $f_n \to 0$ uniformly on $\R^1$ and uniformly bounded by $1$. But $\int_{\R^1} f_n = 1$ and $\int_{\R^1} 0 = 0$.
+
+
+
+
+
+\end{document}

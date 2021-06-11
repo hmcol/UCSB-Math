@@ -1,0 +1,423 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Theorem Environments
+%\theoremstyle{definition}
+%\newtheorem{proposition}{Proposition}
+%\newtheorem{lemma}{Lemma}
+
+% Options
+%\allowdisplaybreaks
+%\addtolength{\jot}{4pt}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+
+% Extra Commands
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\Gal}{Gal}
+\newcommand{\teq}{\trianglelefteq}
+\newcommand{\inc}{\hookrightarrow}
+
+\DeclareMathOperator{\Emb}{Emb}
+
+\newcommand{\tsqrt}[1]{{\textstyle\sqrt{#1}}}
+\newcommand{\pfrac}[2]{\left(\frac{#1}{#2}\right)}
+
+
+\newcommand\myprod[2]{
+    \begin{array}[t]{@{}l@{}}
+        {\displaystyle\prod #2} \\[-3pt] \scriptstyle #1 
+    \end{array}
+}
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH 111C Homework 8}
+    \fancyhead[C]{June 4, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+\begin{pbox}[Q1]
+    Let $K$ be a finite separable extension of $F$. Given $\alpha\in K$, the \textbf{norm} of $\alpha$ from $K$ to $F$ is defined as
+    \[
+        N_{K/F}(\alpha) = \prod_{\substack{\phi:K \to \clo{F} \\ F\text{-embedding}}} \phi(\alpha).
+    \]
+    
+\end{pbox}
+
+For fields $K$ and $L$ containing $F$, we write
+\[
+    \Emb_F(K, L) = \{F\text{-embeddings } K \to L\}
+\]
+to denote the set of $F$-embeddings from $K$ to $L$.
+    
+\begin{pbox}[(a)]
+    Show that $N_{K/F}(\alpha) \in F$.
+\end{pbox}
+
+\begin{proof}
+    Let $L/F$ be the Galois closure of $K/F$, with $L \subseteq \clo{F}$. Each $\phi \in \Emb_F(K, \clo{F})$ can be extended to an $F$-embedding $\sigma : L \to \clo{F}$, such that $\sigma|_K = \phi$. And since $L/F$ is normal, then $\sigma(L) = L$, meaning $\sigma$ is an automorphism of $L$ fixing $F$, i.e., $\sigma \in \Gal(L/F)$. Since
+    \[
+        \phi(K) = \sigma(K) \subseteq \sigma(L) = L,
+    \]
+    then $\phi$ can be considered as an $F$-embedding from $K$ to $L \subseteq \clo{F}$.
+
+    Given $\tau \in \Gal(L/F)$, we consider the map
+    \begin{align*}
+        \Emb_F(K, \clo{F}) &\to \Emb_F(K, \clo{F}), \\
+            \phi &\mapsto \tau \circ \phi.
+    \end{align*}
+    Since $\phi(K) \subseteq L$ and $\tau$ fixes $F$, we know each $\tau \circ \phi$ is an $F$-embedding $K \to \clo{F}$, i.e., this map is well-defined. We claim that this map is a bijection. 
+    
+    Suppose $\tau \circ \phi_1 = \tau \circ \phi_2$, for a pair $\phi_1, \phi_2 \in \Emb_F(K, \clo{F})$. Extend $\phi_1$ and $\phi_2$ to automorphisms $\sigma_1, \sigma_2 \in \Gal(L/F)$, respectively, so
+    \[
+        \tau\sigma_1|_K = \tau \circ \phi_1 = \tau \circ \phi_2 = \tau\sigma_2|_K.
+    \]
+    Composing with $\tau^{-1}$, we obtain
+    \[
+        \phi_1 = \sigma_1|_K = \tau^{-1}\tau\sigma_1|_K = \tau^{-1}\tau\sigma_2|_K = \sigma_2|_K = \phi_2,
+    \]
+    which proves injectivity. Moreover, with the number of $F$-embeddings being finite, we conclude that the map is a bijection. Therefore,
+    \[
+        \tau(N_{K/F}(\alpha))
+            = \myprod{\phi \in \Emb_F(K, \clo{F})}{(\tau \circ \phi)(\alpha)}
+            = \myprod{\phi \in \Emb_F(K, \clo{F})}{\phi(\alpha)}
+            = N_{K/F}(\alpha).
+    \]
+
+    This proves that $N_{K/F}(\alpha)$ is fixed by every element of $\Gal(L/F)$, i.e.,
+    \[
+        N_{K/F}(\alpha) \in L^{\Gal(L/F)} = F.
+    \]
+    
+
+\end{proof}
+
+
+\newpage
+\begin{pbox}[(b)]
+    Suppose that $\alpha \in \clo{F}$ and $m_{\alpha, F}(x) = x^n + a_{n-1} x^{n-1} + \cdots + a_1x + a_0$ is separable. Show that $N_{F(\alpha)/F}(\alpha) = (-1)^n a_0$.
+\end{pbox}
+
+\begin{proof}
+    Each element of $\Emb_F(F(\alpha), \clo{F})$ is completely determined by the image of $\alpha$, which must be a root of $m_{\alpha, F}(x)$. In other words, there is an injection
+    \begin{align*}
+        \Emb_F(F(\alpha), \clo{F}) &\to \{\text{roots of } m_{\alpha, F}(x) \text{ in } \clo{F}\}, \\
+            \phi &\mapsto \phi(\alpha).
+    \end{align*}
+    To show it is a bijection, we show that the sets are the same size. Since $m_{\alpha, F}(x)$ is separable and degree $n$, it has exactly $n$ distinct roots. Moreover, $F(\alpha)/F$ is a finite separable extension, giving us
+    \[
+        |\Emb_F(F(\alpha), \clo{F})|
+            = [F(\alpha) : F]
+            = \deg m_{\alpha, F}(x)
+            = n.
+    \]
+    Hence, the above evaluation map is a bijection.
+
+    If $S$ is the set of roots of $m_{\alpha, F}(x)$ in $\clo{F}$, then $m_{\alpha, F}(x) = \prod_{\beta \in S} (x - \beta)$, so
+    \[
+        a_0 
+            = m_{\alpha, F}(0) 
+            = \prod_{\beta \in S} (0 - \beta) 
+            = (-1)^n \prod_{\beta \in S} \beta.
+    \]
+    Thus,
+    \[
+        N_{F(\alpha)/F}(\alpha)
+            = \myprod{\phi \in \Emb_F(F(\alpha), \clo{F})}{\phi(\alpha)}
+            = \prod_{\beta \in S} \beta
+            = (-1)^n a_0.
+    \]
+
+
+\end{proof}
+    
+
+
+\newpage
+\begin{pbox}[Q2 Problem 14.7.4]
+    Let $K = \Q(\sqrt[n]{a})$, where $a \in \Q$, $a > 0$ and suppose $[K : \Q] = n$ (i.e., $x^n - a$ is irreducible). Let $E$ be any subfield of $K$ and let $[E : \Q] = d$. Prove that $E = \Q(\sqrt[d]{a})$. [Consider $N_{K/E}(\sqrt[n]{a}) \in E$.]
+\end{pbox}
+    
+\begin{proof}
+    Since $K/\Q$ is finite and $\Q$ is perfect, the extension is separable. Therefore, $K/E$ is a finite separable extension, with
+    \[
+        |\Emb_{E}(K, \clo{\Q})| = [K : E] = \frac{[K : \Q]}{[E : \Q]} = \frac{n}{d}.
+    \]
+    In particular, note $n/d \in \Z_{>0}$. By Q1(a), we have
+    \[
+        N_{K/E}(\sqrt[n]{a})
+            = \myprod{\phi \in \Emb_{E}(K, \clo{\Q})}{\phi(\sqrt[n]{a})}
+            \in E.
+    \]
+    Note that $K = E(\sqrt[n]{a})$, so any $E$-embedding $K \to \clo{\Q}$ is completely determined by the image of $\sqrt[n]{a}$, which must be a root of $x^n - a$. Suppose $\Emb_{E}(K, \clo{\Q}) = \{\phi_1, \dots, \phi_{n/d}\}$, and assume that $\phi_j(\sqrt[n]{a}) = \sqrt[n]{a} \zeta_n^{r_j}$ for $0 \leq r_j \leq n$. Then
+    \[
+        N_{K/E}(\sqrt[n]{a})
+            = \prod_{j=1}^{n/d} \phi_j(\sqrt[n]{a})
+            = \sqrt[n]{a}^{n/d} \zeta_n^{r_1} \cdots \zeta_n^{r_{n/d}}
+            = \sqrt[d]{a} \zeta_n^{r_1 + \cdots + r_{n/d}}
+            \in E.
+    \]
+    Since $E \subseteq K = \Q(\sqrt[n]{a}) \subseteq \R$ and $\sqrt[d]{a} \in \R$, then
+    \[
+        \zeta_n^{r_1 + \cdots + r_{n/d}} = \sqrt[d]{a}^{-1}N_{K/E}(\sqrt[n]{a}) \in \R,
+    \]
+    so $\zeta_n^{r_1 + \cdots + r_{n/d}} = \pm1$. Hence, $N_{K/E}(\sqrt[n]{a}) = \pm\sqrt[d]{a} \in E$. 
+    
+    Since $\Q(\sqrt[d]{a}) \subseteq E$, 
+    \[
+        [\Q(\sqrt[d]{a}) : \Q] \leq [E : \Q] = d.
+    \]
+    To prove $E = \Q(\sqrt[d]{a})$, it remains to show the opposite inequality.
+
+    Since the polynomial $x^{n/d} - \sqrt[d]{a} \in (\Q(\sqrt[d]{a}))[x]$ has a root of $\sqrt[n]{a}$, it has as a factor the minimal polynomial of $\sqrt[n]{a}$ over $\Q(\sqrt[d]{a})$. Then
+    \[
+        [K : \Q(\sqrt[d]{a})] 
+            = [(\Q(\sqrt[d]{a}))(\sqrt[n]{a}) : \Q(\sqrt[d]{a})]
+            = \deg m_{\sqrt[n]{a}, \Q(\sqrt[d]{a})}(x)
+            \leq \frac{n}{d},
+    \]
+    giving us
+    \[
+        [\Q(\sqrt[d]{a}) : \Q] 
+            = \frac{[K : \Q]}{[K : \Q(\sqrt[d]{a})]} 
+            = \frac{n}{[K : \Q(\sqrt[d]{a})]} 
+            \geq \frac{n}{n/d} 
+            = d.
+    \]
+    Hence, $[\Q(\sqrt[d]{a}) : \Q] = d$, implying that $E = \Q(\sqrt[d]{a})$.
+
+\end{proof}
+
+
+\newpage
+\begin{pbox}[Q3 Problem 14.7.5]
+    Let $K$ be as in the previous exercise. Prove that if $n$ is odd then $K$ has no nontrivial subfields which are Galois over $\Q$ and if $n$ is even then the only nontrivial subfield of $K$ which is Galois over $\Q$ is $\Q(\sqrt{a})$.
+\end{pbox}
+
+\begin{proof}
+    Suppose $E$ is a subfield of $K$ which is Galois over $\Q$. By Q2, we know $E = \Q(\sqrt[d]{a})$ for some $d \mid n$. Since $\Q(\sqrt[d]{a})/\Q$ is Galois, it must be the splitting field of $m_{\sqrt[d]{a}, \Q}(x) = x^d - a$. Therefore, $E$ contains the $d$-th roots of unity. But unless $d$ is $1$ or $2$, the $d$-th roots of unity are not contained in $\R$. Since $E \subseteq K \subseteq \R$, the it must be the case that $d = 1$ or $d = 2$.
+
+    If $n$ is odd, then $d \mid n$ implies $d = 1$, so $E = \Q(a) = \Q$. That is, $K$ has not nontrivial subfields which are Galois over $\Q$.
+
+    Suppose $n$ is even. As before, $d = 1$ implies $E = \Q$. That is, $E$ is nontrivial only if $d = 2$; we check that $\Q(\sqrt{a})$ is as desired. Since $n$ is even, then $n/2 \in \Z$, so $\sqrt{a} = \sqrt[n]{a}^{n/2} \in K$, i.e., $\Q(\sqrt{a}) \subseteq K$. Moreover, $\Q(\sqrt{a})/\Q$ is Galois, as the splitting field of $x^2 - a \in \Q[x]$. Additionally, $\Q(\sqrt{a}) \ne \Q$ since, from Q2, we know $[\Q(\sqrt{a}) : \Q] = 2$. Hence, $\Q(\sqrt{a})/\Q$ is in fact a nontrivial Galois subextension of $K/\Q$.
+
+\end{proof}
+
+
+\newpage
+\begin{pbox}[Q4 Problem 14.7.6]
+    Let $L$ be the Galois closure of $K$ is the previous two exercises (i.e., the splitting field of $x^n-a$). Prove that $[L : \Q] = n\phi(n)$ or $\frac{1}{2} n\phi(n)$. [Note that $\Q(\zeta_n)\cap K$ is a Galois extension of $\Q$.]
+    
+    (Here $\phi(n)$ is Euler's totient function. It counts the number of integers between 1 and $n$ coprime to $n$. For $n = p_1^{k_1} p_2^{k_2} \cdots p_r^{k_r}$, $\phi(n) = (p_1^{k_1} - p_1^{k_1-1})(p_2^{k_2} - p_2^{k_2-1}) \cdots (p_r^{k_r} - p_r^{k_r-1})$. You can use the fact that $[\Q(\zeta_n) : \Q] = \phi(n)$.)
+\end{pbox}
+
+\begin{proof}
+    Since $x^n - a$ splits over $L$, then $L$ contains all $n$-th roots of unity, i.e., $\Q(\zeta_n) \subseteq L$, so
+    \[
+        [L : \Q] = [L : \Q(\zeta_n)][\Q(\zeta_n) : \Q] = [L : \Q(\zeta_n)]\phi(n).
+    \]
+    Let $F = \Q(\zeta_n)$, then $x^n - 1$ splits over $F$ and $L = F(\sqrt[n]{a})$. Therefore, $m = [F(\sqrt[n]{a}) : F]$, where $m$ is the minimum positive integer such that $\sqrt[n]{a}^m \in F$. 
+
+    We consider the extension $\Q(\sqrt[n]{a}^m)/\Q$. By assumption, $F$ contains $\sqrt[n]{a}^m$, so $\Q(\sqrt[n]{a}^m)/\Q$ is a subextension of $F/\Q$. By the fundamental theorem,
+    \[
+        \Gal(F/\Q(\sqrt[n]{a}^m)) \leq \Gal(F/\Q).
+    \]
+    Moreover, since $\Gal(F/\Q) \isom (\Z/n\Z)^\times$ is abelian, then every subgroup is a normal subgroup, implying that $\Q(\sqrt[n]{a}^m)/\Q$ is a Galois extension. Since $\sqrt[n]{a} \in K$, then $\Q(\sqrt[n]{a}^m) \subseteq K$, i.e., $\Q(\sqrt[n]{a}^m)/\Q$ is a Galois subextension of $K/\Q$. By Q3, we now consider two possible cases: $n$ is odd and $n$ is even.
+
+    If $n$ is odd, then we must have $\Q(\sqrt[n]{a}^m) = \Q$, i.e., $\sqrt[n]{a}^m \in \Q$. But we know that $n$ is the minimum positive integer such that $\sqrt[n]{a}^n = a \in \Q$, implying that $m \geq n$. By assumption, $m$ was chosen to the the minimum positive integer such that $\sqrt[n]{a}^m \in F$. Since $\sqrt[n]{a}^n \in \Q \subseteq F$, we know $n$ suffices, implying $m \leq n$. Hence,
+    \[
+        n 
+            = m
+            = [F(\sqrt[n]{a}) : F] 
+            = [L : \Q(\zeta_n)],
+    \]
+    so
+    \[
+        [L : \Q] 
+            = [L : \Q(\zeta_n)]\phi(n) 
+            = n \phi(n).
+    \]
+
+    If $n$ is even, then either $\Q(\sqrt[n]{a}^m) = \Q$ (handled in the odd case) or $\Q(\sqrt[n]{a}^m) = \Q(\sqrt{a})$. Assuming the latter is true, we claim that $m = n/2$. Consider the norm
+    \[
+        N_{\Q(\sqrt[n]{a}^m)/\Q}(\sqrt[n]{a}^m) 
+            = \myprod{\phi \in  \Emb_{\Q}(\Q(\sqrt[n]{a}^m), \clo{\Q})}{\phi(\sqrt[n]{a}^m)}
+            \in \Q.
+    \]
+    Since $\Q(\sqrt[n]{a}^m) = \Q(\sqrt{a})$ is separable over $\Q$,
+    \[
+        |\Emb_{\Q}(\Q(\sqrt[n]{a}^m), \clo{\Q})|
+            = [\Q(\sqrt[n]{a}^m) : \Q] 
+            = [\Q(\sqrt{a}) : \Q]
+            = 2.
+    \]
+    If $\Emb_{\Q}(\Q(\sqrt[n]{a}^m), \clo{\Q}) = \{\phi_1, \phi_2\}$, then
+    \[
+        N_{\Q(\sqrt[n]{a}^m)/\Q}(\sqrt[n]{a}^m)
+            = \phi_1(\sqrt[n]{a}^m) \phi_2(\sqrt[n]{a}^m) 
+            \in \Q.
+    \]
+    Both $\Q$-embeddings $\phi_1, \phi_2$ can be extended to $\sigma_1, \sigma_2 \in \Gal(L/\Q)$ such that $\sigma_j|_{\Q(\sqrt[n]{a}^m)} = \phi_j$, for $j = 1, 2$. Then suppose $\sigma_j(\sqrt[n]{a}) = \sqrt[n]{a}\zeta_n^{r_j}$, so
+    \[
+        \phi_1(\sqrt[n]{a}^m) \phi_2(\sqrt[n]{a}^m) 
+            = \sigma_1(\sqrt[n]{a}^m) \sigma_2(\sqrt[n]{a}^m)
+            = (\sqrt[n]{a}\zeta_n^{r_1})^m (\sqrt[n]{a}\zeta_n^{r_2})^m
+            = \sqrt[n]{a}^{2m} \zeta_n^{(r_1 + r_2)m}.
+    \]
+    Since this is an element of $\Q \subseteq \R$, then it must be $\pm\sqrt[n]{a}^{2m}$, i.e., we have that $\sqrt[n]{a}^{2m} \in \Q$. As previously noted, $n$ is the minimum positive integer such that $\sqrt[n]{a}^n \in \Q$, which implies that $m \geq n/2$. On the other hand, by assumption, we have $\Q(\sqrt[n]{a}^m) = \Q(\sqrt{a}) \subseteq F$; in particular, $\sqrt{a} \in F$, so
+    \[
+        \sqrt[n]{a}^{n/2} = \sqrt{a} \in F.
+    \]
+    Since $m$ was chosen to be the minimum positive integer such that $\sqrt[n]{a}^m \in F$, this implies $m \leq n/2$. Hence,
+    \[
+        \frac{n}{2} 
+            = m
+            = [F(\sqrt[n]{a}) : F] 
+            = [L : \Q(\zeta_n)],
+    \]
+    so
+    \[
+        [L : \Q] 
+            = [L : \Q(\zeta_n)]\phi(n) 
+            = \tfrac{1}{2} n \phi(n).
+    \]
+    
+
+\end{proof}
+
+
+\newpage
+\begin{pbox}[Q5 Problem 14.7.18]
+    Let $D \in \Z$ be a squarefree integer and let $a \in \Q$ be a nonzero rational number. Prove that if $\Q(\sqrt{a\sqrt{D}})$ is Galois over $\Q$ [and $D \ne 1$] then $D = -1$.
+\end{pbox}
+
+\begin{proof}
+    Immediately, we can deduce two facts about the squarefree integer $D$. First, $D \ne 0$, as zero is trivially divisible by any square integer. Second, $D$ is not the square of any rational number; one can check that $p \in \Q$ and $p^2 \in \Z$ imply that $p \in \Z$.
+
+    Our first main step is determining the minimal polynomial of $\sqrt{a\sqrt{D}}$ over $\Q$.
+
+    Consider the extension $\Q(\sqrt{D})/\Q$, which is the splitting field of the irreducible separable polynomial $x^2 - D \in \Q[x]$. The irreducibility over $\Q$ follows from the fact that $D$ is not the square of any rational number (i.e., $x^2 - D$ has no roots in $\Q$), implying $m_{\sqrt{D}, \Q}(x) = x^2 - D$. The separability follows from the factorization in $\clo{\Q}[x]$, given by
+    \[
+        x^2 - D = (x - \sqrt{D})(x + \sqrt{D}),
+    \]
+    in which $D \ne 0$ implies $\sqrt{D} \ne -\sqrt{D}$. Hence, $\Q(\sqrt{D})/\Q$ is a Galois extension with
+    \[
+        [\Q(\sqrt{D}) : \Q] = \deg m_{\sqrt{D}, \Q}(x) = \deg(x^2 - D) = 2.
+    \]
+
+    Now, let $F = \Q(\sqrt{D}) = \{p + q\sqrt{D} \mid p, q \in \Q\}$, where $1$ and $\sqrt{D}$ form a basis of $F$ over $\Q$. It can be seen that $F/\Q$ is a subextension of $\Q(\sqrt{a\sqrt{D}})/\Q$, since
+    \[
+        \sqrt{D} = a^{-1}\tsqrt{a\sqrt{D}}^2 \in \Q(\tsqrt{a\sqrt{D}}).
+    \]
+    In particular, $\sqrt{a\sqrt{D}}$ generates the same field over both $\Q$ and $F$, so it makes sense to define
+    \[
+        K = F(\tsqrt{a\sqrt{D}}) = \Q(\tsqrt{a\sqrt{D}}).
+    \]
+    
+    Since the polynomial $x^2 - a\sqrt{D} \in F[x]$ has $\sqrt{a\sqrt{D}}$ as a root, then the degree of $K/F$ is at most $2$. To show it is exactly $2$, it suffices to show $\sqrt{a\sqrt{D}} \notin F$; in which case, $x^2 - a\sqrt{D}$ has no roots in $F$, and is therefore irreducible in $F[x]$. Assume, in contradiction, that there exist $p, q \in \Q$ such that, in $F$, we have
+    \[
+        \tsqrt{a\sqrt{D}} = p + q\sqrt{D} \implies a\sqrt{D} = p^2 + q^2D + 2pq\sqrt{D}.
+    \]
+    As mentioned above, $1$ and $\sqrt{D}$ form a basis for $F$, so in particular, $p^2 + q^2D = 0$. It must be the case that $q$ is nonzero; otherwise, $\sqrt{D} = a^{-1}p^2 \in \Q$, which is false. Then we can write
+    \[
+        -D = \frac{p^2}{q^2} = \pfrac{p}{q}^2 \in \Z,
+    \]
+    which implies $p/q \in \Z$ with $(p/q)^2 \mid D$, contradicting the fact that $D$ is a squarefree integer (unless $p/q = 1$, in which case we are done). Hence, $\sqrt{a\sqrt{D}} \notin F$, and we conclude that that $x^2 - a\sqrt{D}$ is irreducible in $F[x]$. This means $x^2 - a\sqrt{D}$ is the minimal polynomial of $\sqrt{a\sqrt{D}}$ over $F$, so
+    \[
+        [K : F] = \deg m_{\sqrt{a\sqrt{D}}, F}(x) = \deg(x^2 - a\sqrt{D}) = 2.
+    \]
+
+    Thus, we now have
+    \[
+        [K : \Q]
+            = [K : F][F : \Q]
+            = 2 \cdot 2
+            = 4.
+    \]
+    Since $\sqrt{a\sqrt{D}}$ is a root of the degree $4$ monic polynomial $x^4 - a^2D \in \Q[x]$, its minimal polynomial over $\Q$ must precisely be $x^4 - a^2D$. Therefore, since $K/\Q$ is Galois, we conclude that it is the splitting field of
+    \[
+        x^4 - a^2D
+            = \left(x - \tsqrt{a\sqrt{D}}\right)
+                \left(x + \tsqrt{a\sqrt{D}}\right)
+                \left(x - i\tsqrt{a\sqrt{D}}\right)
+                \left(x + i\tsqrt{a\sqrt{D}}\right).
+    \]
+    Notice that $i = \sqrt{a\sqrt{D}}^{-1} \cdot i\sqrt{a\sqrt{D}} \in K$, implying $F(i)/F$ is a subextension of $K/F$ with
+    \[
+        [K : F(i)][F(i) : F] = [K : F] = 2.
+    \]
+    This means that either $K = F(i)$ or $F(i) = F$, exclusively. We will show that the latter case is equivalent to $D = -1$, then that the the former case is not possible.
+
+    Clearly, if $D = -1$, then $F = \Q(\sqrt{-1}) = \Q(i) = \Q(i, i) = F(i)$. To see the opposite implication, suppose $F(i) = F$, so $i \in F$. Then there exist $p, q \in \Q$ such that, in $F$, we have
+    \[
+        i = p + q\sqrt{D} \implies -1 = p^2 + q^2D + 2pq\sqrt{D}.
+    \]
+    It must be the case that $q$ is nonzero; otherwise, $i = p \in \Q$, which is false. Recall that $1$ and $\sqrt{D}$ form a basis for $F$ over $\Q$, so $2pq = 0$ implies $p = 0$. Then we can write
+    \[
+        -D = \frac{1}{q^2} = \pfrac{1}{q}^2 \in \Z,
+    \]
+    which implies $1/q \in \Z$ with $(1/q)^2 \mid D$. This can only be true if $1/q^2 = 1$, so in fact $D = -1$. Thus, $D = -1$ if and only if $F(i) = F$, and remains to prove $K \ne F(i)$.
+
+    Assume, in contradiction, that $K = F(i)$ (which implies $D \ne -1$). In particular, there exist $u, v \in F$ such that, in $F(i)$, we have
+    \[
+        \tsqrt{a\sqrt{D}} = u + vi \implies a\sqrt{D} = u^2 - v^2 + 2uvi.
+    \]
+    It must be the case that $v$ is nonzero; otherwise, $\sqrt{a\sqrt{D}} = u \in F$, which is false.
+    Since $[F(i) : F] = [K : F] = 2$, then $1$ and $i$ form a basis of $F(i)$ over $F$, so $2uv = 0$ implies $u = 0$. Then we can write
+    \[
+        \tsqrt{a\sqrt{D}} = vi \implies -a\sqrt{D} = v^2.
+    \]
+    Since $v \in F$, there exist $p, q \in \Q$ such that $v = p + q\sqrt{D}$, then
+    \[
+        -a\tsqrt{D} = (p + q\sqrt{D})^2 = p^2 + q^2D + 2pq\sqrt{D}.
+    \]
+    It must be the case that $q$ is nonzero; otherwise, $\sqrt{D} = -a^{-1}p^2 \in \Q$, which is false. Then
+    \[
+        p^2 + q^2D = 0 \implies -D = \frac{p^2}{q^2} = \pfrac{p}{q}^2 \in \Z,
+    \]
+    which implies $p/q \in \Z$ with $(p/q)^2 \mid D$. If $p/q \ne 1$, then this contradicts the fact that $D$ is a squarefree integer. If $p/q = 1$, then this contradicts the fact that $D \ne -1$. Either way, we have reached a contradiction, so $K \ne F(i)$, implying $D = -1$.
+
+\end{proof}
+    
+
+\end{document}
