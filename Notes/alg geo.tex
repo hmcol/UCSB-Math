@@ -16,24 +16,27 @@
 
 % Problem Box
 \setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
 \newsavebox{\savefullbox}
-\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
 \newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
 
 % Theorem Environments
 \theoremstyle{definition}
-\newtheorem{theorem}{Theorem}
-\newtheorem{lemma}{Lemma}
-\newtheorem{corollary}{Corollary}
-\newtheorem{proposition}{Proposition}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}{Lemma}
+\newtheorem{cor}{Corollary}
+\newtheorem{prop}{Proposition}
 
-\newtheorem{definition}{Definition}
+\newtheorem{defn}{Definition}
 \newtheorem{construction}{Construction}
 \newtheorem{notation}{Notation}
 
-\newenvironment{btheorem}{\begin{fullbox}\begin{theorem}}{\end{theorem}\end{fullbox}}
-\newenvironment{blemma}{\begin{fullbox}\begin{lemma}}{\end{lemma}\end{fullbox}}
-\newenvironment{bproposition}{\begin{fullbox}\begin{lemma}}{\end{lemma}\end{fullbox}}
+\newenvironment{bthm}{\begin{fullbox}\begin{thm}}{\end{thm}\end{fullbox}}
+\newenvironment{blem}{\begin{fullbox}\begin{lem}}{\end{lem}\end{fullbox}}
+\newenvironment{bprop}{\begin{fullbox}\begin{lem}}{\end{lem}\end{fullbox}}
+\newenvironment{bdefn}{\begin{fullbox}\begin{defn}}{\end{defn}\end{fullbox}}
 
 % Options
 %\allowdisplaybreaks
@@ -54,6 +57,7 @@
 \newcommand{\isom}{\cong}
 \newcommand{\eqc}{\overline}
 \newcommand{\clo}{\overline}
+\newcommand{\sseq}{\subseteq}
 
 % Extra Commands
 \newcommand{\A}{\mathbb{A}}
@@ -63,6 +67,7 @@
 \newcommand{\teq}{\trianglelefteq}
 \newcommand{\inc}{\hookrightarrow}
 \newcommand{\blow}{\widetilde}
+\newcommand*{\rad}{\sqrt}
 
 \newcommand{\Vp}{V_{\mathrm{p}}}
 \newcommand{\Va}{V_{\mathrm{a}}}
@@ -70,8 +75,11 @@
 \DeclareMathOperator{\codim}{codim}
 \DeclareMathOperator{\Hom}{Hom}
 \renewcommand{\Im}{\operatorname{Im}}
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\Spec}{Spec}
 
-\newcommand{\longlimit}[2]{
+\newcommand*{\longlimit}[2]{
     {
         \def\arraystretch{0}
         \begin{array}[t]{@{}l@{}}
@@ -80,18 +88,23 @@
     }
 }
 
-\newcommand{\longprod}[2]{\longlimit{#1}{\prod #2}}
-\newcommand{\longsum}[2]{\longlimit{#1}{\sum #2}}
+\newcommand*{\longprod}[2]{\longlimit{#1}{\prod #2}}
+\newcommand*{\longsum}[2]{\longlimit{#1}{\sum #2}}
+\newcommand*{\longcap}[2]{\longlimit{#1}{\bigcap #2}}
 
 \DeclareMathOperator{\LP}{LP}
 
 \newcommand{\KK}{\mathbf{K}}
 
-\DeclareMathOperator{\dom}{dom}
-\DeclareMathOperator{\im}{im}
+
 
 \newcommand{\dto}[1][]{\overset{#1}{\longrightarrow}}
 \newcommand{\mto}{\longmapsto}
+
+%\newcommand{\defeq}{:=}
+
+\newcommand*{\defeq}{\mathrel{\vcenter{\baselineskip0.7ex \lineskiplimit0pt \hbox{.}\hbox{.}}}=}
+
 
 % Document Info
 \fancypagestyle{title}{
@@ -123,7 +136,7 @@ the (affine) \textbf{zero locus} of $S$. Subsets of $\A^n$ of this form are call
 
 
 
-\begin{definition}(Affine Curves)
+\begin{defn}(Affine Curves)
     \begin{itemize}
         \item[(a)] An \textbf{(affine plane algebraic) curve} is a nonconstant polynomial $F \in K[x, y]$ modulo units, i.e., modulo the equivalence relation $F \sim G$ if $F = \lambda G$ for some $\lambda \in K^\times$. 
 
@@ -134,27 +147,27 @@ the (affine) \textbf{zero locus} of $S$. Subsets of $\A^n$ of this form are call
         \item[(c)] A curve $F$ is called \textbf{irreducible} if it is as a polynomial, and \textbf{reducible} otherwise. Similarly, if $F = F_1^{d_1} \cdots F_k^{d_k}$ is the irreducible decomposition of $F$ as a polynomial, we will also call this the \textbf{irreducible decomposition} of the curve $F$. The curves $F_1, \dots, F_k$ are called the \textbf{(irreducible) components} of $F$ and $d_1, \dots, d_k$ their multiplicities.
     \end{itemize}
     
-\end{definition}
+\end{defn}
 
 
-\begin{lemma}
+\begin{lem}
     Let $F$ be an affine curve.
     \begin{itemize}
         \item[(a)] If $K$ is algebraically closed then $V(F)$ is infinite.
         \item[(b)] If $K$ is infinite then $\A_K^2 \setminus V(F)$ is infinite.
     \end{itemize}
-\end{lemma}
+\end{lem}
 
 
-\begin{proposition}
+\begin{prop}
     If two curves $F$ and $G$ have no common component then their intersection $V(F, G)$ is finite.
-\end{proposition}
+\end{prop}
 
-\begin{corollary}
+\begin{cor}
     Let $F$ be a curve over an algebraically closed field. THe for any irreducible curve $G$ we have $G \mid F$ if and only if $V(G) \subseteq V(F)$.
 
     In particular, the irreducible components of $F$ (but not their multiplicities) can be recovered from $V(F)$.
-\end{corollary}
+\end{cor}
 
 
 \begin{notation}
@@ -168,7 +181,7 @@ the (affine) \textbf{zero locus} of $S$. Subsets of $\A^n$ of this form are call
 \end{notation}
 
 
-\begin{definition}
+\begin{defn}
     Let $a \in \A^2$ be a point.
     \begin{itemize}
         \item[(a)] The \textbf{local ring} of $\A^2$ at $P$ is defined as
@@ -188,38 +201,38 @@ the (affine) \textbf{zero locus} of $S$. Subsets of $\A^n$ of this form are call
         \]
         which is the unique maximal ideal in $\O_a$.
     \end{itemize}
-\end{definition}
+\end{defn}
 
 
-\begin{definition}
+\begin{defn}
     For a point $a \in \A^2$ and two curves $F$ and $G$ we define the \textbf{intersection multiplicity} of $F$ and $G$ at $a$ to be
     \[
         \mu_a(F, G) = \dim \O_a / \<F, G\> \in \N \cup \{\infty\},
     \]
     where $\dim$ denotes the dimension as a vector space over $K$.
-\end{definition}
+\end{defn}
 
-\begin{lemma}
+\begin{lem}
     Let $a \in \A^2$ and let $F$ and $G$ be two curves. We have
     \begin{itemize}
         \item[(a)] $\mu_a(F, G) \geq 1$ if and only if $a \in F \cap G$;
         \item[(b)] $\mu_a(F, G) = 1$ if and only if $\<F, G\> = I_a$ in $\O_a$.
     \end{itemize}
-\end{lemma}
+\end{lem}
 
 \begin{notation}
     For a polynomial $F \in K[x, y]$ of degree $d$ and $i = 0, \dots, d$, we define the \textbf{degree-$i$ part} of $F$ to be the sum of all terms of $F$ of degree $i$. Hence all $F_i$ are homogeneous, and we have $F = F_0 + \cdots + F_d$. We call $F_0$ the \textbf{constant} part, $F_1$ the \textbf{linear} part, and $F_d$ the \textbf{leading} part of $F$.
 \end{notation}
 
 
-\begin{proposition}
+\begin{prop}
     Let $F$ and $G$ be two curves through the origin. Then $\mu_0(F, G) = 1$ if and only if the linear parts of $F$ and $G$ are linearly independent.
-\end{proposition}
+\end{prop}
 
 
 \section{projective}
 
-\begin{definition}
+\begin{defn}
     For $n \in \N$, we define the \textbf{projective $n$-space} over $K$ as the set of all $1$-dimensional linear subspaces of $K^{n+1}$. It is denoted by $\P_K^n$ or simply $\P^n$.
 
     In other words, we have
@@ -233,16 +246,16 @@ the (affine) \textbf{zero locus} of $S$. Subsets of $\A^n$ of this form are call
         V(S) = \{P \in \P^n : f(P) = 0 \text{ for all } f \in S\} \subseteq \P^n
     \]
     the projective \textbf{zero locus} of $S$. Subsets of $\P^n$ of this form are called \textbf{projective varieties}.
-\end{definition}
+\end{defn}
 
 
-\begin{definition}(Projective curves)
+\begin{defn}(Projective curves)
     A \textbf{(projective plane algebraic) curve} is a nonconstant homogeneous polynomial $F \in K[x, y, z]$ modulo units. We call $V(F) = \{P \in \P^2 : F(P) = 0\}$ is \textbf{set of points}.
 
     The \textbf{degree} of a projective curve is its degree as a polynomial.
 
     The notions of irreducible/reducible/reduced curves, as well as irreducible components and their multiplicities, are defined in the same way as for affine curves. 
-\end{definition}
+\end{defn}
 
 
 \begin{construction}
@@ -270,5 +283,136 @@ the (affine) \textbf{zero locus} of $S$. Subsets of $\A^n$ of this form are call
         \mu_P(F, G) = \dim \O_P/\<F, G\>.
     \]
 \end{construction}
+
+
+\newpage
+
+
+
+\begin{bdefn}
+    Let $R$ be a ring. The set of all prime ideals of $R$ is called the \textbf{spectrum} of $R$ or the \textbf{affine scheme} associated to $R$. We denote it by $\Spec R$.
+\end{bdefn}
+
+\begin{bdefn}
+    Let $R$ be a ring, and let $P \in \Spec R$ be a point in the corresponding affine scheme, i.e., a prime ideal $P \teq R$.
+
+    We denote by $K(P)$ the quotient field (fraction field) of the integral domain $R/P$. It is called the \textbf{residue field} of $\Spec R$ at $P$.
+
+    For any $f \in R$ we define the \textbf{value} of $f$ at $P$, written as $f(P)$, to be the image of $f$ under the composite ring homomorphism $R \to R/P \to K(P)$.
+
+    In particular, we have $f(P) = 0$ if and only if $f \in P$.
+\end{bdefn}
+
+\begin{bdefn}
+    Let $R$ be a ring.
+
+    For a subset $S \sseq R$, we define the \textbf{zero locus} of $S$ to be the set
+    \[
+        V(S) 
+            \defeq \{P \in \Spec R : f(P) = 0 \text{ for all } f \in S\}
+            = \{P \in \Spec R : S \sseq P\}
+            \quad \sseq \Spec R.
+    \]
+
+    For a subset $X \sseq \Spec R$, we define the \textbf{idea;} of $X$ to be
+    \[
+        I(X) 
+            \defeq \{f \in R : f(P) = 0 \text{ for all } P \in X\}
+            = \longcap{P \in X}{P}
+            \quad\teq R.
+    \]
+\end{bdefn}
+
+\begin{bdefn}
+    We define the \textbf{Zariski topology} on an affine scheme $\Spec R$ to be the topology whose closed sets are exactly the sets of the form $V(S) = \{P \in \Spec R : S \subseteq P\}$ for some $S \subseteq R$.
+\end{bdefn}
+
+\begin{bprop}
+    (Scheme Nullstellensatz) Let $R$ be a ring.
+
+    For any closed subset $X \subseteq \Spec R$, we have $V(I(X)) = X$.
+
+    For any ideal $J \teq R$, we have $I(V(J)) = \rad{J}$.
+
+    In particular, $V(-)$ and $I(-)$ induce and inclusion-reversing bijection
+    \[
+        \{\text{closed subsets of $\Spec R$}\} \longleftrightarrow \{\text{radical ideals in $R$}\}.
+    \]
+\end{bprop}
+
+Might be true that a closed $Y \subseteq \Spec R$ is irreducible iff $I(Y) \teq J$ is prime. So in particular,
+\[
+    \{\text{irreducible closed subsets of $\Spec R$}\} 
+    \longleftrightarrow \{\text{prime ideals in $R$}\}
+    = \Spec R,
+\]
+and, in which case, the topological dimension $\dim \Spec R$  equals the Krull dimension $\dim R$.
+
+\begin{bdefn}
+    For a ring $R$ and an element $f \in R$, we call
+    \[
+        D(f) 
+            \defeq \Spec R \setminus V(f)
+            = \{P \in \Spec R : f \notin P\}.
+    \]
+    the \textbf{distinguished open subset} of $f$ in $\Spec R$. $A \unlhd B$ $A \teq B$
+\end{bdefn}
+
+\begin{bdefn}
+    Let $R$ be a ring, and let $U$ and an open subset of the affine scheme $\Spec R$. A \textbf{regular function} on $U$ is a family $\phi = (\phi_P)_{P \in U}$ with $\phi_P \in R_P$ for all $P \in U$, such that, for every $P \in U$, there is an open neighborhood $P \in U_P \subseteq U$ and $f_P, g_P \in R$, such that for all $Q \in U_P$, we have
+    \[
+        \phi_Q = \frac{g_P}{f_P} \quad\in R_Q.
+    \]
+    
+    In particular, we require $f_P(Q) \ne 0 \iff f_P \notin Q$ for all $Q \in U_P$, i.e., $U_P \subseteq D(f_P)$.
+
+    Stated obtusely:
+    \[
+        \forall P \in U,\;
+        \exists U_P \in \mathcal{N}_{\Spec R}(P),\;
+        \exists f, g \in R :\quad 
+        \forall Q \in U_P,\;
+        \phi_Q = \frac{g}{f} \;\in R_Q.
+    \]
+
+    The set of all such regular function on $U$ is clearly a ring, and we denote it by $\O_{\Spec R}(U)$. Moreover, the condition imposed on $\phi$ is local and it is obvious that $\O_{\Spec R}$ is a sheaf; it is called the \textbf{structure sheaf} of $\Spec R$.
+\end{bdefn}
+
+\begin{blem}
+    Let $R$ be a ring. Then for any point $P \in \Spec R$ the stalk $\O_{\Spec R, P}$ of the structure sheaf $\O_{\Spec R}$ at $P$ is isomorphic to the localization $R_P$.
+\end{blem}
+
+\begin{bprop}
+    Let $R$ be a ring and $f \in R$, then $\O_{\Spec R}(D(f)) \isom R_f$ as rings.
+
+    In particular, $\O_{\Spec R}(\Spec R) \isom R$.
+\end{bprop}
+
+\begin{bdefn}
+    A \textbf{locally ringed space} is a ringed space $(X, \O_X)$ such that each stalk $\O_{X, P}$ for $P \in X$ is a local ring.
+
+    A \textbf{morphism} of locally ringed spaces from $(X, \O_X)$ to $(Y, \O_Y)$ is given by the following data:
+    \begin{itemize}
+        \item a continuous map $f : X \to Y$,
+        \item for every open subset $U \subseteq Y$ a ring homomorphism $f_{U}^* : \O_Y(U) \to \O_{X}(f^{-1}(U))$ called the pullback on $U$,
+    \end{itemize}
+    such that the following two conditions hold:
+    \begin{itemize}
+        \item The pullback maps are compatible with restrictions, i.e., $f_U^*(\phi_U) = (f_V^* \phi)|_{f^{-1}(U)}$ for all $U \subseteq V \subseteq Y$ and $\phi \in \O_Y(V)$. In particular, this implies that there are induced ring homomorphisms $f_P^* : \O_{Y, f(P)} \to \O_{X, P}$ on the stalks for all $P \in X$.
+        \item For all $P \in X$, we have $(f_P^*)^{-1}(I_P) = I_{f(P)}$, where $I_P$ and $I_{f(P)}$ denote the maximal ideals in the local rings $\O_{X, P}$ and $\O_{Y, f(P)}$, respectively.
+    \end{itemize}
+\end{bdefn}
+
+\begin{bprop}
+    For any two rings $R$ and $S$ there is a bijection
+    \[
+        \{\text{morphism } \Spec R \to \Spec S\} \longleftrightarrow \{\text{ring homomorphism } S \to R\}
+    \]
+    In particular, this means that there is a natural bijection
+    \[
+        \{\text{affine schemes}\}/\text{isomorphisms} \longleftrightarrow \{\text{rings}\}/\text{isomorphisms}
+    \]
+\end{bprop}
+
 
 \end{document}
