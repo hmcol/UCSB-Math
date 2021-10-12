@@ -1,0 +1,192 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\DeclareMathOperator{\id}{id}
+
+% Extra Commands
+\DeclareMathOperator{\Perm}{Perm}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\Aut}{Aut}
+\newcommand{\teq}{\trianglelefteq}
+
+
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman\makebox[0pt][r]{\raisebox{-0.25in}[0pt][0pt]{(worked with Joseph Sullivan, Gahl Shemy)}}}
+    \fancyhead[L]{MATH 220A Homework 2}
+    \fancyhead[C]{October 10, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+\begin{pbox}[1 Exercise I.9]
+    \,
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Let $G$ be a group and $H$ a subgroup of finite index. Show that there exists a normal subgroup $N$ of $G$ contained in $H$ and also of finite index. [\textit{Hint}: If $(G : H) = n$, find a homomorphism of $G$ into $S_n$ whose kernel is contained in $H$.]
+\end{pbox}
+
+\begin{proof}
+    Consider the map $\phi: G \to \Perm(G/H)$, where $\phi(g) = \phi_g : xH \mapsto gxH$. For $g, h \in G$,
+    \[
+        \phi_{gh}(xH) = ghxH = g\phi_h(xH) = \phi_g(\phi_h(xH)) = (\phi_g \circ \phi_h)(xH),
+    \]
+    so $\phi$ is in fact a group homomorphism. Then, $N = \ker\phi$ is a normal subgroup of $G$, with
+    \[
+        G/N \isom \im\phi \leq \Perm(G/H).
+    \]
+    Since $|G/H| = [G : H]$ is finite, so is $[G : N] = |G/N| \leq |\Perm(G/H)|$. If $n \in N$, then we have $nH = \phi_n(eH) = H$, implying that $n \in H$. Hence, $N \subseteq H$, so $N$ is as desired.
+
+\end{proof}
+
+\begin{pbox}[(b)]
+    Let $G$ be a group and let $H_1, H_2$ be subgroups of finite index. Prove that $H_1 \cap H_2$ has finite index.
+\end{pbox}
+
+\begin{proof}
+    By part (a), there are normal subgroups of finite index $N_1, N_2 \teq G$ such that $N_1 \subseteq H_1$ and $N_2 \subseteq H_2$, then $N_1 \cap N_2$ is a normal subgroup of $G$ contained in $H_1 \cap H_2$. By [some] isomorphism theorem,
+    \[
+        N_1/(N_1 \cap N_2) \isom (N_1N_2)/N_2,
+    \]
+    so we deduce
+    \begin{align*}
+        [G : N_1 \cap N_2]
+            &= [G : N_1][N_1 : N_1 \cap N_2] \\
+            &= [G : N_1][N_1N_2 : N_2] \\
+            &\leq [G : N_1][G : N_2].
+    \end{align*}
+    In particular, $N_1 \cap N_2$ is of finite index in $G$. Since $H_1 \cap H_2$ is contained in $N_1 \cap N_2$, we conclude $[G : H_1 \cap H_2] \leq [G : N_1 \cap N_2] < \infty$.
+
+\end{proof}
+
+
+\newpage
+\begin{pbox}[2 Exercise I.14]
+    Let $G$ be a finite group and let $N$ be a normal subgroup such that $N$ and $G/N$ have relatively prime orders.
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Let $H$ be a subgroup of $G$ having the same order as $G/N$. Prove that $G = HN$.
+\end{pbox}
+
+\begin{proof}
+    Since $H, N \leq HN \leq G$, then $|H|$ and $|N|$ divide $|HN|$, which divides $|G|$. Moreover, the least common multiple of $|H|$ and $|N|$, which is $|H||N|$ since they are coprime, must divide $|HN|$. Then
+    \[
+        |H||N|
+            \leq |HN|
+            \leq |G|
+            = |G/N||N|
+            = |H||N|,
+    \]
+    which implies $|HN| = |G|$. Since all orders are finite, we conclude that $HN = G$.
+
+\end{proof}
+
+\begin{pbox}[(b)]
+    Let $g$ be an automorphism of $G$. Prove that $g(N) = N$.
+\end{pbox}
+
+\begin{proof}
+    By the diamond isomorphism theorem,
+    \[
+        g(N)/(g(N) \cap N) \isom g(N)N/N \leq G/N.
+    \]
+    In particular, $|g(N)N/N|$ divides $|G/N|$. Additionally,
+    \[
+        |N| = |g(N)| = |g(N)N/N||g(N) \cap N|,
+    \]
+    which means that $|g(N)N/N|$ also divides $|N|$. Since $|N|$ and $|G/N|$ are coprime, we must have $|g(N)N/N| = 1$. Hence, $g(N)N = N$, implying that $g(N) = N$.
+
+\end{proof}
+
+
+\newpage
+\begin{pbox}[3 Exercise I.15]
+    Let $G$ be a finite group operating on a finite set $S$ with $\#(S) \geq 2$. Assume that there is only one orbit. Prove that there exists an element $x \in G$ which has no fixed point, i.e. $xs \ne s$ for all $s \in S$.
+\end{pbox}
+
+\begin{proof}
+    For all $s \in S$, we have $G \cdot s = S$. Then
+    \[
+        |S| = |G \cdot s| = |G : G_s| = \frac{|G|}{|G_s|},
+    \]
+    so
+    \[
+        |G|
+            = |G|\sum_{s \in S} \frac{1}{|S|}
+            = \sum_{s \in S} |G_s|.
+    \]
+
+    Let $C = \{(x, s) \in G \times S \mid xs = s\}$. Then, applying Exercise I.17 (the next problem) both ways, we obtain
+    \[
+        \sum_{x \in G} |S^x| = |C| = \sum_{s \in S} |G_s|,
+    \]
+    where $S^x$ is the subset of $S$ fixed by $g$. So, we have found $|G| = \sum_{x \in G} S^x$. Since $S^e = S$, then $|S^e| = |S| \geq 2$. We deduce that there is some $x \in G$ with $|S^x| = 0$, i.e., $x$ has no fixed points in $S$.
+
+\end{proof}
+
+
+\newpage
+\begin{pbox}[4 Exercise I.17]
+    Let $X$, $Y$ be finite sets and let $C$ be a subset of $X \times Y$. For $x \in X$ let $\phi(x) =$ number of elements $y \in Y$ such that $(x, y) \in C$. Verify that
+    \[
+        \#(C) = \sum_{x \in X} \phi(x). 
+    \]
+\end{pbox}
+
+\begin{proof}
+    For $x \in X$, let $C_x$ be the subset of $C$ with the first component equal to $x$. Then, $C$ can be written as the disjoint union $C = \bigsqcup_{x \in X} C_x$. By construction, $|C_x| = \phi(x)$, so
+    \[
+        |C|
+            = \left| \bigsqcup_{x \in X} C_x \right|
+            = \sum_{x \in X} |C_x|
+            = \sum_{x \in X} \phi(x).
+    \]
+
+\end{proof}
+
+\end{document}

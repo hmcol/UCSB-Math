@@ -65,10 +65,17 @@
 		"editor.wordWrap": "bounded",
 		"editor.wordWrapColumn": 200,
 		"cSpell.words": [
+			"coproduct",
+			"diagonalizable",
+			"diagonalization",
+			"homeomorphic",
+			"homogenizations",
 			"monoid",
 			"multidegree",
 			"multidegrees",
-			"semigroup"
+			"semigroup",
+			"Sylow",
+			"uncountably"
 		],
 	}
 }

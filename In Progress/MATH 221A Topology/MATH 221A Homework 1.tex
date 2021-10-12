@@ -1,0 +1,304 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+%\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+
+% Options
+%\allowdisplaybreaks
+%\addtolength{\jot}{4pt}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+
+% Extra Commands
+\DeclareMathOperator{\inter}{int}
+\DeclareMathOperator{\id}{id}
+
+\newcommand*\strong[1]{\textbf{\textit{#1}}}
+
+\newcommand{\inc}{\hookrightarrow}
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH 221A Homework 1}
+    \fancyhead[C]{October 6, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+\begin{pbox}[1]
+    Let $X$ and $Y$ be topological spaces.
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Show that for any topological space $T$, a function
+    $f: T \to X \times Y$ is continuous if and only if the compositions
+    $p_X f: T \to X$, $p_Y f: T \to Y$ are continuous.  Here $p_X$ and $p_Y$ are
+    the obvious projection maps.
+\end{pbox}
+
+\begin{proof}
+    Suppose $f$ is continuous. Let $U \subseteq X$ be open, then $p_X^{-1}(U) = U \times Y \subseteq X \times Y$ is open, as it is in the basis for the product topology. And since $f$ is continuous, 
+    \[
+        (p_Xf)^{-1}(U) = f^{-1}(U \times Y) \subseteq T
+    \]
+    is open. This shows $p_Xf$ is continuous, and it is the same to show that $p_Yf$ continuous.
+
+    Suppose both $p_Xf$ and $p_Yf$ are continuous. It suffices to prove that the preimages under $f$ of basis elements are open. Let $U \subseteq X$ and $V \subseteq Y$ be open, so $U \times V \subseteq X \times Y$ is an arbitrary basis element of the product topology. We can rewrite $U \times V$ as
+    \[
+        U \times V = (U \times Y) \cap (X \times V) = p_X^{-1}(U) \cap p_Y^{-1}(V),
+    \]
+    then
+    \[
+        f^{-1}(U \times V) = (p_Xf)^{-1}(U) \cap (p_Yf)^{-1}(V).
+    \]
+    Since $p_Xf$, $p_Yf$ are continuous and $U$, $V$ are open, $f^{-1}(U \times V) \subseteq T$ is is also open, proving that $f$ is continuous.
+
+\end{proof}
+
+\newpage
+\begin{pbox}[(b)]
+    Let $Z$ be a topological space with maps $g_X:Z \to X$ and
+    $g_Y:Z \to Y$.  Suppose that
+    \begin{quote}
+        for every space $T$ and pair of continuous functions $f_X:T \to X$ and
+        $f_Y:T \to Y$, there is a unique continuous function $f:T \to Z$ such that
+        $f_X=g_Xf$ and $f_Y=g_Yf$.
+    \end{quote}
+    Show that $Z$ must be homeomorphic to $X \times Y$ with the product topology
+    and $g_X$ and $g_Y$ are (taken by the homeomorphism to) $p_X$ and $p_Y$.
+\end{pbox}
+
+\begin{proof}
+    Consider $X \times Y$ with the natural projections $p_X$ and $p_Y$. By the stated universal property, there is a unique continuous function $p : X \times Y \to Z$ such that $p_X = g_Xp$ and $p_Y = g_Yp$. We construct a function $g = (g_X, g_Y) : Z \to X \times Y$, where $z \mapsto (g_X(z), g_Y(z))$. We have $p_Xg = g_X$ and $p_Yg = g_Y$, so 1(a) implies $g$ is continuous. We claim that $p$ and $g$ are inverses and, in which case, describe a homeomorphism between $X \times Y$ and $Z$.
+    
+    First, it can be seen that
+    \[
+        gp  = (g_Xp,\, g_Yp) = (p_X,\, p_Y) = \id_{X \times Y}.
+    \]
+    To prove the opposite composition is the identity on $Z$, we construct the continuous functions
+    \[
+        f_X : Z \xrightarrow{g} X \times Y \xrightarrow{p} Z \xrightarrow{g_X} X
+        \isp{and}
+        f_Y : Z \xrightarrow{g} X \times Y \xrightarrow{p} Z \xrightarrow{g_Y} Y.
+    \]
+    By the universal property, there is a unique continuous function $f : Z \to Z$ such that $f_X = g_Xf$ and $f_Y = g_Yf$. On one hand, the constructions of $f_X$ and $f_Y$ imply that $f = pg$. On the other hand, we have
+    \[
+        f_X = g_Xpg = p_Xg = g_X
+        \isp{and}
+        f_Y = g_Ypg = p_Yg = g_Y,
+    \]
+    which would imply that $f = \id_Z$. Therefore, $pg = f = \id_Z$.
+
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[2]
+    Similarly to the previous problem, suppose that $Z$ is a space equipped
+      with maps $q_X:X \to Z$ and $q_Y:Y \to Z$, and that
+      \begin{quote}
+        for every space $T$ and pair of continuous functions $f_X:X \to T$ and
+        $f_Y:Y \to T$, there is a unique continuous function $f:Z \to T$ such that
+        $f_X=fq_X$ and $f_Y=fq_Y$.
+      \end{quote}
+      Show that $Z$ is homeomorphic to $X \sqcup Y$ and $q_X$ and $q_Y$ are (taken by the homeomorphism to) the obvious inclusions.
+      \medskip
+    
+      \noindent This shows that $X \sqcup Y$ is the coproduct of $X$ and $Y$ in the category of topological spaces.
+\end{pbox}
+
+\begin{proof}
+    Consider $X \sqcup Y$ with the inclusions $i_X : X \inc X \sqcup Y$ and $i_Y : Y \inc X \sqcup Y$. By the universal property, there is a unique continuous function $i : Z \to X \sqcup Y$ such that $i_X = iq_X$ and $i_Y = iq_Y$. We construct a function $q = q_X \sqcup q_Y : X \sqcup Y \to Z$, where $x \mapsto q_X(x)$ for all $x \in X$ and $y \mapsto q_Y(y)$ for all $y \in Y$. We claim that $i$ and $q$ are inverses and, in which case, describe a homeomorphism between $X \sqcup Y$ and $Z$.
+
+    First, it can be seen that
+    \[
+        iq = iq_X \sqcup iq_Y = i_X \sqcup i_Y = \id_{X \sqcup Y}.
+    \]
+    To prove the opposite composition gives the identity on $Z$, we construct the continuous functions
+    \[
+        f_X : X \xrightarrow{q_X} Z \xrightarrow{i} X \sqcup Y \xrightarrow{q} Z  
+        \isp{and}
+        f_Y : Y \xrightarrow{q_Y} Z \xrightarrow{i} X \sqcup Y \xrightarrow{q} Z.
+    \]
+    By the universal property, there is a unique continuous function $f : Z \to Z$ such that $f_X = fq_X$ and $f_Y = fq_Y$. On one hand, the constructions of $f_X$ and $f_Y$ imply that $f = qi$. On the other hand, we have
+    \[
+        f_X = qiq_X = qi_X = q_X
+        \isp{and}
+        f_Y = qiq_Y = qi_Y = q_Y,
+    \]
+    which would imply that $f = \id_Z$. Therefore, $qi = f = \id_Z$.
+
+
+
+\end{proof}
+
+
+
+\newpage
+
+\begin{lemma}
+    The map $f : \R^2 \to \R$, $(x, y) \mapsto x + y$ is continuous.
+\end{lemma}
+
+\begin{proof}
+    It suffices to prove that the preimages under $f$ of basis elements (open intervals) in $\R$ are open. Suppose $(a, b) \subseteq \R$, where $a \in [-\infty, \infty)$ and $b \in (-\infty, \infty]$. For $(x, y) \in f^{-1}((a, b))$, there is some $\eps > 0$ such that $B_\eps(x + y) \subseteq (a, b)$. Then, for any $(x', y') \in B_{\eps/2}(x) \times B_{\eps/2}(y)$,
+    \[
+        a
+            < (x - \eps/2) + (y - \eps/2) 
+            < x' + y'
+            < (x + \eps/2) + (y + \eps/2) 
+            < b,
+    \]
+    so $(x', y') \in f^{-1}((a, b))$. That is, we have found an open neighborhood of $(x, y)$ contained in $f^{-1}((a, b))$, namely the basis element $B_{\eps/2}(x) \times B_{\eps/2}(y)$ in the product topology. Hence, $f^{-1}((a, b)) \subseteq \R^2$ is open, so $f$ is continuous.
+
+\end{proof}
+
+\begin{lemma}
+    The map $f : \R \to \R$, $x \mapsto -x$ is continuous.
+\end{lemma}
+
+\begin{proof}
+    Suppose $(a, b) \subseteq \R$ is a possibly unbounded open interval. Then $f^{-1}((a, b))$ is the set of points $x \in \R$ such that $a < -x < b$ or, equivalently, such that $-b < x < -a$. That is, $f^{-1}((a, b)) = (-b, -a)$, which is an open interval in $\R$, so $f$ is continuous.
+
+\end{proof}
+
+\begin{lemma}
+    The map $f : \R \to \R$, $x \mapsto |x|$ is continuous.
+\end{lemma}
+
+\begin{proof}
+    Suppose $(a, b) \subseteq \R$ is a possibly unbounded open interval, then $f^{-1}((a, b)) = (a, b) \cup (-b, -a)$. As the union of open intervals, $f^{-1}((a, b))$ is open, so $f$ is continuous.
+
+\end{proof}
+
+\begin{pbox}[3]
+    Let $X$ be a topological space and let $f:X \to \mathbb R$ and
+      $g:X \to \mathbb R$ be continuous.  Show that $\min(f,g)$ is a continuous
+      function.
+\end{pbox}
+
+\begin{proof}
+    By lemmas 1, 2, and 3, and the fact that the composition of continuous functions is continuous, we have that $\min(f, g) = \tfrac{1}{2}(f + g - |f - g|)$ is continuous.
+
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[4]
+    Let $X$ and $Y$ be metric spaces.  Show that the metrics
+      \begin{align*}
+        d_\infty((x,y),(x',y')) &= \max(d(x,x'),d(y,y')) \\
+        d_1((x,y),(x',y')) &= d(x,x')+d(y,y')
+      \end{align*}
+      both induce the product topology on $X \times Y$.
+    
+      \medskip
+      \noindent(A good exercise is to visualize the balls in
+      $\mathbb R \times \mathbb R$ in both of these topologies.)
+\end{pbox}
+
+\begin{proof}
+    To prove a pair of topologies are the same, we show that every neighborhood, in one topology, around a point contains a neighborhood, in the other topology, of the same point. (If this is the case, then every open set $U$, in one topology, is the union $\bigcup_{x \in U} U_x$, where $U_x$ is an open set, in the other topology, chosen such that $x \in U_x \subseteq U$.)
+
+    We first prove that $d_\infty$ induces the product topology on $X \times Y$. Let $W \subseteq X \times Y$ be open in the product topology and let $(x, y) \in W$. There is an element in the basis for the product topology $U \times V \subseteq X \times Y$, with $U \subseteq X$ open, $V \subseteq Y$ open, and $(x, y) \in U \times V$. Then there is some radius $r_X > 0$ such that $B_{r_X}(x) \subseteq U$, and some radius $r_Y > 0$ such that $B_{r_Y}(y) \subseteq V$. Let $r = \min\{r_X, r_Y\}$, then for any $(x', y') \in B_r((x, y); d_\infty)$, we have
+    \[
+        d(x, x') \leq d_\infty((x, y), (x', y')) < r \leq r_X
+    \]
+    and
+    \[
+        d(y, y') \leq d_\infty((x, y), (x', y')) < r \leq r_Y,
+    \]
+    so
+    \[
+        (x', y') \in B_{r_X}(x) \times B_{r_Y}(y) \subseteq U \times V \subseteq W.
+    \]
+    Thus, $(x, y) \in B_r((x, y); d_\infty) \subseteq W$, which proves that the topology induced by $d_\infty$ is at least as fine as the product topology.
+
+    Let $W \subseteq X \times Y$ be open in the topology induced by $d_\infty$ and let $(x, y) \in W$. There is some radius $r > 0$ such that $(x, y) \in B_r((x, y); d_\infty) \subseteq W$. Then for any $(x', y') \in B_r(x) \times B_r(y)$, we have $d(x, x') < r$ and $d(y, y') < r$, so $d_\infty((x, y), (x', y')) < r$, implying that $(x', y') \in B_r((x, y); d_\infty) \subseteq W$. Hence, we have found a neighborhood of $(x, y)$ in the product topology, namely $B_r(x) \times B_r(Y)$, contained in $W$. This proves that the product topology is at least as fine as the topology induced by $d_\infty$, so we conclude that they are the same topology.
+
+    Next, we will prove that $d_\infty$ and $d_1$ induce the same topology. To do so, we will show that each open ball under one metric contains an open ball in the other metric. Let $B_r((x, y); d_\infty)$ be an open $d_\infty$-ball. Then, for all $(x', y') \in B_{r/2}((x, y); d_1)$, we have
+    \[
+        \max(d(x, x'), d(y, y'))
+            \leq  d(x,x') + d(y,y')
+            < r/2 + r/2
+            = r.
+    \]
+    That is, $B_{r/2}((x, y); d_1) \subseteq B_r((x, y); d_\infty)$, so $d_1$ generates a topology at least as fine as $d_\infty$. Now, consider an open $d_1$-ball $B_r((x, y); d_1)$, with $r > 0$. For all $(x', y') \in B_{r/2}((x, y); d_\infty)$,
+    \[
+        d(x,x') + d(y,y')
+            \leq 2\max(d(x, x'), d(y, y'))
+            < 2 \cdot r/2
+            = r.
+    \]
+    That is, $B_{r/2}((x, y); d_\infty) \subseteq B_r((x, y); d_1)$, so $d_\infty$ generates a topology at least as fine as $d_1$.
+
+\end{proof}
+
+
+\newpage
+\begin{pbox}[5]
+    Give an example of a subset $A \subset \mathbb R$ such that the following
+      sets are all different:
+      \[A, \quad \overline{A}, \quad \inter A, \quad
+      \inter\left(\overline A\right), \quad \overline{\inter A}, \quad
+      \overline{\inter\bigl(\overline A\bigr)}, \quad
+      \inter\bigl(\overline{\inter A}\bigr).\]
+\end{pbox}
+
+Consider the set
+\[
+    A = [0, 1) \cup (1, 2] \cup \big([2, 3] \cap \Q\big) \cup \{4\} .
+\]
+We have
+\begin{align*}
+    \clo{A} &= [0, 3] \cup \{4\}, & \inter A &= (0, 1) \cup (1, 2), \\
+    \inter(\clo{A}) &= (0, 3), & \clo{\inter A} &= [0, 2], \\
+    \clo{\inter(\clo{A})} &= [0, 3], & \inter(\clo{\inter A}) &= (0, 2).
+\end{align*}
+
+\end{document}
