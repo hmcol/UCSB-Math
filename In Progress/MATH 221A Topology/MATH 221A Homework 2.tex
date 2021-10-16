@@ -1,0 +1,241 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+
+% Page Style
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+
+% Extra Commands
+
+
+% Document Info
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{Harry Coleman}
+    \fancyhead[L]{MATH 221A Homework 2}
+    \fancyhead[C]{October 13, 2021}
+}
+
+% Begin Document
+\begin{document}
+\thispagestyle{title}
+
+
+\begin{pbox}[1]
+    A space $X$ is \emph{locally (path-)connected at $x$} if for every neighborhood $N$ of $x$, there is a (path-)connected neighborhood $N' \subseteq N$ of $x$.  It is \emph{locally (path-)connected} if it is locally (path-)connected at every point.
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Show that a connected, locally path-connected space is path-connected.
+\end{pbox}
+
+\begin{proof}
+    For any $x \in X$, let $P_x \subseteq X$ be its path-connected component, i.e., $P_x$ is the set of points in $X$ with a path to $x$. 
+    
+    We claim that $P_x$ is an open subset of $X$, and will prove this directly. Let $y \in P_x$, so there is a path between $x$ and $y$. Since $X$ is locally path-connected, there is some path-connected neighborhood $N$ of $y$. For each $z \in N$, there is a path between $y$ and $z$. We can then join the $x$-$y$ path and the $y$-$z$ path to obtain a path between $x$ and $z$. This means that $z \in P_x$, hence $N \subseteq P_x$. This shows that $P_x \subseteq X$ is open for every $x \in X$.
+
+    Let $x \in X$; we claim that $P_x = X$. Assume not, then the set
+    \[
+        U = \bigcup_{y \in X \setminus P_x} P_y
+    \]
+    is nonempty. As the union of open sets, $U \subseteq X$ is open. Moreover, if $y \in X \setminus P_x$, then $P_y$ must be disjoint from $P_x$; otherwise, there would be a path between $x$ and $y$, constructed out of paths between each and a point in the intersection. This implies that $U$ is disjoint from $P_x$. We now have $X = P_x \sqcup U$, where $P_x$ and $U$ are open. In other words, $X$ is the disjoint union of nonempty open subsets, which is a contradiction. Hence, $X$ is path-connected.
+
+\end{proof}
+
+\newpage
+\begin{pbox}[(b)]
+    Construct a subspace of $\mathbb{R}^2$ which is path-connected, but not locally connected.
+\end{pbox}
+
+Define $L_0 = [0, 1] \times \{0\} \subseteq \R^2$. For each $n \in \N$, let $L_n \subseteq \R^2$ be the line segment between the origin and the point $(1, 1/n) \in \R^2$. Define $X = \bigcup_{n = 0}^{\infty} L_n$.
+
+Each line segment $L_n$ is trivially path-connected and each contains the origin. Hence, $X$ is path-connected as any two points have paths to the origin and, therefore, to each other.
+
+For any $n \in \N$, we can split $X$ along the line $y = 2x/(2n + 1)$. That is, define the open halfspaces
+\[
+    H_n = \{(x, y) \in \R^2 : y > 2x/(2n + 1)\}
+\]
+and
+\[
+    K_n = \{(x, y) \in \R^n : y < 2x/(2n + 1)\}.
+\]
+Then $X = \{0, 0\} \sqcup (H_n \cap X) \sqcup (K_n \cap X)$, where $H_n \cap X$ and $K_n \cap X$ are open in the subspace topology on $X \subseteq \R^2$.
+
+We will show that $X$ is not locally connected. Consider the point $x = (1, 0) \in X$, and any neighborhood $N \subseteq B_1(x) \cap X$ of $x$. Note that $N$ does not contain the origin, so $N$ can be written as the disjoint union of open subsets $N = (H_n \cap N) \sqcup (K_n \cap N)$. There is some $\eps > 0$ such that $B_\eps(x) \cap X \subseteq N$, and some $n \in \N$ such that $1/n < \eps$. Then $L_n \cap B_\eps(x) \subseteq H_n \cap N$ is nonempty, as it contains the point $(1, 1/n)$. Moreover, $K_n \cap N$ is nonempty, as it contains $x = (1, 0)$. Hence, $N$ is the disjoint union of nonempty open subsets, i.e., disconnected.
+
+
+
+\newpage
+\begin{pbox}[2 \\ (a)]
+    Show that every countable metric space is totally disconnected.
+\end{pbox}
+
+\begin{proof}
+    Let $(X, d)$ be a countable metric space.
+
+    Suppose $x, y \in X$ are distinct points, and let $R = d(x, y) > 0$.
+    
+    We claim that there is some radius $r \in \R$ such that $0 < r < R$ and no $z \in X$ has $d(x, z) = r$. If there were some $z \in X$ with $d(x, z) = r$ for every $r \in (0, R)$, then we could construct an injection $(0, R) \to X$, using the axiom of choice, with $r \mapsto z$. This would imply that $X$ is uncountable, as the real interval $(0, R)$ is uncountable.
+
+    Let $r \in (0, R)$ such that $d(x, z) \ne r$ for all $z \in X$. Define the disjoint sets
+    \[
+        U = \{z \in X : d(x, z) < r\}
+        \isp{and}
+        V = \{z \in X : d(x, z) > r\}.
+    \]
+    By choice of $r$, we know $U$ and $V$ cover $X$. Moreover, $x \in U$ and $y \in U$, so both are nonempty. Lastly, $U = B_r(x)$ is open, implying that $V = X \setminus \clo{U}$ is also open. Hence, $X$ is the disjoint union of the nonempty open subsets $U$ and $V$.
+
+    If $C \subseteq X$ is the connected component containing $x$, then we can write $C = (U \cap C) \sqcup (V \cap C)$, where $U \cap C$ and $V \cap C$ are open in the subspace topology on $C$. Since $U \cap C$ contains $x$, it is nonempty. Since $C$ is connected, we must have $V \cap C$ be empty; in particular, $y \notin C$.
+
+    We have shown that $x, y \in X$ are in the same connected component of $X$ if and only if $x = y$, which means that every connected component is a singleton. Hence, $X$ is totally disconnected.
+
+\end{proof}
+
+\begin{pbox}[(b)]
+    Show that if $A \subset \mathbb R^2$ is countable, then $\mathbb R^2 \setminus A$ is path-connected.
+\end{pbox}
+
+\begin{proof}
+    Denote $X = \R^2 \setminus A$.
+
+    Let $x \in X$ and define $L$ to be the collection of lines in $\R^2$ passing through the point $x$. In other words, the sets in $L$ correspond to the $1$-dimensional subspaces of the real vector space $\R^2$, shifted by the vector $x \in \R^2$. Note that $L$ is at least uncountable, since any choice of slope in $\R$ corresponds to a line through $x$ with that slope. Moreover, any two distinct lines in $L$ intersect only at $x$. 
+
+    We claim that there is some line $\ell \in L$ such that $\ell \cap A = \emptyset$. If there were some $a \in \ell \cap A$ for every $\ell \in L$, the we could construct an injection $L \to A$ by $\ell \mapsto a$, using the axiom of choice. This would imply that $A$ is uncountable, as $L$ is uncountable. Let $\ell$ be a line in $\R^2$ passing through $x$ and disjoint from $A$.
+
+    For any other $y \in X$, we use the same argument to construct a line $\ell'$ in $\R^2$ through $y$ and disjoint from $A$. Without loss of generality, we can assume $\ell'$ is not parallel to $\ell$; otherwise we repeat the argument excluding this line, as there are still uncountably many lines through $y$ not parallel to $\ell$.
+
+    We now have $x, y \in \ell \cup \ell' \subseteq X$. Since $\ell$ and $\ell'$ are not parallel, they intersect at some point $z \in \R^2$. Then $X$ contains a line segment between $x$ and $z$, and a line segment between $z$ and $y$, which join to give a path in $X$ between $x$ and $y$. Hence, $X$ is path-connected.
+
+
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[3]
+    Let $X$ be a metric space and $A$ a subset.  For a point $x \in X$, we
+      define
+      \[d(x,A)=\inf_{a \in A} d(x,a).\]
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Show that $d(x,A)=0$ if and only if $x \in \bar A$.
+\end{pbox}
+
+\begin{proof}
+    Suppose $d(x, A) = 0$, so for every $\eps > 0$, there is some $a \in A$ such that $d(x, a) < \eps$. This implies $a \in B_\eps(x)$, i.e., $B_\eps(x) \cap A \ne \emptyset$. Since this holds for all $\eps > 0$ and every neighborhood of $x$ contains a ball of some positive radius, then every neighborhood of $x$ has a nonempty intersection with $A$. Hence, $x \in \clo{A}$.
+
+    Suppose $x \in \clo{A}$. For every $\eps > 0$, the open ball $B_\eps(x)$ is a neighborhood of $x$, so $B_\eps \cap (A) \ne \emptyset$. That is, there is some $a \in A$ such that $d(x, a) < \eps$, implying $d(x, A) \leq \eps$. Since this holds for all $\eps > 0$, we in fact have $d(x, A) = 0$.
+
+\end{proof}
+
+\begin{pbox}[(b)]
+    Show that if $A$ is compact, $d(x,A)=d(x,a)$ for some $a \in A$.
+\end{pbox}
+
+\begin{proof}
+    For each $n \in \N$, there is some $a_n \in A$ such that $d(x, a_n) < d(x, A) + 1/n$, which means that $d(x, a_n) \to d(x, A)$. Then $\{a_n\}$ is a sequence in the compact set $A$, so there is a convergent subsequence $a_{n_k} \to a \in A$. Since $d(x, -)$ is a continuous function, we have convergence $d(x, a_{n_k}) \to d(x, a) = d(x, A)$.
+    
+\end{proof}
+
+\begin{pbox}[(c)]
+    Define the \emph{$\eps$-neighborhood} of $A$ in $X$ to be the set
+        \[U(A,\eps)=\{x : d(x,A)<\eps\}.\]
+        Show that $U(A,\eps)$ is the union of the open balls $B_d(a,\eps)$ for
+        $a \in A$.
+\end{pbox}
+
+\begin{proof}
+    Given $x \in U(A, \eps)$, we have $d(x, A) < \eps$. That is, there is some $\delta > 0$ such that $d(x, A) = \eps - \delta$. Then, for all $\eta > 0$, there is some $a \in A$ such that $d(x, a) < (\eps - \delta) + \eta$. In particular, take $\eta = \delta$, so there is some $a \in A$ such that $d(x, a) < (\eps - \delta) + \delta = \eps$. In other words, $x \in B_\eps(a)$.
+
+    If $x \in B_\eps(a)$ for some $a \in A$, then $d(x, A) \leq d(x, a) < \eps$, implying that $x \in U(A, \eps)$.e
+
+\end{proof}
+
+\newpage
+\begin{pbox}[(d)]
+    If $A$ is compact and $U$ is an open set containing $A$, show that some
+        $\eps$-neighborhood of $A$ is contained in $U$.
+\end{pbox}
+
+\begin{proof}
+    Assume, for contradiction, that $U(A, \eps) \cap U^c \ne \emptyset$ for all $\eps > 0$. Then, for every $n \in \N$, there is some $x_n \in U^c$ such that $d(x_n, A) < \frac{1}{n}$. Moreover, since $A$ is compact, there is some $a_n \in A$ such that $d(x_n, a_n) = d(x_n, A)$. Then, $\{a_n\}$ is a sequence in the compact set $A$, so there is a convergence subsequence $a_{n_k} \to a \in A$. The triangle inequality gives us
+    \[
+        d(x_{n_k}, a)
+            \leq d(x_{n_k}, a_{n_k}) + d(a_{n_k}, a),
+    \] 
+    which converges to zero as $k \to \infty$. This means that for every $\eps > 0$, there is some $k \in \N$ such that $x_{n_k} \in B_{\eps}(a)$, i.e., $B_\eps(a) \cap U^c \ne \emptyset$. However, this contradicts the fact that $a \in A \subseteq U$ and $U$ open implies that there is some $\eps > 0$ such that $B_\eps(x) \subseteq U$. 
+
+\end{proof}
+
+\begin{pbox}[(e)]
+    Show that the result of (d) need not hold if $A$ is closed but not
+        compact.
+\end{pbox}
+
+Consider $X = \R^2$ and let $A$ be the $x$-axis, a closed set. Define
+\[
+    U = \{(x, y) : x > 0 \text{ and } y < 1/x\}
+\]
+
+Then for any $\eps > 0$, $U(A, \eps)$ contains the points $(x, \eps)$ for all $x > 0$. However, $1/\eps \geq 1/\eps$, which implies that the point $(1/\eps, 1/\eps)$ is in $U(A, \eps)$ but not in $U$.
+
+\newpage
+\begin{pbox}[4]
+    Given a nice enough path-connected subset $X \subseteq \mathbb R^n$, we
+      can define the \emph{intrinsic distance} between two points of $X$ by
+      \[d(x,y)=\inf \bigl\{{\textstyle\int_0^1} \lvert\dot\gamma(t)\rvert dt : \gamma\text{ is an almost everywhere differentiable path from $x$ to }y\bigr\}.\]
+      Give an example of an $X \subset \mathbb R^2$ which is compact and
+      path-connected, yet the intrinsic distance takes every positive real value
+      (and hence is infinite for some pairs of points).
+    
+      The moral is that a path being ``infinitely long'' is not a topological
+      property and does not prevent you from being path-connected!
+    
+      \textbf{Optional:} Is there an ambient self-homeomorphism of $\mathbb R^2$ that takes your infinite path to a finite one?  Show that such a homeomorphism can't be differentiable.
+\end{pbox}
+
+Take the topologist's sine curve for $x \in (0, 1]$, including the segment from $-1$ to $1$ on the $y$-axis. This is a closed bounded subset of $\R^2$ and, therefore, compact. Add a path from the rightmost point of the curve, looping around the entire curve, and connecting to the origin on the left. This is, again, a compact set.
+
+Moreover, it is path-connected. However, no path can pass from $x > 0$ to $x = 0$ through the sine curve; it must move through the added loop. Then for very small values of $x > 0$, the minimum length of a path from the point on the curve with that value of $x$ to the origin is arbitrarily large, so the intrinsic distance attains every positive real.
+
+(Note: I'm not sure how this would imply infinite intrinsic distance for some pairs of points, because it seems like every pair of points has some finite path, utilizing the added loop.)
+
+
+\end{document}

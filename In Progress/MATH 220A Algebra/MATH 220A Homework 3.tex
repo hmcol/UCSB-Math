@@ -47,8 +47,8 @@
 \fancypagestyle{title}{
     \renewcommand{\headrulewidth}{0.4pt}
     \setlength{\headheight}{15pt}
-    \fancyhead[R]{Harry Coleman}
-    \fancyhead[L]{MATH  Homework 3}
+    \fancyhead[R]{Harry Coleman\makebox[0pt][r]{\raisebox{-0.25in}[0pt][0pt]{(worked with Joseph Sullivan, Gahl Shemy)}}}
+    \fancyhead[L]{MATH 220A Homework 3}
     \fancyhead[C]{October 16, 2021}
 }
 
@@ -68,6 +68,17 @@
     \]
 \end{pbox}
 
+\begin{proof}
+    Note that for all $t \in G \cdot s$, we have $G \cdot t = G \cdot s$, since the orbits of $G$ in $S$ form a partition of $S$. So
+    \[
+        \sum_{t \in G \cdot s} \frac{1}{|G \cdot t|}
+            = \sum_{t \in G \cdot s} \frac{1}{|G \cdot s|}
+            = |G \cdot s| \frac{1}{|G \cdot s|}
+            = 1.
+    \]
+
+\end{proof}
+
 \begin{pbox}[(b)]
     For each $x \in G$ define $f(x) = $ number of elements $s \in S$ such that $xs = s$. Prove that the number of orbits of $G$ in $S$ is equal to
     \[
@@ -75,28 +86,119 @@
     \]
 \end{pbox}
 
+\begin{proof}
+    By the orbit-stabilizer theorem,
+    \[
+        |G \cdot s|
+            = [G : G_s]
+            = \frac{|G|}{|G_s|}.
+    \]
+    Let $S/G$ be the set of orbits of $G$ in $S$. Then, with (a), the number of orbits of $G$ in $S$ is
+    \[
+        |S/G|
+            = \sum_{O \in S/G} 1
+            = \sum_{O \in S/G} \sum_{s \in O} \frac{1}{|G \cdot s|}
+            = \sum_{s \in S} \frac{1}{|G \cdot s|}
+            = \frac{1}{|G|} \sum_{s \in S} |G_s|.
+    \]
+    Let $C = \{(x, s) \in G \times S \mid xs = s\}$. Then, by Homework 2 Problem 4,
+    \[
+        \sum_{x \in G} f(x) = |C| = \sum_{s \in S} |G_s|,
+    \]
+    so indeed
+    \[
+        |S/G| = \frac{1}{|G|} \sum_{x \in G} f(x).
+    \]
+
+
+\end{proof}
+
+
+\newpage
 \begin{pbox}[2 Exercise I.21]
     Let $G$ be a finite group and $H$ a subgroup. Let $P_H$ be a $p$-Sylow subgroup of $H$. Prove that there exists a $p$-Sylow subgroup $P$ of $G$ such that $P_H = P \cap H$.
 \end{pbox}
 
+\begin{proof}
+    We have $|P_H| = p^k$, for some $k \in \Z_{\geq 0}$; in particular, $P_H$ is a $p$-subgroup of $G$. So there is a $p$-Sylow subgroup $P \leq G$ containing $P_H$. We claim that $P_H = P \cap H$.
+
+    Since $P_H \leq P$ and $P_H \leq H$, it is evident that $P_H \leq P \cap H$. Moreover, this implies that $|P_H| = p^k$ divides $|P \cap H|$. And since $P \cap H \leq P$, we also have $|P \cap H|$ dividing $|P|$, so $|P \cap H|$ is a power of $p$. Since $P_H$ is a $p$-Sylow subgroup of $H$, then $p^k$ is the maximum power of $p$ that divides the order of $H$. So in fact, $|P \cap H| = p^k = |P_H|$. Therefore, $P \cap H$ contains $P$ and has the same order, so they must be equal.
+
+\end{proof}
+
+
+
+\newpage
 \begin{pbox}[3 Exercise I.22]
     Let $H$ be a normal subgroup of a finite group $G$ and assume that $|H| = p$. Prove that $H$ is contained in every $p$-Sylow subgroup of $G$.
 \end{pbox}
 
+\begin{proof}
+    Since $H$ is a $p$-subgroup of $G$, it is contained in some $p$-Sylow subgroup $P \leq G$. For any other $p$-Sylow subgroup $P' \leq G$, we have $P' = gPg^{-1}$ for some $g \in G$. Then, since $H$ is normal in $G$, we have
+    \[
+        H = gHg^{-1} \subseteq gPg^{-1} = P'.
+    \]
+
+\end{proof}
+
+
+\newpage
 \begin{pbox}[4 Exercise I.23]
-    Let $P$, $P'$ be a $p$-Sylow subgroups of a finite group $G$.
+    Let $P$, $P'$ be $p$-Sylow subgroups of a finite group $G$.
 \end{pbox}
 
 \begin{pbox}[(a)]
     If $P' \subseteq N(P)$ (normalizer of $P$), then $P' = P$.
 \end{pbox}
 
+\begin{proof}
+    Consider $PP'$, which the set of all elements $xy$ for $x \in P$ and $y \in P'$. We claim that it is subgroup of $G$. Let $x_1y_1, x_2y_2 \in PP'$; we want to show that the product is still in $G$. Since $y_1 \in P' \subseteq N(P)$, then $y_1x_2y_1^{-1} \in P$, so
+    \[
+        (x_1y_1)(x_2y_2)
+            = x_1y_1x_2(y_1^{-1}y_1)y_2
+            = (x_1y_1x_2y_1^{-1})(y_1y_2)
+            \in PP'.
+    \]
+    Additionally, for $xy \in PP'$, we require $(xy)^{-1}$ in $PP'$. Since $y^{-1} \in P' \subseteq N(P)$, we know that $y^{-1}P = Py^{-1}$. Hence,
+    \[
+        (xy)^{-1}
+            = y^{-1}x^{-1}
+            \in y^{-1}P
+            = Py^{-1}
+            \subseteq PP'.
+    \]
+    We conclude that $PP'$ is a subgroup of $G$ containing $P$ and $P'$.
+    
+    By the diamond isomorphism theorem (listed in Lang as one of the canonical isomorphisms), $P' \leq N(P)$ implies $PP'/P' \isom P/(P \cap P')$, so
+    \[
+        |PP'| = \frac{|P| |P'|}{|P \cap P'|}.
+    \]
+    We deduce that $|PP'|$ is a power of $p$, as it divides $|P||P'|$, which is a power of $p$. Since $PP'$ contains $P$ as a subgroup, then $|PP'|$ is at least $|P|$, the maximum power of $p$ dividing $|G|$. So in fact, $P = PP' = P'$.
+
+\end{proof}
+
 \begin{pbox}[(b)]
     If $N(P') = N(P)$, then $P' = P$.
 \end{pbox}
 
+\begin{proof}
+    Since $P' \subseteq N(P') = N(P)$, then by (a), we have $P' = P$.
+
+\end{proof}
+
 \begin{pbox}[(c)]
     We have $N(N(P)) = N(P)$.
 \end{pbox}
+
+\begin{proof}
+    As always, $N(P) \subseteq N(N(P))$, so we prove the opposite inclusion. Let $x \in N(N(P))$, meaning $xN(P)x^{-1} = N(P)$. Since $P \subseteq N(P)$,
+    \[
+        xPx^{-1}
+            \subseteq xN(P)x^{-1}
+            = N(P).
+    \]
+    Since $xPx^{-1}$ is a $p$-Sylow subgroup of $G$, (a) implies $xPx^{-1} = P$. Hence, $x \in N(P)$.
+
+\end{proof}
 
 \end{document}

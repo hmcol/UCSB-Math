@@ -102,6 +102,19 @@
 \def\\{\setminus}
 
 
+% long limits
+\newcommand{\longlimit}[2]{
+    {
+        \def\arraystretch{0}
+        \begin{array}[t]{@{}l@{}}
+            \displaystyle{#2} \\[8.5pt] \scriptstyle{#1}
+        \end{array}
+    }
+}
+
+\newcommand{\longprod}[2]{\longlimit{#1}{\prod #2}}
+\newcommand{\longsum}[2]{\longlimit{#1}{\sum #2}}
+
 % Document Info
 \fancypagestyle{title}{
     \renewcommand{\headrulewidth}{0.4pt}

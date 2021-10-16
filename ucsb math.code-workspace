@@ -65,17 +65,23 @@
 		"editor.wordWrap": "bounded",
 		"editor.wordWrapColumn": 200,
 		"cSpell.words": [
+			"cofinite",
 			"coproduct",
 			"diagonalizable",
 			"diagonalization",
+			"halfspaces",
 			"homeomorphic",
 			"homogenizations",
 			"monoid",
+			"monomorphism",
 			"multidegree",
 			"multidegrees",
+			"nilpotent",
 			"semigroup",
+			"subneighborhood",
 			"Sylow",
-			"uncountably"
+			"uncountably",
+			"Zariski"
 		],
 	}
 }
