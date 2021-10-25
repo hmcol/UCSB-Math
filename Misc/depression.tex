@@ -1112,4 +1112,45 @@ there is a surjective $K$-linear map
         \item $\ker \psi = 0$ ok
     \end{itemize}
 
+
+\section{compact-open? more like compact-ass}
+
+Let
+    \[
+        X = \clo{B_1(0)} = \{f : [0, 1] \to [-1, 1] \text{ continuous}\}.
+    \]
+    There is an open cover of $X$, given by
+    \[
+        \mathcal{U} = \{B_{1/2}(f) : f \in X\}.
+    \]
+    We claim that $\mathcal{U}$ contains no finite subcover. To show this, we will take an arbitrary finite subset of $\mathcal{U}$, then construct a function which is not covered. Before doing so, we introduce some tools.
+
+    Let $f, g \in X$. If $g \in B_{1/2}(f)$ then, for all $x \in [0, 1]$,
+    \begin{align*}
+        f(x) \leq 0 &\implies g(x) < f(x) + 1/2 < 1, \\
+        f(x) \geq 0 &\implies g(x) > f(x) - 1/2 > -1.
+    \end{align*}
+    On the other hand, if $f(x) \leq 0$ and $g(x) = 1$, then we deduce that $g \notin B_{1/2}(f)$. Similarly, $f(x) \geq 0$ and $g(x) = -1$ imply that $g \notin B_{1/2}(f)$.
+
+    For $n \in \N$, define
+    \begin{align*}
+        \sigma_n : X &\longrightarrow \{-1, 0, 1\} \\
+            f &\longmapsto \sgn f(1/n)
+    \end{align*}
+    where
+    \[
+        \sgn x = \begin{cases}
+            -1 &\text{if } x < 0, \\
+            0 &\text{if } x = 0, \\
+            1 &\text{if } x > 0.
+        \end{cases}
+    \]
+    Then, for each $f \in X$, define the sequence $\sigma(f) = (\sigma_n(f))$; this is a map $\sigma : X \to \{-1, 0, 1\}^\N$.
+    
+    Intuitively, $\sigma(f)$ tracks whether the graph of $f$ is above or below the horizontal axis at each of the points $1/n \in [0, 1]$, for $n \in \N$. The sequence $\sigma(f)$ carries only a small amount of the data of $f$, but it has enough to show that certain functions are not in the ball $B_{1/2}(f)$. For example, if $\sigma_n(f) = \{0, 1\}$ then for any $g \in X$ with $g(x) = -1$, we know that $g \notin B_{1/2}(f)$.
+
+    Suppose $(a_n) \in \{-1, 0, 1\}^\N$ is a sequence with finite support, i.e., finitely many nonzero terms. We can define a piece-wise linear function $[0, 1] \to [-1, 1]$, where $0 \mapsto 0$ and on the interval $[1/(n+1), 1/n]$, the graph of the function is the line segment connecting the points $(1/n, a_n)$ and $(1/(n+1), a_{n+1})$, for $n \in \N$. The only risk with defining the function in this way is that it may not be continuous at zero. However, the fact that the sequence has finite support ensures continuity.
+    
+    We will now prove that $\mathcal{U}$ has no finite subcover. Let $\{B_{1/2}(f_1), \dots, B_{1/2}(f_r)\} \subseteq \mathcal{U}$ be a finite subset. To each $f_i$ corresponds a sequence $\sigma(f_i)$ in $\{-1, 0, 1\}$. Since there are only finitely many $f_i$'s, there is some sequence $(a_n)$ in $\{-1, 1\}$ which differs in at least one term from each $\sigma(f_i)$. Moreover, there is some $N \in \N$ such that $(a_n)$ is distinct from each $\sigma(f_i)$ within the first $N$ terms. We then replace $a_n$ with $0$ for $n \geq N$ to obtain a sequence in $\{-1, 0, 1\}$ with finite support which, in turn, defines a continuous function $g \in X$ with $g(1/n) = a_n$, for all $n \leq N$. For $i = 1, \dots, r$, there is some index $n \leq N$ with $g(1/n) = a_n \neq \sigma_n(f_i)$, implying that $g \notin B_{1/2}(f_i)$.
+
 \end{document}
