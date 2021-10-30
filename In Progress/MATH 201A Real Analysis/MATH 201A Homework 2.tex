@@ -67,7 +67,8 @@
 
 Let $X = \{0, 1\}$ with the indiscrete topology and $\mu$ the cardinality measure. Clearly, $\mu$ is Borel, since $\emptyset$ and $X$, the only Borel sets, are always measurable. Consider $\{0\} \subseteq X$; the only Borel subset containing $\{0\}$ is $X$ itself, but $\mu(\{0\}) = 1 \ne 2 = \mu(X)$. Hence, $\mu$ is not Borel-regular.
 
-\newpage
+
+
 \begin{pbox}[2]
     Let $X$ be a nonempty set and let $\{\mu_n\}_{n=1}^{\infty}$ be a sequence of measures on $X$. Assume for any subset $A \subseteq X$ the limit $\lim_{n \to \infty} \mu_n(A)$ exists and denote $\mu(A) = \lim_{n \to \infty} \mu_n(A)$.
 \end{pbox}
@@ -104,11 +105,13 @@ Yes.
 
 \end{proof}
 
+
+\newpage
 \begin{pbox}[(ii)]
-    Assume in addition that $\mu_1(X) < \infty$, and that each of the measures $\mu_n$ is regular. Is it true that $\mu$ is a measure on $X$ if for any $A \subseteq X$ the sequence $\{\mu_n(A)\}$ is decreasing?
+    Assume in addition that $\mu_1(X) < \infty$, and that each of the measures $\mu_n$ is Borel-regular. Is it true that $\mu$ is a measure on $X$ if for any $A \subseteq X$ the sequence $\{\mu_n(A)\}$ is decreasing?
 \end{pbox}
 
-Yes?
+Yes.
 
 \begin{proof}
     First,
@@ -119,17 +122,52 @@ Yes?
             = 0.
     \]
     
-
-    Suppose $A_1, A_2, \ldots \subseteq X$ and $A \subseteq \bigcup_{i=1}^{\infty} A_i$. By the decreasing condition, $\mu(A) \leq \mu_n(A)$, for all $n \in \N$, so
+    Next, $\mu$ is is monotone. Suppose $A \subseteq B \subseteq X$, then
     \[
         \mu(A)
-            \leq \mu_n(A)
-            \leq \sum_{i=1}^{\infty} \mu_n(A_i).
+            = \lim_{n \to \infty} \mu_n(A)
+            \leq \lim_{n \to \infty} \mu_n(B)
+            = \mu(B).
     \]
-    
 
 
-    This is the countable subadditivity and monotonicity, hence $\mu$ is a measure on $X$.
+
+    Let $A_1, A_2, \dots \subseteq X$ be mutually disjoint Borel sets. Since each $\mu_n$ is Borel-regular, then each $A_i$ is $\mu_n$-measurable. Then,
+    \[
+        \mu\left(\bigcup_{i=1}^{\infty} A_i\right)
+            = \lim_{n \to \infty} \mu_n\left(\bigcup_{i=1}^{\infty} A_i\right)
+            = \lim_{n \to \infty} \sum_{i=1}^{\infty} \mu_n(A_i).
+    \]
+    Since $\mu_n(A_i) \leq \mu_1(A_i)$ and $\sum_{i=1}^{\infty} \mu_1(A_i) = \mu_1(\bigcup_{i=1}^{\infty} A_i) < \infty$, we may perform the interchange
+    \[
+        \mu\left(\bigcup_{i=1}^{\infty} A_i\right)
+            = \lim_{n \to \infty} \sum_{i=1}^{\infty} \mu_n(A_i)
+            = \sum_{i=1}^{\infty} \lim_{n \to \infty} \mu_n(A_i)
+            = \sum_{i=1}^{\infty} \mu(A_i).
+    \]
+    This shows $\mu$ is countably additive on disjoint Borel sets.
+
+    Now, suppose the $A_i$'s are not necessarily disjoint Borel sets. Define the Borel sets $B_1 = A_1$ and $B_i = A_i \setminus B_{i-1}$ for $i \geq 2$. Then $\bigcup_{i=1}^{\infty} A_i = \bigcup_{i=1}^{\infty} B_i$ and $B_i \subseteq A_i$, so
+    \[
+        \mu\left(\bigcup_{i=1}^{\infty} A_i\right)
+            = \sum_{i=1}^{\infty} \mu(B_i)
+            \leq \sum_{i=1}^{\infty} \mu(A_i).
+    \]
+    This shows $\mu$ is countably subadditive on Borel sets.
+
+    Now, suppose the $A_i$'s are arbitrary sets. For each $n, i$, there is a Borel set $B_{n, i} \subseteq X$ such that $A_i \subseteq B_{n,i}$ and $\mu_n(A_i) = \mu_n(B_{n,i})$. Define the Borel set $B_i = \bigcap_{n=1}^{\infty} B_{n,i}$, then $A_i \subseteq B_i \subseteq B_{n,i}$. So
+    \[
+        \mu_n(A_i) \leq \mu_n(B_i) \leq \mu_n(B_{n,i}) = \mu_n(A_i),
+    \]
+    implying $\mu_n(A_i) = \mu_n(B_i)$. Letting $n \to \infty$, we find $\mu(A_i) = \mu(B_i)$. Then
+    \[
+        \mu\left(\bigcup_{i=1}^{\infty} A_i\right)
+            \leq \mu\left(\bigcup_{i=1}^{\infty} B_i\right)
+            \leq \sum_{i=1}^{\infty} \mu(B_i)
+            = \sum_{i=1}^{\infty} \mu(A_i).
+    \]
+    This shows $\mu$ is countably subadditive on all sets.
+
 
 \end{proof}
 
@@ -149,16 +187,16 @@ Yes?
 
     If $A \in F$, then $\chi_{A^c} = 1 - \chi_A \in F$, implying $A^c \in \AA$.
 
-    Suppose $A_1, A_2, \ldots \in \AA$ and let $A = \bigcap_{i=1}^{\infty} A_i$. For $n \in \N$, define $B_n = \bigcap_{i=1}^{n} A_n$, then
+    Suppose $A_1, A_2, \ldots \in \AA$ and let $A = \bigcap_{i=1}^{\infty} A_i$. For $n \in \N$, define $B_n = \bigcap_{i=1}^{n} A_i$, then
     \[
-        \chi_{B_n} = \prod_{i=1}^{n} \chi_{A_n} \in F.
+        \chi_{B_n} = \prod_{i=1}^{n} \chi_{A_i} \in F.
     \]
     Then $\chi_{B_n} \to \chi_A$ pointwise in $X$, so $\chi_A \in F$, implying $A \in \AA$.
 
 \end{proof}
 
 
-\newpage
+
 \begin{pbox}[4]
     Prove that any open subset of $\R^n$ can be expressed as a countable union of closed balls in $\R^n$
 
@@ -166,7 +204,7 @@ Yes?
 \end{pbox}
 
 \begin{proof}
-    Let $X$ be a separable metric space and let $Y \subseteq X$ be a countable dense subset. Let $U \subseteq X$ be an open subset. For each $x \in U$, define the radius $r_x = d(x, U^c) > 0$ and the closed ball $E_x = \clo{B_{r_x/2}(x)}$. We claim that $U = \bigcup_{y \in U \cap Y} E_y$, which is a countable union of closed balls.
+    Let $X$ be a separable metric space and let $Y \subseteq X$ be a countable dense subset. Let $U \subseteq X$ be an open subset. For each $x \in U$, define the radius $r_x = d(x, U^c) > 0$ and the closed ball $E_x = \clo{B_{r_x/2}(x)}$. We claim that $U = \bigcup_{y \in U \cap Y} E_y$ (a countable union of closed balls).
 
     By construction, $E_y \subset B_{r_y}(y) \subseteq U$ for all $y \in U \cap Y$, so $\bigcup_{y \in U \cap Y} E_y \subseteq U$.
 
@@ -177,14 +215,14 @@ Yes?
             = d(x, y) + r_y
             \leq \tfrac{1}{4}r_x + r_y,
     \]
-    so $3r_x/4 \leq r_y$. Then
+    so $\frac{3}{4}r_x \leq r_y$. Then
     \[
         d(x, y)
             \leq \tfrac{1}{4}r_x
-            \leq \tfrac{3}{8}r_x
+            \leq \tfrac{1}{2} \cdot \tfrac{3}{4}r_x
             \leq \tfrac{1}{2}r_y,
     \]
-    so $x \in E_y$. Hence, $U \subseteq \bigcup_{y \in U \cap Y} E_y$
+    so $x \in E_y$. Hence, $U \subseteq \bigcup_{y \in U \cap Y} E_y$, proving the equality.
 
 \end{proof}
 

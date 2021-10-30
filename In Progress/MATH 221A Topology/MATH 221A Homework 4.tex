@@ -1,0 +1,322 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage[shortlabels]{enumitem}
+
+\usepackage{tikz}
+\usetikzlibrary{patterns}
+\usepackage{tikz-cd}
+
+% Drawing
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+
+% Extra Commands
+\newcommand{\UU}{\mathcal{U}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Document
+\begin{document}
+\title{MATH 221A Homework 4}
+\author{Harry Coleman}
+\date{October 27, 2021}
+\maketitle
+
+\begin{pbox}[1]
+    Let $X$ be a noncompact, locally compact Hausdorff space, $Y$ be any
+  Hausdorff compactification, and $X_\infty$ be the one-point compactification
+  $X \cup \{\infty\}$.  Show that the map $Y \to X_\infty$ which is the identity
+  on $X$ and collapses all points of $Y \setminus X$ to $\infty$ is a quotient
+  map.
+\end{pbox}
+
+\begin{lemma}
+    If $U \subseteq X$ is open in $X$, then $U$ is also open in $Y$.
+\end{lemma}
+
+\begin{proof}
+    Since $X \subseteq Y$ has the subspace topology, it suffices to prove that $X$ is open in $Y$. Given $U \subseteq X$ open, $U = V \cap X$ for some open $V \subseteq Y$. If $X$ is in fact open in $Y$, then $U$ is open in $Y$, as the intersection of two open sets in $Y$.
+
+    Given $x \in X$, let $K$ be a compact neighborhood of $x$ and $U$ be an open neighborhood of $x$ contained in $K$. We claim that $U$ is open in $Y$. Since $X \subseteq Y$ has the subspace topology, $U = V \cap X$ for some open $V \subseteq Y$. Suppose, for contradiction, that $U \ne V$, so there exists some $y \in V$. Since $U = V \cap X$, we must have $y \in Y \setminus X$; in particular, $y \in Y \setminus K$. Since $K$ is compact, it is closed in $Y$, so $Y \setminus K$ is open. Therefore, $V \cap (Y \setminus K)$ is an open neighborhood of $y$, but $(V \cap (Y \setminus K)) \cap X = \emptyset$. This is a contradiction since $y \in Y = \clo{X}$, so in fact $U = V$ is open in $Y$. Hence, $X$ is open in $Y$.
+
+\end{proof}
+
+
+
+\begin{proof}
+    Let $f : Y \to X_\infty$ be the identity on $X$ and collapse all points of $Y \setminus X$ to $\infty$. In order for this to be a quotient map, we require that the topology on $X_\infty$ be the finest topology such that $f$ is continuous. In other words, we require that $U \subseteq X_\infty$ is open if and only if its preimage $f^{-1}(U) \subseteq Y$ is open.
+
+    We will first suppose $U \subseteq X_\infty$ is open. By definition of the one-point compactification, there are two cases: (i) $U$ is an open subset of $X$, or (ii) $U = (X \setminus K) \cup \{\infty\}$ with $K \subseteq X$ compact. In case (i), $f$ is the identity on $X$ and maps all points outside of $X$ to $\infty$, so $f^{-1}(U) = U$. Since $f^{-1}(U) \subseteq X$ is open in $X$, Lemma 2 implies it is open in $Y$. In case (ii), we have
+    \[
+        f^{-1}(U)
+            = f^{-1}(X \setminus K) \cup f^{-1}(\{\infty\})
+            = (X \setminus K) \cup (Y \setminus X)
+            = Y \setminus K.
+    \]
+    Since $K$ is compact and $Y$ is Hausdorff, $K$ is closed in $Y$, implying that $Y \setminus K$ is open in $Y$. Thus, in both cases, $f^{-1}(U)$ is open in $Y$.
+
+    Now, suppose $A \subseteq X_\infty$ is arbitrary, with $f^{-1}(A) \subseteq Y$ open. Again, we have two cases, depending on whether or not $A$ contains $\infty$. If $\infty \notin A$, then $A \subseteq X$, which means $A = f^{-1}(A)$. Since $A$ is open in $Y$ and $X \subseteq Y$ has the subspace topology, $A = A \cap X$ is an open subset of $X$. Therefore, $A$ is an open subset of $X_\infty$. If $\infty \in A$, then $f^{-1}(A)$ contains $Y \setminus X$. Define the set
+    \[
+        E
+            = Y \setminus f^{-1}(A)
+            = X \setminus A.
+    \]
+    Since $E$ is closed in the compact space $Y$, it is compact. Since $E \subseteq X$ is compact,
+    \[
+        A = (X \setminus E) \cup \{\infty\}
+    \]
+    is open in $X_\infty$. Thus, in both cases, $A$ is open in $X_\infty$.
+\end{proof}
+
+
+
+
+\newpage
+\begin{pbox}[2]
+    Consider the quotient space $X=\mathbb N \times [0,1]/\mathbb N \times \{0\}$.  We can give $\mathbb N \times [0,1]$ a metric by embedding it in $\mathbb R^2$.
+\end{pbox}
+
+\begin{pbox}[(a)]
+    A space is \emph{first-countable} if for every point $x$ there is a countable set $\{U_i\}$ of open sets containing $x$ such that every neighborhood of $x$ contains some $U_i$.  Show that $X$ is not first-countable.
+\end{pbox}
+
+\begin{proof}
+    Let $\pi : \N \times [0, 1] \to X$ be the natural projection and denote by $x_0 \in X$ the point to which $\N \times \{0\}$ is collapsed.
+
+    Suppose $U \subseteq X$ is an open neighborhood of $x_0$, which means $\pi^{-1}(U)$ is an open subset of the original space. Note that $\pi^{-1}(U)$ contains $\pi^{-1}(x_0) = \N \times \{0\}$. Since $\N \times [0, 1]$ has the metric topology, there is an open ball around each $(n, 0)$ contained in $\pi^{-1}(U)$, i.e., there is some $\eps > 0$ such that $\{n\} \times [0, \eps) \subseteq \pi^{-1}(U)$. For each $n \in \N$, define
+    \[
+        a_n(U) = \max\{a \in (0, 1] : \{n\} \times [0, a) \subseteq \pi^{-1}(U)\}.
+    \]
+    This specifies a sequence of positive real numbers $\{a_n(U)\}_{n \in \N}$, such that $\pi^{-1}(U)$ contains the open set $\{n\} \times [0, a_n(U))$, for each $n \in \N$. 
+    
+    Let $\{U_k\}_{k \in \N}$ be a countable collection of open neighborhoods of $x_0$; we will show that this is not a neighborhood basis of $x_0$. To each $U_k$ corresponds a sequence $\{a_n(U_k)\}_{n \in \N}$ of positive real numbers such that $\{n\} \times [0, a_n(U_k)) \subseteq \pi^{-1}(U_k)$. We employ a sort of diagonalization to construct an open neighborhood of $x_0$, which contains none of the $U_k$'s. For each $t \in \N$, define $r_n = \frac{1}{2}a_n(U_n) > 0$. Then, define the set
+    \[
+        U = \pi\!\left(\bigcup_{n \in \N} \{n\} \times [0, r_n)\right) \subseteq X.
+    \]
+    Note that
+    \[
+        \pi^{-1}(U) = \bigcup_{n \in \N} \{n\} \times [0, r_n)
+    \]
+    is open in $\N \times [0, 1]$, so $U$ is open in $X$. In particular, $U$ is an open neighborhood of $x_0$. But, by construction, $U$ does not contain any $U_k$. Hence, the family of $U_k$'s does not form a neighborhood basis of $x_0$, so $X$ is not first-countable.
+
+\end{proof}
+
+\begin{pbox}[(b)]
+    Show that every metric space is first-countable.  Conclude that $X$ is not metrizable.
+\end{pbox}
+
+\begin{proof}
+    For each point $x$ in a metric space, the collection of open balls $\{B_{1/n}(x)\}_{n \in \N}$ is a neighborhood basis This is because any open set containing $x$ must contain a ball $B_\eps(x)$, for some $\eps > 0$. Then, choosing $n \in \N$ with $1/n < \eps$, we have $B_{1/n}(x) \subseteq B_\eps(x)$.
+
+\end{proof}
+
+Since $X$ is not first countable, its topology is not induced by any metric, i.e., not metrizable.
+
+
+\newpage
+\begin{pbox}[3]
+    Let $X$ be a metric space and $A$ a closed subset.  As in Homework 2, for a point $x \in X$, we define
+  \[d(x,A)=\inf_{a \in A} d(x,a).\]
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Define the \emph{quotient metric} on $X/A$ by
+    \[d_{X/A}(x,y)=\min\{d_X(x,y),d(x,A)+d(y,A)\}.\]
+    Show that this defines a metric.
+\end{pbox}
+
+\begin{proof}
+    Notice that both $d_X(x, y)$ and $d(x, A) + d(y, A)$ are nonnegative, so $d_{X/A}(x, y) \geq 0$.
+
+    If $x = y$, then $0 \leq d_{X/A}(x, y) \leq d_X(x, y) = 0$, implying $d_{X/A}(x, y) = 0$.
+
+    Suppose $d_{X/A}(x, y) = 0$, meaning either $d_X(x, y) = 0$ or $d(x, A) = d(y, A) = 0$. In the first case, we deduce $x = y$ from the fact that $d_X$ is a metric. In the second case, we use Homework 2 Problem 3(b) to select $a, b \in A$ such that $d_X(x, a) = d_X(y, b) = 0$. Once more, this implies $x = a$ and $y = b$. In particular, $x$ and $y$ are both in $A$, which is collapsed to a single point in $X$, i.e., $x = y$ in $X/A$.
+
+    Hence, $d_{X/A}(x, y) = 0$ if and only if $x = y$ in $X/A$.
+
+    By the symmetry of $d_X$ and commutativity of addition in $\R$,
+    \begin{align*}
+        d_{X/A}(x,y)
+            &=\min\{d_X(x,y),d(x,A)+d(y,A)\} \\
+            &= \min\{d_X(y, x),d(y,A)+d(x,A)\} \\
+            &= d_{X/A}(y, x).
+    \end{align*}
+    Note that $\min\{a + b, c\} \leq \min\{a, c\} + \min\{b, c\}$ for all $a, b, c \geq 0$. Then
+    \begin{align*}
+        d_{X/A}(x, z)
+            &= \min\{d_X(x, z), d(x,A) + d(z, A)\} \\
+            &\leq \min\{d_X(x, y) + d_X(y, z),\; d(x, A) + 2d(y, A) + d(z, A)\} \\
+            &= d_{X/A}(y, x).
+    \end{align*}
+
+    For $x, y, z \in X/A$, it is clear that
+    \[
+        d_{X/A}(x, z) \leq d_X(x, z) \leq d_X(x, y) + d_X(y, z)
+    \]
+    and
+    \[
+        d_{X/A}(x, z) \leq d(x, A) + d(z, A) \leq d(x, A) + 2d(y, A) + d(z, A).
+    \]
+    It remains to check the case where $d_{X/A}(x, y) = d(x, y)$ and $d_{X/A}(y, z) = d(y, A) + d(z, A)$. In this case,
+    \[
+        d_{X/A} \leq d(x, A) + d(z, A) \leq d(x, y) + \d(y, A) + d(z, A),
+    \]
+    so in fact, $d_{X/A}(x, z) \leq d_{X/A}(x, y) + d_{X/A}(y, z)$.
+
+\end{proof}
+
+\begin{pbox}[(b)]
+    Show that when $A$ is compact, the topology induced by the quotient metric coincides with the quotient topology.  (Use Homework 2.)
+\end{pbox}
+
+\begin{proof}
+    Let $\pi : X \to X/A$ denote the natural projection. Let $x \in X/A$; we will show that every ball centered at $x$ contains a neighborhood in the quotient topology, and vice versa.
+
+    For any $r > 0$, consider the open ball $B_{X/A}(x; r) = \{y \in X/A : d_{X/A}(x, y) < r\}$. If $A \notin B_{X/A}(x; r)$, then $d(x, A) \geq r$. So for all $y \in B_{X/A}(x; r)$,
+    \[
+        d_X(x, y) < r \leq d(x, A) + d(y, A),
+    \]
+    so $d_{X/A}(x, y) = d_X(x, y)$. Thus, $y$ is in the open ball $B_X(x; r) = \{y \in X : d_X(x, y) < r\}$. In other words, $\pi^{-1}(B_{X/A}(x; r)) = B_X(x; r)$ is open in $X$, so $B_{X/A}(x; r)$ is open in the quotient topology.
+
+    If $U$ is an open neighborhood of $x$ in the quotient topology $X/A$, $\pi^{-1}(U)$ is open in $X$. Then there is some $r > 0$ such that $B_X(x; r) \subseteq \pi^{-1}(U)$. If $x \notin A$, then we can assume $r < d(x, A)$, so $B_{X/A}(x; r) = \pi(B_X(x; r)) \subseteq U$, i.e., $U$ is open in the metric topology.
+    
+    If $x \in A$, then $U(A, r) \subseteq \pi^{-1}(U)$ (in the notation of Homework 2), so $B_{X/A}(x; r) = \pi(U(A, r)) \subseteq U$. Hence, $U$ is open in the metric topology. 
+
+
+\end{proof}
+
+\begin{pbox}[(c)]
+    For the space in the previous problem, compare the quotient topology and the topology induced by the quotient metric.  (Is one finer than the other?)
+\end{pbox}
+
+Topology induced by metric is coarser: open ball around $x_0$ requires a minimum $\eps > 0$ such that preimage contains $\N \times [0, \eps)$. On the other hand, quotient topology contains the open set $\bigcup_{n \in \N} (\{n\} \times [0, \frac{1}{n}))$ which contains no $\N \times [0, \eps)$ for any $\eps > 0$.
+
+
+
+\newpage
+\begin{pbox}[4]
+    Say a quotient map $X \to X/{\sim}$ satisfies the \emph{local lifting property} if for every space $Z$ and every map $\phi:Z \to X/{\sim}$ and every point $y \in Z$, there is a neighborhood $U$ of $y$ in $Z$ such that $\phi|_U$ lifts to a map $\Phi_U:Z \to X$.
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Give an example of a collapse map $X \to X/A$ that doesn't have the local lifting property (and an example map to show this).
+\end{pbox}
+
+Let $X = \{\alpha, \beta\} \times [0, 1]$ be the disjoint union of two line segments, and let $A = \{(\alpha, 1), (\beta, 0)\}$. Then $X/A \isom [0, 1]$, where the collapse map sends the segment $\{\alpha\} \times [0, 1]$ to $[0, \frac{1}{2}]$ and the segment $\{\beta\} \times [0, 1]$ to $[\frac{1}{2}, 1]$, which means $A$ is sent to $\frac{1}{2}$.
+
+Let $Z = [0, 1]$ and $\phi : Z \to X/A$ be the induced homeomorphism. In other words, $\phi$ specifies a path in $X/A$ between $(\alpha, 0)$ and $(\beta, 1)$.
+
+However, for the point $y = \frac{1}{2} \in Z$, every neighborhood $U$ of $y$ contains a point $a \in [0, \frac{1}{2})$ and a point $b \in (\frac{1}{2}, 1]$. Then $\phi(a) \in \pi(\{\alpha\} \times [0, 1])$ and $\phi(b) \in \pi(\{\beta\} \times [0, 1])$. Then, a lift of $\phi|_U$ would induce a continuous map $\Phi : [a, b] \to X$ (a path), with $\Phi(a) \in \{\alpha\} \times [0, 1]$ and $\Phi(b) \in \{\beta\} \times [0, 1]$. But the $\alpha$ and $\beta$ components of $X$ are not path-connected, so this is not possible.
+
+\begin{pbox}[(b)]
+    Give an example of a quotient by a finite group action that doesn't have the local lifting property (and an example map to show this).
+\end{pbox}
+
+Let $X = \R^2$ and have $G = \Z/2\Z$ act on $X$ by rotating halfway about the origin. The the quotient $X/G$ is homeomorphic to the real plane $\R^2$, but the identity $\R^2 \to X/G$ must locally lift to a choice of either the top or bottom half of the place in $X$. However, in any neighborhood of the origin, a local lift must choose some half-disc in $X$, which would not be a continuous map.
+
+
+\newpage
+\begin{pbox}[5]
+    Construct a simplicial complex and a CW complex homeomorphic to
+  \[\mathbb RP^2=S^2/x \sim -x.\]
+\end{pbox}
+
+We construct $\R P^2$ as a CW  complex.
+
+Let $X^{(0)} = \{\bullet\}$ be a single point.
+
+For $X^{(1)}$, we add two segments, $A = [0_A, 1_A]$ and $B = [0_B, 1_B]$, with endpoints glued to $\bullet$.
+
+For $X^{(2)}$, we add a single square $[0, 1] \times [0, 1]$, with the edges glued as follows:
+\begin{itemize}
+    \item $[0, 1] \times \{0\} \sim A$ with $(0, 0) \sim 0_A$ and $(1, 0) \sim 1_A$,
+    \item $\{1\} \times [0, 1] \sim B$ with $(1, 0) \sim 0_B$ and $(1, 1) \sim 1_B$,
+    \item $[0, 1] \times \{1\} \sim A$ with $(1, 1) \sim 1_A$ and $(0, 1) \sim 0_A$,
+    \item $\{0\} \times [0, 1] \sim B$ with $(0, 1) \sim 1_B$ and $(0, 0) \sim 0_B$, 
+\end{itemize} 
+
+
+
+
+
+Graphically:
+
+\begin{drawing}
+    \node at (0, 0) {$\bullet$};
+
+    \draw (1, 0) circle (1);
+    \draw (-1, 0) circle (1);
+
+    \node[rotate=90] at (2, 0) {$>$};
+    \node[rotate=90] at (-2, 0) {$<<$};
+\end{drawing}
+
+
+\begin{drawing}[scale=2]
+    \fill[pattern=north east lines, pattern color=gray] (0, 0) rectangle (1, 1);
+
+    \node at (0, 0) {$\bullet$};
+    \node at (1, 0) {$\bullet$};
+    \node at (1, 1) {$\bullet$};
+    \node at (0, 1) {$\bullet$};
+
+    \draw (0, 0) -- (1, 0) node[midway] {$>$};
+    \draw (1, 0) -- (1, 1) node[midway, rotate=90] {$>>$};
+    \draw (1, 1) -- (0, 1) node[midway] {$<$};
+    \draw (0, 1) -- (0, 0) node[midway, rotate=90] {$<<$};
+\end{drawing}
+
+
+As a simplicial complex, we can take the square above and subdivide it into a $3 \times 3$ grid, with each cell having two triangles. Then identifying edges in the same way, we obtain a simplicial complex construction of $\R P^2$, similar to that of the torus.
+
+\end{document}
