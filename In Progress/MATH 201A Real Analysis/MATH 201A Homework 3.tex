@@ -1,0 +1,123 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+
+% Extra Commands
+
+
+% Document
+\begin{document}
+\title{MATH 201A Homework 3}
+\author{Harry Coleman}
+\date{November 2, 2021}
+\maketitle
+
+\begin{pbox}[1]
+    Let $\lambda$ be the Lebesgue measure and let $\{A_n\}_{n=1}^{\infty}$ be a sequence of Lebesgue-measurable subsets of $[0, 1]$. Assume the set $B$ consists of those points $x \in [0, 1]$ that belong to infinitely many of the $A_n$.
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Prove that $B$ is Lebesgue-measurable.
+\end{pbox}
+
+\begin{pbox}[(b)]
+    Prove that if $\lambda(A_n) > \delta > 0$ for every $n \in \N$, then $\lambda(B) \geq \delta$.
+\end{pbox}
+
+\begin{pbox}[(c)]
+    Prove that if $\sum_{n=1}^{\infty} \lambda(A_n) < \infty$, then $\lambda(B) = 0$.
+\end{pbox}
+
+\begin{pbox}[(d)]
+    Give an example where $\sum_{n=1}^{\infty} \lambda(A_n) = \infty$, but $\lambda(B) = 0$.
+\end{pbox}
+
+
+
+\begin{pbox}[2]
+    Prove that if the set $A \subseteq \R$ is Lebesgue-measurable, with $\lambda(A) > 0$, then there is a subset of $A$ that is not Lebesgue-measurable.
+\end{pbox}
+
+
+
+\begin{pbox}[3]
+    Let $\lambda$ be the Lebesgue measure on $\R$.
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Let $A \subseteq \R$ be a set such that $\lambda(A) > 0$. Prove that for any $\eps > 0$, there exists an interval $(a, b) \subseteq \R$ such that $\lambda(A) \cap (a, b)) > (1 - \eps)(b - a)$.
+\end{pbox}
+
+\begin{pbox}[(b)]
+    Construct a Borel set $B \subseteq \R$ such that $\lambda B > 0$ and $\lambda(B \cap I) < \lambda(I)$ for every non-degenerate interval $I \subseteq \R$.
+\end{pbox}
+
+
+
+\begin{pbox}[4]
+    Prove that if a Lebesgue-measurable set $A \subseteq \R$ has positive Lebesgue measure, then the set
+    \[
+        A - A = \{a - b : a, b \in A\}
+    \]
+    contains a neighborhood of the origin. Is the statement true if one only assumes $\lambda(A) > 0$ (i.e., $A$ is not Lebesgue-measurable)?
+\end{pbox}
+
+
+
+\begin{pbox}[5]
+    Let $A \subseteq R$ be any set. Prove that the set
+    \[
+        B = \bigcup_{x \in A} [x - 1, x + 1]
+    \]
+    is Lebesgue-measurable.
+\end{pbox}
+
+\end{document}
