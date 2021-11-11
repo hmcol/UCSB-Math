@@ -69,6 +69,7 @@
 			"birational",
 			"birationally",
 			"Borel",
+			"Buchberger's",
 			"cofinite",
 			"compactification",
 			"coproduct",
@@ -87,6 +88,7 @@
 			"multiplicatively",
 			"nilpotent",
 			"noncompact",
+			"nonsingular",
 			"presheaf",
 			"presheaves",
 			"semigroup",
@@ -100,7 +102,9 @@
 			"subpresheaf",
 			"subsheaf",
 			"Sylow",
+			"tensoring",
 			"uncountably",
+			"Vitali",
 			"Zariski"
 		],
 	}
