@@ -1,0 +1,186 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+\tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+
+% Extra Commands
+
+
+% Document
+\begin{document}
+\title{MATH 201A Homework 4}
+\author{Harry Coleman}
+\date{November 18, 2021}
+\maketitle
+
+\begin{pbox}[1]
+    Let $X$ be a nonempty topological space and let $\mu$ be a measure on $X$. Prove that if the functions $f_n : X \to [-\infty, +\infty]$ are $\mu$-measurable for $n = 1, 2, \dots$, then the set
+    \[
+        A = \{x \in X : \lim_{n \to \infty} f_n(x) \text{ exists}\}
+    \]
+    is $\mu$-measurable.
+\end{pbox}
+
+
+\begin{proof}
+    Consider the function know that the functions $F: X \to [-\infty, +\infty]$ defined by
+    \[
+        F(x) = \liminf_{n \to \infty} f_n(x) - \limsup_{n \to \infty} f_n(x)
+    \]
+    is $\mu$-measurable. Note that the limit of $f_n(x)$ exists if and only if the limit infimum and limit supremum are equal, i.e., $A = F^{-1}(0)$. Since the singleton $\{0\} \in [-\infty, +\infty]$ is a closed---therefore Borel---set, its preimage is $\mu$-measurable. 
+\end{proof}
+
+
+\newpage
+\begin{pbox}[2]
+    Prove that any Lebesgue-measurable function $f : \R \to \R$ that satisfies the relation
+    \[
+        f(x + y) = f(x) + f(y) \isp{for all} x, y \in \R,
+    \]
+    must be linear.
+\end{pbox}
+
+\begin{proof}
+    
+\end{proof}
+
+
+\newpage
+\begin{pbox}[3]
+    Let $f : (0, 1) \to \R$ be such that for every $x \in (0, 1)$ there exists $\delta > 0$ and a Borel-measurable function $g : \R \to \R$ (both dependent on $x$), such that $f(y) = g(y)$ for all $y \in (x - \delta, x + \delta) \cap (0, 1)$. Prove that $f$ is Borel-measurable. (You can assume that $f(x) = 0$ outside the interval $(0, 1)$).
+\end{pbox}
+
+\begin{proof}
+    We claim that for any closed interval $[a, b] \subseteq (0, 1)$, we can find a Borel-measurable function $g : \R \to \R$ such that $g(x) = f(x)$ for all $x \in [a, b]$.
+    For each $x \in [a, b]$ we can choose a value $\delta_x > 0$ and a Borel-measurable function $g_x : \R \to \R$ be  such that $B_{\delta_x}(x) \subseteq (0, 1)$ and $g_x(y) = f(y)$ for all $y \in B_{\delta_x}(x)$.
+    The collection $\{B_{\delta_x}(x)\}_{x \in [a, b]}$ forms an open cover of the compact interval $[a, b]$, so there is a finite subcover denoted by $B_{\delta_{x_i}}(x_i)$ for $i = 1, \dots, m$.
+
+    Define the initial set $A_1 = B_{\delta_{x_1}}(x_1)$ and for $k = 2, \dots, m$, define the sets
+    \[
+        A_i = B_{\delta_{x_i}}(x_i) \setminus \bigcup_{j=1}^{i-1} A_j.
+    \]
+    Then the $A_k$'s are mutually disjoint Borel-measurable subsets of $(0, 1)$ such that
+    \[
+        [a, b]
+            \subseteq \bigcup_{i=1}^{m} B_{\delta_{x_i}}(x_i) 
+            = \bigcup_{i=1}^{m} A_i.
+    \]
+    Additionally, $g_{x_i}(x) = f(x)$ for all $x \in A_i$.
+    We now define the function
+    \[
+        g = \sum_{i=1}^{m} \chi_{A_i}g_{x_i}.
+    \]
+    As the sum of products of Borel-measurable functions, $g$ is also Borel-measurable.
+    Every point $x \in [a, b]$ is contained in exactly one $A_i$. If $x \in A_k$, then $A_k \subseteq B_{\delta_{x_k}}(x_k)$, so
+    \[
+        g(x)
+            = \sum_{i=1}^{m} \chi_{A_i}(x)g_{x_i}(x)
+            = g_{x_k}(x)
+            = f(x).
+    \]
+    Hence, for every closed interval $[a, b] \subseteq (0, 1)$, there is a Borel-measurable function $g : \R \to \R$ that agrees with $f$ on $[a, b]$ and is zero outside $(0, 1)$.
+
+    For each $n \in \N$ (for $n \geq 3$), we consider the closed interval $I_n = [\tfrac{1}{n}, 1 - \tfrac{1}{n}] \subseteq (0, 1)$. 
+    By the above result, there is a Borel-measurable function $f_n : \R \to \R$ that agrees with $f$ on $I_n$ and is zero outside $(0, 1)$. 
+    Then $f$ can be written as limit of Borel-measurable functions
+    \[
+        f(x) = \lim_{n \to \infty} f_n(x).
+    \]
+    Hence, $f$ is Borel-measurable.
+\end{proof}
+
+\newpage
+\begin{pbox}[4]
+    Give an example of a collection of Lebesgue-measurable nonnegative functions $\{f_\alpha\}_{\alpha \in A}$ ($f_\alpha : \R \to \R$) such that the function
+    \[
+        g(x) = \sup_{\alpha \in A} f_\alpha(x), \quad x \in \R
+    \]
+    is finite for all $x \in \R$ but $g$ is not Lebesgue-measurable. Here $A$ is a nonempty indexing set.
+\end{pbox}
+
+Let $V \subseteq \R$ be a Vitali set.
+For each $v \in V$, the characteristic function $\chi_{\{v\}}$ is Lebesgue-measurable and nonnegative.
+Then for all $x \in \R$,
+\[
+    \sup_{v \in V} \chi_{\{v\}}(x) = \chi_V(x)
+\]
+is clearly finite. However, $\{1\} \subseteq \R$ is a Borel set with preimage
+\[
+    \chi_V^{-1}(\{1\}) = V,
+\]
+which is not Lebesgue-measurable.
+
+
+\newpage
+\begin{pbox}[5]
+    A function $f : \R^n \to \R$ is called lower semi-continuous at the point $x \in \R^n$ if, for any sequence $x_k \in \R^n$ with $x_k \to x$, one has
+    \[
+        \liminf_{k \to \infty} f(x_k) \geq f(x).
+    \]
+    Prove that any lower semi-continuous function on $\R^n$ is Borel-measurable.
+\end{pbox}
+
+\begin{proof}
+    Let $a \in \R$ and consider the set $A = f^{-1}((a, +\infty)) \subseteq \R^n$.
+    To show $f$ is Borel-measurable, it suffices to check that $A$ is Borel-measurable.
+    Fix a point $x \in A$ and choose $0 < \eps < f(x) - a$.
+    Then the lower semi-continuity of $f$ tells us that there is some $\delta > 0$ such that $B_{\delta}(x) \subseteq A$, hence $A$ is open---therefore Borel-measurable. 
+\end{proof}
+
+\end{document}

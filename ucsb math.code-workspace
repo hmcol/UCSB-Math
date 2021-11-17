@@ -70,6 +70,7 @@
 			"birationally",
 			"Borel",
 			"Buchberger's",
+			"clopen",
 			"cofinite",
 			"compactification",
 			"coproduct",
@@ -103,7 +104,9 @@
 			"subsheaf",
 			"Sylow",
 			"tensoring",
+			"Tietze",
 			"uncountably",
+			"Urysohn's",
 			"Vitali",
 			"Zariski"
 		],
