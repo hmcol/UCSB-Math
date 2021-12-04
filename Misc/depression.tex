@@ -1153,4 +1153,192 @@ Let
     
     We will now prove that $\mathcal{U}$ has no finite subcover. Let $\{B_{1/2}(f_1), \dots, B_{1/2}(f_r)\} \subseteq \mathcal{U}$ be a finite subset. To each $f_i$ corresponds a sequence $\sigma(f_i)$ in $\{-1, 0, 1\}$. Since there are only finitely many $f_i$'s, there is some sequence $(a_n)$ in $\{-1, 1\}$ which differs in at least one term from each $\sigma(f_i)$. Moreover, there is some $N \in \N$ such that $(a_n)$ is distinct from each $\sigma(f_i)$ within the first $N$ terms. We then replace $a_n$ with $0$ for $n \geq N$ to obtain a sequence in $\{-1, 0, 1\}$ with finite support which, in turn, defines a continuous function $g \in X$ with $g(1/n) = a_n$, for all $n \leq N$. For $i = 1, \dots, r$, there is some index $n \leq N$ with $g(1/n) = a_n \neq \sigma_n(f_i)$, implying that $g \notin B_{1/2}(f_i)$.
 
+
+\section{integral}
+
+
+For $h : X \to [0, \infty]$ we will write $\lint h$ and $\uint h$ for the lower and upper, respectively, $\mu$-integral of $h$ over $X$.
+If $h$ is $\mu$-integrable we write $\tint h = \int_X h \dd\mu$.
+For completeness, we prove some intermediate results.
+
+\begin{lemma}
+    If $f, g : X \to [0, \infty]$ are $\mu$-integrable then so is $f + g$ and
+    \[
+        \int_X (f + g) \dd\mu = \int_X f \dd\mu + \int_X g \dd\mu.
+    \]
+\end{lemma}
+
+\begin{proof}
+    Let $\eps > 0$ be given. By definition of the $\mu$-integral there are simple functions $r, s : X \to [0, \infty]$ such that $r \leq f$ and $s \leq g$ with
+    \[
+        \tint f - \eps \leq \tint r \leq \tint f
+        \isp{and}
+        \tint g - \eps \leq \tint s \leq \tint g.
+    \]
+    Then $r + s$ is a simple function with $r + s \leq f + g$ and $\tint(r + s) = \tint r + \tint s$.
+    It follows that
+    \[\tag{1}
+        \tint f + \tint g - 2\eps
+            = \tint (r + s)
+            \leq \lint (f + g).
+    \]
+    We now choose simple functions $u, v : X \to [0, \infty]$ such that $f \leq u$ and $g \leq v$ with
+    \[
+        \tint f \leq \tint u \leq \tint f + \eps
+        \isp{and}
+        \tint g \leq \tint v \leq \tint g + \eps.
+    \]
+    Then $u + v$ is a simple function with $f + g \leq u + v$ and $\tint (u + v) = \tint u + \tint v$.
+    It follows that
+    \[\tag{2}
+        \lint (f + g)
+            \leq \tint (u + v)
+            \leq \tint f + \tint g + 2\eps.
+    \]
+    Letting $\eps \to 0$ in inequalities (1) and (2) we obtain
+    \[
+        \tint f + \tint g \leq \lint (f + g) \leq \uint (f + g) \leq \tint f + \tint g.
+    \]
+    Hence, $f + g$ is $\mu$-integrable with $\tint (f + g) = \tint f + \tint g$.
+\end{proof}
+
+\begin{corollary}
+    If $f : X \to [-\infty, \infty]$ is $\mu$-integrable then so is $|f|$ with $\tint |f| = \tint f^+ + \tint f^-$.
+\end{corollary}
+
+\begin{proof}
+    Since $f$ is $\mu$-measurable, $f^+ = \max\{0, f\}$ and $f^- = \max\{0, -f\}$ are nonnegative and $\mu$-measurable.
+    A theorem from class tells us they are in fact $\mu$-integrable. The result follows from Lemma 1 applied to $|f| = f^+ + f^-$.
+\end{proof}
+
+\begin{lemma}
+    Given a $\mu$-summable function $f : X \to [0, \infty]$ and $\eps > 0$, there is a nonnegative $\mu$-measurable simple function $s = \sum_{i=1}^{n} a_i \chi_{A_i}$ (i.e., $a_i \geq 0$ and $A_i \subseteq X$ is $\mu$-measurable) such that $s \leq f$ and $\tint f - \eps \leq \tint s \leq \tint f$.
+    (Importantly, $s$ is the nonnegative combination of finitely many characteristic functions.)
+\end{lemma}
+
+\begin{proof}
+    By definition of the $\mu$-integral there is a nonnegative $\mu$-measurable simple function $s : X \to [0, \infty]$ such that $s \leq f$ and $\tint f - \eps \leq \tint s \leq \tint f$.
+    Since $s$ is simple its image is countable---say $\im s = \{a_i\}_{i=1}^{\infty}$.
+    Then $a_i \geq 0$ and $A_i = s^{-1}(a_i) \subseteq X$ is $\mu$-measurable.
+
+\end{proof}
+
+
+\begin{lemma}
+    If $f, g : X \to [-\infty, \infty]$ are $\mu$-summable and agree $\mu$-a.e. in $X$, then $\tint f = \tint g$.
+\end{lemma}
+
+\begin{proof}
+    Define
+    \[
+        A = (f - g)^{-1}(0) = \{x \in X : f(x) = g(x)\}.
+    \]
+    Then $f|_A = g|_A$ and $\mu(X \setminus A) = 0$.
+
+\end{proof}
+
+\begin{lemma}
+    If $\mu$-measurable functions $f, g : X \to [0, \infty]$ are such that $f$ is $\mu$-summable on $X$ and $g$ is bounded everywhere on $X$ ($g(x) \leq M$ for all $x \in X$), then the product $fg$ is $\mu$-summable and
+    \[
+        \int_X fg \dd\mu \leq M \int_X f \dd\mu.
+    \]
+\end{lemma}
+
+\begin{proof}
+    Both $f$ and $g$ are nonnegative and $\mu$-measurable, so their product $fg$ is also nonnegative and $\mu$-measurable.
+    It follows that $fg$ is $\mu$-integrable.
+    And with $(fg)(x) \leq Mf(x)$ for all $x \in X$ we obtain
+    \[
+        \int_X fg \dd\mu \leq \int_X Mf \dd\mu = M\int_X f \dd\mu.
+    \]
+\end{proof}
+
+
+\begin{lemma}
+    If $f : X \to [-\infty, \infty]$ is $\mu$-summable and $c \in \R$, then $cf$ is $\mu$-summable.
+\end{lemma}
+
+\begin{proof}
+    We have seen that $cf$ is $\mu$-integrable and, subsequently, so is $|cf|$.
+    Then
+    \[
+        \int_X |cf| \dd\mu
+            = \int_X |c||f| \dd\mu
+            = |c|\int_X |f| \dd\mu.
+    \]
+    This must be finite since both $|c|$ and $\int_X |f| \dd\mu$ are finite---therefore $cf$ is $\mu$-summable.
+\end{proof}
+
+\begin{lemma}
+    If $f, g : X \to [-\infty, \infty]$ are $\mu$-summable, then $f + g$ is $\mu$-summable.
+\end{lemma}
+
+\begin{proof}
+    The triangle inequality tells us $|f + g| \leq |f| + |g|$.
+    Applying Lemma 1 we obtain
+    \[
+        \int_X |f + g| \dd\mu \leq \int_X |f| \dd\mu + \int_X |g| \dd\mu,
+    \]
+    which is finite since both $f$ and $g$ are $\mu$-summable.
+\end{proof}
+
+
+
+\begin{lemma}
+    If $\mu$-measurable functions $f, g : X \to [-\infty, \infty]$ are such that $f$ is $\mu$-summable on $X$ and $g$ is bounded everywhere on $X$ ($g(x) \leq M$ for all $x \in X$), then the product $fg$ is $\mu$-summable and
+    \[
+        \int_X fg \dd\mu \leq M \int_X f \dd\mu.
+    \]
+\end{lemma}
+
+\begin{proof}
+    Write
+    \[
+        fg = (f^+ - f^-)(g^+ - g^-) = f^+ g^+ - f^+ g^- - f^- g^+ + f^- g^-
+    \]
+\end{proof}
+
+
+\begin{lemma}
+    If $f : X \to [0, \infty]$ is a function whose support is a null set, then $f$ is $\mu$-integrable with $\int_X f \dd\mu = 0$.
+\end{lemma}
+
+\begin{proof}
+    Let $A = \operatorname{supp} f = \{x \in X : f(x) \ne 0\}$, so $\mu(A) = 0$.
+
+    Note that $f$ is $\mu$-measurable since for any $B \subseteq [-\infty, \infty]$ either $0 \in B$ or $0 \notin B$.
+    If $0 \in B$ then
+    \[
+        X \setminus A \subseteq f^{-1}(B) \implies X \setminus f^{-1}(B) \subseteq A \implies \mu(X \setminus f^{-1}(B)) \leq \mu(A) = 0.
+    \]
+    As the complement of a null set, $f^{-1}(B)$ is $\mu$-measurable.
+    If $0 \notin B$ then
+    \[
+        f^{-1}(B) \subseteq A \implies \mu(f^{-1}(B)) \leq \mu(A) = 0.
+    \]
+    As a null set, $f^{-1}(B)$ is $\mu$-measurable.
+
+    Suppose $s = \sum_{i=1}^{\infty} a_i \chi_{A_i}$ is $\mu$-measurable simple function with $f \leq s$.
+    Then
+    \[
+        \chi_A s 
+            = \sum_{i=1}^{\infty} a_i \chi_{A_i} \chi_A 
+            = \sum_{i=1}^{\infty} a_i \chi_{A_i \cap A}
+    \]
+    is also a $\mu$-measurable simple function with $f = \chi_A f \leq \chi_A s$.
+    Then the upper $\mu$-integral of $f$ is bounded by
+    \[
+        \uint f
+            \leq \tint \chi_A s
+            = \sum_{i=1}^{\infty} a_i \mu(A_i \cap A)
+            \leq \sum_{i=1}^{\infty} a_i \mu(A)
+            = 0.
+    \]
+    As $f$ is nonnegative, $0 \leq \lint f \leq \uint f \leq 0$. Hence, $f$ is $\mu$-integrable with $\int_X f \dd\mu = 0$.
+\end{proof}
+
+\begin{corollary}
+    
+\end{corollary}
+
 \end{document}

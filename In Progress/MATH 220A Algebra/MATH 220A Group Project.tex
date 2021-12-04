@@ -1,0 +1,205 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+\tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+
+% Extra Commands
+\DeclareMathOperator{\Aut}{Aut}
+
+
+% Document
+\begin{document}
+\title{MATH 220 Group Project}
+\author{Harry Coleman}
+\date{, 2021}
+\maketitle
+
+Groups of order $104 = 2^3 \cdot 13$.
+
+By the Sylow theorems, $n_{13} \equiv 1 \bmod 13$ and $n_{13} \mid 8$, which implies $n_{13} = 1$.
+
+Let $N$ be the unique sylow $13$-subgroup of $G$. Then $|N| = 13$ and $N \teq G$.
+
+If $H$ is a sylow $2$-subgroup of $G$ then $|H| = 8$.
+
+We conclude that $|NH| = |N||H| = 13 \cdot 8 = |G|$, so $G \isom N \rtimes_\phi H$ where $\phi : H \to \Aut(N)$.
+
+Since $|N| = 13$, then $N \isom Z_{13}$ so $\Aut(N) \isom Z_{12}$.
+
+Note that $8 = |H| = |\ker\phi||\im\phi|$ and $\im\phi \leq \Aut(N)$ so $|\im\phi|$ divides $\gcd(8, 12) = 4$.
+
+In particular, if $\Aut(N) = \<\sigma\> \isom Z_{12}$ then $\im\phi \leq \<\sigma^3\> \isom Z_4$.
+
+\textbf{Case $H \isom Z_8$.}
+
+Say $H = \<y \mid y^8 = 1\>$.
+
+If $\ker\phi = H$ then (1) $G \isom Z_{13} \times Z_8$
+
+If $\ker\phi = \<y^2\>$ then $\im\phi = \<\sigma^6\> \isom Z_2$ and (2) $G \isom Z_{13} \rtimes Z_8$ with $yxy^{-1} = \sigma^6(x) = x^{12}$.
+
+If $\ker\phi = \<y^4\>$ then $\im\phi = \<\sigma^3\> \isom Z_4$ and (3) $G \isom Z_{13} \rtimes Z_8$ with $yxy^{-1} = \sigma^3(x) = x^8$.
+
+\textbf{Case $H \isom Z_4 \times Z_2$.}
+
+Say $H = \<y, z \mid y^4 = z^2 = [y, z] = 1\>$.
+
+If $\ker\phi = H$ then (4) $G \isom Z_{13} \times Z_4 \times Z_2$.
+
+If $\ker\phi = \<y\>$ then $\im\phi = \<\sigma^6\> \isom Z_2$ and (5) $G \isom (Z_{13} \rtimes Z_2) \times Z_4$ with $zxz^{-1} = x^{12}$, i.e., $D_{2(13)} \times Z_4$.
+
+If $\ker\phi = \<y^2, z\>$ then $\im\phi = \<\sigma^6\> \isom Z_2$ and (6) $G \isom (Z_{13} \rtimes Z_4) \times Z_2$ with $yzy^{-1} = x^{12}$, i.e., $G \isom BD_{4(13)} \times Z_2$.
+
+Where $BD_{4n} = \<a, b \mid a^{2n} = 1, a^n = b^2, bab^{-1} = a^{-1}\>$ take $a = xy^2$, $b = y$.
+
+
+If $\ker\phi = \<z\>$ then $\im\phi = \<\sigma^3\> \isom Z_4$ and (7) $G \isom (Z_{13} \rtimes Z_4) \times Z_2$ with $yxy^{-1} = x^8$.
+
+
+\textbf{Case $H \isom Z_2^3$.} 
+
+Say $H \isom \<y, z, w \mid y^2 = z^2 = w^2 = [y, z] = [y, w] = [z, w] = 1\>$.
+
+If $\ker\phi = H$ then (8) $G \isom Z_{13} \times Z_2^3$.
+
+If $\ker\phi = \<z, w\>$ then $\im\phi = \<\sigma^6\> \isom Z_2$ and (9) $G \isom (Z_{13} \rtimes Z_2) \times Z_2^2$ with $yxy^{-1} = x^{12}$, i.e., $D_{2(13)} \times Z_2^2$.
+
+\textbf{case $H \isom D_{2(4)}$.} 
+
+Say $H = \<y, z \mid y^4 = z^2 = 1, zyz = y^{-1}\>$, 
+
+If $\ker\phi = H$ then (10) $G \isom Z_{13} \times D_{2(4)}$.
+
+If $\ker\phi = \<y\> \isom Z_4$ then $\im\phi = \<\sigma^6\> \isom Z_2$ and (11) $G \isom Z_{13} \rtimes D_{2(4)}$ with $yxy^{-1} = x$ and $zxz^{-1} = x^{12}$, i.e., $D_{2(52)}$ where $\tau = xy$ and $\sigma = z$
+
+If $\ker\phi = \<y^2, z\> \isom \<y^2, yz\> \isom Z_2 \times Z_2$ then $\im\phi = \<\sigma^6\> \isom Z_2$ and (12) $G \isom Z_{13} \rtimes D_{2(4)}$ with $yxy^{-1} = x^{12}$ and $zxz^{-1} = x$.
+
+\textbf{Case $H \isom Q_8$.}
+
+Say $H = \<y, z \mid y^4 = 1, y^2 = z^2, zyz^{-1} = y^{-1}\>$.
+
+If $\ker\phi = H$ then (13) $G \isom Z_{13} \times Q_8$.
+
+If $\ker\phi = \<y\> \isom Z_4$ then $\im\phi = \<\sigma^6\> \isom Z_2$ and (14) $G \isom Z_{13} \rtimes Q_8$ with $yxy^{-1} = x^{12}$ and $zxz^{-1} = x$, i.e., $BD_{4(26)}$ where $a = xz$ and $b = y$.
+
+\newpage
+
+\begin{enumerate}
+    \item $Z_{13} \times Z_8$
+    \item $Z_{13} \rtimes Z_8$ by $Z_8/Z_4 = Z_2$
+    \item $Z_{13} \rtimes Z_8$ by $Z_8/Z_2 = Z_4$
+    \\
+    \item $Z_{13} \times Z_4 \times Z_2$
+    \item $D_{2(13)} \times Z_4$
+    \item $BD_{4(13)} \times Z_2$
+    \item $(Z_{13} \rtimes Z_4) \times Z_2$ by $Z_4/1 = Z_4$
+    \\
+    \item $Z_{13} \times Z_2^3$
+    \item $D_{2(13)} \times Z_2^2$
+    \\
+    \item $Z_{13} \times D_{2(4)}$
+    \item $D_{2(52)}$
+    \item $Z_{13} \rtimes D_{2(4)}$ by $D_{2(4)}/Z_2^2 = Z_2$
+    \\
+    \item $Z_{13} \times Q_8$
+    \item $BD_{4(26)}$
+\end{enumerate}
+
+
+\newpage
+
+\begin{enumerate}
+    \item $Z_{13} \rtimes Z_8$
+    \begin{enumerate}
+        \item $Z_{13} \times Z_8$ or $Z_{104}$
+        \item $Z_8/Z_2 \to Z_4$
+        \item $Z_8/Z_4 \to Z_2$
+    \end{enumerate}
+    \item $Z_{13} \rtimes (Z_4 \times Z_2)$
+    \begin{enumerate}
+        \item $Z_{13} \times Z_4 \times Z_2$ or $Z_{52} \times Z_2$
+        \item $(Z_4 \times Z_2)/(Z_4 \times 1) \to Z_2$ or $D_{2(13)} \times Z_4$
+        \item $(Z_4 \times Z_2)/(Z_2 \times Z_2) \to Z_2$ or $BD_{4(13)} \times Z_2$
+        \item $(Z_4 \times Z_2)/(1 \times Z_2) \to Z_4$ or $(Z_{13} \rtimes Z_4) \times Z_2$
+    \end{enumerate}
+    \item $Z_{13} \rtimes (Z_2^3)$
+    \begin{enumerate}
+        \item $Z_{13} \times Z_2^3$
+        \item $Z_2^3/(Z_2^2 \times 1) \to Z_2$ or $D_{2(13)} \times Z_2^2$
+    \end{enumerate}
+    \item $Z_{13} \rtimes D_{2(4)}$
+    \begin{enumerate}
+        \item $Z_{13} \times D_{2(4)}$
+        \item $D_{2(4)}/\<\tau\> = D_{2(4)}/Z_4 \to Z_2$ or $D_{2(52)}$
+        \item $D_{2(4)}/\<\sigma, \tau^2\> = D_{2(4)}/Z_2^2 \to Z_2$
+    \end{enumerate}
+    \item $Z_{13} \rtimes Q_8$
+    \begin{enumerate}
+        \item $Z_{13} \times Q_8$
+        \item $Q_8/\<i\> = Q_8/Z_4 \to Z_2$ or $BD_{4(26)}$
+    \end{enumerate}
+\end{enumerate}
+
+
+
+\end{document}
