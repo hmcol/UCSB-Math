@@ -1,0 +1,390 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+\tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+
+% Extra Commands
+\DeclareMathOperator{\inter}{int}
+
+% Document
+\begin{document}
+\title{MATH 221A Homework 6}
+\author{Harry Coleman}
+\date{November 17, 2021}
+\maketitle
+
+\begin{pbox}[1 \\ (a)]
+    Show that every totally separated space has a continuous injection into $\{0,1\}^J$ for some index set $J$.
+\end{pbox}
+
+
+
+\begin{proof}
+    Let $X$ be a totally separated space.
+    For every pair of distinct points $x, y \in X$ there is a clopen subset $A \subseteq X$ separating $x$ and $y$, i.e., $x \in A$ and $y \in A^c$.
+    Let $J$ be a separating collection of clopen subsets of $X$, i.e., every distinct pair of points in $X$ is separated by some clopen set in $J$.
+    (We could take $J$ to be the collection of all clopen subsets of $X$, but this is not necessary.) 
+
+    For each $A \in J$, consider the indicator/characteristic function $\chi_A : X \to \{0, 1\}$ defined by $\chi_A(x) = 1$ if and only if $x \in A$.
+    We check that $\chi_A$ is continuous; there are four preimages:
+    \begin{align*}
+        \chi_A^{-1}(\emptyset) = \emptyset, \quad
+        \chi_A^{-1}(\{0\}) = A^c, \quad
+        \chi_A^{-1}(\{1\}) = A, \quad
+        \chi_A^{-1}(\{0, 1\}) = X.
+    \end{align*}
+    Since $A$ is clopen, all four sets are open in $X$, so in fact $\chi_A$ is continuous.
+
+    By the universal property of the product, there is a unique continuous map $f : X \to \{0, 1\}^J$ such that $\pi_A \circ f = \chi_A$ for all $A \in J$.
+    By the assumption on $J$, given a pair of distinct points $x, y \in X$, there is a clopen set $A \in J$ separating $x$ and $y$.
+    Then $\chi_A(x) = 1$ and $\chi_A(y) = 0$, implying that $f(x) \ne f(y)$.
+    Hence, $f$ is injective.
+\end{proof}
+
+
+
+\begin{pbox}[(b)]
+    Show that every second-countable totally separated space has a continuous injection into $\{0,1\}^{\mathbb N}$.
+\end{pbox}
+
+\begin{proof}
+    Let $X$ be a totally separated space with countable basis $\mathcal{B}$.
+    Define the set:
+    \[
+        \mathcal{S} = \{(U, V) \in \mathcal{B}^2 : U \subseteq A \subseteq V^c \text{ for some clopen } A \subseteq X\}.
+    \]
+    In other words, $\mathcal{S}$ is the pairs of basis elements which are separated by some clopen set.
+    Note that $\mathcal{S}$ is countable, so we can enumerate its elements by $\mathcal{S} = \{(U_k, V_k)\}_{k \in \N}$.
+    For each $k \in \N$, choose a representative clopen set $A_k \subseteq X$ separating $U_k$ and $V_k$.
+
+    Then $J = \{A_k\}_{k \in \N}$ is a countable collection of clopen subsets of $X$.
+    In order to apply part (a), we must show that $J$ separates points in $X$.
+    Given distinct points $x, y \in X$, there is a clopen set $A \subseteq X$ separating $x$ and $y$.
+    Since $A$ and $A^c$ are open neighborhoods of $x$ and $y$, respectively, there are basis elements $U, V \in \mathcal{B}$ such that $x \in U \subseteq A$ and $y \in V \subseteq A^c$.
+    In particular, $A$ is a clopen set separating $U$ and $V$, implying $(U, V) \in \mathcal{S}$.
+    By construction, there is some $A_k \in J$ separating $U_k$ and $V_k$.
+    Hence, $J$ is a countable collection of clopen sets which separates points in $X$.
+
+    By part (a), there is a continuous injection $X \to \{0, 1\}^J$.
+    Since $J$ is countable, there is a natural homeomorphism $\{0, 1\}^J \xrightarrow{\sim} \{0, 1\}^\N$ by identifying the indexing elements $A_k \in J$ and $k \in \N$.
+    Composing, we obtain a continuous injection $X \to \{0, 1\}^\N$.
+\end{proof}
+
+\newpage
+\begin{pbox}[(c)]
+    Show that $\{0,1\}^{\mathbb N}$ is homeomorphic to the
+    \emph{middle-thirds Cantor set}: the set of numbers in $[0,1]$ which have a
+    base 3 expansion consisting only of 0's and 2's, with the subspace topology
+    inherited from $\mathbb R$.
+\end{pbox}
+
+\begin{proof}
+    Let $C \subseteq [0, 1]$ be the middle-thirds Cantor set. Define the map $f : \{0, 1\}^\N \to C$ by
+    \[
+        (a_n)_{n \in \N} \longmapsto \sum_{n \in \N} \frac{2a_n}{3^n}.
+    \]
+    In other words, $f$ maps a sequence of 0's and 1's to the corresponding base 3 decimal expansions of 0's and 2's.
+    It is clear that $f$ is bijective since elements of $C$ are uniquely determined by their base 3 expansion and all base 3 expansions are described by a sequence of 0's and 1's.
+    
+    The balls $B_{2/3^k}(x)$---for $x \in \R$, $k \in \N$---generate the usual topology on $\R$.
+    Therefore, it suffices to check the continuity of $f$ on these balls. Fix a point $x \in C$ and define $a = f^{-1}(x)$, then we have the decimal expansion
+    \[
+        x = \sum_{n \in \N} \frac{2a_n}{3^n}.
+    \]
+    Fix some $k \in \N$ and consider the ball
+    \[
+        B_{2/3^k}(x) = \{y \in C : |x - y| < 2/3^k\}.
+    \]
+    Given $y \in C$ define $b = f^{-1}(y)$, then
+    \[
+        |x - y| = \sum_{n \in \N} \frac{2|a_n - b_n|}{3^n}.
+    \]
+    For $m \in \N$, we have
+    \[
+        \sum_{n \geq m} \frac{2|a_n - b_n|}{3^n}
+            \leq \sum_{n \geq m} \frac{2}{3^n}
+            = \frac{1}{3^{m-1}}.
+    \]
+    From this, we deduce that $|x - y| < 2/3^k$ if and only if $a_n = b_n$ for all $n \leq k$. In other words,
+    \[
+        f^{-1}(B_{2/3^k}(x)) = \bigcap_{n = 1}^{k} \pi_n^{-1}(a_n),
+    \]
+    where $\pi_n : \{0, 1\}^\N \to \{0, 1\}$ is the projection map to the $n$th coordinate. As the finite intersection of subbasis elements, $f^{-1}(B_{2/3^k}(x))$ is open in $\{0, 1\}^\N$.
+
+
+    The preimages $\pi_k^{-1}(t)$---for $t \in \{0, 1\}$, $k \in \N$---generate the product topology on $\{0, 1\}^\N$. Therefore, it suffices to check the continuity of $f^{-1}$ on these sets. Fix values $t \in \{0, 1\}$ and $k \in \N$, and consider the subbasis set
+    \[
+        U = \pi_k^{-1}(t) = \{a \in \{0, 1\}^\N : a_k = t\}.
+    \]
+    Let $A \subseteq \{0, 1\}^\N$ be a set containing a choice of representative $a \in \{0, 1\}^\N$ for each combination of $a_1, \dots, a_{k-1}$ and $a_k = t$. (Note that $|A| = 2^{k-1} < \infty$.) Then we can write
+    \[
+        U 
+            = \bigcup_{a \in A} \bigcap_{n=1}^{k} \pi_n^{-1}(a_n)
+            = \bigcup_{a \in A} f^{-1}(B_{2/3^k}(a)),
+    \]
+    so
+    \[
+        f(U) = \bigcup_{a \in A} B_{2/3^k}(a).
+    \]
+    As the union of finitely many open balls, $f(U)$ is open is $C$. We conclude that $f$ is an open mapping, hence a homeomorphism.
+\end{proof}
+
+\newpage
+\begin{pbox}[2]
+    Let $X$ be a locally compact Hausdorff space.
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Show that if $K$ is compact in $X$ and $U$ is an open set containing $K$,
+    then there is a function $f:X \to [0,1]$ which is supported on $U$ and such
+    that $f(K)=1$.
+
+    \textbf{Hint:} First find a larger compact set whose interior contains $K$.
+\end{pbox}
+
+\begin{lemma}
+    Open subspaces of $X$ are locally compact.
+\end{lemma}
+
+\begin{proof}
+    Let $V \subseteq X$ be an open subset and $x \in V$.
+    (The result is trivial if $V$ is empty.)
+    Since $X$ is locally compact, $x$ has a compact neighborhood $L \subseteq X$.
+    Since $X$ is Hausdorff, $L$ is closed in $X$, so $E = (X \setminus V) \cap L$ is also closed.
+    Then $E$ is compact as a closed subset of the compact set $L$.
+    
+    (It is easy to show that disjoint compact subsets of a Hausdorff space are separated by disjoint open sets. Moreover, the condition that two sets $A, B$ are separated is equivalent to the existence of an open set $W$ such that $A \subseteq W$ and $\clo{W} \subseteq B^c$.)
+    
+    Since $X$ is Hausdorff, there is an closed set $F \subseteq X$ such that $x \in \inter F$ and $F \subseteq X \setminus E$.
+    Note
+    \[
+        X \setminus E
+            = (X \setminus (X \setminus V)) \cup (X \setminus L)
+            = V \cup (X \setminus L),
+    \]
+    so
+    \[
+        F \cap L
+            \subseteq (X \setminus E) \cap L
+            = V.
+    \]
+    Moreover,
+    \[
+        x \in \inter F \cap \inter L = \inter (F \cap L),
+    \]
+    so $F \cap L$ is a compact neighborhood of $x$ contained in $V$.
+\end{proof}
+
+We now prove the main result.
+
+\begin{proof}
+    Applying Lemma 1 to each $x \in K \subseteq U$, there is a compact set $L_x \subseteq X$ such that $x \in \inter L_x$ and $L_x \subseteq U$.
+    Then the collection of interiors $\{\inter L_x\}_{x \in K}$ is an open cover of the compact set $K$, so there is a finite subcover $\{\inter L_{x_i}\}_{i=1}^{n}$.
+    Then the union $L = \bigcup_{i=1}^{n} L_{x_i}$ is a compact subset of $U$ with
+    \[
+        K \subseteq \bigcup_{i=1}^{n} \inter L_{x_i} \subseteq \inter L.
+    \]
+    
+    Now $L$ is compact and Hausdorff---therefore normal.
+    By Urysohn's lemma, there is a continuous function $f : L \to [0, 1]$ such that $f|_K = 1$ and $f|_{L \setminus \inter L} = 0$.
+    We can extend $f$ to a function $X \to [0, 1]$ by defining $f|_{X \setminus L} = 0$.
+    
+    By construction, the support of $f$ is contained in $\inter L \subseteq U$.
+    We have that $f|_L$ is continuous, but we must check that $f$ is continuous on all of $X$.
+    Given an open set $U \subseteq [0, 1]$ there are two cases we must consider: $0 \in U$ and $0 \notin U$.
+    
+    If $0 \notin U$, then $f^{-1}(U) \subseteq \inter L$.
+    Since $f|_{\inter L}$ is continuous, $f^{-1}(U)$ is an open subset of the open subspace $\inter L \subseteq X$ and---therefore---also an open subset of $X$.
+    
+    If $0 \in U$, then we write
+    \[
+        f^{-1}(U) = f|_L^{-1}(U) \cup (X \setminus L).
+    \]
+    Since $f|_L$ is continuous, $f|_L^{-1}(U)$ is open in the subspace $L \subseteq X$, i.e., there is an open set $V \subseteq X$ such that $f|_L^{-1}(U) = V \cap L$.
+    Then we have
+    \[
+        f^{-1}(U)
+            = (V \cap L) \cup (X \setminus L)
+            = V \cup (X \setminus L).
+    \]
+    Since $L$ is compact and $X$ is Hausdorff, $L$ is closed in $X$.
+    Therefore $X \setminus L$ is open in $X$, implying $f^{-1}(U)$ is also open in $X$. Hence $f$ is continuous.
+\end{proof}
+
+
+\begin{pbox}[(b)]
+    Define the subspaces $C_c(X) \subseteq C_0(X) \subseteq C_B(X)$ as
+    follows:
+    \begin{itemize}
+    \item A function is in $C_c(X)$ if it is \emph{compactly supported}, i.e.~it
+      is zero outside a compact set.
+    \item A function $f \in C_0(X)$ if it ``vanishes at infinity'', i.e.~for
+      every $\eps>0$, $\{x \in X: |f(x)| \geq \eps\}$ is compact.
+    \end{itemize}
+    Show that $C_0(X)$ is the closure of $C_c(X)$ in the sup norm topology.
+\end{pbox}
+
+\begin{proof}
+    Let $f \in C_0(X)$. For $\eps > 0$ consider the compactly supported supremum norm ball
+    \[
+        B_\eps(f) = \{g \in C_0(X) : \|f - g\|_\infty < \eps\}.
+    \]
+    We want to show that $B_\eps(f) \cap C_c(X) \ne \emptyset$.
+
+    Define $\delta = \eps/2$ and the function $g : X \to \R$ by
+    \[
+        g(x) = \max\{0, f(x) - \delta\} + \min\{0, f(x) + \delta\}.
+    \]
+    The operations preserve continuity and boundedness, so $g \in C_B(X)$.
+    Moreover, this definition gives us $\|f - g\|_\infty \leq \delta < \eps$, implying $g \in B_\eps(f)$.
+
+    Since $f \in C_0(X)$, the set $K = \{x \in X : |f(x)| \geq \delta\}$ is compact.
+    For every $x \in X \setminus K$, we have $|f(x)| < \delta$.
+    Note that $f(x) \leq 0$ implies $f(x) > -\delta$, and $f(x) \geq 0$ implies $f(x) < \delta$.
+    In either case, $g(x) = 0$.
+    Hence, the support of $g$ is contained in $K$, so in fact $g \in C_c(X)$.
+\end{proof}
+
+
+\newpage
+\begin{pbox}[3]
+    A set $A \subset X$ is a \emph{retract} if there is a continuous map
+    $X \to A$ which is the identity on $A$.
+    \begin{itemize}
+    \item Convince yourself that $\{0,1\}$ is not a retract of $[0,1]$.
+    \item Convince yourself that the two obvious circles are (separately) retracts
+      of the torus.
+    \end{itemize}
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Show that if $A$ is a retract of a Hausdorff space $X$, then $A$ is
+    closed in $X$.
+\end{pbox}
+
+\begin{proof}
+    Let $r : X \to A$ be a retraction map, i.e., $r$ is continuous and $r|_A = \id_A$.
+    We will show that $A^c$ is open in $X$. Given a point $x \in A^c$, we know $x \ne r(x)$.
+    Since $X$ is Hausdorff, there are disjoint open sets $U, V \subseteq X$ such that $x \in U$ and $r(x) \in V$. 
+    Then $V \cap A$ is open in the subspace $A \subseteq X$.
+    Since $r$ is continuous, the preimage $r^{-1}(V \cap A)$ open in $X$.
+    Then the intersection $W = U \cap r^{-1}(V \cap A)$ is an open neighborhood of $x$.
+
+    Since $r$ restricts to the identity on $A$, we know that
+    \[
+        r^{-1}(V \cap A) \cap A = V \cap A.
+    \]
+    Since $U$ is disjoint from $V$, it is also disjoint from $V \cap A$. Therefore,
+    \[
+        W \cap A
+            = U \cap r^{-1}(V \cap A) \cap A
+            = U \cap V \cap A
+            = \emptyset,
+    \]
+    so $W \subseteq A^c$, hence $A^c$ is open in $X$.
+\end{proof}
+
+
+\begin{pbox}[(b)]
+    A space $Y$ is an \emph{absolute retract} if whenever $X$ is a normal
+    space which contains a closed set $Y_0$ homeomorphic to $Y$, then $X$
+    retracts to $Y_0$.  Show that $\mathbb R^J$ is an absolute retract, for any
+    index set $J$.
+\end{pbox}
+
+\begin{proof}
+    Let $X$ be a normal space with a closed subspace $Y$ homeomorphic to $\R^J$ for some index set $J$.
+    For $j \in J$, let $\pi_j : \R^J \to \R$ be the projection to the $j$th coordinate.
+    The homeomorphism $f : Y \xrightarrow{\sim} \R^J$ is characterized by its components $f_j = \pi_j \circ f : Y \to \R$.
+    
+    By Tietze, there is a continuous extension $F_j : X \to \R$ such that $F_j|_Y = f_j$.
+    By the universal property of the topological product, there is a unique continuous map $F : X \to \R^J$ such that $F_j = \pi_j \circ F$.
+    Moreover, this construction gives us $F|_Y = f$.
+
+    Define the continuous map $r = f^{-1} \circ F : X \to Y$. 
+    Then $r|_Y = f^{-1} \circ F|_Y = \id_Y$, so $r$ describes a retraction of $X$ onto $Y$.
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[4]
+    Show that a metric space $X$ is compact if and only if every continuous function $f:X \to \mathbb R$ is bounded.
+\end{pbox}
+
+\begin{proof}
+    If $X$ is compact and $f : X \to \R$ is continuous, then the image $f(X) \subseteq \R$ is compact. In particular, $f(X)$ is a bounded subset of $\R$, implying that $f$ is a bounded function.
+
+    If $X$ is not compact, then it is not sequentially compact, i.e., we can find a sequence $(x_n)_{n \in \N}$ of points in $X$ with no convergent subsequence.
+    Without loss of generality, we may assume that the $x_n$'s are distinct (since there must be no infinitely recurring terms, otherwise they would form a trivially convergent subsequence).
+
+    In particular, each $x_n$ is not a limit point of the image of the sequence, so we can find a radius $r_n > 0$ such that the ball $B_{r_n}(x_n)$ contains no other points of the sequence.
+    Define the smaller ball $B_n = B_{\eps_n/2}(x_n)$, which is an open neighborhood of $x_n$. For $n \ne m$, we know that $d(x_n, x_m) < \max\{r_n, r_m\}$, which implies that $B_n \cap B_m = \emptyset$.
+
+    For each $n \in \N$, we use Urysohn's lemma to construct a continuous map $f_n : X \to [0, 1]$ such that $f_n(x_n) = 1$ and $f_n|_{B_n^c} = 0$. Define $f = \sum_{n\in\N} nf_n$; since the supports of the $f_n$'s are disjoint, this is sum is well-defined. However, $f(x_n) = n$ for all $n \in \N$, so this function is unbounded.
+\end{proof}
+
+
+
+\end{document}

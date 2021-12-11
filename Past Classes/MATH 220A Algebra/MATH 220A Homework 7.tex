@@ -1,0 +1,202 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+
+% \usepackage{newpxtext, euler}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+\tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+
+% Extra Commands
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+\DeclareMathOperator{\GL}{GL}
+
+% Document
+\begin{document}
+\title{MATH 220A Homework 7}
+\author{Harry Coleman\makebox[0pt][r]{\raisebox{-0.25in}[0pt][0pt]{(worked with Joseph Sullivan and Gahl Shemy)}}}
+\date{November 23, 2021}
+\maketitle
+
+\begin{pbox}
+    All the problems in this problem set refer to the group $G$ with the identity element $1 \in G$ and presentation:
+    \[
+        G = \<-1, x, y \mid (-1)^2 = 1, x^2 = y^2 = (xy)^2 = -1\>.
+    \]
+\end{pbox}
+
+\begin{pbox}[1]
+    Show that $G$ has order $8$, and show that $x$ generates a normal subgroup of $G$.    
+\end{pbox}
+
+\begin{proof}
+    We first see that $-1$ commutes with both $x$ and $y$:
+    \[
+        (-1)x= x^2x = xx^2 = x(-1) \isp{and} (-1)y = y^2y = yy^2 = y(-1).
+    \]
+    Therefore, it makes sense to write $-x = (-1)x = x(-1)$ and $-y = (-1)y = y(-1)$.
+    Then we find the inverses of $x$ and $y$:
+    \[
+        x^4 = (-1)^2 = 1 \isp{and} y^4 = (-1)^2 = 1,
+    \]
+    so $x^{-1} = x^3 = -x$ and $y^{-1} = y^3 -y$.
+    We compute $yx$:
+    \[
+        -1 = xyxy \implies yx = (-x)(-1)(-y) = -xy.
+    \]
+    Hence, we know how to commute all pairs of generators so every element of $G$ can be written in the form $(-1)^ax^by^c$ where $a, b, c \in \{0, 1\}$.
+    In particular, we deduce that $|G| \leq 8$.
+
+    Define the set of $8$ elements $H = \{(-1)^ax^by^c \mid a, b, c \in \{0, 1\} \}$.
+    One can define the multiplication $(-1)^ax^by^c(-1)^\alpha x^\beta y^\gamma$ in $H$ in a way that agrees with the relations on $G$.
+    Under this multiplication, $H$ is a group of order $8$ and there is an obvious surjective group homomorphism $G \to H$.
+    This implies $|G| \geq 8$.
+
+    Since the order of $x$ is $4$, the subgroup $\<x\>$ is index $2$ in $G$ which implies $\<x\> \teq G$.
+\end{proof}
+
+\begin{pbox}[2]
+    Calculate $xyx^{-1}y^{-1}$, and find the center of $G$.
+\end{pbox}
+
+We compute
+\[
+    xyx^{-1}y^{-1}
+        = xy(-x)(-y)
+        = (-1)^2xyxy
+        = (xy)^2
+        = -1.
+\]
+This implies $x, y \notin Z(G)$.
+Similarly,
+\[
+    (-x)(-y)(-x)^{-1}(-y)^{-1}
+        = (-1)^2xyxy
+        = -1,
+\]
+so $-x, -y \notin Z(G)$.
+Then
+\[
+    (xy)y(xy)^{-1}y^{-1}
+        = xy^2y^{-1}x^{-1}(-y)
+        = x(-1)(-y)(-x)(-y)
+        = xyxy
+        = -1,
+\]
+so $\pm xy \notin Z(G)$.
+Hence, $Z(G) = \{\pm 1\}$.
+
+\newpage
+\begin{pbox}[3]
+    Find four distinct one-dimensional representations of $G$, and one irreducible two-dimensional representation.
+\end{pbox}
+
+We find the conjugacy classes of $G$; let $\eqc{a}$ denote the conjugacy class of $a \in G$.
+Clearly, $\eqc{1} = \{1\}$.
+We conjugate $-1$:
+\[
+    x(-1)x^{-1} = (-1)^2x^2 = -1 \isp{and} y(-1)y^{-1} = (-1)^2y^2 = -1,
+\]
+hence $\eqc{-1} = \{-1\}$.
+Then
+\[
+    (-1)x(-1)^{-1} = (-1)^2x = x \isp{and} yxy^{-1} = -xy(-y) = xy^2 = -x,
+\]
+so $\eqc{x} = \{\pm x\}$.
+It is the same to see $[y] = \{\pm y\}$.
+Then
+\[
+    x(xy)x^{-1} = -y(-x) = yx = -xy,
+\]
+so $\eqc{xy} = \{\pm xy\}$.
+
+Hence, we have five conjugacy classes: $\eqc{1}, \eqc{-1}, \eqc{x}, \eqc{y}, \eqc{xy}$.
+
+There is always the trivial representation which maps all elements to $[1] \in \GL_1(\C)$.
+
+Note that $\<y\>$ and $\<xy\>$ are normal subgroups of order $4$ by the same argument as $\<x\>$.
+So for $a = x, y, xy$ we have $G/\<a\> \isom \Z/2\Z$ and there is a representation sending $\<a\> \mapsto [1]$ and all other elements to $[-1]$.
+
+There is an irreducible representation $G \to \GL_2(\C)$ given by
+\[
+    -1 \mapsto \mat{-1 & 0 \\ 0 & -1}, \quad
+    x \mapsto \mat{i & 0 \\ 0 & -i}, \quad
+    y \mapsto \mat{0 & 1 \\ -1 & 0}, \quad
+    xy \mapsto \mat{0 & i \\ i & 0}, \quad
+\]
+
+
+\begin{pbox}[4]
+    Find as much of the character table of $G$ as you can.
+\end{pbox}
+\[
+    \begin{array}{r|rrrrr}
+        & \eqc{1} & \eqc{-1} & \eqc{x} & \eqc{y} & \eqc{xy} \\
+        \hline
+        \text{triv} & 1 & 1 & 1 & 1 & 1 \\
+        G/\<x\> & 1 & 1 & 1 & -1 & -1 \\
+        G/\<y\> & 1 & 1 & -1 & 1 & -1 \\
+        G/\<xy\> & 1 & 1 & -1 & -1 & 1 \\
+        \text{2d} & 2 & -2 & 0 & 0 & 0
+    \end{array}    
+\]
+
+\end{document}

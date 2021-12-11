@@ -1,0 +1,226 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz-cd}
+
+% tikz-cd
+\tikzcdset{row sep/normal=0pt}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+
+% Extra Commands
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+
+% Document
+\begin{document}
+\title{MATH 237A Homework 4}
+\author{Harry Coleman}
+\date{October 24, 2021}
+\maketitle
+
+\begin{pbox}[1 Exercise I.4.3 \\ (a)]
+    Let $f$ be the rational function on $\P^2$ given by $f = x_1/x_0$. Find the set of points where $f$ is defined and describe the corresponding regular function.
+\end{pbox}
+
+The rational function $f$ is defined on the open set $U_0 = \{x_0 \ne 0\} = \P^2 \setminus Z(x_0)$, and is represented everywhere in $U_0$ by the quotient $x_1/x_0$ of degree $1$ homogeneous polynomials $x_0, x_1 \in k[x_0, x_1, x_2]$, where $x_0$ is never zero on $U_0$.
+
+Identifying $\A^2$ in the coordinates $x_1, x_2$ with $U_0$, we can think of $f$ as the projection on the first coordinate, i.e., $[1 : x_1 : x_2] = (x_1, x_2) \longmapsto x_1$.
+
+\begin{pbox}[(b)]
+    Now think of this function as a rational map from $\P^2$ to $\A^1$. Embed $\A^1$ in $\P^1$, and let $\phi : \P^2 \to \P^1$ be the resulting rational map. Find the set of points where $\phi$ is defined, and describe the corresponding morphism.
+\end{pbox}
+
+The rational map $\phi$ is defined on the set $U_0 = \P^2 \setminus Z(x_0)$, and the morphism $\phi|_{U_0}$ is
+
+
+\begin{cd}
+    U_0 \rar["f"] & \A^1 \rar[hook] & \P^1 \\
+    {[1 : x_1 : x_2]} \rar[mapsto] & x_1 \rar[mapsto] & {[1 : x_1]}.
+\end{cd}
+
+
+
+
+\newpage
+\begin{pbox}[2 Exercise I.4.4]
+    A variety $Y$ is \textit{rational} if it is birationally equivalent to $\P^n$ for some $n$ (or, equivalently by (4.5), if $K(Y)$ is a pure transcendental extension of $k$).
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Any conic in $\P^2$ is a rational curve.
+\end{pbox}
+
+\begin{proof}
+    A conic in the projective plane is a projective closure $X = \clo{Z(f)} \subseteq \P^2$, where $f \in k[x, y]$ is some quadratic. Let $(x_0, y_0) \in Z(f) \subseteq \A^2$ be any point on the affine conic. Consider the lines $L_t = Z((y - y_0) - t(x - x_0)) \subseteq \A^2$, parameterized by $t \in \A^1$. The intersection of $Z(f)$ and $L_t$ is the solutions of the polynomial
+    \[
+        f(x, y_0 + t(x - x_0)) = 0.
+    \]
+    For all but finitely many $t \in \A^1 = k$, this is a quadratic in $k[x]$, with one root being $x_0$. To solve for the other root write
+    \[
+        f(x, y_0 + t(x - x_0)) = A_tx^2 + B_tx + C_t,
+    \]
+    where $A_t, B_t, C_t$ are polynomials in $t$. Denoting the other root by $x_t$, we have
+    \[
+        x^2 + \frac{B_t}{A_t}x + \frac{C_t}{A_t} = (x - x_0)(x - x_t),
+    \]
+    so $x_t = -x_0 - B_t/A_t$. Moreover, $y_t = y_0 + t(x_t - x_0)$ is therefore also a rational function in $t$. This means we have a rational map
+    \begin{cd}
+        \A^1 \rar[dashed, "\phi"] & Z(f) \\
+        t \rar[mapsto] & (x_t, y_t),
+    \end{cd}
+    since $B_t/A_t$ is a rational function in $t$. This map is injective since distinct choices of $t$ give distinct lines $L_t$, which intersect the conic $Z(f)$ at distinct points away from $(x_0, y_0)$. It remains to construct a rational inverse. 
+
+    For $(x, y) \in Z(f)$, there is some $t_{x,y} \in \A^1$ such that $L_{t_{x,y}}$ is the line between $(x, y)$ and $(x_0, y_0)$. Since $(x, y) \in L_{t_{x,y}}$, we can solve for $t_{x,y}$ to obtain $t_{x,y} = (y - y_0)/(x - x_0)$, which is a rational function in $x, y$. Hence, we have a rational map
+    \begin{cd}
+        Z(f) \rar[dashed, "\psi"] & \A^1 \\
+        (x, y) \rar[mapsto] & t_{x,y},
+    \end{cd}
+    which is a rational inverse to $\phi$.
+    
+    The open embeddings $\A^1 \hookrightarrow \P^1$ and $Z(f) \hookrightarrow X$ are birational maps, which allows us to extend $\phi$ and $\psi$ to a birational equivalence between $\P^1$ and $X$.
+    
+
+\end{proof}
+
+\newpage
+\begin{pbox}[(b)]
+    The cuspidal cubic $y^2 = x^3$ is a rational curve.
+\end{pbox}
+
+Let $X = Z(y^2 - x^3)$. There is an isomorphism
+\begin{cd}
+    \A^1 \setminus \{0\} \rar[leftrightarrow] & X \setminus \{0\} \\
+    t \rar[mapsto] & (t^2, t^3) \\
+    y/x & \lar[mapsto] (x, y),
+\end{cd}
+Embedding $\A^1$ in $\P^1$, this defines a birational equivalence between $\P^1$ and $X$.
+
+\begin{pbox}[(c)]
+    Let $Y$ be the nodal cubic curve $y^2z = x^2(x + z)$ in $\P^2$. Show that the projection $\phi$ from the point $P = (0, 0, 1)$ to the line $z = 0$ (Ex. 3.14) induces a birational map from $Y$ to $\P^1$. Thus $Y$ is a rational curve.
+\end{pbox}
+
+Given $a = [x : y : z] \in Y$, the line through $P$ and $a$ is the set of points $[tx : ty : (1 - t) + tz]$, parameterized by $t \in \A^1 = k$. Intersection with the line $\{z = 0\}$ occurs when $t = 1/(1 - z)$, assuming a representative of $a$ is chosen such that $z \ne 1$. In which case, $t \ne 0$, so
+\[
+    \phi(a) = [tx : ty : 0] = [x : y : 0].
+\]
+This suggests a rational map
+\begin{cd}
+    Y \rar[dashed] & \P^1 \\
+    {[x : y : z]} \rar[mapsto] & {[x : y]},
+\end{cd}
+defined on $Y \setminus Z(x, y)$, which is nonempty and open in $Y$. Solving for $z$ in the defining polynomial of $Y$, we find a rational inverse
+\begin{cd}
+    \P^1 \rar[dashed] & Y \\
+    {[x : y]} \rar[mapsto] & {\big[x : y : \tfrac{x^3}{y^2 - x^2}\big]},
+\end{cd}
+defined on $\P^1 \setminus Z(y - x, y + x)$. 
+
+
+\newpage
+\begin{pbox}[3 Exercise I.4.6]
+    A birational map of $\P^2$ into itself is called a \textit{plane Cremona transformation}. We give an example, called a \textit{quadratic transformation}. It is the rational map $\phi : \P^2 \to \P^2$ given by $(a_0, a_1, a_2) \to (a_1a_2, a_0a_2, a_0a_1)$ when no two of $a_0, a_1, a_2$ are $0$.
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Show that $\phi$ is birational and its own inverse.
+\end{pbox}
+
+We compute
+\[
+    (\phi \circ \phi)([x : y : z])
+        = [x^2yz : xy^2z : xyz^2]
+        = [x : y : z],
+\]
+which is well-defined on the open set $\P^2 \setminus Z(x, y, z)$. That is, $\phi \circ \phi = \id_{\P^2}$ as rational maps, so in fact $\phi$ is birational and its own inverse.
+
+\begin{pbox}[(b)]
+    Find open sets $U, V \subseteq \P^2$ such that $\phi : U \to V$ is an isomorphism.
+\end{pbox}
+
+Define the open set $U = \P^2 \setminus Z(x, y, z)$. Then for $[x : y : z] \in U$,
+\[
+    \phi([x : y : z]) = [yz : xz : xy] = \big[\tfrac{1}{x} : \tfrac{1}{y} : \tfrac{1}{z}\big] \in U.
+\]
+It can be seen that $\phi$ is a bijective morphism on $U$, and part (a) tells us $\phi$ is its own inverse morphism. Hence, $\phi|_U : U \to U$ is an isomorphism.
+
+\begin{pbox}[(c)]
+    Find the open sets where $\phi$ and $\phi^{-1}$ are defined, and describe the corresponding morphisms. See also (V, 4.2.3).
+\end{pbox}
+
+On $U$ from part (b), $\phi = \phi^{-1}$ is defined. The morphism inverts each coordinate, i.e.,
+\[
+    [x : y : z] \longmapsto \big[\tfrac{1}{x} : \tfrac{1}{y} : \tfrac{1}{z}\big].
+\]
+
+
+\newpage
+\begin{pbox}[4 Exercise I.4.10]
+    Let $Y$ be the cuspidal cubic curve $y^2 = x^3$ in $\A^2$. Blow up the point $O = (0, 0)$, let $E$ be the exceptional curve, and let $\tilde{Y}$ be the strict transform of $Y$. Show that $E$ meets $\tilde{Y}$ in one point, and that $\tilde{Y} \isom \A^1$. In this case the morphism $\phi : \tilde{Y} \to Y$ is bijective and bicontinuous, but is not an isomorphism.
+\end{pbox}
+
+\begin{proof}
+    We consider the total inverse image
+    \[
+        \phi^{-1}(Y) = \{((x, y), [z, w]) \in \A^2 \times \P^1 \mid y^2 = x^3,  xw = yz\},
+    \]
+    which is covered by the open sets $U_z = \{z \ne 0\}$ and $U_w = \{w \ne 0\}$.
+
+    In $U_z$, we set $z = 1$ and obtain the relations $y^2 = x^3$ and $xw = y$. Substituting, we have $x^2(w^1 - x) = 0$. Therefore, $\phi^{-1}(Y)$ has two components here: one defined by $x = y = 0$ and $w$ arbitrary, which is $E$, and the other defined by $w^2 - x = 0$, which is $\tilde{Y}$. Note that $\tilde{Y}$ meets $E$ when $w = 0$.
+
+    In $U_w$, we set $w = 1$ and obtain the relations $y^2 = x^3$ and $x = yz$. Substituting, we have $y^2(1 - yz^3) = 0$. Therefore, $\phi^{-1}(Y)$ has two components here: one defined by $x = y = 0$ and $z$ arbitrary, which is $E$, and the other defined by $1 - yz^3 = 0$, which is $\tilde{Y}$. Note that $\tilde{Y}$ does not meet $E$ here.
+
+    Hence, $\tilde{Y}$ meets $E$ at only the point $((0, 0), [1 : 0])$.
+
+\end{proof}
+
+
+\end{document}

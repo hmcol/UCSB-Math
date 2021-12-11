@@ -1,0 +1,327 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+\tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+
+% Extra Commands
+\newcommand{\FF}{\mathcal{F}}
+\DeclareMathOperator{\inter}{int}
+\newcommand{\hf}{\widehat{f}}
+\renewcommand{\SS}{\mathcal{S}}
+
+
+% Document
+\begin{document}
+\title{MATH 221A Homework 8}
+\author{Harry Coleman}
+\date{December 3, 2021}
+\maketitle
+
+\begin{pbox}[1]
+    A real number $x$ is \emph{badly approximable} if there is some $c>0$ such that for every rational $p/q$ we have
+  \[\left\lvert x-\frac{p}{q} \right\rvert>\frac{c}{q^2}.\]
+  A somewhat weaker condition (let's say $\alpha$-\emph{badly approximable}) is when $q^2$ is replaced by $q^\alpha$ for some $\alpha>2$.
+\end{pbox}
+
+For $c > 0$ we say $x \in \R$ is \textbf{$(\alpha, c)$-bad} if for every rational $p/q$ we have 
+\[
+    \left| x - \frac{p}{q} \right| > \frac{c}{q^\alpha}.
+\]
+Then $x$ is \textbf{$\alpha$-bad} ($\alpha$-badly approximable) if it is $(\alpha, c)$-bad for some $c > 0$.
+
+For $c > 0$ we say $x \in \R$ is \textbf{$(\alpha, c)$-good} if there is a rational $p/q$ such that
+\[
+    \left| x - \frac{p}{q} \right| < \frac{c}{q^\alpha}.
+\]
+We say $x \in \R$ is \textbf{$\alpha$-good} if it is $(\alpha, c)$-good for all $c > 0$.
+
+Clearly, if $x$ is $\alpha$-good then it must not be $\alpha$-bad, since $\alpha$-good uses a strict inequality, which is stronger than the negation of $\alpha$-bad.
+On the other hand, if $x$ is not $\alpha$-good, then it must not be $(\alpha, c)$-good for some $c > 0$.
+In which case, $c < c/2$ so $x$ is $(\alpha, c/2)$-bad---hence $\alpha$-bad.
+
+We may therefore conclude that a real number is $\alpha$-good if and only if it is not $\alpha$-bad.
+
+\begin{pbox}
+    Show that there are lots of $\alpha$-badly approximable numbers and lots of not-$\alpha$-badly approximable numbers (for example, both sets are uncountable).
+\end{pbox}
+
+\begin{proof}
+    For $c > 0$ define the set
+    \[
+        G_c
+            = \bigcup_{p/q \in \Q} B_{c/q^\alpha}(p/q)
+            = \{x \in \R : x \text{ is $(\alpha, c)$-good}\},
+    \]
+    (where representatives $p/q \in \Q$ are chosen such that $\gcd(p, q) = 1$) and its complement
+    \[
+        N_c = \R \setminus G_c = \{x \in \R : x \text{ is $(\alpha, c)$-bad}\}.
+    \]
+    Then define
+    \[
+        G = \bigcap_{n \in \N} G_{1/n}
+        \isp{and}
+        N = \R \setminus G = \bigcup_{n \in \N} N_{1/n}.
+    \]
+    We claim that $G$ is precisely the set of $\alpha$-good real numbers and, by extension, $N$ is the set of $\alpha$-bad real numbers.
+    Note that if $x \in \R$ is $\alpha$-good, then it must be $(\alpha, 1/n)$-good for every $n \in \N$, i.e., $x \in G$.
+    On the other hand, if $x \in G$ and $c > 0$ then there is some $n \in \N$ such that $1/n < c$.
+    In which case, $x$ is $(\alpha, 1/n)$-good, implying it is $(\alpha, c)$-good---hence $\alpha$-good.
+
+    Note that $G_c$ is an open ``neighborhood'' of $\Q$ since it is the union of open balls---one for each rational.
+    Since $\Q$ is dense in $\R$, $G_c$ is also dense in $\R$.
+    It follows that $N_c$ is nowhere dense as a closed set with dense complement, therefore $N$ is meager.
+    Then $G$ is comeager, so it cannot be meager.
+    Since countable sets are meager, we conclude that $G$ is uncountable.
+
+    Let $\lambda$ denote the Lebesgue measure on $\R$.
+    For any $c > 0$ we have $G \subseteq G_c$ so
+    \[
+        \lambda(G)
+            \leq \lambda(G_c)
+            \leq \sum_{p/q \in \Q} \lambda(B_{c/q^\alpha}(p/q))
+            = \sum_{p/q \in \Q} \frac{2c}{q^\alpha}.
+    \]
+    Again, we are assuming $\gcd(p, q) = 1$ so
+    \[
+        \sum_{p/q \in \Q} \frac{2c}{q^\alpha}
+            = \sum_{n \in \N} \sum_{\substack{k \in \Z \\ \gcd(n, k) = 1}} \frac{1}{n^\alpha}
+            = \sum_{n \in \N} \frac{2 \phi(n)}{n^\alpha},
+    \]
+    where $\phi$ denote Euler's totient function, i.e., $\phi(n)$ is the number of positive integers less than or equal to $n$ that are relatively prime to $n$.
+    Note that $\phi(n) \leq n$ for all $n \in \N$, (with equality only if $n$ is prime).
+    Then
+    \[
+        \sum_{n \in \N} \frac{\phi(n)}{n^\alpha}
+            \leq \sum_{n \in \N} \frac{n}{n^\alpha} 
+            = \sum_{n \in \N} \frac{1}{n^{\alpha-1}}.
+    \]
+    This is precisely the sum of the $p$-series for $p = \alpha - 1$.
+    With $\alpha > 2$ we have $p > 1$ so the sum is $\zeta(\alpha - 1)$, i.e., the evaluation of the Riemann zeta function at $\alpha - 1$.
+    In particular, we conclude that $\lambda(G) \leq \zeta(\alpha - 1) < \infty$.
+    Therefore $\lambda(N) = \infty$, implying $N$ is uncountable.
+\end{proof}
+
+\newpage
+\begin{pbox}[2 \\ (a)]
+    Prove the \textbf{Uniform boundedness principle}:
+    \begin{quote}
+      Let $X$ be a complete metric space and let $\mathcal F$ be a subset of
+      $C(X)$ such that for each $x \in X$, the set
+      \[\mathcal F_x=\{f(x) : f \in \mathcal F\}\]
+      is bounded.  Then there is a nonempty open set $U$ of $X$ on which the
+      functions in $\mathcal F$ are \emph{uniformly bounded}, i.e.~there is an
+      $M$ such that $|f(x)| \leq M$ for all $x \in U$ and $f \in \mathcal F$.
+    \end{quote}
+    \textbf{Hint:} Choose $A_N=\{x \in X: \lvert f(x) \rvert \leq N\text{ for all }f \in \mathcal F\}$.
+\end{pbox}
+
+\begin{proof}
+    Given $x \in X$ we know by assumption that $\FF_x \subseteq [-N, N]$ for some $N \in \N$.
+    In other words, $|f(x)| \leq N$ for all $f \in \FF$, hence $X = \bigcup_{N \in \N} A_N$.
+    Assuming $X = \inter X$ is nonempty, the Baire category theorem implies it cannot be meager.
+    Therefore, some $A_N$ must not be nowhere dense, i.e., $\inter \clo{A_N} \ne \emptyset$.
+    We can write
+    \[
+        A_N = \bigcap_{f \in \FF} f^{-1}([-N, N]),
+    \]
+    which means $A_N$ is closed.
+    Then
+    \[
+        U = \inter A_N = \inter\clo{A_N} \ne \emptyset
+    \]
+    is an open set of $X$ such that $|f(x)| \leq N$ for all $x \in U$ and $f \in \FF$.
+\end{proof}
+
+\begin{pbox}[(b)]
+    Suppose now that $X$ is a Banach space and the functions in $\mathcal F$
+    are linear.  Show that there is an $M$ such that for every $x \in X$ and
+    $f \in \mathcal F$, $|f(x)| \leq M\lVert x \rVert$.
+\end{pbox}
+
+\begin{proof}
+    Let $U$ and $M$ be as in part (a).
+    Choose $z \in U$ and $\eps > 0$ such that $B_\eps(z) \subseteq U$.
+    Then for any $f \in \FF$ and $u \in B_\eps(0)$ we have $z + u \in U$ so
+    \[
+        |f(u)|
+            = |f(-z + z + u)|
+            = |-f(z) + f(z + u)|
+            \leq |f(z)| + |f(z + u)|
+            \leq 2M.
+    \]
+    In other words, $B_\eps(0) \subseteq A_{2M}$.
+    Given $x \in X$ choose $a > 0$ such that $\eps/2 \leq a\|x\| < \eps$.
+    Then
+    \[
+        |f(x)|
+            = \frac{|f(ax)|}{a}
+            \leq \frac{2\|x\|}{\eps} \cdot 2M
+            = \frac{4M}{\eps}\|x\|.
+    \]
+
+\end{proof}
+
+
+\newpage
+\begin{pbox}[3 \\ (a)]
+    Let $Z$ and $X$ be locally compact Hausdorff spaces.  Suppose
+    $K \subseteq Z \times X$ is a compact set contained in an open set $U$.  Show
+    that $K$ is covered by a finite number of compact boxes
+    $A_i \times B_i \subseteq U$.
+\end{pbox}
+
+\begin{proof}
+    Consider a point $(z, x) \in K \subseteq U$.
+    Then there are open neighborhoods $V \subseteq Z$ and $W \subseteq X$ of $z$ and $x$, respectively, such that $V \times W \subseteq U$.
+    Since $Z$ and $X$ are locally compact and Hausdorff, we can choose a compact neighborhood $A_z \subseteq V$ of $x$ and $B_x \subseteq W$ of $y$.
+    The product of interiors $\inter A_z \times \inter B_x \subseteq A_z \times B_x$ is an open neighborhood of $(z, x)$, hence $A_z \times B_x$ is a compact box neighborhood of $(z, x)$. 
+    Importantly, we have found a compact box neighborhood of $(z, x)$ contained in $U$.
+
+    Then the collection of interior boxes $\{\inter A_z \times \inter B_x\}_{(z, x) \in K}$ is an open cover of $K$.
+    If we choose $\{\inter A_i \times \inter B_i\}_{i=1}^{n}$ to be a finite subcover of $K$, then $\{A_i \times B_i\}_{i=1}^{n}$ is the desired cover by compact boxes contained in $U$.
+\end{proof}
+
+
+\begin{pbox}[(b)]
+    In class, we showed that if $X$ is a locally compact Hausdorff space,
+    then for any spaces $Z$ and $Y$,
+    \[C(Z,C(X,Y))\text{ and }C(Z \times X,Y)\]
+    are in bijection as sets, where $C(X,Y)$ is given the compact-open topology.
+    Show that if $Z$ is also locally compact Hausdorff, then this bijection is a
+    homeomorphism if both sets are considered as spaces with the compact-open
+    topology.
+
+    \textbf{Hint:} As always, a good strategy to show two spaces are homeomorphic
+    is to show that a subbasis for the topology of one is open in the other and
+    vice versa.
+\end{pbox}
+
+\begin{lemma}
+    If $\SS$ is a subbasis of open sets for $Y$ then 
+    \[
+        \{V(K, U) : K \subseteq X \text{ compact}, U \in \SS\}
+    \]
+    is a subbasis of open sets for $C(X, Y)$ with the compact open topology.
+\end{lemma}
+
+\begin{proof}
+    Let $\mathcal{B}$ be the collection of finite intersections of sets in $\SS$.
+    Then $\mathcal{B}$ is a basis of open sets for $Y$.
+    Consider an arbitrary standard subbasis set $V(K, U) \subseteq C(X, Y)$, i.e., $K \subseteq X$ is compact and $U \subseteq Y$ is open.
+    Then $U = \bigcup_{\alpha \in I} U_\alpha$ for some $U_\alpha \in \mathcal{B}$ so
+    \[\textstyle
+        V(K, U) = \bigcup\limits_{\alpha \in I} V(K, U_\alpha).
+    \]
+    In other words,
+    \[
+        \{V(K, U) : K \subseteq X \text{ compact}, U \in \mathcal{B}\}
+    \]
+    generates the standard subbasis for $C(X, Y)$ under arbitrary unions and is therefore itself a subbasis.
+    Given a basis set $U \in \mathcal{B}$, we can write $U = \bigcap_{i=1}^{n} U_i$ for some $U_i \in \SS$ so
+    \[\textstyle
+        V(K, U) = \bigcap_{i=1}^{n} V(K, U_i).
+    \]
+    That is, the collection subbasis sets in the statement of the Lemma generates a subbasis for $C(X, Y)$ under finite intersections and arbitrary unions, hence the collection is itself a subbasis.
+\end{proof}
+
+
+\begin{lemma}
+    The collection
+    \[
+        \{V(A \times B, U) : A \subseteq Z \text{ and } B \subseteq X \text{ compact}, U \subseteq Y \text{ open}\}
+    \]
+    is a subbasis of open sets for $C(Z \times X, Y)$ with the compact open topology.
+\end{lemma}
+
+
+\begin{proof}
+    Let $V(K, U)$ be a standard subbasis set and $f \in V(K, U)$.
+    Then $K \subseteq Z \times X$ is a compact set contained in the open set $f^{-1}(U)$.
+    As in part (a), let $\{A_i \times B_i\}_{i=1}^{n}$ be a cover of $K$ by compact boxes contained in $f^{-1}(U)$.
+    Then $f \in K(A_i \times B_i, U)$ for $i = 1, \dots, n$ and
+    \[
+        \bigcap_{i=1}^{n} V(A_i \times B_i, U)
+            = V({\textstyle\bigcup\limits_{i=1}^{n}} (A_i \times B_i), U)
+            \subseteq V(K, U).
+    \]
+    This is an open neighborhood of $f$ contained in $V(K, U)$.
+    We can then write $V(K, U)$ as the union of all such intersections for $f \in V(K, U)$.
+    That is, the collection in question generates the standard subbasis under finite intersections and arbitrary unions and is therefore itself a subbasis.
+\end{proof}
+
+
+\begin{proof}[Proof (a)]
+    Lemma 1 tells us that
+    \[
+        \{V(A, V(B, U)) : A \subseteq Z \text{ and } B \subseteq X \text{ compact}, U \subseteq Y \text{ open}\}
+    \]
+    is a subbasis of open sets for $C(Z, C(X, Y))$ with the compact open topology.
+    Applying Lemma 2, the bijection induces a correspondence of subbasis sets:
+    \begin{align*}
+        C(Z, C(X, Y)) &\longleftrightarrow C(Z \times X, Y) \\
+        V(A, V(B, U)) &\longleftrightarrow V(A \times B, U)
+    \end{align*}
+\end{proof}
+
+\end{document}

@@ -1,0 +1,319 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+\usepackage[shortlabels]{enumitem}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+\tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+
+% Extra Commands
+\newcommand{\UU}{\mathcal{U}}
+\newcommand{\BB}{\mathcal{B}}
+\newcommand{\inc}{\hookrightarrow}
+
+\newcommand{\tsum}{{\textstyle\sum}}
+
+\DeclareMathOperator{\inter}{int}
+
+% Document
+\begin{document}
+\title{MATH 221A Homework 7}
+\author{Harry Coleman}
+\date{November 24, 2021}
+\maketitle
+
+\begin{pbox}[1]
+    Let $X$ be a metric space and let $r$ be a constant. You may assume the theorem that metric spaces are paracompact.
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Show that there is a simplicial complex $P$ and a map $f:X \to P$ such
+    that the preimage of each simplex has diameter at most $r$.  (The
+    \emph{diameter} of a set in a metric space is the sup distance between points
+    inside that set.)
+\end{pbox}
+
+Before beginning the proof, we make explicit the notion of a simplicial complex with arbitrarily many distinct vertices.
+
+\begin{definition}
+    Let $\Lambda$ be an arbitrary indexing set. To each finite subset $L = \{\lambda_0, \dots, \lambda_n\} \subseteq \Lambda$ we associate an $n$-simplex $\Delta^L \isom \Delta^n$. Recall the standard $n$-simplex
+    \[
+        \Delta^n = \big\{x \in \R^{n+1} : x_i \geq 0 \text{ and } \tsum_{i=0}^{n} x_i = 1\big\}.
+    \]
+    With this construction in mind, we can write $\Delta^L$ as the set of formal sums
+    \[
+        \Delta^L = \big\{\tsum_{i=0}^{n} \alpha_i \lambda_i : \alpha \in \Delta^n\big\}.
+    \]
+    For $K \subseteq L$ there is a natural (continuous) inclusion $\Delta^K \inc \Delta^L$.
+    Under this identification, the faces of $\Delta^L$ are the simplices $\Delta^{L \setminus \{\lambda_i\}}$.
+
+    Define the simplicial complex $\Delta^\Lambda$ as union of all simplices $\Delta^L$ with $L \subseteq \Lambda$ finite, quotiented by the inclusions $\Delta^K \inc \Delta^L$ for all $K \subseteq L \subseteq \Lambda$.
+    We can describe $\Delta^\Lambda$ as the set of formal sums $\sum_{\lambda \in \Lambda} \alpha_\lambda \lambda$ such that
+    \begin{enumerate}[(i)]
+        \item $\alpha_\lambda \geq 0$ for all $\lambda \in \Lambda$,
+        \item  $\alpha_\lambda = 0$ for all but finitely many $\lambda \in \Lambda$ (i.e., $\alpha : \Lambda \to \R$ has finite support), and
+        \item $\sum_{\lambda \in \Lambda} \alpha_\lambda = 1$ with the sum taken over the nonzero $\alpha_\lambda$'s.
+    \end{enumerate}
+    For each finite subset $L \subseteq \Lambda$ there is a natural inclusion $\Delta^L \inc \Delta^\lambda$; the topology on $\Delta^\Lambda$ is the direct limit topology with respect to these inclusions.
+\end{definition}
+
+
+\begin{proof}[Proof of (a)]
+    The collection of open balls $\{B_{r/4}(x)\}_{x \in X}$ is an open cover of $X$.
+    Since $X$ is paracompact, this cover has a locally finite refinement $\UU = \{U_\lambda\}_{\lambda \in \Lambda}$.
+    In other words, $\UU$ is an open cover of $X$ such that each $U_\lambda$ has diameter at most $r/2$.
+    Additionally, let $\{\tau_\lambda\}_{\lambda \in \Lambda}$ be a partition of unity subordinate to $\UU$.
+
+    Define the map $f : X \to \Delta^\Lambda$ by
+    \[
+        f(x) = \sum_{\lambda \in \Lambda} \tau_\lambda(x) \lambda.
+    \]
+    We check that $f$ is continuous.
+    Given an open subset $U \subseteq \Delta^\Lambda$, we consider a point in its preimage $x \in f^{-1}(U)$.
+    Since $\UU$ is locally finite, there is an open neighborhood $V \subseteq X$ of $x$ such that the set of indices $L = \{\lambda \in \Lambda : V \cap U_\lambda \ne \emptyset\}$ is a finite.
+    If $\lambda \notin L$ then the support of $\tau_\lambda$ is contained in $U_\lambda \subseteq V^c$.
+    So for $y \in V$ we have
+    \[
+        f(y) = \sum_{\lambda \in L} \tau_\lambda(y) \lambda.
+    \]
+    In other words, we can consider $f|_V$ as a map $V \to \Delta^L \subseteq \Delta^\Lambda$.
+    Identifying $\Delta^L$ with a standard simplex (as in Definition 1), it is clear that $f|_V$ is continuous as the sum of continuous maps from the partition of unity.
+    And since the inclusion $\Delta^L \inc \Delta^\Lambda$ is continuous, $W = f|_V^{-1}(U)$ is an open subset of $V$ containing $x$.
+    Since $V$ is an open subspace of $X$, we know $W$ is also open in $X$.
+    With $W \subseteq f^{-1}(U)$, this proves $f^{-1}(U)$ is open, hence $f$ is continuous.
+
+    We construct a simplicial complex $P$ as a subcomplex of $\Delta^\Lambda$:
+    \[
+        P = \bigcup\big\{\Delta^L \subseteq \Delta^\Lambda : f(x) \in \inter \Delta^L \text{ for some } x \in X\big\}.
+    \]
+    (We consider the interior of a $0$-simplex to be itself: $\inter \Delta^{\{\lambda\}} = \Delta^{\{\lambda\}}$ for all $\lambda \in \Lambda$.)
+    It is immediate that $P$ is itself a simplicial complex since each finite simplex $\Delta^L$ includes its faces and intersections in $P$ are the same as in $\Delta^\Lambda$.
+    Since $f(x)$ is always contained in some finite simplex and every point of a finite simplex is contained in the interior of a subsimplex, we know that $f(x)$ must be contained in the interior of some finite simplex which, by construction, is contained in $P$.
+    Therefore, the image of $f$ is contained in $P$ so we may consider $f$ as a continuous function $f : X \to P \subseteq \Delta^\Lambda$.
+
+    Let $\Delta^L \subseteq P$ be a finite subsimplex and $z \in X$ such that $f(z) \in \inter \Delta^L$.
+    Recall that
+    \[
+        f(z) = \sum_{\lambda \in \Lambda} \tau_\lambda(z) \lambda,
+    \]
+    so we must have $\tau_\lambda(z) \ne 0$ if and only if $\lambda \in L$, which implies $z \in \bigcap_{\lambda \in L} U_\lambda$.
+    By construction we have $f^{-1}(\Delta^L) \subseteq \bigcup_{\lambda \in L} U_\lambda$. Then for $x, y \in f^{-1}(\Delta^L)$ we find
+    \[
+        d(x, y) \leq d(x, z) + d(z, y) < \frac{r}{2} + \frac{r}{2} = r.
+    \]
+    Hence, the diameter of $f^{-1}(\Delta^L)$ is at most $r$.
+\end{proof}
+
+\newpage
+\begin{pbox}[(b)]
+    Let $P$ be as in the previous part and equip $C(X)$ with the sup norm.
+    Construct a map $g:P \to C(X)$ such that $g \circ f(x)$ is at most distance
+    $2r$ from the Kuratowski embedding.
+\end{pbox}
+
+Fix a point $x_0 \in X$ and let $\Phi : X \to C_B(X)$ be the Kuratowski embedding defined by
+\[
+    \Phi(x)(y) = d(x, y) - d(x_0, y).
+\]
+
+For $\lambda \in \Lambda$ choose a representative point $x_\lambda \in U_\lambda$.
+
+Suppose $u \in \Delta^L \subseteq P$ with $u = \sum_{\lambda \in L} \alpha_\lambda \lambda$.
+Define $g(u) : X \to \R$ by
+\[
+    g(u)(y) = \sum_{\lambda \in \Lambda} \alpha_\lambda d(x_\lambda, y) - d(x_0, y),
+\]
+where $\alpha_\lambda = 0$ for $\lambda \notin L$. As the composition of continuous functions $g(u) \in C(X)$.
+
+For $x \in X$ recall that $f(x) = \sum_{\lambda \in \Lambda} \tau_\lambda(x) \lambda$ so
+\[
+    (g \circ f)(x)(y) = \sum_{\lambda \in \Lambda} \tau_\lambda(x) d(x_\lambda, y) - d(x_0, y).
+\]
+Then
+\begin{align*}
+    |\Phi(x)(y) - (g \circ f)(x)(y)|
+        &= \left|d(x, y) - d(x_0, y) - \sum_{\lambda \in \Lambda} \tau_\lambda(x) d(x_\lambda, y) - d(x_0, y)\right| \\
+        &= \sum_{\lambda \in \Lambda} \tau_\lambda(x) \big|d(x, y) - d(x_\lambda, y)\big| \\
+        &\leq \sum_{\lambda \in \Lambda} \tau_\lambda(x) d(x, x_\lambda).
+\end{align*}
+If $f(x) \in \Delta^L \subseteq P$ then $\tau_\lambda(x) = 0$ for all $\lambda \notin L$ so
+\[
+    \sum_{\lambda \in \Lambda} \tau_\lambda(x) d(x, x_\lambda)
+        = \sum_{\lambda \in L} \tau_\lambda(x) d(x, x_\lambda).
+\]
+By construction of $P$, we can choose a point $z \in X$ such that $f(z) \in \inter \Delta^L$, i.e., $\tau_\lambda(z) \ne 0$ if and only if $\lambda \in L$.
+Then
+\[
+    \sum_{\lambda \in L} \tau_\lambda(x) d(x, x_\lambda)
+        \leq \sum_{\lambda \in L} \tau_\lambda(x) \big(d(x, z) + d(z, x_\lambda)\big)
+        = d(x, z) + \sum_{\lambda \in L} \tau_\lambda(x) d(z, x_\lambda).
+\]
+Note that $x, z \in f^{-1}(\Delta^L)$ so part (a) implies $d(x, z) \leq r$. Additionally, $z \in U_\lambda$ for all $\lambda \in L$ and each $U_\lambda$ has a diameter of at most $r/2$, so
+\[
+    \sum_{\lambda \in L} \tau_\lambda(x) d(z, x_\lambda)
+        \leq \sum_{\lambda \in L} \tau_\lambda(x) \frac{r}{2}
+        = \frac{r}{2}
+        \leq r.
+\]
+Hence, $\|\Phi(x) - (g \circ f)(x)\|_\infty \leq 2r$.
+
+
+\newpage
+\begin{pbox}[(c)]
+    Deduce that if $x$ and $y$ are two points of $X$, then
+    \[|d(x,y)-d(g\circ f(x),g \circ f(y))| \leq 4r.\]
+\end{pbox}
+
+\begin{proof}
+    Note that The Kuratowski embedding is an isometry, i.e., $\|\Phi(x) - \Phi(y)\|_\infty = d(x, y)$ for all $x, y \in X$.
+
+    Denote $\Psi = g \circ f$. 
+    We compute
+    \begin{align*}
+        d(x, y)
+            &= \|\Phi(x) - \Phi(y)\|_\infty \\
+            &\leq \|\Phi(x) - \Psi(x)\|_\infty 
+             + \|\Psi(x) - \Psi(y)\|_\infty 
+             + \|\Psi(y) - \Phi(y)\|_\infty \\
+            &\leq \|\Psi(x) - \Psi(y)\|_\infty + 4r.
+    \end{align*}
+    This implies
+    \[
+        d(x,y)-d(\Psi(x), \Psi(y)) \leq 4r.
+    \]
+    Similarly,
+    \begin{align*}
+        \|\Psi(x) - \Psi(y)\|_\infty
+            &\leq \|\Psi(x) - \Phi(x)\|_\infty 
+            + \|\Phi(x) - \Phi(y)\|_\infty 
+            + \|\Phi(y) - \Psi(y)\|_\infty \\
+            &\leq \|\Phi(x) - \Phi(y)\|_\infty + 4r \\
+            &= d(x, y) + 4r.
+    \end{align*}
+    This implies
+    \[
+        d(\Psi(x), \Psi(y)) - d(x, y) \leq 4r.
+    \]
+    We conclude that
+    \[
+        \big|d(x, y) - d(\Psi(x), \Psi(y))\big| \leq 4r.
+    \]
+\end{proof}
+
+
+\newpage
+\begin{pbox}[2]
+    Prove the Remark on p.~124 of J\"anich: a locally compact Hausdorff space
+  which is a countable union of compact subspaces is paracompact.
+
+  \textbf{Hint.} Use (without proof, this time) the lemma from Homework 6: a
+  compact subspace of a locally compact space is contained in the interior of a
+  bigger compact subspace.
+\end{pbox}
+
+\begin{proof}
+    Let $X$ be a locally compact Hausdorff space such that $X = \bigcup_{n \in \N} K_n$ with $K_n \subseteq X$ compact.
+    Applying the lemma from Homework 6, there is a compact set $L_1 \subseteq X$ such that $K_1 \subseteq \inter L_1$.
+    Then can then replace $K_2$ with $K_2 \cup L$, i.e., we can assume $K_1 \subseteq \inter K_2$.
+    Continuing inductively, we can assume $K_n \subseteq \inter K_{n+1}$ for all $n \in \N$.
+
+    Define the compact sets
+    \[
+        E_n = K_n \setminus \inter K_{n-1},
+    \]
+    where $K_0 = \emptyset$.
+    Then $K_n \subseteq \bigcup_{k=1}^{n} E_k$ so we have $X = \bigcup_{n \in \N} E_n$.
+    Define the open sets
+    \[
+        V_n = \inter K_{n+1} \setminus K_{n-2},
+    \]
+    where $K_{-1} = K_0 = \emptyset$; then $E_n \subseteq V_n$. For $m \geq n+3$ we have
+    \begin{align*}
+        V_n \cap V_m
+            &= (\inter K_{n+1} \setminus K_{n-2}) \cap (\inter K_{m+1} \setminus K_{m-2}) \\
+            &\subseteq K_{n+1} \cap (X \setminus K_{m-2}) \\
+            &\subseteq K_{n+1} \cap (X \setminus K_{n+1}) \\
+            &= \emptyset.
+    \end{align*}
+    In other words, with $n \in \N$ fixed, $V_n \cap V_m = \emptyset$ for all but finitely many $m \in \N$. 
+
+    Let $\UU$ be an open cover of $X$.
+    For $n \in \N$ define
+    \[
+        \UU_n = \{U \cap V_n : U \in \UU\},
+    \]
+    which is an open cover of the compact set $E_n$ contained in $V_n$.
+    Let $\BB_n \subseteq \UU_n$ be a finite subcover of $E_n$.
+    We claim that $\BB = \bigcup_{n \in \N} \BB_n$ is a locally finite refinement of $\UU$.
+
+    As $\BB_n$ covers $E_n$ and $X = \bigcup_{n \in \N} E_n$, we know that $\BB$ is a cover of $X$.
+
+    Since each open set in $\BB_n$ is of the form $U \cap V_n$ for some $U \in \UU$, it is also clear that $\BB$ is a refinement of $\UU$.
+
+    Any point $x \in X$ is contained in some $E_n$.
+    Then $V_n$ is a neighborhood of $x$ which meets only finitely many other $V_m$'s.
+    And $V_n$ intersects $U \in \BB$ only if $V_n$ meets $V_m$ and $U \in \BB_m$.
+    Since each $\BB_m$ is finite, we conclude that $V_n$ intersects finitely many open sets in $\BB$.
+
+\end{proof}
+
+\end{document}

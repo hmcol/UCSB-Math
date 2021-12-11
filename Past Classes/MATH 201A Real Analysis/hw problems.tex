@@ -1,0 +1,322 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+\usepackage[shortlabels]{enumitem}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+\tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+
+% Extra Commands
+\DeclareMathOperator{\dist}{dist}
+\newcommand{\CC}{\mathcal{C}}
+\renewcommand{\AA}{\mathcal{A}}
+\newcommand{\NN}{\mathcal{N}}
+
+\newcommand{\tbigcap}{{\textstyle\bigcap}}
+
+\newcommand{\qty}[2][0]{
+    \ifnum #1=0 (#2) \fi
+    \ifnum #1=1 \big(#2\big) \fi
+    \ifnum #1=2 \Big(#2\Big) \fi
+    \ifnum #1=3 \bigg(#2\bigg) \fi
+    \ifnum #1=4 \Bigg(#2\Bigg) \fi
+}
+
+\newcommand{\longlimit}[2]{
+    {
+        \def\arraystretch{0}
+        \begin{array}[t]{@{}l@{}}
+            \displaystyle{#2} \\[8.5pt] \scriptstyle{#1}
+        \end{array}
+    }
+}
+
+\newcommand{\longprod}[2]{\longlimit{#1}{\prod #2}}
+\newcommand{\longsum}[2]{\longlimit{#1}{\sum #2}}
+\newcommand{\longcup}[2]{\longlimit{#1}{\bigcup #2}}
+
+\newcommand{\dd}{\,\mathrm{d}}
+
+\newcommand{\odv}[3][]{\frac{\mathrm{d}^{#1}#2}{\mathrm{d}{#3}^{#1}}}
+
+\newcommand{\dto}{\longrightarrow}
+
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\pfrac}[2]{\qty{\frac{#1}{#2}}}
+
+
+% Document
+\begin{document}
+\title{MATH 201A Homework Problems}
+\author{Harry Coleman}
+\date{, 2021}
+\maketitle
+
+\section*{Homework 1}
+
+\begin{pbox}[1]
+    Let $X$ be a nonempty set and let $\mu$ be a measure on $X$. We have a theorem on sequences of decreasing measurable sets that states the following: Assume $X \supseteq A_1 \supseteq A_2 \supseteq A_3 \supseteq \cdots$ are $\mu$-measurable, such that $\mu(A_1) < \infty$. Then one has
+    \[
+        \lim_{n\to\infty} \mu(A_n) = \mu(\tbigcap_{n=1}^{\infty} A_n).
+    \]
+    Prove that in this theorem the condition $\mu(A_1) < \infty$ is necessary.
+\end{pbox}
+
+\begin{pbox}[2]
+    Does there exist an infinite $\sigma$-algebra that has countably many elements?
+\end{pbox}
+
+\begin{pbox}[3]
+    Is it true that if $\mu$ is a Borel measure on a nonempty set $X$, then for any sets $A, B \subset X$ with $\dist(A, B) > 0$, one has
+    \[
+        \mu(A \cup B) = \mu(A) + \mu(B)?
+    \]
+\end{pbox}
+
+\begin{pbox}[4]
+    Let $X$ be an uncountable set and let $\CC$ be the collection of all subsets $A$ of $X$ such that either $A$ or $A^c$ is at most countable. Prove that $\CC$ is a $\sigma$-algebra.
+\end{pbox}
+
+\section*{Homework 2}
+
+\begin{pbox}[1]
+    Give an example of a topological space $X$ and a measure $\mu$ on $X$ so that $\mu$ is Borel but not Borel-regular.
+\end{pbox}
+
+\begin{pbox}[2]
+    Let $X$ be a nonempty set and let $\{\mu_n\}_{n=1}^{\infty}$ be a sequence of measures on $X$. Assume for any subset $A \subseteq X$ the limit $\lim_{n \to \infty} \mu_n(A)$ exists and denote $\mu(A) = \lim_{n \to \infty} \mu_n(A)$.
+\end{pbox}
+
+\begin{pbox}[(i)]
+    Is it true that $\mu$ is a measure on $X$ if for any $A \subseteq X$ the sequence $\{\mu_n(A)\}$ is increasing?
+\end{pbox}
+
+\begin{pbox}[(ii)]
+    Assume in addition that $\mu_1(X) < \infty$, and that each of the measures $\mu_n$ is Borel-regular. Is it true that $\mu$ is a measure on $X$ if for any $A \subseteq X$ the sequence $\{\mu_n(A)\}$ is decreasing?
+\end{pbox}
+
+\begin{pbox}[3]
+    Let X be a nonempty set and $F$ be a collection of functions $f : X \to \R$ with the following properties:
+    \begin{enumerate}[(i)]
+        \item The constant function $f(x) \equiv 1 \in F$, and if $f, g \in F$ and $c \in \R$, then $f + g, fg, cf \in F$.
+        \item If a sequence $\{f_n\} \subseteq F$ has as pointwise limit in $X$: $f(x) = \lim_{n \to \infty} f_n(x)$ for all $x \in X$, then $f \in F$.
+    \end{enumerate}
+    Prove that the collection $\AA = \{A \subseteq X : \chi_A \in F\}$ is a $\sigma$-algebra, where $\chi_A$ is the characteristic function of the set $A$.
+\end{pbox}
+
+\begin{pbox}[4]
+    Prove that any open subset of $\R^n$ can be expressed as a countable union of closed balls in $\R^n$
+
+    \textbf{Remark.} The statement is true for any separable metric space $X$.
+\end{pbox}
+
+\section*{Homework 3}
+
+\begin{pbox}[1]
+    Let $\lambda$ be the Lebesgue measure and let $\{A_n\}_{n=1}^{\infty}$ be a sequence of Lebesgue-measurable subsets of $[0, 1]$. Assume the set $B$ consists of those points $x \in [0, 1]$ that belong to infinitely many of the $A_n$.
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Prove that $B$ is Lebesgue-measurable.
+\end{pbox}
+
+\begin{pbox}[(b)]
+    Prove that if $\lambda(A_n) > \delta > 0$ for every $n \in \N$, then $\lambda(B) \geq \delta$.
+\end{pbox}
+
+\begin{pbox}[(c)]
+    Prove that if $\sum_{n=1}^{\infty} \lambda(A_n) < \infty$, then $\lambda(B) = 0$.
+\end{pbox}
+
+\begin{pbox}[(d)]
+    Give an example where $\sum_{n=1}^{\infty} \lambda(A_n) = \infty$, but $\lambda(B) = 0$.
+\end{pbox}
+
+\begin{pbox}[2]
+    Prove that if the set $A \subseteq \R$ is Lebesgue-measurable, with $\lambda(A) > 0$, then there is a subset of $A$ that is not Lebesgue-measurable.
+\end{pbox}
+
+
+\begin{pbox}[3]
+    Let $\lambda$ be the Lebesgue measure on $\R$.
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Let $A \subseteq \R$ be a set such that $\lambda(A) > 0$. Prove that for any $\eps > 0$, there exists an interval $(a, b) \subseteq \R$ such that $\lambda(A \cap (a, b)) > (1 - \eps)(b - a)$.
+\end{pbox}
+
+\begin{pbox}[(b)]
+    Construct a Borel set $B \subseteq \R$ such that $\lambda(B) > 0$ and $\lambda(B \cap I) < \lambda(I)$ for every non-degenerate interval $I \subseteq \R$.
+\end{pbox}
+
+\begin{pbox}[4]
+    Prove that if a Lebesgue-measurable set $A \subseteq \R$ has positive Lebesgue measure, then the set
+    \[
+        A - A = \{a - b : a, b \in A\}
+    \]
+    contains a neighborhood of the origin.
+\end{pbox}
+
+\begin{pbox}
+    Is the statement true if one only assumes $\lambda(A) > 0$ (i.e., $A$ is not Lebesgue-measurable)?
+\end{pbox}
+
+\begin{pbox}[5]
+    Let $A \subseteq \R$ be any set. Prove that the set
+    \[
+        B = \bigcup_{x \in A} [x - 1, x + 1]
+    \]
+    is Lebesgue-measurable.
+\end{pbox}
+
+\section*{Homework 4}
+
+\begin{pbox}[1]
+    Let $X$ be a nonempty topological space and let $\mu$ be a measure on $X$.
+    Prove that if the functions $f_n : X \to [-\infty, +\infty]$ are $\mu$-measurable for $n = 1, 2, \dots$, then the set
+    \[
+        A = \{x \in X : \lim_{n \to \infty} f_n(x) \text{ exists}\}
+    \]
+    is $\mu$-measurable.
+\end{pbox}
+
+\begin{pbox}[2]
+    Prove that any Lebesgue-measurable function $f : \R \to \R$ that satisfies the relation
+    \[
+        f(x + y) = f(x) + f(y) \isp{for all} x, y \in \R,
+    \]
+    must be linear.
+\end{pbox}
+
+\begin{pbox}[3]
+    Let $f : (0, 1) \to \R$ be such that for every $x \in (0, 1)$ there exists $\delta > 0$ and a Borel-measurable function $g : \R \to \R$ (both dependent on $x$), such that $f(y) = g(y)$ for all $y \in (x - \delta, x + \delta) \cap (0, 1)$. Prove that $f$ is Borel-measurable. (You can assume that $f(x) = 0$ outside the interval $(0, 1)$).
+\end{pbox}
+
+\begin{pbox}[4]
+    Give an example of a collection of Lebesgue-measurable nonnegative functions $\{f_\alpha\}_{\alpha \in A}$ ($f_\alpha : \R \to \R$) such that the function
+    \[
+        g(x) = \sup_{\alpha \in A} f_\alpha(x), \quad x \in \R
+    \]
+    is finite for all $x \in \R$ but $g$ is not Lebesgue-measurable. Here $A$ is a nonempty indexing set.
+\end{pbox}
+
+\begin{pbox}[5]
+    A function $f : \R^n \to \R$ is called lower semi-continuous at the point $x \in \R^n$ if, for any sequence $x_k \in \R^n$ with $x_k \to x$, one has
+    \[
+        \liminf_{k \to \infty} f(x_k) \geq f(x).
+    \]
+    Prove that any lower semi-continuous function on $\R^n$ is Borel-measurable.
+\end{pbox}
+
+\section*{Homework 5}
+
+\begin{pbox}[1 (Integrability of the Product)]
+    Let $X$ be a nonempty set and let $\mu$ be a measure on $X$.
+    Prove that if $\mu$-measurable functions $f, g : X \to [-\infty, \infty]$ are such that $f$ is $\mu$-summable on $X$ and $g$ is bounded on $X$ ($|g(x)| \leq M$ for $\mu$-a.e.\ $x \in X$), then the product $fg$ is $\mu$-summable and
+    \[
+        \int_X |fg| \dd\mu \leq M \int_X |f| \dd\mu.
+    \]
+\end{pbox}
+
+\begin{pbox}[2]
+    Let $X$ be a nonempty set and let $\mu$ be a measure on $X$.
+    Assume $\mu$-summable functions $f, f_n : X \to [-\infty, \infty]$ are such that
+    \[
+        f_n \dto f \qquad \text{$\mu$-a.e.\ in $X$}
+    \]
+    and
+    \[
+        \int_X |f_n| \dd\mu \dto \int_X |f| \dd\mu.
+    \]
+    Prove that
+    \[
+        \int_X |f_n - f| \dd\mu \dto 0.
+    \]
+\end{pbox}
+
+\begin{pbox}[3]
+    Let $X$ be a topological space and let $\mu$ be a finite measure on $X$, i.e., $\mu(X) < \infty$.
+    A family of $\mu$-measurable functions $f_n : X \to \R$ is called \textbf{uniformly integrable} in $X$ if for any $\eps > 0$ there exists $M > 0$ such that
+    \[
+        \int_{\{x \,:\, |f_n(x)| > M\}} |f_n(x)| \dd\mu < \eps \qquad\text{for all } n = 1, 2, \dots.
+    \]
+    Similarly $\{f_n\}$ is called \textbf{uniformly absolutely continuous} if for any $\eps > 0$ there exists $\delta > 0$ such that for any $\mu$-measurable set $A \subseteq X$ with $\mu(A) < \delta$ one has
+    \[
+        \abs{\int_A f_n(x) \dd\mu} < \eps \qquad\text{for all } n = 1, 2, \dots.
+    \]
+\end{pbox}
+
+\begin{pbox}
+    Prove that $\{f_n\}$ is uniformly integrable if and only if
+    \[
+        \sup_{n} \int_X |f_n(x)| \dd\mu < \infty
+    \]
+    and $\{f_n\}$ is uniformly absolutely continuous.
+\end{pbox}
+
+\begin{pbox}[4]
+    Compute the limit
+    \[
+        \lim_{n \to \infty} \int_{0}^{n} \qty{1 - \frac{x}{n}}^n \ln\qty{2 + \cos\pfrac{x}{n}} \dd{x} 
+    \]
+\end{pbox}
+
+\end{document}

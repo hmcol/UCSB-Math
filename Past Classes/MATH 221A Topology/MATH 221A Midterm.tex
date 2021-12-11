@@ -1,0 +1,296 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+
+% commutative diagrams
+\usepackage{tikz-cd}
+\tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+
+% Extra Commands
+\newcommand{\bd}{\partial}
+\DeclareMathOperator{\inter}{int}
+\newcommand{\CC}{\mathcal{C}}
+
+% Document
+\begin{document}
+\title{MATH 221A Midterm}
+\author{Harry Coleman}
+\date{November 3, 2021}
+\maketitle
+
+% \begin{pbox}[1]
+%     Let a CW complex be defined inductively as in class. Show that if $X$ is a CW complex, then the $n$-skeleton $X^{(n)}$ is closed in $X$. Please prove any results not proved in class.
+% \end{pbox}
+
+
+
+% \begin{proof}
+%     We will prove that $A = X \setminus X^{(n)}$ is open in $X$. Assume $A$ is nonempty, since the result is trivial, otherwise. Fix a point $x \in A$; we want to find an open neighborhood of $x$ contained in $A$. Define
+%     \[
+%         N = \min\{k \in \Z_{\geq0} : x \in X^{(k)}\}. 
+%     \]
+%     Note that $N > n$, since $x \in A$ and $X^{(k)} \subseteq X^{(\ell)}$ for all $k \leq \ell$. Since $x \in X^{(N)}$, we know $x$ is in the quotient of some $N$-cell, whose boundary is glued to $X^{(N-1)}$. In other words, $x$ is in the image of a continuous map $\phi : D^N \to X$, which sends the interior of $D^N$ into $X^{(N)} \setminus X^{(N-1)}$, homeomorphically, and sends $\bd D^N$ into $X^{(N-1)}$. 
+    
+%     Since $x \notin X^{(N-1)}$, we know $x \in \phi(\inter D^N)$. Since $y = \phi^{-1}(x) \in \inter D^N$, then there is an open neighborhood $U \subseteq D^N$ of $y$ contained in the interior of $D^N$. Let $V = \phi(U) \subseteq X^{(N)} \setminus X^{(N-1)}$
+    
+%     Since $\phi$ is homeomorphic on the interior, $\phi(U)$ is an open neighborhood of $x$
+% \end{proof}
+
+
+\begin{pbox}[2]
+    Let $G$ and $H$ be topological groups. Show that a group homomorphism $f : G \to H$ is continuous if and only if for every neighborhood $V$ of the identity $e_h \in H$, there is a neighborhood $U$ of the identity $e_g \in G$ such that $f(U) \subseteq V$. 
+\end{pbox}
+
+\begin{lemma}\label{mul-homeo}
+    If $G$ is a topological group and $x \in G$, then the map
+    \begin{cd}
+        G \rar["m_x"] & G \\
+        y \rar[mapsto] & xy
+    \end{cd}
+    is a homeomorphism of $G$.
+\end{lemma}
+
+\begin{proof}
+    Consider the subspace $\{x\} \times G$ of $G \times G$, with the subspace topology (which, trivially, agrees with its product topology). Then the inclusion $\{x\} \times G \hookrightarrow G \times G$ is continuous. Note that the projection to the second coordinate $\{x\} \times G \to G$ is injective. Since, in general, projections are continuous, open, and surjective, this projection is a homeomorphism.
+    
+    Let $m : G \times G \to G$ denote the multiplication map, then $m_x = m(x, -)$ can be written as the following composition of continuous maps:
+    \begin{cd}
+        G \rar["\sim"] & \{x\} \times G \rar[hookrightarrow] & G \times G \rar["m"] & G \\
+        y \ar[rrr, mapsto] &&& xy
+    \end{cd}
+    Therefore, $m_x$ is a continuous map, for all $x \in G$. Since $G$ is a group, $m_x$ is also bijective and has the continuous inverse $m_{x^{-1}}$, hence it is a homeomorphism.
+
+\end{proof}
+
+\begin{proof}[Proof of Problem 2]
+    If $f$ is continuous, then any open neighborhood $V \subseteq H$ of $e_h$ has an open preimage $f^{-1}(V) \subseteq G$. Because $f$ is a group homomorphism, we have $f(e_g) = e_h \in V$, implying $e_g \in f^{-1}(V)$. Hence, $f^{-1}(V)$ is an open neighborhood of $e_g$, with $f(f^{-1}(V)) = V$.
+
+    Suppose $f$ has the second property. Let $V \subseteq H$ be an open subset; we will prove $f^{-1}(V)$ is open in $G$ by looking at a point. Let $x \in f^{-1}(V)$ and denote $y = f(x)$. Consider the shifted set $y^{-1}V \subseteq H$, which is open by Lemma \ref{mul-homeo} (can write $y^{-1}V = m_{y^{-1}}(V)$). Since $y \in V$,
+    \[
+        e_h = y^{-1}y \in y^{-1}V.
+    \]
+    That is, $y^{-1}V$ is an open neighborhood of $e_h$. Applying the assumed property of $f$, there is an open neighborhood $U \subseteq G$ of $e_g$, such that $f(U) \subseteq y^{-1}V$. Again applying Lemma \ref{mul-homeo}, the shifted set $xU$ is open in $G$. And $e_g \in U$ implies
+    \[
+        x = xe_g \in xU.
+    \]
+    That is, $xU$ is an open neighborhood of $x$. Then
+    \[
+        f(xU) = f(x)f(U) = yf(U) \subseteq y(y^{-1}V) = V,
+    \]
+    which implies $xU \subseteq f^{-1}(V)$. Hence $f^{-1}(V)$ is open in $G$, so $f$ is continuous.
+
+\end{proof}
+
+\newpage
+\begin{pbox}[4]
+    A continuous map is called \textit{proper} if the preimage of every compact set is compact. Show that there is no surjective proper map $\R^2 \to \R$.
+\end{pbox}
+
+\begin{proof}
+    Suppose, for contradiction, that we have a map $f : \R^2 \to \R$, which is continuous, surjective, and proper. Then
+    \[
+        K = f^{-1}([-1, 1]) \subseteq \R^2
+    \]
+    is compact, therefore bounded. Suppose $K$ is contained in a ball of radius $R > 0$ around the origin. Define $B = B_R((0, 0)) \subseteq \R^2$, so $K \subseteq B$.
+
+    Since $f$ is continuous and $\clo{B} \subseteq \R^2$ is compact, the image $f(\clo{B}) \subseteq \R$ is compact. So we can choose $M > 0$ such that $f(\clo{B}) \subseteq (-M, M)$. Since $f$ is surjective, there are $a, b \in \R^2$ such that $f(a) = -M$ and $f(b) = M$. We know that $a, b \notin B$, because $\pm M \notin f(B)$.
+
+    Notice that $\R^2 \setminus B$ is a path-connected set. From any point, one can draw the line towards the origin, until it hits the circle $\bd B$. Then, a path between any two points can be constructed by chaining each of their paths to the circle with an arc.
+
+    Let $\gamma : [0, 1] \to \R^2 \setminus B$ be a path from $a$ to $b$ outside of $B$, i.e., $\gamma(0) = a$ and $\gamma(1) = b$. Then $g = f \circ \gamma$ is a continuous function $[0, 1] \to \R$ with $g(0) = -M$ and $g(1) = M$. By the intermediate value theorem, there is some $t \in [0, 1]$ such that $0 = g(t) = f(\gamma(t))$. This means $\gamma(t) \in K \subseteq B$, which contradicts the choice of $\gamma$ as a path outside $B$.
+
+\end{proof}
+
+
+\newpage
+\begin{pbox}[5]
+    A metric space is \textit{proper} if every closed ball in it is compact.
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Show that every proper metric space is complete.
+\end{pbox}
+
+\begin{proof}
+    Let $(X, d)$ be a proper metric space and $(x_n)$ be a Cauchy sequence in $X$. For each $k \in \N$, choose $N_k \in \N$ such that
+    \[
+        n, m \geq N_k \implies d(x_n, x_m) < \frac{1}{k}.
+    \]
+    Define the closed ball
+    \[
+        E_k = \clo{B_{1/k}(x_{N_k})}.
+    \]
+    For all $n \geq N_k$, we have $d(x_n, x_{N_k}) < 1/k$, which tells us $x_n \in E_k$.
+    
+    Define the set $E = \bigcap_{k \in \N} E_k$; we claim that $E$ is a singleton. If $E$ is nonempty, and $x, y \in E$, then $x, y \in E_k$ implies $d(x, y) \leq 2/k$, for all $k \in \N$. Letting $k \to \infty$, we obtain $d(x, y) = 0$, so $x = y$. Hence, $E$ contains at most one point, and it remains to show $E$ is nonempty.
+
+    Suppose, for contradiction, that $E$ is empty, then
+    \[
+        X = E^c = \bigcup_{k \in \N} E_k^c.
+    \]
+    That is, the complements $\{E_k^c\}$ form an open cover of $X$. In particular, this is an open cover of the first closed ball $E_1$, which is compact since $X$ is proper. Therefore, we can find a finite subcover
+    \[
+        E_1 \subseteq \bigcup_{i=1}^{\ell} E_{k_i}^c.
+    \]
+    Define $K = \max\{k_1, \dots, k_\ell\}$, then $x_{N_K} \in E_k$ for all $k \leq K$. However, this means $x_{N_K} \in E_1$, but $x_{N_K}$ is not in any $E_{k_1}^c, \dots, E_{k_\ell}^c$, which is a contradiction.
+
+    It follows that $E = \{x\}$ for some $x \in X$. In fact, $x$ is the limit of the sequence $(x_n)$; we will verify this. Given $\eps > 0$, choose $k \in \N$ such that $2/k < \eps$. Then, for all $n \geq N_k$,
+    \[
+        d(x_n, x) \leq d(x_n, x_{N_k}) + d(x_{N_k}, x) \leq \frac{1}{k} + \frac{1}{k} < \eps,
+    \]
+    hence $x_n \to x$. This proves $X$ is complete.
+\end{proof}
+
+
+\newpage
+\begin{pbox}[(b)]
+    Show that every open set in a proper metric space is a union of a countable sequence $K_1 \subseteq K_2 \subseteq \cdots$ of compact sets. (Use Homework 2.)
+\end{pbox}
+
+\begin{proof}
+    Let $(X, d)$ be a proper metric space. Let $V \subseteq X$ be an open set. For $n \in \N$, define the closed set
+    \[
+        E_n = U(V^c, 1/n)^c = \{x \in X : B_{1/n}(x) \subseteq V\}.
+    \]
+    In words, $E_n$ is points of $V$ which are at least a distance $1/n$ from its boundary. By construction, we have $E_n \subseteq E_{n+1} \subseteq V$. Fix a point $x_0 \in X$. For $n \in \N$, define the closed set
+    \[
+        K_n = E_n \cap \clo{B_n(x_0)} = \{x \in E : d(x, x_0) \leq n\}.
+    \]
+    Since $X$ is proper, the closed ball is compact, implying the closed subset $K_n$ is also compact. Like the $E_n$'s, the balls are also nested, so we again have $K_n \subseteq K_{n+1} \subseteq V$.
+    
+    Note that every point in $V$ has a positive distance to the boundary and a finite distance to $x_0$, so is eventually in some $K_n$. Explicitly, for each $x \in V$, we have
+    \[
+        d(x, V^c) > 0 \isp{and} d(x, x_0) < \infty.
+    \]
+    Therefore, we can choose $N_1, N_2 \in \N$ such that $d(x, V^c) < 1/N_1$ and $d(x, x_0) < N_2$. So if we define $N = \max\{N_1, N_2\}$, then we know $x \in K_N$.
+    
+    Hence, we can write $V$ as
+    \[
+        V = \bigcup_{n \in \N} K_n,
+    \]
+    which is a countable union of nested compact sets.
+
+\end{proof}
+
+
+\newpage
+\begin{pbox}[6]
+    Are the following subspaces closed? Prove it or give a counterexample.
+\end{pbox}
+
+\begin{pbox}[(a)]
+    The set of \textit{compactly supported} in $\CC_B(\R)$ with the sup norm.
+\end{pbox}
+
+No.
+
+Let $X = \{f \in \CC_B(\R) : f|_{\R \setminus K} = 0 \text{ for some compact set } K \subseteq \R\}$.
+
+Consider the function $f : \R \to \R$ defined by
+\[
+    f(x) = e^{-x^2}.
+\]
+We use the following facts from real analysis:
+\begin{itemize}
+    \item[(i)] $f$ is continuous and positive on all of $\R$,
+    \item[(ii)] $f$ is increasing on $(-\infty, 0]$ and decreasing on $[0, \infty)$,
+    \item[(iii)] $\lim_{|x| \to \infty} f(x) = 0$.
+\end{itemize}
+It follows from (i) and (ii) that $f \in \CC_B(\R) \setminus X$. However, we claim that $f \in \clo{X}$.
+
+Let $\eps > 0$ and consider the open ball
+\[
+    B_\eps(f) = \{g \in \CC_B(\R) : \|f - g\|_{\infty} < \eps\}.
+\]
+Consider the function $g : \R \to \R$ defined by
+\[
+    g(x) = \max\{f(x) - \eps/2,\; 0\}.
+\]
+Since $g$ is continuous and $0 \leq g(x) < f(x)$ for all $x \in \R$ , we have $g \in \CC_B(\R)$. Moreover, since $f(x) - \eps < g(x) < f(x)$ for all $x \in \R$, we have $\|f - g\|_{\infty} < \eps$, i.e., $g \in B_\eps(f)$.
+
+By (iii), there is some $M \in \R$ such that $f(x) < \eps/2$ whenever $|x| \geq M$. Then $K = [-M, M]$ is a compact set with $g|_{\R \setminus K} = 0$, hence $g \in X$.
+
+We have shown that every open ball around $f$ has a nonempty intersection with $X$, so in fact $f \in \clo{X}$. But since $f \notin X$, this implies $X \ne \clo{X}$, i.e., $X$ is not closed.
+
+
+\newpage
+\begin{pbox}[(b)]
+    The set of functions in $\CC(\R)$ with the compact-open topology which are zero on the set $[0, 1]$.
+\end{pbox}
+
+Yes.
+
+\begin{proof}
+    Let $X = \{f \in \CC(\R) : f|_{[0, 1]} = 0\}$; we will show that $\CC(\R) \setminus X$ is open.
+
+    Let $f \in \CC(\R) \setminus X$, so there is some $x \in [0, 1]$ such that $f(x) \ne 0$; denote $a = f(x)$.
+
+    Consider the compact-open topology subbasis set
+    \[
+        U = S(\{x\}, B_{|a|}(a)) = \{g \in \CC(\R) : g(x) \in B_{|a|}(a)\}.
+    \]
+    Then $U$ is an open neighborhood of $f$, since $f(x) = a \in B_{|a|}(a)$.
+    
+    Any $g \in U$ must have $|a - g(x)| < |a|$; in particular, $g(x) \ne 0$. Therefore, $g \notin X$, and we conclude that $U \subseteq \CC(\R) \setminus X$. Hence, $\CC(\R) \setminus X$ is open, so $X$ is closed.
+
+\end{proof}
+
+
+
+
+
+
+\end{document}

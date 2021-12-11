@@ -1,0 +1,266 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\fi}{\end{fullbox}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Extra Commands
+
+
+% Document
+\begin{document}
+\title{MATH 221A Homework 5}
+\author{Harry Coleman}
+\date{November 10, 2021}
+\maketitle
+
+\begin{pbox}[1]
+    A space is \emph{Lindel\"of} if every open cover has a countable subcover. Show that a Lindel\"of metric space is second-countable.
+\end{pbox}
+
+\begin{proof}
+    Let $(X, d)$ be a Lindel\"of metric space.
+    For each $n \in \N$, the set of balls $\{B_{1/n}(x)\}_{x \in X}$ forms an open cover of $X$.
+    Then there is a choice of points $x_{n,k} \in X$ for $k \in \N$ such that the collection $\{B_{1/n}(x_{n, k})\}_{k \in \N}$ is a countable subcover.
+    We claim that the countable collection
+    \[
+        \mathcal{B} = \{B_{1/n}(x_{n, k})\}_{n, k \in \N}
+    \]
+    is a basis for $X$.
+    Let $x \in X$ and $U \subseteq X$ be an open neighborhood of $x$.
+    Then $B_r(x) \subseteq U$ for some radius $r > 0$.
+    Choose $N \in \N$ such that $1/N < r/2$, then $x \in B_{1/N}(x_{N, k}) \in \mathcal{B}$ for some $k \in \N$.
+    For all $y \in B_{1/N}(x_{N,k})$ we compute
+    \[
+        d(x, y)
+            \leq d(x, x_{N, k}) + d(x_{N, k}, y) 
+            < \frac{1}{N} + \frac{1}{N}
+            < r,
+    \]
+    so $y \in B_r(x)$, implying $B_{1/N}(x_{N, k}) \subseteq B_r(x)$.
+    This proves $\mathcal{B}$ is a basis, hence $X$ is Lindel\"of.
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[2]
+    Show that $\mathcal C([0,1])$ with the sup norm is separable (and therefore second-countable).
+
+    \textbf{Hint:} This is equivalent to showing that every continuous function $[0,1] \to \mathbb R$ can be approximated arbitrarily closely by functions from some countable set.
+\end{pbox}
+
+\begin{proof}
+    By the Weierstrass approximation theorem, every function in $\mathcal{C}([0, 1])$ can be uniformly approximated within an arbitrary distance by a polynomial in $\R[x]$.
+    We will show that every polynomial in $\R[x]$ can be uniformly approximated within an arbitrary distance by a polynomial in $\Q[x]$.
+
+    Let $f \in \R[x]$, i.e., $f = \sum_{k=0}^{d} a_kx^k$ where $d = \deg f$ and $a_k \in \R$.
+    Given $\eps > 0$, we can choose $q_k \in \Q$ such that $|a_k - q_k| < \eps/(d+1)$ for $k = 0, \ldots, d$.
+    Then $g = \sum_{k=0}^{d} q_kx^k$ is a polynomial in $\Q[x]$.
+    For all $x \in [0, 1]$, we find
+    \begin{align*}
+        |f(x) - g(x)|
+            &= \left|\sum_{k=0}^{d} (a_k - q_k)x^k\right| \\
+            &\leq \sum_{k=0}^{d} |a_k - q_k||x|^k \\
+            &< \sum_{k=0}^{d} \frac{\eps}{d+1} \cdot 1 \\
+            &= \eps.
+    \end{align*}
+    Hence, polynomials in $\R[x]$ can be uniformly approximated within an arbitrary distance by polynomials in $\Q[x]$. 
+
+    Given $f \in \mathcal{C}([0, 1])$ and $\eps > 0$, we can choose $g \in \R[x]$ such that $\|f - g\| < \eps/2$ and $h \in \Q[x]$ such that $\|g - h\| < \eps/2$.
+    Then
+    \[
+        \|f - h\| \leq \|f - g\| + \|g - h\| < \eps.
+    \]
+    Hence, functions in $\mathcal{C}([0, 1])$ can be uniformly approximated within an arbitrary distance by polynomials in $\Q[x]$. In other words, $\Q[x]$ is a countable dense subset of $\mathcal{C}([0, 1])$, so $\mathcal{C}([0, 1])$ is separable.
+\end{proof}
+
+
+\newpage
+\begin{pbox}[3]
+    Let $\{X_\lambda\}_{\lambda \in \Lambda}$ be an indexed family of connected spaces.  In this problem you will show that their product $X=\prod_{\lambda \in \Lambda} X_\lambda$ is connected.
+\end{pbox}
+
+\begin{lemma}
+    If $Y$ and $Z$ are connected subspaces of a topological space such that $Y \cap Z \ne \emptyset$, then $Y \cup Z$ is connected.
+\end{lemma}
+
+\begin{proof}
+    Assume---for contradiction---that $Y \cup Z$ is disconnected, i.e., $Y \cup Z = U \cup V$ where $U, V \subseteq Y \cup Z$ are nonempty disjoint open sets.
+    We can write
+    \[
+        Y = (Y \cup Z) \cap Y = (U \cap Y) \cup (V \cap Y),
+    \]
+    where $U \cap Y$ and $V \cap Y$ are disjoint open subsets of $Y$. Similarly, 
+    \[
+        Z = (Y \cup Z) \cap Z) = (U \cap Z) \cup (V \cap Z),
+    \]
+    where $U \cap Z$ and $V \cap Z$ are disjoint open subsets of $Z$.
+    
+    Since $Y$ is connected, we can assume without loss of generality that
+    \[
+        U \cap Y = Y \isp{and} V \cap Y = \emptyset.
+    \]
+    This implies $V \subseteq Z$, i.e., $V \cap Z = V$.
+    Since $V$ is nonempty and $Z$ is connected,
+    \[
+        V \cap Z = Z \isp{and} V \cap Z = \emptyset.
+    \]
+    This now tells us $Y = U$ and $Z = V$. However, this is a contradiction since we assumed $Y$ and $Z$ to overlap but $U$ and $V$ to be disjoint.
+\end{proof}
+
+\begin{pbox}[(a)]
+    Fix a point $\textbf a=(a_\lambda)_{\lambda \in \Lambda} \in X$.  Given a finite subset $K \subset \Lambda$, let $X_K$ denote the subspace
+    of points in $X$ whose coordinates are all $a_\lambda$ except perhaps for
+    $\lambda \in K$.  Show that $X_K$ is connected.
+\end{pbox}
+
+\begin{proof}
+    Given $\lambda_0 \in \Lambda$ the space $X_{\lambda_0}$ is homeomorphic to the subspace $X_{\{\lambda_0\}} \subseteq X$. Explicitly, for each point $x \in X_{\lambda_0}$, there is a point $(x_\lambda)_{\lambda \in \Lambda} \in X$ with $x_{\lambda_0} = x$ and $x_\lambda = a_\lambda$ for all $\lambda \ne \lambda_0$.
+    Then the map $x \mapsto (x_\lambda)_{\lambda \in \Lambda}$ is the desired homeomorphism.
+    In particular, $X_{\{\lambda_0\}}$ is connected since $X_{\lambda_0}$ is connected.
+
+    Note that $X_K$ is the finite union of connected subspaces $X_{\{\lambda\}}$ for $\lambda \in K$, which all contain the point $\mathbf{a}$.
+    As an immediate corollary to Lemma 1, the finite union of overlapping connected subspaces is connected, hence $X_K$ is connected.
+\end{proof}
+
+
+\newpage
+\begin{pbox}[(b)]
+    Show that the union $Y$ of all the $X_K$ is connected.
+\end{pbox}
+
+\begin{proof}
+    Assume---for contradiction---that $Y$ is disconnected.
+    Then $Y = U \cup V$ where $U$ and $V$ are nonempty disjoint open subsets of $Y$. Let $x \in U$ and $y \in V$.
+    By construction of $Y$, we have $x \in X_{K_1}$ and $y \in X_{K_2}$ for some finite subsets $K_1, K_2 \subseteq \Lambda$. 
+    Then $K = K_1 \cup K_2$ is also a finite subsets of $\Lambda$ with $x, y \in X_K$.
+    However, we also have
+    \[
+        X_K = Y \cap X_K = (U \cap X_K) \cup (V \cap X_K),
+    \]
+    where $U \cap X_K$ and $V \cap X_K$ are disjoint open subsets of $X_K$.
+    And since $x \in U \cap X_K$ and $y \in V \cap X_K$, then we conclude that $X_K$ is disconnected.
+    However, this contradicts part (a) which tells us that $X_K$ must be connected.
+\end{proof}
+
+\begin{pbox}[(c)]
+    Show that the closure of a connected subset of any space is connected.
+\end{pbox}
+
+\begin{proof}
+    Let $C$ be a connected subset of a space $Z$. If $C = \emptyset$, then the result is trivial, so we assume $C$ is nonempty.
+
+    Assume---for contradiction---that $\clo{C}$ is disconnected.
+    Then $\clo{C} = U \cup V$ for some nonempty disjoint open subsets $U, V \subseteq \clo{C}$.
+    Without loss of generality, assume $U \cap C \ne \emptyset$.
+    If $V \cap C$ were also nonempty, then we could write $C = (U \cap C) \cup (V \cap C)$, with $U$ and $V$ being nonempty disjoint open subsets of $C$.
+    Since $C$ is connected, this is not possible, so $V \cap C$ must be empty.
+    
+    Since $V$ is nonempty, we can choose some $x \in V$. Since $\clo{C} \subseteq Z$ has the subspace topology, we have $V = \clo{C} \cap W$ for some open set $W \subseteq Z$. But then $W$ is an open neighborhood of $x$ outside of $C$. This is a contradiction since we assumed $x \in V \subseteq \clo{C}$.
+\end{proof}
+
+\begin{pbox}[(d)]
+    Show that the closure of $Y$ is $X$.  Conclude that $X$ is connected.
+\end{pbox}
+
+\begin{proof}
+    Let $x \in X$ and consider an open neighborhood $U$ of $x$.
+    Without loss of generality, we may assume $U$ is in the basis for the product topology on $X$.
+    This means there is a finite subset $K \subseteq \Lambda$ and open neighborhoods $U_\lambda$ of $x_\lambda$ for each $\lambda \in K$ such that
+    \[
+        U = \prod_{\lambda \in K} U_\lambda \times \prod_{\lambda \in \Lambda \setminus K} X_\lambda.
+    \]
+    Then $U$ and $Y$ overlap at some point $(y_\lambda)_{\lambda \in \Lambda} \in X_K$, chosen such that $y_\lambda = a_\lambda$ for $\lambda \in \Lambda \setminus K$ and $y_\lambda \in U_\lambda$ for $\lambda \in K$.
+    This implies $x \in \clo{Y}$, so in fact $\clo{Y} = X$.
+    Applying part (c), we conclude that $X$ is connected.
+\end{proof}
+
+\newpage
+\begin{pbox}[4 \\ (a)]
+    Show that if $X$ is a first-countable space, then for every $A \subset X$, every point in the closure of $A$ is the limit of a sequence in $A$.
+\end{pbox}
+
+\begin{proof}
+    Let $x \in \clo{A}$ and let $\{U_n\}_{n \in \N}$ be a countable neighborhood basis for $x$ with $U_n \supseteq U_{n + 1}$. Since $x \in \clo{A}$, we can choose a point $x_n \in U_n \cap A$. We check that $x_n \to x$. For any open neighborhood $U$ of $x$, there is some $N \in \N$ such that $U_N \subseteq U$. Moreover, for any $n \geq N$ we have
+    \[
+        x_n \in U_n \subseteq U_N \subseteq U,
+    \]
+    hence $x_n \to x$.
+\end{proof}
+
+\begin{pbox}[(b)]
+    Using the previous problem, show that this is not true for spaces that aren't first-countable.
+\end{pbox}
+
+Let $\Lambda = \R$ and $X_\lambda = \R$ for $\lambda \in \Lambda$.
+So $X = \R^\R$ is the space of functions $\R \to \R$ with the product topology.
+Choose the base point $\mathbf{a} = \mathbf{0} \in X$ where $a_\lambda = \mathbf{0}(x) = 0 \in \R$ for all $x \in \R$.
+Then $Y$ can be described as the set of functions with finite support.
+
+Consider the function $\mathbf{1} \in X$ with $\mathbf{1}(x) = 1 \in \R$ for all $x \in \R$. We claim that no sequence in $Y$ converges to $\mathbf{1}$.
+
+Let $(f_n)_{n \in \N}$ be a sequence of points in $Y$, i.e., each $f_n$ is a function $\R \to \R$ with finite support. For each $n \in \N$, denote the support of $f_n$ by $\operatorname{supp} f_n$. Since each support is finite, the countable union
+\[
+    S
+        = \bigcup_{n \in \N} \operatorname{supp} f_n
+        = \{x \in \R : f_n(x) \ne 0 \text{ for some } n \in \N\}
+\]
+is a countable subset of $\R$. Then there is some $x_0 \in \R \setminus S$, because $\R$ is uncountable. There is an open neighborhood of $\mathbf{1}$ given by
+\[
+    U = \{f \in X : f(x_0) \in B_{1/2}(1)\}.
+\]
+However, for all $n \in \N$, we have $f_n(x_0) = 0$, implying $f_n \notin U$. Hence, the sequence $(f_n)_{n \in \N}$ does not converge to $\mathbf{1}$.
+
+
+\end{document}
