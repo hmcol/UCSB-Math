@@ -68,6 +68,38 @@
 
 \begin{document}
 
+A \keyword{Ring} is a set $R$ with two binary operations, called addition and multiplication, usually denoted by the operators `$+$' and `$\cdot$' respectively, such that
+\begin{enumerate}[(i)]
+    \item $(R, +)$ forms an abelian group,
+    \item $(R, \cdot)$ forms a monoid,
+    \item multiplication distributes over addition, i.e., 
+    \[
+        a \cdot (b + c) = (a \cdot b) + (a \cdot c)
+        \isp{and}
+        (a + b) \cdot c = (a \cdot c) + (b \cdot c)
+    \]
+    for all $a, b, c \in R$.
+\end{enumerate}
+
+The additive identity of $R$ is denoted by $0_R$, or simply $0$ if the ring is clear from context.
+
+The multiplicative identity of $R$ is denoted by $1_R$, or simply $1$ if the ring is clear from context.
+
+We often write the multiplication by omitting the `$\cdot$' operator, i.e., $ab = a \cdot b$ for all $a, b \in R$.
+Also, multiplication in $R$ is understood to take precedence over addition, so we might rewrite condition (iii) as follows:
+\[
+    a(b + c) = ab + ac \isp{and} (a + b)c = ac + bc
+\]
+for all $a, b, c \in R$.
+
+\sepline
+
+Let $R$ be a ring.
+
+A subset $S \subseteq R$ is called a \keyword{subring} if $1 \in S$ and $S$ closed under addition and multiplication.
+
+\sepline
+
 Let $R$ and $S$ be rings.
 
 A \keyword{ring homomorphism} is a map $\phi : R \to S$ such that for all $a, b \in R$
