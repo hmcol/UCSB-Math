@@ -1,0 +1,275 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+\tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+
+% Extra Commands
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\mSpec}{mSpec}
+\renewcommand{\O}{\mathcal{O}}
+\newcommand{\mm}{\mathfrak{m}}
+\newcommand{\pp}{\mathfrak{p}}
+\newcommand{\qq}{\mathfrak{q}}
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\rad}{\sqrt}
+
+% Document
+\begin{document}
+\title{MATH 237B Homework 1}
+\author{Harry Coleman}
+\date{January 10, 2022}
+\maketitle
+
+\begin{pbox}[1 Exercise 5.6.1]
+    Find all closed points of the real affine plane $\A_\R^2$.
+    What are their residue fields?
+\end{pbox}
+
+As an affine scheme, we consider $\A_\R^2 = \Spec\R[x, y]$, whose closed are precisely the maximal ideals of $\R[x, y]$, i.e., the elements of $\mSpec\R[x, y]$.
+
+Denote $R = \R[x, y]$ and $C = \C[x, y]$.
+
+The inclusion $R \inc C$ induces a morphism $\Spec C \to \Spec R$ sending $\pp \mapsto \pp \cap R$.
+Since $C$ is an integral ring extension of $R$ by $i$, where $i^2 - 1 = 0$, the ``Lying Over'' property (Gathmann, Commutative Algebra, Proposition 9.18) tells us that for every $\pp \in \Spec R$ there is a point $\qq \in \Spec C$ such that $\pp = \qq \cap R$.
+In other words, the intersection map $\Spec C \to \Spec R$ is surjective.
+As maximality is preserved (Gathmann, Commutative Algebra, Corollary 9.21(b)), this restricts to a surjective map $\mSpec C \to \mSpec R$.
+
+In other words, the maximal ideals of $\R[x, y]$ are simply the maximal ideals of $\C[x, y]$, restricted to their real elements.
+
+Since $\C$ is algebraically closed, the maximal ideals of $\C[x, y]$ are the ideals of the form $\<x - a, y - b\>$ with $a, b \in \C$.
+
+If $a$ and $b$ are real, then the intersection with $\R[x, y]$ is simply the ideal of $\R[x, y]$ with the same generators: $\<x - a, y - b\>$.
+In which case the residue field is $\R$.
+
+If $a$ is complex and $b$ is real, then the intersection with $\R[x, y]$ is the ideal $\<(x - a)(x - \overline{a}), y - b\>$, where $\overline{a}$ is the complex conjugate of $a$. In which case the residue field is $\C$.
+
+If both $a$ and $b$ are complex, a change of variables gives the first case, again.
+
+
+
+
+
+\newpage
+\begin{pbox}[2 Exercise 5.6.2]
+    Let $f(x, y) = y^2 - x^2 - x^3$.
+    Describe the affine scheme $X = \Spec R/\<f\>$ set-theoretically for the following rings $R$:
+\end{pbox}
+
+By the correspondence theorem for rings, there is a natural bijection between the ideals of $R/\<f\>$ and the ideals of $R$ containing $\<f\>$.
+Moreover, an ideal $I \teq R$ containing $\<f\>$ is prime if and only if its quotient $I/\<f\> \teq R/\<f\>$ is prime.
+Hence, there is a natural bijection between the elements of the set $\Spec R/\<f\>$ and the prime ideals of $R$ containing $\<f\>$.
+
+\begin{pbox}[(i)]
+    $R = \C[x, y]$ (the standard polynomial ring),
+\end{pbox}
+
+As an affine variety, $X = Z(f) \subseteq \A_\C^2$ is irreducible and $1$-dimensional.
+Therefore, the only proper irreducible closed subvarieties of $X$ are $0$-dimensional.
+By the Nullstellensatz, this equivalently means that the only prime ideals of $\C[x, y]$ strictly containing $\<f\>$ are maximal.
+The maximal ideals of $\C[x, y]$ are of the form $\<x - a, y - b\>$ with $a, b \in \C$, and in order for such an ideal to contain $\<f\>$, we must have $f(a, b) = 0$.
+In other words, the maximal ideals of $\C[x, y]$ containing $\<f\>$ correspond bijectively with the points $(a, b) \in \A_\C^2$ which lie on the curve defined by $f$.
+
+We can parameterize this curve by $\A_\C^1$ where $t \mapsto (t^2 - 1, t^3 - t^2) \in \A_\C^2$.
+(This is injective everywhere except for $\pm1 \mapsto (0, 0)$.)
+Then the underlying set of $X$ can be written as
+\[
+    \{\<0\>\} \cup \{\<x - t^2 + 1, y - t^3 + t^2\> \mid t \in \A_\C^1\},
+\]
+where the ideals are generated in $\C[x, y]/\<f\>$.
+
+\begin{pbox}[(ii)]
+    $R = \C[x, y]_{\<x, y\>}$ (the localization of the polynomial ring at the origin),
+\end{pbox}
+
+Here, the elements of $R$ correspond to the prime ideals of $\C[x, y]$ contained in $\<x, y\>$.
+
+Then $\Spec R/\<f\>$ is the curve from part (i) without the origin.
+The elements of the set correspond to the prime ideals of $\C[x, y]$ contained in $\<x, y\>$ and containing $\<f\>$.
+
+\begin{pbox}[(iii)]
+    $R = \C[[x, y]]$ (the ring of formal power series).
+\end{pbox}
+
+
+
+
+
+\newpage
+\begin{pbox}[3 Exercise 5.6.3]
+    For each of these cases below give an example of an affine scheme $X$ with that property, or prove that such an $X$ does not exist:
+\end{pbox}
+
+\begin{pbox}[(i)]
+    $X$ has infinitely many points, and $\dim X = 0$.
+\end{pbox}
+
+Let $k$ be a field and $\Lambda$ be an infinite indexing set.
+Consider $R = k^\Lambda = \{(a_\lambda)_{\lambda \in \Lambda} \mid a_\lambda \in k\}$, i.e., the product ring of copies of $k$ indexed by $\Lambda$.
+
+For each $\lambda \in \Lambda$ there is a maximal ideal
+\[
+    \mm_\lambda = \{a \in R \mid a_\lambda = 0\}.
+\]
+
+(I was originally assuming all the ideals of $R$ were products of ideals in each component, but this is not true for infinite product rings.
+Every prime ideal which happens to be a product of ideals is in fact maximal, which points toward the Krull dimension of $R$ being zero.
+I cannot find any prime ideals not of this form which are also not maximal.
+So this may still work, but I would not know how to prove it.)
+
+\begin{pbox}[(ii)]
+    $X$ has exactly one point, and $\dim X = 1$.
+\end{pbox}
+
+Does not exist.
+
+If $X = \Spec R$ has exactly one point, then $R$ has a unique prime ideal.
+In which case, the maximum length of an ascending chain of prime ideals is $1$, i.e., $\dim X = \dim R = 0$.
+
+
+\begin{pbox}[(iii)]
+    $X$ has exactly two points, and $\dim X = 1$.
+\end{pbox}
+
+Take the localization $R = \C[x]_{\<x\>}$.
+Then $R$ has only the prime ideals $\<0\> \subset \<x\>$.
+The corresponding scheme $X = \Spec R$ therefore has exactly two points and $\dim X = \dim R = 1$.
+
+\begin{pbox}[(iv)]
+    $X = \Spec R$ with $R \subseteq \C[x]$, and $\dim X = 2$.
+\end{pbox}
+
+Take $R = \Q[x, c]$, where $c \in \C$ is not algebraic over $\Q$, e.g., $e$ or $\pi$.
+Then $R$ is isomorphic to the ring of polynomials over $\Q$ in two variables, and therefore has krull dimension $2$.
+We obtain the scheme $X = \Spec R \isom \A_\Q^2$ with dimension $2$.
+
+
+\newpage
+\begin{pbox}[4 Exercise 5.6.4]
+    Let $X$ be a scheme, and let $Y$ be an irreducible closed subset of $X$.
+    If $\eta_Y$ is the generic point of $Y$, we write $\O_{X, Y}$ for the stalk $\O_{X, \eta_Y}$.
+    Show that $\O_{X, Y}$ is ``the ring of rational functions on $X$ that are regular at a general point of $Y$,'' i.e., it is isomorphic to the ring of equivalence classes of pairs $(U, \phi)$, where $U \subseteq X$ is open with $U \cap Y \ne \emptyset$ and $\phi \in \O_X(U)$, and where two such pairs $(U, \phi)$ and $(U', \phi')$ are called equivalent if there is an open subset $V \subseteq U \cap U'$ with $V \cap Y \ne \emptyset$ such that $\phi|_V = \phi'|_{V'}$.
+\end{pbox}
+
+By definition, we have the stalk
+\[
+    \O_{X, \eta_Y} = \{\eqc{(U, \phi)} \mid \eta_Y \in U \subseteq X \text{ open}, \phi \in \O_X(U)\},
+\]
+where $(U, \phi) \sim (V, \psi)$ if $\phi|_W = \psi|_W$ for some $\eta_Y \in W \subseteq U \cap V$ open.
+Also by definition, we have $Y = \clo{\{\eta_Y\}} \subseteq X$, so an open subset $U \subseteq X$ contains $\eta_Y$ if and only if $U \cap Y \ne \emptyset$.
+We can simply rewrite the stalk as
+\[
+    \O_{X, Y} = \{\eqc{(U, \phi)} \mid U \subseteq X \text{ open}, U \cap Y \ne \emptyset, \phi \in \O_X(U)\},
+\]
+where $(U, \phi) \sim (V, \psi)$ if $\phi|_W = \psi|_W$ for some $W \subseteq U \cap V$ open with $W \cap Y \ne \emptyset$.
+
+\newpage
+\begin{pbox}[5 Exercise 5.6.5]
+    Let $X$ be a scheme of finite type over an algebraically closed field $k$.
+    Show that the closed points of $X$ are dense in every closed subset of $X$.
+\end{pbox}
+
+
+First, consider the affine case $X = \Spec R$, where $R$ is a finitely generated $k$-algebra.
+Consider a nonempty distinguished open set $X_f = \Spec R_f$, i.e., $f \in R$ such that $R_f$ is not the zero ring or, equivalently, $f$ is not nilpotent.
+By Gathmann Corollary 10.13, the fact that $R$ is a finitely generated $k$-algebra implies that
+\[
+    \rad{\<0\>} = \bigcap_{\mm \in \mSpec R} \mm.
+\]
+($f \notin \rad{\<0\>})$, so there is some $\mm \in \mSpec R$ such that $f \notin \mm$.
+That is, $f(\mm) \ne 0$ so $\mm \in X_f$.
+Since the distinguished open subsets in $X$ form a basis for the Zariski topology and every distinguished open subset contains a closed point, we conclude that every open subset of $X$ contains a closed point.
+Hence, the closed points of $X$ are dense in $X$.
+
+Explicitly, if we denote the set of closed points of $X$ by
+\[
+    X_0 = \{\pp \in X \mid \clo{\pp} = \{\pp\}\},
+\]
+then we have shown $\clo{X_0} = X$.
+
+We may consider a closed subset $Z(I) \subseteq X$ as an affine subscheme $\Spec R/I \to X$.
+Moreover, the corresponding ring homomorphism $R \to R/I$ gives $R/I$ as a finitely generated $k$-algebra, so $Y = \Spec R/I$ is an affine scheme of finite type over $k$.
+It follows from the first case that the closed points of $Y$ are dense in $Y$.
+Additionally, the subscheme inclusion $Y \to X$ describes topological embedding whose image is $Z(I)$, so the closed points of $Y$ correspond to the closed points of $X$ contained in $Z(I)$, which are similarly dense. 
+
+For a general scheme $X$ of finite type over $k$, we choose a finite affine open cover $\{U_i\}_{i=1}^{n}$ with $U_i = \Spec R_i$ such that each $R_i$ is a finitely generated $k$-algebra.
+As each $U_i \subseteq X$ has the subspace topology, the closed points of $U_i$ are simply the closed points of $X$ contained in $U_i$, i.e., $(U_i)_0 = X_0 \cap U_i$.
+As as instance of the second case, the closed points of $U_i$ are dense in $Y \cap U_i$, so we conclude that
+\[
+    Y
+        = \bigcup_{i=1}^{n} (Y \cap U_i)
+        = \bigcup_{i=1}^{n} \clo{Y \cap (U_i)_0}
+        = \clo{\textstyle\bigcup_{i=1}^{n} (Y \cap (U_i))_0}
+        = \clo{Y \cap X_0}.
+\]
+
+
+
+\begin{pbox}
+    Conversely, give an example of a scheme $X$ such that the closed points of $X$ are not dense in $X$.
+\end{pbox}
+
+From Problem 3(iii), consider $R = \C[x]_{\<x\>}$ with the prime ideals $\<0\>, \<x\>$.
+Then $\<x\>$ is a closed point of $X = \Spec R$, but $\{\<0\>\}$ is an open subset of $X$ containing no closed points.
+Hence, the closed points of $X$ are not dense in $X$.
+
+\end{document}
