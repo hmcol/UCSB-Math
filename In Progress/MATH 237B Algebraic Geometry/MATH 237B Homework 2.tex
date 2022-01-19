@@ -1,0 +1,366 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+\usepackage[shortlabels]{enumitem}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+
+% Extra Commands
+\DeclareMathOperator{\Spec}{Spec}
+\renewcommand{\O}{\mathcal{O}}
+\newcommand{\mm}{\mathfrak{m}}
+
+\newcommand{\tensor}{\otimes}
+
+
+% Document
+\begin{document}
+\title{MATH 237B Homework 2}
+\author{Harry Coleman}
+\date{January 18, 2022}
+\maketitle
+
+
+\begin{pbox}[1 Exercise 5.6.8]
+    Let $k$ be an algebraically closed field.
+    An $n$-fold point (over $k$) is a scheme of the form $X = \Spec R$ such that $X$ has only one point and $R$ is a $k$-algebra of vector space dimension $n$ over $k$ (i.e., $X$ has length $n$).
+    Show that every double point is isomorphic to $\Spec k[x]/\<x^2\>$.
+\end{pbox}
+
+\begin{proof}
+    Suppose $X = \Spec R$ is a double point, i.e., $R$ is a $k$-algebra with a unique prime ideal and $\dim_k R = 2$.
+    Choose an element $y \in R$ such that $R = ky \oplus k$.
+    Then we must have $y^2 = ay + b$ for some $a, b \in k$.
+    Write $x = y - a/2$ and $c = a^2/4 + b$ for a change of variables, so that $R = kx \oplus k$ with $x^2 = c$.
+    This gives a surjective $k$-algebra homomorphism $k[x]/\<x^2 - c\> \to R$.
+    In particular, this is a $k$-linear map and
+    \[
+        \dim_k k[x]/\<x^2 - c\> = 2 = \dim_k R,
+    \]
+    so in fact $k[x]/\<x^2 - c\> \isom R$ as $k$-algebras.
+    Then the unique prime ideal of $R$ corresponds to a unique prime ideal of $k[x]$ containing $\<x^2 - c\>$.
+    If $c \ne 0$, then because $k$ is algebraically closed, we would have a pair of distinct prime ideals $\<x \pm \sqrt{c}\> \teq k[x]$ containing $\<x^2 - c\>$.
+    It follows that $c = 0$, and we obtain an isomorphism
+    \[
+        \Spec k[x]/\<x^2\> \isom \Spec R = X
+    \]
+    as schemes over $k$.
+\end{proof}
+
+
+\begin{pbox}
+    On the other hand, find two non-isomorphic triple points over $k$, and describe them geometrically.
+\end{pbox}
+
+Use $R = k[x]/\<x^3\>$ and $S = k[x, y]/\<x^2, xy, y^2\>$.
+
+Unique points are $\<x\>$ and $\<x, y\>$, respectively, but second isn't principal, so $R \not\isom S$.
+
+If the double point is a point with a linear direction, we might consider $\Spec R$ to be a point with a quadratic direction.
+
+And we might consider $\Spec S$ to be a point with two linear directions.
+
+
+
+\newpage
+\begin{pbox}[2 Exercise 5.6.9]
+    Show that for a scheme $X$ the following are equivalent:
+    \begin{enumerate}[(i)]
+    \item $X$ is reduced, i.e., for every open subset $U \subseteq X$ the ring $\O_X(U)$ has no nilpotent elements.
+    \item For any open subset $U_i$ of an open affine cover $\{U_i\}$ of $X$, the ring $\O_X(U_i)$ has no nilpotent elements.
+    \item For every point $P \in X$ the local ring $\O_{X, P}$ has no nilpotent elements.
+    \end{enumerate}
+\end{pbox}
+
+\begin{proof}
+    Assuming (i) is true, (ii) follows trivially.
+
+    Assume (ii) is true and let $P \in X$.
+    Choose an affine open cover $\{U_i = \Spec R_i\}$ of $X$ and suppose $P \in U_i$.
+    Then $\O_X(U_i) = R_i$ and
+    \[
+        \O_{X, P} = \O_{U_i, P} = (R_i)_P
+    \]
+    Assume for contradiction that $a/b \in (R_i)_P$ is nilpotent with $a^n/b^n = 0 \in (R_i)_P$.
+    That is, $a, b \in R_i$ with $b \notin P$ and $ua^n = 0 \in R_i$ for some $u \in R \setminus P$.
+    The fact that $a/b \ne 0 \in (R_i)_P$ implies $ua \ne 0 \in R_i$, however $(ua)^n = u^na^n = 0 \in R_i$.
+    That is, $ua$ is a nilpotent element of $R_i$, which contradicts our assumption of (ii), hence (iii) is true.
+
+    Assume (iii) is true and let $U \subseteq X$ be open.
+    Choose an affine open cover $\{U_i = \Spec R_i\}$ of $U$.
+    Then for each $i$, the ringed space structure of $X$ gives us a ring homomorphism $\O_X(U) \to \O_X(U_i) = R_i$.
+    Moreover, there is a natural ring homomorphism $R_i \to (R_i)_P$ for each $P \in U_i$.
+    Then an element $f \in \O_X(U)$ is nonzero only if its image in some $R_i$ is nonzero.
+    Now choose $P \in U_i \cap X_f$, so then $f \notin P$, telling us that $f_P$ is a unit in $(R_i)_P$.
+    In particular, $f$ maps to a nonzero element under the ring homomorphism $\O_X(U) \to (R_i)_P = \O_{X, P}$.
+    By assumption of (iii), $\O_{X, P}$ is reduced, so $f_P$ is not nilpotent.
+    It follows that $f$ is not nilpotent (otherwise if $f^n = 0 \in \O_X(U)$ then it would map to $(f_P)^n = 0 \in (R_i)_P$), hence (i) is true.
+\end{proof}
+
+
+\newpage
+\begin{pbox}[3 Exercise 5.6.11]
+    Let $X = Z(x_1^2x_2 + x_1x_2^2x_3) \subseteq \A_\C^3$, and denote by $\pi_i$ the projection to the $i$th coordinate.
+    Compute the scheme-theoretic fibers $X_{x_i = a} = \pi_i^{-1}(a)$ for all $a \in \C$, and determine the set of isomorphism classes of these schemes.
+\end{pbox}
+
+Let $\A_\C^3 = \Spec \C[x, y, z]$.
+
+Ler $R = \C[x, y, z]/\<x^2y + xy^2z\>$, so $X = \Spec R$.
+
+For the fiber $X_{x=a}$, we have the following corresponding commutative diagram of rings:
+\begin{cd}
+    R \tensor_{\C[x]} \C \rar[hookleftarrow] \dar[hookleftarrow] & \C \\
+    R & \C[x] \uar["\operatorname{eval}_a"'] \lar["\operatorname{eval}_x"]
+\end{cd}
+This means that in $R \tensor_{\C[x]} \C$, we have
+\[
+    x \tensor 1 = x(1 \tensor 1) = (1 \tensor a) = a \tensor 1.
+\]
+In other words,
+\[
+    R \tensor_{\C[x]} \C = R/\<x - a\> = \C[y, z]/\<a^2y + ay^2z\>,
+\]
+so
+\[
+    X_{x=a} = \begin{cases}
+        \Spec \C[y, z] & \text{if } a = 0, \\
+        \Spec \C[y, z]/\<y(a + yz)\> & \text{if } a \ne 0.
+    \end{cases}
+\]
+Similarly, for the fiber $X_{y=a}$, we have the following commutative diagram of rings:
+\begin{cd}
+    R \tensor_{\C[y]} \C \rar[hookleftarrow] \dar[hookleftarrow] & \C \\
+    R & \C[y] \uar["\operatorname{eval}_a"'] \lar["\operatorname{eval}_y"]
+\end{cd}
+This gives us
+\[
+    X_{y=a} = \begin{cases}
+        \Spec \C[x, z] & \text{if } a = 0, \\
+        \Spec \C[x, z]/\<x(x + az)\> & \text{if } a \ne 0.
+    \end{cases}
+\]
+Lastly,
+\[
+    X_{z=a} = \begin{cases}
+        \Spec \C[x, y]/\<x^2y\> & \text{if } a = 0, \\
+        \Spec \C[x, y]/\<xy(x + ay)\> & \text{if } a \ne 0.
+    \end{cases}
+\]
+
+We now have the following isomorphism classes for $a \ne 0$:
+\begin{enumerate}[(i)]
+    \item $X_{x=0} \isom X_{y=0} \isom \A^2$,
+    \item $X_{x=a}$ is the union of a line and a hyperbola,
+    \item $X_{y=a}$ is the union of two lines through the origin,
+    \item $X_{z=0}$ is the union of a two lines through the origin, one having multiplicity $2$,
+    \item $X_{z=a}$ is the union of three lines through the origin.
+\end{enumerate}
+
+
+
+\newpage
+\begin{pbox}[4 Exercise 5.6.12]
+    Let $X$ be a prevariety over an algebraically closed field $k$, and let $P \in X$ be a (closed) point of $X$.
+    Let $D = \Spec k[x]/\<x^2\>$ be the ``double point.''
+    Show that the tangent space $T_{X, P}$ to $X$ at $P$ can be canonically identified with the set of morphisms $D \to X$ that map the unique point of $D$ to $P$.
+\end{pbox}
+
+\begin{proof}
+    Since the tangent space is a local construction, an affine neighborhood of $P$ would have the same tangent space.
+    Without loss of generality, we may assume $X$ is an affine variety, i.e., $X = \Spec R$ where $R$ is a finitely generated reduced $k$-algebra.
+    Then $\mm = P$ is a maximal ideal of $R$ and the tangent space $T_{X, P}$ is the dual of the $k$-vector space $\mm/\mm^2$.
+
+    (Additionally, the unique point of $D$ is the maximal ideal $\<\eqc{x}\> = \<x\>/\<x^2\>$.)
+
+    Consider a morphism $f : D \to X$ such that $f(\<x\>) = P$.
+    Since $f$ is a morphism of locally ringed spaces, the induced morphism of rings
+    \[
+        f^* : R \longrightarrow k[x]/\<x^2\>
+    \]
+    has $(f^*)^{-1}(\<\eqc{x}\>) = \mm$, which implies $\mm^2$ is mapped into $\<\eqc{x}\>^2 = \<0\>$.
+    By the universal property of quotients, $f^*$ uniquely factors to a morphism
+    \[
+        \eqc{f^*} : R/\mm^2 \longrightarrow k[x]/\<x^2\>,
+    \]
+    which restricts to a $k$-linear map
+    \[
+        \eqc{f^*}|_{\mm/\mm^2} : \mm/\mm^2 \longrightarrow \<\eqc{x}\> = \<x\>/\<x^2\>.
+    \]
+    Evaluation at $1$ is a $k$-linear map $\operatorname{eval}_1 : \<\eqc{x}\> \to k$ (defined by $\eqc{x} \mapsto 1$).
+    Composition gives us a $k$-linear functional
+    \[
+        \operatorname{eval}_1 \circ \eqc{f^*}|_{\mm/\mm^2} : \mm/\mm^2 \longrightarrow k,
+    \]
+    which is an element of $T_{X, P}$.
+    
+
+    On the other hand, given $v \in T_{X, P}$, we can define a $k$-linear map
+    \begin{align*}
+        \tilde{v} : \mm/\mm^2 &\longrightarrow \<\eqc{x}\>, \\
+            a &\longmapsto v(a)\eqc{x}.
+    \end{align*}
+    If $\pi : R \to R/\mm^2$ is the quotient map, we obtain a $k$-linear map
+    \[
+        \tilde{v} \circ \pi|_{\mm} : \mm \longrightarrow \<\eqc{x}\>.
+    \]
+    Note that this map also agrees with multiplication.
+    (Though a proper ideal is not a ring, we sometimes consider it to be a \textit{rng}---a ring lacking identity. 
+    In this sense, the map is a morphism of rngs.)
+
+    Since $\mm \teq R$ is maximal and $k$ is algebraically closed, we have $R/\mm = k$, so $R = \mm + k$.
+    By the same argument, $k[x]/\<x^2\> = \<\eqc{x}\> + k$.
+    We can therefore uniquely extend the map to a $k$-algebra homomorphism
+    \[
+        \phi : R \longrightarrow k[x]/\<x^2\>,
+    \]
+    where $\phi|_\mm = \tilde{v} \circ \pi|_{\mm}$.
+    This corresponds to a morphism of varieties $D \to X$ that maps the unique point of $D$ to $P$.
+
+    These constructions are inverse to each other, and thus describe the desired identification.
+\end{proof}
+
+
+
+
+\newpage
+\begin{pbox}[5 Exercise 6.7.1]
+    Let $X$ be a collection of four distinct points in some $\P^n$.
+    What are the possible Hilbert functions $h_X$?
+\end{pbox}
+
+Note that the four points must live inside a copy of $\P^3$.
+A linear change of basis gives
+\[
+    X \subseteq \P^3 = Z(x_4, \dots, x_n) \subseteq \P^n.
+\]
+In which case, $I(X) \subseteq \<x_4, \dots, x_n\> \teq k[x_0, \dots, x_n]$, meaning that $S(X)$ has no monomials containing $x_4, \dots, x_n$, so we can consider it to simply be a quotient of $k[x_0, \dots, x_3]$.
+In other words, for computing the Hilbert functions, we can assume $X \subseteq \P^3$.
+
+
+\begin{enumerate}[(i)]
+    \item If the four points of $X$ are noncoplanar, then we can perform a linear change of basis to write the points as
+    \[
+        [1 : 0 : 0 : 0], [0 : 1 : 0 : 0], [0 : 0 : 1 : 0], [0 : 0 : 0 : 1] \in \P^3,
+    \]
+    then
+    \[
+        I(X) = \<x_0^{d_0} \cdots x_3^{d_3} \mid 0 \leq d_i \leq 2, \textstyle\sum d_i = 3\> \teq S = k[x_0, \dots, x_3].
+    \]
+    As this is ideal is generated by degree $3$ monomials, no smaller monomials are eliminated in $S(X) = S/I(X)$.
+    And for $d \geq 3$, this ideal eliminates all monomials except those of the form $x_i^d$.
+    That is,
+    \[
+        S(X)^{(d)} = \begin{cases}
+            S^{(d)} & \text{if } d \leq 2, \\
+            k \cdot \{x_0^d, \dots, x_3^d\} & \text{if } d \geq 3.
+        \end{cases}
+    \]
+    Hence,
+    \[
+        h_X(s) = \begin{cases}
+            \binom{s + 3}{s} & \text{if } s \leq 2, \\
+            4 & \text{if } s \geq 3.
+        \end{cases}
+    \]
+
+    \item If the four points of $X$ are coplanar, but not colinear, we can perform a linear change of basis to write the points as
+    \[
+        [1 : 0 : 0], [0 : 1 : 0], [0 : 0 : 1], [a : b : c] \in \P^2,
+    \]
+    where $a$ and $b$ are nonzero.
+    Then
+    \[
+        I(X) = \left\<\begin{matrix}
+            axyz = cx^2y = bx^2z, & bx^2y = cxy^2, \\
+            bxyz = cxy^2 = ay^2z, & cx^2z = axz^2, \\
+            cxyz = bxz^2 = ayz^2, & cy^2z = byz^2
+        \end{matrix}\right\>
+        \teq S = k[x, y, z].
+    \]
+    Using these relations, we can rewrite a monomial in $S(X)$ of degree at least $3$ and containing at least two variables as a monomial (times a scalar) containing only the variables $x$ and $y$.
+    Moreover, we can rewrite a monomial of degree at least $3$ containing both $x$ and $y$ to have the degree of $y$ be $1$.
+    That is, 
+    \[
+        S(X)^{(d)} = \begin{cases}
+            S^{(d)} & \text{if } d \leq 2, \\
+            k \cdot \{x^d, y^d, z^d, x^{d-1}y\} & \text{if } d \geq 3.
+        \end{cases}
+    \]
+    Hence,
+    \[
+        h_X(s) = \begin{cases}
+            \binom{s + 2}{s} & \text{if } s \leq 2, \\
+            4 & \text{if } s \geq 3.
+        \end{cases}
+    \]
+
+    \item If the four points are colinear, we can perform a linear change of basis to write the points as
+    \[
+        [1 : 0], [0 : 1], [1 : 1], [a : b] \in \P^1,
+    \]
+    
+\end{enumerate}
+
+
+
+\end{document}

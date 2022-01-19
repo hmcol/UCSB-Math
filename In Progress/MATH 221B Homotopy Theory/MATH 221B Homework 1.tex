@@ -1,0 +1,338 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+\usetikzlibrary{patterns}
+\usetikzlibrary{graphs,decorations.pathmorphing,decorations.markings}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+
+% Extra Commands
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\htpy}{\simeq}
+
+
+% Document
+\begin{document}
+\title{MATH 221B Homework 1}
+\author{Harry Coleman}
+\date{January 17, 2022}
+\maketitle
+
+\begin{pbox}[1 Exercise 0.2]
+    Construct an explicit deformation retraction of $\R^n \setminus \{0\}$ onto $S^{n-1}$.
+\end{pbox}
+
+For $X = \R^n \setminus \{0\}$, define $F : X \times I \to X$ by
+\[
+    F(x, t) = (1 - t)x + t\frac{x}{\|x\|}.
+\]
+As the composition of continuous real functions, $F$ is continuous, and therefore defines a homotopy between $F_0(x) = x$ (identity) and $F_1(x) = x/\|x\|$ (mapping $x$ to its unit).
+Since $S^{n-1} \subseteq X$ is simply the set of unit vectors, we know that $x \in S^{n-1}$ if and only if $x = x/\|x\|$.
+So indeed $F_t|_{S^{n-1}} = \id_{S^{n-1}}$ and $F_1(X) \subseteq S^{n-1}$, hence $F$ describes a deformation retraction of $X$ onto $S^{n-1}$.
+
+
+
+\newpage
+\begin{pbox}[2 Exercise 0.3(c)]
+    Show that a map homotopic to a homotopy equivalence is a homotopy equivalence. 
+\end{pbox}
+
+\begin{proof}
+    Suppose $F : X \times I \to Y$ is a homotopy $f_0 \htpy f_1$ such that $f_1 : X \to Y$ is a homotopy equivalence.
+    Let $g : Y \to X$ be a homotopy inverse to $f_1$, i.e., $g \circ f_1 \htpy \id_X$ and $f_1 \circ g \htpy \id_Y$.
+
+    In other words, we have the following diagrams (not commuting, per se), where homotopies are represented by arrows `$\Rightarrow$' between maps:
+    \begin{cd}[column sep=large]
+        X
+        \ar[r, bend left=50, "f_0" name=A]
+        \ar[r, "f_1"' name=B]
+        \ar[from=A, to=B, shorten=2mm, Rightarrow, "F"]
+        \ar[rr, bend right=40, "\id_X"' name=C]
+        &
+        | [alias=D] | Y
+        \ar[from=D, to=C, shorten=1.5mm, Rightarrow]
+        \rar["g"]
+        &
+        X
+        &
+        Y
+        \ar[rr, bend right=40, "\id_Y"' name=C2]
+        \rar["g"]
+        &
+        | [alias=D2] | X
+        \ar[r, bend left=50, "f_0" name=A2]
+        \ar[r, "f_1"' name=B2]
+        \ar[from=A2, to=B2, shorten=2mm, Rightarrow, "F"]
+        \ar[from=D2, to=C2, shorten=1.5mm, Rightarrow]
+        &
+        Y
+    \end{cd}
+    Intuitively, we will horizontally compose $F$ with an ``identity homotopy'' on $g$ to obtain homotopies from $g \circ f_0$ to $g \circ f_1$ and from $f_0 \circ g$ to $f_1 \circ g$.
+
+    With $F$ and $g$ continuous, their composition $gF := g \circ F : X \times I \to X$ is continuous and therefore describes a homotopy between $(gF)_0 = g \circ f_0$ and $(gF)_1 = g \circ f_1$.
+    And since homotopy is an equivalence relation, we obtain
+    \[
+        g \circ f_0 \htpy g \circ f_1 \htpy \id_X.
+    \]
+
+    Similarly, with $g$ and $\id_I$ continuous, their product $g \times \id_I : Y \times I \to X \times I$ is continuous.
+    Subsequently, the composition $Fg := F \circ (g \times \id_I) : Y \times I \to Y$ is continuous and therefore describes a homotopy between $(Fg)_0 = f_0 \circ g$ and $(Fg)_1 = f_1 \circ g$, hence
+    \[
+        f_0 \circ g \htpy f_1 \circ g \htpy \id_Y.
+    \]
+
+    We conclude that $g$ is a homotopy inverse for $f_0$, so in fact $f_0 : X \to Y$ is a homotopy equivalence.
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[3 Exercise 0.4]
+    
+\end{pbox}
+
+We first make explicit the notion of a ``corestriction'' in the context of topology.
+
+If $f : X \to Y$ is a map and $A$ is a subspace of $X$, then the restriction $f|_A : A \to Y$ is simply the composition of the inclusion $A \inc X$ and $f$. In other words, $f|_A$ the unique map which makes the following diagram commute:
+\begin{cd}
+    X \rar["f"] & Y \\
+    A \uar[hookrightarrow] \urar[dashed, "f|_A"']
+\end{cd}
+
+Similarly, if $f : X \to Y$ is a map and $B$ is a subspace of $Y$ such that $f(X) \subseteq B$, then the \textit{corestriction} $f|^B$ is the unique map which makes the following diagram commute:
+\begin{cd}
+    X \rar["f"] \drar[dashed, "f|^B"'] & Y \\
+    & B \uar[hookrightarrow]
+\end{cd}
+
+Given a map $f : X \to Y$ and subspaces $A \inc X$ and $B \inc Y$ such that $f(A) \subseteq B$, we write $f|_A^B$ for the twice-restricted map $(f|_A)|^B : A \to B$.
+That is, $f|_A^B$ is the unique map which makes the following diagram commute:
+\begin{cd}
+    X \rar["f"] & Y \\
+    A \uar[hookrightarrow] \urar[] \rar[dashed, "f|_A^B"'] & B \uar[hookrightarrow]
+\end{cd}
+
+\begin{pbox}
+    A \textbf{deformation retraction in the weak sense} of a space $X$ to a subspace $A$ is a homotopy $f_t : X \to X$ such that $f_0 = \id_X$, $f_1(X) \subseteq A$, and $f_t(A) \subseteq A$ for all $t$. 
+    Show that if $X$ deformation retracts to $A$ in this weak sense, then the inclusion $A \inc X$ is a homotopy equivalence.
+\end{pbox}
+
+\begin{proof}
+    Let $F : X \times I \to X$ be a deformation retraction of $X$ to $A$ in the weak sense, i.e., $f_0 = \id_X$, $f_1(X) \subseteq A$, and $f_t(A) \subseteq A$.
+    Denote the inclusion $\iota : A \inc X$ and the corestriction $g = f_1|^A : X \to A$; we claim that these maps are homotopy inverses of each other.
+
+    By assumption, $F$ gives a homotopy $\id_X \htpy f_1$.
+    And the universal property of the corestriction gives us $f_1 = \iota \circ f_1|^A = \iota \circ g$, hence $\id_X \htpy \iota \circ g$.
+    Since $F(A \times I) \subseteq A$, we may define the restricted map $G = F|_{A \times I}^A : A \times I \to A$.
+    Then
+    \[
+        g_0 = f_0|_A^A = \id_X|_A^A = \id_A
+    \]
+    and
+    \[
+        g_1 = f_1|_A^A = g|_A = g \circ \iota,
+    \]
+    hence $G$ describes a homotopy $\id_A \htpy g \circ \iota$, i.e., $\iota : A \inc X$ is a homotopy equivalence.
+\end{proof}
+
+
+\newpage
+\begin{pbox}[4 Exercise 0.5]
+    Show that if a space $X$ deformation retracts to a point $x \in X$, then for each neighborhood $U$ of $x$ in $X$ there exists a neighborhood $V \subseteq U$ of $x$ such that the inclusion $V \inc U$ is nullhomotopic.
+\end{pbox}
+
+\begin{proof}
+    Let $F : X \times I \to X$ be a deformation retraction of $X$ to $x \in X$, i.e., $f_0 = \id_X$, $f_1(X) \subseteq \{x\}$, and $f_t(x) = x$.
+    Let $U \subseteq X$ be an open neighborhood of $x$.
+    As $F$ is continuous, the preimage $F^{-1}(U) \subseteq X \times I$ is an open set containing $\{x\} \times I$.
+    For each $t \in I$, we can choose some open sets $V_t \subseteq X$ and $J_t \subseteq I$ such that
+    \[
+        (x, t) \subseteq V_t \times J_t \subseteq F^{-1}(U).
+    \]
+    (This is possible since $X \times I$ has the finite product (box) topology and $F^{-1}(U)$ is a open neighborhood of $(x, t)$.)
+    Then $\{J_t\}_{t \in I}$ is an open cover of the compact space $I$, so we may choose a finite subcover $\{J_{t_1}, \dots, J_{t_n}\}$.
+    Define $V = V_{t_1} \cap \cdots \cap V_{t_n}$, which is an open neighborhood of $x$ in $X$. Moreover, we have
+    \[
+        V \times I
+            = \bigcup_{i=1}^n (V \times J_{t_i})
+            \subseteq \bigcup_{i=1}^n (V_{t_i} \times J_{t_i})
+            \subseteq F^{-1}(U).
+    \]
+    Therefore, $F(V \times I) \subseteq U$; in particular, $V = f_0(V) \subseteq U$.
+
+    We may now define the restricted map $G = F|_{V \times I}^U : V \times I \to U$ (using the notation defined in the proof of Problem 3 to restrict both the domain and codomain).
+    Denoting the inclusion $\iota : V \inc U$, this gives us a homotopy between
+    \[
+        g_0 = f_0|_V^U = \id_X|_V^U = \iota
+    \]
+    and $g_1$.
+    Note that for all $y \in V$, we have
+    \[
+        g_1(y) = f_1(y) = x.
+    \]
+    That is, $g_1$ is a constant map, so indeed $\iota$ is nullhomotopic.
+\end{proof}
+
+
+\newpage
+\begin{pbox}[5 Exercise 0.6 \\ (a)]
+    Let $X$ be the subspace of $\R^2$ consisting of the horizontal segment $[0, 1] \times \{0\}$ together with all the vertical segments $\{r\} \times [0, 1 - r]$ for $r$ a rational number in $[0, 1]$.
+    Show that $X$ deformation retracts to any point in the segment $[0, 1] \times \{0\}$, but not to any other point.
+\end{pbox}
+
+\begin{proof}
+    Assume for contradiction that $X$ does deformation retract to a point $(r_0, y_0) \in X$ with $r_0 \in \Q$ and $y_0 \ne 0$.
+    Since $X \subseteq \R^2$ has the subspace topology and the positive upper half plane $H = \{(x, y) \in \R^2 : y > 0\}$ is open in $\R^2$, then we can intersect $H$ with $X$ to obtain the set
+    \[
+        U = H \cap X = \{(x, y) \in X : y > 0\},
+    \]
+    which is an open neighborhood of $(r_0, y_0)$ in $X$.
+    By Problem 4, there is a neighborhood $V \subseteq U$ of $(r_0, y_0)$ such that the inclusion $V \inc U$ is nullhomotopic, i.e., there is a homotopy $F : V \times I \to U$ such that $f_0$ is the inclusion $V \inc U$ and $f_1$ is a constant map.
+    
+    Suppose $a, b \in V$ are any two points.
+    We can fix an argument of $F$ to obtain continuous maps $\alpha, \beta : I \to U$ where $\alpha(t) = F(a, t)$ and $\beta(t) = F(b, t)$ for each $t \in I$.
+    In other words, $\alpha$ and $\beta$ are paths in $U$ which start at
+    \[
+        \alpha(0) = f_0(a) = a \isp{and} \beta(0) = f_0(b) = b
+    \]
+    and end at
+    \[
+        \alpha(1) = f_1(a) = f_1(b) = \beta(1).
+    \]
+    Following $\alpha$ forwards then $\beta$ backwards gives us a path from $a$ to $b$ in $U$.
+    As $a, b \in V$ were arbitrary, this shows that $V$ is path-connected via paths in $U$.
+
+    Note that $U$ is a subspace of $(I \cap \Q) \times I$, so $V$ contains a box $(J \times \Q) \times K$ for some nontrivial open intervals $J, K \subseteq \R$.
+    However, after projecting $U$ onto $\Q$, we obtain a nonempty interval of $\Q$ which is path connected inside of $\Q$.
+    Since $\Q$ is totally path-disconnected, so this is a contradiction.
+\end{proof}
+
+\begin{pbox}[(b)]
+    Let $Y$ be the subspace of $\R^2$ that is the union of an infinite number of copies of $X$ arranged as in the figure below.
+    Show that $Y$ is contractible but does not deformation retract onto any point.
+    \begin{drawing}
+        \foreach \x in {-1, 0, 1} {
+            \filldraw (0.3*\x-0.5, 0.5) circle (1pt);
+        }
+        \foreach \x in {-1, 0, 1} {
+            \filldraw (0.3*\x+13.5, 0.5) circle (1pt);
+        }
+
+        \foreach \x in {0, 1, 2, 3, 4, 5} {
+            \draw[thick, pattern=north east lines] (2*\x, 0) --++ (1, 1) --++ (1, -1);
+            \draw[draw=none, pattern=north west lines] (2*\x+1, 1) --++ (1, -1) --++ (1, 1);
+            \draw[thick] (2*\x+2, 0) --++ (1, 1);
+        }
+    \end{drawing}
+\end{pbox}
+
+We build a contraction of $Y$ out of two parts. First, take the weak deformation retraction of $X$ onto $Z$ from part (c).
+Second, take a deformation retraction of $Z$ onto some point $z \in Z$.
+For each point in $Z$, we scale the distance to $z$ along $Z$ by $(1 - t)$; this is a continuous map $Z \times I \to Z$ fixing $z$ with the map at $t = 1$ constantly mapping to $z$.
+We combine these homotopies by adjusting the time interval of the first to fit within $[0, 1/2]$ and the second to fit within $[1/2, 1]$.
+Overall, this gives a contraction of $Y$ to the point $z$.
+
+No deformation retraction of $Y$ to a point exists for the same reason that no deformation retraction of of $X$ exists to a point on an attached interval.
+That is, such a deformation retraction of $Y$ would induce such a deformation retraction of $X$.
+
+
+\newpage
+\begin{pbox}[(c)]
+    Let $Z$ be the zigzag subspace of $Y$ homeomorphic to $\R$ indicated by the heavier line. Show there is a deformation retraction in the weak sense of $Y$ onto $Z$, but no true deformation retraction.
+\end{pbox}
+
+Intuitively, we imagine $Z$ as a piece of string which can be bent, but not stretched or compressed along its length.
+Each smaller line segment of $Y$ attached to $Z$ is made of the same type of string, with one end tied to $Z$.
+We construct a weak deformation retraction of $X$ onto $Z$ where at each time $t \in I$, we pull $Z$ to the right a distance of $t$ units along its length.
+Any given point in $Y$ moves at a constant speed with respect to $t$, first moving down its segment onto $Z$, then following $Z$ to the right for the remainder of the time interval.
+After $Z$ has been pulled a distance of $1$ unit, then the longest segments (which are a length of $1$ unit) will have been completely pulled onto $Z$.
+Moreover, every point staring in $Z$ remains in $Z$ for the duration of the time interval.
+Hence, this defines a weak deformation retraction of $Y$ onto $Z$.
+
+No true deformation retraction of $Y$ onto $Z$ exists for the same reason no true deformation retraction of $X$ onto a point in an attached segment exists.
+In particular, a true deformation retraction of $Y$ onto $Z$ would induce a true deformation retraction of $X$ onto the lower and left segments.
+
+\newpage
+\begin{pbox}[6 Lecture 3]
+    Given a subspace $A \subseteq X$ with quotient map $q : X \to X/A$ and homotopy $f_t : X \times I \to X$ such that $f_0 = \id_X$ and $f_1(A) = \{a\}$ for some $a \in A$, consider the family of functions $\eqc{f}_t$ which make the following diagrams commute:
+    \begin{cd}
+        X \rar["f_t"] \dar["q"] & X \rar["q"] & X/A \\
+        X/A \ar[urr, dashed, "\eqc{f}_t", swap]
+    \end{cd}
+    Show that each function $\eqc{f}_t : X/A \to X/A$ is continuous.
+\end{pbox}
+
+\begin{proof}
+    Let $V \subseteq X/A$ be an open set and consider the preimage $\eqc{f}_t^{-1}(V) \subseteq X/A$.
+    By definition of the quotient topology on $X/A$, we know that a subset of $X/A$ is open if and only if its preimage under $q$ is open in $X$.
+    We have the preimage
+    \[
+        q^{-1}(\eqc{f}_t^{-1}(V))
+            = (\eqc{f}_t \circ q)^{-1}(V)
+            = (q \circ f_t)^{-1}(V).
+    \]
+    We know that $q \circ f_t$ is continuous, so this set is open in $X$.
+    Hence, $\eqc{f}_t^{-1}(V)$ is open in $X/A$ and we conclude that $\eqc{f}_t$ is continuous.
+\end{proof}
+
+
+\end{document}
