@@ -1341,4 +1341,30 @@ For completeness, we prove some intermediate results.
     
 \end{corollary}
 
+
+\section*{CW complex? more like EZ complex. more like CW simple}
+
+For each $t \in I$, the point $\gamma(t) \in X$ is contained in the interior of some cell of $X$, say $\gamma(t) \in e^{k_t} \seq X^{(k_t)}$.
+    Since $\gamma$ is continuous, each preimage $\gamma^{-1}(e^{k_t}) \seq I$ is open.
+    Hence, we have an open cover $\{\gamma^{-1}(e^{k_t})\}_{t \in I}$ of the compact space $I$, and we can therefore choose a finite subcover, indexed by $1, \dots, n$.
+    Then we know
+    \[
+        \gamma(I)
+            \seq \bigcup_{i=1}^{n} e^{k_i}
+            \seq \bigcup_{i=1}^{n} X^{(k_i)}
+            = X^{(k)},
+    \]
+    where $k = \max\{k_1, \dots, k_n\}$. Not only does this show $\gamma$ is completely contained in the $k$-skeleton of $X$, but also that $\gamma$ can be split up into finitely many parts, where each part is contained in the interior of some cell of $X$.
+
+    If $k \geq 2$, we claim that $\gamma$ can be modified to construct a path between $x$ and $y$ that is completely contained in the $(k-1)$-skeleton $X^{(k-1)}$.
+    For each $k_i \geq 2$, we know that $e^{k_i}$ is the interior of a closed cell $D^{k_i} \seq X$, whose boundary $\bd D^{k_i} = S^{k_i}$ is path-connected.
+    Since $x, y \in X^{(1)}$, then in particular, $x, y \notin e^{k_i}$.
+    And since $D^{k_i}$ is only (path-)connected to the rest of $X$ by its boundary, we know that $\gamma$ must pass through $\bd D^{k_i}$ just before and just after passing through $e^{k_i}$.
+    Then we can modify $\gamma$ to a path $\gamma'$, which passes through $\bd D^{k_i}$, whenever $\gamma$ would otherwise pass through $e^{k_i}$.
+    Then a finite cover of $\gamma'$ by open cells can be obtained from the finite cover of $\gamma$ by open cells, replacing $e^{k_i}$ with open cells contained in $\bd D^{k_i}$, which would be of strictly smaller dimension.
+
+    Performing this modification of $\gamma$ for each open $k$-cell in the finite cover gives us a new path from $x$ to $y$ that is completely contained in the $(k-1)$-skeleton $X^{(k-1)}$.
+    Continuing inductively, we eventually arrive at a path from $x$ to $y$ that is completely contained in the $1$-skeleton $X^{(1)}$.
+    Hence, $X^{(1)}$ is path-connected.
+
 \end{document}

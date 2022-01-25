@@ -1,0 +1,596 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+\usepackage[shortlabels]{enumitem}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+
+% Extra Commands
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\htpy}{\simeq}
+\newcommand{\bd}{\partial}
+
+
+% Document
+\begin{document}
+\title{MATH 221B Homework 2}
+\author{Harry Coleman}
+\date{January 24, 2022}
+\maketitle
+
+
+\begin{pbox}[1 Exercise 0.9]
+    Show that a retract of a contractible space is contractible.
+\end{pbox}
+
+\begin{proof}
+    Suppose $X$ is a contractible space with $A \seq X$ a retract.
+    Let $F : X \times I \to X$ be a contraction, i.e., a map with $F_0 = \id_X$ and $F_1(X) = \{x_0\}$ for some point $x_0 \in X$.
+    And let $r : X \to A$ be a retract, i.e., a map with $r|_A = \id_A$.
+
+    We define a homotopy $G : A \times I \to A$ by the following composition:
+    \begin{cd}
+        A \times I \rar[hookrightarrow] & X \times I \rar["F"] & X \rar["r"] & A.
+    \end{cd}
+    By construction, for each $a \in A$, we have
+    \[
+        G_0(a) = r(F_0(a)) = r(a) = a
+    \]
+    and
+    \[
+        G_1(a) = r(F_1(a)) = r(x_0).
+    \]
+    In other words, $G_0 = \id_A$ and $G_1(A) = \{r(x_0)\}$, hence $G$ describes a contraction of $A$ to the point $r(x_0) \in A$.
+\end{proof}
+
+\newpage
+\begin{pbox}[2 Exercise 0.10]
+    Show that a space $X$ is contractible iff every map $f : X \to Y$, for arbitrary $Y$, is nullhomotopic.
+\end{pbox}
+
+\begin{proof}
+    Suppose $X$ has a contraction $R : X \times I \to X$, and consider a map $f : X \to Y$.
+    Then the composition $fR = f \circ R : X \times I \to Y$ defines a homotopy between the maps
+    \[
+        (fR)_0 = f \circ R_0 = f \circ \id_X = f
+    \]
+    and
+    \[
+        (fR)_1 = f \circ R_1,
+    \]
+    the latter of which is a constant map since $R_1$ is constant.
+    Hence, $f$ is nullhomotopic.
+
+    On the other hand, if every map $X \to Y$ is nullhomotopic, then in particular the identity $\id_X : X \to X$ is nullhomotopic, which means $X$ is contractible.
+\end{proof}
+
+\begin{pbox}
+    Similarly, show $X$ is contractible iff every map $f : Y \to X$ is nullhomotopic.
+\end{pbox}
+
+\begin{proof}
+    Suppose $X$ has a contraction $R : X \times I \to X$, and consider a map $f : Y \to X$.
+    Then the composition $Rf = R \circ (f \times \id_I) : Y \times I \to X$ defines a homotopy between the maps
+    \[
+        (Rf)_0 = R_0 \circ f = \id_X \circ f = f
+    \]
+    and
+    \[
+        (fR)_1 = R_1 \circ f,
+    \]
+    the latter of which is a constant map since $R_1$ is constant.
+    Hence, $f$ is nullhomotopic.
+
+    On the other hand, if every map $Y \to X$ is nullhomotopic, then in particular the identity $\id_X : X \to X$ is nullhomotopic, which means $X$ is contractible.
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[3 Exercise 0.11]
+    Show that $f : X \to Y$ is a homotopy equivalence if there exist maps $g, h : Y \to X$ such that $fg \htpy \id_Y$ and $hf \htpy \id_X$.
+    
+\end{pbox}
+
+\begin{proof}
+    Suppose $G : Y \times I$ is a homotopy with $G_0 = f \circ g$ and $G_1 = \id_Y$.
+    Similarly, suppose $H : X \times I \to X$ is a homotopy with $H_0 = \id_X$ and $H_1 = h \circ f$.
+    We represent $G$ and $H$ with the following diagram (which commutes only in the sense that difference paths through the diagram are homotopic, rather than equal):
+    \begin{cd}[column sep=large]
+        Y
+        \rar["g"]
+        \ar[rr, bend right=40, "\id_Y"' name=BotMor]
+        &
+        | [alias=MidX] | X
+        \ar[from=MidX, to=BotMor, shorten=1.5mm, Rightarrow, "G" xshift=1mm]
+        \rar["f"]
+        \ar[rr, bend left=40, "\id_X" name=TopMor]
+        &
+        | [alias=MidY] | Y
+        \rar["h"]
+        \ar[from=TopMor, to=MidY, shorten=1.5mm, Rightarrow, "H" xshift=1mm]
+        &
+        X
+    \end{cd}
+    Intuitively, the diagram suggest a homotopy between $g$ (the top path in the diagram) and $h$ (the bottom path).
+    To make this explicit, we construct the following ``horizontal compositions'' of homotopies (also used in Problem 2):
+    \[
+        Hg = H \circ (g \times \id_I) : Y \times I \to X
+    \]
+    and
+    \[
+        hG = h \circ G : Y \times I \to X.
+    \]
+    The first of these describes a homotopy between the maps
+    \[
+        (Hg)_0 = H_0 \circ g = \id_X \circ g = g
+    \]
+    and
+    \[
+        (Hg)_1 = H_1 \circ g = (h \circ f) \circ g = h \circ f \circ g.
+    \]
+    The second describes a homotopy between the maps
+    \[
+        (hG)_0 = h \circ G_0 = h \circ (f \circ g) = h \circ f \circ g
+    \]
+    and
+    \[
+        (hG)_1 = h \circ G_1 = h \circ \id_Y = h.
+    \]
+    The ``vertical compositions'' of these homotopies then gives us
+    \[
+        g \htpy h \circ f \circ g \htpy h.
+    \]
+
+    Lastly, if $K : Y \times I \to X$ is a homotopy with $K_0 = h$ and $K_1 = g$, then we could draw the following diagram of homotopies:
+    \begin{cd}[column sep=large]
+        X
+        \rar["f"]
+        \ar[rr, bend left=40, "\id_X" name=Moridx]
+        &
+        | [alias=ObY] | Y
+        \rar["h" name = Morh]
+        \ar[from=Moridx, to=ObY, shorten=1.5mm, Rightarrow, "H" xshift=1mm]
+        \rar[bend right=50, "g"' name=Morg]
+        \ar[from=Morh, to=Morg, shorten=1.5mm, Rightarrow, "K" xshift=1mm]
+        &
+        X
+    \end{cd}
+    Again, the diagram suggests a homotopy between $\id_X$ and $g \circ f$ which we will make explicit.
+    Constructing the horizontal composition
+    \[
+        Kf = K \circ (f \times \id_I) : X \times I \to X
+    \]
+    gives us a homotopy between the maps
+    \[
+        (Kf)_0 = K_0 \circ f = h \circ f
+    \]
+    and
+    \[
+        (Kf)_1 = K_1 \circ f = g \circ f.
+    \]
+    Vertically composing this homotopy with $H$ allows us to conclude
+    \[
+        \id_X \htpy h \circ f \htpy g \circ f.
+    \]
+    By assumption, $f \circ g \htpy \id_Y$, so in fact $g$ is a homotopy inverse of $f$, hence $f$ is a homotopy equivalence.
+\end{proof}
+
+\begin{pbox}
+    More generally, show that $f$ is a homotopy equivalence if $fg$ and $hf$ are homotopy equivalences.
+\end{pbox}
+
+\begin{proof}
+    Suppose $k : Y \to Y$ and $\ell : X \to X$ are homotopy inverses to $f \circ g$ and $h \circ f$, respectively.
+    Then let $G : Y \times I \to Y$ and $H : X \times I \to X$ be homotopies with
+    \[
+        f \circ g \circ k = G_0 \htpy G_1 = \id_Y
+    \]
+    and
+    \[
+        \id_X = H_0 \htpy H_1 = \ell \circ h \circ f.
+    \]
+    We describe the situation we the following diagram:
+    \begin{cd}
+        Y \rar["k"]
+            \ar[rrr, bend right=35, "\id_Y"' name=idY]
+        & Y \rar["g" name=g]
+            \ar[from=g, to=idY, shorten=3mm, Rightarrow, "G" xshift=1mm]
+        & X \rar["f"]
+            \ar[rrr, bend left=40, "\id_X" name=idX]
+        & Y \rar["h" name=h]
+            \ar[from=idX, to=h, shorten=2mm, Rightarrow, "H" xshift=1mm] 
+        & X \rar["\ell"] 
+        & X
+    \end{cd}
+    Notice that this is essentially the same diagram as the one we used in the first part, but with $g$ and $h$ replaced with $g \circ k$ and $\ell \circ h$, respectively.
+    Moreover, we can use the same techniques of horizontal and vertical composition of homotopies to obtain
+    \[
+        g \circ k \htpy (g \circ k) \circ f \circ (\ell \circ h) \htpy \ell \circ h.
+    \]
+    And again, if $K : Y \times I \to X$ is a homotopy with
+    \[
+        \ell \circ h = K_0 \htpy K_1 = g \circ k,
+    \]
+    then we can draw the following diagram of homotopies:
+    \begin{cd}[column sep=large]
+        X \rar["f"] 
+            \ar[rr, bend left=40, "\id_X" name=idX]
+        &|[alias=Y]| Y \rar["\ell \circ h" name=loh]
+            \ar[from=idX, to=Y, shorten=1.5mm, Rightarrow, "H" xshift=1mm]
+            \rar[bend right=50, "g \circ k"' name=gok]
+            \ar[from=loh, to=gok, shorten=1.5mm, Rightarrow, "K" xshift=1mm]
+        & X
+    \end{cd}
+    This, in turn, gives us a homotopy
+    \[
+        \id_X \htpy (\ell \circ h) \circ f \htpy (g \circ k) \circ f.
+    \]
+    By assumption, $f \circ (g \circ k) \htpy \id_Y$, so in fact $g \circ k$ is a homotopy inverse of $f$, hence $f$ is a homotopy equivalence.
+\end{proof}
+
+
+\newpage
+\begin{pbox}[4 Exercise 0.12]
+    Show that a homotopy equivalence $f : X \to Y$ induces a bijection between the set of path-components of $X$ and the set of path-components of $Y$, and that $f$ restricts to a homotopy equivalence from each path-component of $X$ to the corresponding path-component of $Y$.
+\end{pbox}
+
+\begin{proof}
+    We claim that a pair of points $a, b \in X$ are path-connected in $X$ if and only if their images $f(a)$ and $f(b)$ are path-connected in $Y$.
+
+    On one hand, if $\gamma : I \to X$ is a path from $a$ to $b$, then the composition $f \circ \gamma : I \to Y$ is a path from $f(a)$ to $f(b)$.
+
+    On the other hand, suppose $\gamma : I \to Y$ is a path from $f(a)$ to $f(b)$.
+    Additionally, let $g : Y \to X$ be a homotopy inverse of $f$, and let $H : X \times I \to X$ be a homotopy
+    \[
+        \id_X = H_0 \htpy H_1 = g \circ f.
+    \]
+    We construct maps $\alpha, \beta : I \to X$ by
+    \[
+        \alpha(t) = H_t(a) \isp{and} \beta(t) = H_t(b).
+    \]
+    That is $\alpha$ is a path from
+    \[
+        \alpha(0) = H_0(a) = \id_X(a) = a \isp{to} \alpha(1) = H_1(a) = g(f(a))
+    \]
+    and $\beta$ is a path from
+    \[
+        \beta(0) = H_0(b) = \id_X(b) = b \isp{to} \beta(1) = H_1(b) = g(f(b)).
+    \]
+    Lastly, $g \circ \gamma : I \to X$ is a path from $g(f(a))$ to $g(f(b))$.
+    Hence, there is a path from $a$ to $b$ in $X$, obtained as the product of paths
+    \[
+        \alpha \cdot (g \circ \gamma) \cdot \overline{\beta},
+    \]
+    where $\overline{\beta}$ is the inverse path of $\beta$, i.e., $\overline{\beta}(t) = \beta(1 - t)$.
+
+    Therefore, it is indeed true that $a, b \in X$ are path-connected in $X$ if and only if $f(a)$ and $f(b)$ are path-connected in $Y$.
+    It follows that there is a well-defined injective function
+    \begin{align*}
+        \tilde{f} : \{PC(x) \mid x \in X\} &\longrightarrow \{PC(y) \mid y \in Y\}, \\
+            PC(x) &\longmapsto PC(f(x)),
+    \end{align*}
+    where $PC(-)$ denotes the path-component of a point in its respective space.
+    (Note $\tilde{f}$ is well-defined and injective since $PC(a) = PC(b)$ if and only if $PC(f(a)) = PC(f(b))$.)
+    By the same argument, there is a well-defined injective function
+    \begin{align*}
+        \tilde{g} : \{PC(y) \mid y \in Y\} &\longrightarrow \{PC(x) \mid x \in X\}, \\
+            PC(y) &\longmapsto PC(g(y)).
+    \end{align*}
+    
+    In fact, $\tilde{f}$ and $\tilde{g}$ are inverses of each other.
+    A portion of the above argument shows that any given point $x \in X$ is path-connected to $g(f(x))$, by a restriction of the homotopy $\id_X \htpy g \circ f$.
+    In particular, this means
+    \[
+        PC(x) = PC(g(f(x))) = \tilde{g}(\tilde{f}(PC(x)))
+    \]
+    for all $x \in x$, and similarly that
+    \[
+        PC(y) = PC(f(g(y))) = \tilde{f}(\tilde{g}(PC(y))),
+    \]
+    for all $y \in Y$.
+    Hence, $\tilde{f}$ is a bijection with $\tilde{g}$ its inverse (where $g$ is any homotopy inverse).
+\end{proof}
+
+\begin{pbox}
+    Prove also the corresponding statements with components instead of path-components.
+\end{pbox}
+
+\begin{proof}
+    If $C \seq X$ is a connected component, the continuous image under $f$ is connected in $Y$.
+    Then $f(C)$ is contained in some connected component of $Y$, say $\hat{f}(C)$.
+    This gives us a well-defined function
+    \begin{align*}
+        \hat{f} : \{\text{connected components of } X\} &\longrightarrow \{\text{connected components of } Y\}, \\
+            C &\longmapsto \hat{f}(C).
+    \end{align*}
+    Similarly, we have another function
+    \begin{align*}
+        \hat{g} : \{\text{connected components of } Y\} &\longrightarrow \{\text{connected components of } X\}, \\
+            C &\longmapsto \hat{g}(C).
+    \end{align*}
+
+    For a connected component $C \seq X$ and a point $x \in C$, we have
+    \[
+        f(x) \seq f(C) \seq \hat{f}(C).
+    \]
+    Note that since $\hat{f}(C)$ is a connected component and $PC(f(x))$ is a connected subspace of $Y$ intersecting $\hat{f}(C)$, then we must have
+    \[
+        \tilde{f}(PC(x)) = PC(f(x)) \seq \hat{f}(C).
+    \]
+    By the same argument and the fact that $\tilde{f}$ and $\tilde{g}$ are inverses, we have
+    \[
+        PC(x) = \tilde{g}(\tilde{f}(PC(x))) \subseteq \hat{g}(\hat{f}(C)).
+    \]
+    Since $C$ and $\hat{g}(\hat{f}(C))$ are connected components of $X$ which intersect (at least at $x$), then in fact $C = \hat{g}(\hat{f}(C))$.
+    Since $\hat{f}$ and $\hat{g}$ are symmetric, we conclude that they are inverses, and therefore describe a bijection.
+\end{proof}
+
+\begin{pbox}
+    Deduce from this that if the components and path-components of a space coincide, then the same is true for any homotopy equivalent space.
+\end{pbox}
+
+Since a homotopy equivalence induces a bijection between both the path-components and the connected components of each space, the two types of components coincide for one space if and only if they coincide for the other.
+
+
+\newpage
+\begin{pbox}[5 Exercise 0.13]
+    Show that any two deformation retractions $r^0_t$ and $r^1_t$ of a space $X$ onto a subspace $A$ can be joined by a continuous family of deformation retractions $r^s_t$, $0 \leq s \leq 1$, of $X$ onto $A$, where continuity means that the map $X \times I \times I \to X$ sending $(x, s, t)$ to $r^s_t(x)$ is continuous.
+\end{pbox}
+
+\begin{proof}
+    Denote $Y = X \times I$, so that $r^0, r^1 : Y \to X$.
+    We define a map $F : Y \times I \to X$ by
+    \[
+        F^s(x, t) = r^0_t(r^1_{st}(x)).
+    \]
+    (One may construct $F$ explicitly as the result of combining continuous maps with continuity-preserving operations such as composition, product, multiplication, etc.)
+    Then $F$ describes a sort of ``second-order'' homotopy between
+    \[
+        F^0 = r^0 \circ r^1_0 = r^0 \circ \id_X = r^0
+    \]
+    and
+    \[
+        F^1 = r^0 \circ r^1.
+    \]
+    Note that each $F^s : X \times I \to X$ is a homotopy with $F^s_t(x) = F^s(x, t)$.
+    We find that
+    \[
+        F^s_0 = r^0_0 \circ r^1_0 = \id_X \circ \id_X = \id_X.
+    \]
+    For all $a \in A$ we have
+    \[
+        F^s_t(a) = r^0_t(r^1_{st}(a)) = r^0_t(a) = a,
+    \]
+    since $r^0_t|_A = r^1_t|_A = \id_A$ for all $t$, i.e., $F^s_t|_A = \id_A$ for all $t$.
+    And for all $x \in X$ we have
+    \[
+        F^s_1(x) = R_s(x, 1) = r^0_1(r^1_s(x)) \in A,
+    \]
+    since $r^1_s(x) \in X$ and $r^0_1(X) \seq A$.
+    In other words, each $F^s : X \times I \to X$ is a deformation retraction of $X$ onto $A$.
+    We conclude that $R$ describes a second-order homotopy $r^0 \htpy r^0 \circ r^1$, where each intermediate homotopy $F^s$ is a deformation retraction of $X$ onto $A$.
+
+    We define another map $G : Y \times I \to X$ by
+    \[
+        G^s(x, t) = r^0_{st}(r^1_t(x)),
+    \]
+    which describes a second-order homotopy
+    \[
+        r^1 = G^0 \htpy G^1 = r^0 \circ r^1.
+    \]
+    One can check that, once again, each intermediate homotopy $G^s : X \times I \to X$ is a deformation retraction of $X$ onto $A$.
+    Composing these second-order homotopies, we obtain
+    \[
+        r^0 \htpy r^0 \circ r^1 \htpy r^1,
+    \]
+    via deformation retractions of $X$ onto $A$.
+\end{proof}
+
+\newpage
+\begin{pbox}[6 Exercise 0.17]
+    Construct a $2$-dimensional cell complex that contains both an annulus $S^1 \times I$ and a M\"obius band as deformation retracts.
+\end{pbox}
+
+Note that a quotient of a cell complex where we identify a pair of closed $n$-cells is still a cell complex, as we could reconstruct the new cell complex by adding in only a single $n$-cell for the chosen pair, identifying smaller cells as necessary and modifying all higher attaching maps to reflect this.
+
+For example, we could construct a filled-in square as a $2$-dimensional cell complex as follows:
+\begin{drawing}
+    \draw[fill=gray!20] (0,0) rectangle (2,2);
+    \foreach \x in {0, 2} {
+        \foreach \y in {0, 2} {
+            \filldraw (\x, \y) circle (2pt);
+        }
+    }
+\end{drawing}
+We could then identify the pair of horizontally opposing $1$-cells to obtain an annulus:
+\begin{drawing}
+    \begin{scope}[xshift=-4cm, yshift=-1cm]
+        \draw[fill=gray!20] (0,0) rectangle (2,2);
+        \foreach \x in {0, 2} {
+            \foreach \y in {0, 2} {
+                \filldraw (\x, \y) circle (2pt);
+            }
+        }
+        \draw[->] (0, 0) -- (0, 1);
+        \draw[->] (2, 0) -- (2, 1);
+    \end{scope}
+
+    \node at (-1, 0) {$\leadsto$};
+
+    \draw[fill=gray!20] (1.5, 0) circle (1.5);
+    \draw[fill=white] (1.5, 0) circle (0.5);
+    \filldraw (0, 0) circle (2pt) -- (1, 0) circle (2pt);
+\end{drawing}
+
+With this in mind, we construct a cell complex as the quotient of the following cell complex, where $1$-cells are identified by name:
+\begin{drawing}
+    \begin{scope}[xshift=-2cm]
+        \draw[fill=gray!20] (0,0) rectangle (2,2);
+        \draw (0, 1) -- (2, 1) node[midway, anchor=south] {$e$};
+        \foreach \x in {0, 2} {
+            \foreach \y in {0, 1, 2} {
+                \filldraw (\x, \y) circle (2pt);
+            }
+        }
+
+        \node[anchor=east] at (0, 1.5) {$a$};
+        \node[anchor=west] at (2, 1.5) {$a$};
+        \node[anchor=east] at (0, 0.5) {$b$};
+        \node[anchor=west] at (2, 0.5) {$b$};
+
+        \draw[->] (0, 0) -- (0, 0.5);
+        \draw[->] (0, 1) -- (0, 1.5);
+        \draw[->] (2, 0) -- (2, 0.5);
+        \draw[->] (2, 1) -- (2, 1.5);
+    \end{scope}
+    \begin{scope}[xshift=2cm]
+        \draw[fill=gray!20] (0,0) rectangle (2,2);
+        \draw (0, 1) -- (2, 1) node[midway, anchor=south] {$e$};
+        \foreach \x in {0, 2} {
+            \foreach \y in {0, 1, 2} {
+                \filldraw (\x, \y) circle (2pt);
+            }
+        }
+        
+        \node[anchor=east] at (0, 1.5) {$c$};
+        \node[anchor=west] at (2, 1.5) {$d$};
+        \node[anchor=east] at (0, 0.5) {$d$};
+        \node[anchor=west] at (2, 0.5) {$c$};
+
+        \draw[->] (0, 0) -- (0, 0.5);
+        \draw[->] (0, 1) -- (0, 1.5);
+        \draw[->] (2, 2) -- (2, 1.5);
+        \draw[->] (2, 1) -- (2, 0.5);
+    \end{scope}
+\end{drawing}
+The left component becomes the annulus and the right component becomes the M\"obius band.
+Each component can deformation retract onto the shared centerline $e$.
+Performing one of these deformation retractions while fixing the other component induces a deformation retraction of the whole complex onto the fixed component.
+
+\newpage
+\begin{pbox}[7 Exercise A.3]
+    Show that a CW complex is path-connected iff its 1-skeleton is path-connected.
+\end{pbox}
+
+\begin{proof}
+    Assume $X = \bigcup_k X^k$ is a path-connected CW complex.
+
+    Let $\gamma : I \to X$ be a path in $X$.
+    Since $I$ is compact and $\gamma$ is continuous, the image of $\gamma$ is compact subspace of $X$. By Hatcher Proposition A.1, $\gamma(I)$ is contained in some finite subcomplex of $X$---in particular, in some $k$-skeleton.
+    We conclude that every path in $X$ is contained in some $k$-skeleton.
+
+    Let $x, y \in X^1$ be arbitrary distinct points in the $1$-skeleton.
+    Choose the minimum $k \geq 1$ such that $X^k$ contains a path between $x$ and $y$; let $\gamma : I \to X^k$ be such a path.
+    (Note that $k$ is well-defined since some path in $X$ exists, and the previous result tells us the path is contained in some skeleton.)
+    Assume, for contradiction, that $k > 1$.
+    Again, $\gamma(I) \seq X$ is compact, and therefore contained in finitely many cells.
+    In particular, $\gamma$ passes through finitely many $k$-cells $e^k_1, \dots, e^k_n$.
+
+    Since $k \geq 2$, the boundary $\bd D^k_i$ of each of these $k$-cells is path-connected.
+    Moreover, $x$ and $y$ are not in any of these $k$-cells, which means $\gamma$ does not start or end inside of a $k$-cell.
+    Therefore, we can construct a new path between $x$ and $y$ by following $\gamma$ inside of $X^{k-1}$, but anywhere $\gamma$ would pass through a $k$-cell $e^k_i$, we replace with a path through the boundary $\bd D^k_i$. This is possible since $\gamma$ can only enter/exit the $k$-cell through its boundary, and any time $\gamma$ enters a $k$-cell, it must eventually exit.
+
+    Since the boundaries $\bd D^k_i$ are contained in $X^{k-1}$, this new path is completely contained in $X^{k-1}$.
+    But this contradicts the choice of $k$, implying that $k = 1$.
+    Hence, $x$ and $y$ are connected via a path in $X^1$, and we conclude that $X^1$ is path-connected.
+
+    Assume now that $X = \bigcup_k X^k$ is a CW complex with $X^1$ path-connected.
+    We show by induction on $k$ that each $k$-skeleton is path-connected.
+    Assume $X^{k-1}$ is path-connected, and $X^k$ is formed by attaching $k$-cells $e^k_\alpha$ to $X^{k-1}$.
+    For a point $x \in X^k$, either $x \in X^{k-1}$ or $x \in e^k_\alpha$ for some $\alpha$.
+    In the latter case, $e^k_\alpha$ is path-connected to its boundary, which is contained in $X^{k-1}$.
+    Hence, every point of $X^k$ is path-connected to $X^{k-1}$.
+    Then a path between any two points of $X^k$ is obtained by first connecting each point to a point in $X^{k-1}$ (if necessary), then finding a path connecting these points $X^{k-1}$.
+    Thus, $X^k$ is path connected, which completes the induction.
+    Then any two points in $X$ are contained in some $k$-skeleton, which we have just shown to be path-connected.
+    The path in $X^k$ is also a path in $X$, hence $X$ is path-connected.
+\end{proof}
+
+
+\newpage
+\begin{pbox}[8 Exercise A.4]
+    Show that a CW complex is locally compact iff each point has a neighborhood that meets only finitely many cells.
+\end{pbox}
+
+\begin{proof}
+    Let $X$ be a CW complex.
+    In particular, $X$ is Hausdorff, so we have the following equivalent criteria for $X$ to be locally compact:
+    \begin{enumerate}[(i)]
+        \item Each point of $X$ has a compact neighborhood contained in any given neighborhood.
+        \item Each point of $X$ has a compact neighborhood.
+    \end{enumerate}
+    Definition (i) is given by Hatcher, but we will use (ii) for this proof since, as noted, they are equivalent for Hausdorff spaces.
+
+    Suppose $X$ is locally compact.
+    Let $x \in X$ and let $K \seq X$ be a compact neighborhood of $x$.
+    By Proposition A.1, we know that $K$ is contained in a finite subcomplex of $X$.
+    In particular, $K$ meets only finitely many cells of $X$.
+
+    Suppose $x \in X$ has a neighborhood $N \seq X$ that meets only finitely many cells $e_1, \dots, e_n$ of $X$.
+    If $e_i$ is a $k$-cell, then its closure $\clo{e_i} \seq X$ is homeomorphic to a closed ball in $\R^k$, which is compact.
+    Therefore the finite union of compact sets $K = \clo{e_i} \cup \cdots \cup \clo{e_n}$ is compact.
+    And since $N$ is a neighborhood of $x$ contained in $K$, then $K$ is a compact neighborhood of $x$, as desired.
+\end{proof}
+
+\end{document}

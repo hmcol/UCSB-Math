@@ -81,6 +81,15 @@
 
 \begin{document}
 
+Let $R$ be a ring.
+
+A (left) \keyword{$R$-module} is an abelian group $(M, +)$ with an $R$-action
+\begin{align*}
+    R \times M &\longrightarrow M, \\
+    (r, m) &\longmapsto r \cdot m
+\end{align*}
+
+
 Let $R$ be a ring (not necessarily commutative nor with $1$). A (left) \keyword{$R$-module} is a set $M$ together with
 \begin{enumerate}[(1)]
     \item a binary operation $+$, under which $M$ is an abelian group, and
@@ -95,7 +104,18 @@ Let $R$ be a ring (not necessarily commutative nor with $1$). A (left) \keyword{
 
 An \keyword{$R$-submodule} of an $R$-module $M$ is a subgroup $N$ of $M$ which is closed under the action of ring elements, i.e., $rn \in N$ for all $r \in R$ and $n \in N$.
 
+\sepline
 
+\begin{center}
+    \begin{tabular}{ c c c c c }
+     Ring & Group & Module & Submodules & Homomorphisms \\
+     \hline
+     $R$ & $(R, +)$ & mul. in $R$ & Ideals of $R$ & - \\
+     $\Z$ & $G$ Abelian & group operation & Subgroups of $G$ & Group Homs \\
+     $F$ Field & $V$ an $F$-v.s. & scalar mul. & lin. subspaces of & lin. trans. \\
+     $F[x]$  & $V$ an $F$-v.s. & via $\theta \in \operatorname{End}_F(V)$ & $\theta$-invariant subspaces & -
+    \end{tabular}
+\end{center}
 
 \sepline
 

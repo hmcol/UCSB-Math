@@ -1,0 +1,317 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+\usepackage[shortlabels]{enumitem}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+
+% Extra Commands
+\newcommand{\tensor}{\otimes}
+
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\Proj}{Proj}
+
+
+% Document
+\begin{document}
+\title{MATH 237B Homework 3}
+\author{Harry Coleman}
+\date{January 25, 2022}
+\maketitle
+
+
+\begin{pbox}[1 Exercise 6.7.2]
+    Compute the Hilbert function and the Hilbert polynomial of the ``twisted cubic curve'' $C = \{[s^3 : s^2t : st^2 : t^3] \mid [s : t] \in \P^1\} \seq \P^3$.
+\end{pbox}
+
+Denote $S = k[x, y, z, w]$, so $\P^3 = \Proj S$.
+
+We compute
+\[
+    I(C) = \<xw - yz, xz - y^2, yw - z^2\> \teq S.
+\]
+Similar to the proof of Proposition 6.1.5, we consider a hyperplane $H = Z(w)$ and the following short exact sequence of graded $k$-vector spaces:
+\begin{cd}
+    0 \rar & S/I(C) \rar["\cdot w"] & S/I(C) \rar & S/(I(C) + \<w\>) \rar & 0.
+\end{cd}
+Note that
+\[
+    S(C) = S/I(C) \isp{and} S(C \cap H) = S/(I(C) + \<w\>),
+\]
+so restricting to graded portions gives us another short exact sequence:
+\begin{cd}
+    0 \rar & S(C)^{(d-1)} \rar["\cdot w"] & S(C)^{(d)} \rar & S(C \cap H)^{(d)} \rar & 0.
+\end{cd}
+Taking the dimension over $k$ gives the following relation on Hilbert functions for $d \geq 1$:
+\[
+    h_C(d) = h_{C \cap H}(d) + h_C(d - 1).
+\]
+
+To compute $h_{C \cap H}(d)$, first write
+\[
+    I(C) + \<w\> = \<w, yz, xz - y^2, z^2\> \teq S.
+\]
+Then the only distinct nonzero monomials of $S(C \cap H)^{(d)}$ are $x^d$, $x^{d-1}y$, and $x^{d-1}z$.
+So
+\[
+    h_{C \cap H}(d) = 3,
+\]
+giving us
+\[
+    h_C(d) = h_C(d - 1) + 3
+\]
+for $d \geq 1$.
+And since $h_C(0) = 1$, we conclude that
+\[
+    h_C(d) = 3d + 1 = \chi_C(d).
+\]
+
+
+
+
+\newpage
+\begin{pbox}[2 Exercise 6.7.3]
+    Let $X \seq \P^n$ be a projective scheme with Hilbert polynomial $\chi$.
+    As in example 6.1.10 define the \textit{arithmetic genus } of $X$ to be $g(X) = (-1)^{\dim X} \cdot (\chi(0) - 1)$.
+\end{pbox}
+
+\begin{pbox}[(i)]
+    Show that $g(\P^n) = 0$.
+\end{pbox}
+
+We have seen that $h_{\P^n}(d) = \chi_{\P^n}(d) = \binom{d + n}{n}$, so then
+\[
+    g(\P^n)
+        = (-1)^{\dim \P^n}(\chi_{\P^n}(0) - 1)
+        = (-1)^n(1 - 1)
+        = 0.
+\]
+
+\begin{pbox}[(ii)]
+    If $X$ is a hypersurface of degree $d$ in $\P^n$, show that $g(X) = \binom{d - 1}{n}$.
+    In particular, if $C \seq \P^2$ is a plane curve of degree $d$, then $g(C) = \frac{1}{2}(d - 1)(d - 2)$.
+\end{pbox}
+
+\begin{proof}
+    Suppose $X = Z(f) \subseteq \P^n$, where $f \in S = k[x_0, \dots, x_n]$ is homogeneous of degree $d$.
+    Consider the following short exact sequence of graded $k$-vector spaces:
+    \begin{cd}
+        0 \rar & S \rar["\cdot f"] & S \rar & S/\<f\> \rar & 0.
+    \end{cd}
+    Note that
+    \[
+        S(\P^n) = S \isp{and} S(X) = S/\<f\>,
+    \]
+    so restricting to graded portions gives us another short exact sequence:
+    \begin{cd}
+        0 \rar & S^{(s-d)} \rar["\cdot f"] & S^{(s)} \rar & S(X)^{(d)} \rar & 0.
+    \end{cd}
+    Taking dimensions gives us the following relation on Hilbert functions for $s \geq d$:
+    \[
+        h_X(s)
+            = h_{\P^n}(s) - h_{\P^n}(s - d)
+            = \binom{s + n}{n} - \binom{s - d + n}{n}.
+    \]
+    Then the Hilbert polynomial of $X$ is given by
+    \[
+        \chi_X(s) = \frac{(s + n) \cdots (s + 1)}{n!} - \frac{(s - d + n) \cdots (s - d + 1)}{n!}.
+    \]
+    Evaluating at zero, we obtain
+    \[
+        \chi_X(0)
+            = \frac{n!}{n!} - \frac{(-d + n) \cdots (-d + 1)}{n!}
+            = 1 - (-1)^n \binom{d - 1}{n},
+    \]
+    where the second equality applies the fact that $\binom{a}{b} = (-1)^b\binom{b - a + 1}{b}$, for sufficiently robust definitions of the binomial coefficient.
+    Hence, with $\dim X = n-1$, we find
+    \[\textstyle
+        g(X)
+            = (-1)^{n-1}\left(\left(1 - (-1)^n \binom{d - 1}{n}\right) - 1\right)
+            = \binom{d-1}{n}.
+    \]
+\end{proof}
+
+
+\newpage
+\begin{pbox}[(iii)]
+    Compute the arithmetic genus of the union of the three coordinate axes
+    \[
+        Z(x_1x_2, x_1x_3, x_2x_3) \seq \P^3.
+    \]
+\end{pbox}
+
+Denote $S = k[w, x, y, z]$, so $\P^3 = \Proj S$, and $I = \<xy, xz, yz\> \teq S$, so $X = Z(I)$.
+
+The only distinct nonzero monomials of $S(X)^{(d)} = (S/I)^{}$ are $x^aw^{d-a}, y^aw^{d-a}, z^aw^{d-a}$, $w$, for $a = 1, \dots, d$.
+Hence, we have the Hilbert function/polynomial
+\[
+    h_X(d) = 3d + 1 = \chi_X(d).
+\]
+Then the arithmetic genus is
+\[
+    g(X)
+        = (-1)^{\dim X}(\chi_X(0) - 1)
+        = (-1)^1(1 - 1)
+        = 0.
+\]
+
+
+
+
+
+
+
+
+\newpage
+\begin{pbox}[3 Exercise 6.7.4]
+    For $N = (n + 1)(m + 1) - 1$ let $Z \seq \P^N$ be the image of the Segre embedding $\P^n \times \P^m \to \P^N$.
+    Show that the degree of $Z$ is $\binom{n + m}{n}$.
+\end{pbox}
+
+\begin{proof}
+    Denote $X = \P^n = \Proj k[x_0, \dots, x_n]$ and $Y = \P^m = \Proj k[y_0, \dots, y_m]$.
+
+    Denote the Segre embedding of $X \times Y$ by $Z = \Proj k[z_{00}, \dots, z_{nm}]/I$, where $I$ is the homogeneous ideal $\<z_{ij}z_{k\ell} - z_{i\ell}z_{kj}\>$.
+
+    We define a $k$-algebra homomorphism
+    \begin{align*}
+        \phi : k[z_{00}, \dots, z_{nm}] &\longrightarrow k[x_0, \dots, x_n, y_0, \dots, y_m] =  S(X) \tensor_k S(Y), \\
+            z_{ij} &\longmapsto x_iy_j.
+    \end{align*}
+    Under $\phi$, the generators of $I$ are mapped as follows:
+    \[
+        z_{ij}z_{k\ell} - z_{i\ell}z_{kj}
+            \longmapsto x_iy_jx_ky_\ell - x_iy_\ell x_ky_j
+            = 0.
+    \]
+    Hence, $I \seq \ker\phi$, so $\phi$ factors through the quotient by $I$, giving us a well-defined map
+    \begin{align*}
+        k[z_{00}, \dots, z_{nm}]/I = S(Z) &\longrightarrow S(X) \tensor_k S(Y), \\
+            z_{ij} &\longmapsto x_iy_j.
+    \end{align*}
+    In particular, this map is an injective morphism of graded $k$-vector spaces.
+    The image of the monomials of degree $d$ under this map are precisely the monomials with total degree $d$ with respect to $x_0, \dots, x_n$ and total degree $d$ with respect to $y_0, \dots, y_m$.
+    That is, this map induces an isomorphism of graded $k$-vector spaces
+    \[
+        S(Z)^{(d)} \isom S(X)^{(d)} \tensor_k S(Y)^{(d)}.
+    \]
+    Taking the dimension, we obtain the hilbert function/polynomial
+    \[
+        h_Z(d) = h_X(d) \cdot h_Y(d) = \binom{d + n}{n} \cdot \binom{d + m}{m} = \chi_Z(d),
+    \]
+    with leading coefficient $1/(n!m!)$.
+    Then the degree of $Z$ is
+    \[
+        \frac{(\dim Z)!}{n!m!} = \frac{(n + m)!}{n!m!} = \binom{n + m}{n}.
+    \]
+\end{proof}
+
+
+\newpage
+\begin{pbox}[4 Exercise 6.7.6]
+    Let $C \seq \P^n$ be an irreducible curve of degree $d$.
+    Show that $C$ is contained in a linear subspace of $\P^n$ of dimension $d$.
+\end{pbox}
+
+\begin{proof}
+    If $d \geq n$, then trivially $C \seq \P^n$.
+
+    If $d < n$, then we claim that $C$ is contained in some hyperplane of $\P^n$.
+    Let $H \seq \P^n$ be a hyperplane, i.e., $H = Z(\ell)$ for some homogeneous linear $\ell \in k[x_0, \dots, x_n]$.
+    Since $C$ is irreducible, either $C \seq H$ or $C \cap H$ is $0$-dimensional.
+    In the latter case, we apply B\'ezout's theorem to find
+    \[
+        \deg(C \cap H) = \deg C \cdot \deg \ell = d.
+    \]
+    This gives us the length of $C \cap H$, i.e., the number of points in the intersection, counted with multiplicity.
+    In particular, $C \cap H$ contains at most $d$ points.
+    Since we are assuming $C \nsubseteq H$, we can pick another point $P \in C \setminus H$.
+    Then since $d + 1 \leq n$, we can choose a new hyperplane $H' \seq \P^n$ containing the (at most) $d$ points in $C \cap H$ and the point $P$.
+    In which case, $C \cap H'$ will have at least $d + 1$ points, counted with multiplicity.
+    
+    If $\dim(C \cap H') = 1$, then the intersection is precisely $C$, meaning $C \seq H'$.
+    If $\dim(C \cap H') = 0$, then its degree equals the number of points with multiplicity, which is at least $d + 1$.
+    The contrapositive of B\'ezouts theorem then implies that some component of $C$ is contained in $H'$.
+    But since $C$ is irreducible, we in fact have $C \subseteq H'$ (which is also a contradiction, so we must have $\dim(C \cap H') = 1$).
+
+    We conclude that when $C \seq \P^n$ for any $n > d$, we can find a hyperplane of $\P^n$ containing $C$.
+    This hyperplane is isomorphic to $\P^{n-1}$, and we can continue inductively until $C$ is contained in a linear subspace of $\P^n$ isomorphic to $\P^d$, i.e., of dimension $d$.
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[5 Exercise 6.7.7]
+    Let $X$ and $Y$ be subvarieties of $\P_k^n$ that lie in disjoint linear subspaces of $\P_k^n$.
+    Recall from exercises 3.5.7 and 4.6.1 that the join $J(X, Y) \seq \P_k^n$ of $X$ and $Y$ is defined to be the union of all lines $\overline{PQ}$ with $P \in X$ and $Q \in Y$.
+\end{pbox}
+
+\begin{pbox}[(i)]
+    Show that $S(J(X, Y))^{(d)} \isom \bigoplus_{i+j=d} S(X)^{(i)} \tensor_k S(Y)^{(j)}$.
+\end{pbox}
+
+\begin{pbox}[(ii)]
+    Show that $\deg J(X, Y) = \deg X \cdot \deg Y$.
+\end{pbox}
+
+\end{document}
