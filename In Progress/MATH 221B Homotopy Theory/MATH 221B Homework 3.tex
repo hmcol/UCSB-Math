@@ -1,0 +1,115 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+
+% Extra Commands
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\htpy}{\simeq}
+\newcommand{\bd}{\partial}
+
+% Document
+\begin{document}
+\title{MATH 221B Homework 3}
+\author{Harry Coleman}
+\date{January 31, 2022}
+\maketitle
+
+
+\begin{pbox}[1 Exercise 0.15]
+    Enumerate all the subcomplexes of $S^\infty$, with the cell structure described in this section, having two cells in each dimension.
+\end{pbox}
+
+\begin{pbox}[2 Exercise 0.16]
+    Show that $S^\infty$ is contractible.
+\end{pbox}
+
+\begin{pbox}[3 Exercise 0.18]
+    Show that $S^1 * S^1 = S^3$, and more generally $S^n * S^m = S^{n+m+1}$.
+\end{pbox}
+
+\begin{pbox}[4 Exercise 0.19]
+    Show that the space obtained from $S^2$ by attaching $n$ $2$-cells along any collection of $n$ circles in $S^2$ is homotopy equivalent to the wedge sum of $n + 1$ $2$-spheres.
+\end{pbox}
+
+\begin{pbox}[5 Exercise 0.20]
+    Show that the subspace $X \seq \R^3$ formed by a klein bottle intersecting itself in a circle is homotopy equivalent to $S^1 \vee S^1 \vee S^2$.
+\end{pbox}
+
+\begin{pbox}[6 Exercise 0.23]
+    Show that a CW complex is contractible if it is the union of two contractible subcomplexes whose intersection is also contractible.
+\end{pbox}
+
+\begin{pbox}[7 Exercise 0.24]
+    Let $X$ and $Y$ be CW complexes with $0$-cells $x_0$ and $y_0$.
+    Show that the quotient spaces $X * Y / (X * \{y_0\} \cup \{x_0\} * Y)$ and $S(X \wedge Y) / S(\{x_0\} \wedge \{y_0\})$ are homeomorphic, and deduce that $X * Y \htpy S(X \wedge Y)$.
+\end{pbox}
+
+\begin{pbox}[8 Exercise 0.25]
+    If $X$ is a CW complex with components $X_\alpha$, show that the suspension $SX$ is homotopy equivalent to $Y \bigvee_\alpha SX_\alpha$ for some graph $Y$.
+    In the case that $X$ is a finite graph, show that $SX$ is homotopy equivalent to a wedge sum of circles and $2$-spheres.
+\end{pbox}
+
+
+\end{document}

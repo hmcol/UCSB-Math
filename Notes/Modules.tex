@@ -4,7 +4,7 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath, amsthm, amssymb, physics}
 \usepackage[shortlabels]{enumitem}
-\usepackage{tikz-cd}
+\usepackage{tikz, tikz-cd}
 
 % Problem Box
 \setlength{\fboxsep}{4pt}
@@ -21,6 +21,10 @@
 
 \newcommand{\sepline}{\rule{\textwidth}{0.4pt}}
 
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
 
 
 % Document Formatting
@@ -61,6 +65,7 @@
 
 % Math Roman
 \DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
 \DeclareMathOperator{\Hom}{Hom}
 \DeclareMathOperator{\End}{End}
 \DeclareMathOperator{\Tor}{Tor}
@@ -391,7 +396,25 @@ Examples
 
 \end{enumerate}
 
+\newpage
 
+exact sequences
+
+\begin{cd}[column sep=tiny]
+    && \im f_{i-1} = \ker f_i \drar[hookrightarrow] &&&& \im f_{i+1} \\
+    \dots \rar[] & M_{i-1} \urar[twoheadrightarrow] \ar[rr, "f_{i-1}"] && M_i \ar[rr, "f_i"] \drar[twoheadrightarrow] && M_{i+1} \rar[] \urar[twoheadrightarrow] & \dots \\
+    \ker f_{i-1} \urar[hookrightarrow] &&&& \im f_i = \ker f_{i+1} \urar[hookrightarrow]
+\end{cd}
+
+sploogl
+
+\begin{cd}
+    & 0 \\
+    & \im f_{i-1} \uar \\
+    \dots \rar & M_{i-1} \rar["f_{i-1}"] \uar & M_i \rar["f_i"] & M_{i+1} \rar & \dots\\
+    & \ker f_{i-1} \uar \\
+    & 0 \uar 
+\end{cd}
 
 
 \newpage

@@ -1,0 +1,453 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+
+% Extra Commands
+\newcommand{\OO}{\mathcal{O}}
+\newcommand{\FF}{\mathcal{F}}
+\newcommand{\GG}{\mathcal{G}}
+
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\Proj}{Proj}
+
+\newcommand{\inc}{\hookrightarrow}
+
+% Document
+\begin{document}
+\title{MATH 237B Homework 4}
+\author{Harry Coleman}
+\date{February 1, 2022}
+\maketitle
+
+
+\begin{pbox}[1 Exercise 6.7.8]
+    Let $C_1 = \{f_1 = 0\}$ and $C_2 = \{f_2 = 0\}$ be affine curves in $\A_k^2$, and let $P \in C_1 \cap C_2$ be a point.
+    Show that the intersection multiplicity of $C_1$ and $C_2$ at $P$ (i.e. the length of the component at $P$ of the intersection scheme $C_1 \cap C_2$) is equal to the dimension of the vector space $\OO_{\A^2, P}/\<f_1, f_2\>$ over $k$.
+\end{pbox}
+
+\begin{proof}
+    We have a $k[x, y]$-module isomorphism
+    \[
+        A(C_1 \cap C_2)_P
+            = (k[x, y]/\<f_1, f_2\>)_P
+            \isom k[x, y]_P / \<f_1, f_2\>_P
+            = \OO_{\A^2, P}/\<f_1, f_2\>.
+    \]
+    In particular, this is a $k$-linear isomorphism, so
+    \[
+        \mu_P(C_1, C_2)
+            = \dim_k A(C_1 \cap C_2)_P
+            = \dim_k \OO_{\A^2, P}/\<f_1, f_2\>.
+    \]
+\end{proof}
+
+\newpage
+\begin{pbox}[2 Exercise 6.7.9]
+    
+\end{pbox}
+
+\begin{lemma}
+    Any five distinct points in $\P^2$ (with no four collinear) determine a unique quadric curve passing through them.
+\end{lemma}
+
+\begin{proof}
+    The quadric curves in $\P^2 = \Proj k[x, y, z]$ correspond to the homogeneous quadric polynomials
+    \[
+        A_0x^2 + A_1xy + A_2y^2 + A_3xz + A_4yz + A_5z^2,
+    \]
+    up to nonzero scaling.
+    That is, we can parameterize the quadric curves in $\P^2$ by the projective space $\P^5 = \Proj k[A_0, \dots, A_5]$.
+    For a fixed point $[x : y : z] \in \P^2$, the above polynomial is a homogeneous linear polynomial in the variables $A_0, \dots, A_5$.
+    That is, each point of $\P^2$ determines a hyperplane in $\P^5$, by requiring that the above polynomial is zero at that point.
+    One can check that five points in $\P^2$ determine independent hyperplanes in $\P^5$ if and only if no three of the points are collinear.
+
+    On one hand, if no three points are collinear, the intersection of the five hyperplanes is a unique point of $\P^5$.
+    This point of $\P^5$, in turn, determines an irreducible quadric curve in $\P^2$.
+
+    On the other hand, if three of the points are collinear, then the remaining two determine a second line.
+    The union of these two lines is a quadric in $\P^2$.
+\end{proof}
+
+\begin{pbox}
+    Let $C_1, C_2 \seq \P^2$ be distinct smooth cubic curves, and assume that $C_1$ and $C_2$ intersect in $9$ (distinct) points $P_1, \dots, P_9$.
+    Prove that every cubic curve passing through $P_1, \dots, P_8$ also has to pass through $P_9$.
+\end{pbox}
+
+\begin{proof}
+    Write $C_i = Z(f_i) \seq \P^2$, with $f_i$ an irreducible smooth homogeneous cubic polynomial.
+    Note that B\'ezout's theorem implies no four of the given points $P_1, \dots, P_4$ are collinear, since the intersection of a line and $C_i$ is at most three distinct points.
+    So Lemma 1 implies that any five of the given points uniquely determine a quadric curve.
+
+    Suppose, for contradiction, that $C = Z(f) \seq \P^2$ is a cubic curve passing through $P_1, \dots, P_8$, but not $P_9$.
+    In particular, note that the polynomials $f, f_1, f_2$ are $k$-linearly independent; otherwise, we could write $f = af_1 + bf_2$, for some $a, b \in k$, implying $f(P_9) = 0$.
+
+    We will prove the following two facts: no three of the given points are collinear and no six of the given points lie on the same quadric curve.
+
+    Assume, for contradiction, that three of the given points are collinear---say $P_1, P_2, P_3$ lie on the line $L \seq \P^2$.
+    Then the remaining points $P_4, \dots, P_8$ do not lie on $L$ and uniquely determine a quadric curve $D \seq \P^2$.
+    Choose points $Q \in L \setminus \{P_1, P_2, P_3\}$ and $Q' \in \P^2 \setminus (L \cup D)$.
+    Choose values $a, b, c \in k$ which give a nontrivial solution to the following system of linear equations:
+    \[
+        \begin{bmatrix}
+            f(Q) & f_1(Q) & f_2(Q) \\
+            f(Q') & f_1(Q') & f_2(Q')
+        \end{bmatrix}
+        \begin{bmatrix}
+            a \\ b \\ c
+        \end{bmatrix}
+        = 0.
+    \]
+    Then, since $f, f_1, f_2$ are $k$-linearly independent, we obtain a nonzero homogeneous cubic polynomial
+    \[
+        g = af + bf_1 + cf_2,
+    \]
+    which defines a cubic curve $Z(g) \seq \P^2$ passing through the points $P_1, \dots, P_8$, $Q$, and $Q'$.
+    In particular, $Z(g)$ passes through the collinear points $P_1, P_2, P_3$, and $Q$.
+    Applying B\'ezout's theorem, we deduce that $Z(g)$ must contain the line $L$ as a component.
+    Therefore, if $L = Z(\ell)$ for a homogeneous linear polynomial $\ell$, then we can write $g = \ell \cdot h$ for a homogeneous quadric polynomial $h$.
+    It follows that $Z(h)$ is a quadric curve passing through the points $P_4, \dots, P_8$, so in fact $Z(h) = D$ by uniqueness.
+    We conclude that $Z(g) = L \cup D$, but the choice of $Q' \notin L \cup D$ contradicts the fact that $Q' \in Z(g)$.
+    Hence, no three of the points $P_1, \dots, P_8$ are collinear.
+
+    Assume, for contradiction, that six of the given points lie on a quadric---say $P_1, \dots P_6$ lie on the quadric curve $D \seq \P^2$.
+    Let $L \seq \P^2$ be the line through $P_7$ and $P_8$.
+    Similar to the previous step, we choose points $Q \in D \setminus \{P_1, P_6\}$ and $Q' \in \P^2 \setminus (L \cup D)$, then construct a nonzero cubic polynomial
+    \[
+        g = af + bf_1 + cf_2,
+    \]
+    with zeros at $P_1, \dots, P_8$, $Q$, and $Q'$.
+    In particular, $Z(g)$ passes through the points $P_1, \dots, P_6, Q$ which lie on $D$.
+    Applying B\'ezout's theorem, we deduce that $Z(g)$ must contain the quadric curve $D$ as a component.
+    (By the previous result, $D$ cannot be the union of two lines, and is therefore irreducible.)
+    Then the other component of $Z(g)$ is simply the line $L$, passing through $P_7$ and $P_8$.
+    We conclude that $Z(g) = L \cup D$, but the choice of $Q' \notin L \cup D$ contradicts the fact that $Q' \in Z(g)$.
+    Hence, no six of the points $P_1, \dots, P_8$ lie on a quadric.
+
+    With these two facts, we now let $L \seq \P^2$ be the line through $P_1$ and $P_2$, and let $D \seq \P^2$ be the quadric curve through $P_3, \dots, P_7$; it follows that $P_8 \notin L \cup D$.
+    For a third time, we choose distinct points $Q, Q' \in L \setminus \{P_1, P_2\}$ and construct a nonzero cubic polynomial
+    \[
+        g = af + bf_1 + cf_2,
+    \]
+    with zeros at $P_1, \dots, P_8$, $Q$, and $Q'$.
+    Since the cubic curve $Z(g)$ passes through the collinear points $P_1, P_2, Q, Q'$, B\'ezout's theorem implies that $Z(g)$ must contain the line $L$ as a component.
+    Then the other component of $Z(g)$ is a quadric curve passing through $P_3, \dots, P_7$, which is uniquely $D$.
+    We conclude that $Z(g) = L \cup D$, but the fact that $P_8 \notin L \cup D$ contradicts the fact that $P_8 \in Z(g)$.
+    Hence, no such cubic curve $C$ exists.
+\end{proof}
+
+
+\begin{pbox}
+    Can you find a stronger version of this statement that applies in the case that the intersection multiplicities in $C_1 \cap C_2$ are not all equal to $1$?
+\end{pbox}
+
+Some parts of the proof do not require that the points be distinct, as we rely more often on B\'ezout's theorem to count the length of $0$-dimensional intersections, which accounts for higher multiplicities.
+However, to use entirely the same sort of proof, we would need to be able to construct certain types of curves (e.g., lines and quadrics) given a set of points on another curve, with desired multiplicities.
+I am not sure how to do this nor under what conditions it is possible.
+
+
+
+\newpage
+\begin{pbox}[3 Exercise 6.7.10]
+    Let $C$ be a smooth cubic curve of the form
+    \[
+        C = \{[x : y : z] \mid y^2z = x^3 + axz^2 + bz^3\} \seq \P_k^2
+    \]
+    for some given $a, b \in k$.
+    (It can be shown that every cubic can be brought into this form by a change of coordinates.)
+    Pick the point $P_0 = [0 : 1 : 0]$ as the zero element for the group structure on $C$.
+    For given points $P_1 = [x_1 : y_1 : 1]$ and $P_2 = [x_2 : y_2 : 1]$ compute explicitly the coordinates of the inverse $\ominus P_1$ and of the sum $P_1 \oplus P_2$.
+    Conclude that the group structure on $C$ is well-defined even if $k$ is not necessarily algebraically closed.
+\end{pbox}
+
+Denote $f = x^3 - y^2z + axz^2 + bz^3 \in k[x, y, z]^{(3)}$, so that $C = Z(f) \seq \P^2$.
+
+For any $P, Q \in C$, let $\phi(P, Q)$ be the third point on the intersection of $C$ and $\overline{PQ}$ (or the tangent line if $P = Q$).
+Then we have
+\[
+    \ominus P = \phi(\phi(P_0, P_0), P) \isp{and} P \oplus Q = \phi(\phi(P, Q), P_0).
+\]
+
+Consider the affine open neighborhood $\{y = 1\} \isom \A^2$ of $P_0$.
+Here, $P_0$ is $(0, 0) \in \A^2$ and $f$ can be written as 
+\[
+    F = x^3 -z + axz^2 + bz^3 \in k[x, z].
+\]
+Then the equation of the tangent line at $(0, 0)$ is given by
+\[\textstyle
+    0
+        = \frac{\partial F}{\partial x}\big|_{(0, 0)} \cdot x + \frac{\partial F}{\partial z}\big|_{(0, 0)} \cdot z
+        = -z
+\]
+Taking the projective closure, we find that the line tangent to $C$ at $P_0$ is given by
+\[
+    L = \{[x : y : 0] \mid [x : y] \in \P^1\} \seq \P^2.
+\]
+Since $f|_L = x^3$, we have $C \cdot L = 3P_0$.
+That is, $\phi(P_0, P_0) = P_0$, so
+\[
+    \ominus P = \phi(\phi(P_0, P_0), P) = \phi(P_0, P).
+\]
+The line through $P_0 = [0 : 1 : 0]$ and $P_1 = [x_1 : y_1 : 1]$ is given by
+\[
+    \overline{P_0P_1} = \{[x_1s : y_1s + t : s] \mid [s : t] \in \P^1\} \seq \P^2.
+\]
+At $s = 0$, we get $P_0$, so consider the points on this line with $s = 1$.
+Evaluating $f$ at such a point gives us
+\[
+    x_1^3 + ax_1 - (y_1 + t)^2 + b.
+\]
+Then the possible values of $t$ which give us a point in $C \cap \overline{P_0P_1}$ are $-y_1 \pm \sqrt{x_1^3 + ax_1 + b}$.
+Note that since $f([x_1 : y_1 : 1]) = 0$, then in fact $y_1^2 = x_1^3 + ax_1 + b$, so we have $t = -y_1 \pm y_1$.
+Since $t = 0$ gives $P_1$, then the third point on the intersection of $C$ and $\overline{P_0P_1}$ occurs at $t = -2y_1$, which gives
+\[
+    \ominus P_1 = \phi(P_0, P_1) = [x_1 : -y_1 : 1].
+\]
+
+We parameterize the line through $P_1$ and $P_2$ as follows:
+\[
+    \overline{P_1P_2} = \{[x_1s + x_2t : y_1s + y_2t : s + t] \mid [s : t] \in \P^1\} \seq \P^2.
+\]
+Note that $s = 0$ gives us $P_2$, so we consider the points on this line with $s = 1$.
+Evaluating $f$ at such a point gives us
+\[
+    (x_1 + x_2t)^3 - (y_1 + y_2t)^2(1 + t) + a(x_1 + x_2t)(1 + t)^2 + b(1 + t)^3.
+\]
+(There might be a better overall approach, but I could not find a straightforward way to compute the other value of $t$.)
+If we can solve this for another value of $t$, it gives us the third point on the intersection of $C$ and $\overline{P_1P_2}$:
+\[
+    \phi(P_1, P_2) = ???.
+\]
+Then if it happens that this point is of the form $[x : y : 1]$, we can use the previous result to finish computing
+\[
+    P_1 \oplus P_2
+        = \phi(\phi(P_1, P_2), P_0)
+        = \ominus \phi(P_1, P_2).
+\]
+
+
+
+
+\newpage
+\begin{pbox}[4 Exercise 7.8.1]
+    Let $\FF'$ be a presheaf on a topological space $X$, and let $\FF$ be its sheafification.
+    Show that
+\end{pbox}
+
+\begin{pbox}[(i)]
+    There is a natural morphism $\theta: \FF' \to \FF$.    
+\end{pbox}
+
+For each open set $U \seq X$, we define a map
+\begin{align*}
+    \theta_U : \FF'(U) &\longrightarrow \FF(U) \\
+        \phi &\longmapsto (\phi_P)_{P \in U}.
+\end{align*}
+This is a homomorphism since localization is a homomorphism, i.e., $(\phi + \psi)_P = \phi_P + \psi_P$ (and $(\phi\psi)_P = \phi_P \psi_P$ if a presheaf of rings).
+Then $\theta$ defines a morphism of presheaves as it commutes with restriction, i.e., for all $\phi \in \FF'(U)$ we have
+\[
+    \theta_V(\phi|_V)
+        = ((\phi|_V)_P)_{P \in V}
+        = (\phi_P)_{P \in V}
+        = \theta_U(\phi)|_V.
+\]
+
+\begin{pbox}[(ii)]
+    Any morphism from $\FF'$ to a sheaf factors uniquely through $\theta$.
+\end{pbox}
+
+\begin{proof}
+    Suppose $f : \FF' \to \GG$ is a morphism of presheaves, with $\GG$ a sheaf.
+    Let $U \seq X$ be an open set and $\phi \in \FF(U)$; we want to construct a natural section $f^\#_U(\phi) \in \GG(U)$.
+    For each point $P \in U$, let $V_P \seq U$ be an open neighborhood of $P$ such that for some $\psi^P \in \FF'(V_P)$ we have $(\psi^P)_Q = \phi_Q \in \FF'_Q$ for all $Q \in V_P$.
+    Then $\{V_P\}_{P \in U}$ is an open cover of $U$ with local sections $f_{V_P}(\psi^P) \in \GG(V_P)$, such that
+    \[
+        f_{V_P}(\psi^P)_Q
+            = f_Q((\psi^P)_Q)
+            = f_Q(\phi_Q)
+    \]
+    for all $Q \in V_P$.
+    In particular, since the stalks of all local sections agree, we deduce that
+    \[
+        f_{V_P}(\psi^P)|_{V_P \cap V_{P'}}
+            = (f_Q(\phi_Q))_{Q \in V_P \cap V_{P'}}
+            = f_{V_{P'}}(\psi^{P'})|_{V_P \cap V_{P'}}.
+    \]
+    Hence, by the gluing property of the sheaf $\GG$, there is a unique section $f^\#_U(\phi) \in \GG(U)$ such that $f^\#_U(\phi)|_{V_P} = f_{V_P}(\psi^P)$ for all $P \in U$.
+
+    The fact that $f^\#_U$ is homomorphism follows from the fact that each $f_{V_P}$ is a homomorphism.
+    Moreover, commuting with restrictions is inherent to its construction, so we obtain a morphism $f^\# : \FF \to \GG$.
+    Additionally, $f = f^\# \circ \theta$, since for all $\phi \in \FF'(U)$ we have $\theta(\phi) = (\phi_P)_{P \in U} \in \FF(U)$, which gives
+    \[
+        f^\#_U(\theta(\phi))
+            = (f_P(\phi_P))_{P \in U}
+            = f_U(\phi)
+            \in \GG(U).
+    \]
+\end{proof}
+
+
+
+
+
+
+\newpage
+\begin{pbox}[5 Exercise 7.8.2]
+    Let $f : \FF \to \GG$ be a morphism of sheaves of abelian groups on a topological space $X$.
+    Show that $f$ is injective/surjective/an isomorphism if and only if all induces maps $f_P : \FF_P \to \GG_P$ on the stalks are injective/surjective/an isomorphism.
+\end{pbox}
+
+\begin{proposition}
+    $f$ is injective if and only if each $f_P$ is injective.
+\end{proposition}
+
+\begin{proof}
+    Suppose $f$ is injective, i.e., each $f_U : \FF(U) \to \GG(U)$ is injective.
+    Let $\phi \in \FF(U)$ such that $\phi_P \in \ker f_P$.
+    Note that by definition,
+    \[
+        0 = f_P(\phi_P) = f_U(\phi)_P \in \GG_P.
+    \]
+    This means there is some open neighborhood $V$ of $P$ such that $f_U(\phi)|_V = 0 \in \GG(V)$.
+    Then
+    \[
+        f_V(\phi|_V) = f_U(\phi)|_V = 0 \in \GG(V),
+    \]
+    which means $\phi|_V \in \ker f_V$.
+    Since $f$ is injective, this mean $\phi|_V = 0 \in \FF(V)$, so in fact
+    \[
+        \phi_P = (\phi|_V)_P = 0_P = 0 \in \FF_P.
+    \]
+    Hence, $f_P$ is injective.
+
+    Suppose each $f_P$ is injective and let $\phi \in \ker f_U$, i.e., $f_U(\phi) = 0 \in \GG(U)$.
+    Then
+    \[
+        f_P(\phi_P) = f_U(\phi)_P = 0_P = 0 \in \GG_P.
+    \]
+    This implies $\phi_P = 0$ for all $P \in U$.
+    This means there is an open neighborhood $V_P$ of $P$ such that $\phi|_{V_P} = 0 \in \FF(V_P)$.
+    Then $\{V_P\}_{P \in U}$ is an open cover of $U$ with local sections $\phi|_{V_P}$.
+    By the gluing property of the sheaf $\FF$, there is a unique section in $\FF(U)$ which restricts to these local sections on each $V_P$.
+    However, both $\phi$ and $0$ are sections in $\FF(U)$ satisfying this property, so in fact $\phi = 0$.
+    Hence, $f_U$ is injective, which means $f$ is injective.
+\end{proof}
+
+\begin{proposition}
+    $f$ is surjective if and only if each $f_P$ is surjective.
+\end{proposition}
+
+\begin{proof}
+    (Note that there is a natural inclusion $\im' f \inc \GG$ induced by the construction of the image presheaf $(\im' f)(U) = \im f_U \seq \GG(U)$.
+    Since $\GG$ is a sheaf, Problem 4 implies that this inclusion uniquely factors through the inclusion into the sheafification, giving us a natural inclusions $\im' f \inc \im f \inc \GG$.
+    Under these morphisms, we will consider both the image presheaf and image sheaf to be sort of ``subsheaves'' of $\GG$.
+    Then $f$ is considered to be surjective if $\im f = \GG$, under these identifications.)
+
+    Suppose $f$ is surjective.
+    Let $\phi \in \GG(U) = (\im f)(U)$, which means there is an open cover $\{V_i\}$ of $U$ and local sections $\psi_i \in (\im' f)(V_i) = \im f_{V_i}$ that glue together to form $\phi$ (where $\im' f$ is the image presheaf, whose sheafification is the image sheaf $\im f$).
+    For a given $P \in U$, suppose $V_i$ is a neighborhood of $P$, then
+    \[
+        (\psi_i)_P = (\phi|_{V_i})_P = \phi_P \in \GG_P.
+    \]
+    Additionally, since $\psi_i \in \im f_{V_i}$, then in fact
+    \[
+        \phi_P = (\psi_i)_P \in \im f_P.
+    \]
+    Since we can choose $P$ and $\phi \in \GG(U)$ for a neighborhood $U$ of $P$ arbitrarily, this proves that $\im f_P = \GG_P$, i.e., $f_P$ is surjective.
+
+    Suppose each $f_P$ is surjective.
+    Let $\phi \in \GG(U)$, then for all $P \in U$ we have
+    \[
+        \phi_P \in \GG_P = \im f_P = (\im' f)_P.
+    \]
+    Therefore, there is an open neighborhood $V_P$ of $P$ and a section $\psi^P \in (\im' f)(V_P)$ such that
+    $(\psi^P)_P = \phi_P$.
+    In particular, we can choose $V_P$ small enough so that $\psi^P = \phi|_{V_P}$.
+    Note
+    \[
+        (\im' f)(V_P) = \im f_{V_P} \seq \GG(V_P).
+    \]
+    Then $\{V_P\}_{P \in U}$ is an open cover of $U$ with local sections $\psi^P \in (\im' f)(V_P)$, which agree on overlaps.
+    By the definition of sheafification, this means there is a unique section in $(\im f)(U) \seq \GG(U)$ which restricts to $\psi^P = \phi|_{V_P}$ on each $V_P$.
+    However, since such a section must also be unique in $\GG(U)$ (by the gluing property of the sheaf $\GG$), then $\phi$ must precisely be this section.
+    In particular, $\phi \in (\im f)(U)$, and we conclude that $\im f = \GG$, hence $f$ is surjective.
+\end{proof}
+
+\begin{proposition}
+    $f$ is an isomorphism if and only if each $f_P$ is an isomorphism.
+\end{proposition}
+
+\begin{proof}
+    Suppose $f$ is an isomorphism.
+    (I am a little unsure of what definition of isomorphism we are using here, but I will assume this means each $f_U$ is an isomorphism, which is equivalent to $f$ being both injective and surjective.)
+    Then by Propositions 1 and 2, we know that each $f_P$ is both injective and surjective, which suffices to conclude $f_P$ is an isomorphism.
+
+    Suppose each $f_P$ is an isomorphism.
+    By Propositions 1 and 2, we know that $f$ is therefore both injective and surjective.
+    Equivalently, each $f_U$ is an isomorphism, we we conclude that $f$ is an isomorphism.
+\end{proof}
+
+
+\end{document}
