@@ -1,0 +1,121 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+
+% Extra Commands
+
+
+% Document
+\begin{document}
+\title{MATH 220B Counterexample}
+\author{Harry Coleman}
+\date{February 6, 2022}
+\maketitle
+
+Take $R = \Z$ and consider the $\Z$-modules $A = \Z$ and $B = \bigoplus_{n \in \N} \Z/p\Z$ for a prime $p \in \Z$.
+
+Take $M = A \oplus B$ with maps
+\begin{align*}
+    f : \Z &\longrightarrow \Z \oplus B \\
+        a &\longmapsto pa \oplus 0
+\end{align*}
+and
+\begin{align*}
+    g : \Z \oplus \bigoplus_{n \in \N} \Z/p\Z &\longrightarrow \bigoplus_{n \in \N} \Z/p\Z \\
+        a \oplus b &\longmapsto (a + p\Z) \oplus b.
+\end{align*}
+
+In other words, $f$ is multiplication by $p$ composed with inclusion into the direct sum, and $g$ is the map which quotients $A$ onto the first component and shifts all the components in $B$ to the right by one index.
+
+Then $f$ is inject and $g$ is surjective with $\ker g = p\Z \oplus 0 = \im f$.
+Hence we have the following short exact sequence:
+\begin{cd}
+    0 \rar & A \rar["f"] & A \oplus B \rar["g"] & B \rar & 0.
+\end{cd}
+
+However, if there were a $\Z$-module homomorphism $q : B \to A \oplus B$ such that $g \circ q = \id_B$, it can be seen that $q$ would need to map the first component of $B$ to some part of $A$.
+In particular, given $(n + p\Z) \oplus 0 \in B$, we must be able to choose some $q((n + p\Z) \oplus 0) = a \oplus b \in A \oplus B$ such that
+\[
+    (n + p\Z) \oplus 0 = g(a \oplus b) = (a + p\Z) \oplus b,
+\]
+which implies $b = 0$ and $a \in \Z$ is an integer with $a + p\Z = n + p\Z$.
+This means restricting $q$ to the first component of $B$ induces a $\Z$-module homomorphism $\Z/p\Z \to \Z$ where $n \mapsto a$.
+However, the only $\Z$-module homomorphism $\Z/p\Z \to \Z$ is the zero map.
+But in order to have $g \circ p = \id_B$, we must have $q$ injective, but with the first component of $B$ nonzero, this is not possible.
+
+I believe that the formulation of (i) should also require that $f$ and $g$ act as inclusion and surjection.
+That is, not only do we need $M \isom A \oplus B$, but there must be an isomorphism $\phi : M \to A \oplus B$ such that $\phi \circ f : A \to A \oplus B$ is the natural inclusion and $g \circ \phi^{-1} : A \oplus B \to B$ is the natural projection, i.e., the following diagram commutes with exact rows:
+\begin{cd}
+    0 \rar & A \dar["\id_A"] \rar["f"] & M \dar["\phi"] \rar["g"] & B \dar["\id_B"] \rar & 0 \\
+    0 \rar & A \rar[hookrightarrow] & A \oplus B \rar[twoheadrightarrow] & B \rar & 0
+\end{cd}
+(Where the bottom row uses the natural inclusion and projection.)
+The above example fails because the isomorphism $M \isom A \oplus B$ does not make the right square in this diagram commute.
+
+
+
+
+
+\end{document}

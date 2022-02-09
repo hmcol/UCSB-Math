@@ -1,0 +1,296 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+\usepackage[shortlabels]{enumitem}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+
+% Extra Commands
+\newcommand{\FF}{\mathcal{F}}
+\newcommand{\GG}{\mathcal{G}}
+
+\DeclareMathOperator{\diam}{diam}
+\newcommand{\dd}{\,\mathrm{d}}
+
+
+% Document
+\begin{document}
+\title{MATH 201B Homework 1}
+\author{Harry Coleman}
+\date{February 2, 2022}
+\maketitle
+
+\begin{pbox}[1]
+    Let $\FF$ be a collection of non-degenerate (not a point) closed balled in $\R^n$.
+    A family $\GG \seq \FF$ of disjoint balls in $\FF$ is called maximal if $\GG$ consists of disjoint balls in $\FF$ such that, for any ball $B \in \FF$, there exists another ball $B' \in \GG$ such that $B \cap B' \ne \emptyset$.
+
+    Prove that any such collection $\FF$ contains a maximal family $\GG$ of disjoint balls, if
+    \begin{enumerate}[(i)]
+        \item There exists two positive constants $d, D > 0$ such that any ball $B \in \FF$ satisfies the lower and upper bounds
+        \[
+            d \leq \diam(B) \leq D.
+        \]
+        \item $\FF$ is any collection of closed non-degenerate balls in $\R^n$.
+    \end{enumerate}
+
+    
+\end{pbox}
+
+\begin{proof}
+    Let $\FF$ be any collection of closed non-degenerate balls in $\R^n$.
+    Denote the collection of families of disjoint balls in $\FF$ by
+    \[
+        P = \{\GG \seq \FF : B \cap B' = \emptyset \text{ for all } B, B' \in \GG\}.
+    \]
+    We take $P$ with inclusion ``$\seq$'' to be a partially ordered set, and we will apply Zorn's lemma to find a maximal family.
+    Suppose $C \seq P$ is a chain, i.e., a totally ordered subset.
+    Define the family
+    \[
+        \mathcal{U} = \bigcup_{\GG \in C} \GG.
+    \]
+    By construction, we have $\GG \seq \mathcal{U}$ for all $\GG \in \mathcal{U}$, i.e., $\mathcal{U}$ is an upper bound for $C$ with respect to inclusion; we must check that $\mathcal{U} \in P$.
+    Since $\GG \seq \FF$ for all $\GG \in C$, then we have $\mathcal{U} \seq \FF$.
+    And for any balls $B, B' \in \mathcal{U}$, we must have $B \in \GG$ and $B' \in \GG'$ for some $\GG, \GG' \in C$.
+    Since $C$ is totally ordered, we can assume $\GG \seq \GG'$, so then $B \in \GG'$.
+    With $\GG' \in P$ and $B, B' \in \GG'$, we must have $B \cap B' = \emptyset$.
+    Hence, $\mathcal{U}$ is a family of disjoint balls in $\FF$, so indeed $\mathcal{U} \in P$.
+
+    As $P$ is a partially ordered set such that every chain has an upper bound in $P$, Zorn's lemma tells us that there exists some $\GG \in P$ which is maximal with respect to inclusion.
+    It remains to prove that $\GG$ is maximal in sense of the problem.
+    Suppose $\GG$ is not maximal in this sense, i.e., that there is some ball $B \in \FF$ which is disjoint from all balls in $\GG$.
+    However, we could then take $\GG' = \GG \cup \{B\}$ to be another family of disjoint balls in $\FF$ which strictly contains $\GG$.
+    That is, $\GG' \in P$ but $\GG \subsetneq \GG'$, which contradicts the maximality of $\GG$ in $P$ with respect to inclusion.
+    Hence, $\GG$ is the desired family.
+\end{proof}
+
+\begin{pbox}
+    Is the family $\GG$ unique in general?
+\end{pbox}
+
+No.
+
+Consider the collection of closed balls
+\[
+    \FF = \{\clo{B}_{1/2}(n) \seq \R : n \in \Z\}.
+\]
+Then we have maximal families
+\[
+    \GG = \{\clo{B}_{1/2}(2n) \seq \R : n \in \Z\}
+    \isp{and}
+    \GG' = \{\clo{B}_{1/2}(2n+1) \seq \R : n \in \Z\}.
+\]
+It can be seen that these are maximal since each ball centered at an odd integer touches the two adjacent balls centered at even integers---and vice versa.
+
+\newpage
+\begin{pbox}[2]
+    Let $\lambda$ be Lebesgue measure on $\R$.
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Construct a Lebesgue-integrable function $f : \R \to [-\infty, \infty]$ for which there exists a Lebesgue-measurable set $A \seq \R$ such that $\lambda(A) > 0$ and for any $x \in A$ the limit
+    \[
+        \lim_{r \to 0} \frac{1}{\lambda(B_r(x))} \int_{B_r(x)} f(y) \dd{y} 
+    \]
+    exists but is different from $f(x)$.
+\end{pbox}
+
+\begin{pbox}[(b)]
+    Prove that in fact for any $\eps > 0$ one can reach $\lambda(\R \setminus A) < \eps$ in the first part.
+\end{pbox}
+
+Let $\eps > 0$ be given.
+
+Let $\{q_k\}_{k=1}^{\infty}$ be an enumeration of the rationals.
+Consider the set
+\[
+    U = \bigcup_{k=1}^{\infty} B_{\eps/2^{k+1}}(q_k),
+\]
+which is an open neighborhood of $\Q$ with measure
+\[
+    \lambda(U) \leq \sum_{k=1}^{\infty} \frac{\eps}{2^k} = \eps.
+\]
+Define the function
+\[
+    f = \infty \cdot \chi_U.
+\]
+As $U$ is open, it is Lebesgue measurable, so $f$ is Lebesgue-measurable.
+Moreover, $f$ is nonnegative, so in fact $f$ is Lebesgue-integrable.
+
+Then the set $A = \R \setminus U$ is Lebesgue-measurable with
+\[
+    \lambda(A) = \lambda(\R) - \lambda(U) \geq \infty - \eps = \infty.
+\]
+For all $x \in A$, we have $f(x) = 0$.
+However, for every $r > 0$ there is some rational $q_k \in B_r(x)$.
+Then $B_r(x) \cap U$ is an open neighborhood of $q_k$ contained in $B_r(x)$.
+In particular, we know $\lambda(B_r(x) \cap U) > 0$, so
+\begin{align*}
+    \int_{B_r(x)} f(y) \dd{y}
+        &= \int_{B_r(x) \cap U} f(y) \dd{y} + \int_{B_r(x) \setminus U} f(y) \dd{y} \\
+        &= \int_{B_r(x) \cap U} \infty \dd{y} + \int_{B_r(x) \setminus U} 0 \dd{y} \\
+        &= \infty \lambda(B_r(x) \cap U) \\
+        &= \infty.
+\end{align*}
+Hence, for all $x \in A$ we have
+\[
+    \lim_{r \to 0} \frac{1}{\lambda(B_r(x))} \int_{B_r(x)} f(y) \dd{y}
+        = \infty
+        \ne 0 
+        = f(x).
+\]
+
+
+
+
+
+
+
+\newpage
+\begin{pbox}[3]
+    Let $\alpha \in (0, 1)$ and let $\lambda$ be the Lebesgue measure on $\R$.
+    Construct a Borel set $E \seq [-1, 1]$ such that
+    \[
+        \lim_{r \to 0} \frac{\lambda(E \cap [-r, r])}{2r} = \alpha.
+    \]
+\end{pbox}
+
+For each $k \in \N$,  will construct $I_k$ to be an interval contained in $[\frac{1}{k+1}, \frac{1}{k})$, such that
+\[\textstyle
+    \lambda(I_k)
+        = \alpha \lambda\left[\frac{1}{k+1}, \frac{1}{k}\right)
+        = \alpha \left(\frac{1}{k} - \frac{1}{k+1}\right)
+        = \frac{\alpha}{k(k+1)}.
+\]
+Explicitly, we write
+\[\textstyle
+    I_k = \left[\frac{1}{k+1}, \frac{1 + \alpha/k}{k+1}\right] \seq \left[\frac{1}{k+1}, \frac{1}{k}\right),
+\]
+which has the desired measure.
+
+Now define
+\[
+    E' = \bigcup_{k=1}^{\infty} I_k \seq (0, 1).
+\]
+For $r \in (0, 1)$, consider the intersection
+\[
+    E' \cap [0, r]
+        = \bigcup_{k=1}^{\infty} I_k \cap [0, r]
+        = (I_n \cap [\tfrac{1}{n+1}, r]) \cup \bigcup_{k=n+1}^{\infty} I_k,
+\]
+where $n \in \N$ is such that $r \in [\frac{1}{n+1}, \frac{1}{n})$.
+We compute the measure of this set using the fact that the $I_k$'s are disjoint and Lebesgue-measurable:
+\[
+    \lambda(E' \cap [0, r])
+        = \lambda(I_n \cap [\tfrac{1}{n+1}, r]) + \sum_{k=n+1}^{\infty} \frac{\alpha}{k(k+1)}
+        = \lambda(I_n \cap [\tfrac{1}{n+1}, r]) + \frac{\alpha}{n+1}.
+\]
+We bound the measure
+\[
+    0
+        \leq \lambda(I_n \cap [\tfrac{1}{n+1}, r])
+        \leq \lambda(I_n)
+        = \frac{\alpha}{n(n + 1)}.
+\]
+Then 
+\[
+    \frac{\alpha}{r(n + 1)}
+        \leq \frac{\lambda(E' \cap [0, r])}{r}
+        \leq \frac{\alpha}{r(n + 1)} \left(1 + \tfrac{1}{n}\right).
+\]
+Since $\frac{1}{n+1} \leq r < \frac{1}{n}$, we have
+\[
+    \frac{n}{n+1} < \frac{1}{r(n+1)} \leq \frac{n+1}{n+1} = 1.
+\]
+Note that $n \to \infty$ as $r \to 0$, so this gives us
+\[
+    \lim_{r \to 0} \frac{1}{r(n+1)} = 1,
+\]
+and therefore
+\[
+    \lim_{r \to 0} \frac{\lambda(E' \cap [0, r])}{r} = \alpha.
+\]
+Then the desired subset of $[-1, 1]$ is given by
+\[
+    E = \pm E' = \{\pm x : x \in E\}.
+\]
+
+
+\newpage
+\begin{pbox}[4]
+    Let the function $f : \R \to \R$ be increasing and right-continuous.
+    Define the function $\nu : 2^\R \to [0, \infty]$ as follows:
+    \begin{enumerate}
+        \item For any open set $U = \bigcup_{i=1}^{\infty} (a_i, b_i)$ where $(a_i, b_i)$ are disjoint, set
+        \[
+            \nu(U) = \sum_{i=1}^{\infty} (f(b_i) - f(a_i)).
+        \]
+        If $U$ is a finite union of disjoint open intervals, then $\nu$ is defined as a finite sum accordingly.
+        \item For any $A \seq \R$ define
+        \[
+            \nu(A) = \inf\{\nu(U) : A \seq U, U \text{ open}\}.
+        \]
+        Prove that $\nu$ is a Borel measure on $\R$.
+    \end{enumerate}
+\end{pbox}
+
+\end{document}

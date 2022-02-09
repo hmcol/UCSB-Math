@@ -1,0 +1,340 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+
+% Extra Commands
+\newcommand{\pp}{\mathfrak{p}}
+\newcommand{\qq}{\mathfrak{q}}
+
+
+% Document
+\begin{document}
+\title{MATH 220B Midterm}
+\author{Harry Coleman}
+\date{February 7, 2022}
+\maketitle
+
+\begin{pbox}[Notes]
+    \begin{itemize}
+        \item All rings are assumed to be commutative with $1$.
+        \item You may use your notes, but no other resources.
+        \item Each problem is worth 25 points.
+    \end{itemize}
+\end{pbox}
+
+\begin{pbox}[1]
+    Let $S\subset R$ be a multiplicative subset of a ring $R$.
+    Consider the set
+    \[
+        A=\{\textrm{all ideals $I\subset R$ with $I\cap S=\emptyset$}\}.
+    \]
+    Show that if $I$ is a maximal element in $A$, then $I$ is a prime ideal.
+\end{pbox}
+
+\begin{proof}
+    Assume---for contradiction---that $I \in A$ is maximal with respect to inclusion, but is not a prime ideal.
+    Then there are some elements $a, b \in R \setminus I$ such that $ab \in I$.
+    Then the ideals $I + (a)$ and $I + (b)$ strictly contain $I$, and therefore are not elements of $A$.
+    That is, we can find elements
+    \[
+        x \in (I + (a)) \cap S \isp{and} y \in (I + (b)) \cap S.
+    \]
+    With $S$ multiplicatively closed, we know $xy \in S$.
+    However, since $ab \in I$, we also have
+    \[
+        xy
+            \in (I + (a))(I + (b))
+            \seq I^2 + I(a) + I(b) + (ab)
+            \seq I + (ab)
+            = I.
+    \]
+    This contradicts the fact that $I \in A$ requires $I \cap S = \emptyset$, hence $I$ is indeed prime.
+\end{proof}
+
+
+ 
+\newpage
+\begin{pbox}[2]
+    Give a justified counterexample to the following \emph{false} statement: If $R$ is a ring with the property that $R_\pp$ is an integral domain for all prime ideals $\pp\subset R$, then $R$ is an integral domain.
+
+    \noindent(\emph{Hint:} Consider e.g. $R=\Z/n\Z$ for suitable $n$.)
+\end{pbox}
+
+For distinct primes $p, q \in \Z$ take $R = \Z/pq\Z$, which has the prime ideals
+\[
+    \pp = p\Z/pq\Z \isp{and} \qq = q\Z/pq\Z.
+\]
+As a set, we have the localization
+\[
+    R_\pp = \{\tfrac{a}{b} \mid a, b \in R \text{ with } p \nmid b\},
+\]
+where $\frac{a}{b} = 0 \in R_\pp$ if and only if there is some $t \in R \setminus \pp$ such that $ta = 0 \in R = \Z/pq\Z$. Equivalently, if we consider representatives in $\Z$, this means $pq \mid ta$.
+But since $p \nmid t$, we must have $p \mid a$.
+In fact this is a sufficient conditions as if $p \mid a$, then we can take $t = q$ to obtain $ta = 0 \in \Z/pq\Z = R$.
+In summary, $\frac{a}{b} = 0 \in R_\pp$ if and only if $p \mid a$, i.e., if and only if $a \in \pp$.
+
+With $\pp$ a prime ideal of $R$, we conclude that $\frac{ac}{bd} = 0 \in R_\pp$ if and only if $ac \in \pp$, which requires $a \in \pp$ or $c \in \pp$. Hence, $\frac{a}{b} \cdot \frac{c}{d} = 0 \in R_\pp$ if and only if $\frac{a}{b} = 0$ or $\frac{c}{d} = 0$, so in fact $R_\pp$ is an integral domain.
+
+By the same argument, $R_\qq$ is also an integral domain.
+However, $R = \Z/pq\Z$ is not an integral domain since $p, q \in R$ are nonzero but $pq = 0$.
+
+
+\newpage
+\begin{pbox}[3]
+    Let  
+    \begin{cd}
+        0 \rar & A \rar["f"] & M \rar["g"] & B \rar & 0
+    \end{cd}
+    be an $R$-module exact sequence. Show that the following are equivalent:
+    \begin{itemize}
+        \item[(i)] $M \isom A \oplus B$, with $f:A\rightarrow M$ the natural inclusion and $g:M\rightarrow B$ the natural projection.
+        \item[(ii)] There exists an $R$-homomorphism $p:M\to A$ such that $p\circ f=\id_A$.
+        \item[(iii)] There exists an $R$-homomorphism $q:B\to M$ such that $g\circ q=\id_B$.
+    \end{itemize}
+\end{pbox}
+
+\begin{proof}
+    Assume (i) holds, with $\phi : M \to A \oplus B$ an $R$-module isomorphism such that
+    \[
+        \iota_A = \phi \circ f: A \longrightarrow A \oplus B
+    \]
+    is the natural inclusion and
+    \[
+        \pi_B = g \circ \phi^{-1}: A \oplus B \longrightarrow B
+    \]
+    is the natural projection.
+    Denote the natural projection $\pi_A : A \oplus B \to A$ and inclusion $\iota_B : B \to A \oplus B$.
+    Then define the maps $p = \pi_A \circ \phi : M \to A$ and $q = \phi^{-1} \circ \iota_B : B \to M$.
+    Then by construction, we have
+    \[
+        p \circ f
+            = (\pi_A \circ \phi) \circ f
+            = \pi_A \circ \iota_A
+            = \id_A
+    \]
+    and
+    \[
+        g \circ q
+            = q \circ (\phi^{-1} \circ \iota_B)
+            = \pi_B \circ \iota_B
+            = \id_B.
+    \]
+    Hence, both (ii) and (iii) hold.
+    It remains to prove that (i) holds in the case of (ii) or (iii).
+
+    Assume (ii) holds.
+    Define the following homomorphism of $R$-modules:
+    \begin{align*}
+        \phi = p \oplus g: M &\longrightarrow A \oplus B \\
+            m &\longmapsto p(m) \oplus g(m).
+    \end{align*}
+    We claim that $\phi$ is an isomorphism.
+    
+    First, $\phi$ is surjective.
+    For any $a \in A$ we have $f(a) \in M$ with
+    \[
+        \phi(f(a)) = p(f(a)) \oplus g(f(a)) = a \oplus 0.
+    \]
+    That is, $A \oplus 0 \seq \im \phi$.
+    And for any $b \in B$ there is some $m \in M$ such that $g(m) = b$.
+    Then we have an element $m - f(p(m)) \in M$ with
+    \begin{align*}
+        \phi(m - f(p(m)))
+            &= (p(m) - p(f(p(m))) \oplus (g(m) - g(f(p(m)))) \\
+            &= (p(m) - p(m)) \oplus (b - 0) \\
+            &= 0 \oplus b.
+    \end{align*}
+    That is $0 \oplus B \seq \im \phi$.
+    So for any $a \oplus b \in A \oplus B$ we can choose $m, n \in M$ such that $\phi(m) = a \oplus 0$ and $\phi(n) = 0 \oplus b$.
+    Then $m + n \in M$ with
+    \[
+        \phi(m + n)
+            = \phi(m) + \phi(n)
+            = (a \oplus 0) + (0 \oplus b)
+            = a \oplus b.
+    \]
+    Hence, $\phi$ is surjective.
+
+    Next, $\phi$ is injective.
+    If $m \in \ker\phi$, then we must have $p(m) = 0 \in A$ and $g(m) = 0 \in B$.
+    That is, $m \in \ker g = \im f$, so there is some $a \in A$ such that $f(a) = m$.
+    Then
+    \[
+        0 = p(m) = p(f(a)) = a,
+    \]
+    so in fact $m = f(a) = f(0) = 0$.
+    Hence $\ker \phi = 0$, i.e., $\phi$ is injective.
+
+    We conclude that $\phi : M \to A \oplus B$ is an isomorphism.
+    Moreover, for all $a \in A$ we have
+    \[
+        \phi(f(a)) = p(f(a)) \oplus g(f(a)) = a \oplus 0,
+    \]
+    which means $\phi \circ f : A \to A \oplus B$ is the inclusion map.
+    And given $a \oplus b \in A \oplus B$, there is a unique $m \in M$ such that $p(m) = a$ and $g(m) = b$.
+    Then
+    \[
+        g(\phi^{-1}(a \oplus b)) = g(m) = b,
+    \]
+    which means $g \circ \phi^{-1} : A \oplus B \to B$ is the projection map.
+    Hence, (i) holds.
+    
+
+    Assume (iii) holds.
+    Define the following homomorphism of $R$-modules:
+    \begin{align*}
+        \psi : A \oplus B &\longrightarrow M \\
+            a \oplus b &\longmapsto f(a) + q(b).
+    \end{align*}
+    We claim that $\psi$ is an isomorphism.
+
+    First, $\psi$ is surjective.
+    Given $m \in M$, take $b = g(m) \in B$ and consider $m - q(b) \in M$.
+    Mapping under $g$, we find
+    \[
+        g(m - q(b)) = g(m) - g(q(b)) = b - b = 0,
+    \]
+    so $m - q(b) \in \ker g = \im f$.
+    Choose $a \in A$ such that $f(a) = m - q(b)$.
+    Then $a \oplus b \in A \oplus B$ with
+    \[
+        \psi(a \oplus b)
+            = f(a) + q(b)
+            = m - q(b) + q(b)
+            = m,
+    \]
+    hence $\psi$ is surjective.
+
+    Next, $\psi$ is injective.
+    Suppose $a \oplus b \in \ker \psi$, which means
+    \[
+        q(b) = -f(a) = f(-a) \in \im f = \ker g,
+    \]
+    implying $b = g(q(b)) = 0$.
+    It follows that $0 = \phi(a \oplus b) = f(a)$, but $f$ being injective tells us that $a = 0$.
+    So in fact $a \oplus b = 0$, hence $\psi$ is injective.
+
+    We conclude that $\psi : A \oplus B \to M$ is an isomorphism.
+    Moreover, for all $a \oplus b \in A \oplus B$ we have
+    \[
+        g(\psi(a \oplus b)) = g(f(a)) + g(q(b)) = 0 + b = b,
+    \]
+    which means $g \circ \psi : A \oplus B \to B$ is the projection map.
+    And given $a \in A$, there are unique $a' \in A$ and $b \in B$ such that $\psi(a' \oplus b) = f(a)$.
+    But $\psi(a \oplus 0) = f(a)$, so $\psi^{-1}(f(a)) = a \oplus 0$, which means that $\psi^{-1} \circ f : A \to A \oplus B$ is the inclusion map.
+    Hence, (i) holds.
+\end{proof}
+
+
+
+
+\newpage
+\begin{pbox}[4]
+    Let
+    \begin{cd}
+        0 \rar & M' \rar["f"] &  M \rar["g"] & M'' \rar & 0
+    \end{cd}
+    be an $R$-module exact sequence. Show that if $M'$ and $M''$ are finitely generated, then $M$ is also finitely generated.
+\end{pbox}
+
+\begin{proof}
+    Suppose $M'$ is generated by $x_1, \dots, x_n \in M'$ and $M''$ is generated by $y_1, \dots, y_k \in M''$.
+    Define $z_i = f(x_i) \in M$ for $i = 1, \dots, n$ and choose $z_{n+i} \in g^{-1}(y_i) \seq M$ for $i = 1, \dots, k$.
+    We claim that $M$ is generated by $z_1, \dots, z_{n+k} \in M$.
+
+    For a given $m \in M$, we have
+    \[
+        g(m) = \sum_{i=1}^k b_i y_i,
+    \]
+    for some $b_i \in R$.
+    Define $m' = m - \sum_{i=1}^k b_i z_{n+i}$, then
+    \[
+        g(m')
+            = g(m) - \sum_{i=1}^k b_i g(z_{n+i})
+            = g(m) - \sum_{i=1}^k b_i y_i
+            = g(m) - g(m)
+            = 0.
+    \]
+    This means $m' \in \ker g = \im f$, so there is some $n \in M'$ such that $f(n) = m'$.
+    Then
+    \[
+        n = \sum_{i=1}^{n} a_i x_i,
+    \]
+    for some $a_i \in R$, so
+    \[
+        m' = f(n) = \sum_{i=1}^{n} a_i f(x_i) = \sum_{i=1}^{n} a_i z_i.
+    \]
+    We conclude that
+    \[
+        m = \sum_{i=1}^{n} a_i z_i + \sum_{i=1}^{k} b_i z_{n+i}.
+    \]
+    Hence, $M$ is generated by $z_1, \dots, z_{n+k} \in M$; in particular, $M$ is finitely generated.
+\end{proof}
+
+
+
+
+
+\end{document}

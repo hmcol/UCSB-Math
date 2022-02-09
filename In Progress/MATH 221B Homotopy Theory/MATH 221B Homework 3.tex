@@ -69,11 +69,13 @@
 \newcommand{\htpy}{\simeq}
 \newcommand{\bd}{\partial}
 
+\DeclareMathOperator{\const}{const}
+
 % Document
 \begin{document}
 \title{MATH 221B Homework 3}
-\author{Harry Coleman}
-\date{January 31, 2022}
+\author{Harry Coleman\makebox[0pt][r]{\raisebox{-0.25in}[0pt][0pt]{(worked with Joseph Sullivan, Gahl Shemy)}}}
+\date{February 7, 2022}
 \maketitle
 
 
@@ -81,35 +83,422 @@
     Enumerate all the subcomplexes of $S^\infty$, with the cell structure described in this section, having two cells in each dimension.
 \end{pbox}
 
+For each $n$, the $n$-skeleton of $S^\infty$ is precisely the $n$-sphere $S^n$, which is an $n$-dimensional subcomplex.
+
+Each $S^n$ is constructed out of an equatorial $(n-1)$ sphere $S^{n-1}$ and two $n$-cells, which we will denote $e^n_+$ and $e^n_-$, whose boundaries are glued to the $(n-1)$-skeleton $S^{n-1}$.
+In particular, if a subcomplex of $S^\infty$ contains either $n$-cell, say $e^n_+$, then the subcomplex must also contain all of $S^{n-1}$.
+However, if the subcomplex does not contain the other $n$-cell $e^n_-$, then it could not contain the $(n+1)$-cells $e^{n+1}_\pm$, since the boundaries of both must be glued to the entire $n$-skeleton.
+Hence, we obtain two more $n$-dimensional subcomplexes: $D^n_\pm = e^n_\pm \cup S^{n-1}$.
+
+Thus, for each $n$, there are three $n$-dimensional subcomplexes of $S^\infty$, namely $S^n$ and $D^n_\pm$.
+
+ 
 \begin{pbox}[2 Exercise 0.16]
     Show that $S^\infty$ is contractible.
 \end{pbox}
 
+\begin{proof}
+    Consider the space $R^\infty = \bigcup_n \R^n$, whose points are sequences in $\R$ with finite support, and has the final topology with respect to the inclusions $\R^n \inc \R^\infty$.
+    Note that $\R^\infty$ is a vector space, and we consider the norm
+    \[\textstyle
+        \|x\| = \sqrt{\sum_n x_n^2}, \qquad x \in \R^\infty,
+    \]
+    where the sum is well-defined with only finitely many nonzero terms.
+
+    Then $S^\infty$ is the subspace
+    \[\textstyle
+        S^\infty = \{x \in \R^\infty \mid \|x\| = 1\}.
+    \]
+    For each $x \in S^\infty$, we define $\phi(x) \in S^\infty$ to be the point with $\phi(x)_1 = 0$ and $\phi(x)_n = x_{n-1}$ for $n > 1$.
+    That is, $\phi$ is the map which shifts the components to the right by one index:
+    \begin{align*}
+        \phi : S^\infty &\longrightarrow S^\infty \\
+            (x_1, x_2, \dots) &\longmapsto (0, x_1, x_2, \dots).
+    \end{align*}
+    We now define a homotopy $F_t : S^\infty \to S^\infty$ by
+    \[
+        F_t(x) = \frac{(1-t)x + t\phi(x)}{\|(1-t)x + t\phi(x)\|}.
+    \]
+    This is the straight-line homotopy between $\id_{S^\infty}$ and $\phi$, inside of $\R^\infty$, composed with the normalization map $\R^\infty \setminus \{0\} \to S^\infty$.
+    We conclude that $\id_{\infty} = F_0 \htpy F_1 = \phi$.
+
+    Consider the point $e_1 = (1, 0, \dots) \in S^\infty$.
+    We now define the homotopy $G_t : S^\infty \to S^\infty$ by
+    \[
+        G_t(x) = \sin(\tfrac{\pi}{2}t)e_1 + \cos(\tfrac{\pi}{2}t)\phi(x).
+    \]
+    It is immediate that this is a continuous map $S^\infty \to \R^\infty$, and to see that the image is in $S^\infty$, note that $e_1 \perp \phi(x)$ so
+    \[
+        \|G_t(x)\|
+            = \sqrt{\sin^2(\tfrac{\pi}{2}t)\|e_1\| + \cos^2(\tfrac{\pi}{2}t)\|\phi(x)\|}
+            = \sqrt{\sin^2(\tfrac{\pi}{2}t) + \cos^2(\tfrac{\pi}{2}t)}.
+            = 1.
+    \]
+    Hence, $\phi = G_0 \htpy G_1 = \const_{e_1}$.
+    Composing $F$ and $G$, we deduce $\id_{S^\infty} \htpy \phi \htpy \const_{e_1}$, hence $S^\infty$ is contractible.
+\end{proof}
+
+
+
+
+\newpage
 \begin{pbox}[3 Exercise 0.18]
     Show that $S^1 * S^1 = S^3$, and more generally $S^n * S^m = S^{n+m+1}$.
 \end{pbox}
+
+Applying Problem 7 (Exercise 0.24), we have
+\[
+    S^n * S^m \htpy S(S^n \wedge S^m).
+\]
+It is stated in Hatcher that $S^n \wedge S^m \isom S^{n + m}$, so
+\[
+    S^n * S^m \htpy S(S^{n + m}) \isom S^{n + m + 1}.
+\]
+
 
 \begin{pbox}[4 Exercise 0.19]
     Show that the space obtained from $S^2$ by attaching $n$ $2$-cells along any collection of $n$ circles in $S^2$ is homotopy equivalent to the wedge sum of $n + 1$ $2$-spheres.
 \end{pbox}
 
+\begin{proof}
+    Enumerate the $2$-cells by $e^2_i$ for $i = 1, \dots, n$.
+    Then the circles in $S^2$ are described by attaching maps $f_i : S^1 \to S^2$.
+    As $S^2$ is contractible, we know that $f_i \htpy \const_1$, where $1 \in S^2$ is some fixed point.
+    We now take $X$ to be the cell complex of $n$ disjoint discs with an attaching map $F : X^1 \to S^2$ described by $f_i$ on the $i$th circle, so $F \htpy \const_1$.
+    Then by Proposition 0.18, we have
+    \[\textstyle
+        X \sqcup_F S^2 \htpy X \sqcup_{\const_1} S^2 = (\bigvee_{i=1}^n S^2) \vee S^2 = \bigvee_{i=0}^n S^2.
+    \]
+\end{proof}
+
 \begin{pbox}[5 Exercise 0.20]
     Show that the subspace $X \seq \R^3$ formed by a klein bottle intersecting itself in a circle is homotopy equivalent to $S^1 \vee S^1 \vee S^2$.
 \end{pbox}
 
+
+\begin{drawing}[scale=0.8]
+    \begin{scope}
+        \draw (-0.8, 0) to[out=-10, in=190] (0.8, 0);
+
+        \draw (-0.8, 0) to[out=170, in=-90]
+            (-1, 0.2) -- 
+            (-1, 1) to[out=90, in=-135]
+            (-0.5, 2) to[out=45, in=-90]
+            (-0.25, 2.5) to[out=90, in=180]
+            (0.75, 3.4) to[out=0, in=45, looseness=1.3]
+            (0.5, 1);
+        
+        \draw[dashed] (0.5, 1) to [out=-135, in=170, looseness=1.3] (0.8, 0);
+
+        \draw (0.8, 0) to[out=10, in=-90]
+            (1, 0.2) --
+            (1, 1) to[out=90, in=-45]
+            (0.5, 2) to[out=135, in=-90]
+            (0.25, 2.5) to[out=90, in=180]
+            (0.75, 3) to[out=0, in=45]
+            (0.25, 1.25);
+
+        \draw[dashed] (0.25, 1.25) to [out=-135, in=10, looseness=1.3] (-0.8, 0);
+
+        \draw (0.5, 1) to[out=180, in=-90] (0.25, 1.25);
+        \draw[dashed] (0.5, 1) to[out=90, in=0] (0.25, 1.25);
+    \end{scope}
+    \begin{scope}[xshift=2cm]
+        \node at (0, 1.5) {$\htpy$};
+    \end{scope}
+    \begin{scope}[xshift=4cm]
+        \draw (-0.8, 0) to[out=-10, in=190] (0.8, 0);
+
+        \coordinate (A) at (0.325, 1.125);
+
+        \filldraw (A) circle (2pt);
+
+        \draw (-0.8, 0) to[out=170, in=-90]
+            (-1, 0.2) -- 
+            (-1, 1) to[out=90, in=-135]
+            (-0.5, 2) to[out=45, in=-90]
+            (-0.25, 2.5) to[out=90, in=180]
+            (0.75, 3.4) to[out=0, in=45, looseness=1.3]
+            (A);
+        
+        \draw[dashed] (A) to [out=-135, in=170, looseness=1.3] (0.8, 0);
+
+        \draw (0.8, 0) to[out=10, in=-90]
+            (1, 0.2) --
+            (1, 1) to[out=90, in=-45]
+            (0.5, 2) to[out=135, in=-90]
+            (0.25, 2.5) to[out=90, in=180]
+            (0.75, 3) to[out=0, in=45]
+            (A);
+
+        \draw[dashed] (A) to [out=-135, in=10, looseness=1.3] (-0.8, 0);
+    \end{scope}
+    \begin{scope}[xshift=6cm]
+        \node at (0, 1.5) {$\htpy$};
+    \end{scope}
+    \begin{scope}[xshift=8cm]
+        \draw (-0.8, 0) to[out=-10, in=190] (0.8, 0);
+
+        \coordinate (A) at (0.325, 1.125);
+
+        \filldraw (A) circle (2pt);
+
+        \draw (-0.8, 0) to[out=170, in=-90]
+            (-1, 0.2) -- 
+            (-1, 1) to[out=90, in=-135]
+            (-0.5, 2) to[out=45, in=-90]
+            (-0.25, 2.5) to[out=90, in=180]
+            (0.75, 3.2);
+        
+        \filldraw (0.75, 3.2) circle (2pt);
+        \draw (0.75, 3.2) to[out=0, in=45] (A);
+        
+
+        \draw (0.8, 0) to[out=10, in=-90]
+            (1, 0.2) --
+            (1, 1) to[out=90, in=-45]
+            (0.5, 2) to[out=135, in=-90]
+            (0.25, 2.5) to[out=90, in=180]
+            (0.75, 3.2);
+
+        \draw[dashed] (A) to [out=-135, in=90] (0, 0);
+        \filldraw (0, -0.06) circle (2pt);
+    \end{scope}
+    \begin{scope}[xshift=10cm]
+        \node at (0, 1.5) {$\isom$};
+    \end{scope}
+    \begin{scope}[xshift=12cm, yshift=1.5cm]
+        \draw (0, 0) circle (1cm);
+        \draw (-1, 0) to[out=-45, in=-135, looseness=0.9] (1, 0);
+        \draw[dashed] (-1, 0) to[out=45, in=135, looseness=0.9] (1, 0);
+        
+        \filldraw (0, 1) circle (2pt);
+        \filldraw (1, 0) circle (2pt);
+        \filldraw (0, -1) circle (2pt);
+
+        \draw (0, 1) to[out=45, in=45, looseness=2] (1, 0);
+        \draw[dashed] (0, -1) to[out=90, in=180] (1, 0);
+    \end{scope}
+    \begin{scope}[xshift=14cm]
+        \node at (0, 1.5) {$\htpy$};
+    \end{scope}
+    \begin{scope}[xshift=16cm, yshift=1.5cm]
+        \draw (0, 0) circle (1cm);
+        \draw (-1, 0) to[out=-45, in=-135, looseness=0.9] (1, 0);
+        \draw[dashed] (-1, 0) to[out=45, in=135, looseness=0.9] (1, 0);
+        
+        \filldraw (1, 0) circle (2pt);
+
+        \draw (1, 0.01) to[out=0, in=90, looseness=400] (1, 0);
+        \draw (1, 0.01) to[out=0, in=-90, looseness=400] (1, 0);
+    \end{scope}
+\end{drawing}
+
+
+\newpage
 \begin{pbox}[6 Exercise 0.23]
     Show that a CW complex is contractible if it is the union of two contractible subcomplexes whose intersection is also contractible.
 \end{pbox}
 
+\begin{proof}
+    Let $X$ be a CW complex consisting of two contractible subcomplexes $A$ and $B$, whose intersection $Y = A \cap B$ is also contractible.
+    As $(X, B)$ is a CW pair with $B$ contractible, Proposition 0.17 tells us $X \htpy X/B$.
+
+    We claim that $X/B \isom A/Y$.
+    As sets,
+    \[
+        X/B = (X \setminus B) \sqcup \{b\} = (A \setminus B) \sqcup \{b\}
+    \]
+    and
+    \[
+        A/Y = (A \setminus Y) \sqcup \{y\} = (A \setminus B) \sqcup \{y\}.
+    \]
+    So there is an obvious bijection $f : X/B \to A/Y$, which is the identity on $A \setminus B$ and maps the point $b \mapsto y$. 
+    We claim that $f$ is a homeomorphism.
+    
+    The topology on $X/B$ is induced by the quotient map $\pi_{X/B} : X \to X/B$ and the topology on $A/Y$ is induced by the quotient map $\pi_{A/Y} : A \to A/Y$.
+
+    Suppose $U \seq A/Y$ is an open set, which means $\pi_{A/Y}^{-1}(U) \seq A$ is open in $A$.
+
+    If $y \notin U$, then $f^{-1}(U) = U = \pi_{A/B}^{-1}(U)$ is an open subset of $A \setminus Y = X \setminus B$.
+    Since $B \seq X$ is closed, we know $X \setminus B$ is an open subspace of $X$, which means means $f^{-1}(U)$ is an open subset of $X$.
+
+    If $y \in U$, then $Y$ is contained in the open subset $\pi_{A/Y}^{-1}(U) \seq A$.
+    Since $A$ is a subspace of $X$, we know that $\pi_{A/Y}^{-1}(U) = V \cap A$ for some open set $V \seq X$.
+    On the other hand, $b \in f^{-1}(U)$, so we can write
+    \[
+        \pi_{X/B}^{-1}(f^{-1}(U)) 
+            = \pi_{A/Y}^{-1}(U) \cup (X \setminus A)
+            = (V \cap A) \cup (X \setminus A)
+            = V \cup (X \setminus A).
+    \]
+    With $A \seq X$ closed and $V \seq X$ open, we conclude that $\pi_{X/B}^{-1}(f^{-1}(U)) \seq X$ is open. 
+    Therefore, $f^{-1}(U) \seq X/B$ is open, hence $f$ is continuous.
+
+    It is similar to check that $f$ is an open map, so $f$ is a homeomorphism $X/B \isom A/Y$.
+
+    Since $(A, Y)$ is a CW pair with $Y$ contractible, Proposition 0.17 allows us to conclude that
+    \[
+        X \htpy X/B \isom A/Y \htpy A.
+    \]
+    With $A$ contractible, it follows that $X$ is also contractible.
+
+
+\end{proof}
+
+
+\newpage
 \begin{pbox}[7 Exercise 0.24]
     Let $X$ and $Y$ be CW complexes with $0$-cells $x_0$ and $y_0$.
     Show that the quotient spaces $X * Y / (X * \{y_0\} \cup \{x_0\} * Y)$ and $S(X \wedge Y) / S(\{x_0\} \wedge \{y_0\})$ are homeomorphic, and deduce that $X * Y \htpy S(X \wedge Y)$.
 \end{pbox}
 
+\begin{proof}
+    We can express $X * Y / (X * \{y_0\} \cup \{x_0\} * Y)$ as the quotient $(X \times Y \times I)/{\sim_a}$ for some relation $\sim_a$.
+    This relation is generated by the following equivalences:
+    \begin{enumerate}
+        \item[(a1)] $(x, y_1, 0) \sim_a (x, y_2, 0)$,
+        \item[(a2)] $(x_1, y, 1) \sim_a (x_2, y, 1)$,
+        \item[(a3)] $(x, y_0, t_1) \sim_a (x_0, y, t_2)$.
+    \end{enumerate}
+    The equivalences (a1) and (a2) come from the join $X * Y$, and (a3) comes from the quotient by $X * \{y_0\} \cup \{x_0\} * Y$.
+
+    In a similar fashion, we can express $S(X \wedge Y) / S(\{x_0\} \wedge \{y_0\})$ as the quotient $(X \times Y \times I)/{\sim_b}$, where $\sim_b$ is the relation generated by the following equivalences:
+    \begin{enumerate}
+        \item [(b1)] $(x, y_0, t) \sim_b (x_0, y, t)$,
+        \item [(b2)] $(x_1, y_1, 0) \sim_b (x_2, y_2, 0)$,
+        \item [(b3)] $(x_1, y_1, 1) \sim_b (x_2, y_2, 1)$,
+        \item [(b4)] $(x_0, y_0, t_1) \sim_b (x_0, y_0, t_2)$.
+    \end{enumerate}
+    The equivalence (b1) comes from the smash product $X \wedge Y$ involving the quotient by the wedge product $X \vee Y$.
+    Equivalences (b2) and (b3) come from taking the suspension $S(X \wedge Y)$, and (b4) is the quotient by the suspension $S(\{x_0\} \wedge \{y_0\})$.
+
+    We claim that $\sim_a$ and $\sim_b$ in fact define the same equivalence on $X \times Y \times I$.
+
+    We first show that we can derive the equivalences of (b1-4) in terms of $\sim_a$:
+    \begin{enumerate}
+        \item[(b1)] $(x, y_0, t) \overset{(a3)}{\sim_a} (x_0, y, t)$,
+        \item[(b2)] $(x_1, y_1, 0) \overset{(a1)}{\sim_a} (x_1, y_0, 0) \overset{(a3)}{\sim_a} (x_0, y_0, 0) \overset{(a3)}{\sim_a} (x_2, y_0, 0) \overset{(a1)}{\sim_a} (x_2, y_2, 0)$,
+        \item[(b3)] $(x_1, y_1, 1) \overset{(a2)}{\sim_a} (x_0, y_1, 1) \overset{(a3)}{\sim_a} (x_0, y_0, 1) \overset{(a3)}{\sim_a} (x_0, y_2, 1) \overset{(a2)}{\sim_a} (x_2, y_2, 1)$,
+        \item[(b4)] $(x_0, y_0, t_1) \overset{(a3)}{\sim_a} (x_0, y_0, t_2)$. 
+    \end{enumerate}
+
+    Next, we show that we can derive the equivalences of (a1-3) in terms of $\sim_b$:
+    \begin{enumerate}
+        \item[(a1)] $(x, y_1, 0) \overset{(b2)}{\sim_b} (x, y_2, 0)$,
+        \item[(a2)] $(x_1, y, 1) \overset{(b3)}{\sim_b} (x_2, y, 1)$,
+        \item[(a3)] $(x, y_0, t_1) \overset{(b1)}{\sim_b} (x_0, y_0, t_1) \overset{(b4)}{\sim_b} (x_0, y_0, t_2) \overset{(b1)}{\sim_b} (x_0, y, t_2)$.
+    \end{enumerate}
+
+    Hence $\sim_a$ and $\sim_b$ generate the same equivalence relation on $X \times Y \times I$, so there is a natural bijection $(X \times Y \times I)/\sim_a \leftrightarrow (X \times Y \times I)/\sim_b$.
+    Moreover, this bijection agrees with the quotient maps from $X \times Y \times I$, so the topology on each is the same.
+    Hence, we have a homeomorphism between the spaces.
+
+    Note that all of the involved operations, when applied to CW complexes, again give us CW complexes.
+    Then $(X * \{y_0\} \cup \{x_0\} * Y)$ is a subcomplex of $X * Y$ and $S(\{x_0\} \wedge \{y_0\})$ is a subcomplex of $S(X \wedge Y)$.
+    Moreover, both are contractible, so Proposition 0.17 gives us
+    \[
+        X * Y
+            \htpy X * Y / (X * \{y_0\} \cup \{x_0\} * Y)
+            \isom S(X \wedge Y) / S(\{x_0\} \wedge \{y_0\})
+            \htpy S(X \wedge Y).
+    \]
+\end{proof}
+
+
 \begin{pbox}[8 Exercise 0.25]
     If $X$ is a CW complex with components $X_\alpha$, show that the suspension $SX$ is homotopy equivalent to $Y \bigvee_\alpha SX_\alpha$ for some graph $Y$.
     In the case that $X$ is a finite graph, show that $SX$ is homotopy equivalent to a wedge sum of circles and $2$-spheres.
 \end{pbox}
+
+For each pair of components $X_{\alpha_1}$ and $X_{\alpha_2}$, we can perform the following homotopies on the suspension $S(X_{\alpha_1} \sqcup X_{\alpha_2})$:
+
+\begin{drawing}
+    \begin{scope}[scale=0.5]
+        \draw[fill=gray!20] (0, 0) ellipse (1cm and 0.5cm);
+        \draw[fill=gray!20] (3, 0) ellipse (1cm and 0.5cm);
+
+        \filldraw (160: 1 and 0.5) -- (1.5, 3) circle (2pt) -- ([xshift=3cm] 20: 1 and 0.5);
+        \draw (1, 0) -- (1.5, 3) -- (2, 0);
+
+        \filldraw (-160: 1 and 0.5) -- (1.5, -3) circle (2pt) -- ([xshift=3cm] -20: 1 and 0.5);
+        \draw (1, 0) -- (1.5, -3) -- (2, 0);
+    \end{scope} 
+    \begin{scope}[xshift=2.5cm]
+        \node at (0, 0) {$\htpy$};
+    \end{scope}
+    \begin{scope}[scale=0.5, xshift=7cm]
+        \draw[fill=gray!20] (0, 0) ellipse (1cm and 0.5cm);
+        \draw[fill=gray!20] (3, 0) ellipse (1cm and 0.5cm);
+
+        \filldraw (170: 1 and 0.5) -- (0, 3) circle (2pt) -- (10: 1 and 0.5);
+        \filldraw[xshift=3cm] (170: 1 and 0.5) -- (0, 3) circle (2pt) -- (10: 1 and 0.5);
+        \draw (0, 3) -- (3, 3);
+
+        \filldraw (-160: 1 and 0.5) -- (1.5, -3) circle (2pt) -- ([xshift=3cm] -20: 1 and 0.5);
+        \draw (1, 0) -- (1.5, -3) -- (2, 0);
+
+        \filldraw (1.5, 3) circle (2pt) node[above] {$a$};
+    \end{scope} 
+    \begin{scope}[xshift=6cm]
+        \node at (0, 0) {$\htpy$};
+    \end{scope}
+    \begin{scope}[scale=0.5, xshift=14cm]
+        \draw[fill=gray!20] (0, 0) ellipse (1cm and 0.5cm);
+        \draw[fill=gray!20] (3, 0) ellipse (1cm and 0.5cm);
+
+        \filldraw (170: 1 and 0.5) -- (0, 3) circle (2pt) -- (10: 1 and 0.5);
+        \filldraw[xshift=3cm] (170: 1 and 0.5) -- (0, 3) circle (2pt) -- (10: 1 and 0.5);
+
+        \filldraw (-160: 1 and 0.5) -- (1.5, -3) circle (2pt) -- ([xshift=3cm] -20: 1 and 0.5);
+        \draw (1, 0) -- (1.5, -3) -- (2, 0);
+
+        \draw (1.5, -3.5) circle (0.5cm);
+        \filldraw (1.5, -4) circle (2pt) node[below] {$a$};
+    \end{scope}
+\end{drawing}
+This gives us $S(X_{\alpha_1} \sqcup X_{\alpha_2}) \htpy SX_{\alpha_1} \vee SX_{\alpha_2} \vee S^1$.
+Performing this sort of operation on more than two components, the second step has a segment from the top of each suspension $SX_\alpha$ to $a$, giving us as many segments from bottom point to $a$ in the third step.
+Taking the graph $Y$ to have the $0$-skeleton $\{x_0, a\}$, and a segment from $x_0$ to $a$ for each component $X_\alpha$ in $X$, we obtain $SX \htpy Y \bigvee_\alpha SX_\alpha$.
+
+
+If $X$ is a finite graph, then for a segment connecting a pair of distinct points in $X^0$, we can obtain a homotopy equivalent space from $X$ by contracting the segment to a point.
+That is, we have the following:
+\begin{drawing}
+    \begin{scope}
+        \filldraw (0, 0) circle (2pt) -- (1, 0) circle (2pt);
+        
+        \foreach \a in {90, 112.5, 135, 225, 247.5, 270} {
+            \draw (0, 0) -- (\a : 1);
+        }
+        \node at (-0.5, 0.1) {$\vdots$};
+
+        \foreach \a in {90, 67.5, 45, -45, -67.5, -90} {
+            \draw (1, 0) -- +(\a : 1);
+        }
+        \node at (1.5, 0.1) {$\vdots$};
+    \end{scope}
+    \begin{scope}[xshift=3cm]
+        \node at (0, 0) {$\htpy$};
+    \end{scope}
+    \begin{scope}[xshift=5cm]
+        \filldraw (0.5, 0) circle (2pt);
+        
+        \foreach \a in {90, 112.5, 135, 225, 247.5, 270} {
+            \draw (0.5, 0) -- (\a : 1);
+        }
+        \node at (-0.5, 0.1) {$\vdots$};
+
+        \foreach \a in {90, 67.5, 45, -45, -67.5, -90} {
+            \draw (0.5, 0) -- ([xshift=1cm]\a : 1);
+        }
+        \node at (1.5, 0.1) {$\vdots$};
+    \end{scope}
+\end{drawing}
+The the number of cycles (in the graph theory sense) remains constant under this operation.
+Repeating this operation until there are no more segments to contract, we obtain each component of $X$ homotopy equivalent to a wedge sum of circles, one circle for each distinct cycle in the component.
+The suspension of a wedge sum of circles is a wedge sum of circles, so we obtain $SX \htpy Y \bigvee_\alpha SX_\alpha$, where $Y$, as before, is a wedge sum of circles (contracting one of its segments) and each $SX_\alpha$ is homotopy equivalent to a wedge sum of spheres.
+
 
 
 \end{document}

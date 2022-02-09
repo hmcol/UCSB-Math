@@ -1,0 +1,191 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+
+% Extra Commands
+\newcommand{\OO}{\mathcal{O}}
+\newcommand{\FF}{\mathcal{F}}
+\newcommand{\GG}{\mathcal{G}}
+\newcommand{\LL}{\mathcal{L}}
+\newcommand{\mm}{\mathfrak{m}}
+
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\Proj}{Proj}
+
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\tensor}{\otimes}
+
+% Document
+\begin{document}
+\title{MATH 237B Homework 5}
+\author{Harry Coleman}
+\date{February 8, 2022}
+\maketitle
+
+\begin{pbox}[1 Exercise 7.8.3]
+    Let $f : \FF \to \GG$ be a morphism of locally free sheaves on a scheme $X$ over a field $k$.
+    Let $P \in X$ be a point, and denote by $\FF(P)$ (resp. $\GG(P)$) the fiber of the vector bundle $\FF$ (resp. $\GG$) over $P$, which is a $k$-vector space.
+    Are the following statements true or false?
+\end{pbox}
+
+If $\iota : P \to X$ is the inclusion map, then the fiber of $\FF$ over $P$ is defined as the pullback
+\[
+    \FF(P)
+        = (\iota^*\FF)(P) 
+        = (\iota^{-1}\FF)(P) \tensor_{(\iota^{-1}\OO_{X})(P)} \OO_P(P)
+        = \FF_P \tensor_{\OO_{X, P}} k(P).
+\]
+Given $f : \FF \to \GG$, there is an induced morphism of stalks $f_P : \FF_P \to \GG_P$.
+We have seen that $f$ is injective/surjective if and only if $f_P$ is injective/surjective at all points $P \in X$.
+There is an induced morphism of $\OO_{X, P}$-modules, given by
+\[
+    f_P \tensor \id_{k(P)} : \FF_P \tensor_{\OO_{X, P}} k(P) \longrightarrow \GG_P \tensor_{\OO_{X, P}} k(P).
+\]
+This is the induced map of fibers $\FF(P) \to \GG(P)$.
+
+\begin{pbox}[(i)]
+    If $f : \FF \to \GG$ is injective then the induced map $\FF(P) \to \GG(P)$ is injective for all $P \in X$.
+\end{pbox}
+
+No.
+
+Consider $X = \P^n$, with locally free sheaves $\FF = \OO_{\P^n}(-1)$ and $\GG = \OO_{\P^n}$.
+Then we have an exact sequence of $\OO_{\P^n}$-modules
+\begin{cd}
+    0 \rar & \OO_{\P^n}(-1) \rar["\cdot x_0"] & \OO_{\P^n}.
+\end{cd}
+In other words, $f = \cdot x_0$ is an injective morphism of sheaves.
+Consider the induced map on fibers:
+\begin{cd}
+    (\OO_{\P^n}(-1))_P \tensor_{\OO_{\P^n, P}} k(P) \rar & \OO_{\P^n, P} \tensor_{\OO_{\P^n, P}} k(P) = k(P)
+\end{cd}
+Note that the right side (the residue field $k(P)$) has the structure of an $\OO_{\P^n, P}$ module by the evaluation map $\phi \mapsto \phi(P) \in k(P)$.
+So if we take $P = [0 : 1 : \cdots ] \in \P^n$, then any $\frac{g}{h} \in (\OO_{\P^n}(-1))_P$ will have $\frac{x_0g}{h} \in \OO_{\P^n, P}$, which is then zero in $k(P)$.
+That is, the induced map on fibers is trivial.
+But since the left side is not trivial, the map is not injective.
+    
+\begin{pbox}[(ii)]
+    If $f : \FF \to \GG$ is surjective then the induced map $\FF(P) \to \GG(P)$ is surjective for all $P \in X$.
+\end{pbox}
+
+Yes.
+
+If $f$ is surjective, then the map on stalks $f_P$ is surjective, which implies that the map on fibers $f_P \tensor \id_{k(P)}$ is surjective.
+This follows from the fact that tensoring is right-exact.
+
+
+\newpage
+\begin{pbox}[2 Exercise 7.8.4]
+    Prove the following generalizations of example 7.1.16: If $X$ is a smooth curve over some field $k$, $\LL$ a line bundle on $X$, and $P \in X$ a point, then there is an exact sequence
+    \begin{cd}
+        0 \rar & \LL(-P) \rar & \LL \rar & k_p \rar & 0,
+    \end{cd}
+    where $k_P$ denotes the ``skyscraper sheaf''
+    \[
+        k_P(U) = \begin{cases}
+            k &\text{if } P \in U, \\
+            0 &\text{if } P \notin U.
+        \end{cases}
+    \]
+\end{pbox}
+
+Consider the case that $\LL = \OO_X$.
+By definition, if $U \seq X$ is an open neighborhood of $P$, we have
+\[
+    \OO_X(-P)(U) = \{\phi \in K(X) \mid (\phi) - P \geq 0 \text{ on } U\}.
+\]
+This means $\phi \in \OO_X(-P)(U)$ if and only if $\phi \in \OO_X(U)$ with $\phi(P) = 0$.
+And if $U \seq X$ is open not containing $P$, then $\OO_X(-P)(U) = \OO_X(U)$.
+Suppose $s_0$ is a rational section on $\OO_X(-P)$, so that $\OO_X(-P) = \OO_X((s_0))$.
+Then we can also write
+\[
+    \OO_X(-P)(U) = \OO_X((s_0))(U) = \{\phi \in K(X) \mid (\phi) + (s_0) \geq 0 \text{ on } U\}.
+\]
+Then we have a sequence of $\OO_X$-modules
+\begin{cd}
+    0 \rar & \OO_X(-P) \rar["\cdot s_0"] & \OO_X \rar["\operatorname{eval}_P"] & k_P \rar & 0.
+\end{cd}
+By construction, this sequence is exact on open sets $U \seq X$ containing $P$, since $\OO_X(-P)(U)$ is precisely the sections in $\OO_X(U)$ which evaluate to zero at $P$.
+And when $U$ does not contain $P$, the skyscraper sheaf is zero, and the sequence describes an automorphism of $\OO_X(U)$.
+
+For a general line bundle $\LL$, we choose a rational section $\ell$ on $\LL$, so that $\LL \isom \OO_X((\ell))$.
+Then the desired short exact sequence is obtained via the first case.
+
+
+
+
+
+\newpage
+\begin{pbox}[3 Exercise 7.8.5]
+    If $X$ is an \textit{affine} variety over a field $k$ and $\FF$ a locally free sheaf of rank $r$ on $X$, is then necessarily $\FF \isom \OO_X^{\oplus r}$?
+\end{pbox}
+
+\begin{pbox}[4 Exercise 7.8.6]
+    Let $X$ be a scheme, and let $\FF$ be a locally free sheaf on $X$.
+    Show that $(\FF^\vee)^\vee \isom \FF$.
+    Show by example that this statement is in general false if $\FF$ is only quasi-coherent but not locally free.
+\end{pbox}
+
+\end{document}
