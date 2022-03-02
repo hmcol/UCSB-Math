@@ -1,0 +1,579 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+
+% Extra Commands
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\htpy}{\simeq}
+\newcommand{\bd}{\partial}
+
+\newcommand{\const}{\mathrm{const}}
+
+% Document
+\begin{document}
+\title{MATH 221B Homework 4}
+\author{Harry Coleman\makebox[0pt][r]{\raisebox{-0.25in}[0pt][0pt]{(I worked with Joseph Sullivan and Gahl Shemy)}}}
+\date{February 14, 2022}
+\maketitle
+
+
+\begin{pbox}[1 Exercise 1.1]
+    Show that the composition of paths satisfies the following cancellation property: if $f_0 \cdot g_0 \htpy f_1 \cdot g_1$ and $g_0 \htpy g_1$ then $f_0 \htpy f_1$.
+\end{pbox}
+
+\begin{proof}
+    Since $g_0 \htpy g_1$, we have inverse paths $\overline{g_0} \htpy \overline{g_1}$, such that $g_i \cdot \overline{g_i} \htpy c$, for $c$ a constant path with $c(s) = g_i(0) = f_i(1)$.
+    Using the known properties of path composition, we compute
+    \begin{align*}
+        f_0 &\htpy f_0 \cdot c \\
+            &\htpy f_0 \cdot (g_0 \cdot \overline{g_0}) \\
+            &\htpy (f_0 \cdot g_0) \cdot \overline{g_0} \\
+            &\htpy (f_1 \cdot g_1) \cdot \overline{g_1} \\
+            &\htpy f_1 \cdot (g_1 \cdot \overline{g_1}) \\
+            &\htpy f_1 \cdot c \\
+            &\htpy f_1.
+    \end{align*}
+\end{proof}
+
+\begin{pbox}[2 Exercise 1.2]
+    Show that the change-of-basepoint homomorphism $\beta_h$ depends only on the homotopy class of $h$.
+\end{pbox}
+
+\begin{proof}
+    If $h \htpy k$ are paths from $x_0$ to $x_1$ in a space $X$, then we have the induced homomorphisms  $\beta_h, \beta_k : \pi_1(X, x_1) \to \pi_1(X, x_0)$.
+    Note that we have inverse paths $\overline{h} \htpy \overline{k}$, so for all loops $f : (I, \bd I) \to (X, x_0)$,
+    \[
+        h \cdot f \cdot \overline{h} \htpy k \cdot f \cdot \overline{k}.
+    \]
+    It follows that
+    \[
+        \beta_h[f]
+            = [h \cdot f \cdot \overline{h}]
+            = [k \cdot f \cdot \overline{k}]
+            = \beta_{h_1}[f].
+    \]
+    Hence, $[h] = [k]$ implies $\beta_h = \beta_k$.
+\end{proof}
+
+\begin{pbox}[3 Exercise 1.3]
+    For a path-connected space $X$, show that $\pi_1(X)$ is abelian if and only if all basepoint-change homomorphisms $\beta_h$ depend only on the endpoints of the path $h$.
+\end{pbox}
+
+\begin{proof}
+    Suppose $\pi_1(X)$ is abelian and $h, k : I \to X$ are paths from $x_0$ to $x_1$.
+    Then for a given homotopy class $[f] \in \pi_1(X, x_1)$, we want to show that $\beta_h[f] = [h \cdot f \cdot \overline{h}]$ is equal to $\beta_k[f] = [k \cdot f \cdot \overline{k}]$.
+    Equivalently, we want $[f] = [\overline{k} \cdot h \cdot f \cdot \overline{h} \cdot k]$.
+    But with $\pi_1(X)$ abelian, we compute
+    \[
+        [\overline{k} \cdot h \cdot f \cdot \overline{h} \cdot k]
+            = [\overline{k} \cdot h] [f] [\overline{h} \cdot k]
+            = [\overline{k} \cdot h] [f] [\overline{k} \cdot h]^{-1}
+            = [f].
+    \]
+    Hence $\beta_h = \beta_k$.
+
+    In the case that all the base-change homomorphisms depend only on the endpoints of the path, for every $[f], [g] \in \pi_1(x, x_0)$ we have
+    \[
+        [g][f][g]^{-1} = \beta_g[f] = \beta_f[f] = [f][f][f]^{-1} = [f].
+    \]
+    Hence, $[f][g] = [g][f]$ for all $[f], [g] \in \pi_1(x, x_0)$, so indeed $\pi_1(X)$ is abelian.
+\end{proof}
+
+\newpage
+\begin{pbox}[4 Exercise 1.4]
+    A subspace $X \seq \R^n$ is said to be \textit{star-shaped} if there is a point $x_0 \in X$ such that, for each $x \in X$, the line segment from $x_0$ to $x$ lies in $X$. 
+    Show that if a subspace $X \seq \R^n$ is locally star-shaped, in the sense that every point of $X$ has a star-shaped neighborhood in $X$, then every path in $X$ is homotopic in $X$ to a piecewise linear path, that is, a path consisting of a finite number of straight line segments traversed at constant speed.
+\end{pbox}
+
+\begin{proof}
+    Let $f : I \to X$ be a path and for every $x \in f(I)$, let $S_x \seq X$ be a star-shaped neighborhood of $x$.
+    In case the $S_x$'s are not themselves open, we also consider open neighborhoods of each point: $x \seq U_x \seq S_x$. 
+    Then $\{f^{-1}(U_x)\}_{x \in f(I)}$ is an open cover of the compact (metric) space $I$.
+    By the Lebesgue number lemma, there is some $\delta > 0$ such that for every $t \in I$, the open ball $B_\delta(t) \seq I$ is entirely contained in some $f^{-1}(U_x)$ of the open cover.
+
+    Choose $k \in \N$ such that $1/k \leq \delta$. Denote the point $t_j = j/k \in I$ for $j = 0, \dots, k$, and the interval $I_j = [t_{j-1}, t_j] \seq I$ for $j = 1, \dots, k$.
+    Then a homeomorphism $\phi_j : I \xrightarrow{\sim} I_j$ (say by shifting and linear scaling) gives us a path $f_j = f \circ \phi_j : I \to X$ from $f(t_{j-1})$ to $f(t_j)$.
+    With this construction, we obtain a homotopy
+    \[
+        f \htpy f_1 \cdot f_2 \cdots f_k,
+    \]
+    which is simply a reparameterization, fixing the points $t_0, \dots, t_j$.
+    
+    Fix an index $j \in \{1, \dots, k\}$.
+    By construction, the interval $I_j$ is contained in an open ball of radius $\delta$ and, therefore, in some $f^{-1}(U_x)$; so
+    \[
+        f_j(I) = f(I_j) \seq U_x \seq S_x.
+    \]
+    In other words, $f_j$ is a path in $S_x$ from $f(t_{j-1})$ to $f(t_j)$.
+    Say $v \in S_x$ is a vantage point of $S_x$, in the sense that for every other point $y \in S_x$ the line segment $\overline{vy}$ is contained in $S_x$.
+    We can then perform the straight line homotopy $f_j \htpy \const_{v}$ inside of $S_x$.
+    This homotopy is represented by a map $H : I \times I \to S_x$ such that $H(s, 0) = f_j(s)$ and $H(s, 1) = \const_v$.
+    The parameter space of $H$ can be drawn as follows:
+    \begin{drawing}
+        \filldraw (0, 0) circle (2pt) node[anchor=north east] {$v$};
+        \filldraw (2, 0) circle (2pt) node[anchor=north west] {$v$};
+        \filldraw (0, 2) circle (2pt) node[anchor=south east] {$f_j(0)$};
+        \filldraw (2, 2) circle (2pt) node[anchor=south west] {$f_j(1)$};
+
+        \draw (0, 0) rectangle (2, 2);
+
+        \draw[->] (-0.5, 1.5) -- (-0.5, 0.5) node[midway, anchor=east] {$t$};
+        \draw[->] (0.5, -0.5) -- (1.5, -0.5) node[midway, anchor=north] {$s$};
+    \end{drawing}
+    The top edge is $f_j$, the bottom edge is $\const_v$, and every vertical line corresponds under $H$ to a line segment in $S_x$.
+    In this parameter space, we construct a homotopy $\gamma_t : I \to I \times I$ (of paths) from the path following the top edge to the path following the other three edges.
+    In particular, we split the top edge into thirds, sending the middle third to the bottom edge and the left/right thirds to their respect side of the square.
+    Explicitly, we perform the straight line homotopy in the parameter space, giving us the following picture:
+    \begin{drawing}
+        \foreach \x in {0, 2} {
+            \foreach \y in {0, 2} {
+                \filldraw (\x, \y) circle (2pt);
+            }
+        }
+        \draw (0, 0) rectangle (2, 2);
+
+        \draw[dashed] (0, 0) -- (0.666, 2);
+        \draw[dashed] (2, 0) -- (1.333, 2);
+        \draw[thick] (0, 2) -- (0.333, 1) -- (1.666, 1) node[midway, anchor=south] {$\gamma_t$} -- (2, 2);
+
+        \node[anchor=south] at (1, 2) {$\gamma_0$};
+        \node[anchor=north] at (1, 0) {$\gamma_1$};
+    \end{drawing}
+    Then $H \circ \gamma_t$ gives us a homotopy of paths in $S_x$ from $\gamma_0 = f_j$ to $\gamma_1 = \ell_j$, where $\ell_j : I \to S_x$ is the piecewise linear path from $f_j(0)$ to $v$, pausing at $v$, then from $v$ to $f_j(1)$.
+
+    Constructing the homotopy of paths $f_j \htpy \ell_j$ for all $j = 1, \dots, k$, we obtain
+    \[
+        f \htpy f_1 \cdot f_2 \cdots f_k \htpy \ell_1 \cdot \ell_2 \cdots \ell_k.
+    \]
+    If necessary, we can reparameterize the resulting path so that it is traversed at a constant speed, not pausing at the vantage points.
+\end{proof}
+
+\begin{pbox}
+    Show that this applies in particular when $X$ is open or when $X$ is a union of finitely many closed convex sets.
+\end{pbox}
+
+\begin{proof}
+    If $X \seq \R^n$ is open, then for every point $x \in X$ there is a radius $r > 0$ such that the open ball $B_r(x) \seq \R^n$ is completely contained in $X$.
+    As $B_r(x)$ is convex, it is trivially a star-shaped neighborhood of $x$.
+    Hence, open subsets of $\R^n$ are locally star-shaped.
+
+    Suppose $X = \bigcup_{i=1}^{k} C_i$ for closed convex sets $C_i \seq \R^n$, and consider a point $x_0 \in X$.
+    Since the set $E = \bigcup\{C_i : x_0 \notin C_i\}$ is closed and does not contain $x_0$, its complement is an open neighborhood of $x_0$.
+    So we can find a radius $r > 0$ such that $B_r(x_0) \cap E = \emptyset$.
+    This means $U = B_r(x_0) \cap X$ is an open neighborhood of $x_0$ (that is, open in the subspace $X \seq \R^n$), and we can write
+    \[
+        U = (B_r(x_0) \cap (X \setminus E)) \cup (B_r(x_0) \cap E)= \bigcup\{B_r(x_0) \cap C_i : x_0 \in C_i\}.
+    \]
+    Then $U$ is star-shaped as the union of convex sets with nonempty intersection.
+    That is, for every point $x \in U$, we have $x \in B_r(x_0) \cap C_i$ for some $C_i$ containing $x_0$.
+    Since $B_r(x_0)$ and $C_i$ are convex, so is their intersection, which must therefore contain the line segment $\overline{x_0x}$.
+    Hence, $U$ is star-shaped (with $x_0$ as a vantage point), and we conclude that $X$ is locally star-shaped.
+\end{proof}
+
+\newpage
+\begin{pbox}[5 Exercise 1.5]
+    Show that for a space $X$, the following three conditions are equivalent:
+    \begin{enumerate}
+        \item[(a)] Every map $S^1 \to X$ is homotopic to a constant map, with image a point.
+        \item[(b)] Every map $S^1 \to X$ extends to a map $D^2 \to X$.
+        \item[(c)] $\pi_1(X, x_0) = 0$ for all $x_0 \in X$.
+    \end{enumerate}
+\end{pbox}
+
+\begin{proof}
+    Assuming (a) holds, we aim to prove (b).
+    Let $f : S^1 \to X$ be any map.
+    By (a), there is a homotopy $F : S^1 \times I \to X$ with $F_0$ a constant map and $F_1 = f$.
+    We interpret $S^1 \times I$ as the annulus and notice that $(S^1 \times I)/(S^2 \times \{0\}) \isom D^2$, with the quotient map:
+    \begin{drawing}
+        \draw[fill=gray!20] (0, 0) circle (1.5cm) node[above, yshift=1.5cm] {$S^1 \times I$};
+        \draw[thick, fill=white] (0, 0) circle (0.5cm) node[above, yshift=0.5cm] {$\scriptstyle S^1 \times \{0\}$};
+
+        \draw[->>] (2, 0) -- (3, 0) node[midway, above] {$q$};
+
+        \draw[fill=gray!20] (5, 0) circle (1.5cm) node[above, yshift=1.5cm] {$D^2$};
+        \filldraw (5, 0) circle (2pt) node[above] {$\scriptstyle \{S^1 \times \{0\}\}$};
+    \end{drawing}
+    The fact that $F_0$ is a constant map means that $F$ is constant on the subset $S^2 \times \{0\}$.
+    So by the universal property of quotients, there is a unique map $\tilde{f} : D^2 \to X$ such that the following diagram commutes:
+    \begin{cd}
+        S^1 \times I \rar["F"] \dar["q"'] & X \\
+        D^2 \urar[dashed, "\exists!\tilde{f}"']
+    \end{cd}
+    Where $S^1 = S^1 \times \{1\}$ is the boundary of $D^2$, we have
+    \[
+        \tilde{f}|_{S^1}
+            = (\tilde{f} \circ q)|_{S^1 \times \{1\}}
+            = F|_{S^1 \times \{1\}}
+            = F_1
+            = f.
+    \]
+    Hence, $\tilde{f}$ is an extension of $f$.
+
+    Assuming (b) holds, we aim to prove (c).
+    Fix a basepoint $x_0 \in X$ and consider a homotopy class $[f] \in \pi_1(X, x_0)$ of a loop $f : (S^1, s_0) \to (X, x_0)$.
+    Applying (b) and taking $S^1 = \bd D^2$, we have the following commutative diagram:
+    \begin{cd}
+        D^2 \drar[dashed, "\tilde{f}"] \\
+        S^1 \uar[hookrightarrow] \rar["f"'] & X
+    \end{cd}
+    Let $R : D^2 \times I \to D^2$ be a deformation retraction to the point $s_0 \in S^1 \inc D^2$.
+    In other words, $R$ is a homotopy from $\id_{D^2}$ to $\const_{s_0}$ relative to $s_0$, which we depict using the following diagram:
+    \begin{cd}
+        D^2
+            \rar[bend left=40, "\id_{D^2}"{name=A}]
+            \rar[bend right=40, "\const_{s_0}"'{name=B}]
+            \ar[from=A, to=B, Rightarrow, shorten=2mm, "R"]
+        & D^2
+    \end{cd}
+    We extend this diagram as follows:
+    \begin{cd}
+        S^1 \rar[hookrightarrow]
+        & D^2
+            \rar[bend left=40, "\id_{D^2}"{name=A}]
+            \rar[bend right=40, "\const_{s_0}"'{name=B}]
+            \ar[from=A, to=B, Rightarrow, shorten=2mm, "R"]
+        & D^2 \rar["\tilde{f}"]
+        & X
+    \end{cd}
+    This diagram suggests a homotopy from the top edge, $f$, and the bottom edge, $\const_{x_0}$.
+    Moreover, we should expect this new homotopy, like $R$, to be relative to $s_0$.
+    Explicitly, we can construct the homotopy $f \htpy \const_{x_0}$ as the composition
+    \begin{cd}
+        S^1 \times I \rar[hookrightarrow] & D^2 \times I \rar["R"] & D^2 \rar["\tilde{f}"] & X.
+    \end{cd}
+    This is indeed a homotopy from $f$ to $\const_{x_0}$ relative to $s_0$, which means $[f] = [\const_{x_0}]$ in the fundamental group $\pi_1(X, x_0)$, so the fundamental group must be trivial.
+
+    Assuming (c) holds, we aim to prove (a).
+    We can consider any given map $f : S^1 \to X$ as a map $(S^1, s_0) \to (X, x_0)$, where $s_0 \in S^1$ is fixed and $x_0 = f(s_0)$.
+    By (c),
+    \[
+        [f] = [\const_{x_0}] \in \pi_1(X, x_0) = 0,
+    \]
+    which means $f \htpy \const_{x_0}$.
+    (Moreover, the homotopy is relative to $s_0$, but (a) is satisfied regardless of this fact.)
+\end{proof}
+
+\begin{pbox}
+    Deduce that a space $X$ is simply-connected iff all maps $S^1 \to X$ are homotopic.
+\end{pbox}
+
+\begin{proof}
+    Assume $X$ is simply connected and let $f, g : S^1 \to X$ be any two maps.
+    As (c) is immediately satisfied, (a) tells us that $f \htpy \const_x$ and $g \htpy \const_y$ for some points $x, y \in X$.
+    With $X$ path-connected, there is a path $I \to X$ from $x$ to $y$, which can be used to describe a homotopy from $\const_x$ to $\const_y$.
+    Hence,
+    \[
+        f \htpy \const_x \htpy \const_y \htpy g.
+    \]
+
+    Assume all maps $S^1 \to X$ are homotopic.
+    For any two points $x, y \in X$, we have (homotopic) maps $\const_x, \const_y : S^1 \to X$.
+    If $\gamma : S^1 \times I \to X$ is a homotopy from $\const_x$ to $\const_y$, then we have a path $I \to X$ from $x$ to $y$, given by $t \mapsto \gamma_t(s_0)$, for any fixed $s_0 \in S^1$.
+    This shows $X$ is path-connected.
+    Every map $S^1 \to X$ is, in particular, homotopic to a constant map, i.e., (a) is satisfied.
+    By the proven equivalence, (c) is also satisfied, so we conclude that $X$ is simply connected.
+\end{proof}
+
+\begin{pbox}[6 Exercise 1.6]
+    We can regard $\pi_1(X, x_0)$ as the set of base-point preserving homotopy classes of maps $(S^1, s_0) \to (X, x_0)$.
+    Let $[S^1, X]$ be the set of homotopy classes of maps $S^1 \to X$, with no conditions on basepoints.
+    Thus there is a natural map $\Phi : \pi_1(X, x_0) \to [S^1, X]$ obtained by ignoring basepoints.
+
+    Show that $\Phi$ is surjective if $X$ is path-connected,
+\end{pbox}
+
+\begin{proof}
+    Suppose $X$ is path-connected and let $f : S^1 \to X$ be any map.
+    Let $h : I \to X$ be a path from $x_0$ to $f(s_0)$, giving us the homotopy class $[h \cdot f \cdot \overline{h}] \in \pi_1(X, x_0)$.
+    Possibly after reparameterizing, we can consider $h \cdot f \cdot \overline{h}$ to be a path $I \to X$, where on the interval $[0, \frac{1}{3}]$ we follow $h$, on $[\frac{1}{3}, \frac{2}{3}]$ we follow $f$, and on $[\frac{2}{3}, 1]$ we follow $\overline{h}$.
+    We define a homotopy of reparameterizations $\phi_t : I \to I$ by
+    \[
+        \phi_t(s) = (1 - t)s + t\tfrac{1}{3}(1 + s).
+    \]
+    Then the composition $(h \cdot f \cdot \overline{h}) \circ \phi_t$ describes a homotopy $h \cdot f \cdot \overline{h} \htpy f$.
+    (Note that this is simply a homotopy of maps, not a homotopy of paths, i.e., it need not fix basepoints.)
+    This gives us $\Phi([h \cdot f \cdot \overline{h}]) = [f]$, where $[f] \in [S^1, X]$ was chosen arbitrarily.
+\end{proof}
+
+\begin{pbox}
+    and that $\Phi([f]) = \Phi([g])$ iff $[f]$ and $[g]$ are conjugate in $\pi_1(X, x_0)$.
+    Hence $\Phi$ induces a one-to-one correspondence between $[S^1, X]$ and the set of conjugacy classes in $\pi_1(X)$, when $X$ is path-connected.
+\end{pbox}
+
+\begin{proof}
+    Suppose $\Phi([f]) = \Phi([g])$, which means $f, g : S^1 \to X$ are homotopic maps, and it happens that $f(s_0) = g(s_0) = x_0$. If the homotopy is described by a map $H : S^1 \times I \to X$, with $H(s, 0) = f(s)$ and $H(s, 1) = g(s)$, then $H(s_0, t)$ need not be constant.
+    The parameter space of $H$ can be drawn as an annulus:
+    \begin{drawing}
+        \draw (0, 0) circle (1.5cm);
+        \draw (0, 0) circle (0.5cm);
+
+        \filldraw (0, -0.5) circle (2pt) node[above] {$x_0$};
+        \filldraw (0, -1.5) circle (2pt) node[below] {$x_0$};
+        \draw (0, -0.5) -- (0, -1.5);
+
+        \node[above] at (0, 1.5) {$f$};
+        \node[above] at (0, 0.5) {$g$};
+    \end{drawing}
+    The outer edge is $f$ (where $t = 0$) and the inner edge is $g$ (where $t = 1$).
+    The line connecting the two edges is the path traced by $H(s_0, t)$.
+    In this parameter space, we construct a homotopy $\gamma_t : S^1 \to S^1 \times I$ (of loops) from the outer edge to the path up through the connecting line, around the inner edge, and back down the connecting line.
+    The homotopy could look something like the following:
+    \begin{drawing}
+        \draw (0, 0) circle (1.5cm);
+        \draw (0, 0) circle (0.5cm);
+
+        \filldraw (0, -0.5) circle (2pt);
+        \filldraw (0, -1.5) circle (2pt);
+        \draw (0, -0.5) -- (0, -1.5);
+
+        \draw[dashed] (-115 : 1.5) -- (0, -0.5) -- (-65 : 1.5);
+        \draw[thick] (0, -1.5) -- (-110 : 1) arc (250 : -70 : 1) -- cycle;
+
+        \node[above] at (0, 1.5) {$\gamma_0$};
+        \node[below] at (0, 0.5) {$\gamma_1$};
+        \node[above] at (0, 1) {$\gamma_t$};
+    \end{drawing}
+    Then $H \circ \gamma_t$ gives us a homotopy of loops from $\gamma_0 = f$ to $\gamma_1 = h \cdot g \cdot \overline{h}$, where $h$ is the loop $(S^1, s_0) \to (X, x_0)$ following $H(s_0, t)$.
+    Since $\gamma_t(s_0) = (s_0, 0)$ for all $t$, then $H \circ \gamma_t$ is a homotopy relative to the basepoints.
+    So in $\pi_1(X, x_0)$ we have
+    \[
+        [f]
+            = [h \cdot g \cdot \overline{h}]
+            = [h] [g] [h]^{-1},
+    \]
+    which is to say that $[f]$ and $[g]$ are conjugate.
+
+    Let $f, h : (S^1, s_0) \to (X, x_0)$ be loops---then $[f]$ and $[h \cdot f \cdot \overline{h}]$ are conjugate in $\pi_1(X, x_0)$.
+    There is a homotopy of parameters $\phi_t : S^1 \to S^1$ given by rotating the circle up to a third of a full revolution.
+    In other words, $\phi_t$ moves all the points along the circle $S^1$ at a constant rate of $1/3$ revolutions per unit time.
+    Assuming $h \cdot f \cdot \overline{h}$ is nicely parameterized into thirds, the composition $(h \cdot f \cdot \overline{h}) \circ \phi_t$ describes a homotopy of maps between $h \cdot f \cdot \overline{h}$ and $f \cdot \overline{h} \cdot h$.
+    Hence, $h \cdot f \cdot \overline{h} \htpy f \cdot \overline{h} \cdot h \htpy f$, where both homotopies are as maps $S^1 \to X$ (and the second is also as loops based at $x_0$), so in fact $\Phi([f]) = \Phi([g])$.
+\end{proof}
+
+\begin{pbox}[7 Exercise 1.9]
+    Let $A_1, A_2, A_3$ be compact sets in $\R^3$.
+    Use the Borsuk-Ulam theorem to show that there is one plane $P \seq \R^3$ that simultaneously divides each $A_i$ into two pieces of equal measure.
+\end{pbox}
+
+\begin{proof}
+    We consider $S^2$ as the unit sphere in $\R^3$.
+    A plane in $\R^3$ is determined by a normal vector $v \in S^2$ and a distance $r \in \R$ from the origin, in the direction of the normal vector.
+    That is, each point $(v, r) \in S^2 \times \R$ defines a plane
+    \[
+        P(v, r) = \{x \in \R^3 \mid v \cdot x = r\}.
+    \]
+    Notice that each plane can be written in exactly two ways: $P(v, r) = P(-v, -r)$.
+    This relates to the fact that $P(v, r)$ divides $\R^3$ into two (closed) half-spaces, defined by
+    \[
+        H(v, r) = \{x \in \R^3 \mid v \cdot x \geq r\}
+        \isp{and}
+        H(-v, -r) = \{x \in \R^3 \mid v \cdot x \leq r\},
+    \]
+    and whose intersection is the plane $P(v, r)$.
+    Let $\lambda$ be the Lebesgue measure on $\R^3$.
+    For $i = 1, 2, 3$ define the function $h_i : S^2 \times \R \to \R$ by
+    \[
+        h_i(v, r) = \lambda(A_i \cap H(v, r)).
+    \]
+    Since the $A_i$'s are compact, they have finite measure.
+    We know that $\lambda(P(v, r)) = 0$ and half-spaces are Lebesgue-measurable, so
+    \[
+        \lambda(A_i)
+            = \lambda(A_i \cap H(v, r)) + \lambda(A_i \cap H(-v, -r))
+            = h_i(v, r) + h_i(-v, -r) < \infty.
+    \]
+    In other words, the plane $P(v, r)$ divides $A_i$ into two pieces, one with measure $h_i(v, r)$ and the other with measure $h_i(-v, -r)$.
+    Define the function $f_i : S^2 \times \R \to \R$ by
+    \[
+        f_i(v, r) = h_i(v, r) - h_i(-v, -r).
+    \]
+    Notice that $f_i(v, r) = -f_i(-v, -r)$ and $f_i(v, r) = 0$ if and only if $P(v, r)$ divides $A_i$ into two pieces of equal measure.
+
+    For a fixed $v \in S^2$, there is a real function $\R \to \R$ where $r \mapsto f_i(v, r)$.
+    As $A_i \seq \R^3$ is compact, it is contained in a ball $B_R(0)$ for some $R > 0$.
+    On one hand,
+    \[
+        A_i \seq B_R(0) \seq H(v, -R),
+    \]
+    which means $h_i(v, -R) = \lambda(A_i)$, so $f_i(v, -R) = \lambda(A_i)$.
+    On the other hand,
+    \[
+        A_i \seq B_R(0) \seq (\R^3 \setminus H(v, R)),
+    \]
+    which means $h_i(v, R) = 0$, so $f_i(v, R) = -\lambda(A_i)$.
+    One can check that $f_i$ is continuous, so the intermediate value theorem tells us there must be some $r \in (-R, R)$ such that $f_i(v, r) = 0$.
+    We can therefore make a choice of function $r_i : S^2 \to \R$ such that $f_i(v, r_i(v)) = 0$ for all $v \in S^2$.
+    
+    \textit{Note.} We will assume that $r_i$ may be chosen to be continuous.
+    I believe this can be shown using the hypothesis that $A_i$ is compact, since that should allow for small changes in $v$ to necessitate (at most) small changes in $r_i(v)$.
+    Moreover, we would like for $r_i(-v) = -r_i(v)$.
+
+    For the next construction, we will use $r_3$ to ensure that $A_3$ is always divided into parts of equal measure.
+    Define the function $f : S^2 \to \R^2$ by
+    \[
+        f(v) = \big(f_1(v, r_3(v)),\; f_2(v, r_3(v))\big).
+    \]
+    By the Borsuk-Ulam theorem, there is a point $v \in S^2$ such that $f(v) = f(-v)$.
+    But since
+    \[
+        f_i(-v, r_3(-v)) = f_i(-v, -r_3(v)) = -f_i(v, r_3(v)),
+    \]
+    we must have $f_i(v, r_3(v)) = 0$ for $i = 1, 2$.
+    Since we have $f_3(v, r_3(v)) = 0$ by choice of $r_3$, we conclude that the plane $P(v, r_3(v))$ divides each $A_i$ into two pieces of equal measure.
+\end{proof}
+
+\begin{pbox}[8 Exercise 1.11]
+    If $X_0$ is the path-component of a space $X$ containing the basepoint $x_0$, show that the inclusion $X_0 \inc X$ induces an isomorphism $\pi_1(X_0, x_0) \to \pi_1(X, x_0)$.
+\end{pbox}
+
+\begin{proof}
+    Suppose $[f] \in \pi_1(X_0, x_0)$ is is the kernel of the induced homomorphism, which means there is a homotopy of loops $f \htpy \const_{x_0}$ in $X$.
+    Since $f$ is a loop in $X_0$, and the homotopy to $\const_{x_0}$ takes every point on $f(I)$ to $x_0$ through a path in $X$, that path must be contained in the path-component of $x_0$.
+    That is, the homotopy from $f$ to $\const_{x_0}$ must be entirely contained in $X_0$, which means $f \htpy \const_{x_0}$ in $X_0$.
+    We conclude that $[f] = [\const_{x_0}] \in \pi_1(X_0, x_0)$, hence the induced homomorphism is injective.
+
+    Given any homotopy class $[f] \in \pi_1(X, x_0)$, the loop $f$ is a path in $X$ with both endpoints at $x_0$.
+    So every point along the path is path-connected to $x_0$, and therefore contained in the path-component of $x_0$.
+    This means that $f$ is a loop in $X_0$, so $[f] \in \pi_1(X_0, x_0)$.
+    Hence, the induced homomorphism is surjective.
+\end{proof}
+
+\begin{pbox}[9 Exercise 1.13]
+    Given a space $X$ and a path-connected subspace $A$ containing the basepoint $x_0$, show that the map $\pi_1(A, x_0) \to \pi_1(X, x_0)$ induced by the inclusion $A \inc X$ is surjective iff every path in $X$ with endpoints in $A$ is homotopic to a path in $A$.
+\end{pbox}
+
+\begin{proof}
+    Suppose the map is surjective and let $f : I \to X$ be a path with endpoints in $A$.
+    Since $A$ is path-connected, there exist paths $\alpha, \beta : I \to A$ such that
+    \[
+        \alpha(0) = x_0,
+            \quad \alpha(1) = f(0),
+            \qquad \beta(0) = f(1),
+            \quad \beta(1) = x_0.
+    \]
+    Then $\alpha \cdot f \cdot \beta$ is a loop in $X$ based at $x_0$.
+    By assumption, there is a loop $g : (I, \bd I) \to (A, x_0)$ such that $[\alpha \cdot f \cdot \beta] = [g] \in \pi_1(X, x_0)$.
+    That is, there is a homotopy of paths $\alpha \cdot f \cdot \beta \htpy g$ in $X$, described by a map $H : I \times I \to X$ with $H(s, 0) = \alpha \cdot f \cdot \beta$ and $H(s, 1) = g$.
+    The parameter space of $H$ can be drawn as follows:
+    \begin{drawing}
+        \filldraw (0, 0) circle (2pt) node[anchor=north east] {$x_0$};
+        \filldraw (3, 0) circle (2pt) node[anchor=north west] {$x_0$};
+        \filldraw (0, 2) circle (2pt) node[anchor=south east] {$x_0$};
+        \filldraw (3, 2) circle (2pt) node[anchor=south west] {$x_0$};
+
+        \filldraw (1, 2) circle (2pt) node[anchor=south] {$f(0)$};
+        \filldraw (2, 2) circle (2pt) node[anchor=south] {$f(1)$};
+
+
+        \draw (0, 0) rectangle (3, 2);
+
+        \draw[->] (-0.5, 1.5) -- (-0.5, 0.5) node[midway, anchor=east] {$t$};
+        \draw[->] (1, -0.5) -- (2, -0.5) node[midway, anchor=north] {$s$};
+    \end{drawing}
+    The three segments along the top edge are $\alpha$, $f$, and $\beta$, respectively, and the bottom edge is $g$.
+    In this parameter space, we construct a homotopy $\gamma_t : I \to I \times I$ of paths from the middle segment on the top edge to the path around the edge using the other segments.
+    In particular, we split the top middle segment into fifths, each being sent to the corresponding segment on the edge of the square.
+    The homotopy could look something like the following:
+    \begin{drawing}
+        \filldraw (0, 0) circle (2pt);
+        \filldraw (3, 0) circle (2pt);
+        \filldraw (0, 2) circle (2pt);
+        \filldraw (3, 2) circle (2pt);
+        \filldraw (1, 2) circle (2pt);
+        \filldraw (2, 2) circle (2pt);
+
+        \draw (0, 0) rectangle (3, 2);
+
+        \draw[dashed] (1.4, 2) -- (0, 0);
+        \draw[dashed] (1.6, 2) -- (3, 0);
+        \draw[dashed] (0, 2) arc (-135 : -45 : 0.849);
+        \draw[dashed] (3, 2) arc (-45 : -135 : 0.849);
+
+        \draw[thick] (1, 2) -- (0.6, 1.75) -- (0.7, 1) -- (2.3, 1) node[midway, above] {$\gamma_t$} -- (2.4, 1.75) -- (2, 2);
+
+        \node[anchor=south] at (1.5, 2) {$\gamma_0$};
+        \node[anchor=north] at (1.5, 0) {$\gamma_1$};
+    \end{drawing}
+    With a reparameterization, this gives us the homotopy of paths
+    \[
+        f
+            = \gamma_0
+            \htpy \gamma_1
+            \htpy \overline{\alpha} \cdot \const_{x_0} \cdot g \cdot \const_{x_0} \cdot \overline{\beta}
+            \htpy \overline{\alpha} \cdot g \cdot \overline{\beta}.
+    \]
+    Since, $\overline{\alpha}$, $g$, and $\overline{\beta}$ are all paths in $A$, so is their composition.
+    Hence, this is the desired homotopy of $f$.
+
+    Suppose every path in $X$ with endpoints in $A$ is homotopic to a path in $A$.
+    Choose any homotopy class $[f] \in \pi_1(X, x_0)$, for a loop $f : (I, \bd I) \to (X, x_0)$.
+    Since $x_0 \in A$, then by assumption, $f$ is homotopic to a path $g : (I, \bd I) \to (A, x_0)$.
+    Then $[g]$ is a well-defined homotopy class in $\pi_1(A, x_0)$, and we have $[f] = [g] \in \pi_1(X, x_0)$.
+    Hence, the induced map is surjective.
+\end{proof}
+
+
+\end{document}

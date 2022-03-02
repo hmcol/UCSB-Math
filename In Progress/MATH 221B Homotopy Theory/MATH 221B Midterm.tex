@@ -1,0 +1,457 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+\usepackage[shortlabels]{enumitem}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+\newcommand{\inc}{\hookrightarrow}
+
+% Extra Commands
+\newcommand{\ovl}{\overline}
+\newcommand{\htpy}{\simeq}
+\newcommand{\bd}{\partial}
+
+\newcommand{\const}{\mathrm{const}}
+
+
+% Document
+\begin{document}
+\title{MATH 221B Midterm}
+\author{Harry Coleman}
+\date{February 28, 2022}
+\maketitle
+
+\phantom{.}
+
+\begin{pbox}[1 Exercise 1.2.1]
+    Show that the free product $G * H$ of nontrivial groups $G$ and $H$ has trivial center,
+\end{pbox}
+
+\begin{proof}
+    Each element $x \in G * H$ can be uniquely written as word $x = x_1 \cdots x_n$ such that
+    \begin{enumerate}[(i)]
+        \item $x_i \in (G \sqcup H) \setminus \{1_G, 1_H\}$,
+        \item $x_i \in G$ implies $x_{i+1} \in H$, and $x_i \in H$ implies $x_{i+1} \in G$.
+    \end{enumerate}
+    (As usual, the identity corresponds to the empty word.)
+    We will call a word $x_1 \cdots x_n$ satisfying (i) and (ii) an \textit{alternating reduced word} (in $G$ and $H$).
+    To see this, one could put a suitable group structure on the set of alternating reduced words and check that this group satisfies the necessary universal property of the free product for $G * H$.
+    It follows that the map $x \mapsto x_1 \cdots x_n$ is necessarily an isomorphism.
+
+
+    Suppose $x$ is in the center of $G * H$ and has alternating reduced word $x = x_1 \cdots x_n$.
+    Then
+    \[
+        x = x_1^{-1}xx_1 = x_2 \cdots x_n x_1.
+    \]
+    We now show that $x_1 \cdots x_n$ must be the empty word, corresponding to the identity, by considering a number of cases, with regards to the value of $n$ and whether or not certain letters in the alternating reduced word of $x$ are contained in the same group.
+
+    If $n \geq 2$ and $x_n$ and $x_1$ are not elements of the same group (i.e., one in $G$ and the other in $H$), then $x_2 \cdots x_n x_1$ is an alternating reduced word for $x$.
+    However, property (ii) requires that $x_1$ and $x_2$ are from different groups, so $x_2 \cdots x_nx_1$ and $x_1 \cdots x_n$ must be different words.
+    But the alternating reduced word is unique, so this is a contradiction.
+
+    If $n \geq 2$ and $x_n$ and $x_1$ are elements of the same group, we can define $y = x_nx_1 \in G \sqcup H$.
+    If $y$ is not the identity, then $x_2 \cdots x_{n-1}y$ is an alternating reduced word with $n-1$ letters.
+    Otherwise, $x_2 \cdots x_{n-1}$ is an alternating reduced word with $n-2$ letters.
+    In either case, we find an alternating reduced word for $x$ different from $x_1 \cdots x_n$ (each has strictly fewer letters), which is a contradiction.
+
+    If $n = 1$ then, without loss of generality, assume $x = x_1 \in G \setminus \{1_G\}$.
+    Since $H$ is nontrivial, we can pick some $h \in H \setminus\{1_H\}$.
+    Then
+    \[
+        x = hxh^{-1} = hx_1h^{-1}
+    \]
+    is an alternating reduced word for $x$ different from $x_1$, which is a contradiction.
+
+    We conclude that $n = 0$, i.e., $x$ is the empty word---the identity in $G * H$.
+\end{proof}
+
+\begin{pbox}
+    and that the only elements of $G * H$ of finite order are the conjugates of finite-order elements of $G$ and $H$.
+\end{pbox}
+
+\begin{proof}
+    An element of $G$ or $H$ has the same order when included into $G * H$, and all the conjugates of an element have the same order.
+    In particular, conjugates of finite-order elements of $G$ and $H$ are finite order in $G * H$.
+    It remains to show that all elements of finite order in $G * H$ have the described form.
+
+    Suppose $x \in G * H$ has $x^k = 1$ and reduced word $x = x_1 \cdots x_n$.
+    If $n = 1$, then the result is immediate as $x = x_1$ is a finite order element of $G$ or $H$.
+    Assuming $n \geq 2$, we write
+    \[
+        1 = x^k = (x_1 \cdots x_n)(x_1 \cdots x_n) \cdots (x_1 \cdots x_n).
+    \]
+    If $x_n$ and $x_1$ are not elements of the same group, then the word obtained by concatenating $x_1 \cdots x_n$ with itself $k$ times is an alternating reduced word.
+    However, the identity has the empty word, so this cannot be the case.
+    Similarly, if $x_n$ and $x_1$ are elements of the same group (implying $n \geq 3$) but their product $y = x_n x_1$ is not the identity of that group, we again obtain a nonempty alternating reduced word
+    \[
+        1 = (x_1 \cdots x_{n-1})y(x_2 \cdots x_{n-1}) \cdots y(x_2 \cdots x_n).
+    \]
+    Again, this is a contradiction, and it follows that $y$ is the identity in its respective group, so $x_n = x_1^{-1}$.
+    Repeating the same argument, $x_{n-1} = x_2^{-1}$ and so on.
+    If $n$ is even, this implies $x = 1$.
+    If $n$ is odd, we deduce that $x = yx_iy^{-1}$ where $i = (n+1)/2$.
+    Then
+    \[
+        1 = x^k = yx_i^ky^{-1},
+    \]
+    which implies $x_i^k = 1$, i.e., $x_i$ is an element of finite order in its group ($G$ or $H$).
+\end{proof}
+
+
+
+\begin{pbox}[2 Exercise 1.2.2]
+    Let $X \seq \R^m$ be the union of convex open sets $X_1, \dots, X_n$ such that $X_i \cap X_j \cap X_k \ne \emptyset$ for all $i, j , k$.
+    Show that $X$ is simply-connected.
+\end{pbox}
+
+\begin{proof}
+    We first show $X$ is path-connected.
+    Let $x, y \in X$---say $x \in X_i$ and $y \in X_j$.
+    Then for any $k$, there exists some point
+    \[
+        z \in X_i \cap X_j \cap X_k \ne \emptyset.
+    \]
+    Take $\ovl{xz} : I \to \R^m$ to be the straight line path from $x$ to $z$, then $\ovl{xz}(I) \seq X_i$ since $X_i$ is convex.
+    Similarly, $\ovl{zy}(I) \seq X_j$, so $\ovl{xz} \cdot \ovl{zy}$ is a path in $X$ from $x$ to $y$.
+    Hence, $X$ is path connected.
+    
+    We now prove that $\pi_1(X) = 0$ by induction on $n$.
+    For $n = 1$, the convex set $X = X_1$ is simply-connected, so $\pi_1(X) = 0$.
+    For the inductive hypothesis, assume that for any $i$, we have $\pi_1(\bigcup_{j \ne i} X_j) = 0$, i.e., the union of any $n-1$ of the sets is simply-connected.
+
+    Let $f$ be a loop in $X$ based at $x_0 \in X$.
+    We will show that $f$ is homotopic to a loop entirely contained in the union of $n - 1$ of the $X_i$'s.
+    If this is the case, then the inductive hypothesis will imply that $f$ is in fact homotopic to the constant loop at $x_0$, proving that $\pi_1(X) = 0$.
+
+    Each $f^{-1}(X_i)$ is an open set in $I = [0, 1] \seq \R$ and therefore the union of disjoint open intervals $\bigcup_j (a_{i, j}, b_{i, j})$ (intersected with $I$).
+    Then the collection $\{(a_{i, j}, b_{i, j})\}_{i, j}$ is an open cover of $I \seq \R$.
+    By the Lebesgue number lemma, there is some $\eps > 0$ such that each interval $(x, x + \eps) \seq I$ is entirely contained in some interval $(a_{i, j}, b_{i, j})$.
+    Choose $N \in \N$ such that $1/N < \eps$, and define $t_0 = 0$.
+    For each $\ell \geq 1$, define
+    \[
+        t_\ell = \max \{\tfrac{a}{N} \mid a \in \Z \text{ and } [t_{\ell-1}, \tfrac{a}{N}] \seq f^{-1}(X_i) \text{ for some } i\}.
+    \]
+    The choice of $\eps$ and $N$ ensures that we could at least take $t_\ell \geq t_{\ell-1} + 1/N$, so this procedure will eventually finish, giving us a partition of the interval $I$.
+    Take $r$ to be the first index with $t_r = 1$; this is the last point in the partition.
+    For $\ell = 1, \dots, r$, let $f_\ell$ be the path obtained by restricting $f$ to the interval $[t_{\ell-1}, t_\ell]$.
+    Then $f$ factors into
+    \[
+        f = f_1 \cdots f_r
+    \]
+    and each $f_\ell$ is contained in some $X_i$, but $f_\ell$ and $f_{\ell+1}$ are not contained in the same $X_i$.
+    Without loss of generality, we may assume that $f_1$ is contained in $X_1$.
+
+    Suppose $\ell \geq 2$ is an index such that $f_\ell$ is contained in $X_n$ and no other $X_i$ for $i \ne n$.
+    By construction, $f_{\ell-1}$ is contained in $X_i$ for some $i \ne n$ and $f_{\ell+1}$ is contained in $X_j$ for some $j \ne n$.
+    In particular,
+    \[
+        f_\ell(0) = f_{\ell-1}(1) \in X_i \cap X_n \isp{and} f_\ell(1) = f_{\ell+1}(0) \in X_j \cap X_n
+    \]
+    Choose a point $x \in X_i \cap X_j \cap X_n \ne \emptyset$.
+    We can homotope $f_\ell$ inside of $X_n$ to the piecewise linear path $\ovl{f_\ell(0) x} \cdot \ovl{x f_\ell(1)}$, with the first segment contained in $X_i$ and the second segment contained in $X_j$.
+    That is, $f_\ell$ is homotopic to a path contained in $X_i \cup X_j$ for $i \ne n$ and $j \ne n$.
+    Doing this for each such $\ell$, we deduce that $f$ is homotopic to a loop in $\bigcup_{i=1}^{n-1} X_i$ based at $x_0$, completing the induction.
+\end{proof}
+
+
+\begin{pbox}[3 Exercise 1.2.3]
+    Show that the complement of a finite set of points in $\R^n$ is simply-connected if $n \geq 3$.
+\end{pbox}
+
+\begin{proof}
+    By Problem 6 (Hatcher Exercise 1.2.6), it suffices to show that a finite set of points in $\R^n$ is closed and discrete. 
+    Given a finite set of points $C \seq \R^n$, and any point $x \in \R^n$, we can define the radius
+    \[
+        r = \min\{\|x - y\| : y \in C\} > 0.
+    \]
+    If $x \notin C$, then $B_r(x) \cap C = \emptyset$, so $C$ is closed.
+    If $x \in C$, then $B_r(x) \cap C = \{x\}$, so $C$ is discrete.
+\end{proof}
+
+\begin{pbox}[4 Exercise 1.2.4]
+    Let $X \seq \R^3$ be the union of $n$ lines through the origin.
+    Compute $\pi_1(\R^3 \setminus X)$.
+\end{pbox}
+
+Denote $Y = \R^3 \setminus X$.
+
+For $n = 0$, we have $\pi_1(Y) = \pi_1(\R^3) = 0$.
+
+Assume $n \geq 1$.
+In this case, $Y$ does not contain the origin, so we can construct a deformation retraction of $Y$ onto its intersection with the unit sphere $S^2 \cap Y = S^2 \setminus X$.
+Explicitly, we can take the straight line homotopy $h_t : Y \to Y$ with $h_0 = \id_Y$ and $h_1$ a retraction of $Y$ onto $S^2 \setminus X$, where each point of $Y$ is homotoped to its normalization:
+\[
+    h_t(y) = (1- t)y + t \frac{y}{\|y\|}.
+\]
+We deduce the homotopy equivalence $Y \htpy S^2 \setminus X$, where $S^2 \setminus X$ is the $2$-dimensional sphere with $n$ pairs of antipodal points removed.
+Unfolding the sphere at one of the removed points, we find that space is in fact homeomorphic to an open disc (a $2$-cell) with $2n-1$ points removed.
+Slightly deforming the boundary, this is homotopy equivalent to a closed disc with the same number of very small discs removed:
+\begin{drawing}
+    \begin{scope}[xshift=-2.5cm]
+        \fill[gray!20] (0, 0) circle (1.5);
+        \foreach \p in {(0, 0), (0.2, 1), (1, 0), (0.5, -0.7), (-0.5,-0.2), (-0.4, -0.9), (-0.8, 0.6), (-1, -0.5), (0.4, 0.3)} {
+            \fill[white] \p circle (2pt);
+        }
+    \end{scope}
+    \node at (0, 0) {$\htpy$};
+    \begin{scope}[xshift=2.5cm]
+        \draw[fill=gray!20] (0, 0) circle (1.5);
+        \foreach \p in {(0, 0), (0.2, 1), (1, 0), (0.5, -0.7), (-0.5,-0.2), (-0.4, -0.9), (-0.8, 0.6), (-1, -0.5), (0.4, 0.3)} {
+            \draw[fill=white] \p circle (4pt);
+        }
+    \end{scope}
+\end{drawing}
+
+We can freely move these holes around the disc and maintain a homeomorphic space; for instance, we might distribute the holes around the disc near the boundary.
+There is a deformation retraction of this space onto a wheel of circles, each connected by a spoke to the center point:
+\begin{drawing}
+    \begin{scope}[xshift=-2.5cm]
+        \draw[fill=gray!20] (0, 0) circle (1.5);
+        \foreach \a in {0, 1, 2, 3, 4, 5, 6, 7, 8} {
+            \draw[fill=white] (360 * \a / 9 : 1.1) circle (0.3);
+        }
+    \end{scope}
+    \node at (0, 0) {$\htpy$};
+    \begin{scope}[xshift=2.5cm]
+        \foreach \a in {0, 1, 2, 3, 4, 5, 6, 7, 8} {
+            \draw (360 * \a / 9 : 1.1) circle (0.3);
+            \draw (0, 0) -- (360 * \a / 9 : 0.8);
+        }
+    \end{scope}
+\end{drawing}
+Collapsing each spoke, we obtain the wedge sum of $2n-1$ circles, i.e., $Y \htpy \bigvee^{2n-1} S^1$, so
+\[\textstyle
+    \pi_1(Y)
+        \isom \pi_1(\bigvee^{2n-1} S^1)
+        \isom *^{2n-1} \pi_1(S^1)
+        \isom *^{2n-1} \Z.
+\]
+In other words, $\pi_1(Y)$ is the free group on $2n - 1$ generators.
+
+\begin{pbox}[5 Exercise 1.2.5]
+    Let $X \seq \R^2$ be a connected graph that is the union of a finite number of straight line segments.
+    Show that $\pi_1(X)$ is free with a basis consisting of loops formed by the boundaries of the bounded complementary regions of $X$, joined by suitably chosen paths in $X$.
+\end{pbox}
+
+\begin{proof}
+    In the style of Hatcher Section 1.A, we take a graph $X$ to be a $1$-dimensional CW complex with vertex set $X^0$ and edges $\{I_\alpha\}_\alpha$.
+
+    The choice of $X \seq \R^2$ as the union of finitely many straight line segments means, in particular, that $X$ is a planar graph.
+    We will allow $X$ to be any connected planar graph with finitely many edges.
+
+    If $X$ has only one vertex $v_0 \in X^0$, it is the wedge sum of (finitely many) circles $\bigvee_\alpha S^1_\alpha$, one for each edge $e_\alpha$.
+    Then $\pi_1(X)$ is a free group, with basis of loops $S^1_\alpha \to X$, which are precisely the boundaries of the bounded complementary regions of $X$.
+
+    Suppose now that $X$ has more than one vertex, but still only finitely many. Denote the bounded complementary regions $R_i \seq \R^2 \setminus X$ for $i = 1, \dots, m$; these are the connected components of $\R^2 \setminus X$. 
+    Let $f_i$ be a loop in its boundary $\bd R_i \seq X$ based at some vertex $v_i \in X^0$ also in its boundary.
+    Let $R_0$ be the exterior complementary region of $X$ and choose any vertex $v_0 \in X^0$ to be the basepoint.
+    
+    Pick a pair of distinct adjacent vertices $u, v \in X$ and an edge $I_\alpha = \clo{e}_\alpha$ between them.
+    This edge lies on the boundary of each of two regions, $R_i$ and $R_j$, for some $i$ and $j$ not necessarily distinct.
+    By Proposition 0.17, the quotient $X \to X/I_\alpha$ is a homotopy equivalence.
+    Moreover, $X/I_\alpha$ is still a connected planar graph with exactly one less edge and one less vertex than $X$.
+    Allowing curved edges, we can embed $X/I_\alpha$ into $\R^2$ such that the graph structure is preserved, giving us something like the following picture:
+    \begin{drawing}
+        \begin{scope}
+            \draw[thick] (0, 0) -- (1, 0);
+            \fill (0, 0) circle (2pt) node[left] {$u$};
+            \fill (1, 0) circle (2pt) node[right] {$v$};
+            
+            \foreach \a in {112.5, 135, 225, 247.5} {
+                \draw (0, 0) -- (\a : 1);
+            }
+            \node at (-0.75, 0.1) {$\vdots$};
+    
+            \foreach \a in {67.5, 45, -45, -67.5} {
+                \draw (1, 0) -- +(\a : 1);
+            }
+            \node at (1.75, 0.1) {$\vdots$};
+    
+            \node at (0.5, 0.5) {$R_i$};
+            \node at (0.5, -0.5) {$R_j$};
+        \end{scope}
+        \begin{scope}[xshift=3cm]
+            \node at (0, 0) {$\htpy$};
+        \end{scope}
+        \begin{scope}[xshift=5cm]
+            \fill (0.5, 0) circle (2pt);
+            
+            \foreach \a in {112.5, 135, 225, 247.5} {
+                \draw (0.5, 0) -- (\a : 1);
+            }
+            \node at (-0.5, 0.1) {$\vdots$};
+    
+            \foreach \a in {67.5, 45, -45, -67.5} {
+                \draw (0.5, 0) -- ([xshift=1cm]\a : 1);
+            }
+            \node at (1.5, 0.1) {$\vdots$};
+    
+            \node at (0.5, 0.75) {$R_i'$};
+            \node at (0.5, -0.75) {$R_j'$};
+        \end{scope}
+    \end{drawing}
+    The regions $R_i$ and $R_j$ of $X$ are distinct if and only if the regions $R_i'$ and $R_j'$ of $X/I_\alpha$ are distinct.
+    Moreover, each loop $f_k$ in $\bd R_k$ is sent to a loop $f_k'$ in $\bd R_k'$ based at the corresponding vertex $v_k'$ of $X/I_\alpha$.
+
+    We repeatedly perform this procedure until we obtain a graph with only one vertex, by collapsing some choice of edges $\{e_\alpha\}_{\alpha \in A}$ of $X$.
+    Then $T = \bigcup_{\alpha \in A} I_\alpha$ is a maximal tree in $X$ and the quotient $X \to X/T$ is a homotopy equivalence.
+    And, as discussed above, $\pi_1(X/T)$ is a free group with basis consisting of a loop for each edge in $X/T$.
+    The edges in $X/T$ are precisely the boundaries of the bounded complementary regions, which correspond to those of $X$ under the quotient, so the loops $f_i'$ in $X/T$ provide a basis for $\pi_1(X/T)$.
+
+    For each $i = 1, \dots, m$, let $\gamma_i$ be a path in $T$ from $v_0$ to $v_i$; this corresponds to a constant loop in $X/T$ based at $v_0'$.
+    Then $\gamma_i \cdot f_i \cdot \ovl{\gamma_i}$ is a loop in $X$ based at $v_0$ and whose homotopy class in $\pi_1(X/T)$ is
+    \[
+        [\gamma_i' \cdot f_i' \cdot \ovl{\gamma_i}']
+            = [\gamma_i'][f_i'][\gamma_i']^{-1}
+            = [f_i'].
+    \]
+    It follows that the loops $\gamma_i \cdot f_i \cdot \ovl{\gamma_i}$ provide a basis for the free group $\pi_1(X) \isom \pi_1(X/T)$.
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[6 Exercise 1.2.6]
+    Suppose a space $Y$ is obtained from a path-connected subspace $X$ by attaching $n$-cells for a fixed $n \geq 3$.
+    Show that the inclusion $X \inc Y$ induces an isomorphism on $\pi_1$.
+    [See proof of Proposition 1.26.]
+\end{pbox}
+
+\textbf{The print version of the textbook includes this part of the problem, but the PDF version does not.
+It looks like the PDF version simply proves this generalization of  the print version's proposition.
+I'm leaving it here because I typed it up.} 
+
+\begin{proof}
+    Suppose we attach $n$-cells $e^n_\alpha$ with attaching maps $\phi_\alpha : S^{n-1} \to X$.
+    Choose basepoints $s_0 \in S^{n-1}$ and $x_0 \in X$, and choose paths $\gamma_\alpha$ in $X$ from $x_0$ to $\phi_\alpha(s_0)$.
+    Then for any loop $f$ in $S^{n-1}$ based at $s_0$, there is a loop
+    \[
+        f_\alpha = \gamma_\alpha \cdot (\phi_\alpha \circ f) \cdot \ovl{\gamma_\alpha}
+    \]
+    in $X$ based at $x_0$.
+    Since $S^{n-1}$ is simply-connected, this loop is nullhomotopic in $X$ (relative to $x_0$).
+
+    We perform the following---slightly modified---construction from the proof of Proposition 1.26:
+    Let us expand $Y$ to a slightly larger space $Z$ that deformation retracts onto $Y$ and is more convenient for applying van Kampen's theorem.
+    The space $Z$ is obtained from $Y$ by attaching rectangular strips $S_\alpha = I \times I$, with the lower edge $I \times \{0\}$ attached along $\gamma_\alpha$, the right edge $\{1\} \times I$ attached along an arc $e^n_\alpha$, and all the left edges $\{0\} \times I$ of the different strips identified together.
+    The top edges of the strips are not attached to anything, and this allows us to deformation retract $Z$ onto $Y$.
+
+    In each cell $e^n_\alpha$ choose a point $y_\alpha$ not in the arc along which $S_\alpha$ is attached.
+    Let $A = Z \setminus \bigcup_\alpha\{y_\alpha\}$ and let $B = Z \setminus X$.
+    Then $A$ deformation retracts onto $X$, and $B$ is contractible.
+    Since $\pi_1(B) = 0$, van Kampen's theorem applied to the cover $\{A, B\}$ of $Z$ says that
+    \[
+        \pi_1(Z) \isom \pi_1(A) / \<\!\<\im(\pi_1(A \cap B) \to \pi_1(A))\>\!\>.
+    \]
+    However, $\pi_1(A \cap B)$ is trivial.
+    This can be shown by another application of van Kampen's theorem, this time to the cover of $A \cap B$ by the open sets $A_\alpha = A \cap B \setminus \bigcup_{\beta \ne \alpha} e^n_\beta$.
+    Since $A_\alpha$ deformation retracts onto a sphere $S^{n-1}$ in $e^n_\alpha \setminus \{y_\alpha\}$, we have $\pi_1(A_\alpha) \isom \pi_1(S^{n-1}) = 0$.
+    It follows that
+    \[
+        \pi_1(X) \isom \pi_1(A) \isom \pi_1(Z) \isom \pi_1(Y),
+    \]
+    with the isomorphism being induced by the inclusion $X \inc Y$.
+\end{proof}
+
+\begin{pbox}
+    Use Proposition 1.26 to show that to show that the complement of a closed discrete subspace of $\R^n$ is simply-connected if $n \geq 3$.
+\end{pbox}
+
+\begin{proof}
+    Let $\bigcup_\alpha\{x_\alpha\} \seq \R^n$ be the closed discrete subspace.
+    For each $\alpha$, there is a radius $r_\alpha > 0$ such that the open ball $B_{r_\alpha}(x_\alpha) \seq \R^n$ contains no other points $x_\beta$ for $\beta \ne \alpha$.
+    Let $B_\alpha = B_{r_\alpha/2}(x_\alpha)$ be the open ball of half the radius, also centered at $x_\alpha$.
+    Then $B_\alpha \cap B_\beta = \emptyset$ for $\alpha \ne \beta$.
+    Each punctured closed ball $\clo{B_\alpha} \setminus \{x_\alpha\}$ deformation retracts onto its unpunctured boundary $\bd B_\alpha \isom S^{n-1}$.
+    Gluing these deformation retractions together and taking the identity elsewhere, we obtain a deformation retraction of $\R^n \setminus \bigcup_\alpha \{x_\alpha\}$ onto $\R^n \setminus \bigcup_\alpha B_\alpha$.
+    We can now reconstruct $\R^n$ by attaching $n$-cells $e^n_\alpha$, via attaching maps $S^{n-1} \to \bd B_\alpha$, filling in each of the holes formed by removing $B_\alpha$.
+    By the previous result (part of Proposition 1.26 in ), we conclude
+    \[\textstyle
+        \pi_1(\R^n \setminus \bigcup_\alpha \{x_\alpha\})
+            \isom \pi_1(\R^n \setminus \bigcup_\alpha B_\alpha)
+            \isom \pi_1(\R^n)
+            = 0.
+    \]
+\end{proof}
+
+
+\begin{pbox}[7 Exercise 1.2.8]
+    Compute the fundamental group of the space obtained from two tori $S^1 \times S^1$ by identifying a circle $S^1 \times \{x_0\}$ in one torus with the corresponding circle $S^1 \times \{x_0\}$ in the other torus.
+\end{pbox}
+
+This space is simply $S^1 \times (S^1 \vee S^1)$, so we can compute
+\[
+    \pi_1(S^1 \times (S^1 \vee S^1))
+        \isom \pi_1(S^1) \times \pi_1(S^1 \vee S^1)
+        \isom Z \times (\pi_1(S^1) * \pi_1(S^1))
+        \isom \Z \times (\Z * \Z).
+\]
+This group has three copies of $\Z$, the first of which commutes with each of the other two, but the latter two do not commute with each other.
+We might give the following presentation of this group:
+\[
+    \<a, b, c \mid [a, b] = [a, c] = 1\>.
+\]
+
+
+\end{document}

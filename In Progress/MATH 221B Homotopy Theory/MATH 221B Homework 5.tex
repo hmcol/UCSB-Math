@@ -1,0 +1,427 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+
+% Extra Commands
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\htpy}{\simeq}
+\newcommand{\bd}{\partial}
+
+\newcommand{\const}{\mathrm{const}}
+
+% Document
+\begin{document}
+\title{MATH 221B Homework 5}
+\author{Harry Coleman}
+\date{February 23, 2022}
+\maketitle
+
+
+\begin{pbox}[1 Exercise 1.1.7]
+    Define $f : S^1 \times I \to S^1 \times I$ by $f(\theta, s) = (\theta + 2\pi s, s)$, so $f$ restricts to the identity on the two boundary circles of $S^1 \times I$.
+    Show that $f$ is homotopic to the identity by a homotopy $f_t$ that is stationary on one of the boundary circles.
+    [Consider what $f$ does to the path $s \mapsto (\theta_0, s)$ for a fixed $\theta_0 \in S^1$.]
+\end{pbox}
+
+Define the homotopy $f_t : S^1 \times I \to S^1 \times I$ by
+\[
+    f_t(\theta, s) = (\theta + 2\pi st, s).
+\]
+Then $f_0 = \id_{S^1 \times I}$ and $f_t = f$.
+Moreover, for all points on the lower boundary circle $S^1 \times \{0\}$ we have
+\[
+    f_t(\theta, 0) = (\theta + 2\pi 0t, 0) = (\theta, 0).
+\]
+That is, $f_t|_{S^1 \times \{0\}} = \id_{S^1 \times \{0\}}$, as desired.
+
+
+\begin{pbox}[2 Exercise 1.1.8]
+    Does the Borsuk-Ulam theorem hold for the torus?
+    In other words, for every map $f : S^1 \times S^1 \to \R^2$ must there exist $(x, y) \in S^1 \times S^1$ such that $f(x, y) = f(-x, -y)$?
+\end{pbox}
+
+No.
+
+\begin{proof}
+    We represent the points in the circle $S^1$ as radians $\theta \in \R$, modulo $2\pi$.
+    With this representation, the antipodal point to $\theta \in S^1$ is $\theta + \pi \pmod{2\pi}$.
+    Then there is a natural embedding of the circle into the real plane:
+    \begin{align*}
+        S^1 &\longrightarrow \R^2 \\
+        \theta &\longmapsto (\cos\theta, \sin\theta).
+    \end{align*}
+    We project the torus onto its first component, then embed the circle into the plane, giving us $f(x, y) = (\cos x, \sin x)$.
+    The value at the antipodal point is
+    \[
+        f(x + \pi, y + \pi)
+            = (\cos(x + \pi), \sin(y + \pi))
+            = (-\cos x, -\sin y)
+            = -f(x, y).
+    \]
+    In particular, the Borsuk-Ulam theorem does not hold.
+\end{proof}
+
+
+\begin{pbox}[3 Exercise 1.1.10]
+    From the isomorphism $\pi_1(X \times Y, (x_0, y_0)) \isom \pi_1(X, x_0) \times \pi_1(Y, y_0)$ it follows that loops in $X \times \{y_0\}$ and $\{x_0\} \times Y$ represent commuting elements of $\pi_1(X \times Y, (x_0, y_0))$.
+    Construct an explicit homotopy demonstrating this.
+\end{pbox}
+
+A loop $\alpha : (I, \bd I) \to (X, x_0)$ corresponds to a loop $\alpha' : (I, \bd I) \to X \times \{y_0\}$ defined by $\alpha'(s) = (\alpha(s), y_0)$.
+Similarly, a loop $\beta : (I, \bd I) \to (Y, y_0)$ corresponds to a loop $\beta' : (I, \bd I) \to \{x_0\} \times Y$ defined by $\beta'(s) = (x_0, \beta(s))$.
+
+Denote the product map $H = \alpha \times \beta : I \times I \to X \times Y$, i.e., $H(s_1, s_2) = (\alpha(s_1), \beta(s_2))$.
+We can draw the parameter space of $H$ as follows:
+\begin{drawing}
+    \fill (0, 0) circle (2pt) node[anchor=north east] {$(x_0, y_0)$};
+    \fill (2, 0) circle (2pt) node[anchor=north west] {$(x_0, y_0)$};
+    \fill (0, 2) circle (2pt) node[anchor=south east] {$(x_0, y_0)$};
+    \fill(2, 2) circle (2pt) node[anchor=south west] {$(x_0, y_0)$};
+
+    \draw (0, 0) rectangle (2, 2);
+
+    \draw[->] (-0.5, 1.5) -- (-0.5, 0.5) node[midway, left] {$s_2$};
+    \draw[->] (0.5, -0.5) -- (1.5, -0.5) node[midway, below] {$s_1$};
+
+    \node[above] at (1, 2) {$\alpha'$};
+    \node[right] at (2, 1) {$\beta'$};
+\end{drawing}
+For a fixed $s_2$, the horizontal line $I \times \{s_2\}$ in this space corresponds to the the loop in $X \times \{\beta(s_2)\}$ following $\alpha$ in the $X$ component.
+Similarly, for a fixed $s_1$, the vertical line $\{s_1\} \times I$ corresponds to the loop in $\{\alpha(s_1)\} \times Y$ following $\beta$ in the $Y$ component.
+In particular, note that the top and bottom edges both correspond to $\alpha'$, while the left and right edges both correspond to $\beta'$.
+
+We construct a homotopy of paths $\gamma_t : I \to I \times I$ in this space, from the path following the top and right edges to the path following the left and bottom edges:
+\begin{drawing}
+    \fill (0, 0) circle (2pt);
+    \fill (2, 0) circle (2pt);
+    \fill (0, 2) circle (2pt);
+    \fill (2, 2) circle (2pt);
+
+    \draw (0, 0) rectangle (2, 2);
+
+    \draw[->] (0, 2.2) -- (1, 2.2);
+    \draw (1, 2.2) -- (2.2, 2.2);
+    \draw[->] (2.2, 2.2) -- (2.2, 1);
+    \draw (2.2, 1) -- (2.2, 0);
+    \node[right] at (2.2, 2.2) {$\gamma_0$};
+
+    \draw[->] (-0.2, 2) -- (-0.2, 1);
+    \draw (-0.2, 1) -- (-0.2, -0.2);
+    \draw[->] (-0.2, -0.2) -- (1, -0.2);
+    \draw (1, -0.2) -- (2, -0.2);
+    \node[left] at (-0.2, -0.2) {$\gamma_1$};
+
+    \draw[dashed] (0, 0) -- (2, 2);
+
+    \draw[->] (0, 2) -- (3/4, 7/4);
+    \draw (3/4, 7/4) -- (3/2, 3/2);
+    \draw[->] (3/2, 3/2) -- (7/4, 3/4) node[left] {$\gamma_t$};
+    \draw (7/4, 3/4) -- (2, 0);
+\end{drawing}
+Then the composition $H \circ \gamma_t$ is a homotopy of paths in $X \times Y$:
+\[
+    \alpha' \cdot \beta' = H \circ \gamma_0 \htpy H \circ \gamma_1 = \beta' \cdot \alpha'.
+\]
+Then in $\pi_1(X \times Y, (x_0, y_0))$, we have
+\[
+    [\alpha'][\beta'] = [\alpha' \cdot \beta'] = [\beta' \cdot \alpha'] = [\beta'][\alpha'].
+\]
+
+
+\begin{pbox}[4 Exercise 1.1.12]
+    Show that every homomorphism $\pi_1(S^1) \to \pi_1(S^1)$ can be realized as the induced homomorphism $\phi_*$ of a map $\phi : S^1 \to S^1$.
+\end{pbox}
+
+\begin{proof}
+    Recall that $\pi_1(S^1) \isom \Z$, where the homotopy class of a loop in $S^1$ corresponds to its winding number.
+    A homomorphism $\Z \to \Z$ must send $0$ to itself and $1$ to some $n \in \Z$---this information completely characterizes the homomorphism.
+    We realize the circle as the quotient $q : I \to I/\bd I = S^1$. 
+    Define the map
+    \begin{align*}
+        \phi' : I &\longrightarrow S^1, \\
+            s &\longmapsto ns \pmod{1}.
+    \end{align*}
+    As $\phi'(0) = 0 \equiv n = \phi'(1) \pmod{1}$, $\phi'$ is constant on $\bd I$ and, therefore, factors through the quotient as follows:
+    \begin{cd}
+        I \rar["\phi'"] \dar["q"'] & S^1 \\
+        I/\bd I = S^1 \urar[dashed, "\exists! \phi"']
+    \end{cd}
+    We now compute the induced homomorphism $\phi_* : \pi_1(S^1) \to \pi_1(S^1)$.
+    Note that $q$ can be interpreted as the loop in $S^1$ based at $0$ which goes around the circle exactly once at a constant speed, which means that its homotopy class $[q] \in \pi_1(S^1)$ corresponds to $1 \in \Z$.
+    Then we have
+    \[
+        \phi_*[q] = [\phi \circ q] = [\phi'].
+    \]
+    By construction, $\phi'$ is the loop in $S^1$ which goes around the circle exactly $n$ times (or $-n$ times backwards if $n$ is negative) at a constant speed.
+    Therefore, $\phi_*[q] \in \pi_1(S^1)$ corresponds to $n \in \Z$, hence $\phi_*$ corresponds to the original homomorphism $\Z \to \Z$ sending $1$ to $n$.
+\end{proof}
+
+\begin{pbox}[5 Exercise 1.1.16]
+    Show that there are not retractions $r : X \to A$ in the following cases:
+\end{pbox}
+
+Proposition 1.17 tells us that if such a retraction exists, then the inclusion $\iota : A \inc X$ induces an injective homomorphism $\iota_* : \pi_1(A) \to \pi_1(X)$.
+We will compute the fundamental groups $\pi_1(X)$ and $\pi_1(A)$ to show that $\iota_*$ is not an injection.
+This, in turn, proves that no such retraction exists.
+(All spaces are path-connected, so any choice of base point suffices.)
+
+\begin{pbox}[(a)]
+    $X = \R^3$ with $A$ any subspace homeomorphic to $S^1$.
+\end{pbox}
+
+The fundamental groups are
+\[
+    \pi_1(X) = \pi_1(\R^3) = 0
+\]
+and
+\[
+    \pi_1(A) \isom \pi_1(S^1) \isom \Z.
+\]
+There is no injection $\Z \to 0$.
+
+\begin{pbox}[(b)]
+    $X = S^1 \times D^2$ with $A$ its boundary torus  $S^1 \times S^1$.
+\end{pbox}
+
+The fundamental groups are
+\[
+    \pi_1(X)
+        = \pi_1(S^1 \times D^2)
+        \isom \pi_1(S^1) \times \pi_1(D^2)
+        \isom \Z \times 0
+        = \Z
+\]
+and
+\[
+    \pi_1(A)
+        = \pi_1(S^1 \times S^1)
+        \isom \pi_1(S^1) \times \pi_1(S^1)
+        \isom \Z \times \Z.
+\]
+Then $\iota_*$ corresponds to a homomorphism $\Z \times \Z \to \Z$ which is simply the projection onto the first component; this map is not injective.
+
+\begin{pbox}[(c)]
+    $X = S^1 \times D^2$ with $A$ the circle shown in the figure.
+\end{pbox}
+
+It can be seen that a path in $A$ is nullhomotopic in $X$, even relative to any basepoint in $A$.
+This means that $\iota_*$ must be the trivial map.
+However, $\pi_1(A) \isom(S^1) \isom \Z$ is not trivial, so $\iota_*$ is not injective.
+
+\begin{pbox}[(d)]
+    $X = D^2 \vee D^2$ with $A$ its boundary $S^1 \vee S^1$.
+\end{pbox}
+
+The fundamental groups are
+\[
+    \pi_1(X)
+        = \pi_1(D^2 \vee D^2)
+        \isom \pi_1(D^2) * \pi_1(D^2)
+        = 0 * 0
+        = 0
+\]
+and
+\[
+    \pi_1(A)
+        = \pi_1(S^1 \vee S^1)
+        \isom \pi_1(S^1) * \pi_1(S^1)
+        \isom \Z * \Z.
+\]
+As $\Z * \Z$ is nontrivial, there is no injection $\Z * \Z \to 0$.
+
+\begin{pbox}[(e)]
+    $X$ a disc with two points on its boundary identified and $A$ its boundary $S^1 \vee S^1$.
+\end{pbox}
+
+We are given $X$ as the following quotient of the disc $D^2$:
+\begin{drawing}
+    \begin{scope}[xshift=-2.5cm, scale=3/4]
+        \filldraw[fill=gray!20] (0, 0) circle (1.5);
+
+        \fill (-1.5, 0) circle (2pt);
+        \fill (1.5, 0) circle (2pt);
+    \end{scope}
+
+    \draw[->>] (-1/2, 0) -- (1/2, 0);
+
+    \begin{scope}[xshift=2.5cm, scale=3/4]]
+        \filldraw[fill=gray!20]
+            (0, -1) to[out=-135, in=-90, looseness=1.5]
+            (-2, 0) arc (180 : 0 : 2)
+            to[out=-90, in=-45, looseness=1.5]
+            (0, -1);
+
+        \filldraw[fill=white] (0, 0) circle (1);
+        \fill (0, -1) circle (2pt) node[above]{$x_0$};
+    \end{scope}
+\end{drawing}
+There is a deformation retraction of $X$ onto the inner boundary circle, giving us a homotopy equivalence $X \htpy S^1$ and fundamental group
+\[
+    \pi_1(X)
+        = \pi_1(X, x_0)
+        \isom \pi_1(S^1)
+        \isom \Z.
+\]
+This can been seen intuitively in the drawing of $X$, as any loop based at $x_0$ (in particular, those in the outer boundary circle) can be homotoped to a loop contained in the inner boundary circle.
+The fundamental group of $A$ is
+\[
+    \pi_1(A)
+        = \pi_1(A, x_0)
+        \isom \pi_1(S^1 \vee S^1)
+        \isom \pi_1(S^1) * \pi_1(S^1)
+        \isom \Z * \Z.
+\]
+Then $\iota_*$ corresponds to a homomorphism $\Z * \Z \to \Z$ which acts as the identity on the first copy of $\Z$.
+All other elements of the free product must also be sent somewhere in $\Z$, so this is not an injection.
+
+\begin{pbox}[(f)]
+    $X$ the M\"obius band and $A$ its boundary circle.
+\end{pbox}
+
+Note that $X$ deformation retracts to the circle through its middle.
+This gives us the fundamental group
+\[
+    \pi_1(X) \isom \pi_1(S^1) \isom \Z,
+\]
+where a loop in $X$ is corresponds to its winding number around the M\"obius band.
+In particular, if $f$ is the loop in $X$ following the boundary circle, its homotopy class in $\pi_1(X)$ corresponds to $2 \in \Z$ (or $-2$ depending on orientation).
+In other words, if $g$ is the loop in $X$ following the middle circle, its homotopy class in $\pi_1(X)$ corresponds to $1 \in \Z$, which means
+\[
+    [f] = [g][g] = [g]^2 \in \pi_1(X).
+\]
+The fundamental group of $A$ is
+\[
+    \pi_1(A) \isom \pi_1(S^1) \isom \Z,
+\]
+where $f$ corresponds to $1 \in \Z$.
+
+
+Assume, for contradiction, a retraction $r : X \to A$ exists.
+By definition, $r \circ \iota = \id_A$, which implies the induced homomorphism is
+\[
+    r_* \circ \iota_* = (r \circ \iota)_* = \id_{\pi_1(A)}.
+\]
+So in $\pi_1(A)$, we have
+\[
+    [f]
+        = r_*(\iota_*[f])
+        = r_*([g]^2)
+        = (r_*[g])^2.
+\]
+This is a contradiction, as $[f]$ is a generator of the cyclic group $\pi_1(A) \isom \Z$, so it is not the square of any element.
+
+\begin{pbox}[6 Exercise 1.1.18]
+    Using the technique in the proof of Proposition 1.14, show that if a space $X$ is obtained from a path-connected subspace $A$ by attaching a cell $e^n$ with $n \geq 2$, then the inclusion $A \inc X$ induces a surjection $\pi_1(A) \to \pi_1(X)$.
+\end{pbox}
+
+\begin{proof}
+    Let $f : I \to X$ be a loop based at a point in $A$.
+    We will find a loop $g$ homotopic to $f$ which does not pass through a given point $x \in e^n$.
+
+    The preimage $f^{-1}(e^n)$ is an open subset of the real interval $(0, 1)$ and, therefore, can be written as the countable union of disjoint open intervals: $f^{-1}(e^n) = \bigcup_i (a_i, b_i)$.
+    Then $f^{-1}(x)$ is a compact set covered by these intervals, so it must be covered by finitely many---say $(a_i, b_i)$ for $i = 1, \dots, k$.
+    The restricted path $f_i = f|_{[a_i, b_i]}$ is contained in the closure $\clo{e^n} = D^n$, with its endpoints $f(a_i)$ and $f(b_i)$ in the boundary $\bd e^n = S^{n-1}$.
+    As $S^{n-1}$ is path-connected for $n \geq 2$, we can choose a path $g_i$ between these endpoints contained in $S^{n-1}$---in particular, $g_i$ does not pass through $x$.
+    Since $D^n$ is simply-connected, $f_i$ and $g_i$ are homotopic as paths (i.e., relative the endpoints).
+    Then we may homotope $f$ by deforming $f_i$ to $g_i$ for $i = 1, \dots, k$, with the resultant loop $g$ having $g(I)$ disjoint from $x$.
+
+    With $D^n$ homeomorphic to a convex subset of $\R^n$, we can take $x \in e^n$ as the focus of a radial projection $D^n \setminus \{x\} \to S^{n-1}$.
+    Take $h_t : D^n \setminus \{x\} \to D^n \setminus \{x\}$ to be the straight line homotopy between the identity and the radial projection.
+    In other words, $h_t$ describes a deformation retraction of $D^n \setminus \{x\}$ onto its boundary.
+    Gluing this homotopy to the identity on $A$ gives us a deformation retraction of $X \setminus \{x\}$ onto $A$.
+    Then the composition $h_t \circ g$ gives a homotopy between $h_0 \circ g = g$ and a loop $h = h_1 \circ g$ entirely contained in $A$.
+    Hence, $f$ and $h$ are homotopic loops, so $[h] = [f] \in \pi_1(X)$. 
+\end{proof}
+
+\begin{pbox}
+    Apply this to show:
+\end{pbox}
+
+\begin{pbox}[(a)]
+    The wedge sum $S^1 \vee S^2$ has fundamental group $\Z$.
+\end{pbox}
+
+We can consider $S^1 \vee S^2$ as the result of attaching $e^2$ to $S^1$ with a constant attaching map $\bd e^n \to S^1$.
+Therefore, the inclusion $S^1 \inc S^1 \vee S^2$ induces a surjection of fundamental groups:
+\[
+    \Z \isom \pi_1(S^1) \longrightarrow \pi_1(S^1 \vee S^2).
+\]
+This is also an injection by Proposition 1.17, as there is a retraction $S^1 \vee S^2 \to S^1$ which acts as the identity on $S^1$ and sends all of $S^2$ to the distinguished point.
+Hence, we have an isomorphism $\pi_1(S^1 \vee S^2) \isom \Z$.
+
+\begin{pbox}[(b)]
+    For a path-connected CW complex $X$ the inclusion map $X^1 \inc X$ of its $1$-skeleton induces a surjection $\pi_1(X^1) \to \pi_1(X)$.
+    [For the case that $X$ has infinitely many cells, see Proposition A.1 in the Appendix.]
+\end{pbox}
+
+\begin{proof}
+    By Proposition A.1, a given loop in $X$ is contained in a finite subcomplex $Y$ of $X$.
+    Then the subcomplex $X^1 \cup Y$ can be constructed by sequentially attaching finitely many cells (of dimension at least $2$) to the $1$-skeleton.
+    Applying the result at each step of this construction, we deduce that the inclusion $X^1 \inc X^1 \cup Y$ induces a surjective homomorphism $\pi_1(X^1) \to \pi_1(X^1 \cup Y)$, which is then included into $\pi_1(X)$.
+    Applying this to all loops, we conclude that the inclusion $X^1 \inc X$ induces a surjection $\pi_1(X^1) \to \pi_1(X)$.
+\end{proof}
+
+
+\end{document}

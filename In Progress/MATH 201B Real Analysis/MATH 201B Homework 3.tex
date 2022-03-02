@@ -1,0 +1,361 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+\newcommand{\inc}{\hookrightarrow}
+
+% Extra Commands
+\newcommand{\dd}{\,\mathrm{d}}
+
+
+% Document
+\begin{document}
+\title{MATH 201B Homework 3}
+\author{Harry Coleman}
+\date{March 1, 2022}
+\maketitle
+
+\begin{pbox}[1]
+    Let the function $f : [a, b] \to \R$ be differentiable at every point $x \in [a, b]$.
+    Is $f$ necessarily absolutely continuous on $[a, b]$?
+\end{pbox}
+
+No.
+
+Consider the function
+\[
+    f(x) = \begin{cases}
+        x^2 \cos(2\pi/x^2) &\text{if } x \in (0, 1], \\
+        0 &\text{if } x = 0,
+    \end{cases}
+\]
+on the interval $[0, 1]$.
+It is immediate that $f$ is differentiable on $(0, 1]$, but we must check that is is also differentiable at $0$ (from the right).
+For $h > 0$, we estimate
+\[
+    \left|\frac{f(0 + h) - f(0)}{h}\right|
+        = \frac{|h^2\cos(2\pi/h^2) - 0|}{h}
+        \leq \frac{h^2}{h}
+        = h.
+\]
+Hence, $f$ is differentiable at $0$ (from the right) and
+\[
+    f'(0) = \lim_{h \to 0^+} \frac{f(0 + h) - f(0)}{h} = 0.
+\]
+However, $f$ is not absolutely continuous on $[0, 1]$.
+To see this, consider the collection of disjoint open intervals
+\[
+    (a_k, b_k) = \left(\tfrac{1}{\sqrt{k + 1/4}},\; \tfrac{1}{\sqrt{k}}\right) \seq [0, 1], \qquad k \in \N.
+\]
+Since these are disjoint intervals in $[0, 1]$, we have
+\[
+    \sum_{k=1}^{\infty} (b_k - a_k) 
+        = \sum_{k=1}^{\infty} \lambda(a_k, b_k)
+        = \lambda\left(\bigcup_{k=1}^{\infty}(a_k, b_k)\right)
+        \leq \lambda[0, 1]
+        = 1. 
+\]
+Since this is a positive summation, the tail must tend to zero, i.e.,
+\[
+    \lim_{N \to \infty} \sum_{k=N}^{\infty} (b_k - a_k) = 0. 
+\]
+This means that for every $\delta > 0$ there exists an $N \in \N$ such that $\{(a_k, b_k)\}_{k=N}^{\infty}$ is a collection of disjoint open intervals in $[0, 1]$ such that
+\[
+    \sum_{k=N}^{\infty} (b_k - a_k) < \delta.
+\]
+However, we also have
+\[
+    \sum_{k=N}^{\infty} |f(b_k) - f(a_k)|
+        = \sum_{k=N}^{\infty} \frac{1}{k}
+        = +\infty.
+\]
+Therefore, $f$ cannot be absolutely continuous.
+
+
+
+\begin{pbox}[2]
+    Let $A \seq [0, 1]$ be a null set (a set that has zero Lebesgue measure).
+    Construct an increasing and absolutely continuous function $f [0, 1] \to \R$ such that
+    \[
+        \lim_{h \to 0} \frac{f(x + h) - f(x)}{h} = + \infty
+    \]
+    for all $x \in A$.
+\end{pbox}
+
+Choose open sets $B_n \seq [0, 1]$ containing $A$ such that $\lambda(B_n) < 1/2^n$ and $B_n \supseteq B_{n+1}$.
+
+Define
+\[
+    f(x) = \int_{0}^{x} \sum_{n=1}^{\infty} \chi_{B_n} \dd{\lambda}.
+\]
+We check that $f$ is finite for all $x \in [0, 1]$, i.e., that $\sum_{n=1}^{\infty} \chi_{B_n}$ is summable:
+\begin{align*}
+    f(x)
+        &= \int_{0}^{x} \sum_{n=1}^{\infty} \chi_{B_n} \dd{\lambda} \\
+        &= \sum_{n=1}^{\infty} \int_{0}^{x} \chi_{B_n} \dd{\lambda} \\
+        &\leq \sum_{n=1}^{\infty} \int_{0}^{1} \chi_{B_n} \dd{\lambda} \\
+        &= \sum_{n=1}^{\infty} \lambda(B_n) \\
+        &\leq \sum_{n=1}^{\infty} \frac{1}{2^n} \\
+        &= 1.
+\end{align*}
+As the integral of a nonnegative summable function, $f$ is increasing and absolutely continuous.
+
+We check that the derivative of $f$ at each point $x \in A$ is unbounded.
+Assume $h > 0$, then
+
+\begin{align*}
+    \frac{f(x + h) - f(x)}{h}
+        &= \frac{1}{h} \left(\int_{0}^{x+h} \sum_{n=1}^{\infty} \chi_{B_n} \dd{\lambda} - \int_{0}^{x} \sum_{n=1}^{\infty} \chi_{B_n} \dd{\lambda}\right) \\
+        &= \frac{1}{h} \int_{x}^{x+h} \sum_{n=1}^{\infty} \chi_{B_n} \dd{\lambda} \\
+        &= \frac{1}{h} \sum_{n=1}^{\infty} \int_{x}^{x+h} \chi_{B_n} \dd{\lambda} \\
+        &= \frac{1}{h} \sum_{n=1}^{\infty} \lambda(B_n \cap (x, x+ h)).
+\end{align*}
+Since $B_n$ is an open neighborhood of $x$, there is an open ball of radius $r_n > 0$ around $x$ contained in $B_n$.
+For $0 < h < r_1$, define
+\[
+    N_h = \sup\{n \in \N : (x, x + h) \seq B_n\},
+\]
+then $N_h \to \infty$ as $h \to 0^+$.
+Then
+\begin{align*}
+    \frac{f(x + h) - f(x)}{h}
+        &\geq \frac{1}{h} \sum_{n=1}^{N_h} \lambda(B_n \cap (x, x + h)) \\
+        &= \frac{1}{h} \sum_{n=1}^{N_h} \lambda(x, x + h) \\
+        &= \frac{1}{h} \sum_{n=1}^{N_h} h \\
+        &= \sum_{n=1}^{N_h} 1\\
+        &= N_h.
+\end{align*}
+The same holds for $h < 0$, so we conclude that
+\[
+    \lim_{h \to 0} \frac{f(x + h) - f(x)}{h} \geq \lim_{n \to \infty} N_h = + \infty.
+\]
+
+
+\newpage
+\begin{pbox}[3]
+    Let $f, g \in L^1(\R)$.
+    Prove that the function
+    \[
+        \phi(t) = \int_\R |f(x) + tg(x)| \dd{x}
+    \]
+    is well-defined in $\R$, finite for all $t \in \R$, and is differentiable a.e.\ in $\R$.
+\end{pbox}
+
+\begin{proof}
+    Since $f$ and $g$ are summable, so is $f + tg$ for all $t \in \R$, with
+    \[
+        \int_\R |f(x) + tg(x)| \dd{x}
+            \leq \int_\R |f(x)| \dd{x} + |t|\int_\R |g(x)| \dd{x}
+            < \infty.
+    \]
+    That is, $\phi$ is well-defined and finite in $\R$.
+
+    Moreover, $\phi$ is Lipchitz, with constant $M = \int_\R |g(x)| \dd{x} < \infty$.
+    For $x, y \in \R$, we have
+    \begin{align*}
+        |\phi(x) - \phi(y)|
+            &= \left|\int_\R |f(t) + xg(t)| \dd{t} - \int_\R |f(t) + yg(t)| \dd{t}\right| \\
+            &\leq \int_\R \big| |f(t) + xg(t)| - |f(t) + yg(t)| \big| \dd{t} \\
+            &\leq \int_\R \big| f(t) + xg(t) - f(t) - yg(t) \big| \dd{t} \\
+            &= \int_\R |(x - y)g(t)| \dd{t} \\
+            &= M|x - y|.
+    \end{align*}
+    In particular, for all $n \in \N$, we have $\phi \in \mathrm{Lip}[-n, n] \seq \mathrm{BV}[-n, n]$, so $\phi$ is differentiable almost everywhere in $[-n, n]$.
+    Say $\phi$ is not differentiable only in the set $A_n \seq [-n, n]$, then $\lambda(A_n) = 0$.
+    It follows that $\bigcup_{n=1}^{\infty} A_n$ is the set of points in $\bigcup_{n=1}^{\infty} [-n, n] = \R$ at which $\phi$ is not differentiable.
+    But
+    \[
+        \lambda\left(\bigcup_{n=1}^{\infty} A_n\right)
+            \leq \sum_{n=1}^{\infty} \lambda(A_n)
+            = \sum_{n=1}^{\infty} 0
+            = 0,
+    \]
+    so indeed $\phi$ is differentiable almost everywhere in $\R$.
+\end{proof}
+
+
+\newpage
+\begin{pbox}[4]
+    Suppose $f : [0, 1] \to \R$ is continuous and absolutely continuous in $[a, 1]$ for all $a \in (0, 1)$.
+    Is $f$ necessarily absolutely continuous on $[0, 1]$?
+\end{pbox}
+
+No.
+
+Consider the same function as in Problem 1:
+\[
+    f(x) = \begin{cases}
+        x^2 \cos(2\pi/x^2) &\text{if } x \in (0, 1], \\
+        0 &\text{if } x = 0.
+    \end{cases}
+\]
+For all $a \in (0, 1)$ we have $f \in C^1[a, 1] \seq \mathrm{AC}[a, 1]$, but $f \notin \mathrm{AC}[0, 1]$.
+(Note that while $f$ is differentiable on all of $[0, 1]$, its derivative is not continuous at $0$.)
+
+\begin{pbox}
+    If $f$ is in addition of bounded variation on $[0, 1]$ is it necessarily absolutely continuous on $[0, 1]$?
+\end{pbox}
+
+Yes.
+
+\begin{proof}    
+    We prove the contrapositive.
+    Suppose $f \in \mathrm{AC}[a, 1]$ for all $a \in (0, 1)$ but $f \notin \mathrm{AC}[0, 1]$; we claim that $f \notin \mathrm{BV}[0, 1]$.
+    To prove this, we will construct a family of partitions of $[0, 1]$ over which the variation of $f$ is unbounded.
+
+
+    Since $f$ is not absolutely continuous on $[0, 1]$, by definition there is some $M > 0$ such that for all $\delta > 0$ there is a collection of disjoint open intervals $\{(x_i, y_i)\}_{i=1}^{\infty}$ in $[0, 1]$ with
+    \[
+        \sum_{i=1}^{\infty} (y_i - x_i) < \delta
+        \isp{and}
+        \sum_{i=1}^{\infty} |f(y_i) - f(x_i)| \geq M.
+    \]
+    We will use this fact to inductively construct a countable collection of disjoint open intervals in $[0, 1]$ with unbounded variation.
+    We will take finite subcollections of these intervals and use their endpoints to define our partitions of $[0, 1]$.
+
+    Choose any $a_0 \in (0, 1)$, e.g., $a_0 = 1/2$.
+    Take $\delta > 0$ for the absolute continuity of $f$ on $[a_0, 1]$ with $\eps = M/2$.
+    As $f \notin \mathrm{AC}[0, 1]$, we can find a collection of disjoint open intervals $\{(x_i^{(0)}, y_i^{(0)})\}_{i=1}^{\infty}$ in $[0, 1]$ with
+    \[
+        \sum_{i=1}^{\infty} (y_i^{(0)} - x_i^{(0)}) < \delta
+        \isp{and}
+        \sum_{i=1}^{\infty} |f(y_i^{(0)}) - f(x_i^{(0)})| \geq M.
+    \]
+    Since the intervals $(x_i^{(0)}, y_i^{(0)})$ are disjoint, most are either entirely contained in $[0, a_0)$ or $(a_0, 1]$; at most one interval is cut in half by $a_0$.
+    If this occurs---if $a_0 \in (x_i^{(0)}, y_i^{(0)})$---then we can replace this interval with two new intervals: $(x_i^{(0)}, a_0)$ and $(a_0, y_i^{(0)})$.
+    Then the total measure of the collection of intervals is still less than $\delta$ and
+    \[
+        |f(y_i^{(0)}) - f(a_0)| + |f(a_0) - f(x_i^{(0)})|
+            \geq |f(y_i^{(0)}) - f(x_i^{(0)})|,
+    \]
+    so the sum of differences in $f$ is still at least $M$.
+    Without loss of generality, we may assume that each interval $(x_i^{(0)}, y_i^{(0)})$ is entirely contained in either $[0, a_0)$ or $(a_0, 1]$.
+    In particular, we have
+    \[
+        \sum_j (y_j^{(0)} - x_j^{(0)}) < \delta,
+    \]
+    where the sum is taken over all $j$ such that $(x_j^{(0)}, y_j^{(0)})$ is contained in $(a_0, 1]$.
+    By the absolute continuity of $f$ on $[a_0, 1]$, we have
+    \[
+        \sum_j |f(y_j^{(0)}) - f(x_j^{(0)})| < \frac{M}{2},
+    \]
+    where the sum is taken over the same $j$ as the previous sum.
+    It follows that
+    \[
+        \sum_k |f(y_k^{(0)}) - f(x_k^{(0)})| > \frac{M}{2},
+    \]
+    where the sum is taken over all $k$ such that $(x_k^{(0)}, y_k^{(0)})$ is contained in $[0, a_0)$.
+    Since the inequality is strict, we can choose finitely many terms in $k$ which still sum to more than $M/2$.
+    After reindexing, we can assume
+    \[
+        \sum_{k=1}^{n_0} |f(y_k^{(0)}) - f(x_k^{(0)})| > \frac{M}{2}
+    \]
+    and $x_k^{(0)} < x_{k+1}^{(0)}$ for $k = 1, \dots, n_0 - 1$.
+
+    We hope that $x_1^{(0)} > 0$, but if this is not the case, we can make a slight modification to the value of $x_1^{(0)}$.
+    If $x_1^{(0)} = 0$ then, because $f$ is continuous, there is some $c \in (0, y_1^{(0)})$ such that $f(c)$ is very close to $f(0)$.
+    We replace $x_1^{(0)}$ with $c$ close enough so that
+    \[
+        \sum_{k=1}^{n_0} |f(y_k^{(0)}) - f(x_k^{(0)})| > \frac{M}{2}
+    \]
+    and
+    \[
+        0 < x_1^{(0)} < y_1^{(0)} < x_2^{(0)} < \cdots < x_{n_0}^{(0)} < y_{n_0}^{(0)} \leq a_0.
+    \]
+    Lastly, define $a_1 = x_1^{(0)} < a_0$.
+
+    For each $\ell \geq 1$, repeat the above process with $a_\ell$ to find points
+    \[
+        0 < a_{\ell+1} = x_1^{(\ell)} < y_1^{(\ell)} < x_2^{(\ell)} < \cdots < x_{n_0}^{(\ell)} < y_{n_0}^{(\ell)} \leq a_\ell
+    \]
+    such that
+    \[
+        \sum_{k=1}^{n_\ell} |f(y_k^{(\ell)}) - f(x_k^{(\ell)})| > \frac{M}{2}.
+    \]
+
+    For $N \in \N$, we build the following partition by enumerating the endpoint of the intervals we have constructed for $\ell = 1, \dots, N$:
+    \[
+        P_N
+            = \{t_i\}_{i=1}^n
+            = \bigcup_{\ell=0}^{N} \bigcup_{k=1}^{n_\ell} \{x_k^{(\ell)}, y_k^{(\ell)}\}
+    \]
+    such that $t_i < t_{i+1}$ for $i = 1, \dots, n$.
+    This forms a partition of the interval $[a_N, 1]$ with variational sum
+    \begin{align*}
+        V(f, P_N)
+            &= \sum_{i=1}^{n} |f(t_i) - f(t_{i+1})| \\
+            &\geq \sum_{\ell=0}^{N} \sum_{k=1}^{n_\ell} |f(y_k^{(\ell)}) - f(x_k^{(\ell)})| \\
+            &\geq \sum_{\ell=0}^{N} \frac{M}{2} \\
+            &= \frac{(N + 1)M}{2}.
+    \end{align*}
+    Then we can bound below the total variation of $f$ by
+    \[
+        V_0^1(f) \geq \sup_{N \in \N} V(f, P_N) = +\infty.
+    \]
+    In other words, $f$ is not of bounded variation on $[0, 1]$.
+\end{proof}
+
+
+
+\end{document}

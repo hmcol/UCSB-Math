@@ -65,6 +65,7 @@
 \DeclareMathOperator{\im}{im}
 
 % Extra Commands
+\newcommand{\dd}{\,\mathrm{d}}
 
 
 % Document
@@ -77,11 +78,48 @@
 \begin{pbox}[1]
     For a function $f : [a, b] \to \R$ define for every $x \in [a, b)$
     \[
-        D^+ f(x) = \limsup_{h \to 0+} \frac{f(x + h) - f(x)}{h}.
+        D^+ f(x) = \limsup_{h \to 0^+} \frac{f(x + h) - f(x)}{h}.
     \]
     Prove that if $f : [a, b] \to \R$ is continuous and $D^+ f(x) \geq 0$ for all $x \in [a, b)$, then $f(b) \geq f(a)$.
 \end{pbox}
 
+\begin{proof}
+    First, suppose $D^+f(x) > 0$ for all $x \in [a, b)$.
+    Since $f$ is continuous on the compact set $[a, b]$, it attains its supremum $M = \sup_{[a, b]} f$ at some point.
+    Now define $c = \sup f^{-1}(M)$, which is on the interval $[a, b]$.
+    Moreover, we can choose a sequence of points in $[a, b]$ approaching $c$ from the left, and on which $f$ equals $M$.
+    With $f$ continuous, it follows that $f(c) = M$.
+
+    If $c = b$, then $f(b) = M \geq f(a)$ and we are done.
+    Assume for contradiction that $c < b$.
+    With $D^+f(c) > 0$, there must be some $h > 0$ such that
+    \[
+        \frac{f(c + h) - f(c)}{h} > 0.
+    \]
+    But this means $f(c) < f(c + h)$, which contradicts the maximality of $f(c) = M$.
+
+    Now suppose $D^+f(x) \geq 0$ for all $x \in [a, b)$ and assume for contradiction that $f(b) < f(a)$.
+    Then there is some $\eps > 0$ such that $f(b) + (b - a)\eps < f(a)$.
+    Define the function
+    \[
+        g(x) = f(x) + (x - a)\eps,
+    \]
+    which has
+    \[
+        g(b) = f(b) + (b - a)\eps < f(a) = g(a).
+    \]
+    However,
+    \[
+        \frac{g(x + h) - g(x)}{h}
+            = \frac{f(x + h) - f(x)}{h} + \eps
+            \geq 0 + \eps
+            = \eps,
+    \]
+    so letting $h \to 0^+$, we obtain $D^+g(x) \geq \eps > 0$ for all $x \in [a, b)$.
+    This contradicts the first result, which implies $g(b) \geq g(a)$.
+\end{proof}
+
+\newpage
 \begin{pbox}[2]
     Suppose $f_n : [0, 1] \to [0, \infty)$ is a sequence of increasing and right-continuous function.
     Let
@@ -96,9 +134,98 @@
     for almost every $x \in [0, 1]$ (in the sense of the Lebesgue measure).
 \end{pbox}
 
+\begin{proof}
+    For $x, y \in [0, 1]$ with $x \leq y$, we have $f_n(x) \leq f_n(y)$ for all $n \in \mathbb{N}$.
+    This gives us
+    \[
+        f(x) = \sum_{n=1}^{\infty} f_n(x) \leq \sum_{n=1}^{\infty} f_n(y) = f(y),
+    \]
+    which means $f$ is increasing, and therefore differentiable $\lambda$-a.e.\ in $[0, 1]$.
+
+    For $k \in \N$, denote the partial sum $s_k = \sum_{n=1}^{k} f_n$ and remainder $r_k = \sum_{n=k+1}^{\infty} f_n$, which are both increasing and, therefore, differentiable $\lambda$-a.e.\ in $[0, 1]$.
+    In particular, if $x \in [0, 1]$ is a point where the derivatives exist, we have
+    \[
+        f'(x) = s_k'(x) + r_k'(x) = \sum_{n=1}^{k} f_n'(x) + r_k'(x).
+    \]
+    Moreover, the derivatives of increasing functions are nonnegative, so
+    \[
+        f'(x) \geq s_k'(x) = \sum_{n=1}^{k} f_n'(x).
+    \]
+    Letting $k \to \infty$, we obtain
+    \[
+        f'(x) \geq \sum_{n=1}^{\infty} f_n'(x) \qquad \text{for $\lambda$-a.e.\ $x \in [0, 1]$.}
+    \]
+    We estimate
+    \[
+        \int_{0}^{1} f' \dd{x}
+            = \int_{0}^{1} s_k' \dd{x} + \int_{0}^{1} r_k' \dd{x}
+            \leq \int_{0}^{1} \sum_{n=1}^{\infty} f_n'  \dd{x} + r_k(1) - r_k(0).
+    \]
+    Since $\sum_{n=1}^{\infty} f_n'(x) \leq f'(x)$ for $\lambda$-a.e.\ $x \in [0, 1]$, we have
+    \[
+        \int_{0}^{1} \sum_{n=1}^{\infty} f_n' \dd{x} \leq \int_{0}^{1} f' \dd{x}.
+    \]
+    These integrals are finite, so
+    \[
+        0 
+            \leq \int_{0}^{1} f' \dd{x} - \int_{0}^{1} \sum_{n=1}^{\infty} f_n' \dd{x}
+            = \int_{0}^{1} \left(f' - \sum_{n=1}^{\infty} f_n' \right) \dd{x}
+            \leq r_k(1) - r_k(0).
+    \]
+    On one hand, we have
+    \[
+        f(1) - f(0) = \lim_{k \to \infty} (s_k(1) - s_k(0)).
+    \]
+    On the other hand, $f(0) \leq f(1) < \infty$, so we can write
+    \[
+        r_k(1) - r_k(0) = (f(1) - f(0)) - (s_k(1) - s_k(0)).
+    \]
+    Taking the limit as $k \to \infty$, we obtain
+    \[
+        \lim_{k \to \infty} (r_k(1) - s_k(0)) = 0.
+    \]
+    Letting $k \to \infty$ in the above inequality, we deduce
+    \[
+        \int_{0}^{1} \left(f' - \sum_{n=1}^{\infty} f_n' \right) \dd{x} = 0.
+    \]
+    Since the integrand is nonnegative, we in fact must have
+    \[
+        f'(x) = \sum_{n=1}^{\infty} f_n'(x) \qquad \text{for $\lambda$-a.e.\ $x \in [0, 1]$.}
+    \]
+\end{proof}
+
+\newpage
 \begin{pbox}[3]
-    Find an increasing function $f : [0, 1] \to \R$ such that $f'(x) = 0$ almost everywhere in $[0, 1]$, but $f$ is not constant on any open subinterval of $[0, 1]$.
+    Find an increasing function $f : [0, 1] \to \R$ such that $f'(x) = 0$ a.e.\ in $[0, 1]$, but $f$ is not constant on any open subinterval of $[0, 1]$.
 \end{pbox}
+
+For $n \in \N$, define a piecewise constant function $f_n : [0, 1] \to \R$ by
+\[
+    f_n(x) = \frac{\lfloor 2^nx \rfloor}{2^{2n}}.
+\]
+On each interval $[\frac{m}{2^n}, \frac{m+1}{2^n})$, this map is constantly $\frac{m}{2^{2n}}$.
+In particular, each $f_n$ is increasing and right-continuous.
+For $x \in [0, 1]$ define
+\[
+    f(x) = \sum_{n=1}^{\infty} f_n(x).
+\]
+Then $f$ is an increasing function and we we will check that it is finite:
+\[
+    f(1)
+        = \sum_{n=1}^{\infty} f_n(1)
+        = \sum_{n=1}^{\infty} \frac{\lfloor 2^n \rfloor}{2^{2n}}
+        = \sum_{n=1}^{\infty} \frac{1}{2^n}
+        = 1.
+\]
+Then applying Problem 2, we find
+\[
+    f'(x)
+        = \sum_{n=1}^{\infty} f_n'(x)
+        = \sum_{n=1}^{\infty} 0
+        = 0
+\]
+for $\lambda$-a.e.\ $x \in [0, 1]$.
+Moreover, $f$ is not constant on any open subinterval of $[0, 1]$, since $f_n$ ensures that points separated by at least a distance of $1/2^n$ will have distinct values (and $1/2^n$ is eventually small enough to affect any given open subinterval).
 
 
 
