@@ -1,0 +1,189 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+\newcommand{\inc}{\hookrightarrow}
+
+% Extra Commands
+\newcommand{\OO}{\mathcal{O}}
+\newcommand{\FF}{\mathcal{F}}
+\newcommand{\GG}{\mathcal{G}}
+
+\newcommand{\tensor}{\otimes}
+\newcommand{\dd}{\mathrm{d}}
+
+% Document
+\begin{document}
+\title{MATH 237B Homework}
+\author{Harry Coleman}
+\date{2022}
+\maketitle
+
+\begin{pbox}[Exercise 8.6.1]
+    Let $X$ be a smooth projective curve.
+    For any point $P \in X$ consider the exact skyscraper sequence of sheaves on $X$
+    \begin{cd}
+        0 \rar & \omega_X \rar & \omega_X \tensor \OO_X(P) \rar & k_P \rar & 0.
+    \end{cd}
+    Show that the induces sequence of global sections is not exact, i.e., the last map $\Gamma(\omega_X \tensor \OO_X(P)) \to \Gamma(k_P)$ is not surjective.
+\end{pbox}
+
+Note that as $\dim X = 1$, we have $\omega_X = \omega_X$.
+
+We obtain a long exact sequence of cohomologies
+\begin{cd}[row sep=tiny]
+    0 \rar & H^0(\omega_X) \rar & H^0(\omega_X \tensor \OO_X(P)) \rar & H^0(k_P) \\
+    \rar & H^1(\omega_X) \rar & H^1(\omega_X \tensor \OO_X(P)) \rar & H^1(k_P) \\
+    \rar & \cdots
+\end{cd}
+The $0$th cohomology is precisely the global sections, so we have the exact sequence
+\begin{cd}
+    \Gamma(\omega_X \tensor \OO_X(P)) \rar & \Gamma(k_P) \rar & H^1(\omega_X) \rar & H^1(\omega_X \tensor \OO_X(P)) \rar & H^1(k_P).
+\end{cd}
+Fix an affine open cover $\{U_i\}_{i \in I}$ of $X$ (with $I$ ordered).
+Without loss of generality, assume $P \in U_{i_0}$ and and $P \notin U_{i_1}$ for all $i_1 \ne i_0$.
+(If $U_{i_1}$ does contain $P$, then $U_{i_1} \setminus \clo{\{P\}}$ is an open subset of $X$, i.e., it is an open subscheme.
+We can then replace $U_{i_1}$ in the cover of $X$ by an affine open cover of $U_{i_1}$.)
+By definition of the skyscraper sheaf, we find that
+\[
+    C^1(k_P)
+    = \prod_{i_0 < i_1} k_P(U_{i_0} \cap U_{1_i})
+    = 0,
+\]
+and it follows that $H^1(k_P) = 0$.
+This gives us the exact sequence
+\begin{cd}
+    \Gamma(\omega_X \tensor \OO_X(P)) \rar & \Gamma(k_P) \rar & H^1(\omega_X) \rar & H^1(\omega_X \tensor \OO_X(P)) \rar & 0.
+\end{cd}
+Not sure if there is anywhere to go from here in general, so I will simplify to an easy case.
+
+
+
+Consider $X = \P^1$ with the fixed affine open cover $U_i = \{x_i \ne 0\}$ for $i = 0, 1$.
+Additionally, we assume $P = [0 : 1]$ so that $P \in U_0$ but $P \notin U_1$.
+Then
+\[
+    \Gamma(k_P)
+        = H^0(k_P)
+        = k_P(U_0) \times k_P(U_1)
+        = k \times 0
+        = k,
+\]
+which means in particular that $h^0(k_P) = 1$.
+By Example 8.4.3,
+\[
+    h^1(\omega_X) = h^1(\P^1, \omega_{\P^1}) = 1.
+\]
+This means that the map $\Gamma(k_P) \to H^1(\omega_X)$ is either the zero map or surjective; we want to show that it is not the zero map, so we need $H^1(\omega_X \tensor \OO_X(P)) = 0$.
+By Lemma 7.4.15,
+\[
+    \omega_X = \omega_{\P^1} = \OO_{\P^1}(-1-1) = \OO_X(-2).
+\]
+Additionally, since the line bundles on $\P^1$ are precisely the twisting sheaves $\OO_{\P^1}(n)$, then
+\[
+    \OO_X(P) = \OO_{\P^1}(\deg P) = \OO_{\P^1}(1) = \OO_X(1).
+\]
+Hence,
+\[
+    \omega_X \tensor \OO_X(P) = \OO_X(-2) \tensor \OO_X(1) = \OO_X(-1).
+\]
+Note that $\P^1$ is a genus $g = 0$ curve and $\deg \OO_X(-1) = -1 \geq 2g - 1$.
+By the Kodaira vanishing theorem, we conclude that
+\[
+    H^1(\omega_X \tensor \OO_X(P)) = H^1(\OO_X(-1)) = 0.
+\]
+Hence, the map $\Gamma(k_P) \to H^1(\omega_X)$ is surjective, with each of dimension $1$, so the kernel is proper.
+In other words, the image of the map $\Gamma(\omega_X \tensor \OO_X(P)) \to \Gamma(k_P)$ is proper, hence the map is not surjective.
+
+
+
+
+\newpage
+\begin{pbox}[Exercise 8.6.3]
+    Compute the cohomology groups $H^i(\P^1 \times \P^1, p^*\OO_{\P^1}(a)) \tensor q^*\OO_{\P^1}(b))$ for all $a, b \in \Z$, where $p$ and $q$ denote the two projection maps from $\P^1 \times \P^1$ to $\P^1$.
+\end{pbox}
+
+A result from a paper online gives
+\[
+    H^i(\P^1 \times \P^1, p^*\OO_{\P^1}(a) \tensor q^*\OO_{\P^1}(b))
+        \isom H^i(\P^1, \OO_{\P^1}(a)) \tensor H^i(\P^1, \OO_{\P^1}(b)).
+\]
+We have computed
+\[
+    H^i(\P^1, \OO_{\P^1}(d)) = \begin{cases}
+        k[x_0, x_1]_d &\text{if } i = 0, \\
+        k[x_0, x_1]_{-2-d} &\text{if } i = 1, \\
+        0 &\text{otherwise},
+    \end{cases}
+\]
+so
+\[
+    H^i = \begin{cases}
+        k[x_0, x_1]_a \tensor k[y_0, y_1]_b &\text{if } i = 0, \\
+        k[x_0, x_1]_{-2-a} \tensor k[y_0, y_1]_{-2-b} &\text{if } i = 1, \\
+        0 &\text{otherwise}.
+    \end{cases}
+\]
+
+\end{document}

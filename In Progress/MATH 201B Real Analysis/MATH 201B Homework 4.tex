@@ -1,0 +1,192 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+\newcommand{\inc}{\hookrightarrow}
+
+% Extra Commands
+
+
+% Document
+\begin{document}
+\title{MATH 201B Homework 4}
+\author{Harry Coleman}
+\date{March 12, 2022}
+\maketitle
+
+\begin{pbox}[1]
+    Let $\{B_n\}$ be a nested sequence of closed balls in a complete normed space $X$, where
+    \[
+        B_n = \bar{B}_{r_n}(x_n), \isp{with} r_n \geq r > 0 \isp{for all} n \in \N.
+    \]
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Is it true that $\bigcap_{n=1}^{\infty} B_n \ne \emptyset$?
+\end{pbox}
+
+Yes.
+
+\begin{proof}    
+    Define the radius $R = \inf r_n \geq r > 0$.
+    Since the balls are nested, $\{r_n\}$ is a decreasing sequence converging to $R$.
+
+    We will prove that the sequence of center points $\{x_n\}$ is Cauchy.
+
+    Let $\eps > 0$ be given and choose $N \in \N$ such that $r_N < R + \eps$.
+    Suppose $m \geq n \geq N$.
+    If $x_n = x_m$, then trivially $\|x_n - x_m\| = 0 < \eps$.
+    Otherwise, if $x_n \ne x_m$, consider the ray in $X$ starting from $x_n$ in the direction of $x_m$.
+    Let $y \in X$ be the point where this ray meets the boundary of $B_m$:
+    \[
+        y = x_n + \frac{r_m}{\|x_m - x_n\|}(x_m - x_n).
+    \]
+    Then $x_n, x_m, y$ are all collinear and contained in $B_n$.
+    \begin{drawing}
+        \draw (0, 0) circle (2);
+        \fill (0, 0) circle (2pt) node[below right] {$x_n$};
+        \draw (0, 0) -- (-2, 0) node[midway, above] {$r_n$};
+
+        \draw (30 : 0.75) circle (1.1);
+        \fill (30 : 0.75) circle (2pt) node[below right] {$x_m$};
+        \draw (30 : 0.75) -- +(-1.1, 0) node[midway, above] {$r_m$};
+
+        \draw[->, thick] (0, 0) -- (30 : 3);
+        \fill (30 : 1.85) circle (2pt) node[below, xshift=-2pt, yshift=-3pt] {$y$};
+    \end{drawing}
+    It follows that
+    \[
+        \|x_n - x_m\| = \|x_n - y\| - \|y - x_m\| = \|x_n - y\| - r_m \leq r_n - r_m < \eps.
+    \]
+    As $\{x_n\}$ is a Cauchy sequence in the complete space $X$, we know that it converges to some point $x \in X$.
+    For each $n \in \N$, all the points $x_k$ for $k \geq n$ are contained in the closed ball $B_n$.
+    In particular, $B_n$ is sequentially closed so $x_k \to x$ implies $x \in B_n$.
+    Hence, $x \in \bigcap_{n=1}^{\infty} B_n$.
+\end{proof}
+
+
+\newpage
+\begin{pbox}[(b)]
+    Is it true $B \seq \bigcap_{n=1}^{\infty} B_n$ for some closed ball $B$ with radius $r$?
+\end{pbox}
+
+Yes.
+
+\begin{proof}
+    Let $y \in \bar{B}_r(x)$, where $x = \lim_{n \to \infty} x_n \in X$ as in the previous proof.
+    For $n \in \N$ define the point $y_n = x_n + (y - x)$.
+    Then $x_n \to x$ implies $y_n \to y$, since
+    \[
+        \|y_n - y\| = \|x_n + (y - x) - y\| = \|x_n - x\| \xrightarrow{n \to \infty} 0.
+    \]
+    On the other hand,
+    \[
+        \|y_n - x_n\| = \|y - x\| \leq r \leq r_n,
+    \]
+    which means $y_n \in B_n$, so $y \in B_k$ for all $k \leq n$.
+    In other words, $y_k \in B_n$ for all $k \geq n$.
+    Therefore, $y_k \to y$ in the closed ball $B_n$, so in fact $y \in B_n$.
+    Hence, $\bar{B}_r(x) \seq \bigcap_{n=1}^{\infty} B_n$.
+\end{proof}
+
+\newpage
+\begin{pbox}[2]
+    Construct a Lebesgue-measurable set $A \seq [0, 1]$ such that $m(A) = 1$ and $A$ is of Baire first category in $[0, 1]$.
+\end{pbox}  
+
+For any $0 < \alpha \leq 1$, we can construct a ``fat Cantor set'' by removing the middle $\alpha/3$ of each interval (instead of the usual middle $1/3$).
+The resulting set $C_\alpha \seq [0, 1]$ is homeomorphic to the usual cantor set by appropriate stretching and shrinking of the interval.
+In particular, the set is nowhere dense and has measure
+\[
+    m(C_\alpha)
+        = 1 - \sum_{n=0}^{\infty} 2^n \left(\frac{\alpha}{3}\right)^{n+1}
+        = 1 - \frac{\alpha}{3} \sum_{n=0}^{\infty} \left(\frac{2\alpha}{3}\right)^{n}
+        = 1 - \frac{\alpha}{3} \cdot \frac{1}{1 - \frac{2\alpha}{3}}
+        = \frac{3 - 3\alpha}{3 - 2\alpha}.
+\]
+We now define the Baire first category set $A = \bigcup_{k=1}^{\infty} C_{1/k}$.
+Since $[0, 1] \supseteq A \supseteq C_{1/k}$, we have
+\[
+    1 \geq m(A) \geq m(C_{1/k}) = \frac{3k - 3}{3k - 2}.
+\]
+Taking the limit as $k \to \infty$, we obtain $m(A) = 1$.
+
+
+
+\newpage
+\begin{pbox}[3]
+    Let $f : (0, 1) \to \R$ be continuous.
+    Prove that if $\lim_{n \to \infty} f(\frac{x}{n}) = 0$ for all $x \in (0, 1)$, then $\lim_{x \to 0} f(x) = 0$.
+\end{pbox}
+
+
+\newpage
+\begin{pbox}[4]
+    Let $f \in C^\infty(\R, \R)$ be such that for every $x \in \R$, there exists $N_x \in \N$ such that $f^{(n)}(x) = 0$ for all $n \geq N_x$.
+    Prove that $f$ is a polynomial on $\R$.
+\end{pbox}
+
+
+\end{document}
