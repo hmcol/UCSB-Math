@@ -1,0 +1,583 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+\usetikzlibrary{decorations.markings}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+\newcommand{\inc}{\hookrightarrow}
+
+% Extra Commands
+\newcommand{\bd}{\partial}
+\newcommand{\htpy}{\simeq}
+\newcommand{\To}{\longrightarrow}
+\newcommand{\Mapsto}{\longmapsto}
+
+\DeclareMathOperator{\inter}{int}
+
+% Document
+\begin{document}
+\title{MATH 221B Final}
+\author{Harry Coleman}
+\date{March 18, 2022}
+\maketitle
+
+\vspace*{0pt}
+
+\begin{pbox}[1]
+    
+\end{pbox}
+
+We first prove the generalization of Hatcher Lemma 1.19.
+
+\begin{lemma}
+    If $\phi_t : X \to Y$ is a homotopy and $h$ is the path $\phi_t(x_0)$ formed by the images of a basepoint $x_0 \in X$, then the three maps in the following diagram satisfy $\phi_{0*} = \beta_h \circ \phi_{1*}$.
+    \begin{cd}[row sep=tiny, column sep=large]
+        & \pi_n(Y, \phi_1(x_0)) \ar[dd, "\beta_h"]\\
+        \pi_n(X, x_0) \urar["\phi_{1*}"] \drar["\phi_{0*}"'] \\
+        & \pi_n(Y, \phi_0(x_0))
+    \end{cd}
+\end{lemma}
+
+\begin{proof}
+    Let $h_t$ be the restriction of $h$ to the interval $[0, t]$, with a reparameterization so that the domain of $h_t$ is still $[0, 1]$.
+    Explicitly, we can take $h_t(s) = h(ts)$.
+    Given a map $f : (I^n, \bd I^n) \to (X, x_0)$, the product $h_t \cdot (\phi_t \circ f)$  gives a homotopy of maps $(I^n, \bd I^n) \to (Y, \phi_0(x_0))$.
+    Restricting this homotopy to $t = 0$ and $t = 1$, we see that $\phi_{0*}[f] = \beta_h (\phi_{1*}[f])$.
+\end{proof}
+
+\begin{pbox}
+    Show that if $f : X \to Y$ is a homotopy equivalence and $y_0 = f(x_0)$ then the induced homomorphism $f_* : \pi_n(X, x_0) \to \pi_n(Y, y_0)$ is an isomorphism. [$n = 1$ was done in class.]
+\end{pbox}
+
+\begin{proof}
+    Let $g : Y \to X$ be a homotopy inverse to $f$, so that $g \circ f \htpy \id_X$ and $f \circ g \htpy \id_Y$.
+    Consider the sequence of group homomorphisms
+    \begin{cd}
+        \pi_n(X, x_0) \rar["f_*"] & \pi_n(Y, y_0) \rar["g_*"] & \pi_n(X, g(y_0)) \rar["f_*"] & \pi_n(Y, (f \circ g)(y_0)).
+    \end{cd}
+    By the lemma, $g_* \circ f_* = \beta_h$ for some $h$.
+    In particular, since $\beta_h$ is an isomorphism,
+    \[
+        0 = \ker \beta_h = \ker (g_* \circ f_*) = f_*^{-1}(\ker g_*) \supseteq f_*^{-1}(0) = \ker f_*.
+    \]
+    This implies $\ker f_* = 0$ so $f_*$ is injective.
+    Again, the lemma tells us $f_* \circ g_* = \beta_h$ for some $h$.
+    In particular, since $\beta_h$ is an isomorphism,
+    \[
+        \pi_n(Y, (f \circ g)(y_0))
+            = \im \beta_h
+            = \im (f_* \circ g_*)
+            = \im f_*|_{\im g_*}
+            \seq \im f_*.
+    \]
+    This implies $\im f_* = \pi_n(Y, (f \circ g)(y_0))$ so $f_*$ is surjective.
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[2]
+    If $X$ is simply connected carefully show that $\bd : \pi_2(X, A, x_0) \to \pi_1(A, a_0)$ is surjective.
+    You may not assume any results about exact sequences.
+\end{pbox}
+
+\begin{proof}
+    Let $f : (I, \bd I) \to (A, a_0)$ be a loop in $A$ based at $a_0$, representing an arbitrary element $[f] \in \pi_1(A, a_0)$.
+    Since $X$ is simply connected, we have
+    \[
+        [f] = [c] \in \pi_n(X, a_0),
+    \]
+    where $c \equiv a_0$ is the constant loop $(I, \bd I) \to (X, a_0)$.
+    In other words, $f \htpy c$ in $X$ relative to basepoints.
+    Suppose $H_t : (I, \bd I) \to (X, a_0)$ is a homotopy with $H_0 = f$ and $H_1 = c$.
+    Then the parameter space of $H : I \times I \to X$ can be drawn as follows:
+    \begin{drawing}
+        \draw[fill=gray!20] (0, 0) rectangle (2, 2);
+        \foreach \x in {0, 2} {
+            \foreach \y in {0, 2} {
+                \fill (\x, \y) circle (2pt);
+            }
+        }
+        
+
+        \draw[->] (-0.75, 0.5) -- (-0.75, 1.5) node[midway, left] {$t$};
+        \draw[->] (0.5, -0.75) -- (1.5, -0.75) node[midway, below] {$s$};
+
+        \node[below] at (1, 0) {$f$};
+        \node[left] at (0, 1) {$c$};
+        \node[right] at (2, 1) {$c$};
+        \node[above] at (1, 2) {$c$};
+        
+        \node[below left] at (0, 0) {$a_0$};
+        \node[below right] at (2, 0) {$a_0$};
+        \node[above left] at (0, 2) {$a_0$};
+        \node[above right] at (2, 2) {$a_0$};
+    \end{drawing}
+    We can interpret this as being the square ($2$-cube) $I^2$.
+    Under the map $H : I^2 \to X$, the front face $F^1$ is mapped via $f$, in particular $H(F^1) \seq A$, and the remaining faces $J^1$ are mapped constantly to $a_0$.
+    Therefore, $H$ can be viewed as a map $H : (I^2, F^1, J^1) \to (X, A, a_0)$.
+    We have thus found an element $[H] \in \pi_2(X, A, a_0)$ such that
+    \[
+        \bd[H] = [H|_{F^1}] = [f] \in \pi_1(A, a_0).
+    \]
+\end{proof}
+
+\newpage
+\begin{pbox}[3]
+    In each case either prove a covering exists or that no such covering exists.
+    You may state what the fundamental groups of spaces are without proof.
+\end{pbox}
+
+\begin{pbox}[(a)]
+    $p : S^2 \to T^2$
+\end{pbox}
+
+No such covering exists.
+By Hatcher Proposition 4.1, such a covering would induce an isomorphism
+\begin{cd}
+    \Z \isom \pi_2(S^2) \rar["p_*"] & \pi_2(T^2) = 0,
+\end{cd}
+but this is not possible.
+
+\begin{pbox}[(b)]
+    $p : T^2 \to S^2$
+\end{pbox}
+
+No such covering exists.
+By Hatcher Proposition 1.31, such a covering would induce an injection
+\begin{cd}
+    Z^2 \isom \pi_1(T^2) \rar["p_*"] & \pi_1(S^2) = 0,
+\end{cd}
+but this is not possible.
+
+
+\begin{pbox}[(c)]
+    $p : \R^2 \to T^2$
+\end{pbox}
+
+Let $q : \R \to S^1$ be the usual covering and define the product map
+\[
+    p = q \times q : \R^2 \To S^2.
+\]
+We claim that this map as the even covering property.
+
+\begin{proof}
+    For a given point $(x, y) \in S^2$, we choose neighborhoods $x \in U \seq S^1$ and $y \in V \seq S^1$ such that each component $\tilde{U}_i \seq \R$ of $q^{-1}(U)$ is mapped homeomorphically to $U$ and each component $\tilde{V}_j \seq \R$ of $q^{-1}(V)$ is mapped homeomorphically to $V$.
+    Since the finite product topology is simply the box topology, $U \times V \seq S^2$ is an open neighborhood of $(x, y)$.
+    Moreover, the components of
+    \[
+        p^{-1}(U \times V) = (q \times q)^{-1}(U \times V) = q^{-1}(U) \times q^{-1}(V) \seq \R^2
+    \]
+    are precisely the sets $\tilde{U}_i \times \tilde{V}_j \seq \R^2$, each of which is mapped homeomorphically to $U \times V$ via our map $p = q \times q$.
+\end{proof}
+
+\begin{pbox}[(d)]
+    $p : \R^2 \to S^2$
+\end{pbox}
+
+No such covering exists.
+By Hatcher Proposition 4.1, such a covering would induce an isomorphism
+\begin{cd}
+    0 = \pi_2(\R^2) \rar["p_*"] & \pi_2(S^2) \isom \Z,
+\end{cd}
+but this is not possible.
+
+\newpage
+\begin{pbox}[4]
+    The cell complex $X$ is a wedge of two circles with one $0$-cell $x_0$, and two $1$-cells and $a$ and $b$.
+    Let $[a], [b] \in \pi_1(X, x_0)$ denote the elements represented by loops that go once along $a$ and $b$ respectively.
+    For parts (i) and (ii) of the following carefully draw a covering space $\tilde{X}$ of $X$, label each $1$-cell of $\tilde{X}$ by $a$ or $b$ according to which $1$-cell it projects to, and put an arrow on it to indicate the covering (as is done in the text on page 58).
+    More a basepoint $\tilde{x}_0 \in \tilde{X}$ that maps to $x_0$, and let $H$ be the subgroup of $\pi_1(X, x_0)$ determined by the covering and $\tilde{x}_0$.
+    In each part \textbf{prove your answer is correct}
+\end{pbox}
+
+
+
+\begin{drawing}
+    \fill (0, 0) circle (2pt) node[below, yshift=-3pt] {$x_0$};
+    \draw[->] (0, 0) to[out=-45, in=-90] (2, 0) node[right] {$a$};
+    \draw (2, 0) to[out=90, in=45] (0, 0);
+
+    \draw[->] (0, 0) to[out=135, in=90] (-2, 0) node[left] {$b$};
+    \draw (-2, 0) to[out=-90, in=-135] (0, 0);
+\end{drawing}
+
+\begin{pbox}[(i)]
+    Draw the covering $p_1 : \tilde{X}_1 \to X$ with $H = \<a^3, b, aba^2, a^2ba\>$.
+\end{pbox}
+
+We start with the required paths for each of the generators of $H$:
+\begin{drawing}
+    \begin{scope}[yshift=1cm]
+        \fill (-90 : 1) circle (2pt) node[below] {$\tilde{x}_0$};
+        % \fill (30 : 1) circle (2pt) node[right] {$\tilde{x}_1$};
+        % \fill (150 : 1) circle (2pt) node[left] {$\tilde{x}_2$};
+
+        \begin{scope}[decoration={
+            markings,
+            mark=at position 0.5 with {\arrow{>}}}
+            ] 
+            \draw[postaction={decorate}] (-90 : 1) -- (30 : 1) node[midway, below right] {$a$};
+            \draw[postaction={decorate}] (30 : 1) -- (150 : 1) node[midway, above] {$a$};
+            \draw[postaction={decorate}] (150 : 1) -- (-90 : 1) node[midway, below left] {$a$};
+        \end{scope}
+    \end{scope}
+
+    \begin{scope}[xshift=3cm]
+        \fill (0, 0) circle (2pt) node[below] {$\tilde{x}_0$};
+        \draw[->] (0, 0) to[out=45, in=0] (0, 1) node[above] {$b$};
+        \draw(0, 1) to[out=180, in=135] (0, 0);
+    \end{scope}
+
+    \begin{scope}[xshift=6cm, yshift=1cm]
+        \fill (-90 : 1) circle (2pt) node[below] {$\tilde{x}_0$};
+        % \fill (0 : 1) circle (2pt) node[right] {$\tilde{x}_2$};
+
+        \begin{scope}[decoration={
+            markings,
+            mark=at position 0.5 with {\arrow{>}}}
+            ] 
+            \draw[postaction={decorate}] (-90 : 1) -- (0 : 1) node[midway, below right] {$a$};
+            \draw[postaction={decorate}] (0 : 1) -- (90 : 1) node[midway, above right] {$b$};
+            \draw[postaction={decorate}] (90 : 1) -- (180 : 1) node[midway, above left] {$a$};
+            \draw[postaction={decorate}] (180 : 1) -- (-90 : 1) node[midway, below left] {$a$};
+        \end{scope}
+    \end{scope}
+
+    \begin{scope}[xshift=10cm, yshift=1cm]
+        \fill (-90 : 1) circle (2pt) node[below] {$\tilde{x}_0$};
+        % \fill (0 : 1) circle (2pt) node[right] {$\tilde{x}_1$};
+        % \fill (90 : 1) circle (2pt) node[above] {$\tilde{x}_2$};
+        % \fill (180 : 1) circle (2pt) node[left] {$\tilde{x}_2$};
+
+        \begin{scope}[decoration={
+            markings,
+            mark=at position 0.5 with {\arrow{>}}}
+            ] 
+            \draw[postaction={decorate}] (-90 : 1) -- (0 : 1) node[midway, below right] {$a$};
+            \draw[postaction={decorate}] (0 : 1) -- (90 : 1) node[midway, above right] {$a$};
+            \draw[postaction={decorate}] (90 : 1) -- (180 : 1) node[midway, above left] {$b$};
+            \draw[postaction={decorate}] (180 : 1) -- (-90 : 1) node[midway, below left] {$a$};
+        \end{scope}
+    \end{scope}
+\end{drawing}
+
+Each vertex of $\tilde{X}$ must have each of $a$ and $b$ entering and exiting exactly once.
+Taking $\tilde{x}_0$ as the basepoint, we can deduce what identifications are necessary so that $\tilde{X}$ is a covering of $X$.
+Without loss of generality, we may label the two other vertices of the $a^3$ loop as $\tilde{x_1}$ and $\tilde{x_2}$.
+Then, in each of the remaining loops, we must end end up at the same vertex after following any path.
+In particular, following the path of either $a$ or $a^{-2}$ from $\tilde{x}_0$ must land at $\tilde{x}_1$ and following the path of either $a^2$ or $a^{-1}$ from $\tilde{x}_0$ must land at $\tilde{x}_2$.
+Hence, the vertices must be labeled as follows:
+\begin{drawing}
+    \begin{scope}[yshift=1cm]
+        \fill (-90 : 1) circle (2pt) node[below] {$\tilde{x}_0$};
+        \fill (30 : 1) circle (2pt) node[right] {$\tilde{x}_1$};
+        \fill (150 : 1) circle (2pt) node[left] {$\tilde{x}_2$};
+
+        \begin{scope}[decoration={
+            markings,
+            mark=at position 0.5 with {\arrow{>}}}
+            ] 
+            \draw[postaction={decorate}] (-90 : 1) -- (30 : 1) node[midway, below right] {$a$};
+            \draw[postaction={decorate}] (30 : 1) -- (150 : 1) node[midway, above] {$a$};
+            \draw[postaction={decorate}] (150 : 1) -- (-90 : 1) node[midway, below left] {$a$};
+        \end{scope}
+    \end{scope}
+
+    \begin{scope}[xshift=3cm]
+        \fill (0, 0) circle (2pt) node[below] {$\tilde{x}_0$};
+        \draw[->] (0, 0) to[out=45, in=0] (0, 1) node[above] {$b$};
+        \draw(0, 1) to[out=180, in=135] (0, 0);
+    \end{scope}
+
+    \begin{scope}[xshift=6cm, yshift=1cm]
+        \fill (-90 : 1) circle (2pt) node[below] {$\tilde{x}_0$};
+        \fill (0 : 1) circle (2pt) node[right] {$\tilde{x}_1$};
+        \fill (90 : 1) circle (2pt) node[above] {$\tilde{x}_1$};
+        \fill (180 : 1) circle (2pt) node[left] {$\tilde{x}_2$};
+
+        \begin{scope}[decoration={
+            markings,
+            mark=at position 0.5 with {\arrow{>}}}
+            ] 
+            \draw[postaction={decorate}] (-90 : 1) -- (0 : 1) node[midway, below right] {$a$};
+            \draw[postaction={decorate}] (0 : 1) -- (90 : 1) node[midway, above right] {$b$};
+            \draw[postaction={decorate}] (90 : 1) -- (180 : 1) node[midway, above left] {$a$};
+            \draw[postaction={decorate}] (180 : 1) -- (-90 : 1) node[midway, below left] {$a$};
+        \end{scope}
+    \end{scope}
+
+    \begin{scope}[xshift=10cm, yshift=1cm]
+        \fill (-90 : 1) circle (2pt) node[below] {$\tilde{x}_0$};
+        \fill (0 : 1) circle (2pt) node[right] {$\tilde{x}_1$};
+        \fill (90 : 1) circle (2pt) node[above] {$\tilde{x}_2$};
+        \fill (180 : 1) circle (2pt) node[left] {$\tilde{x}_2$};
+
+        \begin{scope}[decoration={
+            markings,
+            mark=at position 0.5 with {\arrow{>}}}
+            ] 
+            \draw[postaction={decorate}] (-90 : 1) -- (0 : 1) node[midway, below right] {$a$};
+            \draw[postaction={decorate}] (0 : 1) -- (90 : 1) node[midway, above right] {$a$};
+            \draw[postaction={decorate}] (90 : 1) -- (180 : 1) node[midway, above left] {$b$};
+            \draw[postaction={decorate}] (180 : 1) -- (-90 : 1) node[midway, below left] {$a$};
+        \end{scope}
+    \end{scope}
+\end{drawing}
+
+Making these identifications, we obtain $\tilde{X}_1$ as the following space:
+\begin{drawing}
+    \fill (-90 : 1) circle (2pt) node[below] {$\tilde{x}_0$};
+    \fill (30 : 1) circle (2pt) node[right, yshift=5pt] {$\tilde{x}_1$};
+    \fill (150 : 1) circle (2pt) node[left, yshift=5pt] {$\tilde{x}_2$};
+
+    \begin{scope}[decoration={
+        markings,
+        mark=at position 0.5 with {\arrow{>}}}
+        ] 
+        \draw[postaction={decorate}] (-90 : 1) -- (30 : 1) node[midway, below right] {$a$};
+        \draw[postaction={decorate}] (30 : 1) -- (150 : 1) node[midway, above] {$a$};
+        \draw[postaction={decorate}] (150 : 1) -- (-90 : 1) node[midway, below left] {$a$};
+
+        \draw[postaction={decorate}] (-90 : 1) arc (-270 : 90 : 0.5) node[midway, below] {$b$};
+        \draw[postaction={decorate}] (30 : 1) arc (-150 : 210 : 0.5) node[midway, right] {$b$};
+        \draw[postaction={decorate}] (150 : 1) arc (-30 : 330 : 0.5) node[midway, left] {$b$};
+    \end{scope}
+\end{drawing}
+
+We apply Hatcher Proposition 1A.2 to check the fundamental group.
+Take $T$ to be the maximal tree of the edges corresponding to the path $a^2$ from the basepoint.
+Then we obtain a generator for each of the edges in $X \setminus T$:
+\[
+    H = \pi_1(\tilde{X}_1, \tilde{x_0}) = \<a^3, b, aba^{-1}, a^2ba^{-2}\>.
+\]
+Multiplying the last two generators on the right by $a^3$ gives us the original generating set.
+
+\begin{pbox}[(ii)]
+    Draw a cover $p_2 : \tilde{X}_2 \to X$ of degree $3$ that is not normal and not shown on page 58 and write down $H$ for this cover.
+    You need to prove the cover is not normal.
+\end{pbox}
+
+There are four undirected graphs on $3$ vertices of degree $4$ (that is degree $4$ as vertices in the graph):
+\begin{drawing}
+    \begin{scope}[xshift=-0.5cm]
+        \draw (0, 0) circle (1);
+        \draw (-90 : 1) -- (30 : 1) -- (150 : 1) -- cycle;
+    \end{scope}
+    \begin{scope}[xshift=3cm, yshift=0.2cm]
+        \draw (-90 : 0.75) -- (30 : 0.75) -- (150 : 0.75) -- cycle;
+        \draw (-90 : 0.75) arc (-270 : 90 : 0.3);
+        \draw (30 : 0.75) arc (-150 : 210 : 0.3);
+        \draw (150 : 0.75) arc (-30 : 330 : 0.3);
+    \end{scope}
+    \begin{scope}[xshift=5.5cm]
+        \draw (0, 0) circle (0.5);
+        \draw (1, 0) circle (0.5);
+        \draw (2, 0) circle (0.5);
+        \draw (3, 0) circle (0.5);
+    \end{scope}
+    \begin{scope}[xshift=12cm]
+        \draw (-1, 0) arc (180 : 270 : 1);
+        \draw (-90 : 1) arc (-90 : 90 : 1);
+        \draw (90 : 1) arc (90 : 180 : 1);
+        
+        \draw (90 : 1) arc (135 : 225 : 1.414);
+        \draw (-90 : 1) arc (-45 : 45 : 1.414);
+        \draw (180 : 1) arc (0 : 360 : 0.5);
+    \end{scope}
+\end{drawing}
+
+The first two of these will certainly be normal and the third is present on page 58.
+And, indeed, the fourth is $2$-orientable giving us $\tilde{X}_2$ as follows:
+\begin{drawing}
+    \fill (-1, 0) circle (2pt);
+    \begin{scope}[decoration={
+        markings,
+        mark=at position 0.5 with {\arrow{>}}}
+        ] 
+        \draw[postaction={decorate}] (-1, 0) arc (180 : 270 : 1) node[midway, below left] {$a$};
+        \draw[postaction={decorate}] (-90 : 1) arc (-90 : 90 : 1) node[midway, right] {$a$};
+        \draw[postaction={decorate}] (90 : 1) arc (90 : 180 : 1) node[midway, above left] {$a$};
+        
+        \draw[postaction={decorate}] (-90 : 1) arc (225 : 135 : 1.414) node[midway, below right] {$b$};
+        \draw[postaction={decorate}] (90 : 1) arc (45 : -45 : 1.414) node[midway, above left] {$b$};
+        \draw[postaction={decorate}] (180 : 1) arc (0 : 360 : 0.5) node[midway, left] {$b$};
+    \end{scope}
+\end{drawing}
+This covering is not normal as the marked vertex has a loop of $b$, while neither of the other two vertices do.
+This means that there can be no graph automorphism taking the vertex to either of the other vertices.
+As the graph automorphisms of $\tilde{X}_2$ are precisely the automorphisms as a covering space $p_2 : \tilde{X}_2 \to X$, we conclude that there are no automorphisms of $\tilde{X}_2$ sending the lifted basepoint $\tilde{x}_0$ to any other lifted basepoint, i.e., $\tilde{X}_2$ is not normal.
+
+We apply Hatcher Proposition 1A.2 to compute the fundamental group.
+Take $T$ to be the maximal tree of the edges corresponding to the path $a^2$ from the basepoint.
+Then we obtain a generator for each of the edges in $X \setminus T$:
+\[
+    H = \pi_1(\tilde{X}_2, \tilde{x_0}) = \<a^3, b, aba, a^2ba^{-1}\>.
+\]
+We can check again that this is not normal; consider $a^2b = a(aba)a^{-1} \in aHa^{-1}$.
+Following the corresponding path in $\tilde{X}_2$ does not return to the basepoint, so this element could not be in $H$, hence $H$ is not a normal subgroup.
+
+\newpage
+\begin{pbox}[(iii)]
+    Does the map $p_2$ lift to a map $\tilde{p}_2 : \tilde{X}_2 \to \tilde{X}_1$ so that $p_1 \circ \tilde{p}_2 = p_2$?
+    (it is not required that $\tilde{p}_2$ sends basepoint to basepoint.)
+\end{pbox}
+
+No. If $\tilde{p}_2 : \tilde{X}_2 \to \tilde{X}_1$ were such a lift, then consider the loop $\gamma : (I, \bd I) \to X$ corresponding to $a^2b$.
+This uniquely lifts to a path $\tilde{\gamma}_2 : I \to \tilde{X}_2$ such that $p_2 \circ \tilde{\gamma}_2 = \gamma$.
+Notably, $\tilde{\gamma}_2$ is a loop in $\tilde{X}_2$.
+Therefore, the composition $\tilde{p}_2 \circ \tilde{\gamma}_2 : I \to \tilde{X}_1$ is a loop in $\tilde{X}_1$ such that
+\[
+    p_1 \circ (\tilde{p_2} \circ \tilde{\gamma}_2) = p_2 \circ \tilde{\gamma}_2 = \gamma.
+\]
+But $\gamma$ uniquely lifts to a path $\tilde{\gamma}_1 : I \to \tilde{X}_1$ such that $p_1 \circ \tilde{\gamma}_1 = \gamma$, so $\tilde{\gamma}_1 = \tilde{p_2} \circ \tilde{\gamma}_2$.
+However, $\tilde{\gamma}_1$ is not a loop in $\tilde{X}_1$, which is a contradiction.
+(In order for the composition to work out, $\tilde{p}_2(\tilde{x}_0)$ must be one of the vertices of $\tilde{X}_1$, and $a^2b$ is not a loop based at any of these vertices.)
+
+
+
+
+\newpage
+\begin{pbox}[5]
+    Given a sequence $f : \N \to (0, \infty)$ define $p_k = (0, 0, f(k))$ and $C_k$ is the boundary of the triangle in the plane $\{(x, y, 0) \in \R^3\}$ with vertices $0, v_{2k}, v_{2k+1}$ where $v_n = (1/n, 1/n^2, 0)$.
+    For $k \in \N$ the set
+    \[
+        A_k = \{t \cdot q + (1 - t) \cdot p_k : q \in C_k \quad 0 \leq t \leq 1\}
+    \]
+    is the cone from $p_k$ to $C_k$.
+    The subspace $X \seq \R^3$ is $X = \bigcup A_k$.
+\end{pbox}
+
+\begin{pbox}[(a)]
+    If $f(k) = 1$ for all $k$, prove that $X$ is simply connected.
+\end{pbox}
+
+\begin{proof}
+    In this case, $p_k = (0, 0, 1) = e_3$ for all $k \in \N$ and $X$ contains the line segment between $e_3$ and any point in $X$.
+    In particular, $X$ is path-connected, where a path between any two points can be found through their line segments to $e_3$.
+    We construct a deformation retraction of $X$ to the point $e_3$ as the straight line homotopy
+    \begin{align*}
+        H : X \times I &\To X, \\
+            (q, t) &\Mapsto (1 - t) \cdot q + t \cdot e_3.
+    \end{align*}
+    In particular, Hatcher Proposition 1.17 gives us an isomorphism
+    \[
+        \pi_1(X, e_3) \isom \pi_1(\{e_3\}, e_3) = 0.
+    \]
+    Hence, $X$ is simply connected.
+\end{proof}
+
+\begin{pbox}[(b)]
+    If $f(k) = 1/k$ prove $X$ is simply connected.
+\end{pbox}
+
+\begin{proof}
+    Similar to part (a), $X$ contains the line segment between $p_k$ and any point in $A_k$. Moreover, $X$ contains the line segment between any two focal points $p_k$ and $p_\ell$.
+    Thus, a path between any two points of $X$ can be found by first taking the line segments to their respective focal points, then connecting the focal points via a path in the unit interval on the $z$-axis $\{0\} \times \{0\} \times [0, 1] \seq X$.
+
+
+    Each $A_k$ is homeomorphic to a cell complex of the following form:
+    \begin{drawing}
+        \filldraw[fill=gray!20] (-90 : 1.5) -- (30 : 1.5) -- (150 : 1.5) -- cycle;
+        \fill (-90 : 1.5) circle (1.5pt) node[below] {$0$};
+        \fill (30 : 1.5) circle (1.5pt) node[right] {$v_{2k}$};
+        \fill (150 : 1.5) circle (1.5pt) node[left] {$v_{2k+1}$};
+
+        \draw (30 : 1.5) -- (0, 0) -- (150 : 1.5);
+        \draw[very thick] (-90 : 1.5) -- (0, 0);
+
+        \fill (0, 0) circle (1.5pt) node[below right] {$p_k$};
+    \end{drawing}
+    There is a deformation retraction of this space to the bold $1$-cell.
+    Let $h_k : A_k \times I \to A_k$ be the corresponding deformation retraction of $A_k$ onto the line segment $\{0\} \times \{0\} \times [0, p_k]$.
+    The $A_k$'s only overlap inside of $\{0\} \times \{0\} \times [0, 1]$, on which each $h_k$ is the identity, so there is a well-defined function $H : X \times I \to X$ such that $H|_{A_k \times I} = h^k$.
+    However, it is not immediate that that $H$ is continuous.
+    To use the pasting lemma, we would require a cover of open sets or a finite cover of closed sets---we have an infinite cover of closed sets $A_k \times I$.
+    
+    For $n \in \N$, define the subspace $X_n = \bigcup_{k=1}^{n} A_k$, so then $X_n \times I = \bigcup_{k=1}^{n} (A_k \times I)$.
+    Since we have a cover of $X_n \times I$ by finitely many closed sets $A_k \times I$, on each of which $H$ is continuous, the pasting lemma tells us that $H$ is continuous on all of $X_n \times I$.
+    The the continuity of $H$ at every point in $X_n \times I \setminus \{0\} \times I$ follows from the continuity in each $X_n \times I$, since every point of $X$ has a neighborhood contained in some $X_n$.
+    
+    The continuity on $\{0\} \times I$ is shown similarly.
+    For an open neighborhood $U \seq X$ of $0$, its complement $X \setminus U$ is closed and is contained in some $X_n$.
+    Then $H^{-1}(X \setminus U) = X \times I \setminus H^{-1}(U)$ is a closed subset of $X_n \times I$, which is a closed subspace of $X \times I$.
+    We conclude that $H^{-1}(U)$ is open in $X$ since its complement is closed.
+
+\end{proof}
+
+\begin{pbox}[(c)]
+    If $f(k) = k$ prove $X$ is not simply connected [hint: compactness]
+\end{pbox}
+
+\begin{proof}
+    Define the path $\gamma : (I, \bd I) \to (X, 0)$ which makes a single loop around $C_k$ on the interval $[1/k, 1/(k+1)]$ for each $k \in \N$.
+    If $X$ were simply connected, then there would be a homotopy $H_t : I \to X$ such that $H_0 = \gamma$, $H_1 \equiv 0$, and $H_t(0) = 0$.
+    In particular, restricting $H$ to $[1/k, 1/(k+1)] \times I$ gives a homotopy of the loop around $C_k$ to the origin.
+    The only possible way for this to happen is if the loop passes through the focal point $p_k \in A_k$ at some time during the homotopy.
+    In particular, $p_k$ is in the image of $H$ for all $k \in \N$.
+    However, $I \times I$ is a compact space, which implies its image $H(I \times I) \seq X \seq \R^3$ is also compact.
+    But compactness in $\R^3$ requires boundedness and the set of focal points $\{p_k\} \seq \im H$ is unbounded, so this is a contradiction.
+\end{proof}
+
+
+\end{document}

@@ -1,0 +1,194 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amsthm, amssymb, physics}
+\usepackage[shortlabels]{enumitem}
+\usepackage{tikz, tikz-cd}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{8pt}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+
+% Environments
+\newenvironment{definition}{\begin{fullbox}}{\end{fullbox}}
+\newcommand{\keyword}[1]{\textbf{#1}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\setlist[enumerate]{nosep}
+\def\[#1\]{\begin{align*}#1\end{align*}}
+
+\newcommand{\sepline}{\rule{\textwidth}{0.4pt}}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+
+% Document Formatting
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Math Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\tc}[1]{, \qquad \text{#1}}
+\newcommand{\mc}[1]{, \qquad #1}
+\newcommand{\cfa}[1]{, \qquad \text{for all $#1$}}
+
+% Symbols
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+
+% Delimiters
+\newcommand{\<}{\left\langle}
+\renewcommand{\>}{\right\rangle}
+
+% Relations
+\newcommand{\isom}{\cong}
+\newcommand{\dsum}{\oplus}
+\newcommand{\divides}{\mid}
+
+\newcommand{\eqc}{\overline}
+
+% Math Roman
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Ann}{Ann}
+
+
+
+\title{Algebra \\
+    \large 
+}
+\author{}
+\date{}
+
+
+
+\begin{document}
+
+A \keyword{binary operation} (on a set $S$) is a function $f : S \times S \to S$.
+
+A binary operation $\beta$ is said to be
+\begin{enumerate}
+    \item d
+\end{enumerate}
+
+\sepline
+
+A \keyword{magma} is given by the following data:
+\begin{enumerate}[$\bullet$]
+    \item a set $S$,
+    \item a binary operation $f : S \times S \to S$.
+\end{enumerate}
+
+It is common convention to notate the binary operation with a symbol called a (binary) \emph{operator}---common examples include the following:
+\[
+    + \quad \times \quad \cdot \quad * \quad \star \quad \circ
+\]
+This is of course not a comprehensive catalog, though it covers most of the basic cases.
+If we choose the star `$\star$' to represent our binary operation, we write `$a \star b$' to mean the image in $S$ under $f$ of the pair $(a, b) \in S \times S$.
+In other words, $f$ describes a rule which takes two elements $a, b \in A$ and produces a third element of $S$, denoted 
+\[
+    a \star b = f(a, b).
+\]
+This new element $a \star b \in S$ might be called many different things depending on the actual context.
+
+We will say things like ``$S$ is a set with a binary operation $\star$'' or ``$\star$ is a binary operation on the set $S$.''
+For brevity, we will also write ``$(S, \star)$ is a magma'' or possibly ``$(S, f)$ is a magma'' if we want to emphasize the fact that the binary operation is a function $S \times S \to S$.
+
+In the broader mathematical world, it is common to consider only a single binary operation on a set at one time---there are many sets with `canonical' operations---which can lead to the set alone being taken as proxy for the magma.
+For example, to refer to what we call ``the magma $(S, \star)$,'' one might instead say ``the set $S$ \textit{equipped with} a binary operation $\star$.''
+The difference here is subtle and a passing glance is not likely to reveal a discrepancy beyond the obvious linguistic one.
+And indeed there is no difference to one interfacing with mathematics in its most pure conceptual form.
+But you and I---dear reader---are confined to the relentlessly imperfect and finite bounds of language.
+When we do mathematics, we must undertake the impossible challenge of justifying that the sense connecting our mathematical referents to our mathematical language is justified, but can only do so either in the very same mathematical language or in some natural language.
+(The latter is what a mathematician might call `intuition' (for the more cultured `being loosey goosey' or `feeding the geese')).
+
+I trailed off, but the minor point is that it is unreasonable to be fully explicit all of the time.
+And while there are sometimes good reasons to `compress' mathematical data into containers not designed for it, there should be a way to unpack that data when necessary (in my opinion of course).
+I would also say that neither formality nor explication exist solely on single axis of `less' or `more,' where one must simply pick a single point along that axis.
+A thinner dictionary can be seen as either `clean and elegant' or `intuitive and superficial,' while a thicker one as either `rigorous and complete' or `cluttered and illegible' (find more creative or meaningful adjectives).
+A proof on either end of this can also be more or less transparent/opaque/illuminating/aesthetic/motivating.
+(Hot take things have many aspects and rarely does a single aspect determine its quality.)
+
+We are rarely interested in a general binary operation and will most often require it to have some additional structure.
+In such cases, however, we will need to define a particular binary operation and prove that it has the desired structure.
+For this reason---I would argue---it is worth having the language to talk about general binary operations.
+
+(There is a diversion here where I lament about having to prove certain elementary properties of objects without having the proper language to even talk about the way in which those objects possess those properties.
+To make matters worse, it is often the case that the desired result is essentially some form of ``niceness'' in the sense that we are showing that some hypothetical bad situation never occurs. In which case, when we are using the object for its intended purpose, we can sweep certain technical nuances under the rug.
+So because the goal is to be able to ignore the nuance, one has to synthesize a complete model of this nuance only to discard it the moment it reveals its own unimportance.)
+
+\sepline
+
+In order to notate an expression containing multiple applications of the operation, we use parenthesis, e.g.,
+\[
+    a \star (b \star c) = f(a, f(b, c)) \isp{and} (a \star b) \star c = f(f(a, b), c).
+\]
+In general, it is not well-defined to write an expression like `$a \star b \star c$,' as it is possible that the result is dependent on the order in which we apply the operation.
+In cases where the this order does not matter, we can make sense of such notation.
+
+A binary operation $\star$ on a set $S$ is called \keyword{associative} if
+for all $a, b, c \in S$ we have
+\[
+    (a \star b) \star c = a \star (b \star c)
+\]
+
+A magma $(S, \star)$
+\begin{itemize}
+    \item is \keyword{associative} if $(a \star b) \star c = a \star (b \star c)$ for all $a, b, c \in S$,
+    \item has \keyword{identity} if there exists $e \in S$ such that $e \star a = a \star e = a$ for all $a \in S$,
+    \item has \keyword{inverses} if for every $a \in S$ there exists $b \in S$ such that $ab = ba = e$,
+    \item is \keyword{commutative} if $a \star b = b \star a$ for all $a, b \in S$,
+\end{itemize}
+Moreover, we say $\star$ has
+\begin{itemize}
+    \item \keyword{identity} if 
+\end{itemize}
+
+
+\sepline
+
+A \keyword{commutative ring} is given by the following data:
+\begin{enumerate}[(1)]
+    \item a set $R$,
+    \item a distinguished elements $0, 1 \in R$,
+    \item an addition function $\alpha : R \times R \to R$ such that $(R, 0, \alpha)$ is an abelian group,
+    \item a multiplication function $\mu : R \times R \to R$ such that $(R, 1, \mu)$ is a monoid,
+\end{enumerate}
+
+\sepline
+
+A \keyword{}{module} is given by the following data:
+\begin{enumerate}[(1)]
+    \item a ring $R$,
+    \item an abelian group $M$,
+    \item a function $\mu : R \times M \to M$ such that
+    \begin{enumerate}[(i)]
+        \item $\mu(1, x) = x$ or equivalently $\mu(1, -) = \mu|_{1 \times M} = \id_M$
+        \item $\mu(ab, x) = \mu(a, \mu(b, x))$ or equivalently the following diagram commutes
+        \begin{cd}
+            R \times R \times M \rar["\id_R \times \mu"] \dar["\mathrm{mul}_R \times \id_M"'] & R \times M \dar["\mu"] \\
+            R \times M \rar["\mu"] & M
+        \end{cd}
+    \end{enumerate}
+\end{enumerate} 
+
+
+\end{document}

@@ -1367,4 +1367,76 @@ For each $t \in I$, the point $\gamma(t) \in X$ is contained in the interior of 
     Continuing inductively, we eventually arrive at a path from $x$ to $y$ that is completely contained in the $1$-skeleton $X^{(1)}$.
     Hence, $X^{(1)}$ is path-connected.
 
+\section{hoop tedium}
+
+{\color{red} claim that $H$ is continuous. does work out but very tedious.}
+    
+
+    Note that for any radius $\eps > 0$, the subspace $A_k$ is contained in the ball $B_\eps(0)$ whenever $k > 1/\eps$.
+    In particular, all but finitely many of the $A_k$'s are contained in $B_\eps(0)$ for all $\eps > 0$.
+    It follows that any nonzero point $q \in X \setminus \{0\}$ has a neighborhood $U \seq X$ contained in finitely many of the $A_k$'s (e.g., $U = B_{\|q\|/2}(q)$).
+    In which case, $U \seq X_n$ for some $n \in \N$ and the fact that $H^{-1}(X_n) = X_n \times I$ implies
+    \[
+        H^{-1}(U) = H|_{X_n \times I}^{-1}(U)
+    \]
+    is an open subset of $X_n \times I$.
+
+
+
+
+
+
+
+
+    Since we have $H$ continuous on an \textit{infinite} closed cover of $X \times I$, we cannot directly use the pasting lemma to deduce that $H$ is continuous on all of $X \times I$.
+    For $n \in \N$, define the subspace $X_n = \bigcup_{k=1}^{n} A_k$, so then $X_n \times I = \bigcup_{k=1}^{n} (A_k \times I)$.
+    Since $X_n \times I$ is the union of finitely many closed subspaces, on each of which $H$ is continuous, the pasting lemma tells us that $H$ is continuous on $X_n \times I$.
+    In particular
+
+
+    The fact that the interiors $\inter A_k$ are all disjoint means that only $h^k$ maps into $\inter A_k$, so the preimage of any point in $\inter A_k$ under $H$ is just the preimage under $h^k$.
+    In other words, the continuity of $H$ on the open set $(\inter A_k) \times I$ is equivalent to the continuity of $h^k$.
+    
+    We next show that $H$ is continuous on the half-open line segment $\{0\} \times \{0\} \times (0, 1]$.
+    Given a point $q = (0, 0, z)$ in this set (i.e., $0 < z \leq 1$), we can choose $N \in \N$ large enough that $1/N < z$.
+    In which case, $q \in A_k$ only if $k \leq N$.
+    We can choose an open neighborhood of $q$ in $X$ which meets only finitely many $A_k$.
+    Then finite pasting lemma gives us continuity good.
+
+    It remains to prove $H$ is continuous at the origin.
+    Suppose $B_\eps(0) \seq \R^3$ is an open ball of radius $\eps > 0$ and choose $N \in \N$ such that $1/N < \eps$.
+    Then for all $k \geq N$ we have $p_k, v_{2k}, v_{2k+1} \in B_\eps(0)$, which implies $A_k \seq B_\eps(0)$.
+    This means that $X \setminus B_\eps(0)$ meets at most finitely many $A_k$'s---namely $k = 1, \dots, N-1$.
+
+    Let $U \seq X$ be an open subset; we will show that $H^{-1}(U) \seq X \times I$ is open.
+
+
+\begin{lemma}
+    Suppose $X = \bigcup_\alpha X_\alpha$ with each $X_\alpha \seq X$ a closed subspace.
+    Additionally, assume that for each point $x \in X$ one of the following is true:
+    \begin{enumerate}
+        \item[(i)] there exists a neighborhood of $x$ which meets at most finitely many $X_\alpha$'s,
+        \item[(ii)] the complement of every neighborhood of $x$ meets at most finitely many $X_\alpha$'s.
+    \end{enumerate}
+    Then a function $f : X \to Y$ is continuous if and only if it is continuous on each $X_\alpha$.
+\end{lemma}
+
+\begin{proof}
+    If $f$ is continuous on $X$ and $U \seq Y$ is open, then $f^{-1}(U)$ is open in $X$.
+    And by definition of the subspace topology, $f|_{X_\alpha}^{-1}(U) = f^{-1}(U) \cap X_\alpha$ is open in $X_\alpha$.
+    Hence, $f$ is continuous on $X_\alpha$.
+
+    Suppose that $f$ is continuous on each $X_\alpha$ and let $U \seq Y$ be open.
+    Given a point $x \in f^{-1}(U)$, we will show that there is an open neighborhood of $x$ contained in $f^{-1}(U)$.
+
+    Supposing (i) holds for $x$, let $V \seq X$ be an open neighborhood with $V \cap X_\alpha \ne \emptyset$ for at most finitely many $\alpha$'s---say $\alpha_1, \dots, \alpha_n$.
+    Then $V = \bigcup_{i=1}^{n} (V \cap X_{\alpha_i})$ with each $V \cap X_{\alpha_i}$ a closed subset of $V$.
+    Moreover, each restriction $f|_{V \cap X_{\alpha_i}}$ is continuous, as it is the restriction of a continuous map $f|_{X_{\alpha_i}}$ to a subspace of $X_{\alpha_i}$.
+    We may now apply the pasting lemma to deduce that $f|_V$ is continuous on $V$.
+    It follows that $f|_V^{-1}(U) = V \cap f^{-1}(U)$ is open in $V$.
+    And since $V$ is an open subspace of $X$, then in fact is it is open in $X$, which means we have found is an open neighborhood of $x$ contained in $f^{-1}(U)$.
+
+    Supposing (ii) holds for $x$, let
+\end{proof}
+
 \end{document}

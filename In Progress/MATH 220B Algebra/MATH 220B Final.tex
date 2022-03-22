@@ -1,0 +1,547 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+\usepackage[shortlabels]{enumitem}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\inc}{\hookrightarrow}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+
+% Extra Commands
+\newcommand{\mm}{\mathfrak{m}}
+\newcommand{\pp}{\mathfrak{p}}
+\renewcommand{\aa}{\mathfrak{a}}
+
+
+\renewcommand{\AA}{\mathcal{A}}
+\newcommand{\CC}{\mathcal{C}}
+
+\newcommand{\tensor}{\otimes}
+\newcommand{\To}{\longrightarrow}
+\newcommand{\Mapsto}{\longmapsto}
+
+\newcommand{\eval}{\mathrm{eval}}
+\newcommand{\tors}{\mathrm{tors}}
+
+\DeclareMathOperator{\Supp}{Supp}
+\DeclareMathOperator{\Ann}{Ann}
+\DeclareMathOperator{\Frac}{Frac}
+\DeclareMathOperator{\coker}{coker}
+
+
+
+
+% Document
+\begin{document}
+\title{MATH 220B Final}
+\author{Harry Coleman}
+\date{March 15, 2022}
+\maketitle
+
+\begin{pbox}[1]
+    Let $f=a_0+a_1x+\cdots+a_nx^n\in R[x]$ be a polynomial.
+\end{pbox}
+
+\textit{Note.} I use (b) in the proof of (a), but the proof of (b) does not rely on (a).
+
+\begin{pbox}[(a)]
+    Show that if $f$ is a unit in $R[x]$, then $a_0$ is a unit in $R$ and $a_1,\dots,a_n$ are nilpotent.
+\end{pbox}
+
+\begin{proof}
+    Let $g = b_0 + b_1x + \cdots + b_m x^m \in R[x]$ be any polynomial, then we have the product
+    \[
+        fg = \sum_{d=0}^{n+m} c_dx^d \isp{where} c_d = \sum_{i + j = d} a_i b_j.
+    \]
+    Then $fg = 1$ if and only if $c_0 = 1$ and $c_d = 0$ for all $d > 0$.
+    Assuming $g$ is the inverse of $f$, this means that $1 = c_0 = a_0 b_0$, so indeed $a_0$ is a unit in $R$.
+
+    The next step is to show that the leading coefficient of $f$ is nilpotent when $n \geq 1$.
+    To do this, we first claim that $a_n^{k+1}b_{m-k} = 0$ for $k = 0, 1, \dots, m$---we will prove this by induction on $k$.
+    For the base case of $k = 0$, we immediately have
+    \[
+        0 = c_{n + m} = a_nb_m.
+    \]
+    Assuming the result holds for all indices less than some $k \geq 1$.
+    Then
+    \[
+        0 = c_{n + m - k} = a_nb_{m - k} + a_{n-1}b_{m-(k-1)} + \cdots + a_{n-k}b_m,
+    \]
+    and multiplying by $a_n^k$ gives
+    \[
+        0
+            = a_n^{k+1}b_{m-k} + a_{n-1}(a_n^{k+1}b_{m-(k-1)}) + \cdots + a_{n-k}(a_n^{k+1}b_m)
+            = a_n^{k+1}b_{m-k}.
+    \]
+    This completes the induction.
+    In particular, $k = m$ tells us that $a_n^{m+1}b_0 = 0$, and multiplying by $a_0$ gives $a_n^{m+1} = 0$, i.e., $a_n$ is nilpotent in $R$.
+
+    Lastly, we perform induction on $n = \deg f$ to show that the coefficients of the remaining nonconstant terms are nonzero.
+    For the base case of $n = 0$, $f = a_0$ has no nonconstant terms, so the result is vacuously true.
+    Assume that the result holds for all unit polynomials of degree less than $n \geq 1$.
+    Since $a_n$ is nilpotent in $R$, we know that $a_nx^n$ is nilpotent in $R[x]$, so part (b) tells us that $f - a_nx^n$ is a unit in $R[x]$.
+    But the degree of $f - a_nx^n$ is strictly less than $n$, so the inductive hypothesis tells us that all the coefficients of all of its nonconstant terms are nilpotent---these are precisely $a_1, \dots, a_{n-1}$, so the induction is complete.
+\end{proof}
+
+\begin{pbox}[(b)]
+    Show that the sum of a unit and a nilpotent element is a unit.
+\end{pbox}
+
+\begin{proof}
+    We consider elements of an arbitrary ring.
+
+    If $a$ is nilpotent with $a^n = 0$ then
+    \[
+        (1 - a)(1 + a + \cdots + a^{n-1}) = 1 - a^n = 1.
+    \]
+    In particular, $1 - a$ is a unit whenever $a$ is nilpotent.
+
+    Let $u$ be a unit and $a$ be nilpotent.
+    Then $-u^{-1}a$ is also nilpotent and the above result tells us that $1 + u^{-1}a$ is a unit.
+    Multiplying by the unit $u$, we conclude that $u + a$ is a unit.
+\end{proof}
+
+
+
+\begin{pbox}[(c)]
+    Show that the converse of (a) also holds.
+\end{pbox}
+
+\begin{proof}
+    Since the set of nilpotents of $R[x]$ is an ideal (the nilradical), then any $R[x]$-linear combination of nilpotents $a_1, \dots, a_n \in R \seq R[x]$ is also nilpotent.
+    In particular,
+    \[
+        a_1x + \cdots + a_nx^n
+    \]
+    is nilpotent.
+    Then if $a_0$ is a unit in $R$, it is still a unit in $R[x]$, so part (b) tells us that
+    \[
+        f = a_0 + a_1x + \cdots + a_nx^n
+    \]
+    is a unit in $R[x]$.
+\end{proof}
+
+
+\newpage
+\begin{pbox}[2]
+    Let $M$ be an $R$-module, and $I\subset R$ an ideal. Show that if $M_{\mathfrak{m}}=\{0\}$ for all maximal ideals $\mathfrak{m}\subset R$ containing $I$, then $M=IM$.
+\end{pbox}
+
+\begin{proof}
+    Note that $M = IM$ if and only if $M/IM = 0$.
+    Moreover, $M/IM = 0$ if and only if the localization $(M/IM)_\mm = 0$ at every maximal ideal $\mm \seq R$.
+
+    If $\mm \seq R$ is maximal ideal containing $I$, the quotient map followed by a canonical isomorphism gives us a surjection
+    \[
+        0 = M_\mm \To M_\mm/(IM)_\mm \isom (M/IM)_\mm,
+    \]
+    hence $(M/IM)_\mm = 0$.
+
+    If $\mm \seq R$ is a maximal ideal not containing $I$, we can find a scalar $t \in I \setminus \mm$.
+    Then for any element in the localization $\frac{m + IM}{s} \in (M/IM)_\mm$, we have $tm \in IM$ so
+    \[
+        t(m + IM) = 0 \in M/IM \implies \tfrac{m + IM}{s} = 0 \in (M/IM)_\mm.
+    \]
+    So again we deduce that $(M/IM)_\mm = 0$.
+\end{proof}
+
+% \begin{proof}
+%     Note that $M = IM$ if and only if $M/IM = 0$.
+%     As an $R/I$-module, $M/IM = 0$ if and only if its localization at every maximal ideal of $R/I$ is zero.
+%     Also note that the maximal ideals of $R/I$ are precisely the quotients $\mm/I$ of maximal ideals $\mm \seq R$ containing $I$.
+%     Altogether, we have $M = IM$ if and only if $(M/IM)_{\mm/I} = 0$ for all maximal ideals $\mm \seq R$ containing $I$.
+
+%     Suppose $\mm \seq R$ is a maximal ideal containing $I$.
+%     There are canonical module isomorphisms
+%     \begin{align*}
+%         (M/IM)_{\mm/I}
+%             &\isom_{R/I} M/IM \tensor_{R/I} (R/I)_{\mm/I} \\
+%             &\isom_{R/I} (M \tensor_R R/I) \tensor_{R/I} (R/I)_{\mm/I} \\
+%             &\isom_R M \tensor_R (R/I \tensor_{R/I} (R/I)_{\mm/I}) \\
+%             &\isom_R M \tensor_R (R/I)_{\mm/I}.
+%     \end{align*}
+%     The $R$-module structure of $(M/IM)_{\mm/I}$ induced by these isomorphisms is the natural structure we would obtain by expanding the definitions of quotients and localizations.
+%     We have the isomorphism $(R/I)_{\mm/I} \isom R_\mm/I_\mm$ as rings, so the same is true as $R$-modules, hence
+%     \[
+%         (M/IM)_{\mm/I} \isom_R M \tensor_R (R_\mm/I_\mm).
+%     \]
+%     The quotient $R_\mm \to R_\mm/I_\mm$ is a surjective $R$-module homomorphism, so tensoring with $M$ induces a surjective $R$-module homomorphism
+%     \begin{cd}
+%         M \tensor_R R_\mm \rar[twoheadrightarrow] & M \tensor_R R_\mm/I_\mm.
+%     \end{cd}
+%     However,
+%     \[
+%         M \tensor_R R_\mm \isom_R M_\mm = 0,
+%     \]
+%     which means there is a surjective $R$-module homomorphism
+%     \begin{cd}
+%         0 \rar[twoheadrightarrow] & (M/IM)_{\mm/I}.
+%     \end{cd}
+%     It follows that $(M/IM)_{\mm/I} = 0$, giving us $M = IM$ by the initial discussion.
+% \end{proof}
+
+
+\newpage
+\begin{pbox}[3]
+    Let $M$ be an $R$-module. Define the \emph{support} of $M$ to be  
+    \[
+    {\rm Supp}(M):=\{\textrm{all prime ideals}\;\mathfrak{p}\subset R\;\textrm{such that}\;M_{\mathfrak{p}}\neq 0\},
+    \]
+    and the \emph{annihilator} of $M$ to be
+    \[
+    {\rm Ann}_R(M):=\{r\in R\;\textrm{such that}\;rm=0\;\textrm{for all}\;m\in M\}.
+    \] 
+    Show that if $M$ is finitely generated over $R$, then ${\rm Supp}(M)$ is the same as the set of all prime ideals $\mathfrak{p}\subset R$ containing  ${\rm Ann}_R(M)$.
+\end{pbox}
+
+\begin{proof}
+    Suppose $\pp \in \Supp(M)$.
+    The fact that $M_\pp \ne 0$ means there is some $m \in M$ such that $tm \ne 0$ for all $t \in R \setminus \pp$.
+    In particular, for all $a \in \Ann_R(M)$ we have $am = 0$, which implies $a \in \pp$.
+    Hence, $\Ann_R(M) \seq \pp$.
+
+    Suppose $\pp \seq R$ is a prime ideal with $M_\pp = 0$, i.e., $\pp \notin \Supp(M)$.
+    This means that for all $m \in M$ there is some $t \in R \setminus \pp$ such that $tm = 0$.
+    If $M$ is generated by $x_1, \dots, x_n \in M$, we can choose scalars $t_i \in R \setminus \pp$ such that $t_ix_i = 0$.
+    Since $\pp$ is prime, we know that the product $t = t_1 \cdots t_n$ is not in $\pp$.
+    For any $m \in M$, write $m = \sum_{i=1}^{n} a_ix_i$ for some $a_i \in R$, then
+    \[
+        tm = \sum_{i=1}^{n} a_i(t_1 \cdots t_i \cdots t_n)x_i = 0.
+    \]
+    That is, $t \in \Ann_R(M)$.
+    But since $t \notin \pp$, we conclude that $\Ann_R(M) \nsubseteq \pp$.
+\end{proof}
+
+\newpage
+\begin{pbox}[4]
+    Let $M$ be a nonzero module over a Noetherian ring $R$. We say that a prime ideal $\mathfrak{p}\subset R$ is \emph{associated with $M$} if
+    \[
+    \mathfrak{p}={\rm Ann}_R(m)
+    \]
+    for some $m\in M$, where ${\rm Ann}_R(m):=\{r\in R\colon rm=0\}$.
+
+    Show that the set of prime ideals associated with $M$ is nonempty.
+
+    \noindent
+    (\emph{Hint:} Consider a maximal element in the set $\{{\rm Ann}_R(m)\colon m\neq 0\in M\}$.)
+\end{pbox}
+
+\begin{proof}
+    Note that $\Ann_R(m)$ is an ideal of $R$: given $a, b \in \Ann_R(m)$ and $r \in R$ we have
+    \[
+        (ra + b)m = r(am) + bm = r \cdot 0 + 0 = 0,
+    \]
+    hence $ra + b \in \Ann_R(m)$.
+    Moreover, $\Ann_R(m)$ is a proper ideal if and only if $m \ne 0 \in M$, since both are equivalent to $1 \in \Ann_R(m)$.
+
+    Per the hint, consider the set $\AA = \{\Ann_R(m) \mid m \ne 0 \in M\}$, partially ordered by inclusion.
+    This is a set of proper ideals in $R$, which we know to be nonempty because $M$ is nonzero.
+    We will use Zorn's lemma to choose a maximal element of $\AA$.
+
+    Suppose $\CC \seq \AA$ is a chain.
+    Choose an arbitrary initial element $\aa_0 \in \CC$ and inductively choose $\aa_i \in \CC$ such that $\aa_i \seq \aa_{i+1}$, with strict inclusion whenever $\aa_i$ is not the maximum in $\CC$.
+    (It may be worth remarking on the choice of $\aa_i$'s here---to be completely formal, we are using dependent choice.)
+    We now have an ascending sequence $\aa_0 \seq \aa_1 \seq \cdots$ of ideals in $R$.
+    Since $R$ is noetherian, this sequence eventually stabilizes, i.e., there is an index $n$ such that $\aa_i = \aa_n$ for all $i \geq n$.
+    However, by our choice of $\aa_i$'s, this is only possible if $\aa_n$ is the maximum of $\CC$.
+    In particular, $\aa_n \in \AA$ is an upper bound for $\CC$, so the condition for Zorn's lemma is satisfied.
+
+    Let $\Ann_R(m) \in \AA$ be a maximal element.
+    We already know that $\Ann_R(m)$ is an ideal of $R$, so it remains to prove it is prime.
+    Suppose $r, s \in R$ with $rs \in \Ann_R(m)$.
+    If $s \notin \Ann_R(m)$, then $sm \ne 0$ and we have
+    \[
+        \Ann_R(m) \seq \Ann_R(sm) \in \AA.
+    \]
+    However, since $\Ann_R(m)$ is maximal in $\AA$, we must have equality.
+    And since $rsm = 0$, we conclude that
+    \[
+        r \in \Ann_R(sm) = \Ann_R(m).
+    \]
+    Hence, $\Ann_R(m)$ is a prime ideal associated with $M$.
+\end{proof}
+
+\newpage
+\begin{pbox}[5]
+    Let $M$ be a flat $R$-module. 
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Show that if $R$ is an integral domain, then $M_{\rm tors}=\{0\}$.
+\end{pbox}
+
+\begin{proof}
+    We check that $M_\tors$ is a submodule of $M$.
+    Given $m, n\in M_\tors$ and $r \in R$, there are nonzero scalars $s, t \in R$ such that $sm = tn = 0$.
+    Then
+    \[
+        st(rm + n) = rt(sm) + s(tn) = rt \cdot 0 + s \cdot 0 = 0,
+    \]
+    hence $rm + n \in M_\tors$.
+    In particular, the inclusion map $M_\tors \inc M$ is an injective $R$-module homomorphism.
+
+    Let $F = \Frac R$ be the field of fractions of $R$.
+    The inclusion $R \inc F$ is an injective ring homomorphism, so it is also an injective $R$-module homomorphism.
+    Since $M$ is $R$-flat, the induced $R$-module homomorphism $R \tensor_R M \to F \tensor_R M$ is also injective.
+    We now consider the following composition of injective $R$-module homomorphisms:
+    \begin{cd}[row sep=tiny]
+        M_\tors \rar[hookrightarrow] & M \rar["\sim"] & R \tensor_R M \rar & F \tensor_R M \\
+        & m \rar[mapsto] & 1 \tensor m \\
+        && r \tensor m \rar[mapsto] & \frac{r}{1} \tensor m
+    \end{cd}
+    Given $m \in M_\tors$ there is a nonzero scalar $r \in R$ such that $rm = 0 \in M$.
+    Under the above map, $m$ is sent to $1 \tensor m \in F \tensor_R M$.
+    However, in $F \tensor_R M$, we have
+    \[\textstyle
+        1 \tensor m
+            = \frac{r}{r} \tensor m
+            = \frac{1}{r} \tensor rm
+            = \frac{1}{r} \tensor 0
+            = 0.
+    \]
+    In other words, $M_\tors \to F \tensor_R M$ is the zero map.
+    But because we already know this map to be injective, we must conclude that $M_\tors = 0$.
+\end{proof}
+
+\newpage
+\begin{pbox}[(b)]
+    Show that for any ideal $I\subset R$ we have
+    \[
+    I\tensor_{R}M\simeq IM
+    \]
+    as $R$-modules.
+\end{pbox}
+
+\begin{proof}
+    The natural projection of $R$ onto the quotient $R/I$ can be used to construct the following short exact sequence of $R$-module homomorphisms:
+    \begin{cd}
+        0 \rar & I \rar[hookrightarrow, "\iota"] & R \rar["\pi"] & R/I \rar & 0.
+    \end{cd}
+    Since $M$ is $R$-flat, there is an induced short exact sequence of $R$-module homomorphisms
+    \begin{cd}[column sep=large]
+        0 \rar & I \tensor_R M \rar["\iota \tensor \id_M"] & R \tensor_R M \rar["\pi \tensor \id_M"] & R/I \tensor_R M \rar & 0.
+    \end{cd}
+    By the universal property of the tensor product, these are in fact the unique maps such that the following diagram commutes with exact rows:
+    \begin{cd}[column sep=large]
+        0 \rar & I \times M \rar["\iota \times \id_M"] \dar & R \times M \rar["\pi \times \id_M"] \dar & R/I \times M \rar \dar & 0 \\
+        0 \rar & I \tensor_R M \rar["\iota \tensor \id_M"] & R \tensor_R M \rar["\pi \tensor \id_M"] & R/I \tensor_R M \rar & 0
+    \end{cd}
+    (The horizontal maps are $R$-linear while the vertical maps are $R$-bilinear.)
+
+    The natural projection of $M$ onto the quotient $M/IM$ can be used to construct the following short exact sequence of $R$-module homomorphisms:
+    \begin{cd}
+        0 \rar & IM \rar[hookrightarrow] & M \rar & M/IM \rar & 0.
+    \end{cd}
+    Consider the following multiplication maps
+    \begin{align*}
+        I \times M &\To IM & R \times M &\To M & R/I \times M &\To M/IM \\
+        (a, m) &\Mapsto am & (r, m) &\Mapsto rm & (r + I, m) &\Mapsto rm + IM
+    \end{align*}
+    Once again, these $R$-bilinear maps make the following diagram commute with exact rows:
+    \begin{cd}[column sep=large]
+        0 \rar & I \times M \rar \dar & R \times M \rar \dar & R/I \times M \rar \dar & 0 \\
+        0 \rar & IM \rar & M \rar & M/IM \rar & 0
+    \end{cd}
+    
+    The universal property of the tensor product gives us unique $R$-linear maps $\alpha, \beta, \gamma$ such that the following diagram commutes with exact rows:
+    \begin{cd}[column sep=tiny]
+        0 \ar[rr]
+            && I \times M \ar[rr] \dlar 
+            && R \times M \ar[rr] \dlar 
+            && R/I \times M \rar \dlar
+            & 0 \\
+        0 \rar 
+            & I \tensor_R M \ar[rr] \drar[dashed, "\alpha"]
+            && R \tensor_R M \ar[rr] \drar[dashed, "\beta"]
+            && R/I \tensor_R M \ar[rr] \drar[dashed, "\gamma"]
+            && 0 \\
+        0 \ar[rr]
+            && IM \ar[from=uu, crossing over] \ar[rr]
+            && M \ar[from=uu, crossing over] \ar[rr]
+            && M/IM \ar[from=uu, crossing over] \rar
+            & 0
+    \end{cd}
+    Notice that $\beta$ and $\gamma$ are simply the canonical isomorphisms
+    \begin{align*}
+        R \tensor_R M &\To M & R/I \tensor_R M &\To M/IM \\
+        r \tensor m &\Mapsto rm & (r + I) \tensor m &\Mapsto rm + IM
+    \end{align*}
+    By the 5-lemma (proved below), $\alpha$ is an isomorphism $I \tensor_R M \isom IM$.
+    % \begin{cd}
+    %     0 \rar & I \tensor_R M \rar & R \tensor_R M \rar \dar["\wr"] & R/I \tensor_R M \rar \dar["\wr"] & 0 \\
+    %     0 \rar & IM \rar[hookrightarrow] & M \rar & M/IM \rar & 0
+    % \end{cd}
+    % \begin{cd}[]
+    %     0 \rar & A \ar[rr] \dar && B \ar[rr] \dar && C \rar \dar & 0 \\
+    %     0 \rar & A' \ar[rr] \drar && B' \ar[rr] \drar && C' \rar \drar & 0 \\
+    %     & 0 \rar & A'' \ar[from=uul, crossing over] \ar[rr] && B'' \ar[from=uul, crossing over] \ar[rr] && C'' \ar[from=uul, crossing over] \rar & 0 \\ 
+    % \end{cd}
+    % \begin{cd}[column sep=large]
+    %     0 \rar 
+    %         & I \times M \rar \dar 
+    %         & R \times M \rar \dar 
+    %         & R/I \times M \rar \dar
+    %         & 0 \\
+    %     0 \rar 
+    %         & I \tensor_R M \rar \drar
+    %         & R \tensor_R M \rar \drar
+    %         & R/I \tensor_R M \rar \drar
+    %         & 0 \\
+    %     & 0 \rar
+    %         & IM \ar[from=uul, crossing over] \rar
+    %         & M \ar[from=uul, crossing over] \rar
+    %         & M/IM \ar[from=uul, crossing over] \rar
+    %         & 0 \\ 
+    % \end{cd}
+    % \begin{cd}[column sep=large]
+    %     0 \rar 
+    %         & I \times M \rar \dar 
+    %         & R \times M \rar \dar 
+    %         & R/I \times M \rar \dar
+    %         & 0 \\
+    %     0 \rar 
+    %         & I \tensor_R M \rar \dar
+    %         & R \tensor_R M \rar \dar
+    %         & R/I \tensor_R M \rar \dar
+    %         & 0 \\
+    %     0 \rar
+    %         & IM \ar[from=uu, crossing over, bend left=70] \rar
+    %         & M \ar[from=uu, crossing over, bend left=70] \rar
+    %         & M/IM \ar[from=uu, crossing over, bend left=70] \rar
+    %         & 0 \\ 
+    % \end{cd}
+    % \begin{cd}[column sep=tiny]
+    %     0 \ar[rr]
+    %         && I \times M \ar[rr] \dlar 
+    %         && R \times M \ar[rr] \dlar 
+    %         && R/I \times M \rar \dlar
+    %         & 0 \\
+    %     0 \rar 
+    %         & I \tensor_R M \ar[rr] \drar
+    %         && R \tensor_R M \ar[rr] \drar
+    %         && R/I \tensor_R M \ar[rr] \drar
+    %         && 0 \\
+    %     0 \ar[rr]
+    %         && IM \ar[from=uu, crossing over] \ar[rr]
+    %         && M \ar[from=uu, crossing over] \ar[rr]
+    %         && M/IM \ar[from=uu, crossing over] \rar
+    %         & 0 \\ 
+    % \end{cd}
+\end{proof}
+
+\begin{lemma}[5-lemma]
+    Suppose the following diagram of $R$-module homomorphisms commutes with exact rows:
+    \begin{cd}
+        0 \rar & A \rar \dar["\alpha"] & B \rar \dar["\beta"] & C \rar \dar["\gamma"] & 0 \\
+        0 \rar & A' \rar & B' \rar & C' \rar & 0
+    \end{cd}
+    If two of the maps $\alpha, \beta, \gamma$ are isomorphisms then so is the third.
+\end{lemma}
+
+\begin{proof}
+    Note that a map $\phi : G \to H$ is an isomorphism if and only if the sequence
+    \begin{cd}
+        0 \rar & G \rar["\phi"] & H \rar & 0
+    \end{cd}
+    is exact.
+    That is, $\phi$ is an isomorphism if and only if $\ker\phi = \coker\phi = 0$.
+
+    By the snake lemma, there is an exact sequence
+    \[
+        0 \to \ker\alpha \to \ker\beta \to \ker\gamma \to \coker\alpha \to \coker\beta \to \coker\gamma \to 0.
+    \]
+    If $\alpha$ and $\beta$ are isomorphisms then this becomes
+    \[
+        0 \To 0 \To 0 \To \ker\gamma \To 0 \To 0 \To \coker\gamma \To 0,
+    \]
+    which means $\ker\gamma = \coker\gamma = 0$.
+    The same argument shows that if $\alpha$ and $\gamma$ are isomorphisms then $\ker\beta = \coker\beta = 0$, and if $\beta$ and $\gamma$ are isomorphisms then $\ker\alpha = \coker\alpha = 0$.
+\end{proof}
+
+\newpage
+\begin{pbox}[(c)]
+    Let $f:R\rightarrow S$ be a ring homomorphism. Show that the map
+    \begin{align*}
+    M&\rightarrow M\tensor_{R}S\\
+    m&\mapsto m\tensor 1
+    \end{align*}
+    is injective if and only if ${\rm ker}(f)\subset{\rm Ann}_R(M)$.
+
+    \noindent(\emph{Hint:} Consider the $R$-module exact sequence defined by $f$.)
+\end{pbox}
+
+\begin{proof}
+    Per the hint, there is an exact sequence of $R$-module homomorphisms
+    \begin{cd}
+        0 \rar & \ker f \rar[hookrightarrow] & R \rar["f"] & S.
+    \end{cd}
+    Since $M$ is $R$-flat, tensoring with $M$ over $R$ will produce another exact sequence.
+    Additionally---similar to part (b)---we use canonical isomorphisms to obtain the following commutative diagram with exact rows:
+    \begin{cd}
+        0 \rar & \ker f \tensor_R M \dar["\wr"] \rar & R \tensor_R M \dar["\wr"] \rar & S \tensor_R M \dar["\id"] \\
+        0 \rar & (\ker f)M \rar[hookrightarrow] & M \rar & S \tensor_R M
+    \end{cd}
+    As the bottom row is exact, the map $M \to S \tensor_R M$ is injective if and only if $(\ker f)M = 0$.
+    This is the case if and only if every element of $\ker f$ annihilates $M$, i.e., $\ker f \seq \Ann_R(M)$.
+\end{proof}
+
+\end{document}
