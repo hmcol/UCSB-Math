@@ -66,6 +66,7 @@
 		"editor.wordWrapColumn": 200,
 		"cSpell.words": [
 			"approximable",
+			"arity",
 			"Baire",
 			"basepoint",
 			"basepoints",
@@ -87,6 +88,7 @@
 			"coproduct",
 			"corestricted",
 			"corestriction",
+			"designatum",
 			"diagonalizable",
 			"diagonalization",
 			"Fatou's",
@@ -126,6 +128,7 @@
 			"noncoplanar",
 			"nonmaximal",
 			"nonsingular",
+			"nullary",
 			"nullhomotopic",
 			"orientable",
 			"paracompact",

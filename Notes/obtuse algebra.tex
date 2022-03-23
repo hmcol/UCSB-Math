@@ -2,23 +2,21 @@
 
 % Packages
 \usepackage[margin=1in]{geometry}
-\usepackage{amsmath, amsthm, amssymb, physics}
-\usepackage[shortlabels]{enumitem}
+\usepackage{parskip}
+\usepackage{amsmath, amsthm, amssymb}
 \usepackage{tikz, tikz-cd}
+\usepackage[shortlabels]{enumitem}
 
 % Problem Box
 \setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
 \newsavebox{\savefullbox}
-\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{8pt}}{\end{minipage}\end{lrbox}\begin{center}\framebox[\textwidth]{\usebox{\savefullbox}}\end{center}}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
 
 % Environments
-\newenvironment{definition}{\begin{fullbox}}{\end{fullbox}}
-\newcommand{\keyword}[1]{\textbf{#1}}
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{6pt}
 \setlist[enumerate]{nosep}
-\def\[#1\]{\begin{align*}#1\end{align*}}
-
+\newcommand{\keyword}[1]{\textbf{#1}}
 \newcommand{\sepline}{\rule{\textwidth}{0.4pt}}
 
 % Tikz Environments
@@ -57,12 +55,22 @@
 
 % Relations
 \newcommand{\isom}{\cong}
-\newcommand{\dsum}{\oplus}
-\newcommand{\divides}{\mid}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\newcommand{\tensor}{\otimes}
 
-\newcommand{\eqc}{\overline}
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\To}{\longrightarrow}
+\newcommand{\Mapsto}{\longmapsto}
+
+\newcommand{\eqby}[1]{\overset{\mathrm{(#1)}}{=}}
 
 % Math Roman
+\newcommand{\op}{\mathrm{op}}
+
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\codom}{codom}
+
 \DeclareMathOperator{\id}{id}
 \DeclareMathOperator{\im}{im}
 \DeclareMathOperator{\Hom}{Hom}
@@ -70,6 +78,8 @@
 \DeclareMathOperator{\Tor}{Tor}
 \DeclareMathOperator{\Ann}{Ann}
 
+% Other
+\newcommand{\eqc}{\overline}
 
 
 \title{Algebra \\
@@ -79,23 +89,197 @@
 \date{}
 
 
-
 \begin{document}
 
-A \keyword{binary operation} (on a set $S$) is a function $f : S \times S \to S$.
+We assume some amount of set theory.
 
-A binary operation $\beta$ is said to be
-\begin{enumerate}
-    \item d
-\end{enumerate}
+ordered tuples and finite cartesian product
 
 \sepline
 
-A \keyword{magma} is given by the following data:
+The definitions given here are not good for intuition.
+The main purpose is to provide (robust?) set-theoretic \emph{implementations} of familiar algebraic constructions.
+This is a key distinction to be made---I am essentially assuming the reader is familiar with most if not all of the concepts and is able to recognize that the definitions (stroke implementations) adequately capture the necessary functionality.
+
+A mathematical concept in the mind is characterized by some \emph{information}---that being the information necessary to understand the concept.
+In my usage ``information'' does not exist in the mathematical world, but rather it exists in each individual mathematicians mind.
+We hope that this information generally agrees across minds, and in such cases we consider the information characterizing a mathematical object to be the information which is common in the minds of the mathematical community at large.
+It is this standard of information to which we will hold definitions.
+
+In order to capture the information of a mathematical concept, we will use \emph{data}---something which does exist in the mathematical world.
+Again, I have my own usage of the word ``data,'' which is luckily more concrete than that of ``information.''
+My usage will hopefully become more clear as you read on, but suffice it to say that data is a specific mathematical construction intended to represent the information of some mathematical concept.
+
+To be a bit more opaque, I will employ an analogy and some precise yet non-mathematical terminology.
+We can consider mathematical concepts like fictional characters.
+When we gives names to these concepts, there is no actual referent (though Salmon and I would prefer designatum, here) to which the name applies (refers/designates you get the idea).
+(Unfortunately, my choice of the word ``concept'' for a mathematical audience now conflicts with the point I am making because we can of course refer to concepts, as I have been doing.)
+If you're willing to take my word for it---which you absolutely should not---the sort thing I have been calling a ``concept'' is better described in other terms, namely ``sense.''
+For normal sorts of things, you can think of the sense of a name as the tether between the name itself and the referent.
+The name (word) ``goose'' has some sense attached to it which allows us to pick out the actual animal, i.e., the goose.
+One can think of the sense of the word ``goose'' as that thing which allows you to read and understand that it refers to the goose.
+
+Anyway, definitions are gonna look like this:
+
+\begin{fullbox}
+    A \keyword{whimple} $W$ is given by the following data:
+    \begin{enumerate}[(1)]
+        \item an aggle-poogle $A$,
+        \item a buzzo $B$ with impermeable flingos,
+        \item a crundo $C$ (called the \emph{crun} inside $W$),
+    \end{enumerate}
+    such that
+    \begin{enumerate}[(i)]
+        \item $A$ and $B$ are equivalent as aggle-poogles,
+        \item each dellon of $C$ is also a dellon of $A$.
+    \end{enumerate}
+    Say $W$ is a whimple or $W = (A, B, C)$ is a whimple.
+\end{fullbox}
+
+In other words, definitions of mathematical objects will be given as set-theoretic implementations in terms of collections of data satisfying certain axioms.
+Then to name such an object, we write it as the ordered tuple of data.
+
+\sepline
+
+If $A$ and $B$ are sets, a subset $F \seq A \times B$ is called \keyword{functional} if for each $a \in A$ there is exactly one $b \in B$ such that $(a, b) \in F$.
+
+A \keyword{function} $f$ is given by the following data:
+\begin{enumerate}[(1)]
+    \item a set $A$ called the \emph{domain} of $f$ (denoted ``$\dom f$''),
+    \item a set $B$ called the \emph{codomain} of $f$ (denoted ``$\codom f$''),
+    \item a functional subset $F \seq A \times B$ called the \emph{graph} of $f$.
+\end{enumerate}
+We say that $f$ is a function \emph{from $A$ to $B$}, denoted $f : A \to B$ or $A \xrightarrow{f} B$.
+
+Given $a \in A$, the unique element $b \in B$ such that $(a, b) \in F$ is called the \keyword{value} of $f$ at $a$, often denoted by $f(a)$, though sometimes denoted by $fa$ or $f_a$.
+This is can also be called the evaluation of $f$ at $a$ or the image of $a$ under $f$.
+
+This definition adapted from [Ronald Brown, TOPOLOGY AND
+GROUPOIDS: A Geometric Account of General Topology,
+Homotopy Types and the Fundamental Groupoid]
+
+\sepline
+
+We make a brief distinction here between our specific \emph{definition} of the word ``function'' and the (more general) conceptual \emph{notion} of a function.
+It is impossible to say in words precisely what the latter is, but we can make reference to it by the role it serves in the mathematical world.
+At one point or another---hopefully rather early in their career---a mathematician will acquire the correct notion of a function.
+The sense in which the notion is \emph{correct} is that it is consistent with the notions of the vast majority of mathematicians.
+
+
+We might ask the mathematician, ``What is a function?''
+To which they might respond, ``A function from $A$ to $B$ is a rule which assigns, to each element of $A$, an element of $B$.''
+You---the reader---can now act as an impartial third party to me---the author---and this other mathematician I have manufactured.
+With any luck, you are able to read and understand both this definition and my own definition of the word ``function.''
+Moreover, I hope you agree that they both refer to the same \emph{thing}---that being the notion of a function.
+
+
+The goal of the above definition is that any sufficiently experienced mathematician will agree that I am using the word ``function'' consistently with broader mathematics, even if some of the specifics are different.
+In other words, my definition is attempting to capture the notion of a function by the set-theoretic data which characterizes it.
+
+
+To be explicit, we are not defining functions per se, rather we are setting up a correspondence between functions $f : A \to B$ and triples of data $(A, B, F)$ satisfying our definition of function.
+
+In a completely set theoretic construction, we would identify every function $f$ with its corresponding triple of data, i.e., $f = (A, B, F)$.
+In which case, we are essentially claiming that there is a bijection between functions in the usual sense and their corresponding triples.
+
+$g = (C, D, G)$ is a 
+
+
+The justification for this sort of definition is that it ensures two functions $f : A \to B$ and $f' : A' \to B'$ are equal
+
+\sepline
+
+The domain of $f$ can be recovered from its graph $F$ as follows:
+\[
+    \dom f = \{a \mid (a, b) \in F \text{ for some } b\} = A.
+\]
+On the other hand, the codomain of $f$ cannot be recovered in this way.
+Instead, we find the following subset of the codomain called the \keyword{image} of $f$:
+\[
+    \im f := \{b \mid (a, b) \in F \text{ for some } a\} \seq B.
+\]
+The domain of $f$ and the evaluation can also be used to find the image as follows:
+\[
+    \im f = \{f(a) \mid a \in A\} \seq B.
+\]
+Lastly, the graph of $f$ can be recovered from the domain and the evaluations as follows:
+\[
+    \Gamma_f := \{(a, f(a)) \mid a \in A\} = F.
+\]
+
+
+
+If desired, $B^A$ is used to denoted the set of all functions from $A$ to $B$.
+
+
+\sepline
+
+Let $S$ be a set.
+We define the following functions:
+
+the \keyword{identity} function $\id_S : S \to S$ where $a \mapsto a$,
+
+the \keyword{diagonal} function $\Delta_S : S \to S \times S$ where $a \mapsto (a, a)$,
+
+the unnamed (component interchange) function $\lambda_S : S \times S \to S \times S$ where $(a, b) \mapsto (b, a)$.
+
+
+
+
+\newpage
+
+Let $S$ be a (nonempty?) set and $n$ be a nonnegative integer.
+
+The \keyword{$n$th cartesian power} of $S$ is the set of all $n$-tuples of elements of $S$, denoted
+\[
+    S^n
+        = \underbrace{S \times S \times \cdots \times S}_{n \text{ times}}
+        = \{(a_1, \dots, a_n) \mid a_i \in S\}.
+\]
+By convention, we take $S^0 = \{()\} = \{\emptyset\}$ (the set containing only the empty tuple/set).
+
+An \keyword{$n$-ary operation} on $S$ is a function $S^{n} \to S$.
+
+Notably, a $0$-ary (nullary) operation is a function $f : \{\emptyset\} \to S$.
+In other words, $f$ picks out a single element of $S$, namely $f(\emptyset) \in S$.
+In fact, there is a bijective correspondence between the elements of $S$ and the nullary operations on $S$, given by
+\begin{align*}
+    S &\longleftrightarrow \{\text{nullary operations on } S\}, \\
+    a &\longleftrightarrow (\emptyset \mapsto a).
+\end{align*}
+Under this correspondence, we can consider distinguished elements of a set to be nullary operations, and vice versa.
+This is not a super important point, but simply makes the following definitions more concise, maybe.
+Is it worth it? Who is to say?
+
+\sepline
+
+We want more than static sets---we want to be able to do stuff with the sets.
+Similar to our definition of ``function,'' we want to define the term ``algebraic structure.''
+Put in an unhelpfully circular way, an algebraic structure is the sort of mathematical construction inside of which we can perform algebraic activities.
+In the fundamental cases, it consists of a set and some rules for how we can manipulate the elements of the set, e.g., operations.
+This paragraph is devoid of meaning.
+I am going to provide a set-theoretic implementation now.
+
+
+An \keyword{algebraic structure} $A$ (simple/on a set?) is given by the following data:
+\begin{enumerate}
+    \item a set $S$, called the \emph{underlying set} of $A$ (denoted ``$|A|$''),
+    \item some operations $\alpha, \beta, \dots$ of any arity on $S$.
+\end{enumerate}
+We say $A = (S, \alpha, \beta, \dots)$ is an algebraic structure.
+
+There will usually only be finitely many operations on $S$ and in any case there isn't, we will use more compact notation.
+
+\sepline
+
+A \keyword{magma} $M$ is given by the following data:
 \begin{enumerate}[$\bullet$]
     \item a set $S$,
     \item a binary operation $f : S \times S \to S$.
 \end{enumerate}
+We say $M = (S, f)$ is a magma.
+
+A magma $M$ is (naturally) an algebraic structure $(S, f)$.
 
 It is common convention to notate the binary operation with a symbol called a (binary) \emph{operator}---common examples include the following:
 \[
@@ -152,26 +336,249 @@ for all $a, b, c \in S$ we have
 
 A magma $(S, \star)$
 \begin{itemize}
-    \item is \keyword{associative} if $(a \star b) \star c = a \star (b \star c)$ for all $a, b, c \in S$,
-    \item has \keyword{identity} if there exists $e \in S$ such that $e \star a = a \star e = a$ for all $a \in S$,
-    \item has \keyword{inverses} if for every $a \in S$ there exists $b \in S$ such that $ab = ba = e$,
-    \item is \keyword{commutative} if $a \star b = b \star a$ for all $a, b \in S$,
+    \item (ass) is \keyword{associative} if $(a \star b) \star c = a \star (b \star c)$ for all $a, b, c \in S$,
+    \item (id) has \keyword{identity} if there exists $e \in S$ such that $e \star a = a \star e = a$ for all $a \in S$,
+    \item (inv) has \keyword{inverses} if for every $a \in S$ there exists $b \in S$ such that $ab = ba = e$,
+    \item (comm) is \keyword{commutative} if $a \star b = b \star a$ for all $a, b \in S$.
 \end{itemize}
-Moreover, we say $\star$ has
+
+A magma $(S, \star)$ satisfying certain properties typically has a more specific name.
+We say $(S, \star)$ is a
 \begin{itemize}
-    \item \keyword{identity} if 
+    \item \keyword{semigroup} if (ass) it is associative,
+    \item \keyword{monoid} if (ass, id) it is associative and has an identity,
+    \item \keyword{group} if (ass, id, inv) it is associative, has an identity, and has inverses,
 \end{itemize}
+Most of these will simply take ``commutative'' as an adjective, though we usually say \keyword{abelian group} to mean a commutative group, i.e.,
+\begin{itemize}
+    \item \keyword{abelian group} if (ass, id, inv, comm) it is associative, has an identity, has inverses, and is commutative.
+\end{itemize}
+
+Chart:
+\begin{center}
+    \begin{tabular}{r|cccc}
+         & ass & id & inv & comm \\
+            \hline
+        magma & - & - & - & - \\
+        semigroup & x & - & - & - \\
+        monoid & x & x & - & - \\
+        comm.\ monoid & x & x & - & x \\
+        group & x & x & x & - \\
+        abelian group & x & x & x & x \\
+    \end{tabular}
+\end{center}
+
 
 
 \sepline
 
-A \keyword{commutative ring} is given by the following data:
+A \keyword{monoid} is given by the following data:
+\begin{enumerate}[(1)]
+    \item s set $S$,
+    \item a distinguished element $e \in S$,
+    \item a binary operation $\star$ on $S$,
+\end{enumerate}
+such that
+\begin{enumerate}[(i)]
+    \item (ass) $(a \star b) \star c = a \star (b \star c)$ for all $a, b, c \in S$,
+    \item (id) $e \star a = a \star e = a$ for all $a \in S$.
+\end{enumerate}
+In which case, we say $(S, e, \star)$ is a \keyword{monoid}.
+
+\sepline
+
+Let $(S, e, \cdot)$ be a monoid.
+(For simplicity, write $ab = a \cdot b$ for all $a, b \in S$.)
+
+Given $a, b \in S$ such that $ab = e$, we say that $a$ is a \keyword{left inverse} of $b$ and $b$ is a \keyword{right inverse} of $a$.
+If in addition $ba = e$, then we say that $a$ is an \keyword{inverse} of $b$, and vice versa.
+Equivalently, we might say
+\begin{itemize}[nosep]
+    \item $a$ and $b$ are inverses (of each other),
+    \item $a$ is inverse to $b$,
+    \item $a$ and $b$ are inverse (to one another).
+\end{itemize}
+Additionally, we say that $a$ and $b$ are \keyword{invertible} in the monoid.
+
+(One must be careful when using the word ``invertible,'' as it is relative to both the underlying set and the operation---e.g., every element of $\Z$ is invertible with respect to addition, though only $1$ and $-1$ are invertible with respect to multiplication.)
+
+Note $a$ and $b$ are inverses if and only if one is both a left and right inverse of the other.
+
+In general mathematics, it is more common to hear the phrase ``$a$ is \textit{the} inverse of $b$'' rather than ``$a$ is \textit{an} inverse of $b$.''
+Indeed, in most nice cases, there is only one inverse.
+In turns out that this uniqueness holds in any monoid, as we will now demonstrate.
+
+\begin{proposition}
+    If $a, b, c \in S$ are such that $ab = ca = e$, then $b = c$.
+\end{proposition}
+
+\begin{proof}
+    $b \eqby{id} eb = (ca)b \eqby{ass} c(ab) = ce \eqby{id} c$.
+\end{proof}
+
+In particular, the common value of $b$ and $c$ is an inverse of $a$.
+It follows that an element of a monoid is invertible whenever it has both a left and a right inverse---the proposition implies that the two are equal.
+
+\begin{corollary}
+    Inverses are unique.
+\end{corollary}
+
+\begin{proof}
+    If $b$ and $c$ are both inverses of $a$, the proposition implies $b = c$.
+\end{proof}
+
+Hence, every invertible element of the monoid in fact has a unique inverse.
+If $a \in S$ is invertible, then we denote \keyword{the inverse} of $a$ might be denoted by one of the following
+\[
+    -a \qquad a^{-1} \qquad \frac{1}{a} \qquad \overline{a} \qquad a'
+\]
+
+\sepline
+
+Let $(G, e, \cdot)$ be a group, i.e., a monoid with all elements invertible.
+Since the inverses in a monoid are unique, so too are the inverses in a group.
+And since every element has an inverse, there is a well-defined function 
+\begin{align*}
+    \iota : G &\To G, \\
+        g &\Mapsto g^{-1},
+\end{align*}
+where $g^{-1}$ is \textit{the} inverse of $g$ in the group.
+This function has the following properties:
+\begin{enumerate}[(i)]
+    \item $\iota \circ \iota = \id_G$
+    \item $\iota(g \cdot h) = \iota(h) \cdot \iota(g)$, i.e., $(gh)^{-1} = h^{-1}g^{-1}$
+\end{enumerate}
+
+\sepline
+
+Let $G = (S, e, \cdot)$ be a group.
+We can define a new binary operation $\odot$ on $S$ as follows:
+\[
+    g \odot h := h \cdot g \isp{or} \mu_\odot = \mu_\cdot \circ \lambda_G.
+\]
+Denote the algebraic structure $G^\op = (S, e, \odot)$.
+We claim $G^\op$ is a group.
+Indeed $(S, \odot)$ is a magma and $e \in S$ is a distinguished element, so we have the required data. (unless i later require the inversion map for groups)
+We check the axioms now:
+\begin{itemize}[nosep]
+    \item (ass) $(g \odot h) \odot k = k \cdot (h \cdot g) = (k \cdot h) \cdot g = g \odot (h \odot k)$,
+    \item (id) $g \odot e = e \cdot g = g = g \cdot e = e \odot g$,
+    \item (inv) $g \odot g^{-1} = g^{-1} \cdot g = e = g \cdot g^{-1} = g^{-1} \odot g = e$, where $g^{-1}$ is the inverse of $g$ in $G$. 
+\end{itemize}
+Hence, $G^\op$ is a group, called the \emph{opposite group} of $G$.
+
+If $\iota : S \to S$ is the inversion function of $G$, then we have
+\[
+    \iota(g \cdot h) = \iota(h) \cdot \iota(g) = \iota(g) \odot \iota(h).
+\]
+That is, $\iota$ specifies a group homomorphism (what's that bud?) $G \to G^\op$.
+In fact, this is an isomorphism and $(G^\op)^\op = G$.
+
+
+\newpage
+\sepline
+
+A \keyword{ring} $R$ is an algebraic structure with the following data:
+\begin{enumerate}[(1)]
+    \item distinguished elements $0, 1 \in |R|$,
+    \item a binary operation $+$ called \emph{addition} such that $(|R|, 0, +)$ is an abelian group,
+    \item a binary operation $\cdot$ called \emph{multiplication} such that $(|R|, 1, \cdot)$ is a monoid,
+\end{enumerate}
+such that the two operations satisfy the following distributivity properties:
+\begin{enumerate}[(i)]
+    \item (dist) $a \cdot (b + c) = (a \cdot b) + (a \cdot c)$,
+    \item (dist) $(a + b) \cdot c = (a \cdot c) + (b \cdot c)$.
+\end{enumerate}
+
+By convention, the \emph{order of operations} in a ring puts multiplication before addition.
+Because of this, we can omit parentheses the order of operations can be deduced.
+Moreover, we typically write the multiplication without the operator, though sometimes use it for clarity.
+On the other hand, we always write the operator for addition.
+For example, we can write the following
+\[
+    (a \cdot b) + (c \cdot d) = ab + cd.
+\]
+The additive inverse of $a \in R$ is denoted by $-a$, and we replace the plus sign with a minus sign when adding an inverse, e.g.,
+\[
+    a + (-b) = a - b.
+\]
+The multiplicative inverse of $a \in R$, when it exists, is denoted by $a^{-1}$.
+
+
+
+\begin{enumerate}[(i)]
+    \item $\mu(a, \alpha(b, c)) = \alpha(\mu(a, b), \mu(a, c))$, i.e., 
+    \begin{cd}[column sep=large]
+        R \times R \times R \ar[rr, "\Delta_R \times \id_R \times \id_R"] \dar["\id_R \times \alpha"]
+            && R \times R \times R \times R \ar[rr, "\id_R \times \lambda_R \times \id_R"]
+            && R \times R \times R \times R \dar["\mu \times \mu"]\\
+        R \times R \ar[rr, "\mu"]
+            && R
+            && R \times R \ar[ll, "\alpha"']
+    \end{cd}
+    \begin{cd}
+        R^3 \ar[rr, "\Delta \times \id \times \id"] \dar["\id \times \alpha"']
+            && R^4 \ar[rr, "\id \times \lambda \times \id"]
+            && R^4 \dar["\mu \times \mu"]\\
+        R^2 \ar[rr, "\mu"']
+            && R
+            && R^2 \ar[ll, "\alpha"]
+    \end{cd}
+    \item $\mu(\alpha(a, b), c) = \alpha(\mu(a, c), \mu(b, c))$, i.e.,
+    \begin{cd}
+        R^3 \ar[rr, "\id \times \id \times \Delta"] \dar["\alpha \times \id"']
+            && R^4 \ar[rr, "\id \times \lambda \times \id"]
+            && R^4 \dar["\mu \times \mu"]\\
+        R^2 \ar[rr, "\mu"']
+            && R
+            && R^2 \ar[ll, "\alpha"]
+    \end{cd}
+\end{enumerate}
+
+\sepline
+
+A \keyword{ring} is given by the following data:
 \begin{enumerate}[(1)]
     \item a set $R$,
-    \item a distinguished elements $0, 1 \in R$,
-    \item an addition function $\alpha : R \times R \to R$ such that $(R, 0, \alpha)$ is an abelian group,
-    \item a multiplication function $\mu : R \times R \to R$ such that $(R, 1, \mu)$ is a monoid,
+    \item a binary operation $+$ on $R$ called \emph{addition},
+    \item a binary operation $\cdot$ on $R$ called \emph{multiplication},
 \end{enumerate}
+such that
+\begin{enumerate}[(i)]
+    \item $R$ is an abelian group under addition:
+    \begin{enumerate}
+        \item (ass) $(a + b) + c = a + (b + c)$,
+        \item (id) $0 \in R$ called \emph{zero} such that $0 + a = a + 0 = a$,
+        \item (inv) for all $a \in R$ there exists an $-a \in R$ such that $a + (-a) = 0$,
+    \end{enumerate}
+    \item $R$ is a monoid under multiplication, whose identity is called the \emph{one} denoted $1 \in R$.
+\end{enumerate}
+
+\sepline
+
+
+\begin{proposition}
+    In a ring $R$ we have the following properties:
+    \begin{enumerate}[(a)]
+        \item $0 \cdot a = a \cdot 0 = 0$,
+        \item $(-1) \cdot a = a \cdot (-1) = -a$,
+        \item $(-a) \cdot b = a \cdot (-b) = -(a \cdot b)$,
+        \item $(-1) \cdot (-1) = 1$,
+        \item $(-a) \cdot (-b) = ab$.
+    \end{enumerate}
+\end{proposition}
+\begin{proof}
+    beebop
+    \begin{enumerate}[(a)]
+        \item $0a \eqby{+ id} (0 + 0)a \eqby{dist} 0a + 0a$ implies $0 = 0a$ by cancellation. \\
+        $a0 \eqby{+ id} a(0 + 0) \eqby{dist} a0 + a0$ implies $0 = a0$ by cancellation.
+        \item $a + (-1)a \eqby{\cdot id} 1a + (-1)a \eqby{dist} (1 - 1)a \eqby{+inv} 0a \eqby{a} 0$ implies $(-1)a = -a$ by additive inverse uniqueness. \\
+        $a + a(-1) \eqby{\cdot id} a1 + a(-1) \eqby{dist} a(1 - 1) \eqby{+inv} a0 \eqby{a} 0$ implies $a(-1) = -a$ by additive inverse uniqueness.
+        \item $-(ab) \eqby{b} (-1)ab \eqby{b} (-a)b \eqby{b} a(-1)b \eqby{b} a(-b)$.
+        \item $(-1)(-1) \eqby{b} -(-1)$ but $-(-1) = 1$ by additive inverse uniqueness.
+        \item $(-a)(-b) \eqby{b} a(-1)(-1)b \eqby{d} a1b \eqby{\cdot id} ab$.
+    \end{enumerate}
+\end{proof}
 
 \sepline
 
@@ -184,8 +591,8 @@ A \keyword{}{module} is given by the following data:
         \item $\mu(1, x) = x$ or equivalently $\mu(1, -) = \mu|_{1 \times M} = \id_M$
         \item $\mu(ab, x) = \mu(a, \mu(b, x))$ or equivalently the following diagram commutes
         \begin{cd}
-            R \times R \times M \rar["\id_R \times \mu"] \dar["\mathrm{mul}_R \times \id_M"'] & R \times M \dar["\mu"] \\
-            R \times M \rar["\mu"] & M
+            R \times R \times M \rar["\id_R \times \mu"] \dar["\mu_R \times \id_M"'] & R \times M \dar["\mu"] \\
+            R \times M \rar["\mu"'] & M
         \end{cd}
     \end{enumerate}
 \end{enumerate} 
