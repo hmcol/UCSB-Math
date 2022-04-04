@@ -1,0 +1,407 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+
+\usetikzlibrary{calc}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+\newcommand{\inc}{\hookrightarrow}
+
+% Extra Commands
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\DD}{\mathrm{D}}
+
+\newcommand{\pdv}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+
+
+% Document
+\begin{document}
+\title{MATH 221C Homework 1}
+\author{Harry Coleman}
+\date{April 4, 2022}
+\maketitle
+
+\begin{pbox}[1]
+    Prove that for a function $f : \R \to \R$ the definition of differentiable at $x$ given in class is equivalent to the usual definition that $\lim_{h \to 0} (f(x + h) - f(x))/h$ exists.
+\end{pbox}
+
+\begin{proof}
+    Suppose $f$ is differentiable at $x$ in the sense of the definition from class, i.e., there is a linear map $T : \R \to \R$ such that
+    \[
+        0
+            = \lim_{\substack{\|\Delta x\| \to 0 \\ \Delta x \in \R \setminus \{0\}}} \frac{\|f(x + \Delta x) - f(x)  - T(\Delta x)\|}{\|\Delta x\|}
+            = \lim_{h \to 0} \frac{|f(x + h) - f(x) - T(h)|}{|h|}.
+    \]
+    Since $T : \R \to \R$ is linear, there exists $a \in \R$ such that $T(y) = ay$ for all $y \in \R$.
+    Then
+    \[
+        \lim_{h \to 0} \left|\frac{f(x + h) - f(x)}{h} - a \right|
+            = \lim_{h \to 0} \frac{|f(x + h) - f(x) - T(h)|}{|h|}
+            = 0.
+    \]
+    That is, $f'(x) = a$ in the usual sense.
+
+    Suppose now that $f$ is differentiable at $x$ in the usual sense---say $f'(x) = a$.
+    Define the linear map $T : \R \to \R$ by $T(y) = ay$ for all $y \in \R$.
+    Then
+    \[
+        \lim_{h \to 0} \frac{f(x + h) - f(x) - T(h)}{h}
+            = \lim_{h \to 0} \frac{f(x + h) - f(x)}{h} - a
+            = f'(x) - a
+            = 0.
+    \]
+    Taking the absolute value, this limit is still zero, so we obtain the desired limit.
+\end{proof}
+
+
+\begin{pbox}[2]
+    Suppose that $f : \R^n \to \R^m$ is the affine map $\vec{x} = A\vec{x} + \vec{b}$ where $A$ an $m \times n$ matrix and $\vec{b} \in \R^m$.
+    Prove that $f$ is differentiable everywhere and that $\dd{f} = A$.
+\end{pbox}
+
+\begin{proof}
+    For any point $x \in \R^n$ and nonzero $\Delta x \in \R^n$ we have
+    \[
+        \frac{\|f(x + \Delta x) - f(x)  - A\Delta x\|}{\|\Delta x\|}
+            = \frac{\|A(x - \Delta x) + b - (Ax + b)  - A\Delta x\|}{\|\Delta x\|}
+            = \frac{\|0\|}{\|\Delta x\|}
+            = 0.
+    \]
+    The limit as $\|\Delta x\| \to 0$ is hence zero, so indeed $\dd{f} = A$.
+\end{proof}
+
+
+\begin{pbox}[3]
+    Given an integer $n$ the function $f_n : \R^2 \to \R$ is given in polar coordinates by $f_n(r, \theta) = r \sin(n\theta)$ for $r \ne 0$ and $f_n(0, 0) = 0$.
+    Define a surface
+    \[
+        S_n = \{(r \cos\theta, r \sin\theta, f_n(r, \theta)) : r \geq 0, \theta \in \R\} \seq \R^3.
+    \]
+\end{pbox}
+
+\begin{pbox}[(i)]
+    Sketch $S_2$.
+\end{pbox}
+
+\begin{pbox}[(ii)]
+    Prove that every directional derivative of $f_n$ exists at the origin and find it.
+\end{pbox}
+
+\begin{proof}
+    Let $v \in \R^2$ nonzero be given by the polar coordinates $(r; \theta)$.
+    Then the derivative of $f_n$ at the origin in the direction of $v$ is given by
+    \[
+        \DD_v f(0)
+            = \lim_{h \to 0} \frac{f_n(0 + hv) - f_n(0)}{h}
+            = \lim_{h \to 0} \frac{hr\sin(n\theta) - 0}{h}
+            = \lim_{h \to 0} r\sin(n\theta)
+            = r\sin(n\theta).
+    \]
+\end{proof}
+
+\begin{pbox}[(iii)]
+    Use the definition in class to prove that $f_2$ is not differentiable at the origin.
+\end{pbox}
+
+\begin{proof}
+    Suppose $\Delta x \in \R^2$ nonzero is given in polar coordinates by $(r; \theta)$ and $T : \R^2 \to \R$ is a linear map.
+    Then
+    \[
+        \frac{f_2(0 + \Delta x) - f_2(0) - T(\Delta x)}{\|\Delta x\|}
+            = \frac{r\sin(2\theta) - 0 - rT(1; \theta)}{r}
+            = \sin(2\theta) - T(1; \theta).
+    \]
+    If we assume that $f$ is differentiable at the origin with $T = \dd{f}$, then we would have
+    \[
+        0
+            = \lim_{\substack{\|\Delta x\| \to 0 \\ \Delta x \in \R \setminus \{0\}}} \frac{\|f(x + \Delta x) - f(x)  - T(\Delta x)\|}{\|\Delta x\|}
+            = \|\sin(2\theta) - T(1; \theta)\|.
+    \]
+    That is, $T(1; \theta) = \sin(2\theta)$ for all angles $\theta$.
+    In particular, the unit vectors in $\R^2$ are mapped to $T(e_1) = T(1; 0) = 0 $ and $T(e_2) = T(1; \pi) = 0$.
+    It follows that $T$ is the zero map.
+    However, along $\theta = \pi/2$ we have $\sin\pi = 1 \ne 0 = T(1; \pi/2)$.
+    This is a contradiction, so $f$ must not be differentiable at the origin.
+\end{proof}
+
+\begin{pbox}[(iv)]
+    Express $f_2$ in terms of $(x, y)$ coordinates.
+\end{pbox}
+
+Given a nonzero point $(x, y) \in \R^2$, consider the triangle
+\begin{drawing}
+    \draw (0, 0) -- ({sqrt(3)}, 0) node[midway, below]{$x$};
+    \draw (30 : 2) -- ++(0, -1) node[midway, right]{$y$};
+    \draw (0, 0) -- (30 : 2) node[midway, above left]{$r$};
+
+    \draw (1/2, 0) arc (0 : 30 : 1/2) node[midway, right, yshift=2pt]{$\theta$};
+\end{drawing}
+Applying trigonometric identities, we compute
+\[
+    f_2(x, y)
+        = r\sin(2\theta)
+        = r \cdot 2\sin\theta\cos\theta
+        = 2r \cdot \frac{y}{r} \cdot \frac{x}{r}
+        = \frac{2xy}{\sqrt{x^2 + y^2}}.
+\]
+
+\begin{pbox}[(v)]
+    Do you think $\partial f_2 / \partial x$ is continuous at the origin?
+\end{pbox}
+
+No.
+
+We compute
+\[
+    \frac{\partial f_2}{\partial x}
+        = \pdv{}{x} \frac{2xy}{(x^2 + y^2)^{1/2}}
+        = \frac{2y^3}{(x^2 + y^2)^{3/2}}.
+\]
+Along the $y$-axis, this gives
+\[
+    \left.\pdv{f_2}{x}\right|_{x=0}
+        = \frac{2y^3}{(y^2)^{3/2}}
+        = \frac{2y^3}{|y|^3}
+        = \frac{2y}{|y|}.
+\]
+For $y > 0$ this is $2$ and for $y < 0$ this is $-2$, so
+\[
+    \lim_{y \to 0^+} \pdv{f_2}{x}
+        = 2
+        \ne -2
+        = \lim_{y \to 0^-} \pdv{f_2}{x}.
+\]
+Hence, $\partial f_2 / \partial x$ is not continuous at the origin.
+
+
+\begin{pbox}[4]
+    Suppose that $f : \R^2 \to \R$ and $\partial f / \partial y = 0$ everywhere.
+    Prove that there is $g : \R \to \R$ such that $f(x, y) = g(x)$.
+\end{pbox}
+
+\begin{proof}
+    For $x \in \R$ define the function $f_x : \R \to \R$ by $f_x(y) = f(x, y)$.
+    Then $f_x$ is differentiable everywhere with $f_x'(y) = \partial f / \partial y = 0$.
+    Let $a, b \in \R$ with $a < b$.
+    The mean value theorem tells us there is some point $c \in (a, b)$ such that $f_x(a) - f_x(b) = f_x'(c)(a - b)$.
+    But $f_x'(c) = 0$ implies $f_x(a) = f_x(b)$, hence $f_x$ is constant on $\R$.
+    We now define $g(x) = f_x(0)$, and it follows that $f(x, y) = g(x)$ for all $(x, y) \in \R^2$.
+\end{proof}
+
+\begin{pbox}
+    Deduce that if $\dd{f} = 0 $ everywhere on $\R^2$ then $f$ is constant.
+\end{pbox}
+
+\begin{proof}
+    Assuming $\dd{f} = 0$, then the Jacobian matrix
+    \[
+        J_f = \mat{\pdv{f}{x} & \pdv{f}{y}}            
+    \]
+    is zero.
+    In particular, both partial derivatives of $f$ are zero everywhere.
+    By the previous part, there are functions $g_1, g_2 : \R \to \R$ such that $f(x, y) = g_1(x) = g_2(y)$.
+    Then for all $(x, y) \in \R^2$ we have
+    \[
+        f(x, y) = g_1(x) = f(x, 0) = g_2(0) = f(0, 0),
+    \]
+    hence $f$ is constant.
+\end{proof}
+
+\begin{pbox}
+    What happens if the \textit{domain} of $f$ is only $\{(x, y) : x \ne 0\}$?
+\end{pbox}
+
+In this case, $f$ is constant on both the open left and right half-planes, though their respective values may differ.
+
+\begin{pbox}[5]
+    Using the definition of derivative given in class prove that $f = (f_1, f_2): \R \to \R^2$ is differentiable at $a \in \R$ iff $f_1$ and $f_2$ are differentiable at $a$.
+\end{pbox}
+
+\begin{proof}
+    Suppose $f$ is differentiable at $a$ and let $\dd{f}_a = T = (T_1, T_2) : \R \to \R^2$ be the derivative.
+    We consider the max norm $\|(x, y)\| = \max\{|x|, |y|\}$ on $\R^2$.
+    Then
+    \begin{align*}
+        0
+            &= \lim_{h \to 0} \frac{\|f(x + h) - f(x) - T(h)\|}{|h|} \\
+            &= \lim_{h \to 0} \frac{\max\{f_1(x + h) - f(x) - T_1(h), f_2(x + h) - f_2(x) - T_2(h)\}}{|h|} \\
+            &= \lim_{h \to 0} \max\left\{\frac{|f_1(x + h) - f_1(x) - T_1(h)|}{|h|}, \frac{|f_2(x + h) - f_2(x) - T_2(h)|}{|h|}\right\}.
+    \end{align*}
+    Since this is an upper bound for both limits, it follows that
+    \[
+        \lim_{h \to 0} \frac{|f_1(x + h) - f_1(x) - T_1(h)|}{|h|}
+            = \lim_{h \to 0} \frac{|f_2(x + h) - f_2(x) - T_2(h)|}{|h|}
+            = 0. 
+    \]
+    Hence, both $f_1$ and $f_2$ are differentiable at $a$ with $(\dd{f_i})_a = T_i$.
+
+    Suppose now that $f_1$ and $f_2$ are differentiable at $a$ with derivatives $(\dd{f_i})_a = T_i : \R \to \R$.
+    Define the linear map $T = (T_1, T_2) : \R \to \R^2$.
+    Then
+    \begin{align*}
+        \lim_{h \to 0} &\frac{\|f(x + h) - f(x) - T(h)\|}{|h|} \\
+            &= \lim_{h \to 0} \max\left\{\frac{|f_1(x + h) - f_1(x) - T_1(h)|}{|h|}, \frac{|f_2(x + h) - f_2(x) - T_2(h)|}{|h|}\right\} \\
+            &\leq \lim_{h \to 0} \frac{|f_1(x + h) - f_1(x) - T_1(h)|}{|h|} + \lim_{h \to 0} \frac{|f_2(x + h) - f_2(x) - T_2(h)|}{|h|} \\
+            &= 0.
+    \end{align*}
+    Hence, $f$ is differentiable at $a$ with $\dd{f}_a = ((\dd{f_1})_a, (\dd{f_2})_a)$.
+\end{proof}
+
+\begin{pbox}[6]
+    The function $f:\R \to \R$ is defined by
+    \[
+        f(x) = \begin{cases}
+            e^{-1/x^2} & x \neq 0\\
+            0 & x = 0
+        \end{cases}
+    \]
+    Prove that $f$ is smooth at the origin.
+\end{pbox}
+
+\begin{proof}
+    Consider the ring of Laurent polynomials $\R[x, x^{-1}]$.
+    We claim that for all $n \geq 0$ there exists a Laurent polynomial $p_n(x) \in \R[x, x^{-1}]$ such that
+    \[
+        f^{(n)}(x) = p_n(x) e^{-1/x^2},
+    \]
+    where the derivative is take away from the origin.
+    We will prove this by induction on $n$.
+    The base case is immediate since $f^{(0)}(x) = f(x) = 1 e^{-1/x^2}$.
+    Assuming the result holds for derivatives less than $n$, we find
+    \[
+        f^{(n)}(x)
+            = \pdv{}{x} f^{(n-1)}(x)
+            = \pdv{}{x} p_{n-1}(x)e^{-1/x^2}
+            = (p_{n-1}'(x) + p_{n-1}(x) \cdot 2x^{-3})e^{-1/x^2}.
+    \]
+    Since the ring $\R[x, x^{-1}]$ is closed under taking derivatives, we have
+    \[
+        p_n(x) = p_{n-1}'(x) + p_{n-1}(x) \cdot 2x^{-3} \in \R[x, x^{-1}].
+    \]
+    This completes the induction.
+
+    Next, we claim that for any Laurent polynomial $p(x) \in \R[x, x^{-1}]$,
+    \[
+        \lim_{h \to 0} p(h)e^{-1/h^2} = 0.
+    \]
+    One can check that $e^{1/h^2} < e^{1/|h|}$ for all nonzero $|h| < 1$.
+    Additionally, $|p(h)| \leq p(|h|)$ by applying the triangle inequality to each term in the polynomial.
+    So for $p(x) \in \R[x, x^{-1}]$ and nonzero $|h| < 1$ we have
+    \[
+        |p(h)e^{-1/h^2}| = |p(h)|e^{-1/h^2} \leq p(|h|)e^{-1/|h|}.
+    \]
+    Taking the limit as $h \to 0$, we write
+    \[
+        \lim_{h \to 0} |p(h)e^{-1/h^2}|
+            \leq \lim_{h \to 0} \frac{p(|h|)}{e^{1/|h|}}
+            = \lim_{y \to \infty} \frac{p(1/y)}{e^y}.
+    \]
+    Note that $p(1/y) = p(y^{-1}) \in \R[y, y^{-1}]$ is still a (Laurent) polynomial.
+    Since the exponential function is faster than any polynomial function, we conclude that this limit is zero.
+
+    In particular, this proves
+    \[
+        \lim_{x \to 0} f^{(n)}(x) = p_n(x) e^{-1/x^2} = 0.
+    \]
+    
+
+    We now prove $f^{(n)}(0) = 0$ by induction on $n$.
+    Since $f^{(0)}(0) = f(0) = 0$, the base case holds.
+    Assume the result holds for derivatives less than $n$.
+    Then the $n$-derivative of $f$ at the origin is given by
+    \[
+        \lim_{h \to 0} \frac{f^{(n-1)}(0 + h) - f^{(n-1)}(0)}{h}
+            = \lim_{h \to 0} \frac{f^{(n-1)}(h)}{h}
+            = \lim_{h \to 0} \frac{p_{n-1}(h)}{h}e^{-1/h^2}.
+    \]
+    Since $x^{-1}p_{n-1}(x) \in \R[x, x^{-1}]$, we have seen that this limit is zero, so indeed $f^{(n)}(0) = 0$.
+\end{proof}
+
+
+\begin{pbox}[7]
+    The function $f : \R^2 \to \R^2$ is given by $f(x, y) = (e^x+ e^y - 2, x^5 - y^5 + x)$.
+    Show that there is $\eps > 0$ and $\delta > 0$ such that for all $a, b$ with $|a| < \eps$ and $|b| < \eps$ there are unique $x, y$ with $x^2 + y^2 < \delta$ and $f(x, y) = (a, b)$.
+\end{pbox}
+
+\begin{proof}
+    Note that $f = (f_1, f_2)$ is smooth with $f(0) = 0$.
+    The Jacobian of $f$ at zero is
+    \[
+        J_f(0)
+            = \left.\mat{\pdv{f_1}{x} & \pdv{f_1}{y} \\ \pdv{f_2}{x} & \pdv{f_2}{y}}\right|_{0} 
+            = \left.\mat{e^x & e^y \\ 5x^4 + 1 & -5y^4}\right|_{0} 
+            = \mat{1 & 1 \\ 1 & 0}.
+    \]
+    This matrix is full rank, so $(\dd{f})_{0}$ invertible.
+    By the inverse function theorem, there are open neighborhoods $U, V \seq \R^2$ of the origin such that $f|_U : U \to V$ is a homeomorphism.
+
+    Considering $\R^2$ with the Euclidean norm $\|\cdot\|_2$, we choose an open ball $B_\delta(0; \|\cdot\|_2)$ around the origin contained in $U$.
+    Since $f_U$ is an open map, the image $f(B_\delta(0; \|\cdot\|_2)) \seq V$ is an open neighborhood of the origin.
+    Considering $\R^2$ with the max/sup norm $\|\cdot\|_\infty$, we choose an open ball $B_\eps(0; \|\cdot\|_\infty) \seq f(B_\delta(0; \|\cdot\|_2))$.
+    
+    Hence, $f$ induces a bijection $f^{-1}(B_\eps(0; \|\cdot\|_\infty)) \to B_\eps(0; \|\cdot\|_\infty)$, the domain of which is contained in $B_\delta(0; \|\cdot\|_2)$.
+    Taking $\delta' = \delta^2$ gives us the desired $\eps > 0$ and $\delta' > 0$.
+\end{proof}
+
+\end{document}

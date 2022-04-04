@@ -80,6 +80,7 @@
 
 % Other
 \newcommand{\eqc}{\overline}
+\newcommand{\udl}{\underline}
 
 
 \title{Algebra \\
@@ -272,6 +273,8 @@ There will usually only be finitely many operations on $S$ and in any case there
 
 \sepline
 
+
+
 A \keyword{magma} $M$ is given by the following data:
 \begin{enumerate}[$\bullet$]
     \item a set $S$,
@@ -318,6 +321,38 @@ For this reason---I would argue---it is worth having the language to talk about 
 (There is a diversion here where I lament about having to prove certain elementary properties of objects without having the proper language to even talk about the way in which those objects possess those properties.
 To make matters worse, it is often the case that the desired result is essentially some form of ``niceness'' in the sense that we are showing that some hypothetical bad situation never occurs. In which case, when we are using the object for its intended purpose, we can sweep certain technical nuances under the rug.
 So because the goal is to be able to ignore the nuance, one has to synthesize a complete model of this nuance only to discard it the moment it reveals its own unimportance.)
+
+\sepline
+
+An \keyword{algebraic structure} $A$ is given by (some or all of) the following data:
+\begin{enumerate}[(1)]
+    \item an \emph{underlying} algebraic structure, denoted explicitly by $\udl{A}$ unless otherwise specified,
+    \item some \emph{auxiliary} algebraic structures/objects,
+    \item some homomorphisms between these algebraic structures.
+\end{enumerate}
+
+An algebraic structure \keyword{class/type} is a \emph{signature} of data for constructing an algebraic structure.
+The signature prescribes the following: whether or not and from which category an underlying object is required, whether or not and from which category any auxiliary objects are required, whether or not and from which category any morphisms are required.
+Additionally, the signature prescribes some \emph{coherence conditions} which must be satisfied by the supplied data.
+
+In other words, an algebraic structure class/type describes a format/template for constructing a more narrow sort of object.
+Any algebraic object which conforms to the template, is said to be of the class/type in question.
+
+Whenever an algebraic object $A$ of type $\mathcal{A}$ has an underlying structure $\udl{A}$, then we very closely identify 
+
+hey bud these are just categories. just use categories
+
+\sepline
+
+A \keyword{magma} $M$ is a type of algebraic structure given by the following data:
+\begin{enumerate}[(1)]
+    \item an underlying set $\udl{M}$,
+    \item a binary operation on $\udl{M}$ (a function $\udl{M} \times \udl{M} \to \udl{M}$).
+\end{enumerate}
+
+\sepline
+
+Let $M = (\udl{M}, \odot)$ and $N = (\udl{N}, \otimes)$ be magmas.
 
 \sepline
 
@@ -368,7 +403,9 @@ Chart:
     \end{tabular}
 \end{center}
 
+semigroup bad, just add identity to get monoid.
 
+``you can define lots of things, but that doesn't mean you should study them.'' - Dave Morrison
 
 \sepline
 
@@ -597,5 +634,15 @@ A \keyword{}{module} is given by the following data:
     \end{enumerate}
 \end{enumerate} 
 
+\sepline
+
+Let $R$ be a ring.
+
+An \keyword{$R$-module} is given by the following data:
+\begin{enumerate}[(1)]
+    \item an abelian group $M$ written additively, i.e., identity is $0$ and binary operation is $+$,
+    \item a ring homomorphism $\mu : R \to \End(M)$, called \emph{scalar multiplication}.
+\end{enumerate}
+We usually write $r \cdot m$ for the evaluation $\mu(r)(m)$.
 
 \end{document}

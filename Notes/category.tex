@@ -1,0 +1,419 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+\usepackage[shortlabels]{enumitem}
+
+\usepackage{suffix}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+
+% Environments
+\setlist[enumerate]{nosep}
+\newcommand{\keyword}[1]{\textbf{#1}}
+\newcommand{\sepline}{\rule{\textwidth}{0.4pt}}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+
+% Document Formatting
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Math Formatting
+\newcommand{\ds}{\displaystyle}
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\tc}[1]{, \qquad \text{#1}}
+\newcommand{\mc}[1]{, \qquad #1}
+\newcommand{\cfa}[1]{, \qquad \text{for all $#1$}}
+
+% mathbb
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+% mathcal
+\renewcommand{\AA}{\mathcal{A}}
+\newcommand{\BB}{\mathcal{B}}
+\newcommand{\CC}{\mathcal{C}}
+\newcommand{\DD}{\mathcal{D}}
+
+% Symbols
+
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+
+% Delimiters
+\newcommand{\<}{\left\langle}
+\renewcommand{\>}{\right\rangle}
+
+% Relations
+\newcommand{\isom}{\cong}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\newcommand{\tensor}{\otimes}
+
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\To}{\longrightarrow}
+\newcommand{\Mapsto}{\longmapsto}
+
+\newcommand{\eqby}[1]{\overset{\mathrm{(#1)}}{=}}
+
+% Math Operators
+\DeclareMathOperator{\Ob}{Ob}
+\DeclareMathOperator{\Mor}{Mor}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Iso}{Iso}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Aut}{Aut}
+
+
+
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\codom}{codom}
+\newcommand{\op}{\mathrm{op}}
+
+
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Ann}{Ann}
+
+% Other
+\newcommand{\eqc}{\overline}
+\newcommand{\udl}{\underline}
+
+% Category Names
+\newcommand{\mathcat}{\mathsf}
+\newcommand{\newcat}[2]{\newcommand{#1}{\mathcat{#2}}}
+\WithSuffix\newcommand\newcat*[2]{\WithSuffix\newcommand#1*{\mathcat{#2}}}
+
+
+\newcat{\Set}{Set}
+\newcat{\Top}{Top}
+\newcat{\Htpy}{Htpy}
+\newcat{\Grp}{Grp}
+\newcat{\Ab}{Ab}
+\newcat{\Ring}{Ring}
+\newcat{\CRing}{CRing}
+\newcat{\Mod}{\text{-}Mod}
+\newcat*{\Mod}{Mod}
+\newcat{\Vect}{\text{-}Vect}
+\newcat*{\Vect}{Vect}
+\newcat{\Cat}{Cat}
+\newcat{\CAT}{CAT}
+
+
+
+
+\title{Category \\
+    \large 
+}
+\author{}
+\date{}
+
+
+\begin{document}
+
+We make reference to set theory concepts.
+
+Set theory is not a strictly conceptually necessary prerequisite, but is helpful for understanding.
+
+The word ``collection'' is used in a generally nonmathematical way, i.e., its typical usage in natural language (here English).
+However, we will mostly refer to collections of abstract things, as opposed to physical things.
+
+By convention, our language will make no distinction between the various ways in which certain things (arguably) exist---e.g., physically, abstractly, hypothetically, etc.---all modes of existence are considered to be the same.
+
+There will be no discussion of subatomic concepts.
+The first definition we give will not rely on any prior mathematical foundation, and it will be assumed that the reader is able to reconcile any personal concerns over the nature of sense and reference.
+
+\sepline
+
+A note on notation.
+
+In a moment I am going to say the following common mathematical sentence.[see footnote]:
+\begin{enumerate}[(0)]
+    \item Let $S$ be a set.
+\end{enumerate}
+I will clarify that I have not yet said the sentence (0) with the intent of expressing its meaning.
+So far, I have only presented it as linguistic thing to be discussed.
+This is very subtly contrasted with the next paragraph in which I will say (0) with the intent of expressing its meaning.
+It is intended that (0) be read and understood in the usual way.
+The sentence itself it not meant to be confusing or deceptive, though what follows may be rather pedantic.
+
+Let $S$ be a set.
+
+I really must emphasize here that the previous paragraph is fundamentally different from the first occurrence of the sentence (0) in this text.
+At its first occurrence, there were no mathematical objects present in the discussion.
+Only as it occurs in the previous paragraph does (0) have any mathematical meaning.
+I will repeat that the meaning of (0) is the (hopefully) obvious one, so the previous paragraph has the same meaning within the context of this text as it would within any other.
+
+I would now like to consider a number of related sentences, which will be enumerated.
+Unlike (0), these will be explicitly declarative statements.
+The truth of these statements is unclear and for that reason I will be saying none of them with the intent of expressing their meaning.
+
+\begin{enumerate}[(1)]
+    \item $S$ is a set.
+    \item $S$ denotes a set.
+    \item ``$S$'' denotes a set.
+    \item $S$ is empty.
+    \item $S$ has a cardinality.
+    \item The cardinality of $S$ is $3$.
+\end{enumerate}
+
+
+
+[footnote] \textit{This is of course metaphorical.
+By ``say'' I mean ``write,'' but more exactly I mean that the reader is experiencing a sort of metaphorical dialogue with the text.
+For the most part, the text can be seen as a lecturer whose script is the text itself.
+When the reader is engaged, they will listen (read) relatively swiftly and with focus.
+When the text becomes boring, the reader may choose to end the conversation.
+When the reader is confused, they may ask the lecturer to repeat something they previously said.
+And so on and so forth.
+By ``moment'' I mean a moment in the context of this metaphorical conversation, in which real time is passing to the reader.
+In literal terms, I mean a short distance down the page, or possibly on the next page.
+Though not likely further than that.}
+
+
+\newpage
+\sepline
+
+A \keyword{category} $\CC$ is given by the following data:
+\begin{itemize}
+    \item a collection of \keyword{objects}, denoted $\Ob(\CC)$;
+    \item for each $x, y \in \Ob(\CC)$, a collection of \keyword{morphisms/arrows/maps} from $x$ to $y$, denoted $\Mor(x, y)$;
+    \item for each $x, y, z \in \Ob(\CC)$, a function
+    \begin{align*}
+        \Mor(y, z) \times \Mor(x, y) &\To \Mor(x, z) \\
+            (g, f) &\Mapsto g \circ f
+    \end{align*}
+    called \keyword{composition};
+    \item for each $x \in \Ob(\CC)$, an \keyword{identity morphism} $1_x \in \Mor(x, x)$;
+\end{itemize}
+such that the following axioms hold:
+\begin{itemize}
+    \item (ass) $(h \circ g) \circ f = h \circ (g \circ f)$ for all $f \in \Mor(x, y)$, $g \in \Mor(y, z)$, $h \in \Mor(z, w)$;
+    \item(id) $f \circ 1_x = f = 1_y \circ f$ for all $f \in \Mor(x, y)$.
+\end{itemize}
+
+\sepline
+
+Remarks.
+
+Notation we often use:
+\begin{itemize}
+    \item $x \in \CC$ to mean $x \in \Ob(\CC)$;
+    \item $\Mor_\CC(x, y)$ to mean $\Mor(x, y)$ to distinguish the category $\CC$;
+    \item $\Mor(\CC)$ to mean the collection of all morphisms in $\CC$, i.e., $\bigsqcup_{x, y \in \CC} \Mor(x, y)$;
+    \item $f : x \to y$ to mean $f \in \Mor(x, y)$.
+\end{itemize}
+
+Notation we rarely use (if at all, but is prevalent elsewhere):
+\begin{itemize}
+    \item $\CC(x, y)$ to mean $\Mor(x, y)$ to distinguish the category $\CC$;
+    \item  $x \xrightarrow{f} y$ to mean $f \in \Mor(x, y)$;
+    \item $gf$ to mean $g \circ f$.
+\end{itemize}
+
+For $f : x \to y$, call $x$ the \keyword{domain} (or \keyword{source}) of $f$ and $y$ the \keyword{codomain} (or \keyword{target}) of $f$.
+
+
+\sepline
+
+Some categories.
+\begin{center}
+    \begin{tabular}{c|c|c}
+        Category & Objects & Morphisms \\
+        \hline
+        $\Set$ & sets & functions \\
+        $\Top$ & topological spaces & continuous maps \\
+        $\Htpy$ & topological spaces & homotopy classes of continuous maps \\
+        $\Grp$ & groups & group homomorphisms \\
+        $\Ab$ & abelian groups & group homomorphisms \\
+        $\Ring$ & rings & ring homomorphisms \\
+        $\CRing$ & commutative rings & ring homomorphisms \\
+        $R\Mod$ & left $R$-modules & left $R$-module homomorphisms \\
+        $\Mod*\text{-}R$ & right $R$-modules & right $R$-module homomorphisms \\
+        $k\Vect$ & $k$-vector spaces & $k$-linear transformations
+    \end{tabular}
+\end{center}
+
+Note $\Ab = \Z\Mod$ and $k\Vect = k\Mod$.
+
+\sepline
+
+We often discuss \keyword{diagrams} in a category.
+This is a drawing of some objects in the category and some morphisms between them.
+The objects are typically drawn as their names and the morphisms as labeled arrows from their domain to their codomain.
+For instance, given objects $x, y, z, w \in \CC$ and morphisms $f : x \to y$, $g : x \to z$, $h : y \to w$, $k : z \to w$, we say that we have the the following diagram in $\CC$:
+\begin{cd}
+    x \rar["f"] \dar["g"'] & y \dar["h"] \\
+    z \rar["k"'] & w
+\end{cd}
+
+One can think of such a diagram $\CC$ as a drawing of a directed graph whose vertices correspond to objects of $\CC$ and whose (directed) edges correspond to morphisms in $\CC$.
+A finite path in this graph corresponds to an ordered sequence of morphisms in $\CC$ such that the codomain of each morphism is the domain of the following morphism.
+We can therefore compose these morphisms in the specified order to obtain another morphism in the $\CC$.
+We say that a diagram \keyword{commutes} if any two paths in the graph with the same source and target correspond to the same morphism of objects in $\CC$.
+
+In the above diagram, there are two paths from $x$ to $w$, corresponding to the composite morphisms $h \circ f$ and $k \circ g$.
+We would say that this diagram commutes if $h \circ f = k \circ g$.
+
+\sepline
+
+Fix a category $\CC$.
+
+A morphism $f : x \to y$ is called an \keyword{isomorphism} if there exists a morphism $g : y \to x$ such that $g \circ f = 1_x$ and $f \circ g = 1_y$.
+Equivalently, $f$ is an isomorphism if there exists $g : y \to x$ such that the following diagram commutes:
+\begin{cd}
+    x \ar[loop left, "1_x"] \rar[shift left=1, "f"] & y \ar[loop right, "1_y"] \lar[shift left=1, "g"]
+\end{cd}
+In which case, $g$ is called the[footnote] \keyword{inverse} of $f$, denoted $f^{-1} = g$.
+
+Additionally, we say $x$ and $y$ are \keyword{isomorphic}, written $x \isom y$.
+
+An \keyword{endomorphism} is a morphism whose domain and codomain are the same.
+
+An \keyword{automorphism} is an endomorphism which is also an isomorphism.
+
+Define the collections
+\begin{itemize}
+    \item $\Iso(\CC) \seq \Mor(\CC)$ of all isomorphisms in $\CC$;
+    \item $\Iso(x, y) = \Mor(x, y) \cap \Iso(\CC)$ of all isomorphisms $x \to y$;
+    \item $\End(\CC) \seq \Mor(\CC)$ of all endomorphisms in $\CC$;
+    \item $\End(x) = \Mor(x, x)$ of all endomorphisms of $x$;
+    \item $\Aut(\CC) = \End(\CC) \cap \Iso(\CC)$ of all automorphisms in $\CC$;
+    \item $\Aut(x) = \End(x) \cap \Iso(\CC) = \Iso(x, x)$ of all automorphisms $x$;
+\end{itemize}
+
+Examples
+\begin{center}
+    \begin{tabular}{c|c}
+        Category & Isomorphisms \\\hline
+        $\Set$ & bijections \\
+        $\Top$ & homeomorphisms \\
+        $\Htpy$ & homotopy equivalences \\
+        $\Grp$, $\Ring$, $R\Mod$ & bijective homomorphisms
+    \end{tabular}
+\end{center}
+
+\sepline
+
+A \keyword{groupoid} is a category in which every morphism is an isomorphism.
+
+As both a definition and example: a \keyword{group} is a groupoid with only one object.
+
+A \keyword{subcategory} $\DD$ of a category $\CC$ is a category such that $\Ob(\DD) \seq \Ob(\CC)$ and $\Mor_\DD(x, y) \seq \Mor_\CC(x, y)$ for all $x, y \in \DD$, and we write $\DD \seq \CC$.
+(e.g., $\Ab \seq \Grp$ and $\CRing \seq \Ring$.)
+It is sometimes required that $\Mor_\DD(x, y) = \Mor_\CC(x, y)$ for all $x, y \in \DD$.
+
+\sepline
+
+A category $\CC$ is called
+\begin{itemize}
+    \item \keyword{small} if $\Mor(\CC)$ is a set;
+    \item \keyword{locally small} if $\Mor(x, y)$ is a set for all $x, y \in \CC$; 
+\end{itemize}
+
+\sepline
+
+For any category $\CC$, we construct its \keyword{opposite} (or \keyword{dual}) category $\CC^\op$ as follows:
+\begin{itemize}
+    \item $\Ob(\CC^\op) = \Ob(\CC)$;
+    \item for each $f \in \Mor_\CC(x, y)$, a morphism $f^\op \in \Mor_{\CC^\op}(y, x)$;
+    \item composition $f^\op \circ g^\op = (g \circ f)^\op$ for all $f \in \Mor_\CC(x, y)$ and $g \in \Mor_\CC(y, z)$;
+    \item for each $x \in \CC^\op$, an identity $1_x^\op$.
+\end{itemize}
+
+\sepline
+
+Duality stuff.
+If you do a category thing, reverse all the arrows to get a dual thing.
+
+\sepline
+
+Fix an object in a category $c \in \CC$.
+
+The \keyword{slice category} of $\CC$ \keyword{over} $c$ is a category $\CC/c$ with
+\begin{itemize}
+    \item objects $\Ob(\CC/c) = \bigcup_{x \in \CC} \Mor_\CC(x, c) = \{f : x \to c \mid x \in \CC\}$;
+    \item morphisms: $\Mor_{\CC/c}(f : x \to c, g : y \to c) = \{h : x \to y \mid f = g \circ h\}$, i.e., $\Mor_{\CC/c}(f, g)$ is the collection of morphisms $h : x \to y$ such that the following diagram commutes:
+    \begin{cd}[row sep=small, column sep=tiny]
+        x \drar["f"'] \ar[rr, "h"] && y \dlar["g"] \\
+        & c
+    \end{cd}
+\end{itemize}
+
+The slice category of $\CC$ \keyword{under} $c$ is a category $c/\CC$ with
+\begin{itemize}
+    \item objects $\Ob(c/\CC) = \bigcup_{x \in \CC} \Mor_\CC(c, x) = \{f : c \to x \mid x \in \CC\}$;
+    \item morphisms: $\Mor_{c/\CC}(f : c \to x, g : c \to y) = \{h : x \to y \mid g = h \circ f\}$, i.e., $\Mor_{c/\CC}(f, g)$ is the collection of morphisms $h : x \to y$ such that the following diagram commutes:
+    \begin{cd}[row sep=small, column sep=tiny]
+        & c \dlar["f"'] \drar["g"] \\
+        x \ar[rr, "h"'] && y
+    \end{cd}
+\end{itemize}
+
+These are dual notions in the sense that $c/\CC = (\CC^\op/c)^\op$ and $\CC/c = (c/\CC^\op)^\op$.
+
+\sepline
+
+A (\keyword{covariant}) \keyword{functor} $F : \CC \to \DD$ between categories is given by the following data:
+\begin{itemize}
+    \item for each object $x \in \CC$, an object $F(x) = Fx \in \DD$;
+    \item for each morphism $f \in \Mor_\CC(x, y)$, a morphism $F(f) = Ff \in \Mor_\DD(x, y)$;
+\end{itemize}
+such that the following \keyword{functoriality axioms} hold:
+\begin{itemize}
+    \item $F(g \circ f) = Fg \circ Ff$ for all $f : x \to y$ and $g : y \to z$ in $\CC$;
+    \item $F(1_x) = 1_{Fx}$ for all $x \in \CC$.
+\end{itemize}
+
+A \keyword{contravariant functor} $\CC \to \DD$ is given by the data of a covariant functor $\CC^\op \to \DD$.
+
+\sepline
+
+There is a category $\Cat$ whose objects are small categories and whose morphisms are functors.
+
+There is a category $\CAT$ whose objects are locally small categories and whose morphisms are functors.
+
+\sepline
+
+Fix an object in a locally small category $c \in \CC$.
+
+We construct the following pair of covariant and contravariant \keyword{functors represented} by $c$:
+\begin{center}
+    \begin{tikzcd}[row sep=tiny, column sep=tiny]
+        \CC \ar[rr, "{\Mor(c, -)}"] && \DD \\
+        x \ar[dd, "f"'] & \Mapsto & \CC(c, x) \ar[dd, "f_*"] \\
+        & \Mapsto \\
+        y & \Mapsto & \CC(c, y)
+    \end{tikzcd}
+    \hspace*{2cm}
+    \begin{tikzcd}[row sep=tiny, column sep=tiny]
+        \CC \ar[rr, "{\Mor(-, c)}"] && \DD \\
+        x \ar[dd, "f"'] & \Mapsto & \CC(x, c) \ar[dd, "f^*"] \\
+        & \Mapsto \\
+        y & \Mapsto & \CC(y, c)
+    \end{tikzcd}
+\end{center}
+
+
+\end{document}
