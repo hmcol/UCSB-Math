@@ -1,0 +1,371 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\iso}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+\newcommand{\inc}{\hookrightarrow}
+
+% Extra Commands
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\esssup}{\operatorname{ess\,sup}}
+
+% Document
+\begin{document}
+\title{MATH 201C Homework 1}
+\author{Harry Coleman}
+\date{April 12, 2022}
+\maketitle
+
+
+\begin{pbox}[1]
+    Let $\{x_n\}$ be a Cauchy sequence of a metric space $(X, d)$.
+    Suppose that for some subsequence $\{x_{n_k}\}$, $x_{n_k}$ converges to $x_0$ as $k \to \infty$, show that $x_n$ converges to $x_0$ too.
+\end{pbox}
+
+\begin{proof}
+    Let $\eps > 0$ be given.
+    Choose $N \in \N$ for the definitions of both the Cauchyness of $\{x_n\}$ and the convergence of the subsequence $x_{n_k} \to x_0$, with respect to $\eps/2$.
+    For any $n \geq N$, choose any $n_k \geq N$, then
+    \[
+        \|x_n - x_0\|
+            \leq \|x_n - x_{n_k}\| + \|x_{n_k} - x_0\|
+            < \frac{\eps}{2} + \frac{\eps}{2}
+            = \eps.
+    \]
+    Hence, we indeed have convergence of the whole sequence $x_n \to x_0$.
+\end{proof}
+
+
+\newpage
+\begin{pbox}[2]
+    Construct a sequence $f_n(x)$ of bounded functions on $[0, 1]$ converging to zero in $L^1$, but $f_n$ converges at no point in $[0, 1]$.
+\end{pbox}
+
+For each $k \in \N$ and $i = 1, \dots, k$, define $f_{k, i} = \chi_{[\frac{i-1}{k}, \frac{i}{k}]}$, i.e., the characteristic function on the interval $[\frac{i-1}{k}, \frac{i}{k}] \seq [0, 1]$.
+Choose an indexing $k_n, i_n \in \N$ such that the sequence $\{f_{k_n, i_n}\}$ progresses as follows: $f_{k,1}, f_{k,2}, \dots, f_{k,k}, f_{k+1, 1}$.
+In particular, $k_n \to \infty$ as $n \to \infty$.
+It follows that the integral
+\[
+    \int_{0}^{1} |f_{k,i}(x)| \dd{x}
+        = \int_{0}^{1} \chi_{[\frac{i-1}{k}, \frac{i}{k}]}(x) \dd{x}
+        = \frac{1}{k}
+\]
+converges to zero as $n \to \infty$ (with $k = k_n$).
+However, for each $x \in [0, 1]$ and $k \in \N$, there is some $i \in \{1, \dots, k\}$ such that $x \in [\frac{i-1}{k}, \frac{i}{k}]$, which gives $f_{k,i}(x) = 1$.
+Since there are infinitely many such pairs of $k, i$ satisfying this, all of which appear in the sequence, the sequence does not converges pointwise at $x$.
+
+
+\newpage
+\begin{pbox}[3]
+    Let $(M, \mu)$ be a measure space, show that $L^\infty(M, \mu)$ is a Banach space.
+\end{pbox}
+
+\begin{proof}
+    We will take for granted that this is a normed vector space, as proving this primarily involves expanding definitions.
+    It remains to prove that the space is complete.
+
+    Recall that the set $L^\infty(M, \mu)$ is a quotient---we denote the equivalence class of $f$ by $[f]$.
+    Then $[f] = [g]$ whenever $\|[f] - [g]\|_\infty = \esssup_M|f - g| = 0$.
+
+    Suppose $\{[f_n]\}$ is a Cauchy sequence in $L^\infty(M, \mu)$.
+    By Problem 1, it suffices to show any subsequence converges.
+    For each $k \in \N$, choose $n_k \in \N$ for the definition of Cauchyness with respect to $\eps = 1/2^k$, and such that $n_k \geq n_{k-1}$.
+    Replacing the original sequence with this subsequence, we have the property that
+    \[
+        n \leq m \implies \|[f_n - f_m]\|_\infty = \|[f_n] - [f_m]\|_\infty < \frac{1}{2^n}.
+    \]
+    For $n \leq m$, choose a null set $E_{n, m} \seq M$ (i.e., $\mu(E_{n,m}) = 0$) such that
+    \[
+        \|[f_n - f_m]\|_\infty
+            = \esssup_M|f_n - f_m|
+            \leq \sup_{M \setminus E_{n,m}} |f_n - f_m|
+            < \frac{1}{2^n}.
+    \]
+    Define the set
+    \[
+        E = \bigcup_{n=1}^{\infty}\bigcup_{m=n}^{\infty} E_{n, m}.
+    \]
+    By subadditivity, we have
+    \[
+        \mu(E)
+            \leq \sum_{n=1}^{\infty} \sum_{m=n}^{\infty} \mu(E_{n, n})
+            = \sum_{n=1}^{\infty} \sum_{m=n}^{\infty} 0
+            = 0.
+    \]
+    Moreover, $E_{n,m} \seq E$ implies $M \setminus E \seq M \setminus E_{n, m}$, so
+    \[
+        \sup_{M \setminus E} |f_n - f_m|
+            \leq \sup_{M \setminus E_{n,m}} |f_n - f_m|
+            < \frac{1}{2^n}.
+    \]
+    For each $x \in M \setminus E$ and $m \geq n$, we have
+    \[
+        |f_n(x) - f_m(x)| \leq \sup_{M \setminus E} |f_n - f_m| < \frac{1}{2^n}.
+    \]
+    This means that the sequence $\{f_n(x)\}$ of complex values is Cauchy: given $\eps > 0$, one can choose $N \in \N$ such that $1/2^N < \eps$.
+    Since $\C$ is complete, the sequence converges to some value in $\C$, which we will denote by $f(x)$.
+    This gives us a function $f : M \setminus E \to \C$, to which the sequence $\{f_n|_{M \setminus E}\}$ converges pointwise.
+    Letting $m \to \infty$ in the previous inequality yields
+    \[
+        |f_n(x) - f(x)| \leq \frac{1}{2^n}.
+    \]
+    Taking the supremum over all $x \in M \setminus E$ gives us
+    \[
+        \sup_{M \setminus E} |f_n - f| \leq \frac{1}{2^n}.
+    \]
+    In particular, this value is finite.
+    Since $[f_1] \in L^\infty(M, \mu)$, we know $\|[f_1]\|_\infty < \infty$.
+    Choose a null set $E' \seq M$ such that $\sup_{M \setminus E'}|f| < \infty$.
+    Then $E'' = E \cap E'$ is also a null set and
+    \[
+        \sup_{M \setminus E''} |f|
+            = \sup_{M \setminus E''} |f - f_1 + f_1|
+            \leq \sup_{M \setminus E'} |f_1 - f| + \sup_{M \setminus E'} |f_1|
+            < \infty.
+    \]
+    We extend $f$ to $M$ by defining $f|_E = 0$.
+    Then
+    \[
+        \|[f]\|_\infty = \esssup_M |f| \leq \sup_{M \setminus E''} |f| < \infty,
+    \]
+    which means $[f] \in L^1(M, \mu)$.
+    Moreover,
+    \[
+        \|[f_n] - [f]\|_\infty
+            = \|[f_n - f]\|_\infty
+            \leq \sup_{M \setminus E} |f_n - f| \leq \frac{1}{2^n},
+    \]
+    which converges to zero as $n \to \infty$, hence $[f_n] \to [f]$ in $L^1(M, \mu)$.
+\end{proof}
+
+
+\newpage
+\begin{pbox}[4]
+    Let $X$ be Banach space and $Y$ be a closed subspace of $X$.
+    Prove that the quotient space $X/Y$ is a Banach space.
+    Note that if $[x] = [y]$ in $X/Y$, then $x - y \in Y$, $\|[x]\| = \inf_{y \in [x]} \|y\|$.
+\end{pbox}
+
+\begin{proof}
+    The quotient of a vector space by a linear subspace is always a vector space, but we must check that the proposed norm is in fact a norm.
+
+    Nonnegativity follows immediately from the nonnegativity of the norm in $X$.
+
+    Since $0 \in [0]$, then $\|[0]\| \leq \|0\| = 0$, so indeed $\|[0]\| = 0$.
+
+    Suppose $\|[x]\| = 0$.
+    For each $n \in \N$, choose $y_n \in [x]$ such that $\|y_n\| \leq 1/2^n$.
+    In other words, $\{y_n\}$ is a sequence in $[x]$ converging to zero.
+    Define $z_n = x - y_n \in Y$, then
+    \[
+        \|x - z_n\| = \|-y_n\| \leq \frac{1}{2^n}.
+    \]
+    This means that $\{z_n\}$ is a sequence in $Y$ converging to $x$.
+    Since $Y$ is closed, this implies $x \in Y$, so $[x] = 0$.
+
+    For all nonzero scalars $a$, we have $y \in [x]$ if and only if $ay \in [ax]$.
+    And in which case, $\|ay\| = |a|\|y\|$, hence we have homogeneity
+    \[
+        \|[ax]\| = \inf_{ay \in [ax]}\|ay\| = |a|\inf_{y \in [x]}\|y\| = |a|\|[x]\|.
+    \]
+
+    Lastly, the triangle inequality:
+    \begin{align*}
+        \|[x] + [y]\|
+            &= \inf_{z \in [x + y]}\|z\| \\
+            &= \inf_{u \in [x], v \in [y]}\|u + v\| \\
+            &\leq \inf_{u \in [x], v \in [y]}(\|u\| + \|v\|) \\
+            &\leq \inf_{u \in [x]}\|u\| + \inf_{v \in [y]}\|v\| \\
+            &= \|[x]\| + \|[y]\|.
+    \end{align*}
+    We conclude that $X/Y$ is a normed space with the stated norm.
+
+    Finally, we show that the space is complete.
+    Let $\{[x_n]\}$ be a Cauchy sequence in $X/Y$.
+    Our goal is to choose a representative sequence in $X$ which is also Cauchy.
+    By Problem 1, and similar to the proof of Problem 2, we may assume without loss of generality that for all $n \in \N$ and $m \geq n$,
+    \[
+        \|[x_n] - [x_m]\| < \frac{1}{2^n}.
+    \]
+    (If this is not the case, use Cauchyness to choose a subsequence such that it is true, and re-index.)
+    For each $n \in \N$, choose $y_n \in [x_n - x_{n+1}]$ such that 
+    \[
+        \|[x_n] - [x_{n+1}]\| \leq \|y_n\| < \frac{1}{2^n}.
+    \]
+    Set $x'_1 = x_1$ and $x'_{n+1} = x'_n - y_n$ for all $n \in \N$.
+    This inductive definition gives us a new representative sequence $\{x'_n\}$ in $X$ with $[x'_n] = [x_n]$.
+    Moreover,
+    \[
+        \|x'_n - x'_{n+1}\| = \|x'_n - (x'_n - y_n)\| = \|y_n\| < \frac{1}{2^n},
+    \]
+    so $\{x'_n\}$ is a Cauchy sequence in $X$ and, therefore, converges to some $x \in X$.
+    Then
+    \[
+        \|[x_n] - [x]\|
+            = \|[x'_n] - [x]\|
+            = \|[x'_n - x]\|
+            \leq \|x'_n - x\|,
+    \]
+    which converges to zero as $n \to \infty$.
+    So $[x_n] \to [x]$ in $X/Y$, which is therefore is complete.
+\end{proof}
+
+
+\newpage
+\begin{pbox}[5 \\ (a)]
+    Prove that in every inner product space $X$, the following identity (parallelogram law) holds:
+    \[
+        \|x + y\|^2 + \|x - y\|^2 = 2\|x\|^2 + 2\|y\|^2, \quad \forall x, y \in X.
+    \] 
+\end{pbox}
+
+\begin{proof}
+    Applying the definition of the induced norm and the bilinearity (with respect to real scalars), we calculate
+    \begin{align*}
+        \|x + y\|^2 + \|x - y\|^2
+            &= \<x + y, x + y\> + \<x - y, x - y\> \\
+            &= \<x, x\> + \<x, y\> + \<y, x\> + \<y, y\> \\
+            &\quad + \<x, x\> - \<x, y\> - \<y, x\> + \<y, y\> \\
+            &= 2\|x\|^2 + 2\|y\|^2.
+    \end{align*}
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[(b)]
+    Prove that the parallelogram law characterizes inner product spaces.
+    Namely, suppose that the parallelogram law holds on a normed linear space $X$, then one can define an inner product $\<-, -\>$ in $X$ in such a way that $\|x\| = \<x, x\>^{1/2}$ for all $x \in X$.
+    (Hint: consider the polarization identity
+    \[
+        \<x, y\> = \frac{1}{4}\left((\|x + y\|^2 - \|x - y\|^2) - i(\|x + iy\|^2 - \|x - iy\|^2)\right).
+    \]
+\end{pbox}
+
+\begin{proof}
+    We first check positive definite:
+    \begin{align*}
+        \<x, x\>
+            &= \frac{1}{4}\left((\|x + x\|^2 - \|x - x\|^2) - i(\|x + ix\|^2 - \|x - ix\|^2)\right) \\
+            &= \frac{1}{4}\left((\|2x\|^2 - 0) - i(\|x + ix\|^2 - (|-i|\|ix + x\|)^2)\right) \\
+            &= \frac{1}{4}\left(4\|x\|^2 - i(\|x + ix\|^2 - \|x + ix\|^2)\right) \\
+            &= \|x\|^2 \\
+            &\geq 0,
+    \end{align*}
+    with equality if and only if $x = 0$, by definition of the norm.
+
+    We now check conjugate symmetry:
+    \begin{align*}
+        \overline{\<y, x\>}
+            &= \frac{1}{4}\left((\|y + x\|^2 - \|y - x\|^2) + i(\|y + ix\|^2 - \|y - ix\|^2)\right) \\
+            &= \frac{1}{4}\left((\|x + y\|^2 - \|x - y\|^2) + i((|i|\|x - iy\|)^2 - (|-i|\|x + iy\|)^2)\right) \\
+            &= \frac{1}{4}\left((\|x + y\|^2 - \|x - y\|^2) - i(\|x + iy\|^2 - \|x - iy\|^2)\right).
+    \end{align*}
+    
+    From the parallelogram law, we deduce
+    \[
+        \|x + x' + y\|^2 = 2\|x + y\|^2 + 2\|x'\|^2 - \|x - x' + y\|^2
+    \]
+    and
+    \[
+        \|x + x' + y\|^2 = 2\|x' + y\|^2 + 2\|x\|^2 - \|x' - x + y\|^2.
+    \]
+    Then
+    \[
+        \|x + x' + y\|^2 = \|x\|^2 + \|x'\|^2 + \|x + y\|^2 + \|x' + y\|^2 - \|x - x' + y\|^2 - \|x' - x + y\|^2
+    \]
+    and, similarly,
+    \[
+        \|x + x' - y\|^2 = \|x\|^2 + \|x'\|^2 + \|x - y\|^2 + \|x' - y\|^2 - \|x - x' - y\|^2 - \|x' - x - y\|^2.
+    \]
+    Therefore,
+    \[
+        \|x + x' + y\|^2 - \|x + x' - y\|^2
+            = \|x + y\|^2 - \|x - y\| + \|x' + y\| - \|x' - y\|
+    \]
+    and, similarly,
+    \[
+        \|x + x' + iy\|^2 - \|x + x' - iy\|^2
+            = \|x + iy\|^2 - \|x - iy\| + \|x' + iy\| - \|x' - iy\|.
+    \]
+    Substituting into the definition of the inner product gives us 
+    \[
+        \<x + x', y\> = \<x, y\> + \<x', y\>.
+    \]
+    It follows that the inner product is $\Z$-linear and therefore $\Q$-linear in the first argument.
+    Then
+    \[
+        i\<x, y\> = 
+    \]
+    \begin{align*}
+        i\<x, y\>
+            &= i\frac{1}{4}\left((\|x + y\|^2 - \|x - y\|^2) - i(\|x + iy\|^2 - \|x - iy\|^2)\right) \\
+            &= \frac{1}{4}\left(i((|-i|\|ix + iy\|)^2 - (|-i|\|ix - iy\|)^2) + ((|-i|\|ix - y\|)^2 - (|-i|\|ix + y\|)^2)\right) \\
+            &= \frac{1}{4}\left((\|ix + y\|^2 - \|ix - y\|^2) - i(\|ix + iy\|^2 - \|ix - iy\|^2)\right) \\
+            &= \<ix, y\>.
+    \end{align*}
+    Hence, the inner product is $\Q(i)$-linear in the first argument.
+    Since $\Q(i)$ is dense in $\C$ and the inner product is continuous, we conclude that it must also be $\C$-linear.
+\end{proof}
+
+\end{document}

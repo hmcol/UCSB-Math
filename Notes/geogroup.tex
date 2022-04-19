@@ -1,0 +1,388 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+\usepackage[shortlabels]{enumitem}
+
+\usepackage{bbm}
+
+\usepackage{suffix}
+\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{decorations.markings, arrows.meta}
+
+\tikzset{
+    marrow/.style={decoration={
+        markings,
+        mark=at position 0.5 with {\arrow{>}}}, postaction=decorate,
+    }
+}
+
+
+\makeatletter
+\tikzset{nomorepostaction/.code=\let\tikz@postactions\pgfutil@empty}
+\makeatother
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+
+% Environments
+\setlist[enumerate]{nosep}
+\newcommand{\keyword}[1]{\textbf{#1}}
+\newcommand{\sepline}{\rule{\textwidth}{0.4pt}}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+
+% Document Formatting
+\newtheoremstyle{mythmstyle}% name of the style to be used
+{ }% measure of space to leave above the theorem. E.g.: 3pt
+{ }% measure of space to leave below the theorem. E.g.: 3pt
+{ }% name of font to use in the body of the theorem
+{ }% measure of space to indent
+{\scshape}% name of head font
+{.}% punctuation between head and body
+{ }% space after theorem head; " " = normal interword space
+{\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}}% Manually specify head
+
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+
+% Math Formatting
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+
+% mathbb
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+% mathcal
+\renewcommand{\AA}{\mathcal{A}}
+\newcommand{\BB}{\mathcal{B}}
+\newcommand{\CC}{\mathcal{C}}
+\newcommand{\DD}{\mathcal{D}}
+\newcommand{\OO}{\mathcal{O}}
+
+% Symbols
+
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+
+% Delimiters
+\newcommand{\<}{\left\langle}
+\renewcommand{\>}{\right\rangle}
+
+% Relations
+\newcommand{\seq}{\subseteq}
+\newcommand{\iso}{\cong}
+% \newcommand{\qisom}{\underset{\mathrm{QI}}{\sim}}
+\newcommand{\qisom}{\sim_\mathrm{QI}}
+
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\To}{\longrightarrow}
+\newcommand{\Mapsto}{\longmapsto}
+
+
+
+% Math Roman
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\source}{\mathrm{source}}
+\newcommand{\target}{\mathrm{target}}
+
+\newcommand{\QMet}{\mathsf{QMet}}
+\newcommand{\QI}{\mathrm{QI}}
+
+
+% Math Operators
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Cay}{Cay}
+\DeclareMathOperator{\Isom}{Isom}
+
+
+
+% Other
+\newcommand{\clo}{\overline}
+
+
+
+
+
+\title{Geometric Group Theory \\
+    \large 
+}
+\author{}
+\date{}
+
+
+\begin{document}
+
+Geometry cares about distance, so we study metric spaces.
+
+\sepline
+
+Let $X$ be a set.
+
+A \keyword{metrix} on $X$ is a function $d : X \times X \to \R$ such that
+\begin{itemize}
+    \item $d(x, y) = 0$ if and only if $x = y$ (identity of indiscernibles / Leibniz's law);
+    \item $d(x, y) = d(y, x)$ (symmetry);
+    \item $d(x, z) \leq d(x, y) + d(y, z)$ (triangle inequality).
+\end{itemize}
+
+Some authors require the following addition property (which follows from the firs three):
+\begin{itemize}
+    \item $d(x, y) \geq 0$ (nonnegativity).
+\end{itemize}
+
+A \keyword{metric space} is a set $X$ with a metric $d_X$.
+
+\sepline
+
+Examples
+
+\begin{itemize}
+    \item A normed vector space $X$ (e.g., $\R^n$) has a metric $d(x, y) = \|x - y\|_X$.
+    \item Any set has the \keyword{discrete metric} $d(x, x) = 0$ and $d(x, y) = 1$ for $x \ne y$.
+    \item $X$ a set and $Y$ a metric space, the set of bounded functions $X \to Y$ is a metric space with $d(f, g) = \sup_{x \in X} d_Y(f(x), g(x))$.
+    (This might be called the uniform metric or supremum (sup) metric.)
+    \item $X$ a metric space and $f : [0, \infty) \to [0, \infty)$ a nondecreasing concave function with $f^{-1}(0) = \{0\}$, then $f \circ d$ is a metric on $X$.
+    \item $X$ a set, $Y$ a metric space, and $f : X \to Y$ an injection, then $d(x, y) = d_Y(f(x), f(y))$ is a metric on $Y$.
+\end{itemize}
+
+\sepline
+
+Important Example.
+
+Let $\Gamma$ be a connected graph, then set of vertices $V$ has a metric given by the shortest path between two vertices.
+\[
+    d(u, v) = \min_{P_\Gamma(u, v)} |{-}| = \min\{|p| : p \in \mathrm \Gamma[u, v]\}.
+\]
+This is called the \keyword{path metric} of $V$ with respect to $\Gamma$.
+
+Given a group $G$ and generating set $S$, the \keyword{word metric} $d_S$ on $G$ with respect to $S$ is the path metric on $G$ with respect to the Cayley graph $\Cay(G, S)$, i.e.,
+\[
+    d_S(g, h) = \min\{n \in \N \mid gs_1 \cdots s_n = h \text{ for some } s_i \in S\}.
+\]
+The distance $d_S(1_G, g)$ is called the $\keyword{word length}$ of $g$ with respect to $S$.
+
+Note
+\[
+    gs_1 \cdots s_n = h \iff s_1 \cdots s_n = g^{-1}h,
+\]
+so $d_S(g, h) = d_S(1_G, g^{-1}h)$.
+
+\sepline
+
+
+Let $X$ be a metric space.
+
+Given $r > 0$ and $x \in X$, we construct the \keyword{open ball} in $X$ of radius $r$ centered at $x$ as follows:
+\[
+    B_r(x) = B_r(x; X) = B_r(x; d_X) = \{y \in X \mid d_X(x, y) < r\}.
+\]
+The second and third notation may be used to specify the specific space/metric with respect to which the ball is constructed.
+Various notations are used for this set, including but not limited to:
+\[
+    B(x; r), \quad B_X(x; r), \quad B^X_r(x), \quad B(x; r; X), \quad B(x; r; d_X).
+\]
+Hopefully the sort of pattern is clear---it is usually fairly easy to intuit any given authors convention.
+Usually any mix of a ``$B$'' and the necessary data denotes an open ball.
+
+Sometimes this notation is also used for the following slightly modified construction.
+We construct the \keyword{closed ball} in $X$ of radius $r$ centered at $x$ as follows:
+\[
+    \bar{B}_r(x) = \clo{B}_r(x) = \{y \in X \mid d_X(x, y) \leq r\}.
+\]
+There are also all the corresponding notational variants featuring``$\bar{B}$'' or ``$\clo{B}$.'' 
+
+
+
+
+\sepline
+
+Every metric space $X$ is `naturally' a topological space, with a basis of open sets given by the collection of all open balls:
+\[
+    \{B_r(x) \seq X : r > 0, x \in X\}.
+\]
+The topology generated by this basis is called the \keyword{metric topology} on $X$.
+
+It it worth remarking that $\bar{B}_r(x) \ne \clo{B_r(x)}$ in general, where the former is the closed ball and the latter is the closure of the open ball in the metric topology.
+On the other hand, it is always true that $\clo{\bar{B}_r(x)} = \bar{B}_r(x)$, i.e, $\bar{B}_r(x)$ is closed in the metric topology.
+
+Something continuity something $\eps$-$\delta$.
+
+\sepline
+
+Examples
+
+\begin{itemize}
+    \item $\R^n$ with any usual metric induces Euclidean topology.
+    \item discrete metric induces discrete topology.
+\end{itemize}
+
+\sepline
+
+Let $X$ and $Y$ be metric spaces.
+
+An \keyword{isometric embedding} is a function $f : X \to Y$ such that $d_Y(f(x), f(y)) = d_X(x, y)$.
+
+All isometric embeddings are injective.)
+
+Every isometric embedding is a continuous with respect to the metric topologies.
+
+An \keyword{isometry} is a surjective isometric embedding.
+
+All isometries are bijective.
+Their inverses are isometric embeddings and isometries.
+
+Every isometry is a homeomorphism with respect to the metric topologies.
+
+Isometry is very strong---too strong...
+
+\sepline
+
+Let $f : X \to Y$ be a function between metric spaces.
+
+Say $f$ is \keyword{Lipschitz} (or Lipschitz continuous) if there is a constant $C \in \R$ such that
+\[
+    d_Y(f(x), f(y)) \leq C d_X(x, y).
+\]
+In this case, also say $f$ is \keyword{$C$-Lipschitz}.
+
+Since the metric is nonnegative, nontrivial $C$-Lipschitz functions only exist for $C > 0$, so we typically assume that $K$ is positive (or at least nonnegative).
+Some authors require this in the definition, but it is a minor point in any case.
+
+All lipschitz functions are continuous with respect to the metric topologies.
+
+Say $f$ is \keyword{bilipschitz} (or called a \keyword{bilipschitz embedding}) if there exists a (positive) constant $K \in \R$ such that
+\[
+    \frac{1}{C} d_X(x, y) \leq d_Y(f(x), f(y)) \leq C d_X(x, y).
+\]
+In this case, also say $f$ is \keyword{$C$-bilipschitz}.
+
+A $C$-bilipschitz function is clearly $C$-Lipschitz.
+
+All bilipschitz functions are injections.
+
+A \keyword{bilipschitz equivalence} is a bilipschitz function with a bilipschitz inverse. (equiv, a surjective bilipschitz function).
+
+Say two spaces are \keyword{bilipschitz equivalent} if there exists a bilipschitz equivalence between them.
+
+\sepline
+
+Let $f : X \to Y$ be a function between metric spaces.
+
+Say $f$ is a \keyword{quasi-isometric embedding} if there exist constants $C, K \in \R$ such that 
+\[
+    \frac{1}{C} d_X(x, y) - K \leq d_Y(f(x), f(y)) \leq C d_X(x, y) + K.
+\]
+In this case, also say $f$ is a \keyword{$(C, K)$-quasi-isometric embedding}.
+(slogan ``almost injective'')
+
+Say $f$ is a \keyword{quasi-isometry} if it is a $(C, K)$-quasi-isometric embedding and there exists a constant $D \in \R$ such that every point in $Y$ is a distance at most $D$ from a point in the image of $f$, i.e., for all $y \in Y$ there exists $x \in X$ such that $d_Y(y, f(x)) \leq D$.
+(slogan ``almost surjective'')
+
+Say $X$ and $Y$ are \keyword{quasi-isometric}, written $X \qisom Y$, if there exists a quasi-isometry between them.
+
+
+It is equivalent to take a single constant $R = \max\{C, K\}$ in the definition of quasi-isometric embedding, and likewise $R = \max\{C, K, D\}$ in the definition of quasi-isometry.
+
+``$\qisom$'' is an equivalence relation on metric spaces.
+
+Some equivalent definition of quasi-isometry in terms of quasi-inverse and...
+
+Say two functions $f, g : X \to Y$ between metric spaces are a \keyword{finite distance} from each other if there is a constant $D \in \R$ such that $d_Y(f(x), g(x)) \leq D$.
+
+If $f : X \to Y$ and $g : Y \to X$ are maps such that $f \circ g$ is a finite distance to $\id_Y$ and $g \circ f$ is a finite distance to $\id_X$, say $f$ and $g$ are \keyword{quasi-inverse} to each other.
+
+\sepline
+
+Categories
+
+Let $\mathsf{Met_{isom}}$ and $\mathsf{Met_{bilip}}$ be the categories whose objects are metric spaces and whose morphisms are isometric embeddings and bilipschitz embeddings, respectively.
+Then the isomorphisms in these categories are the respective equivalences between metric spaces.
+
+Let $\QMet'$ be the category whose objects are metric spaces and whose morphisms are quasi-isometric embeddings.
+The isomorphisms in this category are bijective quasi-isometric embeddings whose inverse is also a quasi-isometric embedding, not the quasi-isometries.
+The relation of ``finite distance from'' describes an equivalence relation on $\QMet'(X, Y)$.
+We define the quotient category
+\[
+    \QMet = \QMet'/\text{finite distance},
+\]
+whose objects are metric spaces and whose morphisms are equivalence classes of quasi-isometric embeddings modulo finite distance.
+The isomorphisms in $\QMet$ are precisely the quasi-isometries, as desired.
+
+Natural inclusions (essentially subcategories with less morphisms):
+\begin{cd}
+    \mathsf{Met_{isom}} \rar[hook] & \mathsf{Met_{bilip}} \rar[hook] & \QMet.
+\end{cd}
+
+
+For $X \in \QMet$ (any metric space), the \keyword{quasi-isometry group} of $X$ is
+\[
+    \QI(X) := \Aut_{\QMet}(X).
+\]
+In other words, the group of quasi-isometries $X \to X$ modulo finite distance.
+
+\sepline
+
+Let $X$ be a metric space.
+
+A \keyword{geodesic segment} in $X$ is an isometric embedding $[a, b] \to X$ of an interval $[a, b] \seq \R$.
+
+A \keyword{geodesic} (line) in $X$ is an isometric embedding $\R \to X$.
+
+We often identify geodesics (and geodesic segments) with their images in $X$.
+
+We say $X$ is a \keyword{geodesic metric space} if for any $x, y \in X$, there is a geodesic segment $\gamma : [a, b] \to X$ such that $\gamma(a) = x$ and $\gamma(b) = y$.
+In other words, any two points in $X$ are connected by a geodesic segment that realizes their distance.
+
+\sepline
+
+Geodesic metric spaces.
+
+\begin{itemize}
+    \item $\R^n$ with Euclidean metric; geodesics are straight lines.
+    \item Any convex set in $\R^n$.
+    \item $\R^n \setminus\{0\}$ is not geodesic as $v$ and $-v$ have no stright line between them for $v \ne 0$.
+    \item For $G$ finitely generated group, $\Cay(G, S)$ with the path metric is geodesic.
+    When $G$ is a free group over $S$, $\Cay(G, S)$ is a tree so there is a unique path between any pair of points.
+\end{itemize}
+
+\sepline
+
+A metric space $X$ is \keyword{proper} if for all $x \in X$ and $r > 0$ the closed ball $\bar{B}_r(x)$ is a compact subset of $X$.
+
+\sepline
+
+Let $X$ be a metric space.
+
+A \keyword{quasi-geodesic segment} in $X$ is a quasi-isometric embedding $[a, b] \to X$.
+
+A \keyword{quasi-geodesic} (line) in $X$ is a quasi-isometric embedding $\R \to X$.
+
+\sepline
+
+Let $G$ be a group and $X$ a metric space.
+
+An \keyword{action by isometries} of $G$ is a group homomorphism $G \to \Isom(X)$.
+
+
+
+\end{document}

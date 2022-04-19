@@ -1,0 +1,591 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\def\temp{#1}\ifx\temp\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\iso}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+\newcommand{\inc}{\hookrightarrow}
+
+% Extra Commands
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\DD}{\mathrm{D}}
+
+\newcommand{\pdv}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+
+% Document
+\begin{document}
+\title{MATH 221C Homework 3}
+\author{Harry Coleman}
+\date{April 18, 2022}
+\maketitle
+
+I worked with Joseph Sullivan and Gahl Shemy.
+
+\begin{pbox}[1 Exercise 1.1.9]
+    Explicitly exhibit enough parameterizations to cover $S^1 \times S^1 \seq \R^4$.
+\end{pbox}
+
+The projection $(x, y) \mapsto x$ is a parameterization on both the open sets $\{(x, y) \in S^1 : y > 0\}$ and $\{(x, y) \in S^1 : y < 0\}$.
+Similarly, the projection $(x, y) \mapsto y$ is a parameterization on both the open sets $\{(x, y) \in S^1 : x > 0\}$ and $\{(x, y) \in S^1 : x < 0\}$.
+These four parameterizations cover $S^1$, denote them by $\phi_i : U_i \to (-1, 1) \seq \R^1$, for $i = 1, 2, 3, 4$.
+Then we get a cover of $S^1 \times S^1$ by sixteen parameterizations
+\[
+    \phi_i \times \phi_j : U_i \times U_j \to (-1, 1) \times (-1, 1) \seq \R^2.
+\]
+Indeed, this are smooth by Homework 2 Exercise 1.1.14, and have smooth inverses given by products of inverses, hence diffeomorphisms.
+
+\begin{pbox}[2 Exercise 1.1.15]
+    Show that the projection map $X \times Y \to X$, carrying $(x, y)$ to $x$, is smooth.
+\end{pbox}
+
+\begin{proof}
+    Denote the projection map by $f : X \times Y \to X$.
+    Suppose $X \seq \R^N$ and $Y \seq \R^M$, then define $F : \R^{N + M} \to \R^N$ by
+    \[
+        F(x_1, \dots, x_N, y_1, \dots, y_M) = (x_1, \dots, x_N).
+    \]
+    This map is linear, hence smooth.
+    Moreover, $\R^N$ is an open neighborhood of $X$ and $F|_X = f$.
+    In other words, $F$ is a smooth (global) extension of $f$, so $f$ is smooth.
+\end{proof}
+
+\begin{pbox}[3 Exercise 1.1.16]
+    The \textit{diagonal} $\Delta$ in $X \times X$ is the set of points of the form $(x, x)$.
+    Show that $\Delta$ is diffeomorphic to $X$, so $\Delta$ is a manifold if $X$ is.
+\end{pbox}
+
+\begin{proof}
+    Let $f : X \to \Delta$ be the diagonal map $x \mapsto (x, x)$.
+    Suppose $X \seq \R^N$ and define the diagonal map $F : \R^N \to \R^{2N}$ by
+    \[
+        F(x_1, \dots, x_N) = (x_1, \dots, x_N, x_1, \dots, x_N).
+    \]
+    This map is linear, hence smooth.
+    Moreover, it is a smooth extension of $f$, so $f$ is smooth.
+
+    Note that $\Delta \seq \R^N$ Let $G : \R^{2N} \to \R^N$ be the projection map
+    \[
+        G(x_1, \dots, x_N, x'_1, \dots, x'_N) = (x_1, \dots, x_N).
+    \]
+    This map is linear, hence smooth.
+    Therefore, the restriction $g = G|_{\Delta} : \Delta \to X$ is smooth.
+
+    Lastly,
+    \[
+        f(g(x, x)) = f(x) = (x, x) \isp{and} g(f(x)) = g(x, x) = x,
+    \]
+    so $f$ and $g$ are smooth inverses, hence diffeomorphisms.
+
+    Supposing $X$ is a manifold, let $U \seq X$ be open and $\phi : U \to V \seq \R^k$ be a smooth chart.
+    Then $f(U) \seq \Delta$ is open and $\phi \circ g : f(U) \to V$ is a smooth chart.
+    An open cover of $X$ is sent to an open cover of $\Delta$ under $f$, so the manifold structure of $X$ corresponds to a manifold structure of $\Delta$ under $f$ and $g$.
+\end{proof}
+
+\begin{pbox}[4 Exercise 1.1.17]
+    The \textit{graph} of a map $f : X \to Y$ is the subset of $X \times Y$ defined by
+    \[
+        \mathrm{graph}(f) = \{(x, f(x)) : x \in X\}.
+    \]
+    Define $F : X \to \mathrm{graph}(f)$ by $F(x) = (x, f(x))$.
+    Show that if $f$ is smooth, $F$ is a diffeomorphism; thus $\mathrm{graph}(f)$ is a manifold if $X$ is.
+\end{pbox}
+
+\begin{proof}
+    Notice that $F$ can be written as the following composition:
+    \begin{cd}[column sep=large, row sep=tiny]
+        X \rar & \Delta \rar["\id_X \times f"] & \mathrm{graph}(f) \\
+        x \rar[mapsto] & (x, x) \rar[mapsto] & (x, f(x))
+    \end{cd}
+    The first map (the diagonal map) is smooth by the previous problem (Exercise 1.1.16), and the latter is smooth as the product of smooth maps.
+    The projection map $X \times Y \to X$ restricted to $\mathrm{graph}(f)$ is inverse to $F$ and smooth by Problem 2 (Exercise 1.1.15), hence $F$ is a diffeomorphism.
+
+    Similar to the previous problem, when $X$ is a manifold, its charts can be turned into charts on $\mathrm{graph}(f)$, giving $\mathrm{graph}(f)$ a manifold structure. 
+\end{proof}
+
+\begin{pbox}[5 Exercise 1.1.18 \\ (a)]
+    An extremely useful function $f : \R^1 \to \R^1$ is
+    \[
+        f(x) = \begin{cases}
+            e^{-1/x^2} & x > 0, \\
+            0 & x \leq 0.
+        \end{cases}
+    \]
+    Prove that $f$ is smooth.
+\end{pbox}
+
+\begin{proof}
+    We need only check that $f$ is smooth at $0$.
+    From Homework 1 Problem 6, we know that the function
+    \[
+        \hat{f}(x) = \begin{cases}
+            e^{-1/x^2} & x \ne 0, \\
+            0 & x = 0,
+        \end{cases}
+    \]
+    is smooth.
+    Moreover, $\hat{f}^{(n)}(0) = 0$ for all $n$, which implies that derivatives of all orders of $f$ at $0$ from the right are all zero.
+    Since the the derivatives of all orders of $f$ at $0$ from the left are also all zero, we conclude that $f$ is smooth at $0$ with $f^{(n)}(0) = 0$ for all $n$.
+\end{proof}
+
+\begin{pbox}[(b)]
+    Show that $g(x) = f(x - a)f(b - x)$ is a smooth function, positive on $(a, b)$, and zero elsewhere.
+    Then
+    \[
+        h(x) = \frac{\int_{-\infty}^{x} g \,\dd{x}}{\int_{-\infty}^{\infty} g \,\dd{x}}
+    \]
+    is a smooth function satisfying $h(x) = 0$ for $x \leq a$, $h(x) = 1$ for $x \geq b$ and $0 < h(x) < 1$ for $x \in (a, b)$.
+\end{pbox}
+
+\begin{proof}
+    We can write $g$ as the composition
+    \begin{cd}[row sep=0pt]
+        \R^1 \rar & \R^2 \rar & \R^2 \rar & \R^2 \rar & \R^1 \\
+        x \rar[mapsto] & (x, x) & (x, y) \rar[mapsto] & (f(x), f(y)) \\
+        & (x, y) \rar[mapsto] & (x - a, b - y) & (x, y) \rar[mapsto] & xy \\
+    \end{cd}
+    The first map is the diagonal, the second map is linear, the third map is $f \times f$, and the last map is multiplication.
+    We know all of these to be smooth, so $g$ is smooth as their composition.
+
+    If $x \leq a$, then $x - a \leq 0$ so $f(x - a) = 0$.
+    If $x \geq b$, then $b - x \geq 0$ so $f(b - x) = 0$.
+    In either case, $g(x) = 0$.
+    
+    If $a < x < b$ then $x - a > 0$ and $b - x > 0$, so $f(x - a)$ and $f(b - x)$ are positive.
+    In which case $g(x)$ is positive.
+
+    By the fundamental theorem of calculus, $G(x) = \int_{-\infty}^x g \,\dd{y}$ is differentiable, with $G' = g$.
+    Since $g$ is smooth, this implies $G$ is smooth.
+    Multiplying by the constant $1/\int_{-\infty}^{\infty} g \,\dd{y}$ gives us the smooth function $h$.
+
+    Given $x \leq a$, we know $g(y) = 0$ for all $y \leq x$, so
+    \[
+        h(x)
+            = \frac{\int_{-\infty}^{x} g \,\dd{y}}{\int_{-\infty}^{\infty} g \,\dd{y}}
+            = \frac{\int_{-\infty}^{x} 0 \,\dd{y}}{\int_{-\infty}^{\infty} g \,\dd{y}}
+            = \frac{0}{\int_{-\infty}^{\infty} g \,\dd{y}}
+            = 0.
+    \]
+    Given $x \geq b$, we know $g(y) = 0$ for all $y \geq x$, so
+    \[
+        h(x)
+            = \frac{\int_{-\infty}^{x} g \,\dd{y}}{\int_{-\infty}^{\infty} g \,\dd{y}}
+            = \frac{\int_{-\infty}^{b} g \,\dd{y} + \int_{b}^{x} g \,\dd{y}}{\int_{-\infty}^{b} g \,\dd{y} + \int_{b}^{\infty} g \,\dd{y}}
+            = \frac{\int_{-\infty}^{b} g \,\dd{y} + 0}{\int_{-\infty}^{b} g \,\dd{y} + 0}
+            = 1.
+    \]
+    Since $g(x) > 0$ for all $x \in (a, b)$, we know that $G$ is strictly increasing on $(a, b)$.
+    The same is true of $h$, as a positive scalar multiple of $G$, so
+    \[
+        0 = h(a) < h(x) < h(b) = 1
+    \]
+    for all $x \in (a, b)$.
+\end{proof}
+
+\begin{pbox}[(c)]
+    Now construct a smooth function on $\R^k$ that equals $1$ on the ball of radius $a$, zero outside the ball of radius $b$, and is strictly between $0$ and $1$ at intermediate points.
+\end{pbox}
+
+\begin{proof}
+    For $x < y$, let $h_x^y : \R^1 \to [0, 1]$ be constructed as $h$ in part (b) with $a = x$ and $b = y$.
+
+    Let $F : \R^k \to \R^1$ be given by the following composition:
+    \begin{cd}[row sep=0pt]
+        \R^k \rar["\|{-}\|^2"] & \R^1 \rar["h_{a^2}^{b^2}"] & \R^1 \rar[] & \R^1 \\
+        (x_1, \dots, x_k) \rar[mapsto] & \sum x_i^2 & x \rar[mapsto] & 1 - x \\
+        & x \rar[mapsto] & h_{a^2}^{b^2}(x).
+    \end{cd}
+    The first map is a polynomial, the second map is $h_{a^2}^{b^2}$, and the last map is linear.
+    We know that each of these maps is smooth, therefore $F$ is smooth as their composition.
+
+    For $x \in \R^k$ with $\|x\| \leq a$, we have $\|x\|^2 \leq a^2$.
+    This implies $h_{a^2}^{b^2}(\|x\|^2) = 0$, so $F(x) = 1$.
+
+    For $x \in \R^k$ with $\|x\| \geq b$, we have $\|x\|^2 \geq b^2$.
+    This implies $h_{a^2}^{b^2}(\|x\|^2) = 1$, so $F(x) = 0$.
+
+    For $a < \|x\| < b^2$, we have $a^2 < \|x\|^2 < b^2$.
+    This implies $ 0 < h_{a^2}^{b^2}(\|x\|^2) < 1$, so $0 < F(x) < 1$.
+
+\end{proof}
+
+\begin{pbox}[6 Exercise 1.2.2]
+    If $U$ is an open subset of the manifold $X$, check that
+    \[
+        T_x(U) = T_x(X) \isp{for} x \in U.
+    \]
+\end{pbox}
+
+\begin{proof}
+    Let $V \seq X$ be an open neighborhood of $x$ with smooth parameterization $\phi : W \to V$ with $W \seq \R^k$ open and $\phi(0) = x$.
+    Then $U \cap V$ is an open neighborhood of $x$ contained in $U$, and the restriction of $\phi$ to the open set $\phi^{-1}(U \cap V) \seq W$ is a smooth parameterization of $U \cap V$.
+    Hence, we have the tangent spaces
+    \[
+        T_x(X)
+            = \dd\phi_0(\R^k)
+            = \dd(\phi|_{\phi^{-1}(U \cap V)})_0(\R^k)
+            = T_x(U).
+    \]
+\end{proof}
+
+\begin{pbox}[7 Exercise 1.2.3]
+    Let $V$ be a vector subspace of $\R^N$.
+    Show that $T_x(V) = V$ if $x \in V$.
+\end{pbox}
+
+\begin{proof}
+    Suppose $v_1, \dots, v_k \in V$ form a basis for $V$.
+    The linear map $L : \R^k \to V$ defined by $e_i \to v_i$ is an isomorphism of vector spaces.
+    Fixing $x \in V$, the map $\phi : \R^k \to V$ sending $y \mapsto \L(y) + x$ is a smooth parameterization with $\phi(0) = x$.
+    Then the tangent space is given by
+    \[
+        T_x(V)
+            = \dd\phi_0(\R^k)
+            = \dd(L + x)_0(\R^k)
+            = \dd{L}_0(\R^k)
+            = L(\R^k)
+            = V.
+    \]
+\end{proof}
+
+\begin{pbox}[8 Exercise 1.2.4]
+    Suppose that $f : X \to Y$ is a diffeomorphism, and prove that at each $x$ its derivative $\dd{f}_x$ is an isomorphism of tangent spaces.
+\end{pbox}
+
+\begin{proof}
+    Let $g : Y \to X$ be a smooth inverse of $f$, i.e., $f \circ g = \id_Y$ and $g \circ f = \id_X$.
+    Their derivatives give linear maps $\dd{f}_x : T_x(X) \to T_{f(x)}(Y)$ and $\dd{g}_{f(x)} : T_{f(x)}(Y) \to T_x(X)$.
+    The chain rule lets us compute
+    \[
+        \dd(f \circ g)_{f(x)}
+            = \dd{f}_{g(f(x))} \circ \dd{g}_{f(x)}
+            = \dd{f}_x \circ \dd{g}_{f(x)}
+    \]
+    and
+    \[
+        \dd(g \circ f)_x = \dd{g}_{f(x)} \circ \dd{f}_x.
+    \]
+    On the other hand,
+    \[
+        \dd{f \circ g}_{f(x)} = \dd{\id_y}_{f(x)} = \id_Y
+    \]
+    and
+    \[
+        \dd{g \circ f}_x = \dd{\id_X}_x = \id_X.
+    \]
+    Hence $\dd{f}_x$ and $\dd{g}_{f(x)}$ are linear inverses.
+    In particular, $\dd{f}_x$ is an isomorphism.
+\end{proof}
+
+\begin{pbox}[9 Exercise 1.2.9 \\ (a)]
+    Show that for any manifolds $X$ and $Y$,
+    \[
+        T_{(x, y)}(X \times Y) = T_x(X) \times T_y(Y).
+    \]
+\end{pbox}
+
+\begin{proof}
+    Suppose we have smooth local parameterizations $\phi : U \to X$ and $\psi : V \to Y$ at the points $x \in X$ and $y \in Y$, respectively, with $U \seq \R^k$ and $V \seq \R^\ell$ open sets.
+    Additionally, assume $\phi(0) = x$ and $\psi(0) = y$.
+    Then their product $\phi \times \psi : U \times V \to X \times Y$ is a smooth local parameterization at $(x, y) \in X \times Y$, with $(\phi \times \psi)(0) = (\phi(0), \psi(0)) = (x, y)$.
+    Thus, we compute the tangent space
+    \[
+        T_{(x, y)}(X \times Y)
+            = \dd(\phi \times \psi)_{(0,0)}(\R^{k + \ell})
+            = \dd\phi_0(\R^k) \times \dd\psi_0(\R^\ell)
+            = T_x(X) \times T_y(Y).
+    \]
+\end{proof}
+
+\begin{pbox}[(b)]
+    Let $f : X \times Y \to X$ be the projection map $(x, y) \mapsto x$.
+    Show that
+    \[
+        \dd{f}_{(x, y)} : T_x(X) \times T_y(Y) \to T_x(X)
+    \]
+    is the analogous projection $(v, w) \mapsto v$.
+\end{pbox}
+
+\begin{proof}
+    Let $f : X \times Y \to X$ be the projection map.
+    Let $\phi : U \to X$ and $\psi : V \to Y$ be smooth local parameterizations with $\phi(0) = x$ and $\psi(0) = y$, then there is a commutative diagram
+    \begin{cd}
+        X \times Y
+            \rar["f"]
+        & X
+        \\
+        U \times V
+            \uar["\phi \times \psi"]
+            \rar[dashed, "h"']
+        & U
+            \uar["\phi"']
+    \end{cd}
+    Note that $h : U \times V \to U$ is simply a restriction of the the linear projection $L : \R^k \times \R^\ell \to \R^k$.
+    Taking derivatives gives us
+    \begin{cd}[column sep=large]
+        T_{(x, y)}(X \times Y)
+            \rar["\dd{f}_{(x, y)}"]
+        & T_x(X)
+        \\
+        \R^k \times \R^\ell
+            \uar["\dd(\phi \times \psi)_0"]
+            \rar["\dd{h}_0 = L"']
+        & \R^k
+            \uar["\dd{\phi}_0"']
+    \end{cd}
+    For $(v, w) \in T_x(X) \times T_y(Y) = T_{(x, y)}(X \times Y)$, we compute
+    \begin{align*}
+        \dd{f}_{(x, y)}(v, w)
+            &= (\dd\phi_0 \circ \dd{h}_0 \circ \dd(\phi \times \psi)_0^{-1})(v, w) \\
+            &= (\dd\phi_0 \circ L \circ (\dd\phi_0^{-1} \times \dd\psi_0^{-1}))(v, w) \\
+            &= \dd\phi_0(L(\dd\phi_0^{-1}(v), \dd{\psi}_0^{-1}(w))) \\
+            &= \dd\phi_0(\dd\phi_0^{-1}(v)) \\
+            &= v.
+    \end{align*}
+\end{proof}
+
+\begin{pbox}[(c)]
+    Fixing any $y \in Y$ gives an injection mapping $f : X \to X \times Y$ by $f(x) = (x, y)$.
+    Show that $\dd{f}_x(v) = (v, 0)$.
+\end{pbox}
+
+\begin{proof}
+    
+\end{proof}
+
+\begin{pbox}[(d)]
+    Let $f : X \to X'$, $g : Y \to Y'$ be any smooth maps.
+    Prove that
+    \[
+        \dd(f \times g)_{(x, y)} = \dd{f}_x \times \dd{g}_y.
+    \]
+\end{pbox}
+
+\begin{proof}
+    Consider parameterizations described by the following (commutative) diagrams:
+    \begin{center}
+        \begin{tikzcd}
+            X
+                \rar["f"]
+            & X'
+            \\
+            U
+                \uar["\phi"]
+                \rar[dashed, "h"']
+            & U'
+                \uar["\phi'"']
+        \end{tikzcd}
+        \hspace{2em}
+        \begin{tikzcd}
+            Y
+                \rar["g"]
+            & Y'
+            \\
+            V
+                \uar["\psi"]
+                \rar[dashed, "k"']
+            & V'
+                \uar["\psi'"']
+        \end{tikzcd}
+    \end{center}
+    Taking derivatives gives us the following commutative diagrams:
+    \begin{center}
+        \begin{tikzcd}
+            T_x(X)
+                \rar["\dd{f}_x"]
+            & T_{f(x)}(X')
+            \\
+            \R^n
+                \uar["\dd{\phi}_0"]
+                \rar["\dd{h}_0"']
+            & \R^{n'}
+                \uar["\dd{\phi'}_0"']
+        \end{tikzcd}
+        \hspace{2em}
+        \begin{tikzcd}
+            T_y(Y)
+                \rar["\dd{g}_y"]
+            & T_{g(y)}(Y')
+            \\
+            \R^m
+                \uar["\dd{\psi}_0"]
+                \rar["\dd{k}_0"']
+            & \R^{m'}
+                \uar["\dd{\psi'}_0"']
+        \end{tikzcd}
+    \end{center}
+    Taking the products of these pairs of diagrams gives us parameterizations
+    \begin{center}
+        \begin{tikzcd}
+            X \times Y
+                \rar["f \times g"]
+            & X' \times Y'
+            \\
+            U \times V
+                \uar["\phi \times \psi"]
+                \rar["h \times k"']
+            & U' \times V'
+                \uar["\phi' \times \psi'"']
+        \end{tikzcd}
+        \hspace{2em}
+        \begin{tikzcd}[column sep=large]
+            T_x(X) \times T_y(Y)
+                \rar["\dd{f}_x \times \dd{g}_y"]
+            & T_{f(x)}(X') \times T_{g(y)}(Y')
+            \\
+            \R^n \times \R^m
+                \uar["\dd{\phi}_0 \times \dd{\psi}_0"]
+                \rar["\dd{h}_0 \times \dd{k}_0"']
+            & \R^{n'} \times \R^{m'}
+                \uar["\dd{\phi'}_0 \times \dd{\psi'}_0"']
+        \end{tikzcd}
+    \end{center}
+    Applying the definition of the derivative for maps of manifolds and the product result for the usual derivative (i.e., from analysis), we obtain
+    \begin{align*}
+        \dd(f \times g)_{(x, y)}
+            &= \dd(\phi' \times \psi')_0 \circ \dd(h \times k)_0 \circ \dd(\phi' \times \psi')_0^{-1} \\
+            &= (\dd{\phi'}_0 \times \dd{\psi'}_0) \circ (\dd{h}_0 \times \dd{k}_0) \circ (\dd{\phi}_0^{-1} \times \dd{\psi}_0^{-1}) \\
+            &= (\dd{\phi'}_0 \circ \dd{h}_0 \circ \dd{\phi}_0^{-1}) \times (\dd{\psi'}_0 \circ \dd{k}_0 \circ \dd{\psi}_0^{-1}) \\
+            &= \dd{f}_x \times \dd{g}_y.
+    \end{align*}
+\end{proof}
+
+\begin{pbox}[10 Exercise 1.2.11 \\ (a)]
+    Suppose that $f : X \to Y$ is a smooth map, and let $F : X \to X \times Y$ be $F(x) = (x, f(x))$.
+    Show that
+    \[
+        \dd{F}_x(v) = (v, \dd{f}_x(v)).
+    \]
+\end{pbox}
+
+\begin{proof}
+    Let $\Delta : X \to \Delta_X \seq X \times X$ be the diagonal map.
+    Then (similar to Exercise 1.1.17 above) $F$ can be written as the composition
+    \begin{cd}[column sep=large]
+        X \rar["\Delta"] & \Delta_X \rar["\id_X \times f"] & \mathrm{graph}(f) \seq X \times Y.
+    \end{cd}
+    Then
+    \[
+        \dd{F}_x
+         = \dd((\id_X \times f) \circ \Delta)_x
+         = \dd(\id_X \times f)_{(x, x)} \circ \dd{\Delta}_x
+         = (\id_{T_x(X)} \times \dd{f}_x) \circ \Delta,
+    \]
+    so 
+    \[
+        \dd{F}_x(v)
+            = (\id_{T_x(X)} \dd{f}_x)(\Delta(v))
+            = (\id_{T_x(X)} \dd{f}_x)(v, v)
+            = (v, \dd{f}_x(v)).
+    \]
+\end{proof}
+
+\begin{pbox}[(b)]
+    Prove that the tangent space to $\mathrm{graph}(f)$ at the point $(x, f(x))$ is the graph of $\dd{f}_x : T_x(X) \to T_{f(x)}(Y)$.
+\end{pbox}
+
+\begin{proof}
+    Since $F : X \to \mathrm{graph}(f)$ is a diffeomorphism, the derivative is an isomorphism.
+    In particular, it is surjective, and by part (a) its image is precisely the graph of $\dd{f}_x$.
+\end{proof}
+
+\begin{pbox}[11 Exercise 1.3.2 \\ (a)]
+    If $X$ is compact and $Y$ connected, show every submersion $f : X \to Y$ is surjective.
+\end{pbox}
+
+\begin{pbox}[(b)]
+    Show that there exist no submersions of compact manifolds into Euclidean spaces.
+\end{pbox}
+
+\begin{pbox}[12 Exercise 1.3.3]
+    Show that the curve $t \mapsto (t, t^2. t^3)$ embeds $\R^1$ into $\R^3$.
+    Find two independent functions that globally define the image.
+    Are your functions independent on all of $\R^3$, or just on an open neighborhood of the image?
+\end{pbox}
+
+
+\begin{pbox}[13 Exercise 1.3.4]
+    Prove the following extension of Converse 2.
+    Suppose that $Z \seq X \seq Y$ are manifolds, and $z \in Z$.
+    Then there exist independent functions $g_1, \dots, g_\ell$ on a neighborhood $W$ of $z$ in $Y$ such that
+    \[
+        Z \cap W = \{y \in W : g_1(y) = \cdots = g_\ell(y) = 0\}
+    \]
+    and
+    \[
+        X \cap W = \{y \in W : g_1(y) = \cdots = g_m(y) = 0\},
+    \]
+    where $\ell = m$ is the codimension of $Z$ in $X$.
+\end{pbox}
+
+\begin{pbox}[14 Exercise 1.3.6]
+    More generally, let $p$ be any homogeneous degree $m$ polynomial in $k$ variables.
+    Prove that the set of points $x$, where $p(x) = a$, is a $(k - 1)$-dimensional submanifold of $\R^k$, provided that $a \ne 0$.
+    Show that the manifolds obtained with $a > 0$ are all diffeomorphic, as are those with $a < 0$.
+    [Hint: Use Euler's identity for homogeneous polynomials
+    \[
+        \sum_{i=1}^{k} x \pdv{p}{x_i} = m \cdot p
+    \]
+    to prove that $0$ is the only critical value of $p$.]
+\end{pbox}
+
+\end{document}

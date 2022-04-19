@@ -1,0 +1,184 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+\usepackage[shortlabels]{enumitem}
+
+\usepackage{bbm}
+
+\usepackage{suffix}
+\usetikzlibrary{decorations.pathmorphing}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+
+% Environments
+\setlist[enumerate]{nosep}
+\newcommand{\keyword}[1]{\textbf{#1}}
+\newcommand{\sepline}{\rule{\textwidth}{0.4pt}}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+
+% Document Formatting
+\newtheoremstyle{mythmstyle}% name of the style to be used
+{ }% measure of space to leave above the theorem. E.g.: 3pt
+{ }% measure of space to leave below the theorem. E.g.: 3pt
+{ }% name of font to use in the body of the theorem
+{ }% measure of space to indent
+{\scshape}% name of head font
+{.}% punctuation between head and body
+{ }% space after theorem head; " " = normal interword space
+{\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}}% Manually specify head
+
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+
+% Math Formatting
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+
+% mathbb
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\renewcommand{\k}{\mathbbm{k}}
+
+% mathcal
+\newcommand{\LL}{\mathcal{L}}
+
+% Symbols
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+
+% Delimiters
+\newcommand{\<}{\left\langle}
+\renewcommand{\>}{\right\rangle}
+
+% Relations
+\newcommand{\isom}{\cong}
+\newcommand{\seq}{\subseteq}
+
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\To}{\longrightarrow}
+\newcommand{\Mapsto}{\longmapsto}
+
+
+
+% Math Roman
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\DD}{\mathrm{D}}
+
+
+
+
+
+% Other
+\newcommand{\pdv}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+
+
+
+
+
+\title{Calculus \\
+    \large 
+}
+\author{}
+\date{}
+
+
+\begin{document}
+
+idk what is wanted, but imma fix a base field $\k$, which is likely $\R$ or $\C$.
+I think any subfield of $\C$ is fine.
+
+A \keyword{vector space} (over $\k$) is a $\k$-module.
+
+A \keyword{norm} on a vector space $X$ is a function $\|{-}\| : X \to \R$ such that
+\begin{itemize}
+    \item (positive definite) $\|x\| = 0$ implies $x = 0$, for all $x \in X$;
+    \item (absolute homogeneity) $\|cx\| = |c| \|x\|$ for all $c \in \k$ and $x \in X$;
+    \item (triangle inequality) $\|x + y\| \leq \|x\| + \|y\|$ for all $x, y \in X$.
+\end{itemize}
+
+One can check that these conditions also imply
+\begin{itemize}
+    \item $\|x\| = 0$ if and only if $x = 0$, for all $x \in X$;
+    \item $\|x\| \geq 0$ for all $x \in X$.
+\end{itemize}
+These slightly stronger conditions are sometimes added into the definition of a norm.
+
+A \keyword{normed vector space} is a vector space $X$ with a norm $\|{-}\|_X$.
+
+\sepline
+
+Let $X$ and $Y$ be normed vector spaces.
+
+A linear map $T : X \to Y$ is called \keyword{bounded} if there exists $C \in \R$ such that
+\[
+    \|Tx\|_Y \leq C\|x\|_X, \qquad \text{for all } x \in X.
+\]
+(Necessarily, such a $C$ would be positive.)
+We also call $T$ a \keyword{bounded linear operator}.
+
+If $T : X \to Y$ is a bounded linear operator, define
+\[
+    \|T\| := \inf\{C \in \R : \|Tx\|_Y \leq C\|x\|_X \text{ for all } x \in X\}.
+\]
+One can check that
+\[
+    \|T\|
+        = \sup_{\substack{x \in X \\ x \ne 0}} \frac{\|Tx\|_Y}{\|x\|_X}
+        = \sup_{\substack{x \in X \\ 0 < \|x\|_X \leq 1}} \frac{\|Tx\|_Y}{\|x\|_X}
+        = \sup_{\substack{x \in X \\ 0 < \|x\|_X < 1}} \frac{\|Tx\|_Y}{\|x\|_X}
+        = \sup_{\substack{x \in X \\ \|x\|_X = 1}} \|Tx\|_Y
+\]
+
+\sepline
+
+Let $X$ and $Y$ be normed vector spaces and $U \seq X$ be an open subset.
+
+A function $f : U \to Y$ is called \keyword{differentiable at} $x \in U$ if there exists a bounded linear operator $T : X \to Y$ satisfying
+\[
+    \lim_{\substack{\|h\|_X \to 0 \\ h \in X \setminus\{0\}}} \frac{\|f(x + h) - f(x) - T(h)\|_Y}{\|h\|_X} = 0.
+\]
+\[
+    Q(f, x, h, T) = \frac{\|f(x + h) - f(x) - T(h)\|_Y}{\|h\|_X}
+\]
+In which case, we say $T$ is the* \keyword{derivative of $f$ at $x$}, written $\dd{f}_x = \dd(f)_x = T$.
+
+
+
+For any $V \seq U$, $f$ is called \keyword{differentiable on $V$} if it is differentiable at every point of $V$.
+
+$f$ is called \keyword{differentiable} if it is differentiable on $U$.
+
+\sepline
+
+Let $U \seq X$ be open and $f : U \to Y$ be differentiable.
+
+$\LL(X, Y)$.
+
+\sepline
+
+$f$ is called \keyword{continuously differentiable at $x$} 
+
+
+\end{document}

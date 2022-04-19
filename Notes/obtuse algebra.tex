@@ -7,6 +7,8 @@
 \usepackage{tikz, tikz-cd}
 \usepackage[shortlabels]{enumitem}
 
+\usepackage{mathrsfs}
+
 % Problem Box
 \setlength{\fboxsep}{4pt}
 \newlength{\myparskip}
@@ -39,12 +41,19 @@
 \newcommand{\mc}[1]{, \qquad #1}
 \newcommand{\cfa}[1]{, \qquad \text{for all $#1$}}
 
-% Symbols
+% mathbb
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\Q}{\mathbb{Q}}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\C}{\mathbb{C}}
+
+% mathcal
+\renewcommand{\AA}{\mathcal{A}}
+\newcommand{\RR}{\mathcal{R}}
+\newcommand{\ZZ}{\mathcal{Z}}
+
+% symbols
 \newcommand{\eps}{\varepsilon}
 \renewcommand{\phi}{\varphi}
 \renewcommand{\emptyset}{\varnothing}
@@ -512,6 +521,89 @@ That is, $\iota$ specifies a group homomorphism (what's that bud?) $G \to G^\op$
 In fact, this is an isomorphism and $(G^\op)^\op = G$.
 
 
+\sepline
+
+To be extremely pedantic, let
+\[
+    \ZZ = \{\dots, -3, -2, -1, 0, 1, 2, 3, \dots\}
+\]
+denote the set of integers.
+I emphasize that this is a set with no additional structure.
+It doesn't matter which specific set-theoretic structure it has---choose your favorite.
+
+We define a binary operation $+$ on $\ZZ$ such that $a + b$ is `the sum of $a$ and $b$,' for all $a, b \in \ZZ$.
+This seems a little circular, and could definitely be formalized better.
+We define the abelian group $\Z = (\ZZ, 0, +)$, called the additive group of integers.
+
+Typically, the term ``addition'' is reserved for any operation on a set that is sufficiently similar to the usual addition of integers.
+In particular, $\Z$ addition is an abelian group.
+In fact, there is a sense in which addition over the integers is the most fundamental nontrivial abelian group.
+
+
+
+\sepline
+
+Let $X$ be a set.
+
+A \keyword{formal sum} in $X$ is given by the data of a function $c : X \to \Z$, written as
+\[
+    c = \sum_{x \in X} c_x \cdot x.
+\]
+The value $c_x = c(x) \in \Z$ is called the \keyword{coefficient} of $x$.
+When we interpret $c$ as a function $X \to \Z$, it is called the \emph{coefficient function}.
+The notation is meant to suggest multiplying the coefficient $c(x) \in \Z$ with the element $x \in X$, and taking the sum over all such products.
+
+Since $\Z$ is an abelian group under addition, the set of functions $\Z^X$ is also an abelian group under componentwise addition:
+\[
+    (a + b)(x) = a(x) + b(x).
+\]
+Equivalently, this gives us an addition on the set of formal sums, with
+\[
+    a + b
+        = \sum_{x \in X} a_x \cdot x + \sum_{x \in X} b_x \cdot x
+        = \sum_{x \in X} (a + b)_x \cdot x
+        = \sum_{x \in X} (a_x + b_x) \cdot x.
+\]
+For each $a \in X$, there is a characteristic function $\chi_a : X \to \Z$ defined by
+\[
+    \chi_a(x) = \begin{cases}
+        1 & x = a, \\
+        0 & x \ne a.
+    \end{cases}
+\]
+
+A \keyword{finite formal sum} in $X$ is a formal sum $\sum_{x \in X} c_x x$ with only finitely many nonzero coefficients, i.e., $c_x \ne 0$ for finitely many $x \in X$.
+
+The set of finite formal sums in $X$ may be denoted as any of the following:
+\[\arraycolsep=1em
+    \begin{array}{cccc}
+        \Z \cdot X & \Z X & \Z[X] & \Z^{(X)}
+    \end{array}
+\]
+
+
+\sepline
+
+A \keyword{formal sum} in $S$ is a symbolic object which suggests some form of addition over the elements of $S$, but no specific operation is present.
+Intuitively, we want to build notation for `the most general sort of addition' over the elements of $S$.
+
+
+
+The formal sum of two elements $a, b \in S$ is written as ``$a + b$'' or ``$b + a$''.
+Ideally, we would want to interpret these expressions as the same thing.
+In other words, we are imagining the operation to be commutative.
+
+The formal sum of three elements $a, b, c \in S$ is written as ``$a + b + c$'' (or any permutation of the order).
+With this notation---in particular, not putting parentheses---we are imagining the operation to be associative.
+
+
+\sepline
+
+Let $A = (\AA, 0, +)$ be an abelian group.
+
+
+
+
 \newpage
 \sepline
 
@@ -572,23 +664,34 @@ The multiplicative inverse of $a \in R$, when it exists, is denoted by $a^{-1}$.
     \end{cd}
 \end{enumerate}
 
+\newpage
 \sepline
 
 A \keyword{ring} is given by the following data:
 \begin{enumerate}[(1)]
-    \item a set $R$,
-    \item a binary operation $+$ on $R$ called \emph{addition},
-    \item a binary operation $\cdot$ on $R$ called \emph{multiplication},
+    \item a set $R$;
+    \item a binary operation $+$ on $R$ called \emph{addition};
+    \item a binary operation $\cdot$ on $R$ called \emph{multiplication};
 \end{enumerate}
 such that
 \begin{enumerate}[(i)]
     \item $R$ is an abelian group under addition:
     \begin{enumerate}
-        \item (ass) $(a + b) + c = a + (b + c)$,
-        \item (id) $0 \in R$ called \emph{zero} such that $0 + a = a + 0 = a$,
-        \item (inv) for all $a \in R$ there exists an $-a \in R$ such that $a + (-a) = 0$,
+        \item (associativity) $(a + b) + c = a + (b + c)$,
+        \item (identity) $0 \in R$ called \emph{zero} such that $0 + a = a + 0 = a$,
+        \item (invertibility) for all $a \in R$ there exists an $-a \in R$ such that $a + (-a) = 0$,
+        \item (commutativity) $a + b = b + a$;
     \end{enumerate}
-    \item $R$ is a monoid under multiplication, whose identity is called the \emph{one} denoted $1 \in R$.
+    \item $R$ is a monoid under multiplication:
+    \begin{enumerate}
+        \item (associativity) $(a \cdot b) \cdot c = a \cdot (b \cdot c)$,
+        \item (identity) $1 \in R$ called \emph{one} such that $a \cdot 1 = 1 \cdot a = a$;
+    \end{enumerate}
+    \item multiplication is distributive over addition:
+    \begin{enumerate}
+        \item (left distributivity) $a \cdot (b + c) = (a \cdot b) + (a \cdot c)$,
+        \item (right distributivity) $(a + b) \cdot c = (a \cdot c) + (b \cdot c)$.
+    \end{enumerate}
 \end{enumerate}
 
 \sepline
@@ -619,9 +722,9 @@ such that
 
 \sepline
 
-A \keyword{}{module} is given by the following data:
+A \keyword{}{module} (over a commutative ring) is given by the following data:
 \begin{enumerate}[(1)]
-    \item a ring $R$,
+    \item a commutative ring $R$,
     \item an abelian group $M$,
     \item a function $\mu : R \times M \to M$ such that
     \begin{enumerate}[(i)]
@@ -636,13 +739,66 @@ A \keyword{}{module} is given by the following data:
 
 \sepline
 
-Let $R$ be a ring.
+Let $R$ be a commutative ring.
 
 An \keyword{$R$-module} is given by the following data:
 \begin{enumerate}[(1)]
     \item an abelian group $M$ written additively, i.e., identity is $0$ and binary operation is $+$,
     \item a ring homomorphism $\mu : R \to \End(M)$, called \emph{scalar multiplication}.
+    \item a $\Z$-module homomorphism $\mu : R \tensor_\Z M \to M$, called \emph{scalar multiplication}.
 \end{enumerate}
 We usually write $r \cdot m$ for the evaluation $\mu(r)(m)$.
+
+\sepline
+
+Let $R$ be a ring.
+
+A \keyword{left $R$-module} is given by the following data:
+\begin{itemize}
+    \item an abelian group $M$, written additively, i.e., identity is $0$ and binary operation is $+$;
+    \item a function $\mu : R \times M \to M$ called \emph{scalar multiplication} (write $r \cdot m = \mu(r, m)$);
+\end{itemize}
+such that
+\begin{itemize}
+    \item $1 \cdot m = m$ for all $m \in M$;
+    \item $r \cdot (m + n) = (r \cdot m) + (r \cdot n)$ for all $r \in R$ and $m, n \in M$;
+    \item $(r + s) \cdot m = (r \cdot m) + (s \cdot m)$ for all $r, s \in R$ and $m \in M$;
+    \item $r \cdot (s \cdot m) = (rs) \cdot m$ for all $r, s \in R$ and $m \in M$.
+\end{itemize}
+
+A \keyword{right $R$-module} is given by the following data:
+\begin{itemize}
+    \item an abelian group $M$, written additively, i.e., identity is $0$ and binary operation is $+$;
+    \item a function $\mu : M \times R \to M$ called \emph{scalar multiplication} (write $m \cdot r = \mu(m, r)$);
+\end{itemize}
+such that
+\begin{itemize}
+    \item $m \cdot 1 = m$ for all $m \in M$;
+    \item $(m + n) \cdot r = (r \cdot m) + (r \cdot n)$ for all $r \in R$ and $m, n \in M$;
+    \item $m \cdot (r + s) = (r \cdot m) + (s \cdot m)$ for all $r, s \in R$ and $m \in M$;
+    \item $(m \cdot s) \cdot r = m \cdot (sr)$ for all $r, s \in R$ and $m \in M$.
+\end{itemize}
+
+\sepline
+
+Let $R = (\RR, 0, 1, +, \cdot)$ be a ring.
+
+We construct a the \keyword{opposite ring} $R^\op = (\RR, 0, 1, +, \cdot^\op)$, where
+\[
+    r \cdot^\op s = s \cdot r
+\]
+
+\sepline
+
+Let $R$ be a ring and $M$ be an abelian group.
+
+A left $R$-module structure on $M$ is equivalently a ring homomorphism $\lambda : R \to \End(M)$, with
+\[
+    r \cdot m = \lambda(r)(m)
+\]
+
+A right $R$-modules over $M$ is a ring homomorphism $R^\op \to \End(M)$.
+
+
 
 \end{document}

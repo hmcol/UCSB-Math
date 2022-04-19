@@ -1,0 +1,382 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+\usepackage[shortlabels]{enumitem}
+
+\usepackage{bbm}
+
+\usepackage{suffix}
+\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{decorations.markings, arrows.meta}
+
+\tikzset{
+    marrow/.style={decoration={
+        markings,
+        mark=at position 0.5 with {\arrow{>}}}, postaction=decorate,
+    }
+}
+
+
+\makeatletter
+\tikzset{nomorepostaction/.code=\let\tikz@postactions\pgfutil@empty}
+\makeatother
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+
+% Environments
+\setlist[enumerate]{nosep}
+\newcommand{\keyword}[1]{\textbf{#1}}
+\newcommand{\sepline}{\rule{\textwidth}{0.4pt}}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+
+% Document Formatting
+\newtheoremstyle{mythmstyle}% name of the style to be used
+{ }% measure of space to leave above the theorem. E.g.: 3pt
+{ }% measure of space to leave below the theorem. E.g.: 3pt
+{ }% name of font to use in the body of the theorem
+{ }% measure of space to indent
+{\scshape}% name of head font
+{.}% punctuation between head and body
+{ }% space after theorem head; " " = normal interword space
+{\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}}% Manually specify head
+
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+
+% Math Formatting
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+
+% mathbb
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+% mathcal
+\renewcommand{\AA}{\mathcal{A}}
+\newcommand{\BB}{\mathcal{B}}
+\newcommand{\CC}{\mathcal{C}}
+\newcommand{\DD}{\mathcal{D}}
+\newcommand{\OO}{\mathcal{O}}
+
+% Symbols
+
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+
+% Delimiters
+\newcommand{\<}{\left\langle}
+\renewcommand{\>}{\right\rangle}
+
+% Relations
+\newcommand{\isom}{\cong}
+\newcommand{\seq}{\subseteq}
+
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\To}{\longrightarrow}
+\newcommand{\Mapsto}{\longmapsto}
+
+
+
+% Math Roman
+\newcommand{\source}{\mathrm{source}}
+\newcommand{\target}{\mathrm{target}}
+
+
+% Math Operators
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Cay}{Cay}
+
+
+
+% Other
+\newcommand{\eqc}{\overline}
+\newcommand{\udl}{\underline}
+
+\newcommand{\adj}{\leftrightarrow}
+
+
+
+
+\title{Graph \\
+    \large 
+}
+\author{}
+\date{}
+
+
+\begin{document}
+
+A \keyword{graph} $\Gamma$ is characterized by the following information:
+\begin{itemize}
+    \item a collection $V$ (or $\Gamma_0$) of \keyword{vertices} (sing. vertex) (or \keyword{nodes} or \keyword{points});
+    \item a collection $E$ (or $\Gamma_1$) of \keyword{edges} (or \keyword{arcs} or \keyword{lines});
+    \item a rule that associates each edge with two vertices (not necessarily distinct) called its \keyword{endpoints};
+\end{itemize}
+
+A \keyword{loop} is an edge whose endpoints are the same vertex.
+
+Two different edges are \keyword{parallel} is they have the same endpoints.
+
+A graph is \keyword{simple} if it has no loops or parallel edges.
+
+When two vertices are the endpoints of an edge, they are said to be \keyword{adjacent} or \keyword{neighbors}.
+
+A graph is \keyword{finite} if it has finitely many vertices and edges.
+
+The \keyword{null graph} is the graph with no vertices and no edges.
+It is stupid and we ignore it, I think.
+
+\sepline
+
+Let $\mathbbm{2} = \{0, 1\}$ be a two-element set with distinguished elements.
+
+\sepline
+
+A \keyword{simple graph} is implemented with the following data:
+\begin{itemize}
+    \item a set $V$;
+    \item an anti-reflexive symmetric relation $\adj$ on $V$ called the \keyword{adjacency} relation, i.e.,
+    \begin{itemize}
+        \item $v \not\adj v$ for all $v \in V$,
+        \item $u \adj v$ iff $v \adj u$ for all $u, v \in V$;
+    \end{itemize}
+\end{itemize}
+
+A simple graph is an implementation of a graph as follows:
+\begin{itemize}
+    \item vertices $V$;
+    \item edges $E = \{\{u, v\} \seq V \mid u \adj v\}$;
+    \item endpoints of $e = \{u, v\} \in E$ are its elements, $u$ and $v$.
+\end{itemize}
+
+By this implementation, a simple graph is finite if and only if both its vertex set $V$ and edge set $E$ have finite cardinality.
+
+Because the adjacency relation is anti-reflexive, each edge always has two distinct vertices.
+Moreover, if two edges $e_1, e_2 \in E$ have the same endpoints if and only if they are the same set---hence there are no parallel edges.
+Therefore, a ``simple graph'' is indeed a graph which is simple in the above sense.
+
+
+
+\sepline
+
+A \keyword{graph} $\Gamma$ is given by the following data:
+\begin{itemize}
+    \item a collection of vertices $V$;
+    \item a relation $\sim$ on $V$ called the \keyword{adjacency} relation.
+\end{itemize}
+
+\sepline
+
+A \keyword{directed graph} is a type of graph in which edges have a certain orientation/direction.
+We might think of the edges as arrows.
+
+Given by the following data:
+\begin{itemize}
+    \item a collection of vertices $V$;
+    \item a collection of edges $E$;
+    \item for each edge $e \in E$ two vertices $\source(e), \target(e) \in V$.
+\end{itemize}
+
+\sepline
+
+
+
+\begin{itemize}
+    \item simple graph: injective function $E \to \binom{V}{2}$; 
+    (or symmetric irreflexive relation on $V$)
+    \item multigraph: arbitrary function $E \to \binom{V}{2}$;
+    \item loop graph: injective function $E \to \binom{V}{2} \cup \binom{V}{1}$;
+    (or symmetric relation on $V$)
+    \item pseudograph: arbitrary function $E \to \binom{V}{2} \cup \binom{V}{1}$;
+\end{itemize}
+
+
+directed variants
+\begin{itemize}
+    \item directed graph: injective function $E \to V^2 \setminus \Delta_V$;
+    (or irreflexive relation on $V$)
+    \item directed multigraph: arbitrary function $E \to V^2 \setminus \Delta_V$;
+    \item directed loop graph: injective function $E \to V^2$;
+    (or any relation on $V$)
+    \item directed pseudograph (quiver): arbitrary function $E \to V^2$;
+\end{itemize}
+
+not commutative:
+\begin{cd}[math mode=false, arrows={shift right=1.25, math mode=true}]
+    di(simple)
+        \ar[rrr, hook]
+        \ar[ddd, hook]
+        \drar[two heads, "\pi"']
+    &&& dimulti
+        \ar[lll, two heads, "\pi"'] 
+        \ar[ddd, hook]
+        \dlar[two heads, "\pi"']
+    \\
+    & simple
+        \rar[hook]
+        \dar[hook]
+        \ular["\delta"']
+    & multi
+        \lar[two heads, "\pi"'] 
+        \dar[hook]
+        \urar["\delta"']
+    \\
+    & loop
+        \uar[two heads, "\lambda"']
+        \rar[hook]
+        \dlar["\delta"']
+    & pseudo
+        \lar[two heads, "\pi"']
+        \uar[two heads, "\lambda"']
+        \drar["\delta"']
+    \\
+    diloop
+        \ar[uuu, two heads, "\lambda"']
+        \ar[rrr, hook]
+        \urar[two heads, "\pi"']
+    &&& dipseudo
+        \ar[lll, two heads, "\pi"']
+        \ar[uuu, two heads, "\lambda"']
+        \ular[two heads, "\pi"']
+\end{cd}
+
+\sepline
+
+An \keyword{isomorphism} of graphs $f : \Gamma \to \Gamma'$ is consists of the following data:
+\begin{itemize}
+    \item a bijection $f : V \to V'$;
+    \item a bijection $f : E \to E'$;
+\end{itemize}
+such that
+\begin{itemize}
+    \item $\source(f(e)) = f(\source(e))$ for all $e \in E$;
+    \item $\target(f(e)) = f(\target(e))$ for all $e \in E$;
+    \item equiv $d(e) = (u, v)$ implies $d(f(e)) = (f(u), f(v))$ for all $e \in E$.
+    \item map $f_{u, v} : \Gamma(u, v) \to \Gamma'(f(u), f(v))$ for all $u, v \in V$.
+\end{itemize}
+
+\sepline
+
+An \keyword{automorphism} of a graph $\Gamma$ is an isomorphism $\Gamma \to \Gamma$.
+
+Denote the set of such automorphisms by $\Aut(\Gamma)$.
+
+Note that $\Aut(\Gamma)$ is ``naturally'' a group under composition.
+
+\sepline
+
+Let $G$ be a group and $\Gamma$ be a graph.
+
+An \keyword{acton} of $G$ on $\Gamma$ consists of the following data:
+\begin{itemize}
+    \item a group homomorphism $G \to \Aut(\Gamma)$, denoted $g \mapsto (g \cdot -)$.
+\end{itemize}
+
+Equivalently, an action consists of a function $A : G \times \Gamma \to \Gamma$, denoted $(g, x) \mapsto g \cdot x$ for $x$ in $V$ or $E$, such that
+\begin{itemize}
+    \item $1_G \cdot x = x$ for all $x \in \Gamma$;
+    \item $g \cdot (h \cdot x) = (gh) \cdot x$ for all $x \in \Gamma$;
+    \item $g \cdot (e : u \to v) = g \cdot e : g \cdot u \to g \cdot v$ for all $e \in E$;
+\end{itemize}
+
+\sepline
+
+Let $G$ be a group generated by $S \seq G$.
+
+We construct a directed graph $\Cay(G, S)$, called the \keyword{Cayley graph} of $G$ with respect to $S$, as follows:
+\begin{itemize}
+    \item vertices of $\Cay(G, S)$ are the elements of $G$;
+    \item edges of $\Cay(G, S)$ are $g \to gs$ for all $g \in G$ and $s \in S$.
+\end{itemize}
+
+There is a path $(s_1, \dots, s_n) : g \mapsto h$ in $\Cay(G, S)$ if and only $gs_1 \cdots s_n = h \in G$.
+
+\sepline
+
+Let $D_n = \<s, r \mid s^2 = r^n = (sr)^2 = 1\>$
+
+Then $\Cay(D_4, \{s, r\})$ is as follows:
+\begin{drawing}[decoration={
+        markings,
+        mark=at position 0.5 with {\arrow{>}}
+    }]
+    \node[inner sep=0pt] (e) at (0, 0) {};
+    \node[inner sep=0pt] (r) at (1, 0) {};
+    \node[inner sep=0pt] (r2) at (1, 1) {};
+    \node[inner sep=0pt] (r3) at (0, 1) {};
+    \node[inner sep=0pt] (s) at (-1, -1) {};
+    \node[inner sep=0pt] (sr) at (-1, 2) {};
+    \node[inner sep=0pt] (sr2) at (2, 2) {};
+    \node[inner sep=0pt] (sr3) at (2, -1) {};
+
+    \foreach \p in {e, r, r2, r3, s, sr, sr2, sr3} {
+        \fill (\p) circle (2pt);
+    }
+
+    \begin{scope}[every path/.style={postaction={nomorepostaction, decorate}}]
+        \draw (e) -- (r) node[midway, below]{$r$};
+        \draw (r) -- (r2) node[midway, right]{$r$};
+        \draw (r2) -- (r3) node[midway, above]{$r$};
+        \draw (r3) -- (e) node[midway, left]{$r$};
+
+        \draw (s) -- (sr) node[midway, left]{$r$};
+        \draw (sr) -- (sr2) node[midway, above]{$r$};
+        \draw (sr2) -- (sr3) node[midway, right]{$r$};
+        \draw (sr3) -- (s) node[midway, below]{$r$};
+
+        \draw (e) arc (90 : 180 : 1);
+        \draw (s) arc (270 : 360 : 1);
+
+        \draw (r) arc (180 : 270 : 1);
+        \draw (sr3) arc (0 : 90 : 1);
+
+        \draw (r2) arc (270 : 360 : 1);
+        \draw (sr2) arc (90 : 180 : 1);
+
+        \draw (r3) arc (0 : 90 : 1);
+        \draw (sr) arc (180 : 270 : 1);
+
+    \end{scope}
+    \node at (-0.5, -0.5) {$s$};
+    \node at (1.5, -0.5) {$s$};
+    \node at (1.5, 1.5) {$s$};
+    \node at (-0.5, 1.5) {$s$};
+
+
+    
+\end{drawing}
+
+\sepline
+
+There is a natural action of $G$ on $\Cay(G, S)$ by $g \mapsto \phi_g \in \Aut(\Cay(G, S))$, where
+\begin{cd}[column sep=0pt, row sep=tiny]
+    \Cay(G, S) \ar[rr, "\phi_g"] && \Cay(G, S) \\
+    v \ar[dd, -, marrow, "s"'] & \longmapsto & gv \ar[dd, -, marrow, "s"] \\
+    & \longmapsto & \\
+    vs & \longmapsto & gvs \\
+\end{cd}
+
+The map $\phi : G \to \Aut(\Cay(G, S))$ is an isomorphism of groups.
+
+\end{document}

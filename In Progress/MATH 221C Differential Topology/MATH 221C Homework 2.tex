@@ -1,0 +1,496 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\ifx#1\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\isom}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+\newcommand{\inc}{\hookrightarrow}
+
+% Extra Commands
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\DD}{\mathrm{D}}
+
+\newcommand{\pdv}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+
+% Document
+\begin{document}
+\title{MATH 221C Homework 2}
+\author{Harry Coleman}
+\date{April 11, 2022}
+\maketitle
+
+I worked with Joseph Sullivan and Gahl Shemy.
+
+\begin{pbox}[1 Exercise 1.1.1]
+    If $k < \ell$ we can consider $\R^k$ to be the subset $\{(a_1, \dots, a_k, 0, \dots, 0)\}$ in $\R^\ell$.
+    Show that the smooth functions on $\R^k$, considered as a subset of $\R^\ell$, are the same as usual.
+\end{pbox}
+
+\begin{proof}
+    Recall that a function $f = (f_1, \dots, f_m) : \R^n \to \R^m$ is smooth if and only if all its component functions $f_i : \R^n \to \R$ are smooth.
+    Therefore, it suffices to consider only functions with codomain $\R$.
+    
+    Let $\iota : \R^k \inc \R^\ell$ be standard immersion and $\pi : \R^\ell \to \R^k$ be the standard submersion, which are both smooth maps.
+
+    Given $f : \R^k \to \R$ smooth in the usual sense, the composition $F = f \circ \pi : \R^\ell \to \R$ is again smooth.
+    Moreover,
+    \[
+        F|_{\R^k} = f \circ \pi|_{\R^k} = f \circ \id_{\R^k} = f,
+    \]
+    so $F$ is a smooth extension of $f$ to $\R^\ell$ (an open neighborhood of $\R^k$).
+    By definition, this means $f$ is smooth on $\R^k$ as a subset of $\R^\ell$.
+
+    Given $f : \R^k \to \R$ smooth in the subset sense, let $F : U \to \R$ be a smooth local extension at a point $x \in \R^k$ to an open neighborhood $U \seq \R^\ell$.
+    Then the composition
+    \[
+        F \circ \iota = F|_{\R^k} = f|_{U \cap \R^k}
+    \]
+    is smooth in the usual sense.
+    In particular, $f$ is smooth at $x$ and therefore on all of $\R^k$.
+\end{proof}
+
+\begin{pbox}[2 Exercise 1.1.2]
+    Suppose that $X$ is a subset of $\R^N$ and $Z$ is a subset of $X$.
+    Show that the restriction to $Z$ of any smooth map on $X$ is a smooth map on $Z$.
+\end{pbox}
+
+\begin{proof}
+    As in Problem 1, it suffices to consider only functions with codomain $\R$.
+
+    Let $f : X \to \R$ be a smooth function and $z \in Z$ be any point.
+    Since $f$ is smooth at $z \in X$ (as a subset of $\R^N$), we can find a smooth local extension $F : U \to \R$ of $f$ at $z$, where $U \seq \R^N$ is an open neighborhood of $z$.
+    Then $F|_Z = f|_Z$ means that $F$ is also a smooth local extension of $f|_Z$ at $z$.
+    By definition, $f|_Z$ is smooth map on $Z$.
+\end{proof}
+
+\begin{pbox}[3 Exercise 1.1.3]
+    Let $X \seq \R^N$, $Y \seq \R^M$, $Z \seq \R^L$ be arbitrary subsets, and let $f : X \to Y$, $g : Y \to Z$ be smooth maps.
+    Then the composite $g \circ f : X \to Z$ is smooth.
+\end{pbox}
+
+\begin{proof}
+    Let $x \in X$ and $F : U \to \R^M$ be a smooth local extension of $f$ at $x$.
+    Next, let $G : V \to \R^L$ be a smooth local extension of $g$ at $f(x)$.
+    Set $W = U \cap F^{-1}(V)$, then $F|_W : W \to V$ is a smooth extension of $f$ at $x$.
+    Then the composition of smooth maps (in the usual sense) $G \circ F|_W : W \to \R^L$ is again smooth.
+    Moreover, $G \circ F|_W$ is in fact a local extension of $g \circ f$ at $x$.
+    Hence, $g \circ f$ is a smooth map on $X$.
+\end{proof}
+
+
+\newpage
+\begin{pbox}[]
+    If $f$ and $g$ are diffeomorphisms, so is $g \circ f$.
+\end{pbox}
+
+\begin{proof}
+    When $f$ and $g$ are diffeomorphisms, they have smooth inverses $f^{-1} : Y \to X$ and $g^{-1} : Z \to Y$, respectively.
+    By the previous result, the function inverse $(g \circ f)^{-1} = f^{-1} \circ g^{-1}$ is smooth.
+\end{proof}
+
+
+\begin{pbox}[4 Exercise 1.1.4(a)]
+    Let $B_a$ be the open ball $\{x : |x|^2 < a^2\}$ in $\R^k$.
+    ($|x|^2 = \sum x_i^2$) Show that the map
+    \[
+        x \longmapsto \frac{ax}{\sqrt{a^2 - |x|^2}}
+    \]
+    is a diffeomorphism of $B_a$ onto $\R^k$.
+    [Hint: Compute its inverse directly.]
+\end{pbox}
+
+\begin{proof}
+    Denote the given map by $f : B_a \to \R^k$ and define $g : \R^k \to \R^k$ by
+    \[
+        g(x) = \frac{ax}{\sqrt{a^2 + |x|^2}}.
+    \]
+    We check that the image of $g$ is contained in $B_a$:
+    \[
+        \bigg|\frac{ax}{\sqrt{a^2 + |x|^2}}\bigg|^2
+            = \frac{a^2|x|^2}{a^2 + |x|^2}
+            = \frac{a^2}{\frac{a^2}{|x|^2} + 1}
+            \leq a^2.
+    \]
+    This allows us to consider $g$ as be a map $\R^k \to B_a$.
+    As compositions of smooth functions, both $f$ and $g$ are smooth---we claim they are inverses.
+    First, for any $x \in \R^k$,
+    \[
+        f(g(x))
+            = \frac{a\frac{ax}{\sqrt{a^2 + |x|^2}}}{\sqrt{a^2 - \Big|\frac{ax}{\sqrt{a^2 + |x|^2}}\Big|^2}}
+            = \frac{\frac{a^2x}{\sqrt{a^2 + |x|^2}}}{\sqrt{a^2 - \frac{a^2|x|^2}{a^2 + |x|^2}}}
+            = \frac{a^2x}{\sqrt{a^4 + a^2|x|^2 - a^2|x|^2}}
+            = x.
+    \]
+    In particular, this tells us that $f$ is surjective, since $g(x) \in B_a$ is a point in the domain of $f$ mapping to $x$.
+    Second, for any $x \in B_a$,
+    \[
+        g(f(x))
+            = \frac{a\frac{ax}{\sqrt{a^2 - |x|^2}}}{\sqrt{a^2 + \Big|\frac{ax}{\sqrt{a^2 - |x|^2}}\Big|^2}}
+            = \frac{a^2x}{\sqrt{(a^2 - |x|^2)\Big(a^2 + \frac{a^2|x|^2}{a^2 - |x|^2}}\Big)}
+            = \frac{a^2x}{\sqrt{a^4 - a^2|x|^2 + a^2|x|^2}}
+            = x.
+    \]
+    Hence, $f$ is a diffeomorphism with smooth inverse $g$.
+\end{proof}
+
+\begin{pbox}[5 Exercise 1.1.6]
+    A smooth bijective map of manifolds need not be a diffeomorphism.
+    In fact, show that $f : \R^1 \to \R^1$, $f(x) = x^3$ is an example.
+\end{pbox}
+
+\begin{proof}
+    The function inverse of $f$ is $g(x) = \sqrt[3]{x}$, but this is not differentiable at $0$, since
+    \[
+        \lim_{h \to 0} \frac{g(0 + h) - g(0)}{h}
+            = \lim_{h \to 0} \frac{\sqrt[3]{h}}{h}
+            = \lim_{h \to 0} \frac{1}{h^{2/3}}
+            = \infty.
+    \]
+\end{proof}
+
+\begin{pbox}[6 Exercise 1.1.7]
+    Prove that the union of the two coordinate axes in $\R^2$ is not a manifold.
+\end{pbox}
+
+\begin{proof}
+    Assume in contradiction that $X = \{xy = 0\} \seq \R^2$ is a manifold.
+
+    We first show that $X$ must be a $1$-dimensional manifold.
+    The point $(1, 0) \in X$ has an open neighborhood $(0, 2) \times 0 \seq X$, which is diffeomorphic to the open interval $(0, 2) \seq \R^1$ via projecting onto the first coordinate.
+    In particular, $X$ is locally $1$-dimensional at the point $(1, 0)$, so by definition it must be globally $1$-dimensional.
+
+    \begin{drawing}[commutative diagrams/every diagram]
+        \begin{scope}[xshift=-4cm]
+            \draw (0, 0) -- (2, 0);
+
+            \draw[dotted] (-0.5, 0) -- (0, 0);
+            \draw[dotted] (0, -0.5) -- (0, 0.5);
+            \draw[dotted] (2, 0) -- (2.5, 0);
+
+            \fill (1, 0) circle (2pt) node[below] {$(1, 0)$};
+        \end{scope}
+
+        \node (A) at (-1, 0.25) {};
+        \node (B) at (1, 0.25) {};
+        \path[commutative diagrams/.cd, every arrow, every label]
+            (A) edge[bend left] node {} (B);
+
+        \begin{scope}[xshift=3cm]
+            \draw (-1, 0) -- (1, 0);
+
+            \draw[dotted] (1, 0) -- (1.5, 0);
+            \draw[dotted] (-1, 0) -- (-1.5, 0);
+
+            \fill (0, 0) circle (2pt) node[below] {$1$};
+        \end{scope}
+    \end{drawing}
+
+    Let $\phi : U \to V$ be a smooth chart of $X$ around the origin, i.e., $U \seq X$ is an open neighborhood of the origin, $V \seq \R^1$ is open, and $\phi$ is a diffeomorphism.
+    Since $X \seq \R^2$ has the subspace topology, we may restrict our attention to a small open ball $B_r(0) \seq \R^2$ whose intersection $U' = B_r(0) \cap X$ is contained in $U$.
+    Set $V' = \phi(U') \seq V$, then $U' \seq U$ being open implies that the restriction $\phi|_{U'} : U' \to V'$ is still a diffeomorphism, i.e., a smooth chart.
+    \begin{drawing}[commutative diagrams/every diagram]
+        \begin{scope}[xshift=-3cm]
+            \draw (-1, 0) -- (1, 0);
+            \draw (0, -1) -- (0, 1);
+
+            \draw[dotted] (1, 0) -- (1.5, 0);
+            \draw[dotted] (-1, 0) -- (-1.5, 0);
+            \draw[dotted] (0, 1) -- (0, 1.5);
+            \draw[dotted] (0, -1) -- (0, -1.5);
+
+            \fill (0, 0) circle (2pt) node[below left] {$0$};
+
+            \node at (1, 1) {$U'$};
+        \end{scope}
+
+        \node (A) at (-1, 0.5) {};
+        \node (B) at (1, 0.5) {};
+        \path[commutative diagrams/.cd, every arrow, every label]
+            (A) edge[bend left] node {$\phi|_{U'}$} (B);
+
+        \begin{scope}[xshift=3cm]
+            \draw (-1, 0) -- (1, 0);
+
+            \draw[dotted] (1, 0) -- (1.5, 0);
+            \draw[dotted] (-1, 0) -- (-1.5, 0);
+
+            \fill (0, 0) circle (2pt) node[below] {$\phi(0)$};
+
+            \node at (-1, 1) {$V'$};
+        \end{scope}
+    \end{drawing}
+    
+    On one hand, $U'$ is star-shaped (with all line segments to the origin) so it is a connected space.
+    The homeomorphism $\phi|_{U'}$ preserves connectedness, therefore $V' \seq \R^1$ must be an open interval.
+    On the other hand, $U' \setminus \{0\}$ is an open subset with four connected components---namely $\{\pm x > 0\} \cap U$ and $\{\pm y > 0\} \cap U$.
+    Restricting $\phi$ gives a diffeomorphism to
+    \[
+        \phi(U' \setminus \{0\}) = \phi(U') \setminus \{\phi(0)\} = V' \setminus \{\phi(0)\}.
+    \]
+    However, removing a single point from an open interval leaves us with only two disjoint intervals, which make up its two connected components.
+    This is a contradiction since homeomorphisms preserve the number of connected components.
+\end{proof}
+
+\begin{pbox}[7 Exercise 1.1.8]
+    Prove that the paraboloid in $\R^3$, defined by $x^2 + y^2 - z^2 = a$, is a manifold if $a > 0$.
+\end{pbox}
+
+\begin{proof}
+    Define $f(x, y, z) = x^2 + y^2 - z^2$, so $f : \R^3 \to \R$ is a smooth function.
+    We claim that $a \ne 0$ is a regular value of $f$.
+    Suppose $p = (x, y, z) \in f^{-1}(a)$, then we have the Jacobian
+    \[
+        J_f(p) = \mat{2x & 2y & -2z}.
+    \]
+    Since $x^2 + y^2 - z^2 = a \ne 0$, then some component of $p$ must be nonzero.
+    In particular, the Jacobian has rank $1$, so $\dd{f}_p$ is surjective.
+    This means $a$ is a regular value of $f$, therefore the paraboloid $f^{-1}(a) \seq \R^3$ is a smooth manifold of dimension $2$.
+\end{proof}
+
+\begin{pbox}[]
+    Why doesn't $x^2 + y^2 - z^2 = 0$ define a manifold?
+\end{pbox}
+
+Note that when $a = 0$, the origin $0 \in f^{-1}(a)$ has Jacobian $J_f(0) = 0$.
+In particular, $a$ is not a regular value of $f$, so the above argument does not work to show $f^{-1}(0)$ is a manifold.
+We will prove more explicitly that it is not a manifold.
+
+\begin{proof}
+    Denote $X = f^{-1}(0) \seq \R^3$.
+    Consider the open subsets $V = \{z > 0\} \cap X$ of $X$ and $U = \R^2 \setminus\{0\}$ of $\R^2$.
+    There is a smooth surjection $U \to V$ defined by
+    \[
+        (x, y) \longmapsto \left(x, y, \sqrt{x^2 + y^2}\right).
+    \]
+    In fact, this is a diffeomorphism whose inverse is projection onto the first two components.
+    Assuming $X$ is a manifold, this provides a local parameterization for any point in $V$.
+    In particular, $X$ must be a manifold of dimension $2$.
+
+    Suppose $\phi : U \to V \seq \R^2$ is a local chart at $0 \in X$; without loss of generality, assume $U$ is the intersection of $X$ and a ball in $\R^3$ around the origin.
+    Since $f$ is a homogeneous polynomial (of degree $2$), we have $f(ap) = a^2f(p)$ for all $a \in \R$ and $p \in \R^3$, which implies that $X$ is closed under scalar multiplication.
+    It follows that $U$ is star-shaped (having all line segments to the origin) and therefore connected.
+    Since $\phi$ is a homeomorphism, $V$ is also connected.
+    
+    Removing the origin from $U$ disconnects the space, yielding the components $\{\pm z > 0\} \cap U$.
+    But removing $\phi(0)$ from the open set $V \seq \R^2$ results in a connected space (see Lemma 1 below).
+    This is a contradiction since $\phi$ restricts to a homeomorphism between these spaces, preserving the number of connected components.
+\end{proof}
+
+\begin{lemma}
+    If $U \seq \R^2$ is open connected and $x \in U$, then $U \setminus \{x\}$ is still connected.
+\end{lemma}
+
+\begin{proof}
+    Suppose not, then $U \setminus \{x\} = V \cup W$ for nonempty disjoint open subsets $V$ and $W$ of $U \setminus \{x\}$.
+    Since $U \setminus \{x\}$ is open in $U$, so are $V$ and $W$.
+    Since $U \seq \R^2$ is open, $B_r(x) \seq U$ for some radius $r > 0$.
+
+    If $B_r(x) \seq V \cup\{x\}$, then taking $V' = V \cup B_r(x)$ we can write $X = V' \cup W$, where $V'$ and $W$ are nonempty disjoint open subsets of $V$.
+    This is not possible since $X$ is connected.
+    By the same argument, $B_r(x)$ is also not contained in $W \cup \{x\}$.
+
+    It follows that $D = B_r(x) \setminus \{x\}$ contains points from both $V$ and $W$; say $v$ and $w$, respectively.
+    Since $D$ (a punctured disc) is path-connected, there is a path $\gamma : I \to D$ from $v$ to $w$.
+    Then $I = \gamma^{-1}(V) \cup \gamma^{-1}(W)$ is a decomposition of $I$ into two nonempty disjoint open subsets.
+    This is a contradiction since $I$ is connected.
+\end{proof}
+
+\newpage
+\begin{pbox}[8 Exercise 1.1.14]
+    If $f : X \to X'$ and $g : Y \to Y'$ are smooth maps, define a \textit{product map} $f \times g : X \times Y \to X' \times Y'$ by
+    \[
+        (f \times g)(x, y) = (f(x), g(y)).
+    \]
+    Show that $f \times g$ is smooth.
+\end{pbox}
+
+\begin{proof}
+    Say $X \seq \R^n$, $X' \seq \R^k$, $Y \seq \R^m$, and $Y' \seq \R^\ell$.
+    Given a point $(x, y) \in X \times Y$, choose smooth local extensions $F : U \to \R^k$ of $f$ at $x$ and $G : V \to \R^\ell$ of $g$ at $y$.
+    Then the product map $F \times G : U \times V \to \R^k \times \R^\ell$ is a smooth local extension of $f \times g$ at $(x, y)$, hence $f \times g$ is smooth.
+\end{proof}
+
+\begin{pbox}[9 Exercise 1.2.3]
+    Let $V$ be a vector subspace of $\R^N$.
+    Show that $T_x(V) = V$ if $x \in V$.
+\end{pbox}\
+
+\begin{proof}
+    Let $v_1, \dots, v_n \in V$ form a basis and define a parameterization $\phi : \R^M \to V$ in terms of basis vectors $e_i \mapsto v_i$.
+    This is indeed a diffeomorphism since it is linear and therefore smooth, with a smooth inverse $v_i \mapsto e_i$.
+    Given a point $x \in V$, let $y = \phi^{-1}(x) \in \R^M$.
+    Then the fact that $\phi$ is linear implies $\dd{\phi}_y = \phi : \R^M \to \R^N$.
+    Therefore, we compute the tangent space to be
+    \[
+        T_x(V) = \im\dd{\phi}_y = \im \phi = V.
+    \]
+\end{proof}
+
+\begin{pbox}[10 Exercise 1.2.6]
+    The tangent space to $S^1$ at a point $(a, b)$ is a one-dimensional subspace of $\R^2$.
+    Explicitly calculate the subspace in terms of $a$ and $b$.
+\end{pbox}
+
+The function $(\cos, \sin) : \R^1 \to \R^2$ defined by $x \mapsto (\cos x, \sin x)$ is a smooth surjection on $S^1$; choose $p \in \R^1$ such that $p \mapsto (a, b) \in S^1$.
+On the interval $U = (p - \pi, p + \pi) \seq \R^1$, this map restricts to an injection, denoted by $\phi : U \to V = S^1 \setminus\{(-a, -b)\}$.
+The inverse of $\phi$ is a smooth map $V \to U$ given by the appropriate branches of the inverse sine and cosine functions, hence $\phi$ is a diffeomorphism.
+
+We now compute the derivative of $\phi$ at $p$:
+\[
+    \dd{\phi}_{p}(x)
+        = \dd(\cos, \sin)_p(x)
+        = (-\sin, \cos)_p(x)
+        = (-\sin p, \cos p) \cdot x
+        = (-bx, ax).
+\]
+Hence, we have the tangent space
+\[
+    T_{(a, b)}(S^1)
+        = \im \dd{\phi}_{p}
+        = \{(-bx, ax) : x \in \R^1\}
+        = \operatorname{span}_\R\{-be_1 +  ae_2\}
+\]
+
+
+
+\begin{pbox}[\relax11 Exercise 1.2.8]
+    What is the tangent space to the paraboloid defined by $x^2 + y^2 - z^2 = a$ at $(\sqrt{a}, 0, 0)$, where ($a > 0$)?
+\end{pbox}
+
+Let $M = \{x^2 + y^2 - z^2 = a\} \seq \R^3$ be the manifold in question.
+Since $x^2 + y^2 = z^2 + a > 0$, there is a well-defined function $f : M \to \R^3$ where
+\[\textstyle
+    f(x, y, z)
+        = \left(\frac{x}{\sqrt{x^2 + y^2}}, \frac{y}{\sqrt{x^2 + y^2}}, z\right)
+        = \left(\frac{x}{\sqrt{z^2 + a}}, \frac{y}{\sqrt{z^2 + a}}, z\right).
+\]
+The first two components describe a unit vector in $\R^2$, which means we may consider this to be a smooth map $f : M \to N = S^1 \times \R^1$.
+In fact, this is a diffeomorphism with smooth inverse $g : S^1 \times \R^1 \to M$ defined by
+\[
+    g((u, v), z) = \left(u\sqrt{z^2 + a}, v\sqrt{z^2 + a}, z\right).
+\]
+Then at each point $p \in N$, the derivative $\dd{g}_p : T_{p}(N) \to T_{g(p)}(M)$ is an isomorphism of tangent spaces (Exercise 1.1.4).
+We compute the Jacobian matrix at $p = ((u, v), z)$ to be
+\[
+    J_g(p) = \mat{
+        \sqrt{z^2 + a} & 0 & \frac{uz}{\sqrt{z^2 + a}} \\
+        0 & \sqrt{z^2 + a} & \frac{vz}{\sqrt{z^2 + a}} \\
+        0 & 0 & 1
+    }.
+\]
+Moreover, (Textbook Exercise 1.2.9 and) Problem 10 give us
+\[
+    T_p(N)
+        = T_{((u, v), z)}(S^1 \times \R^1)
+        = T_{(u, v)}(S^1) \times T_z(\R^1)
+        = \operatorname{span}_\R\{-ve_1 + ue_2, e_3\}.
+\]
+Taking the image under $\dd{g}_p$ yields
+\[
+    T_{g(p)}(M)
+        = \im \dd{g}_p
+        = J_g(p) \cdot T_p(N)
+        = \operatorname{span}_\R\left\{
+            \mat{-v\sqrt{z^2 + a} \\ u\sqrt{z^2 + a} \\ 0},
+            \mat{\frac{uz}{\sqrt{z^2 + a}} \\ \frac{vz}{\sqrt{z^2 + a}} \\ 1}
+        \right\}.
+\]
+At the point $(\sqrt{a}, 0, 0) = g((1, 0), 0) \in M$, we have
+\[
+    T_{(\sqrt{a}, 0, 0)}(M) = \operatorname{span}_\R\left\{
+        \mat{-0\sqrt{0^2 + a} \\ 1\sqrt{0^2 + a} \\ 0},
+        \mat{\frac{1 \cdot 0}{\sqrt{0^2 + a}} \\ \frac{0 \cdot 0}{\sqrt{0^2 + a}} \\ 1}
+    \right\} = \operatorname{span}_\R\{e_2, e_3\} = 0 \times \R^2.
+\]
+
+
+\begin{pbox}[12 Exercise 1.2.10 \\ (a)]
+    Let $f : X \to X \times X$ be the mapping $f(x) = (x, x)$.
+    Check that $\dd{f}_x(v) = (v, v)$.
+\end{pbox}
+
+\begin{proof}
+    Suppose $X \seq \R^n$ and $L : \R^n \to \R^n \times \R^n = \R^{n + n}$ is the linear map defined on bases by $e_i \mapsto (e_i, e_i) = e_i + e_i'$, where $\{e_i' = e_{i+n}\}$ is the standard basis for the second copy of $\R^n$.
+    Then $f$ is simply the restriction of $L$ to $X$, so for all $x \in X$ its derivative is $\dd{f}_x = L$.
+    Hence, for all $v \in \R^n$, we indeed have $\dd{f}_x(v) = L(v) = (v, v)$.
+\end{proof}
+
+\begin{pbox}[(b)]
+    If $\Delta$ is the diagonal of $X \times X$, show that its tangent space $T_{(x, x)}(\Delta)$ is the diagonal of $T_x(X) \times T_x(X)$.
+\end{pbox}
+
+\begin{proof}
+    Note that $f : X \to \Delta$ from (a) is a diffeomorphism, whose inverse is projection onto either component, hence the derivative $\dd{f}_x : T_x(X) \to T_{(x, x)}(\Delta)$ is an isomorphism of tangent spaces.
+    Applying the result of (a), we find
+    \[
+        T_{(x, x)}(\Delta)
+            = \im \dd{f}_x
+            = \{(v, v) : v \in T_x(X)\},
+    \]
+    which is precisely the diagonal of $T_x(X) \times T_x(X)$.
+\end{proof}
+
+
+\end{document}

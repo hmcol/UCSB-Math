@@ -8,6 +8,7 @@
 \usepackage[shortlabels]{enumitem}
 
 \usepackage{suffix}
+\usetikzlibrary{decorations.pathmorphing}
 
 % Problem Box
 \setlength{\fboxsep}{4pt}
@@ -28,18 +29,25 @@
 
 
 % Document Formatting
+\newtheoremstyle{mythmstyle}% name of the style to be used
+  { }% measure of space to leave above the theorem. E.g.: 3pt
+  { }% measure of space to leave below the theorem. E.g.: 3pt
+  { }% name of font to use in the body of the theorem
+  { }% measure of space to indent
+  {\scshape}% name of head font
+  {.}% punctuation between head and body
+  { }% space after theorem head; " " = normal interword space
+  {\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}}% Manually specify head
+
 \theoremstyle{definition}
 \newtheorem{theorem}{Theorem}
 \newtheorem{corollary}{Corollary}
 \newtheorem{lemma}{Lemma}
 \newtheorem{proposition}{Proposition}
 
+
 % Math Formatting
-\newcommand{\ds}{\displaystyle}
 \newcommand{\isp}[1]{\quad\text{#1}\quad}
-\newcommand{\tc}[1]{, \qquad \text{#1}}
-\newcommand{\mc}[1]{, \qquad #1}
-\newcommand{\cfa}[1]{, \qquad \text{for all $#1$}}
 
 % mathbb
 \newcommand{\N}{\mathbb{N}}
@@ -53,6 +61,7 @@
 \newcommand{\BB}{\mathcal{B}}
 \newcommand{\CC}{\mathcal{C}}
 \newcommand{\DD}{\mathcal{D}}
+\newcommand{\OO}{\mathcal{O}}
 
 % Symbols
 
@@ -72,7 +81,12 @@
 
 \newcommand{\inc}{\hookrightarrow}
 \newcommand{\To}{\longrightarrow}
+\newcommand{\tto}{\rightrightarrows}
 \newcommand{\Mapsto}{\longmapsto}
+
+\newcommand{\nato}{\Rightarrow}
+\newcommand{\Nato}{\Longrightarrow}
+
 
 \newcommand{\eqby}[1]{\overset{\mathrm{(#1)}}{=}}
 
@@ -87,7 +101,7 @@
 
 
 \DeclareMathOperator{\dom}{dom}
-\DeclareMathOperator{\codom}{codom}
+\DeclareMathOperator{\cod}{cod}
 \newcommand{\op}{\mathrm{op}}
 
 
@@ -107,16 +121,22 @@
 
 
 \newcat{\Set}{Set}
+
 \newcat{\Top}{Top}
 \newcat{\Htpy}{Htpy}
+
+\newcat{\Mon}{Mon}
+\newcat{\CMon}{CMon}
 \newcat{\Grp}{Grp}
 \newcat{\Ab}{Ab}
+
 \newcat{\Ring}{Ring}
 \newcat{\CRing}{CRing}
 \newcat{\Mod}{\text{-}Mod}
 \newcat*{\Mod}{Mod}
 \newcat{\Vect}{\text{-}Vect}
 \newcat*{\Vect}{Vect}
+
 \newcat{\Cat}{Cat}
 \newcat{\CAT}{CAT}
 
@@ -243,8 +263,10 @@ Some categories.
         Category & Objects & Morphisms \\
         \hline
         $\Set$ & sets & functions \\
+        $(P, \leq)$ & elements of $P$ & relations in the partial order $\leq$ \\
         $\Top$ & topological spaces & continuous maps \\
         $\Htpy$ & topological spaces & homotopy classes of continuous maps \\
+        $\OO(X)$ & open subsets of $X$ & inclusions of subsets \\
         $\Grp$ & groups & group homomorphisms \\
         $\Ab$ & abelian groups & group homomorphisms \\
         $\Ring$ & rings & ring homomorphisms \\
@@ -378,7 +400,11 @@ These are dual notions in the sense that $c/\CC = (\CC^\op/c)^\op$ and $\CC/c = 
 A (\keyword{covariant}) \keyword{functor} $F : \CC \to \DD$ between categories is given by the following data:
 \begin{itemize}
     \item for each object $x \in \CC$, an object $F(x) = Fx \in \DD$;
+
+    equiv, a function $F_0 : \Ob(\CC) \to \Ob(\DD)$
     \item for each morphism $f \in \Mor_\CC(x, y)$, a morphism $F(f) = Ff \in \Mor_\DD(x, y)$;
+
+    equiv, a function $F_{x,y} : \CC(x, y) \to \DD(Fx, Fy)$
 \end{itemize}
 such that the following \keyword{functoriality axioms} hold:
 \begin{itemize}
@@ -396,6 +422,12 @@ There is a category $\CAT$ whose objects are locally small categories and whose 
 
 \sepline
 
+A \keyword{presheaf of sets} on a category $\CC$ is a functor $\CC^\op \to \Set$ (i.e., a contravariant functor $\CC \to \Set$).
+
+For a topological space $X$, a presheaf of sets on $X$ is a presheaf of sets on the category $\OO(X)$.
+
+\sepline
+
 Fix an object in a locally small category $c \in \CC$.
 
 We construct the following pair of covariant and contravariant \keyword{functors represented} by $c$:
@@ -406,14 +438,759 @@ We construct the following pair of covariant and contravariant \keyword{functors
         & \Mapsto \\
         y & \Mapsto & \CC(c, y)
     \end{tikzcd}
-    \hspace*{2cm}
+    \hspace{2cm}
     \begin{tikzcd}[row sep=tiny, column sep=tiny]
         \CC \ar[rr, "{\Mor(-, c)}"] && \DD \\
-        x \ar[dd, "f"'] & \Mapsto & \CC(x, c) \ar[dd, "f^*"] \\
+        x \ar[dd, "f"'] & \Mapsto & \CC(x, c)\\
         & \Mapsto \\
-        y & \Mapsto & \CC(y, c)
+        y & \Mapsto & \CC(y, c) \ar[uu, "f^*"'] 
     \end{tikzcd}
 \end{center}
 
+
+\sepline
+
+For any categories $\CC$ and $\DD$ there is a category $\CC \times \DD$ called their \keyword{product} with
+\begin{itemize}
+    \item objects are ordered pairs $(c, d)$ with $c \in \CC$ and $d \in \DD$;
+    
+    i.e., $\Ob(\CC \times \DD) = \Ob(\CC) \times \Ob(\DD)$
+    \item morphisms are ordered pairs $(f, g) : (c, d) \to (c', d')$ where $f : c \to c' \in \CC$ and $g : d \to d' \in \DD$.
+    
+    i.e., $\Mor_{\CC \times \DD}((c, d), (c', d')) = \Mor_{\CC}(c, c') \times \Mor_{\DD}(d, d')$
+
+    i.e., $\Mor(\CC \times \DD) = \Mor(\CC) \times \Mor(\DD)$
+\end{itemize}
+
+\sepline
+
+A \keyword{bifunctor} is a functor whose domain is a product category, e.g., $F : \AA \times \BB \to \CC$.
+For each $a \in \AA$ and $b \in \BB$ there are functors
+\begin{center}
+    \begin{tikzcd}[row sep=tiny, column sep=tiny]
+        \BB \ar[rr, "{F(a, -)}"] && \CC \\
+        b \ar[dd, "g"'] & \Mapsto & F(a, b) \ar[dd, "{F(1_a, g)}"] \\
+        & \Mapsto \\
+        b' & \Mapsto & F(a, b')
+    \end{tikzcd}
+    \hspace{2cm}
+    \begin{tikzcd}[row sep=tiny, column sep=tiny]
+        \AA \ar[rr, "{F(-, b)}"] && \CC \\
+        a \ar[dd, "f"'] & \Mapsto & F(a, b) \ar[dd, "{F(f, 1_b)}"] \\
+        & \Mapsto \\
+        a' & \Mapsto & F(a', b)
+    \end{tikzcd}
+\end{center}
+
+
+\sepline
+
+If $\CC$ is locally small, there is a \keyword{two-sided represented functor}
+\[
+    \Mor_\CC(-, -) : \CC^\op \times \CC \to \Set.
+\]
+
+\sepline
+
+Given functors $F : \AA \to \CC$ and $G : \BB \to \CC$ there is a \keyword{comma category} $F \downarrow G$ with
+\begin{itemize}
+    \item objects are triples $(a \in \AA, b \in \BB, f: Fa \to Gb \in \CC)$;
+    \item morphisms $(a, b, f) \to (a', b', f')$ are pairs $(h : a \to a', k : b \to b')$ such that the following diagram commutes:
+    \begin{cd}
+        Fa \dar["Fh"'] \rar["f"] & Gb \dar["Gk"] \\
+        Fa' \rar["f'"'] & Gb'
+    \end{cd}
+\end{itemize}
+
+There are projection functors $\dom : F \downarrow G \to \AA$ and $\cod : F \downarrow G \to \BB$.
+
+\begin{center}
+    \begin{tikzcd}[row sep=tiny, column sep=tiny]
+        F \downarrow G \ar[rr, "\dom"] && \AA \\
+        (a, b, f) \ar[dd, "{(h, k)}"'] & \Mapsto & a \ar[dd, "h"] \\
+        & \Mapsto \\
+        (a', b', f') & \Mapsto & a'
+    \end{tikzcd}
+    \hspace{2cm}
+    \begin{tikzcd}[row sep=tiny, column sep=tiny]
+        F \downarrow G \ar[rr, "\cod"] && \BB \\
+        (a, b, f) \ar[dd, "{(h, k)}"'] & \Mapsto & b \ar[dd, "k"] \\
+        & \Mapsto \\
+        (a', b', f') & \Mapsto & b'
+    \end{tikzcd}
+\end{center}
+
+\sepline
+
+Can construct slice categories $\CC/c$ and $c/\CC$ as special cases of comma categories.
+
+\sepline
+
+Given functors $F, G : \CC \tto \DD$, a \keyword{natural transformation} $\alpha : F \nato G$ is given by the data of a morphism $\alpha_x : Fx \to Gx \in \DD$ for each $x \in \CC$, the collection of which are called the \keyword{components} of $\alpha$, such that for all $f : x \to y \in \CC$ the following diagram in $\DD$ commutes:
+\begin{cd}
+    Fx \dar["Ff"'] \rar["\alpha_x"] & Gx \dar["Gf"] \\
+    Fy \rar["\alpha_y"'] & Gy
+\end{cd}
+
+In the case that $\alpha$ is a natural transformation from $F$ to $G$. we express this fact with the following diagram:
+\begin{cd}
+    \CC
+        \rar[bend left=50, "F" name=F]
+        \rar[bend right=40, "G"' name=G]
+        \ar[from=F, to=G, shorten=1ex, Rightarrow, "\alpha"]
+    & \DD
+\end{cd}
+
+We say that $\alpha$ is a \keyword{natural isomorphism} if each component $\alpha_x : Fx \to Gx$ is an isomorphism in $\DD$; sometimes write this as $\alpha : F \isom G$.
+
+\sepline
+
+Consider the opposite map $(-)^\op : \Grp \to \Grp$; this is a covariant endofunctor.
+A homomorphism $\phi : G \to H$ induces a homomorphism $\phi^\op : G^\op \to H^\op$, which behaves the same as $\phi$ on elements.
+Moreover, this functor is naturally isomorphic to the identity.
+For each group $G \in \Grp$ define the map $\eta_G : G \to G^\op$ sending $g \in G$ to its inverse  $g^{-1} \in G^\op$.
+This is not an automorphism of $G$ because taking the inverse does not in general commute with multiplication---in fact, it reverses multiplication.
+In other words, $\eta_G$ defines an isomorphism $G \to G^\op$.
+And given any homomorphism $\phi : G \to H$, thew following diagram commutes:
+\begin{cd}
+    G \dar["\phi"'] \rar["\eta_G"] & G^\op \dar["\phi^\op"] \\
+    H \rar["\eta_H"'] & H^\op
+\end{cd}
+Hence, we have a natural isomorphism
+\begin{cd}
+    \Grp
+        \rar[bend left=40, "1" name=U]
+        \rar[bend right=30, "(-)^\op"' name=L]
+        \ar[from=U, to=L, shorten=1ex, Rightarrow, "\eta"]
+    & \Grp
+\end{cd}
+
+\sepline
+
+Fix a locally small category $\CC$.
+
+Let $f : x \to y$ and $h : z \to w$ be morphisms.
+Post-composition by $h$ and precomposition by $f$ make the following diagram commute:
+\begin{cd}
+    \CC(y, z) \dar["- \circ f"'] \rar["h \circ -"] & \CC(y, w) \dar["- \circ f"] \\
+    \CC(x, z) \rar["h \circ -"'] & \CC(x, w)
+\end{cd}
+The commutativity of this diagram follows from the associativity of composition, which implies the commutativity of the following diagram for any $g : y \to z$:
+\begin{cd}
+    x \rar["f" description]
+        \ar[rr, bend left, "g \circ f" description]
+        \ar[rrr, bend left=40, "h \circ (g \circ f)" description]
+        \ar[rrr, bend right=40, "(h \circ g) \circ f" description]
+    & y \rar["g" description] 
+        \ar[rr, bend right, "h \circ g" description]
+    & z \rar["h" description]
+    & w
+\end{cd}
+
+We therefore obtain natural transformations
+\[
+    h_* : \CC(-, z) \Nato \CC(-, w) \isp{and} f^* : \CC(y, -) \Nato \CC(x, -).
+\]
+
+\sepline
+
+Consider the category of sets $\Set$.
+
+For $A, B \in \Set$, recall that $A \times B$ is their cartesian product, $A \sqcup B$ their disjoint union, and $A^B$ the set of functions from $B$ to $A$.
+These define functors
+\begin{align*}
+    \Set \times \Set &\To \Set & \Set \times \Set &\To \Set & \Set^\op \times \Set &\To \Set \\
+    (A, B) &\Mapsto A \times B & (A, B) &\Mapsto A \sqcup B & (A, B) &\Mapsto B^A
+\end{align*}
+(The third is the two-sided represented functor $\Set(-, -)$ previously discussed.)
+Then we have the following natural isomorphisms:
+\begin{align*}
+    A \times (B \sqcup C) &\isom (A \times B) \sqcup (A \times C)   & (A \times B)^C &\isom A^C \times B^C \\
+    A^{B \sqcup C} &\isom A^B \times A^C 
+        & (A^B)^C &\isom A^{B \times C}
+\end{align*}
+
+\sepline
+
+Let $F : \AA \to \CC$ and $G : \BB \to \CC$ be functors.
+Consider the comma category $F \downarrow G$.
+There is a natural transformation $\alpha : F\dom \nato G\cod$ with components
+\[
+    \alpha_{(a, b, f)} = f : Fa \To Gb.
+\]
+The naturally is immediate from the construction of the comma category, hence the following diagram commutes:
+\begin{cd}[row sep=small, column sep=tiny]
+    & F \downarrow G \dlar["\dom"'] \drar["\cod"]\\
+    \AA \drar["F"'] \ar[rr, shorten=1.5em, Rightarrow, "\alpha"] & & \BB \dlar["G"] \\
+    & \CC
+\end{cd}
+
+\sepline
+
+An \keyword{equivalence of categories} is given by
+\begin{itemize}
+    \item functors $F : \CC \to \DD$ and $G : \DD \to \CC$;
+    \item natural isomorphisms $\eta : 1_\CC \isom GF$ and $\eps : FG \isom 1_\DD$.
+\end{itemize}
+Say $\CC$ and $\DD$ are \keyword{equivalent}, written $\CC \simeq \DD$.
+
+The notion of category equivalence is an equivalence relation.
+
+\sepline
+
+A functor $F : \CC \to \DD$ is called
+\begin{itemize}
+    \item \keyword{full} if each map $F_{x,y} : \CC(x, y) \to \DD(Fx, Fy)$ is surjective (i.e., ``surjective on morphisms'');
+    \item \keyword{faithful} if each map $F_{x,y} : \CC(x, y) \to \DD(Fx, Fy)$ is injective (i.e., ``injective on morphisms'');
+    \item \keyword{essentially surjective on objects} if each $y \in \DD$ is isomorphic to some $Fx$.
+\end{itemize}
+
+An \keyword{embedding} is a faithful functor which is injective on objects.
+
+A \keyword{fully faithful} functor is both full and faithful.
+
+A \keyword{full embedding} is a fully faithful functor which is injective on objects, defining a \keyword{full subcategory} of the codomain.
+
+\sepline
+
+
+
+\begin{theorem}[equiv]
+    A functor defining an equivalence of categories is full, faithful, and essentially surjective on objects.
+    With axiom of choice, any functor with these properties defines an equivalence of categories.
+\end{theorem}
+
+\begin{lemma}
+    Any morphism $f : x \to y$ and fixed isomorphisms $x \isom x'$ and $y \isom y'$ determine a unique morphism $f' : x' \to y'$ so that any of---or, equivalently, all of---the following four diagrams commute:
+    \begin{center}
+        \begin{tikzcd}
+            x \dar["f"'] \ar[from=r, tail, two heads] & x' \dar["f'"] \\
+            y \rar[tail, two heads] & y'
+        \end{tikzcd}
+        \hspace{1em}
+        \begin{tikzcd}
+            x \dar["f"'] \rar["\isom"] & x' \dar["f'"] \\
+            y \rar["\isom"'] & y'
+        \end{tikzcd}
+        \hspace{1em}
+        \begin{tikzcd}
+            x \dar["f"'] \ar[from=r, "\sim"'] & x' \dar["f'"] \\
+            y \ar[from=r, "\sim"] & y'
+        \end{tikzcd}
+        \hspace{1em}
+        \begin{tikzcd}
+            x \dar["f"'] \rar["\isom"'] & x' \dar["f'"] \\
+            y \ar[from=r, "\isom"] & y'
+        \end{tikzcd}
+    \end{center}
+\end{lemma}
+
+\begin{proof}[Proof of Theorem]
+    Let $F : \CC \to \DD$ be a functor.
+
+    Suppose $F$ defines an equivalence of categories; let $G : \DD \to \CC$ be an inverse functor with natural isomorphisms $\eta : 1_\CC \isom GF$ and $\eps : GF \isom 1_\DD$.
+
+    (ess. surj.) 
+    Given $y \in \DD$, the natural isomorphism $\eps$ has component $\eps_y : FGy \isom y$.
+    
+    (faithful)
+    Suppose $f, g \in \CC(x, y)$ such that $Ff = Fg$.
+    Then $GFf = GFg$, so both $f$ and $g$ make the following diagram commute:
+    \begin{cd}
+        x \dar[dashed] \rar["\eta_x"] & GFx \dar["GFf = GFg"] \\
+        y \rar["\eta_y"'] & GFy
+    \end{cd}
+    By the lemma, we must have $f = g$.
+        
+    (full) Let $g \in \DD(Fx, Fy)$ be given.
+    By the lemma, there is a unique $f \in \CC(x, y)$ such that the following diagram commutes:
+    \begin{cd}
+        x \dar["f"'] \rar["\eta_x"] & GFx \dar["Gg"] \\
+        y \rar["\eta_y"'] & GFy
+    \end{cd}
+    But then the right arrow can be filled by $GFf$, i.e.,
+    \begin{cd}
+        x \dar["f"'] \rar["\eta_x"] & GFx \dar["GFf"] \\
+        y \rar["\eta_y"'] & GFy
+    \end{cd}
+    also commutes.
+    By the lemma, we must have $Gg = GFf$.
+    Applying the faithfulness result to $G$, we must therefore have $g = Ff$.
+
+    Hence, $F$ is fully faithful and essentially surjective.
+
+    Now suppose $F$ is fully faithful and essentially surjective.
+    We will construct an functor $G : \DD \to \CC$ inverse to $F$.
+    For each object $y \in \DD$, the fact that $F$ is essentially surjective means we can choose an object $Gx \in \CC$ and isomorphism $\eps_x : FGx \isom x$.
+    Then we have bijections
+    \begin{cd}[column sep=huge]
+        \CC(Gx, Gy) \rar["F_{Gx, Gy}"] & \DD(FGx, FGy) \rar["\eps_y \circ - \circ \eps_x^{-1}"] & \DD(x, y)
+    \end{cd}
+    Define $G_{x, y}$ as the inverse of this map.
+    We now check the functorality axioms of $G$.
+    First,
+    \[
+        \eps_x \circ F1_{Gx} \circ \eps_x^{-1}
+            = \eps_x \circ 1_{FGx} \circ \eps_x^{-1}
+            = \eps_x \circ \eps_x^{-1}
+            = 1_x,
+    \]
+    which implies $G1_x = 1_{Gx}$.
+    Given $f : x \to y$ and $g : y \to z$ are morphisms in $\DD$, $G(g \circ f)$ is the unique morphism $Gx \to Gz$ in $\CC$ such that
+    \[
+        \eps_z \circ FG(g \circ f) \circ \eps_x^{-1} = g \circ f.
+    \]
+    But $Gf$ and $Gg$ are the unique morphisms such that
+    \[
+        \eps_y \circ FGf \circ \eps_x^{-1} = f
+        \isp{and} 
+        \eps_z \circ FGg \circ \eps_y^{-1} = g.
+    \]
+    Then
+    \begin{align*}
+        g \circ f
+            &= (\eps_z \circ FGg \circ \eps_y^{-1}) \circ (\eps_y \circ FGf \circ \eps_x^{-1}) \\
+            &= \eps_z \circ FGg \circ FGf \circ \eps_x^{-1} \\
+            &= \eps_z \circ F(Gg \circ Gf) \circ \eps_x^{-1},
+    \end{align*}
+    hence $G(g \circ f) = Gg \circ Gf$.
+    This shows $G$ is indeed a functor.
+
+    By the construction of $G$, we immediately see that the $\eps_x$'s define the components of a natural isomorphism $\eps : FG \nato 1_\DD$; in particular, the following diagram commutes:
+    \begin{cd}
+        FGx \dar["FGf"'] \rar["\eps_x"] & x \dar["f"] \\
+        FGy \rar["\eps_y"'] & y
+    \end{cd}
+    We now need a natural isomorphism $\eta : 1_\CC \nato GF$.
+    There is a bijection
+    \begin{cd}[column sep=huge]
+        \CC(x, GFx) \rar["F_{x, GFx}"] & \DD(Fx, FGFx),
+    \end{cd}
+    so we can define $\eta_x$ to be the inverse image of $\eps_{Fx}^{-1}$ under this map.
+    We first check that $\eta_x$ is an isomorphism.
+    Let $\alpha$ be the inverse image of $\eps_{Fx}$ under $F_{GFx, x}$.
+    Then
+    \[
+        F(\alpha \circ \eta_x)
+            = F\alpha \circ F\eta_x
+            = \eps_{Fx} \circ \eps_{Fx}^{-1}
+            = 1_{Fx}
+            = F1_x
+    \]
+    and
+    \[
+        F(\eta_x \circ \alpha)
+            = F\eta_x \circ F\alpha
+            = \eps_{Fx}^{-1} \circ \eps_{Fx}
+            = 1_{FGFx}
+            = F1_{GFx}.
+    \]
+    But as $F$ is injective on morphisms, we deduce that
+    \[
+        \alpha \circ \eta_x = 1_x \isp{and} \eta_x \circ \alpha = 1_{GFx},
+    \]
+    hence $\eta_x$ is an isomorphism with $\eta_x^{-1} = \alpha$.
+    Lastly, we check the naturality of $\eta$, which means checking the commutativity of the following diagram in $\CC$:
+    \begin{cd}
+        x \dar["f"'] \rar["\eta_x"] & GFx \dar["GFf"] \\
+        y \rar["\eta_y"'] & GFy
+    \end{cd}
+    Taking this diagram under $F$, we obtain the following diagram in $\DD$:
+    \begin{cd}[column sep=huge]
+        Fx \dar["Ff"'] \rar["F\eta_x = \eps_{Fx}^{-1}"] & FGFx \dar["FGFf"] \\
+        Fy \rar["F\eta_y = \eps_{Fy}^{-1}"'] & FGFy
+    \end{cd}
+    This is the naturality diagram for $\eps$ at $Ff$ and therefore commutes, i.e.,
+    \[
+        F(\eta_y \circ f)
+            = F\eta_y \circ Ff
+            = FGFf \circ F\eta_x
+            = F(GFf \circ \eta_x).
+    \]
+    Since $F$ faithful, it follows that $\eta_y \circ f = GFf \circ \eta_x$.
+    In other words, the naturality diagram for $\eta$ at $f$ commutes.
+    Hence, $\eta$ is a natural isomorphism and we conclude that $G$ is an inverse functor of $F$, which in turn defines an equivalence of categories.
+\end{proof}
+
+\sepline
+
+The following things are invariant under categorical equivalence:
+\begin{itemize}
+    \item If a category is locally small, any equivalent category is also locally small.
+    \item If a category is a groupoid, any equivalent category is also a groupoid.
+    \item If $\CC \simeq \DD$ then $\CC^\op \simeq \DD^\op$.
+    \item If $\CC \simeq \CC'$ and $\DD \simeq \DD'$ then $\CC \times \DD \simeq \CC' \times \DD'$.
+    \item A morphism in a category is an isomorphism if and only if its image under an equivalence is an isomorphism.
+\end{itemize}
+
+
+\sepline
+
+A \keyword{monoidal category} is a category $\CC$ equipped with
+\begin{itemize}
+    \item A (bi-)functor $\tensor : \CC \times \CC \to \CC$ called the \keyword{monoidal product} (or \keyword{tensor product});
+    \item A distinguished object $1 \in \CC$ called the \keyword{unit object} (or \keyword{tensor unit});
+    \item A natural isomorphism
+    \[
+        \alpha : ((- \tensor -) \tensor -) \Nato (- \tensor (- \tensor -))
+    \]
+    with components $\alpha_{x,y,z} : (x \tensor y) \tensor z \to x \tensor (y \tensor z)$ called the \keyword{associator};
+    \item A natural isomorphism
+    \[
+        \lambda : (1 \tensor -) \Nato 1_\CC
+    \]
+    with components $\lambda_x : 1 \tensor x \to x$ called the \keyword{left-unitor};
+    \item A natural isomorphism
+    \[
+        \rho : (- \tensor 1) \Nato 1_\CC
+    \]
+    with components $\rho_x : x \tensor 1 \to x$ called the \keyword{right-unitor};
+\end{itemize}
+such that the following diagrams commute:
+
+For each pair $(x, y) \in \CC \times \CC$ the \keyword{triangle indetity}:
+\begin{cd}[column sep=tiny]
+    (x \tensor 1) \tensor y \drar["\rho_x \tensor 1_y"']
+        \ar[rr, "\alpha_{x,1,y}"]
+    && x \tensor (1 \tensor y) \dlar["1_x \tensor \lambda_y"]
+    \\
+    & x \tensor y
+\end{cd}
+
+
+For each quadruple $(x, y, z, w) \in \CC \times \CC \times \CC \times \CC$ the \keyword{pentagon identity}:
+\begin{cd}[column sep=-2em]
+    &[-3em]&
+        (x \tensor y) \tensor (z \tensor w)
+        \ar[drr, "\alpha_{x,y,z\tensor w}"]
+    \\
+        ((x \tensor y) \tensor z) \tensor w
+            \ar[urr, "\alpha_{x\tensor y,z,w}"]
+            \ar[dr, "\alpha_{x,y,z} \tensor 1_w"']
+    &&&&[-3em] 
+        x \tensor (y \tensor (z \tensor w))
+    \\[2ex]
+    &
+        (x \tensor (y \tensor z)) \tensor w
+            \ar[rr, "\alpha_{x,y\tensor z,w}"']
+    &&
+        x \tensor ((y \tensor z) \tensor w)
+            \ar[ur, "1_x \tensor \alpha_{y,z,w}"']
+\end{cd}
+
+A monoidal category is called \keyword{strict} if the associator and unitors are identity morphisms (in which case the identities hold automatically).
+
+\sepline
+
+In a monoidal category, the following additional triangle identities hold:
+\begin{center}
+    \begin{tikzcd}[column sep=small]
+        (1 \tensor x) \tensor y 
+            \ar[rr, "\alpha_{1, x, y}"]
+            \drar["\lambda_x \tensor 1_y"']
+        && 1 \tensor (x \tensor y)
+            \dlar["\lambda_{x \tensor y}"]
+        \\
+        & x \tensor y
+    \end{tikzcd}
+    \hspace{2em}
+    \begin{tikzcd}[column sep=small]
+        (x \tensor y) \tensor 1 
+            \ar[rr, "\alpha_{x, y, 1}"]
+            \drar["\rho_{x \tensor y}"']
+        && x \tensor (y \tensor 1)
+            \dlar["1_x \tensor \rho_y"]
+        \\
+        & x \tensor y
+    \end{tikzcd}
+\end{center}
+
+
+
+\begin{proof}
+    (largely taken from nlab, which references MacLane and Kelly)
+
+    Consider the following diagram in $\CC$:
+    \begin{cd}[row sep=large, cramped]
+        ((1 \tensor 1) \tensor x) \tensor y
+            \rar["\alpha_{1, 1, x} \tensor 1_y"]
+            \drar["(\rho_1 \tensor 1_x) \tensor 1_y"']
+        & (1 \tensor (1 \tensor x)) \tensor y
+            \rar["\alpha_{1, 1 \tensor x, y}"]
+            \dar["(1_1 \tensor \lambda_x) \tensor 1_y"]
+        & 1 \tensor ((1 \tensor x) \tensor y)
+            \rar["1_1 \tensor \alpha_{1, x, y}"]
+            \dar["1_1 \tensor (\lambda_x \tensor 1_y)"']
+        & 1 \tensor (1 \tensor (x \tensor y))
+            \dlar[dashed]
+        \\
+        & (1 \tensor x) \tensor y 
+            \rar["\alpha_{1, x, y}"']
+        & 1 \tensor (x \tensor y)
+    \end{cd}
+    The left triangle commutes as the image of the triangle identity for $(1, x)$ under the functor $- \tensor y$.
+    The center square commutes by the naturality diagram of $\alpha_{1,-,y}$ at the morphism $\lambda_x$.
+    The dashed arrow is obtained by simply following any suitable path in the diagram, as all the arrows are isomorphisms.
+    We claim that the dashed arrow is in fact $1_1 \tensor \lambda_{x \tensor y}$.
+
+    Since all the arrows are isomorphisms, it suffices to check that the morphism commutes with any other path in the diagram.
+    In particular, we will check that it makes the perimeter commute.
+    We will use the following diagram:
+    \begin{cd}[row sep=large, cramped]
+        & (1 \tensor (1 \tensor x)) \tensor y
+            \rar["\alpha_{1, 1 \tensor x, y}"]
+        & 1 \tensor ((1 \tensor x) \tensor y)
+            \drar["1_1 \tensor \alpha_{1, x, y}"]
+        \\
+        ((1 \tensor 1) \tensor x) \tensor y
+            \urar["\alpha_{1, 1, x} \tensor 1_y"]
+            \ar[rr, "\alpha_{1 \tensor 1, x, y}"]
+            \drar["(\rho_1 \tensor 1_x) \tensor 1_y"']
+        && (1 \tensor 1) \tensor (x \tensor y)
+            \rar["\alpha_{1, 1, x \tensor y}"]
+            \dar["\rho_1 \tensor 1_{x \tensor y}"']
+        & 1 \tensor (1 \tensor (x \tensor y))
+            \dlar["1_1 \tensor \lambda_{x \tensor y}"]
+        \\
+        & (1 \tensor x) \tensor y 
+            \rar["\alpha_{1, x, y}"']
+        & 1 \tensor (x \tensor y)
+    \end{cd}
+    The top pentagon is the pentagon identity for $(1, 1, x, y)$, the bottom left square is the naturality of $\alpha_{-, x, y}$ at the morphism $\rho_1$ (tensor functorality gives $1_x \tensor 1_y = 1_{x \tensor y}$), and the bottom right triangle is the triangle identity for $(1, x \tensor y)$.
+    Hence, the entire diagram commutes, which implies that $1_1 \tensor \lambda_{x \tensor y}$ makes the original diagram commute at the dashed arrow.
+    In particular, the right triangle commutes:
+    \begin{cd}[column sep=tiny]
+        1 \tensor ((1 \tensor x) \tensor y)
+            \ar[rr, "1_1 \tensor \alpha_{1, x, y}"]
+            \drar["1_1 \tensor (\lambda_x \tensor 1_y)"']
+        && 1 \tensor (1 \tensor (x \tensor y))
+            \dlar["1_1 \tensor \lambda_{x \tensor y}"]
+        \\
+        &1 \tensor (x \tensor y)
+    \end{cd}
+    But this is simply the desired diagram mapped under $1 \tensor -$, which is an equivalence under the natural isomorphism $\lambda$.
+    Either via the equivalence or by mapping the diagram under $\lambda$, we deduce that the second triangle identity holds.
+    
+    It is similar to prove the third triangle identity holds.
+\end{proof}
+
+\sepline
+
+In a monoidal category, $\lambda_1 = \rho_1 : 1 \tensor 1 \to 1$.
+
+\begin{proof}
+    Since $- \tensor 1$ is an equivalence, it suffices to show $\lambda_1 \tensor 1_1 = \rho_1 \tensor 1_1$.
+    The naturality of $\lambda$ at $\lambda_1$ some morphism gives the following commutative diagram:
+    \begin{cd}
+        1 \tensor(1 \tensor 1)
+            \rar["\lambda_{1 \tensor 1}"]
+            \dar["1_1 \tensor \lambda_1"']
+        & 1 \tensor 1
+            \dar["\lambda_1"] \\
+        1 \tensor 1
+            \rar["\lambda_1"']
+            \urar[dashed, no head]
+        & 1
+    \end{cd}
+    The bottom right triangle is simply $\lambda_1^{-1} \circ \lambda_1 = 1_{1 \tensor 1}$, so in fact we have $1_1 \tensor \lambda_1 = \lambda_{1 \tensor 1}$.
+    Then the second and first triangle identity on $(1, 1)$ give
+    \[
+        \lambda_1 \tensor 1_1
+            = \lambda_{1 \tensor 1} \circ \alpha_{1,1,1}
+            = \rho_1 \tensor 1_1.
+    \]
+\end{proof}
+
+\sepline
+
+A \keyword{braided monoidal category} is a monoidal category, which is also equipped with 
+\begin{itemize}
+    \item A natural isomorphism $\gamma$ with components $\gamma_{x,y} : x \tensor y \to y \tensor x$ called the \keyword{braiding};
+\end{itemize}
+such that the \keyword{hexagon identities} holds, i.e., the following diagrams commute:
+\begin{cd}[column sep=large]
+    (x \tensor y) \tensor z
+        \dar["\gamma_{x,y} \tensor 1_z"']
+        \rar["\alpha_{x,y,z}"]
+    & x \tensor (y \tensor z)
+        \rar["\gamma_{x,y\tensor z}"]
+    & (y \tensor z) \tensor x
+        \dar["\alpha_{y,z,x}"] \\
+    (y \tensor x) \tensor z
+        \rar["\alpha_{y,x,z}"']
+    & y \tensor (x \tensor z)
+        \rar["1_y \tensor \gamma_{x,z}"]
+    & y \tensor (z \tensor x)
+\end{cd}
+\begin{cd}[column sep=large]
+    (x \tensor y) \tensor z
+        \dar["\gamma_{x,y} \tensor 1_z"']
+        \rar["\alpha_{x,y,z}"]
+    & x \tensor (y \tensor z)
+        \rar["\gamma_{x,y\tensor z}"]
+    & (y \tensor z) \tensor x
+        \dar["\alpha_{y,z,x}"] \\
+    (y \tensor x) \tensor z
+        \rar["\alpha_{y,x,z}"']
+    & y \tensor (x \tensor z)
+        \rar["1_y \tensor \gamma_{x,z}"]
+    & y \tensor (z \tensor x)
+\end{cd}
+
+\sepline
+
+Can maybe prove without symmetric?
+\begin{cd}[column sep=small]
+    x \tensor 1 \drar["\rho_x"'] \ar[rr, "\gamma_{x,1}"] && 1 \tensor x \dlar["\lambda_x"] \\
+    & x
+\end{cd}
+
+\sepline
+
+A \keyword{symmetric monoidal category} is a braided monoidal category in which the braiding satisfies the following additional triangle identity:
+\begin{cd}[column sep=small]
+    x \tensor y \drar["\gamma_{x,y}"'] \ar[rr, "1_{x\tensor y}"] && x \tensor y  \\
+    & y \tensor x \urar["\gamma_{y,x}"']
+\end{cd}
+
+\sepline
+
+A \keyword{strict monoidal category} is a monoidal category in which the left and right unitors are all identity morphisms (up to ambient structure morphisms. see nlab.)
+
+A \keyword{cartesian monoidal category} is a monoidal category in which the monoidal product is given by the usual category theoretic product.
+
+\sepline
+
+Let $\CC$ be a monoidal category with product $\tensor$ and identity $I$.
+
+A \keyword{monoid} (or \keyword{monoid object}) in $\CC$ (or \keyword{monoid internal to} $\CC$) consists of data:
+\begin{itemize}
+    \item an object $M \in \CC$;
+    \item a morphism $\mu : M \tensor M \to M$ called \emph{multiplication};
+    \item a morphism $\eta : I \to M$ called the \emph{unit};
+\end{itemize}
+such that
+\begin{itemize}
+    \item the \keyword{associative law} holds:
+    \begin{cd}[column sep=0pt, row sep=small]
+        (M \tensor M) \tensor M
+            \drar["\mu \tensor 1_M"']
+            \ar[rr, "\alpha_{M, M, M}"]
+        && M \tensor (M \tensor M)
+            \ar[rr, "\mu"]
+        && M \tensor M
+            \dlar["\mu"]
+        \\
+        & M \tensor M
+            \ar[rr, "\mu"']
+        && M
+    \end{cd}
+    \item the \keyword{left and right unit laws} hold:
+    \begin{cd}
+        I \tensor M
+            \drar["\lambda_M"']
+            \rar["\eta \tensor 1_M"]
+        & M \tensor M
+            \dar["\mu"]
+        & M \tensor 1
+            \dlar["\rho_M"]
+            \lar["1_M \tensor \eta"']
+        \\
+        & M
+    \end{cd}
+\end{itemize}
+
+\sepline
+
+Let $\CC$ be a symmetric monoidal category with braiding $\gamma$.
+
+A \keyword{commutative monoid} in $\CC$ is a monoid $M \in \CC$ such that
+\begin{itemize}
+    \item \keyword{commutativity} holds:
+    \begin{cd}[column sep=tiny]
+        M \tensor M
+            \drar["\mu"']
+            \ar[rr, "\gamma_{M, M}"]
+        && M \tensor M
+            \dlar["\mu"]
+        \\
+        & M
+    \end{cd}
+\end{itemize}
+
+\sepline
+
+Let $M_1$ and $M_2$ be monoids in a monoidal category $\CC$.
+
+A \keyword{monoid homomorphism} $f : M_1 \to M_2$ consists of 
+\begin{itemize}
+    \item a morphism $f : M_1 \to M_2 \in \CC$
+\end{itemize}
+such that
+\begin{itemize}
+    \item $f$ commutes with multiplication:
+    \begin{cd}
+        M_1 \tensor M_1
+            \dar["\mu_1"']
+            \rar["f \tensor f"]
+        & M_2 \tensor M_2
+            \dar["\mu_2"]
+        \\
+        M_1
+            \rar["f"']
+        & M_2
+    \end{cd}
+    \item $f$ commutes with the identity:
+    \begin{cd}[column sep=small]
+        & I
+            \dlar["\eta_1"']
+            \drar["\eta_2"]
+        \\
+        M_1
+            \ar[rr, "f"']
+        && M_2
+    \end{cd}
+\end{itemize}
+
+\sepline
+
+If $\CC$ is a monoidal category, the \keyword{category of monoids} in $\CC$, denoted $\Mon(\CC)$, is the category whose objects are monoids in $\CC$ and morphisms are monoid homomorphisms.
+
+If $\CC$ is a symmetric monoidal category, the \keyword{category of commutative monoids} in $\CC$, denoted $\CMon(\CC)$, is the category whose objects are commutative monoids in $\CC$ and morphisms are monoid homomorphisms.
+
+\sepline
+
+Let $\CC$ be a category.
+
+A \keyword{diagram} in $\CC$ is a functor $J \to \CC$, where $J$ is some convenient sort of category.
+More generally, we may let $J$ be any small category.
+In most cases, $J$ is a free category (path category) on a quiver.
+
+An object $i \in \CC$ is \keyword{initial} if for every $x \in \CC$ there is a unique morphism $i \to x$.
+
+An object $t \in \CC$ is \keyword{terminal} if for every $x \in \CC$ there is a unique morphism $x \to t$.
+
+A \keyword{zero object} is an object which is is both initial and terminal.
+
+Say $\CC$ is a \keyword{concrete category} when it comes equipped with a faithful functor $U : \CC \to \Set$.
+Consider $U$ to take objects of $\CC$ to their \keyword{underlying set}.
+
+\sepline
+
+Let $\CC$ and $\DD$ be categories.
+
+The \keyword{functor category} (or \keyword{category of functors} from $\CC$ to $\DD$), denoted $\DD^\CC$ or $[\CC, \DD]$, is the category whose objects are functors $\CC \to \DD$ and whose morphisms are natural transformations.
+
+If $\CC$ and $\DD$ are small categories, then so is $[\CC, \DD]$.
+
+If $\CC$ is small and $\DD$ is locally small, then $[\CC, \DD]$ is locally small.
+
+If only know $\CC$ and $\DD$ to be locally small, know nothing of $[\CC, \DD]$.
+
+\sepline
+
+Let $J$ and $\CC$ be any categories.
+ 
+For any object $c \in \CC$, there is a \keyword{constant functor} $\Delta c : J \to \D$ sending every object of $J$ to $c$ and every morphism to $1_c$.
 
 \end{document}
