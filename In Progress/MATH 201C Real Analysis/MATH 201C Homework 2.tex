@@ -1,0 +1,354 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\def\temp{#1}\ifx\temp\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\iso}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+\newcommand{\inc}{\hookrightarrow}
+
+% Extra Commands
+\newcommand{\dd}{\mathrm{d}}
+
+% Document
+\begin{document}
+\title{MATH 201C Homework 2}
+\author{Harry Coleman}
+\date{April 24, 2022}
+\maketitle
+
+\begin{pbox}[1]
+    Let $(M, \mu)$ be a measure space, show that $L^p(M, \dd{\mu})$ is a Banach space for any $1 < p < \infty$.
+\end{pbox}
+
+\begin{proof}
+    Normed vector space easy; show complete.
+
+    By Problem 4, to show $L^p(M, \dd\mu)$ is complete, it suffices to check that every absolutely summable sequence is summable.
+    Suppose $\{f_n\}$ is an absolutely summable sequence, which means $\sum_{n=1}^{\infty} \|f_n\|_p < \infty$.
+
+    For each $m \in \N$, define $g_n = |f_n|^p$
+    which has $L^1$ norm
+    \[
+        \|g_n\|_1
+            = \int_M |g_n| \,\dd\mu
+            = \int_M |f_n|^p \,\dd\mu
+            = \|f_n\|_p^p
+            < \infty, 
+    \]
+    so $g_n \in L^1(M, \dd\mu)$.
+    Moreover, $\{g_n\}$ is absolutely summable since
+    \[
+        \sum_{n=1}^{\infty} \|g_n\|_1
+            = \sum_{n=1}^{\infty} \|f_n\|_p^p
+            = \sum_{n=1}^{N-1} \|f_n\|_p^p + \sum_{n=N}^{\infty} \|f_n\|_p^p
+            \leq  \sum_{n=1}^{N-1} \|f_n\|_p^p + \sum_{n=N}^{\infty} \|f_n\|_p
+            < \infty,
+    \]
+    where $N \in \N$ is chosen such that $\|f_n\|_p \leq 1$ for all $n \geq N$.
+    Since $L^1(M, \dd\mu)$ is complete, Problem 4 implies $\{g_n\}$ is summable, so we can define
+    \[
+        G
+            = \sum_{n=1}^{\infty} g_n
+            = \sum_{n=1}^{\infty} |f_n|^p
+            \in L^1(M, \dd\mu).
+    \]
+    For all $x \in M$ and $m \in \N$, we have
+    \[
+        \left|\sum_{n=1}^{m} |f_n(x)|\right|^p
+            \leq \sum_{n=1}^{m} |f_n(x)|^p
+            \leq G(x)
+    \]
+    so
+    \[
+        \sum_{n=1}^{\infty} |f_n(x)|
+            = \lim_{m \to \infty} \sum_{n=1}^{m} |f_n(x)|
+            \leq G(x)^{1/p}.
+    \]
+    Then $\int_M G \,\dd\mu < \infty$ implies that $G(x)$ is finite for $\mu$-a.e.\ $x \in M$; in which case, the sequence $\{f_n(x)\}$ in $\C$ is absolutely summable.
+    Since $\C$ is complete, Problem 4 tells us absolutely summable sequences are summable.
+    So for $\mu$-a.e.\ $x \in M$, we can define
+    \[
+        F(x) = \sum_{n=1}^{\infty} f_n(x).
+    \]
+    Moreover, $F \in L^p(M, \dd\mu)$ since
+    \[
+        \|F\|_p^p
+            = \int_M |F|^p \,\dd\mu
+            = \int_M \left|\sum_{n=1}^{\infty} f_n \right|^p \,\dd\mu
+            \leq \int_M \sum_{n=1}^{\infty} |f_n|^p \,\dd\mu
+            = \int_M G \,\dd\mu 
+            < \infty.
+    \]
+
+
+    Since $\int_M |G| \dd\mu < \infty$, then for $\mu$-a.e.\ $x \in M$ we have
+    \[
+            \sum_{n=1}^{m} |f_n(x)|
+                \leq 
+        \lim_{m \to \infty} \sum_{n=1}^{m} |f_n(x)|^p
+            = |G(x)|
+            < \infty.
+    \]
+    Thus, $\{f_n\}$ is summable with $F = \sum_{n=1}^{\infty} f_n$, so $L^p(M, \dd\mu)$ is complete.
+\end{proof}
+
+
+\newpage
+\begin{pbox}[2]
+    Let $M$ be a subspace of a Hilbert space $H$, and $f : M \to \C$ a bounded linear functional on $M$ with bound $C$.
+    Prove that there is a \textbf{unique} extension of $f$ to a bounded linear functional on $H$ with the same bound $C$.
+\end{pbox}
+
+\begin{proof}
+    First, note that $f$ is Lipschitz on $M$, since for all $x, y \in M$ we have
+    \[
+        |f(x) - f(y)| = |f(x - y)| \leq C\|x - y\|.
+    \]
+    In particular, $f$ is uniformly continuous on $M$, so it uniquely extends to a continuous function on the closure $V = \clo{M} \leq H$ (a subspace of $H$.
+    Denote the extension by $\tilde{f} : V \to \C$; we check that $\tilde{f}$ is linear.
+    Let $x, y \in V$ and $a \in \C$.
+    Since $V = \clo{M}$, there are sequences $\{x_n\}$ and $\{y_n\}$ in $M$ converging to $x$ and $y$, respectively.
+    Since $f$ is linear and $\tilde{f}$ is a continuous extension, we have
+    \[
+        \tilde{f}(ax + y)
+            = \lim_{n \to \infty} f(ax_n + y_n)
+            = a\lim_{n \to \infty} f(x_n) + \lim_{n\to \infty} f(y_n)
+            = a\tilde{f}(x) + \tilde{f}(y).
+    \]
+    Hence, $\tilde{f}$ is a bounded linear extension of $f$ to $V$.
+    We now check that $\|\tilde{f}\|_{V^*} = C$.
+    Since $M \seq V$, it is clear that $\|\tilde{f}\|_{V^*} \geq C$.
+    Given $x \in V$ nonzero, let $\{x_n\}$ be a nonzero sequence in $M$ converging to $x$, then
+    \[
+        \frac{|\tilde{f}(x)|}{\|x\|}
+            = \lim_{n \to \infty} \frac{|f(x_n)|}{\|x_n\|}
+            \leq \lim_{n \to \infty} C
+            = C.
+    \]
+    This implies $\|\tilde{f}\|_{V^*} \leq C$, so we in fact have equality.
+    Thus, we have shown that $f$ extends uniquely to a bounded linear functional $\tilde{f}$ on $V = \clo{M}$, with the same bound $C$.
+
+    Since $V$ is a closed subspace of a Hilbert space, it too is a Hilbert space.
+    By the Riesz representation theorem, there is a unique $y \in V$ such that $\tilde{f} = \<-, y\>$ and $\|y\| = C$.
+    Naturally, we define $F = \<-, y\> : H \to \C$, which has
+    \[
+        \|F\|_{H^*} = \|y\| = C.
+    \]
+    Hence, $F$ is a bounded linear extension of $f$ with the same bound $C$.
+    To show that $F$ is unique, suppose $G : H \to \C$ is another bounded linear extension of $f$ with the same bound $C$.
+    Since $H$ is a Hilbert space, the Riesz representation theorem tells us there is some $z \in H$ such that $G = \<-, z\>$ for all $x \in H$ and $\|z\| = \|G\|_{H^*} = C$.
+    Since $V$ is a closed subspace of $H$, we have $H = V \oplus V^\perp$; write $z = v + w$ for $v \in V$ and $w \in V^\perp$.
+    For all $x \in V$, we have
+    \[
+        \<x, v\>
+            = \<x, v + w\>
+            = G(x)
+            = F(x)
+            = \<x, y\>.
+    \]
+    This means $\<-, v\> = \<-, y\>$ as linear functionals on $V$, so the Riesz representation theorem implies $v = y$.
+    Lastly, since $v \perp w$, we have
+    \[
+        \|y\|^2
+            = \|z\|^2
+            = \|v + w\|^2
+            = \|v\|^2 + \|w\|^2
+            = \|y\|^2 + \|w\|^2.
+    \]
+    This implies $w = 0$ so $y = z$, hence $F = G$.
+\end{proof}
+
+\newpage
+\begin{pbox}[3]
+    Show that the unit ball in an infinite dimensional Hilbert space contains infinitely many \textbf{disjoint} ball of radius $\sqrt{2}/4$.
+\end{pbox}
+
+\begin{proof}
+    Let $\{x_\alpha\}_{\alpha \in A}$ be an orthonormal basis of $H$.
+    Since $H$ is infinite dimensional, this basis is infinite.
+    Define $y_\alpha = (1 - \sqrt{2}/4)x_\alpha$ and balls
+    \[
+        B_\alpha = B_{\sqrt{2}/4}(y_\alpha) \seq B_1(0).
+    \]
+    For $\alpha \ne \beta$, we have $y_\alpha \perp y_\beta$ so
+    \[
+        \|y_\alpha - y_\beta\|^2
+            = \|y_\alpha\|^2 + \|y_\beta\|^2
+            = 2(1 - \sqrt{2}/4)^2.
+    \]
+    Then
+    \[
+        \|y_\alpha - y_\beta\|
+            = \sqrt{2}(1 - \sqrt{2}/4)
+            > 2 \cdot \sqrt{2}/4,
+    \]
+    which implies $B_\alpha \cap B_\beta = \emptyset$.
+\end{proof}
+
+
+\newpage
+\begin{pbox}[4]
+    Prove that a normed linear space is complete if and only if every absolutely summable sequence is summable.
+\end{pbox}
+
+\begin{proof}
+    Suppose $X$ is a Banach space and $\{x_n\}$ is an absolutely summable sequence in $X$, i.e., have $\sum_{n=1}^{\infty} \|x_n\| < \infty$.
+    The sequence in question is summable if and only if the sequence of partial sums $y_m = \sum_{n=1}^{m} x_n$ converges in $X$.
+    And for $m \geq k$ we have
+    \[
+        \|y_m - y_k\|
+        = \left\|\sum_{n=k+1}^{m} x_n\right\|
+        \leq \sum_{n=k}^{\infty} \|x_n\|.
+    \]
+    The tail tends to zero as $k \to \infty$, which implies $\{y_m\}$ is Cauchy.
+    Since $X$ is complete, the sequence converges, hence $\{x_n\}$ is summable.
+
+    Suppose $X$ is a normed linear space and every absolutely summable sequence is summable.
+    Let $\{x_n\}$ be a Cauchy sequence in $X$.
+    As usual, we may assume without loss of generality that $\|x_n - x_{n-1}\| < 1/2^n$ (otherwise choose a subsequence which does satisfy this).
+    Define the consecutive difference $y_n = x_n - x_{n+1}$, then
+    \[
+        \sum_{n=1}^{m} \|y_n\|
+            = \sum_{n=1}^{m} \|x_n - x_{n-1}\|
+            \leq \sum_{n=1}^{m} \frac{1}{2^n}
+            \leq 1,
+    \]
+    so the sequence $\{y_n\}$ is absolutely summable.
+    By assumption, this means the sequence is summable so we have
+    \[
+        y
+            = \sum_{n=1}^{\infty} y_n
+            = \lim_{n \to \infty} \sum_{k=1}^{n} y_k.
+    \]
+    Note that
+    \[
+        x_n
+            = x_1 - \sum_{k=1}^{n} (x_k - x_{k+1})
+            = x_1 - \sum_{k=1}^n y_k.
+    \]
+    Define $x = x_1 - y$, then
+    \[
+        \lim_{n \to \infty} \|x - x_n\|
+            = \lim_{n \to \infty} \left\|y - \sum_{k=1}^{n} y_k\right\|
+            = 0.
+    \]
+    Hence, $x_n \to x$ in $X$ and we conclude that $X$ is complete.
+\end{proof}
+
+
+\newpage
+\begin{pbox}[5]
+    Let
+    \[
+        c_0 := \{\{a_n\}_{n=1}^{\infty} : \lim_{n \to \infty} a_n = 0\}.
+    \]
+    Prove that if $\{c_n\}_{n=1}^{\infty} \in \ell_1$, then the linear function on $c_0$ defined by
+    \[
+        T(\{a_n\}_{n=1}^{\infty}) = \sum_{n=1}^{\infty} c_n a_n
+    \]
+    has the norm $\sum_{n=1}^{\infty} |c_n|$.
+\end{pbox}
+
+\begin{proof}
+    We consider $c_0$ as a subspace of $\ell_\infty$.
+    Given $a \in c_0$, we have $|a_n| \leq \|a\|_\infty < \infty$, so
+    \[
+        |Ta|
+            \leq \sum_{n=1}^{\infty} |c_n||a_n|
+            \leq \sum_{n=1}^{\infty} |c_n|\|a\|_\infty
+            = C\|a\|_\infty,
+    \]
+    where $c \in \ell_1$ gives us
+    \[
+        C = \sum_{n=1}^{\infty} \|c_n\| < \infty.
+    \]
+    Therefore, $T$ is a bounded linear functional on $c_0$ with bound $\|T\|_{c_0^*} \leq C$.
+    To show equality, we define sequences $a_k = \{a_{k,n}\} \in c_0$ for $k \in \N$ by
+    \[
+        a_{k, n} = \begin{cases}
+            \frac{|c_n|}{c_n} & n \leq k \text{ and } c_n \ne 0, \\
+            0 & \text{otherwise}.
+        \end{cases}
+    \]
+    If $C = 0$, the overall result is trivial, so we assume $C > 0$.
+    In particular, this implies that some $c_N$ is nonzero, so $\|a_k\|_\infty = 1$ for all $k \geq N$.
+    Moreover, given $\eps > 0$, $c \in \ell_1$ tells us there is some $M \in \N$ such that
+    \[
+        \sum_{n=1}^{M} |c_n| \geq C - \eps.
+    \]
+    Then for $k \geq \max\{N, M\}$, we have
+    \[
+        \|T\|_{c_0^*}
+            \geq \frac{|Ta_k|}{\|a_k\|}
+            = |Ta_k|
+            = \left|\sum_{n=1}^{\infty} c_na_{k,n}\right|
+            = \left|\sum_{n=1}^{k} |c_n|\right|
+            \geq C - \eps.
+    \]
+    Letting $\eps \to 0$, we obtain $\|T\|_{c_0^*} \geq C$ and, therefore, equality.
+\end{proof}
+
+
+
+
+
+\end{document}
