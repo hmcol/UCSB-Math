@@ -47,11 +47,18 @@
 \newcommand{\Q}{\mathbb{Q}}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+
 
 % mathcal
 \renewcommand{\AA}{\mathcal{A}}
+\newcommand{\BB}{\mathcal{B}}
 \newcommand{\RR}{\mathcal{R}}
 \newcommand{\ZZ}{\mathcal{Z}}
+\newcommand{\UU}{\mathcal{U}}
+
+% mathfrak
+\newcommand{\mm}{\mathfrak{m}}
 
 % symbols
 \newcommand{\eps}{\varepsilon}
@@ -63,7 +70,7 @@
 \renewcommand{\>}{\right\rangle}
 
 % Relations
-\newcommand{\isom}{\cong}
+\newcommand{\iso}{\cong}
 \newcommand{\seq}{\subseteq}
 \newcommand{\teq}{\trianglelefteq}
 \newcommand{\tensor}{\otimes}
@@ -74,13 +81,17 @@
 
 \newcommand{\eqby}[1]{\overset{\mathrm{(#1)}}{=}}
 
+% Operators
+
+
 % Math Roman
 \newcommand{\op}{\mathrm{op}}
+\newcommand{\id}{\mathrm{id}}
 
 \DeclareMathOperator{\dom}{dom}
 \DeclareMathOperator{\codom}{codom}
+\DeclareMathOperator{\supp}{supp}
 
-\DeclareMathOperator{\id}{id}
 \DeclareMathOperator{\im}{im}
 \DeclareMathOperator{\Hom}{Hom}
 \DeclareMathOperator{\End}{End}
@@ -90,6 +101,9 @@
 % Other
 \newcommand{\eqc}{\overline}
 \newcommand{\udl}{\underline}
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+
+\renewcommand{\_}[1]{{_{#1}}}
 
 
 \title{Algebra \\
@@ -220,6 +234,7 @@ Lastly, the graph of $f$ can be recovered from the domain and the evaluations as
 
 
 If desired, $B^A$ is used to denoted the set of all functions from $A$ to $B$.
+
 
 
 \sepline
@@ -523,6 +538,34 @@ In fact, this is an isomorphism and $(G^\op)^\op = G$.
 
 \sepline
 
+Let $X$ and $Y$ be sets.
+
+If there is a suitable `zero' element $0 \in Y$, then the \keyword{support} of a function $f : X \to Y$ is the set
+\[
+    \operatorname{supp} f
+        = \operatorname{supp}(f)
+        := \{x \in X \mid f(x) \ne 0\}
+        = f^{-1}(Y \setminus \{0\})
+        = X \setminus f^{-1}(0).
+\]
+
+As a pseudo-definition, say $f$ has \keyword{finite support} when $\supp(f)$ is a finite set.
+
+Recall that the support of a partial function is the subset of its domain on which it is defined.
+
+Then $f$ induces a partial function $\tilde{f}$ from $X$ to $Y \setminus \{0\}$.
+Then the support of $f$ in the above sense is the same as the support of $\tilde{f}$ as a partial function.
+
+The upshot is that the ``support'' of a function usually refers to the subset of the domain whose values we actually care about.
+In algebraic contexts, this is almost always used with respect to a zero element.
+
+Recall that the set of functions from $X$ to $Y$ is denoted by $Y^X$.
+
+When $Y$ is a suitable codomain, we denote by $Y^{(X)}$ the set of (partial) functions $X \to Y$ with finite support.
+
+
+\sepline
+
 To be extremely pedantic, let
 \[
     \ZZ = \{\dots, -3, -2, -1, 0, 1, 2, 3, \dots\}
@@ -573,6 +616,7 @@ For each $a \in X$, there is a characteristic function $\chi_a : X \to \Z$ defin
 \]
 
 A \keyword{finite formal sum} in $X$ is a formal sum $\sum_{x \in X} c_x x$ with only finitely many nonzero coefficients, i.e., $c_x \ne 0$ for finitely many $x \in X$.
+(function $c : X \to \Z$ has finite support.)
 
 The set of finite formal sums in $X$ may be denoted as any of the following:
 \[\arraycolsep=1em
@@ -580,6 +624,7 @@ The set of finite formal sums in $X$ may be denoted as any of the following:
         \Z \cdot X & \Z X & \Z[X] & \Z^{(X)}
     \end{array}
 \]
+
 
 
 \sepline
@@ -722,6 +767,15 @@ such that
 
 \sepline
 
+A ring $R$ is \keyword{local} if any of the following equivalent conditions are satisfied:
+\begin{itemize}[nosep]
+    \item $R$ has a unique maximal left ideal;
+    \item $R$ has a unique maximal right ideal;
+    \item For all $a, b \in R$, if $a + b$ is a unit then either $a$ or $b$ is a unit.
+\end{itemize}
+
+\sepline
+
 A \keyword{}{module} (over a commutative ring) is given by the following data:
 \begin{enumerate}[(1)]
     \item a commutative ring $R$,
@@ -798,6 +852,724 @@ A left $R$-module structure on $M$ is equivalently a ring homomorphism $\lambda 
 \]
 
 A right $R$-modules over $M$ is a ring homomorphism $R^\op \to \End(M)$.
+
+
+
+
+
+
+
+
+\newpage
+\sepline
+
+Let $R$ be a ring.
+
+The \keyword{center} of $R$ is the set
+\[
+    Z(R) = \{r \in R \mid ax = xr \text{ for all } x \in R\}.
+\]
+
+$Z(R)$ is a commutative subring of $R$.
+
+$R$ is commutative if and only if $Z(R) = R$.
+
+It is not in general true that $Z(R)$ is a maximal commutative subring of $R$.
+
+\sepline
+
+Let $R$ be a commutative ring.
+
+An \keyword{associative unital $R$-algebra} consists of
+\begin{itemize}
+    \item A ring $A$;
+    \item A ring homomorphism $\phi : R \to Z(A)$.
+\end{itemize}
+We will consider all algebras to be associative unital until further notice.
+
+If $K$ is a field, a $K$-algebra is equivalently a $K$-vector space $V$ with the structure of a ring such that
+\[
+    a(xy) = x(ay) = (ax)y
+\]
+for all $a \in K$ and $x, y \in V$.
+
+Let $(A, \phi)$ and $(B, \psi)$ be $R$-algebras
+
+An \keyword{$R$-algebra homomorphism} is a ring homomorphism $f : A \to B$ such that
+\[
+    f(\phi(r)a) = \psi(r)f(a)
+\]
+for all $r \in R$ and $a \in A$.
+
+
+There is a category $R\text{-}\mathsf{Alg}$ of $R$-algebras and $R$-algebra homomorphisms.
+
+There are forgetful functors
+\begin{cd}
+    & RAlg 
+        \dlar
+        \dar
+        \drar
+    \\
+    R/Ring
+        \drar
+        \rar
+    & Ring
+        \dar
+    & RMod
+        \dlar
+    \\
+    & Set
+\end{cd}
+\begin{cd}
+    & \phi : R \to Z(A)
+        \dlar
+        \dar
+        \drar
+    \\
+    R \to A
+        \drar
+        \rar
+    & A
+        \dar
+    & \phi(-) \cdot -
+        \dlar
+    \\
+    & A
+\end{cd}
+
+\sepline
+
+
+
+
+
+\sepline
+
+Let $R$ be a commutative ring.
+
+An \keyword{associative unital $R$-algebra} is equivalently any of the following:
+\begin{itemize}
+    \item A monoid object of $R$-Mod with respect to the tensor product of $R$-modules;
+    \item An $R$-module $V$ with $R$-linear maps $p : V \tensor V \to V$ and $i : R \to V$ satisfying associative and unit laws;
+    \item A ring $A$ with a ring homomorphism $R \to A$ whose image is in the center of $A$.
+\end{itemize}
+
+\sepline
+
+Let $R$ be a ring and let $I$ and $J$ be sets.
+
+An \keyword{$I \times J$-matrix over $R$} consists of a function $A : I \times J \to R$.
+Call $a_{ij} = A(i, j) \in R$ the $(i, j)$ entry of $A$, write
+\[
+    A = [a_{ij}]_{I \times J}.
+\]
+For $I' \seq I$ and $J' \seq J$ the restriction $A|_{I' \times J'} = [a_{ij}]_{I' \times J'}$ is called a \keyword{submatrix} of $A$.
+
+For $i \in I$, the restriction $A|_{i \times J} = [a_{ij}]_{i \times J}$ is called a \keyword{row} of $A$.
+
+For $j \in J$ the restriction $A|_{I \times j} = [a_{ij}]_{I \times j}$ is called a \keyword{column} of $A$.
+
+Denote the collection of such matrices by either of the following:
+\[
+    R^{I \times J} = M_{I \times J}(R).
+\]
+
+Something about finiteness.
+
+Get pointwise addition on $R^{I \times J}$, so is abelian group.
+
+For $A \in R^{I \times J}$ and $B \in R^{J \times K}$, there is a function
+\begin{align*}
+    AB : I \times K &\To \Sigma_J R \\
+        (i, k) &\Mapsto \sum_{j \in J} a_{ij}b_{jk}
+\end{align*}
+
+If either $A$ is row finite or $B$ is column finite, each formal sum has finitely many nonzero entries, so is a well-defined element of $R$.
+In which case, $AB$ is an $I \times K$-matrix.
+
+``It is easy but tedious to show that where this product is defined, it is associative and that it distributes over addition on both the right and left.''
+
+The identity matrix $[\delta_{ij}] \in R^{J \times J} = M_J(R)$ is row and column finite and serves as the identity for the partial binary operation of multiplication.
+
+Both the collections column finite and row finite square matrices are rings.
+
+\sepline
+
+Let $R$ be a ring.
+
+An element $e \in R$ is called an \keyword{idempotent} if $e^2 = e$.
+(e.g. $0$ and $1$).
+
+A pair of idempotents $e_1, e_2 \in R$ are \keyword{orthogonal} if $e_1e_2 = e_2e_1 = 0$.
+
+An idempotent $e \in R$ is \keyword{primitive} if $e \ne 0$ and for every pair of orthogonal idempotents $e_1, e_2 \in R$, $e = e_1 + e_2$ implies $e_1 = 0$ or $e_2 = 0$.
+($e$ is not the sum of two nonzero orthogonal idempotents.)
+
+A left (right) ideal of $R$ is \keyword{primitive} if it is of the form $Re$ ($eR$) for some primitive idempotent $e \in R$.
+
+\sepline
+
+If $e \in R$ is an idempotent, so is $1 - e$:
+\[
+    (1 - e)^2
+        = 1 - e - e + e^2
+        = 1 - e - e + e
+        = 1 - e.
+\]
+
+Each nonzero idempotent $e \in R$ determines a ring
+\[
+    eRe = \{ere \mid r \in R\},
+\]
+whose addition and multiplication are the restriction of that in $R$, and whose identities are $0 = e0e$ and $e = e1e$.
+If $e \ne 1$, then $eRe$ is not a subring of $R$ and if $e$ is not central then the natural map $R \to eRe$ need not be a ring homomorphism.
+
+If $e$ is central, then the map $\tau_e : r \mapsto ere$ is a surjective ring homomorphism $R \to eRe$ with kernel $(1 - e)R(1 - e)$.
+
+Let $R = \prod_{A} R_\alpha$ be the cartesian product of rings.
+For $\alpha \in A$, the element $e_\alpha = (\delta_{\alpha\beta}^{R_\beta})_{\beta \in A}$ is a central idempotent of $R$ and there is an isomorphism $e_\alpha R e_\alpha \to R_\alpha$ given by the restriction of the projection $\pi_\alpha$.
+
+Let $R$ be a ring and $1 \leq m \leq n$ be integers.
+Consider the matrix $e = [a_{ij}]$ defined by
+\[
+    a_{ij} = \begin{cases}
+        1 & \text{if } i = j \leq m, \\
+        0 & \text{otherwise}.
+    \end{cases}
+\]
+Put another way,
+\[
+    e = \mat{I_m & 0 \\ 0 & 0}.
+\]
+Then $e$ is a nonzero idempotent and there is a ring isomorphism
+\[
+    eM_n(R)e \iso M_m(R).
+\]
+The same is true for any $e$ with exactly $m$ nonzero entries, all of which are $1$'s on the diagonal.
+
+\sepline
+
+Let $R$ be a ring.
+
+An element $r \in R$ is called \keyword{nilpotent} if $r^n = 0$ for some $n \in \Z_{>0}$.
+The \keyword{nilpotent index/degree} of a nilpotent $r$ is the smallest $n \in \Z_{>0}$ such that $r^n = 0$:
+\[
+    \min\{n \in \Z_{>0} \mid r^n = 0\}.
+\]
+
+A subset $A \seq R$ is \keyword{nilpotent} if there exists $n \in \Z_{>0}$ such that
+\[
+    a_1a_2 \cdots a_n = 0
+\]
+for all sequences $a_1, \dots, a_n \in A$.
+
+A subset $A \seq R$ is \keyword{nil} if each of its elements is nilpotent.
+
+\sepline
+
+Remarks/exercises.
+
+$0$ is the only element which is both idempotent and nilpotent.
+
+$M_n(R)$ has many nilpotents.
+
+If $x \in R$ is nilpotent then $1 - x$ is a unit.
+
+Let $\phi : R \to S$ be a surjective ring homomorphism.
+If $a \in R$ is a unit, central, idempotent, or nilpotent, respectively, then so is $\phi(a) \in S$.
+How about converses?
+
+Let $R$ be a ring and $n \geq 2$ and integer.
+For each ideal $I \teq R$ set
+\[
+    M_n(I) = \{[a_{ij}] \in M_n(R) \mid a_{ij} \in I\}.
+\]
+The map $I \mapsto M_n(I)$ defines an isomorphism between the lattices of ideals in $R$ and $M_n(R)$.
+
+If $I \teq R$, then has ring isomorphism $M_n(R)/M_n(I) \iso M_n(R/I)$.
+
+
+Let $R$ be a ring.
+There is a unique ring homomorphism $\chi : \Z \to R$.
+The kernel of $\chi$ is of the form $n\Z$ for some unique $n \geq 0$; this $n$ is the \keyword{characteristic} of $R$.
+
+
+Let $p \in \N$ be a prime.
+For each $n \in \N$ the ideals of $\Z/p^n\Z$ form a chain and each proper ideal is nilpotent.
+Then the product
+\[
+    R = \prod_{n > 1} \Z/p^n\Z.
+\]
+has a nil ideal that is not nilpotent.
+
+\sepline
+
+Proper coverage of modules goes here.
+
+left/right modules, bimodules, etc.
+
+\sepline
+
+
+
+A module $M$ is called...
+\begin{itemize}
+    \item \keyword{decomposable} if $M = N \oplus N'$ with $N$ and $N'$ nonzero
+
+    (A \keyword{direct decomposition} of $M$ is any direct sum $M = \bigoplus_{\alpha \in A} M_\alpha$);
+
+    \item \keyword{indecomposable} if $M$ is not decomposable;
+
+    \item \keyword{simple} if it has no nonzero proper submodules, i.e., $N \leq M$ implies $N = 0$ or $N = M$;
+
+    (sometimes ``irreducible'' for rep theory reasons i think. we'll see if that's useful.)
+    
+    \item \keyword{completely decomposable} if $M = \bigoplus_{\alpha \in A} M_\alpha$ with each $M_\alpha$ indecomposable
+
+    (called an \keyword{indecomposable decomposition});
+    
+    \item \keyword{semisimple} if $M = \bigoplus_{\alpha \in A} M_\alpha$ with each $M_\alpha$ simple
+
+    (called a \keyword{semisimple decomposition});
+\end{itemize}
+
+
+
+
+
+
+\sepline
+
+Let $M$ be a left $R$-module.
+
+For $X \seq M$, the \keyword{left annihilator} of $X$ in $R$ is
+\[
+    \_R\!\Ann(X) = \{r \in R \mid rx = 0 \text{ for all } x \in X\}.
+\]
+(Notation pending).
+For $A \seq R$ the \keyword{right annihilator} of $A$ in $M$ is
+\[
+    \Ann_M(A) = \{x \in M \mid ax = 0 \text{ for all } a \in A\}.
+\]
+
+Let $M$ be an $(R, S)$-bimodule, $X \seq M$ and $A \seq R$.
+Then $\_R\!\Ann(X)$ is a left ideal of $R$ and $\Ann_M(A)$ is a submodule of $M_S$.
+Moreover if $X \leq \_RM$ then $\_R\!\Ann(X) \teq R$.
+If $A$ is a right ideal of $R$ then $\Ann_M(A) \leq \_RM_S$.
+If $R$ is commutative, then $\_R\!\Ann(X) \teq R$ and $\Ann_M(A) \leq \_RM_S$.
+
+\sepline
+
+Suppose $\_RM = N \oplus N'$ and $\pi_N : M \to N$ is the natural projection.
+Define $e_N \in \End(\_RM)$ by $x \mapsto \pi_N(x)$.
+Then $\pi_N|_{N} = \id_N$, $e_N$ is an idempotent endomorphism of $M$, i.e.,
+\[
+    e_N = e_N^2 \in \End(\_RM)
+\]
+and $N = Me_N$.
+
+Let $e$ be an idempotent in $\End(\_RM)$.
+Then $\id - e$ is an idempotent in $\End(\_RM)$ such that
+\[
+    \ker e = \im(\id - e) \isp{and} \im e = \ker(\id - e)
+\]
+and $M = Me \oplus M(\id - e)$.
+
+\sepline
+
+Suppose $M = \bigoplus_{\alpha \in A} M_\alpha$.
+Then for each $a \in A$
+\[
+    M = M_\alpha \oplus \sum_{\beta \ne \alpha} M_\beta,
+\]
+so by some result, there is a unique idempotent $e_\alpha \in \End(\_RM)$ with
+\[
+    M_\alpha = \im e_\alpha \isp{and} \ker e_\alpha = \sum_{\beta \ne \alpha} M_\beta.
+\]
+
+Moreover the collection of idempotents $\{e_\alpha\}$ is orthogonal and for all $x \in M$ we have $xe_\alpha = 0$ for all but finitely many $\alpha \in A$ with $x = \sum_{\alpha \in A} x e_\alpha$.
+
+\sepline
+
+
+
+A finite orthogonal set of idempotents $e_1, \dots, e_n \in R$ is \keyword{complete/full} if $e_1 + \cdots + e_n = 1$.
+
+
+Let $M_1, \dots, M_n$ be submodules of $M$. Then $M = M_1 \oplus \cdots \oplus M_n$ if and only if there exists a (necessarily unique) complete set $e_1, \dots, e_n$ of orthogonal idempotents in $\End(\_RM)$ with $M_i = Me_i$.
+
+\sepline
+
+For a ring $R$, there are three natural ``regular'' modules to consider: $\_RR$, $R_R$, and $\_RR_R$.
+
+Some results to be shown and expanded upon.
+
+A left ideal $I$ of a ring $R$ is a direct summand of $\_RR$ if and only if there is an idempotent $e \in R$ such that $I = Re$.
+
+If $e \in R$ is an idempotent, then so is $1 - e$, and $Re$ and $R(1 - e)$ are direct complements of each other, i.e., $\_RR = Re + R(1 - e)$.
+
+Any direct decomposition of $\_RR$ has only finitely many nonzero summands.
+(look at $\pi_\alpha(1)$)
+
+Let $I_1, \dots, I_n$ be left ideals of $R$ (equiv $I_i \leq \_RR$?). TFAE:
+\begin{itemize}
+    \item $R = I_1 \oplus \cdots \oplus I_n$;
+    \item Each $r \in R$ has a unique expression $r = r_1 + \cdots r_n$ with $r_i \in I_i$.
+    \item There is a (necessarily unique) complete set of orthogonal idempotents $e_1, \dots, e_n \in R$ with $I_i = Re_i$.
+\end{itemize}
+
+If $e_1, \dots, e_n \in R$ is a complete set of orthogonal idempotents, then
+\[
+    \_RR = Re_1 \oplus \cdots \oplus Re_n
+    \isp{and}
+    R_R = e_1R \oplus \cdots \oplus e_nR.
+\]
+
+Let $e \in R$ be a nonzero idempotent. TFAE:
+\begin{itemize}[nosep]
+    \item $e$ is a primitive idempotent;
+    \item $Re$ is a primitive left ideal of $R$;
+    \item $eR$ is a primitive right ideal of $R$;
+    \item $Re$ is an indecomposable direct summand of $\_RR$;
+    \item $eR$ is an indecomposable direct summand of $R_R$;
+    \item The ring $eRe$ has exactly one nonzero idempotent, namely $e$.
+\end{itemize}
+
+$\_RR = I_1 \oplus \cdots \oplus I_n$ with each $I_i$ a primitive left ideal of $R$ if and only if there exists a complete set of orthogonal primitive idempotents $e_1, \dots, e_n \in R$ such that $I_i = Re_i$.
+
+\sepline
+
+Something about ring direct sums.
+
+\sepline
+
+
+Let $\UU$ be a collection of modules.
+A module $M$ is \keyword{(finitely) generated} by $\UU$ if there is a (finite) collection $\{U_\alpha\}_{\alpha \in A} \seq \UU$ and an epimorphism $\bigoplus_{\alpha \in A} U_\alpha \to M$.
+
+In case $\UU = \{U\}$ is a singleton, say $U$ (finitely) generates $M$; which means there is an epimorphism $U^{(A)} \to M$ for some (finite) index set $A$.
+
+If a module $\_RM$ has a spanning set $X \seq M$, then there is an epimorphism $R^{(X)} \to M$.
+Moreover, $R$ finitely generates $M$ if and only if $M$ has a finite spanning set.
+
+\sepline
+
+A left $R$-module $T$ is simple if and only if $T \iso R/\mm$ for some maximal left ideal $\mm$ of $R$.
+
+
+Suppose $\_RM = \sum_{\alpha \in A} T_\alpha$ with each $T_\alpha$ simple.
+For every submodule $K \leq M$ there is a subset $B \seq A$ such that $M = K \oplus \bigoplus_{\beta \in B} T_\beta$.
+
+Taking $N = 0$, we deduce that a module spanned by simple submodules is semisimple.
+
+If $M$ is semisimple, then every short exact sequence $0 \to K \to M \to N \to 0$ splits.
+
+A few more, but big conclusion is...
+
+Let $M$ be a left $R$-module. TFAE:
+\begin{itemize}[nosep]
+    \item $M$ is semisimple;
+    \item $M$ is generated by simple modules;
+    \item $M$ is the sum of some simple submodules;
+    \item $M$ is the sum of all its simple submodules;
+    \item every submodule of $M$ is a direct summand;
+    \item every short exact sequence $0 \to K \to M \to N \to 0$ splits.
+\end{itemize}
+
+\sepline
+
+All semisimple modules, noetherian modules, and artinian modules have indecomposable decompositions.
+
+However, not all modules admit indecomposable decompositions.
+For example, consider the ring of continuos functions $R = C^0(\Q, \R)$, then the left regular modules $\_RR$ has no indecomposable direct summands.
+
+\sepline
+
+Let $M$ be a module.
+
+Two direct decompositions
+\[
+    M = \bigoplus_{\alpha \in A} M_\alpha = \bigoplus_{\beta \in B} N_\beta
+\]
+are said to be \keyword{equivalent} if there is a bijection $\sigma : A \to B$, called an \keyword{equivalence map}, such that $M_\alpha \iso N_{\sigma(\alpha)}$.
+It is easy to check that, as one should expect, this is indeed an equivalence relation.
+
+Suppose $M = \bigoplus_{\alpha \in A} M_\alpha = \bigoplus_{\beta \in B} N_\beta$ and a function $\sigma : A \to B$.
+Then these two decompositions are equivalent if and only if there is an automorphism $f$ such that $f(M_\alpha) = N_{\sigma(\alpha)}$.
+
+It is in general not the case that any two indecomposable decompositions of a given modules are equivalent.
+For example, let $I$ and $J$ be two left ideals of a ring $R$ such that $R = I + J$, then $I \oplus J \iso R \oplus (I \cap J)$ as left $R$-modules.
+
+\sepline
+
+A decomposition $M = \bigoplus_{\alpha \in A} M_\alpha$ is said to \keyword{complement (maximal) direct summands} if for every (maximal) direct summand $K$ of $M$ there is a subset $B \seq A$ such that
+\[\textstyle
+    M = \left(\bigoplus_{\beta \in B} M_\beta \right)\oplus K.
+\]
+This is a generalization of a property of semisimple modules.
+
+A decomposition which complements all direct summands is necessarily indecomposable.
+
+Suppose $M = \bigoplus_{\alpha \in A} M_\alpha$ is a decomposition that complements (maximal) direct summands.
+If $f : M \to M'$ is an isomorphism, then
+\[
+    M' = \bigoplus_{\alpha \in A} f(M_\alpha)
+\]
+is a decomposition that complements (maximal) direct summands.
+
+In particular, if a decomposition of $M$ complements (maximal) direct summands, then so does any equivalent decomposition.
+
+\sepline
+
+Lemma:
+
+Let $M = \bigoplus_{\alpha \in A} M_\alpha$ be a decomposition that complements maximal direct summands.
+If we have another decomposition
+\[
+    M = N_1 \oplus \cdots \oplus N_n \oplus K
+\]
+with each $N_i$ indecomposable, then there exist $\alpha_i \in A$ such that $M_{\alpha_i} \iso N_i$ and for $\ell = 1, \dots n$,
+\[
+    M = M_{\alpha_1} \oplus \cdots \oplus M_{\alpha_\ell} \oplus N_{\ell + 1} \oplus \cdots \oplus N_n \oplus K.
+\]
+
+Lemma:
+
+Let $M = \bigoplus_{\alpha \in A} M_\alpha$ be a decomposition that complements (maximal) direct summands.
+For any subset $B \seq A$, $N = \bigoplus_{\beta \in B} N_\beta$ is a decomposition that complements (maximal) direct summands.
+
+Moreover, if $M$ has a decomposition that complements direct summands, then so does every direct summand of $M$.
+
+Anderson \& Fuller (1992): ``\textit{Incidentally, it is apparently not known whether the last assertion holds...for decompositions just complementing maximal direct summands.}''
+(should check if this has been resolved.)
+
+Theorem:
+
+If a module $M$ has an indecomposable decomposition that complements maximal direct summands, then all indecomposable decompositions of $M$ are equivalent.
+
+Corollary:
+
+If a module $M$ has an indecomposable decomposition that complements (maximal) direct summands, then every indecomposable decomposition of $M$ complements (maximal) direct summands.
+
+\sepline
+
+If $R$ is a local ring, then $0$ and $1$ are its only idempotents.
+
+Azumaya Theorem:
+
+Let $M = \bigoplus_{\alpha \in A} M_\alpha$ be a decomposition.
+If each endomorphism ring $\End(M_\alpha)$ is local, then this is an indecomposable decomposition and
+\begin{itemize}
+    \item every nonzero direct summand of $M$ has an indecomposable direct summand;
+    \item the decomposition $M = \bigoplus_{\alpha \in A} M_\alpha$ complements maximal direct summands and this is equivalent to every indecomposable decomposition of $M$.
+\end{itemize} 
+
+Corollary:
+
+Let $M = M_1 \oplus \cdots \oplus M_n$ be a finite decomposition.
+If each $\End(M_i)$ is local, then the decomposition complements direct summands.
+
+\sepline
+
+Lemma:
+
+If $M$ is an indecomposable module of finite length, then $\End(M)$ is a local ring.
+
+Krull-Schmidt Theorem:
+
+Let $M$ be a nonzero module of finite length.
+Then $M$ has a finite indecomposable decomposition
+\[
+    M = M_1 \oplus \cdots \oplus M_n
+\]
+such that for every other indecomposable decomposition
+\[
+    M = N_1 \oplus \cdots \oplus N_k,
+\]
+$n = k$ and there is a permutation $\sigma$ such that $M_{\sigma(i)} \iso N_i$ and for $\ell = 1, \dots, n$,
+\[
+    M = M_{\sigma(1)} \oplus \cdots \oplus M_{\sigma(\ell)} \oplus N_{\ell + 1} \oplus \cdots \oplus N_n.
+\]
+In fact, the decomposition $M = M_1 \oplus \cdots \oplus M_n$ complements direct summands.
+
+\sepline
+
+Let $D$ be a division ring (nonzero inverses/noncommutative field) and $n \in \N$.
+
+Let
+\[
+    C_n(D) = M_{n \times 1}(D) = \mat{D \\ \vdots \\ D}
+    \isp{and}
+    R_n(D) = M_{1 \times n}(D) = \mat{D & \cdots & D} 
+\]
+denote the sets of $n \times 1$ column and $1 \times n$ row matrices with entries in $D$.
+Considering these as right and left $D$-vector spaces,
+\[
+    C_n(D) = (D_D)^n \isp{and} R_n(D) = (\_DD)^n.
+\] 
+Moreover, the usual matrix multiplications are ring isomorphisms
+\[
+    \lambda : M_n(D) \To \End(C_n(D)_D) \isp{and} \ell : M_n(D) \To \End(\_DR_n(D)).
+\]
+So $C_n(D)$ and $R_n(D)$ are left and right $M_n(D)$-modules respectively.
+
+In fact, both are simple $M_n(D)$-modules; let $E_1, \dots, E_n$ be the primitive diagonal idempotents of $M_n(D)$.
+Then as a left $M_n(D)$-module
+\[
+    M_n(D)
+        = M_n(D)E_1 \oplus \cdots \oplus M_n(D)E_n
+        \iso C_n(D) \oplus \cdots \oplus C_n(D)
+\]
+and as a right $M_n(D)$-module
+\[
+    M_n(D)
+        = E_1M_n(D) \oplus \cdots \oplus E_nM_n(D)
+        \iso R_n(D) \oplus \cdots \oplus R_n(D).
+\]
+In particular, both left and right regular modules of $M_n(D)$ are generated by a simple module.
+By some result, every left $M_n(D)$-module is generated by the simple $M_n(D)$-module $C_n(D)$ and every right $M_n(D)$-module is generated by the simple $M_n(D)$-module $R_n(D)$.
+
+\sepline
+
+Let $R$ be a ring, $M$ a nonzero left $R$-module, and $n \in \N$.
+Write endomorphisms of both $M$ and $M^{(n)} = M^{\oplus n}$ as right operators, and we also write the natural inclusions and projections
+\[
+    \iota_i : M \to M^{(n)} \isp{and} \pi_i : M^{(n)} \to M
+\]
+on the right.
+For each $\alpha = [\alpha_{ij}] \in M_n(\End(M))$ define $\rho(\alpha) \in \End(M^{(n)})$ componentwise by
+\[
+    (x\rho(\alpha))\pi_j = \sum_{i=1}^{n} x \pi_i \alpha_{ij}.
+\]
+Then $x\rho(\alpha)$ is simply the usual matrix product
+\[
+    x\rho(\alpha) = \mat{x_1 & \cdots & x_n}[\alpha_{ij}]
+\]
+where the elements $x$ of $M^{(n)}$ are considered as row matrices $x = \mat{x_1 & \cdots & x_n}$ over $M$.
+By the properties of ordinary matrix multiplication, we deduce that $M^{(n)}$ is a bimodule
+\[
+    \_RM^{(n)}{}_{M_n(\End(M))}
+\]
+via $\rho$, i.e.,
+\[
+    \rho : M_n(\End(M)) \To \End(M^{(n)})
+\]
+is a ring homomorphism.
+In fact, one can check that this is an isomorphism.
+
+\sepline
+
+Schur Lemma:
+
+If $\_RT$ is a simple module, then $\End(\_RT)$ is a division ring.
+
+Wedderburn Theorem:
+
+The ring $R$ has as simple left generator if and only if $R$ is isomorphic to the full submatrix ring $M_n(D)$ for some division ring $D$ and some $n \in \N$.
+Moreover, if $\_RT$ is a simple left generator for $R$, then as a ring $R \iso M_n(D)$ with $D = \End(\_RT)$ and $n = \mathrm{length}(\_RR)$ or
+\[
+    R \iso M_{\mathrm{length}(\_RR)}(\End(\_RT))
+\]
+
+\sepline
+
+For a ring $R$ TFAE:
+\begin{itemize}[nosep]
+    \item $R$ has a simple left generator;
+    \item $R$ is a simple and left artinian;
+    \item For some simple $\_RT$, $\_RR \iso T^{(n)}$ for some $n$;
+    \item $R$ is simple and $\_RR$ is semisimple.
+\end{itemize}
+Moreover, each of these is equivalent to the dual result (swap left and right).
+
+In particular, for simple rings the conditions of left artinian, right artinian, and artinian are equivalent.
+
+A ring satisfying these equivalent conditions is called a \keyword{simple artinian ring}.
+
+\sepline
+
+A ring $R$ is \keyword{semisimple} if the left regular module $\_RR$ is semisimple.
+
+Every simple artinian ring is semisimple.
+
+Any ring direct sum of semisimple rings is also semisimple.
+
+Wedderburn-Artin Theorem:
+
+A ring is semisimple if and only if it is a finite (ring) direct sum of simple artinian rings.
+
+More Structure:
+
+Let $R$ be a semisimple ring.
+Then $R$ contains a finite set $T_1, \dots, T_m$ of minimal left ideals which comprise and irredundant set of representatives of the simple left $R$-modules.
+Moreover, for each such set the homogeneous components
+\[
+    \mathrm{Tr}(T_i) = RT_iR
+\]
+are simple artinian rings and $R$ is the direct sum
+\[
+    R = RT_1R \dotplus \cdots \dotplus RT_mR.
+\]
+Finally, $T_i$ is a simple generator for the ring $RT_iR$ and
+\[
+    RT_iR \iso M_{n_i}(D_i)
+\]
+where $n_i = \mathrm{length}(RT_iR)$ and $D_i = \End(\_RT_i)$.
+
+\sepline
+
+For a ring $R$ TFAE:
+\begin{itemize}[nosep]
+    \item $R$ is semisimple;
+    \item $R$ has a semisimple left generator;
+    \item Every short exact sequence $0 \to K \to M \to N \to 0$ of left $R$-modules splits
+    
+    (equiv to every mono/epi in $R\text{-}\mathsf{Mod}$ splitting);
+
+    \item Every left $R$-module is semisimple;
+\end{itemize}
+
+\sepline
+
+Maschke Theorem:
+
+If $G$ is a group of order $n$ and $K$ is a field whose characteristic does not divide $n$, then the group ring $KG$ is semisimple.
+
+Theorem:
+
+If $R$ be a simple ring of $m$ elements, then
+\begin{itemize}
+    \item $Z(R) = \F_{p^n}$ for some prime $p$ and some $n$;
+    \item $m = (p^n)^{k^2}$ for some $k$;
+    \item $R \iso M_k(\F_{p^n})$.
+\end{itemize}
+
+As a corollary, there is a natural bijection between the finite semisimple rings (up to isomorphism) and the set of all finite sequences (ordered? surely not)
+\[
+    (p_1, n_1, k_1), \dots, (p_\ell, n_\ell, k_\ell)
+\]
+of triples of natural numbers with each $p_i$ prime.
+\[
+    \{\text{finite semisimple rings}\}/\text{iso} \longleftrightarrow \bigsqcup_{\ell \in \N} (\N_{\mathrm{prime}} \times \N \times \N)^\ell
+\]
+
+\sepline
+
+If $D$ is a division ring and $M_D$ is a right $D$-vector space, then $M_D$ is free, so the ring $\End(M_D)$ of endomorphisms of $M_D$ is isomorphic to the ring of column finite matrices over $D$.
+That is, if $\{x_i\}_{i \in I}$ is a basis for $M_D$ then the mapping
+\begin{align*}
+    \End(M_D) &\To \mathrm{CFM}_I(D) \\
+    a &\Mapsto [a_{ij}]
+\end{align*}
+defined by
+\[
+    a(x_j) = \sum_{i \in I} x_i a_{ij} \isp{and} a_{ij} = \pi_i(a(x_j)).
+\]
+
+
+
+
 
 
 

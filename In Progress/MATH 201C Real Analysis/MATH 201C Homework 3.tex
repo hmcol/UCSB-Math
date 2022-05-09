@@ -1,0 +1,439 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\def\temp{#1}\ifx\temp\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\iso}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\dd}{\mathrm{d}}
+
+% Extra Commands
+
+
+% Document
+\begin{document}
+\title{MATH 201C Homework 3}
+\author{Harry Coleman}
+\date{May 4, 2022}
+\maketitle
+
+\begin{pbox}[1 (a)]
+    Prove that there is a nonzero bounded linear functional on $L^\infty(\R)$ which vanishes on $C(\R)$.
+    Note that $C(\R)$ consists of all bounded continuous functions on $\R$, thus a subspace of $L^\infty(\R)$.
+\end{pbox}
+
+\begin{proof}
+    The Heaviside function $H \in L^\infty(\R)$ is not continuous, i.e., $H \notin C(\R)$.
+    In fact, we claim that $H$ is a positive distance from the subspace $C(\R) \leq L^\infty(\R)$.
+
+    Let $f \in C(\R)$ be given.
+    For each $n \in \N$ we can find a null set $E_n \seq \R$ such that
+    \[
+        \|H - f\|_\infty
+            \leq \sup_{\R \setminus E_n} |H - f|
+            \leq \|H - f\|_\infty + \frac{1}{n}.
+    \]
+    Then the union $E = \bigcup_{n \in \N} E_n$ is a null set such that for all $n \in \N$,
+    \[
+        \|H - f\|_\infty
+            \leq \sup_{\R \setminus E} |H - f|
+            \leq \sup_{\R \setminus E_n} |H - f|
+            \leq \|H - f\|_\infty + \frac{1}{n}.
+    \]
+    Letting $n \to \infty$, we obtain
+    \[
+        \|H - f\|_\infty = \sup_{\R \setminus E} |H - f|.
+    \]
+    In other words, $M = \R \setminus E$ is a full measure subset on which the supremum of $|H - f|$ is the same as the essential supremum on all of $\R$.
+    In particular, note that $M$ is dense in $\R$.
+    
+    For $\eps > 0$ choose $\delta > 0$ for the uniform continuity of $f$ on the closed interval $[-1, 1]$.
+    Since $M$ is dense in $\R$, we can choose $x_0 \in (-\delta/2, 0) \cap M$ and $x_1 \in (0, \delta/2) \cap M$.
+    This choice gives us $H(x_0) = 0$ and $H(x_1) = 1$ in addition to $|x_0 - x_1| < \delta$, so
+    \begin{align*}
+        1 = |H(x_0) - H(x_1)|
+            &\leq |H(x_0) - f(x_0)| + |f(x_0) - f(x_1)| + |f(x_1) - H(x_1)|
+        \\[1ex]
+            &\leq \sup_{M}|H - f| + \eps + \sup_{M}|H - f| \\
+            &= 2\|H - f\|_\infty + \eps.
+    \end{align*}
+    Letting $\eps \to 0$, we obtain $\|H - f\|_\infty \geq 1/2$ for all $f \in C(\R)$, so
+    \[
+        d(H, C(\R))
+            = \inf_{f \in C(\R)} \|H - f\|_\infty
+            \geq \frac{1}{2}.
+    \]
+    (In fact $d(H, C(\R)) = 1/2$ since the constant function $c(x) = 1/2$ has $\|H - c\|_\infty = 1/2$.)
+
+    Importantly, $H$ is an element of $L^\infty(\R)$ with $d = d(H, C(\R)) > 0$.
+    So by a corollary of the Hahn-Banach theorem, there exists $\Lambda \in L^\infty(\R)^*$ such that $\|\Lambda\| \leq 1$, $\Lambda(H) = d$, and $\Lambda|_{C(\R)} = 0$.
+    In other words, $\Lambda$ is of the desired form.
+\end{proof}
+
+\newpage
+\begin{pbox}[(b)]
+    Prove that there is a bounded linear functional $\Lambda$ on $L^\infty(\R)$, such that $\Lambda(f) = f(0)$ for any $f \in C(\R)$.
+\end{pbox}
+
+\begin{proof}
+    Define the function $\lambda : C(\R) \to \R$ by $\lambda(f) = f(0)$.
+    We check that $\lambda$ is linear:
+    \[
+        \lambda(\alpha f + g)
+            = (\alpha f + g)(0)
+            = \alpha f(0) + g(0)
+            = \alpha \lambda(f) + \lambda(g).
+    \]
+    To see that $\lambda$ is bounded, let $f \in C(\R)$ be nonzero.
+    Similar to the proof of problem $A$, we can choose a full measure subset $M \seq \R$ for which
+    \[
+        \|f\|_\infty = \sup_{M}|f|.
+    \]
+    Given $\eps > 0$ choose $\delta > 0$ for the continuity of $f$ at $0$.
+    Since $M$ is dense in $\R$, we can find a point $x \in (-\delta, \delta) \cap M$.
+    Then
+    \[
+        0
+            \leq |f(0)|
+            \leq |f(x)| + |f(x) - f(0)| 
+            \leq \sup_{M}|f| + \eps
+            = \|f\|_\infty + \eps.
+    \]
+    Letting $\eps \to 0$, we obtain $0 \leq |f(0)| \leq \|f\|_\infty$ for all nonzero $f \in C(\R)$, so
+    \[
+        \|\lambda\|
+            = \sup_{\substack{f \in C(\R) \\ f \ne 0}} \frac{|\lambda(f)|}{\|f\|_\infty}
+            \leq 1.
+    \]
+    In particular, $\lambda$ is bounded, so indeed $\lambda \in C(\R)^*$.
+    By a corollary of the Hahn-Banach theorem, there exists $\Lambda \in L^\infty(\R)^*$ such that $\Lambda|_{C(\R)} = \lambda$ and $\|\Lambda\| = \|\lambda\|$.
+\end{proof}
+
+\begin{pbox}
+    Then use this to show that $(L^\infty(\R))^* \ne L^1(\R)$.
+\end{pbox}
+
+We claim that $\Lambda$ does not correspond to an element of $L^1(\R)$.
+
+\begin{proof}
+    Suppose there did exist $\delta \in L^1(\R)$ such that $\Lambda(f) = \int_{\R} f\delta \,\dd{x}$ for all $f \in L^\infty(\R)$.
+    For $\eps > 0$ let $f : \R \to [0, 1]$ be any choice of continuous bump function with $f(0) = 1$ and $f(x) = 0$ for all $|x| > \eps$.
+    Then $f \in C(\R)$ so
+    \[
+        1
+            = f(0)
+            = \Lambda(f)
+            = \int_\R f\delta \,\dd{x}
+            = \int_{-\eps}^{\eps} f\delta \,\dd{x} 
+            \leq \int_{-\eps}^{\eps} |f||\delta| \,\dd{x}
+            \leq \int_{-\eps}^{\eps} |\delta| \,\dd{x}.
+    \]
+    However, $\delta \in L^1(\R)$ means that $\delta$ is Lebesgue integrable in the usual sense, so we must have
+    \[
+        \lim_{\eps \to 0} \int_{-\eps}^{\eps} |\delta| \,\dd{x} = 0.
+    \]
+    This is a contradiction, so no such $\delta$ exists, i.e., $\Lambda \notin L^1(\R)$ as a subspace of $L^\infty(\R)^*$.
+\end{proof}
+
+
+\newpage
+\begin{pbox}[2]
+    Let $X$ be a Banach space.
+    Give an example of an everywhere-defined but discontinuous linear functional $T$.
+\end{pbox}
+
+Let $X$ be any infinite-dimensional Banach space and $\beta = \{e_n\}_{n \in \N}$ be a countably infinite set of linearly independent unit vectors in $X$.
+(e.g., $X = \ell_1$ and $e_n \in \ell_1$ is the sequence with a $1$ in the $n$th position and $0$'s elsewhere.)
+
+We extend $\beta$ to a Hamel basis $\mathcal{B}$ of $X$ and define a linear functional $T : X \to \R$ on the basis by $Te_n = n$ and $Tv = 0$ for all $v \in \mathcal{B} \setminus \beta$.
+Then $T$ is not bounded since
+\[
+    \frac{|Te_n|}{\|e_n\|_X} = \frac{n}{1} = n.
+\]
+With $X$ a Banach space, we conclude that $T$ is not continuous.
+
+
+
+\begin{pbox}
+    Show directly that the graph of $T$ is not closed.
+\end{pbox}
+
+For $n \in \N$, the point $x_n = (e_n/n, 1) \in X \times \R$ is in the graph of $T$.
+However, the limit of the sequence $\lim_{n \to \infty} x_n = (0, 1)$ is not in the graph of $T$ since $T0 = 0 \ne 1$.
+Since a closed set in any topological space is also sequentially closed, the fact that the graph of $T$ is not sequentially closed implies it is not closed.
+
+
+\newpage
+\begin{pbox}[3]
+    Let $X$ be a Banach space in either of the norms $\|{\cdot}\|_1$ or $\|{\cdot}\|_2$.
+    Suppose that $\|{\cdot}\|_1 \leq C\|{\cdot}\|_2$ for some constant $C$.
+    Prove that there is a constant $D$ such that $\|{\cdot}\|_2 \leq D\|{\cdot}\|_1$.
+\end{pbox}
+
+\begin{proof}
+    The identity map $I = \id_X : X \to X$ is an isomorphism of vector spaces.
+    Consider the Banach spaces $X_1 = (X, \|{\cdot}\|_1)$ and $X_2 = (X, \|{\cdot}\|_2)$, which have the same underlying vector space but different norms.
+    We consider $I$ to be a linear operator $X_2 \to X_1$ and compute its operator norm:
+    \[
+        \|I\|
+            = \sup_{x \ne 0} \frac{\|Ix\|_1}{\|x\|_2}
+            = \sup_{x \ne 0} \frac{\|x\|_1}{\|x\|_2}
+            \leq \sup_{x \ne 0} \frac{C\|x\|_2}{\|x\|_2}
+            = C.
+    \]
+    Hence, $I : X_2 \to X_1$ is a bounded linear operator.
+    Since $I$ is also surjective, it must be open, which means that its inverse $I^{-1} : X_1 \to X_2$ is continuous.
+    Since $I^{-1}$ is also linear (it acts as the identity on $X$), we conclude that $I^{-1}$ is bounded and take $D = \|I^{-1}\|$.
+\end{proof}
+
+
+
+
+
+\newpage
+\paragraph{4} \
+
+We will first prove two lemmas.
+
+For $T : X \to Y$ a bounded operator of Banach spaces and $\ell \in Y^*$, the adjoint can be written as the composition $T'\ell = \ell \circ T$. 
+
+\begin{lemma}
+    If $T : X \to Y$ is a linear isometry of Banach spaces, so is $T' : Y^* \to X^*$ (adjoint).
+\end{lemma}
+
+\begin{proof}
+    We have already seen that that $T'$ is a linear map, so it remains to prove $T'$ is an isometry.
+    Let $S = T^{-1} : Y \to X$ be the inverse of $T$.
+    For any $\ell \in Y^*$, we have
+    \[
+        (S' \circ T')\ell
+            = S'(T'\ell)
+            = (\ell \circ T) \circ S
+            = \ell \circ (T \circ S)
+            = \ell \circ \id_Y
+            = \ell.
+    \]
+    Hence, $S' \circ T' = \id_{Y^*}$, and a symmetric argument shows $T' \circ S' = \id_{X^*}$.
+    This proves $T'$ is a bijection.
+    Lastly, we check that $T'$ preserves the norm. 
+    For $\ell \in Y^*$ we have
+    \[
+        \|T'\ell\|_{X^*}
+            = \sup_{x \ne 0} \frac{|T'\ell(x)|}{\|x\|_X}
+            = \sup_{x \ne 0} \frac{|\ell(Tx)|}{\|STx\|_X}
+            = \sup_{y \ne 0} \frac{|\ell(y)|}{\|Sy\|_X}
+            = \sup_{y \ne 0} \frac{|\ell(y)|}{\|y\|_Y}
+            = \|\ell\|_{Y^*}.
+    \]
+\end{proof}
+
+\begin{lemma}
+    Let $J : X \inc X^{**}$ be the usual embedding of a Banach space into its double dual.
+    Then its image $J(X)$ is a closed subspace of $X^{**}$.
+\end{lemma}
+
+\begin{proof}
+    We have already seen that $J(X)$ is a subspace of $X^{**}$, so it remains to prove that $J(X)$ is closed.
+    Since $X^{**}$ is a metric space, a subset being closed in equivalent to it being sequentially closed.
+    Let $\{y_n\}$ be a sequence in $J(X)$ converging to a point $y \in X^{**}$.
+    Since $J$ is an isometric embedding, it gives an isometry $X \to J(X)$, which has an isometry inverse $J^{-1} : J(X) \to X$.
+    Since $\{y_n\}$ is a Cauchy sequence in $J(X)$, its image $\{J^{-1}y_n\}$ is a Cauchy sequence in $X$.
+    Since $X$ is complete, the image sequence converges to some point $x \in X$.
+    Mapping this sequence back under the isometric embedding $J$, we deduce that $\{y_n\}$ converges to the point $Jx \in J(X)$.
+    Hence, $J(X)$ is sequentially closed and therefore closed.
+\end{proof}
+
+\begin{pbox}
+    Prove that a Banach space $X$ is reflexive if and only if its dual space $X^*$ is reflexive.
+    (Hint: if $X \ne X^{**}$, find a bounded linear functional on $X^{**}$ which vanishes on $X$.)
+\end{pbox}
+
+\begin{proof}
+    Assume $X$ is reflexive, i.e., the usual embedding $J : X \to X^{**}$ is a linear isometry.
+    By Lemma 1, the adjoint $J' : X^{***} \to X^*$ is a linear isometry.
+    We claim that it is the inverse to the usual isometric embedding $\tilde{J} : X^* \inc X^{***}$.
+    
+    We next check that $J' \circ \tilde{J} = \id_{X^{***}}$.
+    Indeed, for all $\ell \in X^{***}$ and $x \in X^{**}$, we have
+    \[
+        (\tilde{J} \circ J')\ell(x)
+            = \tilde{J}(J'\ell)(x) 
+            = x(J'\ell) 
+            = J(J^{-1}x)(J'\ell) 
+            = J'\ell(J^{-1}x) 
+            = \ell(J(J^{-1}x)) 
+            = \ell(x).
+    \]
+    From this, we also deduce
+    \[
+        \tilde{J} \circ J'
+            = \left((J')^{-1} \circ J'\right) \circ \tilde{J} \circ J'
+            = (J')^{-1} \circ \id_{X^{***}} \circ J'
+            = \id_{X^*}.
+    \]
+    Hence, $\tilde{J}$ is a linear isometry with $\tilde{J}^{-1} = J'$.
+    In particular, $\tilde{J}$ is surjective, so $X^*$ is reflexive.
+
+    Assume $X$ is not reflexive, i.e., there exists some $y \in X^{**} \setminus J(X)$.
+    Lemma 2 tells us that $J(X)$ is a closed subspace, so $d = d(y, J(X))$ must be positive.
+    Therefore, a corollary of the Hahn-Banach theorem gives $\Lambda \in X^{***}$ such that $\|\Lambda\| = 1$, $\Lambda(y) = d$, and $\Lambda|_{J(X)} = 0$.
+    If we assume in addition that $\tilde{J} : X^* \inc X^{***}$ is a linear isometry, then there is some $\ell \in X^*$ such that $\tilde{J}\ell = \Lambda$.
+    Then for all $x \in X$ we have
+    \[
+        0
+            = \Lambda(Jx)
+            = \tilde{J}\ell(Jx)
+            = Jx(\ell)
+            = \ell(x).
+    \]
+    But this implies $\ell = 0 \in X^*$ and the linearity of $\tilde{J}$ implies $\Lambda = \tilde{J}\ell = 0 \in X^{***}$.
+    This is a contradiction since $\Lambda(y) = d \ne 0$, so $X^*$ must not be reflexive.
+\end{proof}
+
+
+\newpage
+\begin{pbox}[5 (a)]
+    Prove that a locally convex space has a topology given by a single norm if the topology is generated by finitely many seminorms.
+\end{pbox}
+
+\begin{proof}
+    Let $X$ be a locally convex space and let $\rho_1, \dots, \rho_n$ be the seminorms which generate the natural topology, i.e., $0 \in X$ has a neighborhood subbasis of sets of the form
+    \[
+        U_{i, \eps}
+            = \rho_i^{-1}([0, \eps))
+            = \{x \in X : \rho_i(x) < \eps\},
+    \]
+    for $i = 1, \dots, n$ and $\eps > 0$.
+    It follows that $0 \in X$ has a neighborhood basis of sets
+    \[  
+        U_\eps = \bigcap_{i = 1}^n U_{i, \eps}
+    \]
+    for $\eps > 0$, since every finite intersection of subbasis sets contains some $U_\eps$.
+    We now define a function $\eta : X \to [0, \infty)$ as the maximum over the seminorms
+    \[
+        \eta(x) = \max_i \rho_i(x).
+    \]
+    Note that the family of seminorms $\{\rho_i\}$ must be separating since the natural topology on $X$ is Hausdorff (every nonzero point is in the complement of some $U_\eps$).
+    So
+    \[
+        \eta(x) = 0 \isp{$\iff$} \rho_1(x) = \cdots = \rho_n(x) = 0 \isp{$\iff$} x = 0.
+    \]
+    For any scalar $\alpha$, we have
+    \[
+        \eta(\alpha x)
+            = \max_i \rho_i(\alpha x)
+            = \max_i |\alpha|\rho_i(x)
+            = |\alpha| \max_i \rho_i(x)
+            = |\alpha| \eta(x).
+    \]
+    Lastly,
+    \[
+        \eta(x + y)
+            = \max_i \rho_i(x + y)
+            \leq \max_i (\rho_i(x) + \rho_i(y))
+            \leq \max_i \rho_i(x) + \max_i \rho_i(y)
+            = \eta(x) + \eta(y).
+    \]
+    Hence, $\eta$ is a norm on $X$.
+    The metric topology which $\eta$ generates on $X$ is described by the open balls of the origin, which are of the form
+    \[
+        B_\eps^\eta(0) = \{x \in X : \eta(x) < \eps\} = U_\eps.
+    \]
+    In other words, the $U_\eps$'s form a neighborhood basis of $0 \in X$ in both the natural topology and the metric topology, so the two topologies are the same.
+\end{proof}
+
+
+\newpage
+\begin{pbox}[(b)]
+    Prove that a locally convex space has a topology generated by a single norm if and only if $0$ has a bounded neighborhood.
+\end{pbox}
+
+\begin{proof}
+    Let $X$ be a locally convex space.
+
+    Assume the natural topology on $X$ is generated by a norm $\|{\cdot}\|$.
+    We claim that $B_1(0)$ is a bounded neighborhood of the origin.
+    If $N$ is a neighborhood of $0$, it must contain some ball of radius $\eps > 0$ around the origin.
+    But then
+    \[
+        \eps B_1(0) = B_\eps(0) \seq N,
+    \]
+    so $B_1(0) \seq (1/\eps)N$.
+    Hence $B_1(0)$ is bounded.
+
+    Assume $0$ has a bounded neighborhood, say $N$, and define
+    \[
+        \eta(x) = \inf\{\alpha > 0 : x \in \alpha N\}.
+    \]
+    Then the metric topology generated by $\eta$ is described by the balls
+    \[
+        B_\eps^\eta(0)
+            = \{x \in X : \eta(x) < \eps\}
+            = \{x \in X : x \in \eps N\}
+            = \eps N.  
+    \]
+    Since the $\eps N$'s form a neighborhood basis in the natural topology, the two topologies are the same.
+\end{proof}
+
+
+
+\end{document}

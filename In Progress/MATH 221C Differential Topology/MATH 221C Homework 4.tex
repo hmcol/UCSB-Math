@@ -64,9 +64,10 @@
 \DeclareMathOperator{\id}{id}
 \DeclareMathOperator{\im}{im}
 \newcommand{\inc}{\hookrightarrow}
+\newcommand{\dd}{\mathrm{d}}
 
 % Extra Commands
-
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
 
 % Document
 \begin{document}
@@ -75,9 +76,398 @@
 \date{April 25, 2022}
 \maketitle
 
-\begin{pbox}[]
-    
+I worked with Joseph Sullivan and Gahl Shemy.
+
+\begin{pbox}[1 Exercise 1.3.6]
 \end{pbox}
+
+\begin{pbox}[(a)]
+\end{pbox}
+
+\begin{proof}
+    If $f$ and $g$ are immersions, their derivatives are injective.
+    Then $\dd(f \times g)_(x, y) = \dd{f}_x \times \dd{g}_x$ is also injective, which implies $f \times g$ is an immersion.
+\end{proof}
+
+\begin{pbox}[(b)]
+\end{pbox}
+
+\begin{proof}
+    If $f$ and $g$ are immersions, their derivatives are injective.
+    Then $\dd(g \circ f)_x = \dd{g}_{f(x)} \circ \dd{f}_0$ is also injective, which implies $g \circ f$ is an immersion.
+\end{proof}
+
+\begin{pbox}[(c)]
+\end{pbox}
+
+\begin{proof}
+    Suppose $M$ is the domain of $f$ and $\iota : N \inc M$ is an inclusion of manifolds.
+    Then the derivative $\dd{\iota}_x : T_xN \inc T_xM$ is the inclusion of tangent spaces.
+    In particular, $\dd{\iota}_x$ is injective so $\iota$ is an immersion.
+    Then by part (b), we know $f|_N = f \circ \iota$ is an immersion.
+\end{proof}
+
+\begin{pbox}[(d)]
+\end{pbox}
+
+\begin{proof}
+    If $f : X \to Y$ is an immersion, then $\dd{f}_x : T_xX \to T_{f(x)}Y$ is injective.
+    Because
+    \[
+        \dim T_xX = \dim X = \dim Y = \dim T_{f(x)} Y,
+    \]
+    we know that $\dd{f}_x$ is also surjective, and therefore an isomorphism of tangent spaces.
+    By definition, $f$ is a local diffeomorphism.
+
+    If $f : X \to Y$ is a local diffeomorphism, then $\dd{f}_x$ is an isomorphism.
+    In particular the derivative is injective, so $f$ is an immersion.
+\end{proof}
+
+\begin{pbox}[2 Exercise 1.3.9]
+\end{pbox}
+
+\begin{lemma}
+    Let $V \leq \R^n$ be a subspace of dimension $k$.
+    Then the natural projection of $V$ onto the subspace $\<e_{i_1}, \dots, e_{i_k}\> \leq \R^n$ is an isomorphism for some choice of $e_{i_j}$.
+\end{lemma}
+
+\begin{proof}
+    Let $\{v_1, \dots, v_k\}$ be a basis of $V$ and consider the $k \times n$ matrix with the $v_j$'s as rows:
+    \[
+        \begin{bmatrix}
+            - & v_1 & - \\
+            & \vdots & \\
+            - & v_k & -
+        \end{bmatrix}.
+    \]
+    Performing any row operations on this matrix yields a matrix whose rows are still a basis of $V$.
+    Put the matrix into reduced row echelon form:
+    \[
+        \begin{bmatrix}
+            * & 1 & * \cdots * & 0 & * \cdots * & 0 \\
+            && 0 \cdots 0 & 1 & * \cdots * & 0  \\
+            &&&& 0 \cdots 0 & 1 \\
+            &&&&&& \ddots
+        \end{bmatrix}
+    \]
+    Without loss of generality, we can choose the $v_i$'s to be the rows of this matrix.
+    Let $i_j$ be the index of the $j$th pivot column in the matrix.
+
+    Then the natural projection $V \to \<e_{i_1}, \dots, e_{i_k}\>$ sends basis elements $v_j \mapsto e_{i_j}$.
+    This is a linear surjection with the domain and codomain both of dimension $k$, so it must be an isomorphism of vector spaces.
+\end{proof}
+
+\begin{pbox}[(a)]
+\end{pbox}
+
+\begin{proof}
+    By Lemma 1, suppose the natural projection $T_xX \to \<e_{i_1}, \dots, e_{i_k}\>$ is an isomorphism of vector spaces.
+    Then the coordinate function $F = (x_{i_1}, \dots, x_{i_k}) : \R^N \to \R^k$ restricts to an isomorphism $T_xX \to \R^k$ and the restriction $f = F|_X : X \to \R^k$ has derivative
+    \[
+        \dd{f}_x = \dd{F}_x|_{T_xX} = F|_{T_xX}.
+    \]
+    So $\dd{f}_x$ is an isomorphism, so $f$ restricts to a diffeomorphism between an open neighborhood of $x$ in $X$ and an open subset of $\R^k$.
+    In other words, $f$ induces a smooth chart at $x$.
+\end{proof}
+
+\begin{pbox}[(b)]
+\end{pbox}
+
+\begin{proof}
+    Part (a) gives us a local diffeomorphism $f : V \to U \seq \R^k$, which has $f(a_1, \dots, a_N) = (a_1, \dots, a_k)$ for all $(a_1, \dots, a_N) \in V$.
+    Then the smooth inverse $g = f^{-1} : U \to V$ has
+    \[
+        (a_1, \dots, a_N)
+            = g(f(a_1, \dots, a_N))
+            = g(a_1, \dots, a_k)
+            = (g_1(a), \dots, g_N(a)),
+    \]
+    so $g_i(a) = a_i$ for $i = 1, \dots, k$, hence
+    \[
+        g(a_1, \dots, a_k) = (a_1, \dots, a_k, g_{k+1}(a), \dots, g_N(a)).
+    \]
+\end{proof}
+
+\begin{pbox}[3 Exercise 1.3.10]
+\end{pbox}
+
+
+\newpage
+\begin{pbox}[4 Exercise 1.4.1]
+\end{pbox}
+
+\begin{proof}
+    Let $x \in U$ be any point.
+    Since $f$ is a submersion, there are local parameterizations $\phi : V \to X$ and $\psi : W \to Y$ at $x$ and $y$, respectively, such that $F = \psi^{-1} \circ f \circ \phi$ is the standard submersion.
+    The intersection $U' = U \cap \phi(V)$ is an open neighborhood of $x$ in $X$.
+    The parameterizations are homeomorphisms and the standard submersion is an open map, so
+    \[
+        f(U')
+            = f|_{\phi(V)}(U')
+            = (\psi \circ F \circ \phi^{-1})(U')
+    \]
+    is an open neighborhood of $f(x)$ in $\psi(W)$.
+    Since $\psi(W)$ is open in $Y$, the image of $U'$ is also open in $Y$.
+    Hence, $f(U')$ is an open neighborhood of $f(x)$ contained in $f(U)$, so by definition $f(U)$ is open in $Y$.
+\end{proof}
+
+
+\begin{pbox}[5 Exercise 1.4.2]
+\end{pbox}
+
+\begin{pbox}[(a)]
+\end{pbox}
+
+\begin{proof}
+    By Problem 4 Exercise 1.4.1, $f(X)$ is an open subset of $Y$.
+    Since $X$ is compact, $f(X)$ is compact and therefore also closed.
+    Since $Y$ is connected and $f(X) \seq Y$ clopen, we either have $f(X) = \emptyset$ or $f(X) = Y$.
+    Since $X$ is nonempty, the image is nonempty.
+    Hence $f(X) = Y$, i.e., $f$ is surjective.
+\end{proof}
+
+\begin{pbox}[(b)]
+\end{pbox}
+
+\begin{proof}
+    Suppose $f : X \to \R^n$ is a smooth map from a compact manifold.
+    Then $f(X) \seq \R^n$ is compact, but $\R^n$ is not.
+    In particular, $f(X) \ne \R^n$, so $f$ is not surjective.
+    The contrapositive of part (a) tells us that $f$ is not a submersion.
+\end{proof}
+
+\begin{pbox}[6 Exercise 1.4.7]
+\end{pbox}
+
+\begin{proof}
+    By the preimage theorem, $Z = f^{-1}(y)$ is a submanifold of $X$ of dimension
+    \[
+        \dim Z = \dim X - \dim Y = 0.
+    \]
+    Each point $x \in Z$ has a neighborhood $U \seq Z$ diffeomorphic to $\R^0 = \{0\}$.
+    So $Z \cap U = \{x\}$ is an open subset of $Z$ for all $x \in Z$, i.e., $Z$ has the discrete topology.
+    Moreover, $Z$ is a closed subset of the compact set $X$, which implies $Z$ is compact.
+    Therefore, $Z$ must contain only finitely many points since the collection of all singletons forms an open cover.
+
+    Say $Z = f^{-1}(y) = \{x_1, \dots, x_N\}$.
+    Each $x_i$ is a regular point of $f$, so there are neighborhoods $x \in U_i \seq X$ and $y \in V_i \seq Y$ (and suitable parameterizations) on which $f$ is equivalent to the standard submersion.
+    Since
+    \[
+        \dim U_i = \dim X = \dim Y = \dim V_i,
+    \]
+    then $f$ is actually locally equivalent to the identity map on an open subset of Euclidean space.
+    In particular, $f|_{U_i} : U_i \to V_i$ is a diffeomorphism.
+
+    Since $Z$ is a finite discrete subset of Euclidean, there is a positive radius for which the open balls $B_r(x_i)$ are all disjoint.
+    Since $X$ has the subspace topology, the intersection $B_r(x_i) X$ is an open neighborhood of $x_i$ in $X$.
+    Take $W_i = U_i \cap B_r(x_i)$ and $U = \bigcap_{i=1}^{N} f(W_i)$.
+    Then $f^{-1}(U)$ is the disjoint union of $W_i' = W_i \cap f^{-1}(U)$, and each $W_i \cap f^{-1}(U)$ is mapped diffeomorphically to $U$.
+\end{proof}
+
+\begin{pbox}[7 Exercise 1.4.10]
+\end{pbox}
+
+\begin{proof}
+    Let $f : M(n) \to S(n)$ be the map $f(A) = AA^T$ so $O(n) = f^{-1}(I)$.
+    Then
+    \[
+        \dd{f}_I(A) = AI^T + IA^T = A + A^T.
+    \]
+    Then
+    \[
+        T_I O(n) = \ker \dd{f}_I = \{A \in M(n) : A^T = -A\}.
+    \]
+\end{proof}
+
+\begin{pbox}[8 Exercise 1.4.12]
+\end{pbox}
+
+\begin{proof}
+    Consider the map $f = \det|_{M(n) \setminus \{0\}}$; we must check that $0$ is a regular value of $f$.
+    Let $A \in f^{-1}(0)$ and write
+    \[
+        A = \mat{x_1 & x_2 \\ x_3 & x_4}.
+    \]
+    Then the Jacobian of $f$ at $A$ is
+    \[
+        J_f(A) = \mat{x_4 & -x_3 & -x_2 & x_1}.
+    \]
+    Since $A$ is nonzero, some $x_i$ is nonzero, so the Jacobian is full rank.
+    Therefore, $\dd{f}_A$ is surjective so $A$ is a regular point of $f$.
+    Hence $0$ is a regular value of $f$, so $f^{-1}(0)$ is a manifold and is precisely the set of $2 \times 2$ matrices of ranks $1$.
+\end{proof}
+
+\begin{pbox}[9 Exercise 1.6.1]
+\end{pbox}
+
+\begin{pbox}[(a)]
+\end{pbox}
+
+\begin{proof}
+    By definition, $A$ and $V$ are transverse if $\im \dd{A}_x + T_{Ax}V = T_{Ax}\R^n$.
+    But we have
+    \[
+        \dd{A}_x = A, \quad T_{Ax} V = V, \isp{and} T_{Ax}\R^n = \R^n.
+    \]
+    So indeed, $A$ and $V$ are transverse precisely when $A(\R^k) + V = \R^n$.
+\end{proof}
+
+\begin{pbox}[(b)]
+\end{pbox}
+
+\begin{proof}
+    By definition, $V$ and $W$ transverse if $T_x V + T_x W = T_x \R^n$.
+    But we have
+    \[
+        T_x V = V, \quad T_x W = W, \isp{and} T_x \R^n = \R^n.
+    \]
+    So indeed, $V$ and $W$ are transverse precisely when $V + W = \R^n$.
+\end{proof}
+
+\begin{pbox}[10 Exercise 1.6.2]
+\end{pbox}
+
+\begin{pbox}[(a)]
+\end{pbox}
+
+Transverse since the $xy$-plane is the span $\<e_1, e_2\> \leq \R^3$, the $z$-axis the the span $\<e_3\> \leq \R^3$ and
+\[
+    \<e_1, e_2\> + \<e_3\> = \<e_1, e_2, e_3\> = \R^3.
+\]
+
+\begin{pbox}[(b)]
+\end{pbox}
+
+Transverse since $xy$-plane is the span $\<e_1, e_2\> \leq \R^3$ and the other plane contains $4e_2 - e_3$, so their sum also contains $e_3$ and is therefore all of $\R^3$.
+
+\begin{pbox}[(c)]
+\end{pbox}
+
+Not transverse since both are contained in the $xy$-plane, which does not span $\R^3$.
+
+
+\begin{pbox}[(d)]
+\end{pbox}
+
+Transverse if and only if $k + \ell \geq n$.
+
+\begin{pbox}[(e)]
+\end{pbox}
+
+Transverse if and only if $k = n$ or $\ell = n$
+
+\begin{pbox}[(f)]
+\end{pbox}
+
+Transverse since $(v, 0) \in V \times 0$ and $(v, v) \in \Delta(V)$ so $(0, v) \in V + \Delta(V)$.
+Then the vectors $(v, 0)$ and $(0, v)$ as for all $v \in V$ span $V \times V$.
+
+\begin{pbox}[(g)]
+\end{pbox}
+
+Transverse since every matrix $A \in M(n)$ can be written as
+\[
+    A = \frac{1}{2}(A + A^T) + \frac{1}{2}(A - A^T),
+\]
+where $A + A^T$ is symmetric and $A - A^T$ is skew-symmetric, hence the two subspaces span $M(n)$.
+
+\begin{pbox}[11 Exercise 2.2.4]
+\end{pbox}
+
+\begin{proof}
+    Per the hint, Exercise 1.1.4 gives us a diffeomorphism $\phi : B_a \to \R^k$.
+    Then there is a diffeomorphism $g : \R^k \to \R^k$ defined by $g(x) = x + e_1$.
+    The composition $f = \phi^{-1} \circ g \circ \phi$ is thus a diffeomorphism $B_a \to B_a$.
+
+    We claim that $f$ has no fixed points.
+    Suppose $x \in B_a$ is a fixed point, so
+    \[
+        x = f(x) = \phi^{-1}(g(\phi(x))),
+    \]
+    which gives us
+    \[
+        \phi(x) = g(\phi(x)) = \phi(x) + e_1.
+    \]
+    But this implies $e_1 = 0$, which is a contradiction.
+\end{proof}
+
+\begin{pbox}[12 Exercise 2.2.6]
+\end{pbox}
+
+\begin{proof}
+    Let $f : B \to B$ be a continuous map from the closed unit $n$-ball to itself.
+    Let $\eps > 0$ be given and use the Weierstrass approximation theorem to choose a polynomial $p : \R^n \to \R^n$ such that $\|f - p\|_{B} < \eps$.
+    The result is trivial if $f = 0$, so we assume $f \ne 0$ and $\eps$ is small enough so that $p \ne 0$.
+    In particular, $\|f\|_B$ and $\|p\|_B$ are nonzero with
+    \[
+        |\|f\|_{B} - \|p\|_{B}| \leq \|f - p\|_{B} < \eps.
+    \]
+    Define a new polynomial
+    \[
+        q = \frac{\|f\|_{B}}{\|p\|_{B}}p,
+    \]
+    which has $\|q\|_B = \|f\|_B \leq 1$.
+    A priori, we do not know whether $p$ maps the ball back into itself $B$, but we do know $q(B) \seq B$.
+    Moreover,
+    \[
+        \|f - q\|_B
+            \leq \|f - p\|_B + \|p - q\|_B
+            < \eps + \|p - q\|_B.
+    \]
+    We now estimate
+    \[
+        \|p - q\|_B
+            = \left|1 - \frac{\|f\|_B}{\|p\|_B}\right|\|p\|_B
+            = |\|p\|_B - \|f\|_B|
+            < \eps,
+    \]
+    hence $\|f - q\|_B < 2\eps$.
+    In other words, $f$ is approximable by a polynomial $q : B \to B$.
+    Since $q$ is smooth, it has a fixed point: $x \in B$ with $q(x) = x$.
+    Then
+    \[
+        |f(x) - x|
+            = |f(x) - q(x)|
+            \leq \|f - q\|_B
+            < 2\eps,
+    \]
+    which means
+    \[
+        0 \leq \inf\{|f(y) - y| : y \in B\} \leq |f(x) - x| < 2\eps.
+    \]
+    Since this bound holds for all $\eps > 0$, we conclude that
+    \[
+        \inf\{|f(y) - y| : y \in B\} = 0.
+    \]
+    Since this $B$ is compact and $g(y) = |f(y) - y|$ is continuous, the infimum is attained somewhere on $B$.
+    Hence, there is some $x \in B$ such that $|f(x) - x| = 0$, so $f(x) = x$ is a fixed point of $f$.
+\end{proof}
+
+
+\newpage
+\begin{pbox}[13 Exercise 2.2.7]
+\end{pbox}
+
+\begin{proof}
+    Per the hint let $f : \R^n \to \R^n$ be the map $v \mapsto Av/|Av|$.
+    Consider the set
+    \[\textstyle
+        Q = \{x = (x_1, \dots, x_n) \mid x_i \geq 0 \text{ and }\|x\|_2 = 1\}.
+    \]
+    Then for $x \in Q$, we have
+    \[
+        Ax
+            = \sum_{i=1}^{n} x_iAe_i
+            = \sum_{i=1}^{n} x_i\left(\sum_{j=1}^{n} a_{ji}e_j\right)
+            = \sum_{j=1}^{n}\left(\sum_{i=1}^{n} x_ia_{ji}\right)e_j.
+    \]
+    Since $x_i \geq 0$ and $a_{ji} \geq 0$, we know that $\sum_{i=1}^{n} x_i a_{ji} \geq 0$.
+    Since $f(x) \in S^{n-1}$, i.e., $\|f(x)\|_2 = 1$, so indeed $f(x) \in Q$.
+    Let $\phi : B^{n-1} \to Q$ be a diffeomorphism, then $g = \phi^{-1} \circ f \circ \phi$ is a smooth map from $B^{n-1}$ to itself.
+    By the fixed point theorem, there is some $x \in B^{n-1}$ such that $g(x) = x$, then setting $y = \phi(x) \in Q$ we get $f(y) = y$.
+    Hence, $Ay = |Ay|y$, so $|Ay|$ is a positive eigenvalue of $A$.
+\end{proof}
+
 
 
 \end{document}

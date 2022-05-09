@@ -1,0 +1,413 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\def\temp{#1}\ifx\temp\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+\newcommand{\pnum}[1]{\paragraph{#1}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\qquad\text{#1}\qquad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\iso}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\dd}{\mathrm{d}}
+
+% Extra Commands
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+\newcommand{\htpy}{\simeq}
+\newcommand{\bd}{\partial}
+\DeclareMathOperator{\inter}{int}
+
+% Document
+\begin{document}
+\title{MATH 221C Homework 6}
+\author{Harry Coleman}
+\date{May 9, 2022}
+\maketitle
+
+I worked with Joseph Sullivan and Gahl Shemy.
+
+\pnum{Exercise 1.4.8}
+
+Denote the map by $p : \C \to \C$.
+Then the derivative at a point $z \in \C$ is the linear map
+\begin{align*}
+    \dd{p}_z : \C &\longrightarrow \C, \\
+        v &\longmapsto p'(z)v.
+\end{align*}
+This map is surjective if and only if $p'(z)$ is nonzero.
+Note that
+\[
+    p'(z) = mz^{m-1} + (m-1)a_1 z^{m-2} + \cdots + a_{m-1}
+\]
+is a complex polynomial, so the fundamental theorem of algebra tells us that $p'(z)$ has exactly $m-1$ roots in $\C$, counted with multiplicity.
+In particular, $p'(z)$ is nonzero except at finitely many points $z \in \C$.
+
+
+
+
+
+\pnum{Exercise 1.5.8}
+
+Let define the functions $h, s : \R^3 \to \R$ by
+\[
+    h(x, y, z) = x^2 + y^2 - z^2 - 1
+    \isp{and}
+    s(x, y, z) = x^2 + y^2 + z^2 - a.
+\]
+At a point $(x, y, z) \in \R^3$, their Jacobians are
+\[
+    J_h(x, y, z) = \mat{2x & 2y & -2z}
+    \isp{and}
+    J_s(x, y, z) = \mat{2x & 2y & 2z}.
+\]
+We deduce that $0$ is a regular value of both $h$ and $s$, so they define the hyperbola $H = h^{-1}(0)$ and the sphere $S = s^{-1}(0)$ as submanifolds of $\R^3$.
+By Homework 5 Exercise 1.5.5, the tangent spaces are given by
+\[
+    T_{(x, y, z)}X = \ker\dd{h}_{(x, y, z)}
+    \isp{and}
+    T_{(x, y, z)}Y = \ker\dd{s}_{(x, y, z)}.
+\]
+Of course, these are the same as the kernels of the corresponding Jacobian matrices.
+We will use this fact to understand the tangent spaces.
+
+The intersection $H \cap S$ is the set of points in $\R^3$ which are roots of both $h$ and $s$.
+In particular, for or such a point we must have
+\[
+    1 + z^2 = x^2 + y^2 = a - z^2,
+\]
+which implies $z = \pm\sqrt{(a - 1)/2}$.
+
+If $a < 1$, there is no real solution for $z$, so $H \cap S = \emptyset$.
+In this case, $H$ and $S$ are vacuously transverse.
+
+If $a = 1$, then $z = 0$ and their intersection is the circle $\{x^2 + y^2 = 1\}$ in the $xy$-plane.
+However, $H$ and $S$ are not transverse at any of these points.
+For example, consider the point $e_1 = (1, 0, 0) \in H \cap S$.
+The tangent space of $H$ at $e_1$ is
+\[
+    T_{e_1}H
+        = \ker J_h(e_1)
+        = \ker \mat{1 & 0 & 0}
+        = \<e_2, e_3\>
+\]
+and the tangent space of $S$ at $e_1$ is
+\[
+    T_{e_1}S
+        = \ker J_s(e_1)
+        = \ker \mat{1 & 0 & 0}
+        = \<e_2, e_3\>.
+\]
+In other words, both tangent spaces equal the $yz$-plane.
+But these do not span $T_{e_1}\R^3 = \R^3$, so we conclude that $H$ and $S$ are not transverse for $a = 1$.
+
+If $a > 1$, then there are two possible values of $z$---one positive and one negative.
+In this case, $H \cap S$ is the union of two circles $\{x^2 + y^2 = r\}$ with $r = a - z^2 =(a + 1)/2$.
+Each circle is parallel to the $xy$-plane, but shifted up or down by the corresponding value of $z$.
+At all of theses points, $H$ and $S$ are transverse.
+A vertical reflection of $\R^3$ restricts to a diffeomorphism on each of $H$ and $S$ which preserves the overall geometry inside $\R^3$, so it suffices to check that $H$ and $S$ are transverse on just one of the two circles.
+Moreover, a rotation of $\R^3$ about the $z$ axis restricts to the same sort of geometry-preserving diffeomorphism, so we need only check transversality at a single point of the intersection.
+We consider the point
+\[
+    p = (\sqrt{(a + 1)/2}, 0, \sqrt{(a - 1)/2}) \in H \cap S.
+\]
+The tangent space of $H$ at $p$ is
+\[
+    T_p H
+        = \ker \mat{\sqrt{2(a + 1)} & 0 & -\sqrt{2(a - 1)}}
+        = \<\sqrt{2(a - 1)}e_1 + \sqrt{2(a + 1)}e_3,\; e_2\>
+\]
+and the tangent space of $S$ at $p$ is
+\[
+    T_p S
+        = \ker \mat{\sqrt{2(a + 1)} & 0 & \sqrt{2(a - 1)}}
+        = \<\sqrt{2(a - 1)}e_1 - \sqrt{2(a + 1)}e_3,\; e_2\>.
+\]
+These spaces do span $\R^3$, so we conclude that $H$ and $S$ are transverse for $a > 1$.
+
+
+
+
+\pnum{Exercise 1.6.3}
+
+Per the hint, we check that path-connectivity defines an equivalence relation between points.
+The relation is reflexive since the constant map $I \to \{x\}$ is smooth.
+The relation is symmetric since if $f : I \to X$ is a smooth path from $x$ to $y$ then $f(1 - t)$ gives a smooth path from $y$ to $x$.
+Lastly, the relation is transitive since a smooth path $I \to X$ from $x$ to $y$ can be considered as a homotopy between the maps $\{0\} \to \{x\}$ and $\{0\} \to \{y\}$ from the $0$-manifold $\{0\} = \R^0$.
+In other words, the transitivity of paths is a special case of the transitivity of homotopies, which we have from Homework 5 Exercise 1.6.2.
+We deduce that $X$ is the disjoint union of its path-components.
+
+We check that the path-components are open.
+Let $P \seq X$ be a path component and $x \in P$.
+Pick a chart $\phi : U \to \R^k$ on $X$ with $\phi(x) = 0$.
+Then the image $\phi(U) \seq \R^k$ is an open neighborhood of the origin, so it must contain some open ball of radius $\eps > 0$.
+Since $B_\eps(0)$ is path-connected and open in $\phi(U)$, its image $\phi^{-1}(B_\eps(0))$ is similarly path-connected and open in $U$.
+Since this set is path-connected and contains $x$, it must be contained in $P$.
+And since $U$ is open in $X$, the set is also open in $X$.
+Hence, we have found an open neighborhood of $x$ contained in $P$, so $P$ is open in $X$.
+
+To summarize, we have found that every manifold is the disjoint union of its path-components, all of which are open.
+If $X$ is connected, this is only possible if $X$ has a single path-component, hence $X$ must be path-connected.
+
+
+
+\pnum{Exercise 1.6.4}
+
+Suppose $X$ is contractible and let $R : X \times I \to X$ be a smooth homotopy from the identity $R_0 = \id_X$ to a constant map $R_1 = \mathrm{c}_x : X \to \{x\}$.
+Let $Y$ be an arbitrary manifold and $f : Y \to X$ a smooth map.
+Combining maps with smoothness-preserving operations, we construction a smooth map $H : Y \times I \to X$ as follows:
+\begin{cd}[column sep=large]
+    Y \times I \rar["f \times \id_Y"] & X \times I \rar["R"] & X
+\end{cd}
+Then $H$ is a homotopy from
+\[
+    H_0
+        = R_0 \circ f
+        = \id_X \circ f
+        = f
+\]
+to
+\[
+    H_1
+        = R_1 \circ f
+        = \mathrm{c}_x \circ f
+        = \mathrm{c}_x.
+\]
+This proves $f \htpy \mathrm{c}_x$ for all maps $f : Y \to X$.
+From Homework 5 Exercise 1.6.2, we know that homotopy is an equivalence relation.
+Then for all maps $f, g : Y \to X$ we have $f \htpy \mathrm{c}_x \htpy g$, which implies $f \htpy g$.
+
+Conversely, assume that for any manifold $Y$ all maps $Y \to X$ are homotopic.
+In particular, take $Y = X$ and consider the identity map $\id_X$ and a constant map $\mathrm{c}_x$ for some $x \in X$.
+By assumption, we have $\id_X \htpy \mathrm{c}_x$, so indeed $X$ is contractible.
+
+
+
+
+\pnum{Exercise 1.6.5}
+
+We will apply Exercise 1.6.4.
+Define $M : \R^k \times I \to \R^k$ by scalar multiplication, i.e., $M(x, t) = tx$.
+Then $M$ is smooth and thus defines a homotopy $M_0 \htpy M_1$.
+By construction, we have
+\[
+    M_1(x) = 1x = x = \id_{\R^k}(x)
+\]
+and
+\[
+    M_0(x) = 0x = 0 = \mathrm{c}_0(x).
+\]
+Thus, we have found a homotopy $\id_{\R^k} \htpy \mathrm{c}_0$, so indeed $\R^k$ is contractible.
+
+
+
+
+\pnum{Exercise 1.6.6}
+
+Assume $X$ is contractible.
+For any pair of points $x, y \in X$, there is a homotopy between the maps $\{0\} \to \{x\}$ and $\{0\} \to \{y\}$, where $\{0\} = \R^0$ is a $0$-manifold with a single point.
+These two maps are homotopic by Exercise 1.6.4, and a homotopy between them is precisely a path between $x$ and $y$ in $X$.
+Therefore, $X$ is (path-)connected.
+(The proof of Exercise 1.6.3 shows that connectedness and path-connectedness are equivalent conditions for manifolds.)
+Another application of Exercise 1.6.4 tells us that every map $S^1 \to X$ is homotopic to a constant map, so indeed $X$ is simply-connected.
+
+As a likely counterexample to the converse, consider $S^2$.
+In more general algebraic topology, we do not require the homotopies to be smooth---only continuous.
+Any smooth homotopy is also a continuous (not necessarily smooth) homotopy, but a priori the existence of a continuous homotopy does not in general imply the existence of a smooth one.
+I presume that the same techniques for showing $S^2$ is continuously simply-connected would work to show that is is smoothly simply connected, so long as we are careful to preserve smoothness.
+On the other hand, it is obvious that $S^2$ is not smoothly contractible since we know more generally that it is not continuously contractible.
+
+
+\pnum{Exercise 1.6.7}
+
+Per the hint, let $R_t : \R^2 \to \R^2$ be the the linear map defined by the rotation matrix
+\[
+    [R_t] = \mat{\cos\pi t & - \sin{\pi t} \\ \sin{\pi t} & \cos{\pi t}}.
+\]
+Then $R$ restricts to a homotopy of maps $S^2 \to S^2$ corresponding to the matrices
+\[
+    [R_0] = \mat{1 & 0 \\ 0 & 1} = I_2
+    \isp{and}
+    [R_1] = \mat{0 & 1 \\ -1 & 0} = -I_2.
+\]
+The former is corresponds to the identity map and the latter to the antipodal map.
+Then for $k = 2n - 1$ with $n \in \N$, we have $S^k \seq \R^{2n}$ and define the linear map $F_t : \R^{2n} \to \R^{2n}$ by the block matrix built out of $n$ copies of $[R_t]$ along the diagonal (and zeros elsewhere):
+\[
+    [F_t] = \mat{[R_t] && 0 \\ & \ddots \\ 0 && [R_t]}.
+\]
+As in the previous step, $F$ restricts to a homotopy of maps $S^k \to S^k$ corresponding to 
+\[
+    [F_0] = \mat{I_2 && 0 \\ & \ddots \\ 0 && I_2} = I_{2n}
+    \isp{and}
+    [F_1] = \mat{-I_2 && 0 \\ & \ddots \\ 0 && -I_2} = -I_{2n}.
+\]
+Also like the previous step, the former is corresponds to the identity map and the latter to the antipodal map.
+
+
+
+
+\pnum{Exercise 2.1.7}
+
+Let $x \in \bd X$ and take parameterizations $\phi : U \to X$ and $\psi : V \to X$ with $\phi(0) = x = \psi(0)$, where $U$ and $V$ are open subsets of $H^k$.
+By shrinking $U$ and $V$ we may assume without loss of generality that $\phi(U) = \psi(V)$.
+Then $h = \psi^{-1} \circ \phi : U \to V$ is a diffeomorphism, so its derivative $\dd{h}_0$ is an isomorphism of tangent spaces
+\[
+    \R^k = T_0(U) \longrightarrow T_0(V) = \R^k.
+\]
+We claim that $\dd{h}_0(H^k) = H^k$.
+To show this, notice that we can write
+\[
+    H^k = \bd H^k + \R_{\geq 0}e_k,
+\]
+where $\bd H^k = \R^{k-1}$ and $\R_{\geq 0}e_k$ is the nonnegative multiples of $e_k$.
+The linearity of $\dd{h}_0$ gives
+\[
+    \dd{h}_0(H^k)
+        = \dd{h}_0(\bd H^k + \R_{\geq 0}e_k)
+        = \dd{h}_0(\bd H^k) + \R_{\geq 0}\dd{h}_0(e_k)
+\]
+
+Now considering boundaries, the map $\bd h = \bd\psi^{-1} \circ \bd\phi : \bd U \to \bd V$ is a diffeomorphism with $\bd U$ and $\bd V$ both open sets in $\bd H^k = \R^{k-1}$.
+In other words, $\bd h$ is a parameterization of $\bd V$ as a $(k-1)$-manifold, so
+\[
+    \dd{h}_0(\bd H^k)
+        = \im \dd(\bd h)_0
+        = T_0\bd V
+        = T_0\bd H^k
+        = \bd H^k.
+\]
+
+We now inspect the directional derivative
+\[
+    \dd{h}_0(e_k)
+        = \mathrm{D}_{e_k}h(0)
+        = \lim_{t \to 0} \frac{h(0 + te_k) - h(0)}{t}
+        = \lim_{t \to 0} \frac{h(te_k)}{t}
+\]
+For all $t > 0$ we have $te_k \in H^k$.
+Since $U$ is an open neighborhood of $0$ in $H^k$, then for small $t > 0$ we have $te_k \in U$.
+Then $h(te_k) \in V \seq H^k$, and scaling by $1/t > 0$ keeps the value inside of $H^k$.
+Since $H^k$ is closed as a subset $\R^k$, we have
+\[
+    \dd{h}_0(e_k) = \lim_{t \to 0} \frac{h(te_k)}{t} \in H^k.
+\]
+Moreover, since $e_k$ is not contained in the invariant subspace $\bd H^k = \dd{h}_0(\bd H^k)$ and $\dd{h}_0$ is a linear isomorphism, $\dd{h}_0(e_k)$ must also not be in $\bd H^k$.
+In other words, $\dd{h}_0(e_k)$ is is the (strictly) positive upper half-space $H^k \setminus \bd{H^k}$, so
+\[
+    \dd{h}_0(H^k) = \bd H^k + \R_{\geq 0}\dd{h}_0(e_k) = H^k.
+\]
+We now conclude that
+\[
+    \dd{\phi}_0(H^k) = \dd{\psi}_0(\dd{h}_0(H^k)) = \dd{\psi}_0(H^k).
+\]
+
+
+\pnum{Exercise 2.1.8}
+
+Since $T_x\bd X$ is a subspace of codimension in $T_xX$, then the orthogonal complement $(T_x\bd X)^\perp$ is a $1$-dimensional subspace of $T_xX$.
+A $1$-dimensional real vector space has exactly two unit vectors and they are opposites of each other.
+That is, if $v \in (T_x\bd X)^\perp$ is a unit vector, the other unit vector is $-v$.
+In the proof of Exercise 2.1.7, we found that $H_xX$ is a half-space of $T_xX$ whose boundary is precisely $T_x\bd X$.
+By construction, exactly one of $\pm v$ is contained in this half-space.
+
+For $X = H^k$, we have $\vec{n}_{H^k}(x) = -e^k$ for all $x \in \bd H^k$.
+In other words, $\vec{n}_{H^k}$ is a constant map, which is in particular smooth.
+For $x \in \bd X$, let $\phi : U \to X$ be a local parameterization with $\phi(0) = x$.
+For each $u \in U$, the derivative $\dd{\phi}_u : \R^k \to T_{\phi(u)}X$ is an isomorphism of vector spaces.
+There is a map
+\begin{align*}
+    U &\longrightarrow X \times (\R^N)^k \\
+    u &\longmapsto \big(\phi(u), (\dd{\phi}_u(e_1), \dots, \dd{\phi}_u(e_k))\big),
+\end{align*}
+where each point $\phi(u)$ is paired with a basis of the tangent space $T_{\phi(u)}X$.
+This map is smooth, as it can be constructed out of restrictions of the global derivative map $\dd{\phi} : T(U) \to R(X)$ between tangent bundles.
+
+For any vector space $V$ and linearly independent set $v_1, \dots, v_k$, we can perform the Gram-Schmidt process to obtain an orthonormal set $w_1, \dots, w_k$ such that the span of $v_1, \dots, v_i$ is the same as the span of $w_1, \dots, w_i$ for each $i = 1, \dots, k$.
+The subset $Y \seq (\R^N)^k$ consing only of $k$-tuples of linearly independent vectors forms a manifold and the map $Y \to Y$ which performs the Gram-Schmidt process is a smooth map.
+
+Applying this process to $\dd{\phi}_u(e_1), \dots, \dd{\phi}_u(e_k)$ gives us $w_1, \dots, w_k$ with $w_1, \dots, w_{k-1}$ spanning $T_{\phi(u)}\bd X$ and $w_k$ a unit vector in $T_{\phi(u)}X$ orthogonal to $T_{\phi(u)}\bd X$.
+Moreover, from the proof of Exercise 2.1.7, we know that $\dd{\phi}_u(e_k)$ and therefore $w_k$ are both contained in $H_{\phi(u)}X$, so in fact $\vec{n}(\phi(u)) = -w_k$.
+
+Composing all the necessary maps gives $\vec{n}$ as a smooth map.
+
+\pnum{Exercise 2.1.9}
+
+\pnum{(a)}
+
+We prove that $\inter X = X \setminus \bd X$ is open.
+Let $x \in \inter X$ and choose a local parameterization $\phi : U \to X$ where $U$ is an open set in $H^k$.
+Since $x$ is not on the boundary of $X$, the point $u \in U$ with $\phi(u) = x$ must not be on the boundary of $H^k$.
+Since $\bd H^k = \R^{k-1}$ is a closed subspace of $\R^k$, there is a small enough neighborhood $V \seq \R^k$ of $u$ such that $V \cap \R^{k-1} = \emptyset$.
+Then $W = U \cap V$ is an open set in $H^k$ with $W \cap \bd H^k = \emptyset$.
+
+Then $\phi(W)$ is an open neighborhood of $x$ in $X$.
+Moreover, $\phi^{-1}$ gives a chart of $\phi(W)$ such that $\phi^{-1}(y) \notin \bd H^k$ for all $y \in \phi(W)$.
+By Exercise 2.1.1, we conclude that $\phi(W)$ and $\bd X$ are disjoint so $\phi(W) \in \inter X$, hence $\inter X$ is open.
+
+
+\pnum{(b)}
+
+Trivially, any non-compact manifold without boundary, since the emptyset is compact.
+
+The $1$-manifold $H^1 \seq \R^1$ is not compact since it is unbounded, but $\bd H^1 = \{0\}$ is compact.
+
+
+
+
+\end{document}

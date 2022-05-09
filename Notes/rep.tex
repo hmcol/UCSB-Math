@@ -1,0 +1,353 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+\usepackage{suffix}
+
+\usepackage[shortlabels]{enumitem}
+
+% Formatting
+\setlist[enumerate]{nosep}
+\newcommand{\keyword}[1]{\textbf{#1}}
+\newcommand{\sepline}{\rule{\textwidth}{0.4pt}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% mathbb
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\M}{\mathbb{M}}
+
+
+% mathcal
+\renewcommand{\AA}{\mathcal{A}}
+\newcommand{\BB}{\mathcal{B}}
+\newcommand{\RR}{\mathcal{R}}
+\newcommand{\ZZ}{\mathcal{Z}}
+\newcommand{\UU}{\mathcal{U}}
+
+% mathfrak
+\newcommand{\mm}{\mathfrak{m}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\iso}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\dd}{{\underline{d}}}
+
+\newcommand{\udl}{\underline}
+
+% Math Operators
+\DeclareMathOperator{\Ob}{Ob}
+\DeclareMathOperator{\Mor}{Mor}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Iso}{Iso}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Dim}{\underline{dim}}
+
+\DeclareMathOperator{\Rep}{Rep}
+\DeclareMathOperator{\GL}{GL}
+
+\DeclareMathOperator{\len}{len}
+
+% Categories
+\newcommand{\mathcat}{\mathsf}
+\newcommand{\newcat}[2]{\newcommand{#1}{\mathcat{#2}}}
+\WithSuffix\newcommand\newcat*[2]{\WithSuffix\newcommand#1*{\mathcat{#2}}}
+
+
+\newcat{\Set}{Set}
+
+\newcat{\Top}{Top}
+\newcat{\Htpy}{Htpy}
+
+\newcat{\Mon}{Mon}
+\newcat{\CMon}{CMon}
+\newcat{\Grp}{Grp}
+\newcat{\Ab}{Ab}
+
+\newcat{\Ring}{Ring}
+\newcat{\CRing}{CRing}
+
+
+\newcat{\Vect}{\text{-}Vect}
+\newcat*{\Vect}{Vect}
+\newcat{\vect}{\text{-}vect}
+\newcat*{\vect}{vect}
+
+\newcat{\Mod}{\text{-}Mod}
+\newcat*{\Mod}{Mod}
+\renewcommand{\mod}{\mathsf{\text{-}mod}}
+\newcat*{\mod}{mod}
+
+\newcat{\rep}{rep}
+
+\newcat{\cat}{cat}
+\newcat{\Cat}{Cat}
+\newcat{\CAT}{CAT}
+
+
+
+% Extra Commands
+\renewcommand{\_}[1]{{_{#1}}}
+
+% Document
+\begin{document}
+\title{Representation Theory of Algebras}
+\author{}
+\date{}
+% \maketitle
+
+Fix a base field $K$.
+
+\sepline
+
+matrix problems
+
+\sepline
+
+A \keyword{quiver} $Q$ consists of
+\begin{itemize}
+    \item A set $Q_0$ of \keyword{vertices};
+    \item A set $Q_1$ of \keyword{arrows};
+    \item A function $s : Q_1 \to Q_0$ indicating the starting vertex of an arrow;
+    \item A function $t : Q_1 \to Q_0$ indicating the ending vertex of an arrow.
+\end{itemize}
+
+\sepline
+
+A \keyword{representation} of a quiver $Q$ (over $K$) consists of
+\begin{itemize}
+    \item a finite dimensional $K$-vector space $V_i \in K\vect$ for each vertex $i \in Q_0$;
+    \item a linear transformation $f_\alpha : V_{s(\alpha)} \to V_{t(\alpha)}$ for each arrow $\alpha \in Q_1$
+\end{itemize}
+
+\sepline
+
+A \keyword{path} of length $\ell$ is a $(\ell + 2)$-tuple written
+\[
+    w = (j | \alpha_\ell, \dots \alpha_2, \alpha_1 | i)
+\]
+where $i, j \in Q_0$ and $\alpha_n \in Q_1$ are such that $s(\alpha_1) = i$, $t(\alpha_n) = s(\alpha_{n+1})$, and $t(\alpha_\ell) = j$.
+
+Each vertex $i \in Q_0$ is identified with a trivial/identity path $e_i = (i || i)$.
+
+Then $s$ and $t$ can be extended to all all paths by $s(w) = i$ and $t(w) = j$.
+
+Define a concatenation
+\[
+    (k|\beta_m, \dots, \beta_1|j) \circ (j|\alpha_n, \dots, \alpha_1|i) = (k|\beta_m, \dots, \beta_1, \alpha_n, \dots, \alpha_1|i)
+\]
+
+A \keyword{cycle} is a path $w$ with $s(w) = t(w)$.
+
+A cycle of length $1$ is a \keyword{loop}.
+
+For $\ell \geq 0$, let $Q_\ell$ denote the set of paths of length $\ell$ in $Q$.
+This is consistent with $Q_0$ being the vertices and $Q_1$ being the arrows.
+Let
+\[
+    Q_\bullet = \bigcup_{\ell \geq 0} Q_\ell
+\]
+be the set of all paths in $Q$.
+
+\sepline
+
+The \keyword{path category} or \keyword{free category} of a quiver $Q$ is the category whose objects are the vertices of $Q$ and whose morphisms are paths in $Q$.
+
+Denote it by something like $\cat(Q)$.
+
+This is a category enriched over $K$-vector spaces.
+
+Then a representation of $Q$ is simply a functor $\cat(Q) \to K\vect$.
+
+Denote the functor category, $\mathcat{D}_K(Q) = \mathcat{rep}_K(Q) = [\cat(Q), K\vect]$, and call it the category of representations of $Q$.
+
+\sepline
+
+For a quiver $Q$, the \keyword{path algebra} $KQ$ is defined as free $K$-module generated by the set $\Mor(\cat(Q))$ of all paths in $Q$ with multiplication
+\[
+    pq = \begin{cases}
+        p \circ q & \text{if } s(p) = t(q), \\
+        0 & \text{otherwise}.
+    \end{cases}
+\]
+\[
+    KQ = \bigoplus_{i,j \in Q_0} K \cdot \cat(Q)(i, j).
+\]
+
+$KQ = Q_\bullet^{(K)}$ all finite sums over $Q_\bullet$ with coefficients in $K$.
+
+
+\sepline
+
+Something to check that $KQ\mod \iso \rep_K(Q)$
+
+Given $M \in KQ\mod$, define $M_i = e_iM$ for each $i \in Q_0$, then $M = \bigoplus_{i \in Q_0} M_i$
+and for each arrow $\alpha : i \to j \in Q_1$, define
+\begin{align*}
+    f_\alpha : M_i &\longrightarrow M_j \\
+        e_im &\longmapsto \alpha e_im = \alpha m.
+\end{align*}
+Then $((M_i)_{i \in Q_0}, (f_\alpha)_{\alpha \in Q_1})$ is a representation of $Q$.
+
+\sepline
+
+Conditions for ideal $I$ to give path algebra modulo relations.
+
+An ideal $I \teq KQ$ is called \keyword{admissible} if
+\begin{itemize}
+    \item $I$ is generated over $KQ$ by paths of length at least $2$;
+    \item there exists $N \in \N$ such that all paths of length $N$ belong to $I$.
+\end{itemize}
+
+(In particular, $I$ is also generated over $K$ by some paths of length at least $2$.)
+
+If $I \teq KQ$ is admissible, say $KQ/I$ is a path algebra modulo relations.
+
+Have all good decomposition results for $KQ/I$.
+
+\sepline
+
+For $\Lambda \in K\mathcat{\text{-}alg}$ there is always a complete set of primitive orthogonal idempotents $e_1, \dots e_n \in \Lambda$.
+
+Then $\_\Lambda\Lambda = \Lambda e_1 \oplus \cdots \oplus \Lambda e_n$ with each $\Lambda e_i$ indecomposable in $\Lambda\mod$.
+
+The \keyword{Jacobson radical} of $\Lambda$ is 
+\[
+    J = J(\Lambda) = \bigcap\{\text{maximal left ideals of $\Lambda$}\}.
+\]
+
+Up to isomorphism, $S_i = \Lambda e_i / Je_i$ are all simples in $\Lambda\mod$.
+
+For $M \in \Lambda\mod$, have a decomposition
+\[
+    M = e_1 M \oplus \cdots \oplus e_n M.
+\]
+
+Then $\dim_K e_i M$ is the multiplicity of $S_i$ as a composition factor of $M$.
+
+Define \keyword{dimension vector}
+\[
+    \Dim M = (\dim_K e_1 M, \dots, \dim_K e_n M).
+\]
+
+\sepline
+
+For $\Lambda = KQ/I$ and dimension vector $\dd = (d_1, \dots, d_n)$, define
+\[
+    \Rep_\dd(\Lambda) = \left\{
+        x \in \prod_{\alpha \in Q_1} M_{d_{t(\alpha)} \times d_{s(\alpha)}}(K)
+        \,\bigg|\,
+        \text{``$x$ satisfies relations in $I$''}
+    \right\}.
+\] 
+
+Each element $\gamma \in I$ is a finite sum
+\[
+    \gamma = \sum_{\substack{p \in \cat(Q) \\ \len(p) \geq 2}} c_p p,
+\]
+with $c_p \in K$.
+If $\ell = \len(p)$, then $p = \alpha_\ell \cdots \alpha_1$ for some $\alpha_i \in Q_1$.
+
+Given $x = (x_\alpha)_{\alpha \in Q_1}$, write
+\[
+    x_p = x_{\alpha_\ell} \cdots x_{\alpha_1}
+\]
+and
+\[
+    \hat{\gamma} = \sum c_p \hat{p}.
+\]
+Then say ``$x$ satisfies relations in $I$'' if $\hat{\gamma} = 0$ for all $\gamma \in I$.
+
+
+\sepline
+
+For a quiver $Q$ and dimension vector $\dd = (d_1, \dots, d_n)$ define the set
+\[
+    \M_\dd(Q)
+        = \prod_{\alpha \in Q_1} M_{d_{t(\alpha)} \times d_{s(\alpha)}}(K).
+\]
+This is essentially the affine space $\A_K^{N}$ with $N = \sum_{\alpha \in Q_1} d_{t(\alpha)} \cdot d_{s(\alpha)}$.
+
+For $x = (x_\alpha)_{\alpha \in Q_1} \in \M_\dd(Q)$ and $p = (j|\alpha_\ell, \dots, \alpha_1|i) \in Q_\bullet$, define
+\[
+    x_p = x_{\alpha_\ell} \cdots x_{\alpha_1} \in M_{d_j \times d_i}(K).
+\]
+By convention, $x_{(i||i)} = I_{d_i}$ for all trivial paths $(i||i) \in Q_0$.
+
+For $\gamma = \sum_{p \in Q_\bullet} c_p p \in KQ$, define some good notion of
+\[
+    \gamma(x) = \sum_{p \in Q_\bullet} c_p x_p.
+\]
+I guess for each $p \in Q_\bullet$, we have $c_px_p \in M_{d_{t(p)} \times d_{s(p)}}(K)$, so this will be an element of something like
+\[
+    \bigoplus_{d, d' \in \geq 0} M_{d \times d'}(K).
+\]
+Define
+\[
+    \Rep_\dd(\Lambda)
+        = \{x \in \M_\dd(Q) \mid \gamma(x) = 0 \text{ for all } \gamma \in I\}
+        = Z(I) \seq \M_\dd(Q).
+\] 
+
+\sepline
+
+For each $x \in \Rep_\dd(\Lambda)$, we construct $M_x \in \Lambda\mod$ as the set
+\[
+    M_x = \bigoplus_{i=1}^{n} K^{d_i}
+\]
+with $\Lambda$ scalar multiplication in defined for each arrow $\alpha \in Q_1$ by
+\[
+    \alpha \cdot (m_1 + \cdots + m_n) = x_\alpha m_{s(\alpha)} \in K^{t(\alpha)} \seq M_x.
+\]
+
+
+The map
+\begin{align*}
+    \Phi : \Rep_\dd(\Lambda) &\longrightarrow \{M \in \Lambda\mod \mid \Dim M = \dd\}/\text{iso} \\
+        x &\longmapsto [M_x]
+\end{align*}
+is a surjection whose fibers are the orbits of the group $G = \prod_{i=1}^{n} \GL_{d_i} (K)$ under the action
+\begin{align*}
+    G \times \Rep_\dd(\Lambda) &\longrightarrow \Rep_\dd(\Lambda) \\
+        (g, x) &\longmapsto \left(g_{t(\alpha)} x_\alpha g_{s(\alpha)}^{-1}\right)_{\alpha \in Q_1}.
+\end{align*}
+
+This is understood as $g \cdot x$ referring to a change of basis for each linear map $K^{s(\alpha)} \to K^{t(\alpha)}$ corresponding to the matrix $x_\alpha$.
+
+\sepline
+
+Let $\Lambda = KQ/I$ be path algebra modulo relations.
+
+Let $M \in \Lambda\mod$ with $\dd = \Dim M$ and let $x \in \Rep_\dd(\Lambda)$ such that $M$ corresponds to the orbit $G \cdot x \seq \Rep_\dd(\Lambda)$.
+If $U \leq M$ is a submodule, then $U \oplus M/U$ corresponds to an orbit contained in $\clo{G \cdot x}$.
+
+\end{document}

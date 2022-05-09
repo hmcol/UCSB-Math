@@ -1,0 +1,485 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\def\temp{#1}\ifx\temp\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+\newcommand{\pnum}[1]{\paragraph{#1}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\iso}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\dd}{\mathrm{d}}
+
+% Extra Commands
+\DeclareMathOperator{\codim}{codim}
+
+% Document
+\begin{document}
+\title{MATH 221C Homework 5}
+\author{Harry Coleman}
+\date{May 2, 2022}
+\maketitle
+
+I worked with Joseph Sullivan and Gahl Shemy.
+
+\pnum{1 Exercise 1.1.5}
+
+Let $V \leq \R^N$ be a linear subspace of dimension $k$.
+Choose a basis $\{v_1, \dots, v_k\}$ of $V$ and extend it to a basis $\{v_1, \dots, v_k, u_{k+1}, \dots, u_N\}$ of $\R^N$.
+Then there is a linear surjection $L : \R^N \to \R^k$ defined by $v_i \mapsto e_i$ and $u_i \mapsto 0$.
+This map is smooth, therefore the restriction $\phi = L|_{V} : V \to \R^k$ is smooth.
+Moreover, this is an isomorphism of vector spaces, so there is a linear inverse $\phi^{-1} \R^k \to V$.
+Since $\phi^{-1}$ is a linear map $\R^k \to \R^N$, it is smooth, hence $\phi$ is a diffeomorphism.
+That is, $\phi$ is a global parameterization giving $V$ the structure of a manifold, diffeomorphic to $\R^k$.
+
+
+\pnum{2 Exercise 1.2.1}
+
+Take parameterizations $\phi : U \to X$ and $\psi : V \to Y$ where $U \seq \R^k$ and $V \seq \R^\ell$ are open sets such that $\phi(0) = x = \psi(0)$.
+Without loss of generality, we may assume $U$ is chosen small enough that $\phi(U) \seq \psi(V)$, giving us the following commutative diagram:
+\begin{cd}[column sep=large]
+    X
+        \rar[hook, "\iota"]
+    & Y
+    \\
+    U
+        \uar["\phi"]
+        \rar[dashed, "h = \psi^{-1} \circ \phi"']
+    & V
+        \uar["\psi"']
+\end{cd}
+Taking derivatives, we obtain
+\begin{cd}
+    T_xX
+        \rar["\dd{\iota}_0"]
+    & T_xY
+    \\
+    \R^k
+        \uar["\dd{\phi}_0"]
+        \rar["\dd{h}_0"']
+    & \R^\ell
+        \uar["\dd{\psi}_0"']
+\end{cd}
+Note that we can write $\phi = \psi \circ h$, so
+\[
+    \dd{\phi}_0^{-1}
+        = \dd(\psi \circ h)_0^{-1}
+        = (\dd{\psi}_{h(0)} \circ \dd{h}_0)^{-1}
+        = \dd{h}_0^{-1} \circ \dd{\psi}_0^{-1}.
+\]
+Then we compute
+\[
+    \dd{\iota}_x
+        = \dd{\psi}_0 \circ \dd{h}_0 \circ \dd(\phi)_0^{-1}
+        = \dd{\psi}_0 \circ \dd{h}_0 \circ \dd{h}_0^{-1} \circ \dd{\psi}_0^{-1}
+        = \id.
+\]
+That is, $\dd{\iota}_x$ acts as the identity on $T_xX$, so it must be the inclusion $T_xX \inc T_xY$.
+
+\pnum{3 Exercise 1.2.4}
+
+Let $\phi : U \to X$ be a local parameterization with $U \seq \R^k$ an open set such that $\phi(0) = x$.
+In particular, $\phi$ is a diffeomorphism $U \to \phi(U)$.
+Since $f$ is a diffeomorphism, the composition $f \circ \phi$ is a diffeomorphism $U \to f(\phi(U)) \seq Y$.
+In other words, $\psi = f \circ \phi : U \to Y$ is a local parameterization with $\psi(0) = f(x)$.
+Hence, we have the following commutative diagram:
+\begin{cd}
+    X
+        \rar["f"]
+    & Y
+    \\
+    U
+        \uar["\phi"]
+        \rar[dashed, "\id_U"']
+    & U
+        \uar["\psi"']
+\end{cd}
+Taking derivatives, we obtain
+\begin{cd}[column sep=large]
+    T_xX
+        \rar["\dd{f}_x"]
+    & T_{f(x)}Y
+    \\
+    \R^k
+        \uar["\dd{\phi}_0"]
+        \rar["\dd(\id_U)_0 = \id_{\R^k}"']
+    & \R^k
+        \uar["\dd{\psi}_0"']
+\end{cd}
+Since each of $\dd{\phi}_0$, $\dd{\psi}_0$, and $\id_{\R^k}$ are isomorphisms, then $\dd{f}_x$ is necessarily an isomorphism.
+
+\pnum{4 Exercise 1.2.12}
+
+Fix $x \in X$ and choose a local parameterization $\phi : U \to X$ with $U \seq \R^k$ open and $\phi(0) = x$.
+Then $\phi$ is a diffeomorphism from $U$ to the open set $\phi(U) \seq X$, so its derivative is an isomorphism of tangent spaces
+\begin{cd}
+    \R^k = T_0U \rar["\dd{\phi}_0", "\iso"'] & T_x\phi(U) = T_xX.
+\end{cd}
+Given $v \in T_xX$, set $u = \dd{\phi}_0^{-1}(v) \in \R^k$ and define a linear map $\gamma : \R^1 \to \R^k$ by $\gamma(t) = tu$, so
+\[
+    \dd{\gamma}_0(t) = tu.
+\]
+Choose $\eps > 0$ such that $(-\eps, \eps) \seq \gamma^{-1}(U)$
+and define the curve $c = \phi \circ \gamma|_{(-\eps, \eps)} : (-\eps, \eps) \to X$.
+Then the velocity vector of $c$ at $0$ is
+\[
+    \dd{c}_0(1)
+        = \dd(\phi \circ \gamma)_0(1)  
+        = \dd{\phi}_0(\dd{\gamma}_0(1))
+        = \dd{\phi}_0(u)
+        = v.
+\]
+Hence, every vector of $X$ is the velocity vector of some curve in $X$.
+
+Conversely, by definition, every velocity vector lives in some tangent space of $X$.
+
+\pnum{5 Exercise 1.4.11}
+
+\pnum{(a)}
+
+The determinant $\det : M(n) \to \R$ is a polynomial with respect to the entries of the matrices, and is therefore smooth.
+By definition, $SL(n) = \det^{-1}(1) \seq M(n)$.
+
+Let $A \in M(n)$ with $\det A \ne 0$.
+Consider the line $\gamma : \R \to M(n)$ defined by $\gamma(t) = tA$.
+Define the map $f = \det \circ \gamma : \R \to \R$, which we can write as
+\[
+    f(t) = \det(tA) = t^n\det A.
+\]
+Then the derivative of $f$ at $1 \in \R$ is
+\[
+    f'(t) = nt^{n-1}\det A.
+\]
+For $t = 1$ this is nonzero, which means the derivative is a surjective map on tangent spaces.
+And since $\dd{f}_1 = \dd(\det)_A \circ \dd{\gamma}_1$, then in particular $\dd(\det)_A$ is surjective.
+In other words, $A$ is a regular point of the determinant, so all nonzero values are regular values.
+Hence, $SL(n)$ is a manifold by the preimage theorem.
+
+\paragraph{(b)}
+
+Since $SL(n) = \det^{-1}(1) \seq M(n)$, the tangent space is given by
+\[
+    T_{I_n}SL(n) = \ker \dd(\det)_{I_n}.
+\]
+Since $\det$ is smooth, we can use the directional derivative
+\[
+    \dd(\det)_{I_n}(A)
+        = \mathrm{D}_A(I_n)
+        = \lim_{t \to 0} \frac{\det(I_n + tA) - \det I_n}{t}.
+\]
+Note that $A$ is similar to some (possibly complex) upper triangular matrix $U$, i.e., there is some (possibly complex) $P \in GL(n)$ with 
+\[
+    PAP^{-1} = U = \begin{bmatrix}
+        u_1 & & * \\
+        & \ddots \\
+        0 & & u_n
+    \end{bmatrix}.
+\]
+Since determinant is invariant under similarity, we have
+\[
+    \det(I_n + tA)
+        = \det(P(I_n + tA)P^{-1})
+        = \det(I_n + tU).
+\]
+Then $t_n + tU$ is upper triangular, so its determinant is the product of the diagonal entries:
+\[
+    \det(I_n + tU)
+        = (1 + tu_1) \cdots (1 + tu_n)
+        = 1 + t(u_1 + \cdots + u_n) + O(t^2).
+\]
+We can compute the derivative
+\[
+    \dd(\det)_{I_n}(A)
+        = \lim_{t \to 0} \frac{t(u_1 + \cdots + u_n) + O(t^2)}{t}
+        = u_1 + \dots + u_n,
+\]
+but this is simply the trace, which is invariant under similarity, so
+\[
+    \dd(\det)_{I_n}(A)
+        = \mathrm{tr}(U)
+        = \mathrm{tr}(P^{-1}UP)
+        = \mathrm{tr}(A).
+\]
+Hence, the tangent space is
+\[
+    T_{I_n}SL(n)
+        = \ker \dd(\det)_{I_n}
+        = \ker \mathrm{tr}
+        = \{A \in M(n) \mid \mathrm{tr}(A) = 0\}.
+\]
+
+\pnum{6 Exercise 1.5.4}
+
+By Problem 2 Exercise 1.2.1, the derivatives of the inclusions $X \cap Z \inc X$ and $X \cap Z \inc Z$ are inclusions $T_y(X \cap Z) \inc T_yX$ and $T_y(X \cap Z) \inc T_yZ$, hence
+\[
+    T_y(X \cap Z) \seq T_yX \cap T_yZ.
+\]
+We now count dimensions to prove equality.
+Note that $X \cap Z = \iota^{-1}(Z)$ where $\iota : X \to Y$ is the inclusion, so
+\[
+    \codim_X(X \cap Z)
+        = \codim_X \iota^{-1}(Z)
+        = \codim_Y Z.
+\]
+This means the dimension $\dim T_y(X \cap Z) = \dim (X \cap Z) $ is given by
+\[
+    \dim X - \codim_Y Z
+        = \dim X - (\dim Y - \dim Z)
+        = \dim X + \dim Z - \dim Y.
+\]
+The fact that $X$ and $Z$ are transverse tells us $T_yX + T_yZ = T_yY$, so
+\[
+    \dim T_yX + \dim T_yZ
+        = \dim T_yY - \dim(T_yX \cap T_yZ),
+\]
+which implies
+\[
+    \dim(T_yX \cap T_yZ)
+        = \dim T_yX + \dim T_yZ - \dim T_yY
+        = \dim X + \dim Z - \dim Y.
+\]
+We conclude that
+\[
+    \dim T_y(X \cap Z)
+        = \dim X + \dim Z - \dim Y
+        = \dim(T_yX \cap T_yZ),
+\]
+so we must have equality
+\[
+    T_y(X \cap Z) = T_yX \cap T_yZ.
+\]
+
+\pnum{7 Exercise 1.5.5}
+
+Denote $y = f(x)$.
+By construction, $f$ restricts to a map $W \to Z$, which means $\dd{f}_x$ restricts to a map $T_xW \to T_yZ$, so we have
+\[
+    T_xW \seq \dd{f}_x^{-1}(T_yZ).
+\]
+We now count dimensions to prove equality.
+First, $\codim_XW = \codim_YZ$ gives us
+\[
+    \dim T_xW
+        = \dim W
+        = \dim X - \codim_XW
+        = \dim X - \codim_YZ.
+\]
+The fact that $f$ and $Z$ are transverse means $\im\dd{f}_x$ and $T_yZ$ are transverse subspaces of $T_yY$.
+
+Note that for any linear map $L : V \to V'$ of vector spaces and $U \leq V'$ a subspace, it follows from the first isomorphism theorem that
+\[
+    \codim_VL^{-1}(U)
+        = \codim_{V / \ker L} (L^{-1}(U) / \ker L)
+        = \codim_{\im L} (U \cap \im L).
+\]
+Applying this to $\dd{f}_x : T_xX \to T_yY$ and $T_yZ \leq T_yY$, we get
+\begin{align*}
+    \dim\dd{f}_x^{-1}(T_yZ)
+        &= \dim T_xX - \codim_{T_xX} \dd{f}_x^{-1}(T_yZ) \\
+        &= \dim X - \codim_{\im\dd{f}_x}(T_yZ \cap \im\dd{f}_x) \\
+        &= \dim X - \codim_{T_yZ + \im\dd{f}_x}T_yZ \\
+        &= \dim X - \codim_{T_yY}T_yZ \\
+        &= \dim X - \codim_YZ \\
+        &= \dim T_xW.
+\end{align*}
+Hence, we have equality
+\[
+    T_xW = \dd{f}_x^{-1}(T_yZ).
+\]
+
+(Exercise 1.5.4 is the case of $f$ being the inclusion $X \inc Y$.)
+
+\pnum{8 Exercise 1.5.6}
+
+Consider $Y = \R^4$ with subspaces $X = \<e_1, e_2\>$ and $Z = \<e_1, e_3\>$.
+Then $X \cap Z = \<e_1\>$ is still a manifold but
+\[
+    T_0X + T_0Z
+        = X + Z
+        = \<e_1, e_2, e_3\>
+        \ne Y,
+\]
+which means $X$ and $Z$ are not transverse.
+Moreover,
+\[
+    \codim_Y(X \cap Z)
+        = 3 
+        \ne 4
+        = \codim_Y X + \codim_Y Z.
+\]
+
+Lastly, if $U$ and $W$ are linear subspaces of $V$ such that their intersection has codimension $\codim_VU + \codim_VW$, then $U$ and $V$ must be transverse.
+To see this, consider
+\begin{align*}
+    \codim_V(U \cap W)
+        &= \codim_VU + \codim_VW \\
+    \dim V - \dim(U \cap W)
+        &= (\dim V - \dim U) + (\dim V - \dim W) \\
+    \dim V + \dim(U + W) - \dim U - \dim W
+        &= 2\dim V - \dim U - \dim W \\
+    \dim(U + W) 
+        &= \dim V.
+\end{align*}
+Since $U + W$ is a subspace of $V$, this implies $U + W = V$, i.e., $U$ and $V$ are transverse.
+Applying this fact to the tangent spaces, we deduce that if $X$ and $Z$ are submanifolds of $Y$ such that their intersection is a submanifold of codimension $\codim_YX + \codim_YZ$, then $X$ and $Z$ must be transverse.
+
+\pnum{9 Exercise 1.5.7}
+
+Fix a point $x \in X$ and denote $y = f(x)$, $z = g(y)$.
+
+Assume $f$ is transverse to $g^{-1}(W)$, which means
+\[
+    \im\dd{f}_x + T_yg^{-1}(W) = T_yY.
+\]
+Notice that $T_yg^{-1}(W) = \dd{g}_y^{-1}(T_zW)$, so taking the image under $\dd{g}_y$, we obtain
+\[
+    \im\dd(g \circ f)_x + T_zW = \im\dd{g}_y.
+\]
+We add $T_zW$ to both sides, and the fact that $g$ is transverse to $W$ gives us
+\[
+    \im\dd(g \circ f)_x + T_zW
+        = \im\dd{g}_y + T_zW
+        = T_zZ.
+\]
+Hence, $g \circ f$ is transverse to $W$.
+
+Assume $g \circ f$ is transverse to $W$, which means
+\[
+    \im \dd(g \circ f)_x + T_zW = T_zZ.
+\]
+Note that $\im\dd(g \circ f)_x = \dd{g}_y(\im\dd{f}_x)$, then taking the preimage under $\dd{g}_y$ gives us
+\[
+    \dd{g}_y^{-1}( \dd{g}_y(\im\dd{f}_x) + T_zW)
+        = \dd{g}_y^{-1}(T_zZ)
+        = T_yY.
+\]
+If $v \in T_yY$, then we can find $u \in T_xX$ and $w \in T_zW$ such that
+\[
+    \dd{g}_y(v) = \dd{g}_y(\dd{f}_x(u)) + w.
+\]
+Then
+\[
+    \dd{g}_y(v - \dd{f}_x(u))
+        = \dd{g}_y(v) - \dd{g}_y(\dd{f}_x(u))
+        = w,
+\]
+which means
+\[
+    v - \dd{f}_x(u) \in \dd{g}_y^{-1}(T_zW) = T_yg^{-1}(W).
+\]
+We deduce that
+\[
+    v \in \im\dd{f}_x + T_yg^{-1}(W),
+\]
+so
+\[
+    T_yY \seq \im\dd{f}_x + T_yg^{-1}(W).
+\]
+The reverse inclusions is clear since $T_yY$ is the codomain of $\dd{f}_x$ and $g^{-1}(W)$ is a submanifold of $Y$.
+Hence, $f$ is transverse to $g^{-1}(W)$.
+
+
+
+\pnum{10 Exercise 1.6.1}
+
+From Homework 3 Exercise 1.1.18, let $h : \R \to \R$ be a smooth function such that $h(x) = 0$ for $x \leq 1/4$, $h(x) = 1$ for $x \geq 3/4$, and $0 < h(x) < 1$ for $1/4 < x < 3/4$.
+We may consider $h$ as a smooth map $I \to I$.
+
+Let $F : X \times I \to Y$ be a smooth homotopy from $f_0$ to $f_1$.
+We define $\tilde{F}$ as the following composition:
+\begin{cd}[column sep=large]
+    X \times I \rar["\id_X \times h"] & X \times I \rar["F"] & Y
+\end{cd}
+Then $\tilde{F}$ is a smooth map, given by $\tilde{F}(x, t) = F(x, h(t))$.
+So for $t \leq 1/4$
+\[
+    \tilde{F}(x, t) = F(x, h(t)) = F(x, 0) = f_0(x)
+\]
+and for $t \geq 3/4$
+\[
+    \tilde{F}(x, t) = F(x, h(t)) = F(x, 1) = f_1(x).
+\]
+
+\pnum{11 Exercise 1.6.2}
+
+Let $F, G : X \times I \to Y$ be smooth homotopies from $f$ to $g$ and from $g$ to $h$ respectively which satisfy the conditions of Problem 10 Exercise 1.6.1.
+Define the function $H : X \times I \to Y$ by
+\[
+    H(x, t) = \begin{cases}
+        F(x, 2t) & \text{if } t \leq 1/2, \\
+        G(x, 2t - 1) & \text{if } t \geq 1/2.
+    \end{cases}
+\]
+We obtain immediately that $H$ is smooth for $t \neq 1/2$.
+Moreover,
+\[
+    F(x, 2(1/2)) = F(x, 1) = g(x) = G(x, 0) = G(x, 2(1/2) - 1),
+\]
+so $H(x, 1/2) = g(x)$ is well-defined.
+In fact, for all $t \in (3/8, 5/8)$ we have $H(x, t) = g(x)$.
+In other words,
+\[
+    H|_{X \times (3/8, 5/8)} = g \circ \pi_X,
+\]
+where $\pi_X : X \times I \to X$ is the projection onto $X$.
+Since $g$ and $\pi_X$ are smooth, so is their composition, hence $H$ is smooth at $t = 1/2$.
+
+\end{document}
