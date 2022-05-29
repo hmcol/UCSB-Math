@@ -1,0 +1,349 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\def\temp{#1}\ifx\temp\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+\newcommand{\pnum}{\paragraph}
+
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\iso}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+
+% Extra Commands
+\renewcommand{\SS}{\mathcal{S}}
+\newcommand{\DD}{\mathrm{D}}
+\newcommand{\LL}{\mathcal{L}}
+\newcommand{\HH}{\mathcal{H}}
+
+\newcommand{\conj}{\overline}
+
+% Document
+\begin{document}
+\title{MATH 201C Homework 4}
+\author{Harry Coleman}
+\date{May 28, 2022}
+\maketitle
+
+\begin{pbox}[1]
+    Let $\SS$ be the Schwartz space (functions of rapid decay), and $\delta$ is the Dirac delta function.
+    Prove directly that the derivative of $\delta$, denoted by $\delta'$, is in $S'$ (the dual space of $\SS$).
+\end{pbox}
+
+\begin{proof}
+    Note that $\delta \in \SS'(\R)$.
+    By definition, $\delta' : \SS(\R) \to \C$ is a linear map given by
+    \[
+        \delta'(f)
+            = \DD^1\delta(f)
+            = (-1)^1\delta(\DD^1\!f)
+            = -\delta(f')
+            = - f'(0).
+    \]
+    Recall that $\SS$ is a locally compact space with the seminorms $\|{-}\|_{\alpha,\beta}$.
+    Trivially, $\C$ is also a locally compact space with its usual norm $|{-}|$.
+    Therefore, boundedness follows from
+    \[
+        |\delta'(f)|
+            = |f'(0)|
+            \leq \|f'\|_\infty
+            = \sup_{x \in \R} |x^0\DD^1\!f(x)|
+            = \|f\|_{0,1}.
+    \]
+\end{proof}
+
+\begin{pbox}
+    Prove that $\delta'$ does not come from a measure.
+\end{pbox}
+
+\begin{proof}
+    Suppose there is a measure $\nu$ on $\R$ such that for all $f \in \SS$
+    \[
+        \int_\R f \,\dd{\nu}
+            = \delta'(f)
+            = -f'(0).
+    \]
+    Consider the function $f(x) = \int_{0}^{x} e^{-t^2} \dd{t}$.
+    This is an increasing smooth function whose derivatives near $\pm$ infinity go to zero faster than any polynomial grows, i.e., $x^\alpha\DD^{\beta}\!f(x) \to 0$ as $x \to \pm\infty$ for all $\alpha, \beta \in \N$.
+    Since each derivative is continuous, this implies $\|f\|_{\alpha,\beta} < \infty$, so in fact $f \in \SS$.
+    Additionally, $f'(0) = 1$.
+
+    Define the functions $f_n(x) = f(nx)/n$ for all $n \in \N$.
+    Then $f_n \in \SS$ and 
+    \[
+        \int_\R f_n \,\dd{\nu}
+            = \delta'(f_n)
+            = -f_n'(0)
+            = -1.
+    \]
+    Note that $\|f\|_\infty \leq 1$ so $\|f_n\|_\infty \to 0$ as $n \to \infty$.
+    Each $f_n$ is integrable and $|f_n| \geq |f_{n+1}|$, so monotone convergence gives us
+    \[
+        -1
+            = \lim_{n \to \infty} \int_\R f_n \,\dd{\nu}
+            = \int_{\R} \lim_{n\to\infty} f_n \,\dd{\nu} 
+            = \int_\R 0 \,\dd{\nu}
+            = 0.
+    \]
+    This is a contradiction, so no such measure $\nu$ exists.
+\end{proof}
+
+\newpage
+
+\begin{pbox}[2]
+    Let $X$ and $Y$ be Banach spaces.
+    Prove that if $T_n \in \LL(X, Y)$ and $\{T_n x\}$ is a Cauchy sequence for each $x \in X$, then there exists $T \in \LL(X, Y)$ so that $T_n \to T$ in the strong operator.
+\end{pbox}
+
+\begin{proof}
+    Since $Y$ is Banach, $T_nx$ converges to some point $Tx \in Y$.
+    Then $T : X \to Y$ is a linear map:
+    \[
+        T(ax + y)
+            = \lim_{n \to \infty} T_n(ax + y)
+            = a\lim_{n\to \infty} T_nx + \lim_{n \to \infty} T_ny
+            = aTx + Ty.
+    \]
+    By construction, $T_nx \to Tx$ for all $x \in X$.
+    In particular,
+    \[
+        \sup_{n \in \N}\|T_nx\| < \infty
+    \]
+    for all $x \in X$.
+    So the uniform boundedness principle gives us a bound on the operator norms
+    \[
+        M = \sup_{n\in\N}\|T_n\| < \infty.
+    \]
+    Then for all $x \in X$ we have
+    \[
+        \|Tx\|
+            = \lim_{n \to \infty} \|T_nx\|
+            \leq \lim_{n \to \infty} \|T_n\|\|x\|
+            \leq \lim_{n \to \infty} M\|x\|
+            = M\|x\|,
+    \]
+    Hence, $T$ is bounded, i.e., $T \in \LL(X, Y)$.
+\end{proof}
+
+
+\newpage
+
+\begin{pbox}[3]
+    Let $T_t$ be an operator on $L^2(\R)$ with $T_t\phi(x) := \phi(x + t)$.
+    What is the norm of $T_t$?
+\end{pbox}
+
+We have
+\[
+    \|T_t\phi\|_2
+        = \int_\R |\phi(x+t)|^2 \,\dd{x}
+        = \int_\R |\phi(x)|^2 \,\dd{x}
+        = \|\phi\|_2,
+\]
+so $\|T_t\| = 1$.
+
+
+\begin{pbox}
+    To what operator does $T_t$ converge as $t \to \infty$ and in what topology?
+\end{pbox}
+
+Claim that $T_t \to 0$ weakly.
+
+\begin{proof}
+    Suppose $\phi \in L^2(\R)$ and $\ell \in L^2(\R)^*$.
+    Choose $\psi \in L^2(\R)$ by the Riesz lemma for $\ell$.
+    Then
+    \[
+        |\ell(T_t\phi)| = \left|\int_\R \conj{\psi(x)}\phi(x + t) \,\dd{x}\right|.
+    \]
+    Given $\eps > 0$ choose $M > 0$ such that
+    \[
+        \int_{|x|>M} |\psi(x)|^2 \dd{x} < \eps
+        \isp{and}
+        \int_{|x|>M} |\phi(x)|^2 \dd{x} < \eps.
+    \]
+    Then Cauchy-Schwarz gives us
+    \begin{align*}
+        \left|\int_\R \conj{\psi(x)}\phi(x - t) \,\dd{x}\right|
+            &\leq \left|\int_{|x|>M} \conj{\psi(x)}\phi(x + t) \,\dd{x}\right| + \left|\int_{|x|\leq M} \conj{\psi(x)}\phi(x + t) \,\dd{x}\right| \\
+            &\leq \left(\int_{|x|>M} |\psi(x)|^2\dd{x}\right)^{1/2}
+                \left(\int_{|x|>M} |\phi(x + t)|^2\dd{x}\right)^{1/2} \\
+            &\qquad + \left(\int_{|x|\leq M} |\psi(x)|^2\dd{x}\right)^{1/2}
+                \left(\int_{|x|\leq M} |\phi(x + t)|^2\dd{x}\right)^{1/2} \\
+            &\leq \eps \|\phi\|_\infty + \|\psi\|_\infty \left(\int_{|x|\leq M} |\phi(x + t)|^2\dd{x}\right)^{1/2} \\
+            &\leq \eps \|\phi\|_\infty + \|\psi\|_\infty \left(\int_{|x-t|\leq M} |\phi(x)|^2\dd{x}\right)^{1/2}.
+    \end{align*}
+    If we choose $t$ large enough, $|x - t| \leq M$ will imply $|x| > M$, giving us
+    \[
+        |\ell(T_t\phi)|
+            = \left|\int_\R \conj{\psi(x)}\phi(x - t) \,\dd{x}\right|
+            \leq \eps \|\phi\|_\infty + \|\psi\|_\infty \eps.
+    \]
+    Hence, we have convergence $T_t \to 0$ in the weak topology.
+\end{proof}
+
+
+
+\newpage
+
+\begin{pbox}[4 (a)]
+    Let $A$ be a self-adjoint operator on a Hilbert space $\HH$.
+    Prove that 
+    \[
+        \|A\| = \sup_{\|x\| = 1} |\<Ax, x\>|.
+    \]
+\end{pbox}
+
+
+Following the hint, assume $\|x\| = \|y\| = 1$, then we find
+\begin{align*}
+    4|\operatorname{Re}\<x, Ay\>|
+        &\leq |\<x + y, A(x + y)\>| + |\<x - y, A(x - y)\>| \\
+        &\leq \|x + y\|^2 \sup_{\|u\| = 1} \<u, Au\> + \|x - y\|^2 \sup_{\|u\| = 1} |\<u, Au\>| \\
+        &= (2\|x\|^2 + 2\|y\|^2) \sup_{\|u\| = 1} |\<u, Au\>| \\
+        &= 4 \sup_{\|u\| = 1} |\<u, Au\>|.
+\end{align*}
+Consider the unit vector $w = \conj{\<x, Ay\>}/|\<x, Ay\>|$, then $w\<x, Ay\> = \<wx, Ay\>$ is real, so applying the above inequality we get
+\[
+    |\<x, Ay\>|
+        = |w\<x, Ay\>|
+        = |\operatorname{Re}\<wx, Ay\>|
+        \leq \sup_{\|u\| = 1} |\<u, Au\>|.
+\]
+We now write
+\[
+    \|A^2\|
+        = \|A\|^2
+        = \sup_{\|x\|=1} \|Ax\|^2
+        = \sup_{\|x\|=1} |\<Ax, Ax\>|
+        = \sup_{\|x\|=1} |\<x, A^2x\>|.
+\]
+
+I did not complete the proof.
+
+\begin{pbox}[b]
+    Find an example which shows that the conclusion of (a) need not be true if $A$ is not self-adjoint.
+\end{pbox}
+
+Let $\HH = \R^2$ and consider the rotation $A(x_1, x_2) = (-x_2, x_1)$.
+
+Then $\|A\| = 1$ but $\<Ax, x\> = 0$ for all $x \in \R^2$.
+
+\newpage
+
+\begin{pbox}[5]
+    Show that the spectral radius of the Volterra integral operator
+    \[
+        (Tf)(x) = \int_{0}^{x} f(y) \dd{y} 
+    \]
+    as a map on $C[0, 1]$, with the supremum norm, is equal to zero.
+\end{pbox}
+
+\begin{proof}
+    Note that $C[0, 1]$ with the supremum norm is a Banach space, so the spectral radius is given by $\lim_{n \to \infty} \|T^n\|^{1/n}$.
+    We claim that for $f \in C[0, 1]$ with $\|f\|_\infty = 1$ and $x \in [0, 1]$
+    \[
+        |T^nf(x)| \leq \frac{x^n}{n!}.
+    \]
+    We perform induction on $n \geq 0$.
+    The base case of is trivial with $|f(x)| \leq \|f\|_\infty = 1$.
+    The inductive step is shown by
+    \[
+        |T^nf(x)|
+            = \left|\int_{0}^{x} T^{n-1}f(y) \,\dd{y} \right|
+            \leq \int_{0}^{x} |T^{n-1}f(y)| \,\dd{y}
+            \leq \int_{0}^{x} \frac{y^{n-1}}{(n-1)!} \,\dd{y}
+            = \frac{x^n}{n!}.
+    \]
+    We now compute
+    \[
+        \|T^n\|
+            = \sup_{\|f\|_\infty = 1} \|T^nf\|_\infty
+            \leq \sup_{\|f\|_\infty = 1} \sup_{x \in [0, 1]} \frac{x^n}{n!}
+            = \frac{1}{n!},
+    \]
+    so then
+    \[
+        \lim_{n\to\infty} \|T^n\|^{1/n}
+            \leq \lim_{n\to\infty} \frac{1}{\sqrt[n]{n!}}
+            = 0.
+    \]
+    Hence, the spectral radius must be zero.
+\end{proof}
+
+\begin{pbox}
+    What is the norm of $T$?
+\end{pbox}
+
+In the first part, we found the upper bound $\|T\| \leq 1$.
+To see that we in fact have equality, consider the constant function $f(x) = 1$:
+\[
+    \|Tf\|_\infty
+        = \sup_{x \in [0, 1]} \int_{0}^{x} f(y) \dd{y} 
+        = \sup_{x \in [0, 1]} \int_{0}^{x} 1 \dd{y} 
+        =  \sup_{x \in [0, 1]} x
+        = 1.
+\]
+Hence, $\|T\| = 1$.
+
+\end{document}

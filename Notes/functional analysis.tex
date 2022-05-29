@@ -1,0 +1,881 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+\usepackage[shortlabels]{enumitem}
+
+\usepackage{bbm}
+
+\usepackage{suffix}
+\usetikzlibrary{decorations.pathmorphing}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+
+% Environments
+\setlist[enumerate]{nosep}
+\newcommand{\keyword}[1]{\textbf{#1}}
+\newcommand{\sepline}{\rule{\textwidth}{0.4pt}}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+
+% Document Formatting
+\newtheoremstyle{mythmstyle}% name of the style to be used
+{ }% measure of space to leave above the theorem. E.g.: 3pt
+{ }% measure of space to leave below the theorem. E.g.: 3pt
+{ }% name of font to use in the body of the theorem
+{ }% measure of space to indent
+{\scshape}% name of head font
+{.}% punctuation between head and body
+{ }% space after theorem head; " " = normal interword space
+{\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}}% Manually specify head
+
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{claim}{Claim}
+
+
+% Math Formatting
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+
+% mathbb
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\renewcommand{\k}{\mathbbm{k}}
+
+% mathcal
+\newcommand{\LL}{\mathcal{L}}
+\newcommand{\FF}{\mathcal{F}}
+
+% Symbols
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+
+% Delimiters
+\newcommand{\<}{\left\langle}
+\renewcommand{\>}{\right\rangle}
+
+% Relations
+\newcommand{\isom}{\cong}
+\newcommand{\seq}{\subseteq}
+
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\To}{\longrightarrow}
+\newcommand{\Mapsto}{\longmapsto}
+
+
+
+% Math Roman
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\DD}{\mathrm{D}}
+
+\renewcommand{\Re}{\operatorname{Re}}
+
+\DeclareMathOperator{\im}{im}
+
+
+
+% Other
+\newcommand{\pdv}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+\newcommand{\clo}{\overline}
+\newcommand{\conj}{\overline}
+
+
+
+\title{Functional Analysis \\
+    \large 
+}
+\author{}
+\date{}
+
+
+\begin{document}
+
+
+requires like linear algebra and some topology
+
+\sepline
+
+Two Hilbert space $H_1$ and $H_1$ are said to be \keyword{isomorphic} (maybe isometric) if there is a linear operator $U : H_1 \to H_2$ such that
+\[
+    \<Ux, Uy\>_{H_2} = \<x, y\>_{H_1}
+\]
+for all $x, y \in H_1$.
+Such an operator $U$ is called \keyword{unitary}.
+
+\sepline
+
+\begin{lemma}
+    Let $H$ be a Hilbert space, $M \leq H$ a closed subspace, and $x \in H$.
+    Then there exists a unique element $z \in M$ with minimum distance to $x$.
+\end{lemma}
+
+\begin{theorem}[projection theorem]
+    Let $H$ be a Hilbert space and $M \leq H$ closed.
+    Then $H = M \oplus M^\perp$.
+\end{theorem}
+
+\sepline
+
+Let $H_1$ and $H_2$ be Hilbert spaces.
+Denote the set
+\[
+    \LL(H_1, H_2) := \{\text{bounded linear transformations } H_1 \to H_2 \}.
+\]
+This is a Banach space with the norm
+\[
+    \|T\| = \sup_{\|x\|_{H_1} = 1} \|Tx\|_{H_2}
+\]
+
+
+The \keyword{dual space} of a Hilbert space $H$ is
+\[
+    H^* := \LL(H, \C).
+\]
+It's elements are called \keyword{continuous linear functionals}.
+
+
+\sepline
+
+
+\begin{theorem}[Riesz lemma]
+    For each $T \in H^*$ there is a unique $y_T \in H$ such that $Tx = \<y_T, x\>$ for all $x \in H$ and $\|y_T\|_H = \|T\|_{H^*}$.
+\end{theorem}
+
+\sepline
+
+An \keyword{orthonormal basis} of a Hilbert space is a maximal orthonormal subset.
+
+\begin{theorem}
+    Every Hilbert space $H$ has an orthonormal basis.
+\end{theorem}
+
+\sepline
+
+A metric space is \keyword{separable} if it has a countable dense subset.
+
+\begin{theorem}
+    A Hilbert space $H$ is separable if and only if it has a countable orthonormal basis $S$.
+    If there are $N < \infty$ elements in $S$, then $H$ is isometric to $\C^N$.
+    If there are countably infinitely many elements in $S$, then $H$ is isometric to $\ell_2$.
+\end{theorem}
+
+\sepline
+
+Let $(M, \mu)$ be a measure space and $p \geq 1$ a real number.
+Define the set
+\[
+    L^p(M, \dd{\mu}) = 
+\]
+
+\begin{theorem}
+    Let $1 \leq p < \infty$.
+    \begin{enumerate}[(a)]
+        \item (Minkowski inequality) If $f, g \in L^p(M, \dd\mu)$ then $\|f + g\|_p \leq \|f\|_p + \|g\|_p$.
+        \item (Riesz-Fisher) $L^p(M, \dd\mu)$ is complete.
+        \item (H\"older inequality) Let $p, q, r \geq 1$ satisfy $\frac{1}{p} + \frac{1}{q} = \frac{1}{r}$.
+        Suppose $f \in L^p(M, \dd\mu)$, $g \in L^q(M, \dd\mu)$.
+        Then $fg \in L^r(M, \dd\mu)$ and $\|fg\|_r \leq \|f\|_p \|g\|_q$.
+    \end{enumerate}
+\end{theorem}
+
+\sepline
+
+We can define the space $\LL(X, Y)$ of bounded linear operators for any normed spaces $X$ and $Y$.
+
+Dual space $X^* = \LL(X, \C)$.
+
+\begin{theorem}
+    If $Y$ is complete, $\LL(X, Y)$ is a Banach space.
+\end{theorem}
+
+\begin{theorem}
+    A normed linear space is complete if and only if every absolutely summable sequence is summable.
+\end{theorem}
+
+\begin{theorem}
+    Let $X$ be a Banach space.
+    For each $x \in X$, let $\tilde{x} : X^* \to \C$ be the linear functional $\tilde{x}(\lambda) = \lambda(x)$ for all $\lambda \in X^*$.
+    Then the map $J : X \to X^{**}$, $x \mapsto \tilde{x}$, is an isometric embedding of $X$ as a subspace of $X^{**}$.
+\end{theorem}
+
+If $J$ is surjective, say $X$ is \keyword{reflexive}.
+
+\sepline
+
+\begin{theorem}[Hahn-Banach --- real convex]
+    Let $X$ be a real vector space and $p : X \to \R$ convex.
+    Let $Y \leq X$ and $\lambda \in Y^*$ linear with $\lambda(y) \leq p(y)$ for all $y \in Y$.
+    Then there exists $\Lambda \in X^*$ such that $\Lambda(x) \leq p(x)$ for all $x \in X$ and $\Lambda|_Y = \lambda$.
+\end{theorem}
+
+\begin{theorem}[Hahn-Banach --- complex convex]
+    Let $X$ be a complex vector space and $p : X \to \R$ absolutely convex.
+    Let $Y \leq X$ and $\lambda \in Y^*$ with $|\lambda(y)| \leq p(y)$ for all $y \in Y$.
+    Then there exists $\Lambda \in X^*$ such that $|\Lambda(x)| \leq p(x)$ for all $x \in X$ and $\Lambda|_Y = \lambda$.
+\end{theorem}
+
+\begin{theorem}[Hahn-Banach --- real quasi-seminorm]
+    Let $X$ be a real vector space and $q : X \to \R$ a quasi-seminorm.
+    Let $Y \leq X$ and $\lambda \in Y^*$ with $\lambda(y) \leq q(y)$ for all $y \in Y$.
+    Then there exists $\Lambda \in X^*$ such that $\Lambda(x) \leq q(x)$ for all $x \in X$ and $\Lambda|_Y = \lambda$.
+\end{theorem}
+
+\begin{theorem}[Hahn-Banach --- complex quasi-seminorm]
+    Let $X$ be a complex vector space and $q : X \to \R$ a quasi-seminorm.
+    Let $Y \leq X$ and $\lambda \in Y^*$ with $\Re\lambda(y) \leq q(y)$ for all $y \in Y$.
+    Then there exists $\Lambda \in X^*$ such that $\Re\Lambda(x) \leq q(x)$ for all $x \in X$ and $\Lambda|_Y = \lambda$.
+\end{theorem}
+
+\begin{theorem}[Hahn-Banach --- real seminorm]
+    Let $X$ be a real vector space and $p : X \to \R$ a seminorm.
+    Let $Y \leq X$ and $\lambda \in Y^*$ with $\lambda(y) \leq p(y)$ for all $y \in Y$.
+    Then there exists $\Lambda \in X^*$ such that $\Lambda(x) \leq p(x)$ for all $x \in X$ and $\Lambda|_Y = \lambda$.
+\end{theorem}
+
+\begin{theorem}[Hahn-Banach --- complex seminorm]
+    Let $X$ be a complex vector space and $p : X \to \R$ a seminorm.
+    Let $Y \leq X$ and $\lambda \in Y^*$ with $|\lambda(y)| \leq p(y)$ for all $y \in Y$.
+    Then there exists $\Lambda \in X^*$ such that $|\Lambda(x)| \leq p(x)$ for all $x \in X$ and $\Lambda|_Y = \lambda$.
+\end{theorem}
+
+\begin{corollary}
+    Let $X$ be a normed linear space, $Y \leq X$, and $\lambda \in Y^*$.
+    Then there exists $\Lambda \in X^*$ with $\Lambda|_Y = \lambda$ and $\|\Lambda\|_{X^*} = \|\lambda\|_{Y^*}$.
+\end{corollary}
+
+\begin{corollary}
+    Let $X$ be a normed linear space and $y \in X$.
+    Then there exists a nonzero $\Lambda \in X^*$ such that $\Lambda(y) = \|\Lambda\|_{X^*}\|y\|$.
+\end{corollary}
+
+\begin{corollary}
+    Let $X$ be a normed linear space, $Z \leq X$, and $y \in X$ with $d = d(y, Z) > 0$.
+    Then there exists $\Lambda \in X^*$ such that $\|\Lambda\| \leq 1$, $\Lambda(y) = d$, and $\Lambda|_Z = 0$.
+\end{corollary}
+
+\sepline
+
+\begin{theorem}
+    Let $B$ be a Banach space.
+    If $B^*$ is separable, then $B$ is separable.
+\end{theorem}
+
+\sepline
+
+Baire category
+
+\sepline
+
+\begin{theorem}[uniform boundedness principle]
+    Let $B$ be a Banach space and $V$ a normed space.
+    Let $\FF \seq \LL(B, V)$ such that for all $x \in X$
+    \[
+        \sup_{T \in \FF} \|Tx\|_V < \infty
+    \]
+    (i.e., the set $\{\|Tx\|_V : T \in \FF\}$ is bounded).
+    Then
+    \[
+        \sup_{T \in \FF} \|T\| < \infty
+    \]
+    (i.e., the set $\{\|T\| : T \in \FF\}$ is bounded).
+\end{theorem}
+
+\begin{theorem}[open mapping]
+    Let $B_1$ and $B_2$ be Banach spaces and $T \in \LL(B_1, B_2)$.
+    If $T$ is surjective then $T$ is open.
+\end{theorem}
+
+\begin{theorem}[inverse mapping]
+    Let $B_1$ and $B_2$ be Banach spaces and $T \in \LL(B_1, B_2)$.
+    If $T$ is bijective then $T^{-1}$ is bounded/continuous.
+\end{theorem}
+
+\begin{theorem}[closed graph]
+    Let $B_1$ and $B_2$ be Banach spaces and $T : B_1 \to B_2$ linear.
+    Then $T$ is bounded if and only if $\Gamma(T)$ is closed in $B_1 \oplus B_2$
+\end{theorem}
+
+\begin{corollary}[Hellinger-Toeplitz theorem]
+    Let $H$ be a Hilbert space and $A \in \LL(H)$ with $\<x, Ay\> = \<Ax, y\>$ for all $x, y \in H$.
+    Then $A$ is bounded.
+\end{corollary}
+
+\sepline
+
+Let $X$ be a topological space and $S$ any set.
+Let 
+
+
+\newpage
+
+\sepline
+
+5/19/22
+
+Let $H$ be a Hilbert space.
+
+An operator $B \in \LL(H)$ is \keyword{positive}, written $B \geq 0$, if $\<Bx, x\> \geq 0$ for all $x \in H$.
+
+\begin{lemma}
+    If $B \in \LL(H)$ is positive, then $B = B^*$.
+\end{lemma}
+
+\begin{proof}
+    Using polarization identity we deduce
+    \begin{align*}
+        \<Bx, y\> + \<By, x\>
+            &= \frac{1}{2}\big(\<B(x + y), x + y\> - \<B(x - y), x - y\>\big) \\
+            &= \frac{1}{2}\big(\<x+ y, B(x + y)\> - \<x - y, B(x - y)\>\big) \\
+            &= \<x, By\> + \<y, Bx\>.
+    \end{align*}
+    Rearranging, we find
+    \[
+        \<Bx, y\> - \conj{\<Bx, y\>}
+            = \<x, By\> - \conj{\<x, By\>}.
+    \]
+    Replace $y$ bu $iy$, get
+    \[
+        \<Bx, y\> + \conj{\<Bx, y\>}
+            = \<x, By\> + \conj{\<x, By\>}.
+    \]
+    Adding these and dividing by $2$, conclude $\<Bx, y\> = \<x, By\>$, so indeed $B = B^*$.
+\end{proof}
+
+\begin{theorem}[Square Root Lemma]
+    If $A \in \LL(H)$ is positive, then there exists a unique $B \in \LL(H)$ such that $B^2 = A$ and $B \geq 0$.
+    Moreover, for any $C \in \LL(H)$, if $AC = CA$ then $BC = CB$.
+\end{theorem}
+
+\begin{proof}
+    Want to construct $B$.
+    Without loss of generality, may assume $\|A\| \leq 1$; otherwise rescale.
+    Recall that $A = A^*$ implies $\|A\| = \sup_{\|x\| = 1}|\<Ax, x\>|$.
+    Now consider
+    \begin{align*}
+        \|I - A\|
+            &= \sup_{\|x\| = 1} |\<(I - A)x, x\>| \\
+            &= \sup_{\|x\| = 1} \left|\|x\|^2 - \<Ax, x\>\right| \\
+            &\leq 1,
+    \end{align*}
+    since $\|A\| \leq 1$, know $0 \leq \<Ax, x\> \leq 1$.
+
+    \begin{lemma}
+        $\sqrt{1 - z}$ has power series absolutely convergent for $|z| \leq 1$.
+        ($\sqrt{1 - z} = \sum_{n=0}^{\infty} c_n z^n$ with $c_n < 0$ if $n \geq 1$.)
+    \end{lemma}
+    
+    By Lemma, $B := \sum_{n=0}^{\infty} c_n (I - A)^n$ converges in the operator norm, so is well-defined.
+    This construction gives $B^2 = I - (I - A) = A$.
+
+    Since $B$ is defined in terms of $A$ and $I$, then if $A$ commutes with $C$, it is easy to check that $B$ also commutes with $C$.
+
+    We now check $B$ is positive; suffices to check for $\|x\| = 1$.
+    Consider
+    \[
+        \<Bx, x\> = 1 + \sum_{n=1}^{\infty} c_n\<(I - A)^nx, x\>.
+    \]
+
+    \begin{claim}
+        $0 \leq \<(I - A)^nx, x\> \leq 1$ for all $n \in \N$.
+    \end{claim}
+
+    \begin{proof}
+        If $n = 2k$ is even, then $\<(I - A)^nx, x\> = \|(I - A)^kx\|^2$.
+
+        If $n = 2k + 1$ is odd,
+        \[
+            \<(I - A)^nx, x\>
+                = \<(I - A)((I - A)^kx), (I - A)^kx\>
+                = \<(I - A)y, y\>,
+        \]
+        where $y = (I - A)^kx$.
+        Then by an above argument, this is between $0$ and $1$.
+    \end{proof}
+
+    By the claim,
+    \[
+        \<Bx, x\>
+            \geq 1 + \sum_{n=1}^{\infty} c_n 
+            = \sqrt{1 - 1}
+            = 0,
+    \]
+    hence $B \geq 0$.
+
+    It remains to prove uniqueness.
+    Suppose $C^2 = A$ and $C \geq 0$.
+    Have
+    \[
+        CA = C^3 = AC
+        \quad\implies\quad
+        CB = BC.
+    \]
+    Also have
+    \[
+        C^2 = A = B^2.
+    \]
+    These facts imply
+    \[
+        (C - B)(B + C)(C - B) = 0.
+    \]
+    which implies
+    \[
+        (C - B)B(C - B) = (C - B)C(C - B) = 0.
+    \]
+    Can verify this by applying to an element and using commutativity.
+    In particular, if sum of two positive operators is zero then both must be zero.
+    It follows that $(C - B)^3 = 0$, so of course $(C - B)^n = 0$ for $n \geq 3$.
+    Since $B, C$ self-adjoint, deduce
+    \[
+        \|(C - B)\|^4 = \|(C - B)^4\| = 0,
+    \]
+    so indeed $B = C$.
+\end{proof}
+
+From the Square Root Lemma, denote $\sqrt{A} = B$ for positive $A \in \LL(H)$
+
+Let $A \in \LL(H)$ be any, define \keyword{absolute value} as $|A| = \sqrt{A^*A}$.
+(Note $A^*A$ is positive so this makes sense: $\<A^*Ax, x\> \geq 0$).
+Theorem gives $|A|^2 = A^*A$.
+
+\paragraph{Remark.}
+It is not true in general that $|AB| = |A||B|$; this is only notation.
+
+\paragraph{Example.}
+Let $T : \ell_2 \to \ell_2$ be the right shift operator $T(x_1, x_2, \dots) = (0, x_1, x_2, \dots)$.
+Adjoint $T^*$ is left shift, then $T^*T = I$ implies $|T| = I \ne T$.
+
+An operator $U \in \LL(H)$ is called a \keyword{partial isometry} (or \keyword{partial unitary}) if $U$ is an isometry on $(\ker U)^\perp$, i.e., $\|Ux\| = \|x\|$ for all $x \in (\ker U)^\perp$.
+
+\paragraph{Fact.}
+$U$ is a partial isometry if $U^*U = P$ and $UU^* = Q$ where $P : H \to (\ker U)^\perp$ and $Q : H \to \im U$ are orthogonal projections
+
+
+\begin{theorem}[Polar Decomposition]
+    Let $A \in \LL(H)$ arbitrary, then there exists a unique partial isometry $U$ such that $\ker U = \ker A$ and $A = U|A|$.
+    Moreover, $\im U = \clo{\im A}$.
+\end{theorem}
+
+\paragraph{Example.}
+Let $T : \ell_2 \to \ell_2$ be right shift.
+Since $|T| = I$, then this theorem would imply $U = T$.
+Additionally, theorem says that $\im T$ should be closed.
+
+
+\begin{proof}
+    Will construct $U$, prove properties, then prove uniqueness.
+
+    First, want to define $U : \im|A| \to \im A$ by $U(|A|x) = Ax$ for all $x \in H$, but must check well-defined.
+    Notice
+    \[
+        \||A|x\|^2 = \<|A|^2x, x\> = \<A^*Ax, x\> = \|Ax\|^2,
+    \]
+    which implies $\||A|x\| = \|Ax\|$ and $\ker|A| = \ker A$.
+    So $|A|x_1 = |A|x_2$ implies $Ax_1 = Ax_2$, hence $U$ is indeed well-defined on $\im|A|$.
+
+    Naturally extend to $U : \clo{\im|A|} \to \clo{\im A}$, and notice that this is an isometry.
+
+    Then we can simply define $U|_{\clo{\im|A|}^\perp} = 0$, i.e.,
+    \[
+        \ker U = (\im|A|)^\perp = \ker|A| = \ker A
+    \]
+    One can check second equality by self-adjointness of $|A|$.
+
+    We have so far constructed a partial isometry $U$ with the desired properties.
+    To show uniqueness, can suppose there is another and show equality...
+\end{proof}
+
+\sepline
+
+5/19/22
+
+Let $B_1, B_2$ be Banach spaces.
+
+A bounded operator $T \in \LL(B_1, B_2)$ is called \keyword{compact} (or completely continuous) if for every bounded sequence $\{x_n\}$ in $B_1$ the image sequence $\{Tx_n\}$ in $B_2$ has a convergent subsequence.
+
+\paragraph{Recall.}
+If $X$ is a metric space, a subset $K \seq X$ is compact (every open cover of $K$ has a finite subcover) if and only if every sequence in $K$ has a convergence subsequence.
+In other words, for metric spaces compactness is equivalent to sequential compactness.
+
+A subset of a topological space is \keyword{precompact} if its closure in the larger space is compact.
+
+Equivalently, bounded operator $T \in \LL(B_1, B_2)$ is compact if and only if it maps any bounded set in $B_1$ to a precompact (relatively compact) set in $B_2$.
+
+\paragraph{Remark.}
+One can verify that if $T$ is compact, it is bounded.
+To see this, consider the closed unit ball $D \seq B_1$, which is in particular a bounded set.
+Then by the equivalent definition, $\clo{T(D)} \seq B_2$ is compact, which is in particular bounded.
+So then
+\[
+    \|T\| = \sup_{\|x\|=1} \|Tx\| \leq \sup_{x \in D} \|Tx\| < \infty.
+\]
+
+
+\paragraph{Example.}
+\begin{enumerate}
+    \item Finite rank operators: $\dim\im T < \infty$.
+    In this case, can write $\im T = \C y_1 \oplus \cdots \oplus \C y_n \leq B_2$.
+    For a bounded sequence $\{x_k\}_k$ in $B_1$, we can write
+    $Tx_k = \sum_{i=1}^{n} a_{i,k} y_i$.
+    Then for each $i$, $\{a_{i,k}\}_k$ is a bounded sequence in $\C$, so there exists a convergent subsequence $\{a_{i,k_j}\}_j$.
+    Then $\{Tx_{k_j}\}_j$ is a convergent subsequence in $B_2$.
+    Hence, $T$ is compact.
+    \item Classical integral operators.
+    Given $k \in C([0, 1] \times [0, 1])$, consider $B_1 = B_2 = C[0, 1]$ with $\|\cdot\|_\infty$.
+    Then have operator $\hat{k} \in \LL(C[0, 1])$ defined by
+    \[
+        (\hat{k}f)(x) = \int_{0}^{1} k(x, y) f(y) \dd{y}.
+    \]
+    It follows from this definition that $\|\hat{k}\| \leq \|k\|_\infty$.
+    For $\eps > 0$ choose $\delta > 0$ for uniform continuity of $k$.
+    Then $|x - x'| < \delta$ gives
+    \[
+        \left|\hat{k}f(x) - \hat{k}f(x')\right|
+            \leq \sup_{y \in [0, 1]} \left|k(x, y) - k(x', y)\right|\|f\|_\infty
+            < \eps\|f\|_\infty.
+    \]
+    Can verify that if $\{f_n\}$ is bounded sequence in $C[0, 1]$ then $\{\hat{k}f_n\}$ is uniformly bounded.
+    Moreover, $\{\hat{k}f_n\}$ is equicontinuous.
+    By the Arzel\`a-Ascoli theorem $\hat{k}$ has a convergence subsequence.
+\end{enumerate}
+
+Given sequence $\{x_n\}$ in $B$ and $x \in B$:
+\begin{itemize}[nosep]
+    \item say $x_n \to x$ strongly if $\|x_n - x\| \xrightarrow{n \to \infty} 0$;
+    \item say $x_n \to x$ weakly if $\ell(x_n) \to \ell(x)$ for all $\ell \in B^*$.
+\end{itemize}
+
+\begin{theorem}
+    Compact operators map weakly convergent sequences to strongly convergent.
+\end{theorem}
+
+\begin{proof}
+    Suppose $x_n \to x$ weakly in $B_1$, i.e., $\ell(x_n) \to \ell(x)$ for all $\ell \in B_1^*$.
+    Identifying $B_1 \leq B_1^{**}$, we can view this as a sequence $\tilde{x}_n(\ell) \to \tilde{x}(\ell)$ for all $\ell \in B_1^*$.
+    By the uniform boundedness principle, $\{\tilde{x}_n\}$ is bounded in $B_1^{**}$---equivalently $\{x_n\}$ is bounded in $B_1$ since $\|\tilde{y}\| = \|y\|$ for all $y \in B_1$.
+
+    Let $T \in \LL(B_1, B_2)$ be a compact operator.
+    Then $\{y_n = Tx_n\}$ in $B_2$ has a convergent subsequence $\{y_{n_k}\}$.
+    Let $y = T_x$, then $y_n \to y$ weakly in $B_2$.
+    For $\ell \in B_2^*$, we have
+    \[
+        \ell(y_n) - \ell(y)
+            = \ell(T(x_n)) - \ell(T(x))
+            = T'\ell(x_n - x)
+    \]
+    with $T'\ell \in B_1^*$.
+    This converges to zero by weak $x_n \to x$, hence $y_n \to y$ weakly in $B_2$.
+
+    Assuming $y_n \not\to y$ strongly, there exists a subsequence $\{y_{n_j}$ and $\eps > 0$ such that $\|y_{n_j} - y\| \geq \eps$.
+    However, $y_{n_j} = Tx_{n_j}$ has a convergent subsequence, i.e., $y_{n_j} \to y' \ne y$.
+    But then also have $y_{n_j} \to y'$ weakly, which contradicts weak convergence $y_{n_j} \to y$.
+    Hence, $y_n \to y$ strongly.
+\end{proof}
+
+\begin{theorem}
+    Let $T \in \LL(B_1, B_2)$.
+    \begin{enumerate}[(a)]
+        \item If $\{T_k\}$ is a sequence of compact operators in $\LL(B_1, B_2)$ such that $T_k \to T$ with respect to the operator norm, i.e., $\|T_k - T\| \to 0$, then $T$ is also compact.
+        \item $T$ is compact if and only if $T^*$ is compact.
+        \item If $S \in \LL(B_0, B_1)$ arbitrary and $T$ is compact, then $TS \in \LL(B_0, B_2)$ is compact.
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    \begin{enumerate}[(a)]
+        \item Use diagonal argument.
+        Let $\{x_n\}$ be a bounded sequence in $B_1$.
+        Each $T_k$ is bounded, so $\{T_kx_n\}_n$ has a convergent subsequence $\{T_kx_{n_{k,j}}\}_j$.
+        Then get subsequences
+        \[
+            \begin{array}{c|cccc}
+                & x_1 & x_2 & x_3 & \cdots \\
+                \hline
+                T_1 & T_1(x_{n_{1,1}}) & T_1(x_{n_{1,2}}) & T_1(x_{n_{1,3}}) \\
+                T_2 & T_2(x_{n_{2,1}}) & T_2(x_{n_{2,2}}) & T_2(x_{n_{2,3}}) \\
+                T_3 & T_3(x_{n_{3,1}}) & T_3(x_{n_{3,2}}) & T_3(x_{n_{3,3}}) \\
+                \vdots &&&& \ddots \\
+            \end{array}
+        \]
+        Then diagonal $\{x_{n_{k,k}}\}_k$ is a subsequence such that $\{T_jx_{n_{k,k}}\}_k$ is convergent for all $j$.
+        Then
+        \begin{align*}
+            \|Tx_{n_{k,k}} - Tx_{n_{\ell,\ell}}\|
+                &\leq \|Tx_{n_{k,k}} - T_jx_{n_{k,k}}\|
+                    + \|T_jx_{n_{k,k}} = T_jx_{n_{\ell,\ell}}\|
+                    + \|T_jx_{n_{\ell,\ell}} = Tx_{n_{\ell,\ell}}\| \\
+                &< \frac{\eps}{3} + \frac{\eps}{3} + \frac{\eps}{3}
+                = \eps.
+        \end{align*}
+        First two for large $j$ and middle for large $k, \ell$.
+        Therefore, $Tx_{n,k}$ is convergent, so $T$ is compact.
+    \end{enumerate}
+\end{proof}
+
+\sepline
+
+5/24/22
+
+\begin{proof}
+     \begin{enumerate}[(b)]
+        \item For $B_1 = B_2 = H$, $T: H \to H$, $T^* : H \to H$.
+        
+        \begin{lemma}
+            For $T \in \LL(H)$ with $T^*T$ compact, then $T$ is compact.
+        \end{lemma}
+
+        \begin{proof}
+            Given $\{x_n\} \seq H$ bounded, get
+            \[
+                \|T(x_n - x_m)\|^2
+                    = \<T^*T(x_n - x_m), x_n - x_m\>
+                    \leq C\|T^*T(x_n - x_m)\|.
+            \]
+            Then some subsequence $\{T^*Tx_{n_k}\}$ is Cauchy.
+            Plugging in to the above inequality implies $\{Tx_{n_k}\}$ is Cauchy, therefore convergent in $H$.
+            Hence, $T$ is compact.
+        \end{proof}
+        Then if $T$ is compact, then (c) implies $TT^* = (T^*)^*T^*$ is compact, then Lemma implies $T^*$ is compact.
+
+        Remains to show for general Banach spaces and converse.
+    \end{enumerate}
+\end{proof}
+
+\begin{lemma}
+    If $T \in \LL(H)$  is compact, then $\im T$ is separable.
+\end{lemma}
+
+\begin{proof}
+    Idea: $T(B_n(0))$ is precompact so $\clo{T(B_n(0))}$ is compact.
+    Compact sets in metric space are separable (Look at center points of each finite cover by balls of radius $1/n$).
+    Then $\clo{T(B_n(0))}$ is separable, and so is $T(B_n(0))$.
+    Then can write $H = \bigcup_{n=1}^{\infty} B_n(0)$, and $T(H) \seq \bigcup_{n=1}^{\infty}$ so $\im T$ is separable.
+
+    To complete this proof, must give stronger argument for each step.
+\end{proof}
+
+\begin{lemma}
+    If $T \in \LL(H)$ is compact, then $(\ker T)^\perp$ is separable.
+\end{lemma}
+
+\begin{proof}
+    Verify that $(\ker T)^\perp = \clo{\im T^*}$.
+    Then $T$ compact implies $T^*$, so previous lemma implies $\im T^*$ is separable, and therefore so is its closure.
+\end{proof}
+
+\begin{theorem}
+    Let $T \in \LL(H)$ compact.
+    Then there exists a sequence $\{T_n\}$ of finite rank operators such that $T_n \to T$ in the operator norm.
+\end{theorem}
+
+\begin{proof}
+    By Lemma, $(\ker T)^\perp$ has a countable orthonormal basis $\{x_n\}$.
+    Since $T$ acting on the kernel is zero, only care about this orthogonal complement.
+    Define space
+    \[
+        H_n = \ker T \oplus \C x_1 \oplus \cdots \oplus \C x_n.
+    \]
+    Then $\{H_n\}$ is increasing sequence of subspaces, so $\{H_n^\perp\}$ is a shrinking sequence of subspaces.
+    Let
+    \[
+        \lambda_n = \sup_{\substack{x \in H_n^\perp \\ \|x\|=1}} \|Tx\|
+    \]
+    This $\{\lambda_n\}$ is a decreasing nonnegative sequence, therefore convergent $\lambda = \lim_{n\to\infty} \lambda_n \geq 0$.
+
+    We claim that $\lambda = 0 $.
+
+    Suppose $y_n \in H_n^\perp$ satisfying $\|y_n\| = 1$ and $\|Ty_n\| \geq \lambda/2$.
+
+    Then claim $y_n \to 0$ weakly, i.e., $\ell(y_n) \to 0$ for all $\ell \in H^*$.
+
+    By Riesz lemma, can write $\ell(y_n) = \<y_n, x\>$ for some $x \in H$.
+    Write $y_n = \sum_{i=n+1}^{\infty} a_i x_i$ then
+    \[
+        \<y_n, x\> = \sum_{i=n+1}^{\infty} a_i\<x_i, x\>.
+        \quad
+        (a_{n,i}?)
+    \]
+    The tail goes to zero as $n \to \infty$, so indeed $\ell(y_n) \to 0$.
+    
+    Then $T$ compact implies $Ty_n \to 0$ strongly, so must have $\lambda = 0$.
+
+    Now construct finite rank operators.
+    Let $T_nx = \sum_{i=1}^{n} \<x, x_i\> Tx_i$ for $x \in (\ker T)^\perp$ and set $T_n|_{\ker T} = 0$.
+    Then $T_n$ is finite rank.
+
+    Should be clear from construction that $T_n \to T$.
+    To verify, look at
+    \[
+        \|(T - T_n)x\|
+            \leq \lambda_n\|x\|
+    \]
+    for $x \in (\ker T)^\perp$.
+    Can write $(T - T_n)x = Tz_n$ for some $z_n \in H_n^\perp$.
+    Then $\lambda_n \to 0$ implies $\|T - T_n\| \to 0$.
+\end{proof}
+
+\begin{theorem}[Analytic Fredholm]
+    Let $D \seq \C$ open and $f : D \to \LL(H)$ be analytic (i.e., $\lim_{h \to 0} \frac{f(z + h) - f(z)}{h}$ exists for all $x \in D$).
+    If $f(z)$ is compact for all $z \in D$, then either 
+    \begin{enumerate}[(a)]
+        \item $(I - f(z))^{-1}$ does not exits for all $z \in D$ or
+        \item there exists $S \seq D$ discrete such that $(I - f(z))^{-1}$ exists for all $z \in D \setminus S$.
+        Moreover, $(I - f(z))^{-1}$ is meromorphic on $D$ (analytic on $D \setminus S$), and $f(z)x = x$ has a nontrivial solution in $H$ for all $z \in S$.
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    Pick any $z_0 \in D$ and choose radius $r > 0$ such that $B_r(z_0) \seq D$ and $\|f(z) - f(z_0)\| < 1/2$ for all $z \in B_r(z_0)$, by analyticity of $f$.
+    By previous theorem applied to $f(z_0)$, choose a finite rank operator $F$ such that $\|f(z_0) - F\| < 1/2$.
+    Then $\|f(z) - F\| < 1$ for all $z \in B_r(z_0)$.
+    Then $(I - f(z) + F)^{-1}$ exists for $z \in B_r(0)$ since can write as a power series.
+    Moreover, this inverse is analytic for reasons...
+
+    Denote $g(z) = F(I - f(z) + F)^{-1}$, then
+    \[
+        I - f(z) = (I - g(z))(I - f(z) + F).
+    \]
+    Then $I - f(z)$ is invertible if and only if $I - g(z)$ is invertible.
+    Since $F$ is finite rank, so is $g(z)$.
+
+    \begin{center}
+        --- 5/26/22 ---
+    \end{center}
+
+    $F$ is finite rank, so there exist $y_1, \dots y_N \in H$ such that
+    \[
+        F(x)
+            = \sum_{i=1}^{N} \ell_i(x)y_i
+            = \sum_{i=1}^{N} \<x, x_i\>y_i.
+    \]
+    (Second equality comes from Riesz Lemma.)
+    Let $\phi_n(z) = ((I - f(z) + F)^{-1})^*(x_n)$, then
+    \[
+        g(z)
+            = F(I - f(z) + F)^{-1}(z)
+            = \sum_{n=1}^{N} \<-, \phi_n(z)\>y_n.
+    \]
+    To see if $I - g(z)$ is invertible, we are asking if it has any nontrivial zeros, i.e., whether there are any nontrivial solutions for $g(z)x = x$.
+    If $x$ is such a solution, then in particular $x = g(z)x \in \im F$, so we can write $x = \sum_{k=1}^{N} c_k y_k$ giving
+    \[
+        g(z)x
+            = \sum_{n=1}^{N} \sum_{k=1}^{N} \<c_k y_k, \phi_n(z)\>y_n.
+    \]
+    Can check that $g(z)x = x$ has a nontrivial solution if and only if
+    \[
+        \det Q = 0 \isp{where} Q = [\delta_{kn} - \<y_k, \phi_n(z)\>].
+    \]
+    This determinant function is analytic with respect to $z \in B_r(z_0)$.
+    By complex analysis, we know that either $\det Q \equiv 0$ ($=\mathrm{const_0}$ constantly zero) or $\det Q = 0$ only on a discrete set.
+    (In other words, $(\det Q)^{-1}(0)$ is either $B_r(z_0)$ or discrete.)
+    The result now follows.
+\end{proof}
+
+\begin{corollary}[Fredholm alternative]
+    For compact $A \in \LL(H)$, either $(I - A)^{-1}$ exists or $A\psi = \psi$ has a nonzero solution.
+\end{corollary}
+
+\begin{proof}
+    To apply Fredholm theorem, we must construct an analytic function $f : D \to \LL(H)$.
+    
+    Choosing constant $f \equiv A$, then it might simply happen that we are in case (a), where $I - A$ is simply not invertible.
+
+    We choose $f(z) = z \cdot A$ and $D \seq \C$ a neighborhood of zero, because $I - f(0) = I$ is of course invertible.
+    Hence, we are in case (b), so $(I - f(z))^{-1}$ is invertible for all $z \in D \setminus S$ for a discrete set $S \seq D$.
+
+    If $1 \notin S$, then $I - f(1) = I - A$ is invertible.
+    
+    If $1 \in S$, then $x = f(1)x = Ax$ has nontrivial solutions.
+\end{proof}
+
+\begin{theorem}[Fredholm 1st]
+    Let $A \in \LL(H)$ compact and $\lambda \ne 0$.
+    Then $\lambda$ is an eigenvalue for $A$ if and only if $\conj{\lambda} \ne 0$ is an eigenvalue for $A^*$.
+\end{theorem}
+
+\begin{proof}
+    In previous proofs, reduce the problem to the invertibility of a finite rank square matrix.
+    Something about relationship between invertibility and existence of nontrivial zeros.
+
+    Let $f(z) = z \cdot A$.
+    Consider $z = 1/\lambda$ for Analytic Fredholm theorem; have
+    \[
+        I - f(z)
+            = I - zA
+            = I - \tfrac{1}{\lambda}A
+            = \tfrac{1}{\lambda}(\lambda I - A).
+    \]
+    Then $\lambda$ is an eigenvalue for $A$ if and only if $I - g(z)$ is not invertible, if and only if $\det Q = 0$, if and only if $\det \conj{Q} = 0$, if and only if $I - g(z)^*$ is not invertible, if and only if $\conj{\lambda}$ is an eigenvalue of $A^*$.
+\end{proof}
+
+\begin{theorem}[Fredholm 2nd]
+    Let $A \in \LL(H)$ compact.
+    \begin{enumerate}[(a)]
+        \item For $\lambda \ne 0$, $A - \lambda I$ is invertible if and only if $\ker(A - \lambda I) = 0$;
+        \item For $y \in H$, $(A - \lambda I)x = y$ is solvable if and only $y \perp \ker(A^* - \conj{\lambda}I)$.
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    (b)
+
+    Write
+    \[
+        \ker(A^* - \conj{\lambda}I)^\perp
+            = \clo{\im(A^* - \conj{\lambda}I)^*}
+            = \clo{\im(A - \lambda I)}.
+    \]
+    Claim that this equals $\im(A - \lambda I)$, i.e., image is closed.
+    Using previous techniques, there is finite rank $G$ (like $g(z)$) and invertible $P$ (like $(I - f(z) + F)^{-1}$) such that
+    \[
+        A - \lambda I = (I - G) P.
+    \]
+    Then $\im(A - \lambda I)$ is closed if and only if $\im(I - G)$ is closed.
+    Can write
+    \[
+        H = \ker G \oplus H_1
+    \]
+    for finite dimensional $H_1$ (verify by linear algebra since $G$ finite rank).
+    Then
+    \[
+        \im(I - G) = \ker G \oplus F
+    \]
+    for some finite dimensional $F$.
+    Finite dimensional implies closed for subspaces, so $F$ closed.
+    Kernels probably closed (something to check), so $\ker G$ is closed.
+    Then $\ker G$ and $F$ both closed implies $\im(I - G)$ is closed.
+\end{proof}
+
+\paragraph{Remark.} $\dim\ker(A - \lambda I) < \infty$.
+
+
+\begin{theorem}[Fredholm 3rd]
+    Let $A \in \LL(H)$ compact and $\lambda \ne 0$.
+    Then $\dim\ker(A - \lambda I) = \dim\ker(A^* - \conj{\lambda}I)$.
+\end{theorem}
+
+\begin{proof}[Idea]
+    Put $f(z) = zA$ and apply previous stuff to $z = 1/\lambda$.
+    Reduce things to finite dimensional linear algebra.
+\end{proof}
+
+\end{document}

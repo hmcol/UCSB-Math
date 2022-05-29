@@ -1,0 +1,290 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\def\temp{#1}\ifx\temp\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+\newcommand{\pnum}[1]{\paragraph{#1}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\iso}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+
+% Extra Commands
+\newcommand{\bd}{\partial}
+\newcommand{\htpy}{\simeq}
+\DeclareMathOperator{\inter}{int}
+
+
+% Document
+\begin{document}
+\title{MATH 221C Homework 7}
+\author{Harry Coleman}
+\date{May 15, 2022}
+\maketitle
+
+For any map $g : X \to \R^n$ with $z \notin \im g$, define the map $u_{g,z} : X \to S^{n-1}$ by
+\[
+    u_{g,z}(x) = \frac{g(x) - z}{\|g(x) - z\|}.
+\]
+We use simply $u_g$ when the point $z$ is clear from context.
+
+\pnum{Exercise 2.5.1}
+
+By definition, $W_2(f, z) = \deg_2(u_f) = \#u_f^{-1}(y)$, where $y \in S^{n-1}$ is a regular value of $u_f$
+Since $z \notin \im F$, we can extend $u_f$ to the map $u_F : D \to S^{n-1}$.
+If $y \in S^{n-1}$ is a regular value of $u_F$, the preimage $u_F^{-1}(y) \seq D$ is a compact $1$-manifold, consisting of finitely many arcs and circles.
+Each arc has two endpoints, so the boundary
+\[
+    \bd (u_F^{-1}(y))
+        = u_F^{-1}(y) \cap \bd D
+        = u_f^{-1}(y)
+\]
+consists of an even number of points.
+Hence, $W_2(f, z) = \#u_f^{-1}(y) \bmod{2} = 0$.
+
+\pnum{Exercise 2.5.2}
+
+Define the compact submanifold
+\[
+    E = D \setminus \bigcup_{i=1}^{\ell} \inter B_i
+\]
+which has boundary
+\[
+    \bd E = \bd D \sqcup \bigsqcup_{i=1}^{\ell} \bd B_i.
+\]
+Define the restrictions $G = F|_E$ and $g = \bd G$.
+By construction, $F^{-1}(z) \seq D \setminus E$, which means that $G$ does not hit $z$, so by Exercise 2.5.1 we have $W_2(g, z) = 0$.
+
+By definition, we have $W_2(g, z) = \#u_g^{-1}(y)$, where $y \in S^{n-1}$ is a regular value of $u_g$.
+Moreover, since $u_g^{-1} \seq \bd E$ we have
+\[
+    u_g^{-1}(y)
+        = \left(u_g^{-1}(y) \cap \bd E\right) \sqcup \bigsqcup_{i=1}^{\ell} \left(u_g^{-1}(y) \cap \bd B_i\right)
+        = u_f^{-1}(y) \sqcup \bigsqcup_{i=1}^{\ell} u_{f_i}^{-1}(y).
+\]
+It follows that
+\[
+    0 = W_2(g, z) = W_2(f, z) + \sum_{i=1}^{\ell} W_2(f_i, z) \mod{2},
+\]
+hence
+\[
+    W_2(f, z) = \sum_{i=1}^{\ell} W_2(f_i, z) \mod{2}.
+\]
+
+\pnum{Exercise 2.5.3}
+
+By the Stack of Records Theorem (Homework 5 Exercise 1.5.7), there is an open neighborhood $V$ of $z$ in $\R^n$ such that $F^{-1}(V) = U_1 \sqcup \cdots \sqcup U_\ell$, where each $U_i$ is an open neighborhood of $y_i$ and $F$ restricts to a diffeomorphism from $U_i$ to $V$.
+Let $\phi_i : V \to U_i$ be a smooth inverse of $F|_{U_i}$, then $\phi_i$ is a local parameterization of of $D$ at $y_i$.
+Choose a closed ball $\bar{B}_r(z) \seq V$ with $r > 0$ and put $B_i = \phi_i(\bar{B}_r(z))$.
+Then $f_i$ is a diffeomorphism from $\bd B_i$ to the sphere $\bd \bar{B}_r(z)$.
+Since $\bd\bar{B}_{r}(z)$ is a sphere, the shift and scale map $w \mapsto (w - z)/r$ is a bijection to the unit sphere $S^{n-1}$.
+But $u_{f_i}$ is simply the composition of this map with $f_i$, so $u_{f_i}$ is a bijection.
+So then $\#u_{f_i}^{-1}(y) = 1$ for all $y \in S^{n-1}$, hence $W_2(f_i, z) = 1$.
+
+Combining these results, we obtain
+\[
+    W_2(f, z)
+        \equiv \sum_{i=1}^{\ell} W_2(f_i, z)
+        \equiv \sum_{i=1}^{\ell} 1
+        \equiv \ell
+        \equiv \#F^{-1}(z) \pmod{2}.
+\]
+
+\pnum{Exercise 2.5.4}
+
+Let $A \seq X$ be the set of points $x \in X$ for which the statement is true.
+
+We first check that $A$ is nonempty.
+Since $X$ is compact, there is a point $x \in X$ for which the Euclidean distance $d(x, z)$ is minimized over all of $X$.
+Let $\gamma : I \to \R^n$ be the straight line segment from $z$ to $x$.
+Then for any neighborhood $U$ of $x$ in $\R^n$, the preimage $\gamma^{-1}(U)$ is an open neighborhood of $1$ in $I$.
+Choose some $t \in \gamma^{-1}(U) \setminus \{1\}$, then $\gamma$ restricted to $[0, t]$ is the straight line segment from $z$ to $\gamma(t) \in U$.
+This curve does not intersect $X$, otherwise there would be a point in $X$ strictly closer to $z$ than $x$.
+Hence, $x \in A$.
+
+Next, we check that $A$ is closed.
+Let $\clo{A}$ be the closure of $A$ inside $X$.
+Let $x \in \clo{A}$ and $U$ be an open neighborhood of $x$ in $\R^n$.
+Then $U \cap X$ is an open neighborhood of $x$ in $X$, so there is some $a \in U \cap A$.
+But then $U$ is an open neighborhood of $a$ in $\R^n$, so by definition of $A$ there is a curve in $\R^n \setminus X$ between $z$ and a point of $U$.
+Hence, $x \in A$, which implies $A = \clo{A}$.
+
+Lastly, we check that $A$ is open.
+Let $x \in A$ be any point.
+The derivative of the inclusion $\iota : X \inc \R^n$ is the inclusion of tangent spaces $\dd{\iota}_x : T_xX \inc T_x\R^n = \R^n$.
+In particular, $\iota$ is an immersion at $x$ so the local immersion theorem gives us local coordinates at $x$ such that $\iota$ looks like the standard immersion.
+We restrict these local coordinates to a ball $B = B_r(0) \seq \R^n$ with a parameterization $\phi : B \to \R^n$ of $\R^n$ at $x$ such that the restriction to $U = \R^{n-1} \cap B$ is a parameterization of $X$ at $x$.
+Then $B \setminus \R^{n-1}$ consists of an upper component $V^+$ and a lower component $V^-$.
+Each is an open half of the $n$-ball, so each image $\phi(V^\pm)$ is path-connected in $\R^n \setminus X$.
+
+Then $\phi(U)$ is an open neighborhood of $x$ in $X$, which we claim is contained in $A$.
+Let $y \in \phi(U)$ and $W \seq \R^n$ be an open neighborhood of $y$.
+Since $\phi(B)$ is an open neighborhood of $x$, then $z$ is connected to a point $p \in \phi(B)$ via a path outside $X$.
+Either $p \in \phi(V^+)$ or $p \in \phi(V^-)$; without loss of generality we assume the former.
+Choosing a point $q \in W \cap \phi(V^+)$, there is a path from $p$ to $q$ inside of $V^+$.
+Performing a smooth concatenation, we obtain a path from $z$ to $q$ outside of $X$, hence $y \in A$.
+
+Since $X$ is connected but $A \seq X$ is nonempty and clopen, we conclude that $X = A$.
+
+\pnum{Exercise 2.5.5}
+
+Let $\phi : B \to \R^n$ at $x$ be as in the proof of Exercise 2.5.4.
+Then for any point $z \in \R^n \setminus X$, there is a path from $z$ to a point $z' \in \phi(B)$ outside of $X$.
+Then $z'$ is either in $\phi(V^+)$ or $\phi(V^-)$, which implies $z$ is either in the connected component of $\phi(V^+)$ or $\phi(V^-)$.
+Hence, there are at most two components---one containing $\phi(V^+)$ and one containing $\phi(V^-)$.
+
+\pnum{Exercise 2.5.6}
+
+Denote the inclusion $\iota : X \inc \R^n$, then for any $z \in \R^n \setminus X$ we have
+\[
+    W_2(X, z) = W_2(\iota, z) = \deg_2 u_{\iota, z}.
+\]
+A path from $z_0$ to $z_1$ outside $X$ gives homotopy from $u_{\iota, z_0}$ to $u_{\iota, z_1}$.
+Then degree mod $2$ is homotopy invariant, so
+\[
+    W_2(X, z_0) = \deg_2 u_{\iota, z_0} = \deg_2 u_{\iota, z_1} = W_2(X, z_1).
+\]
+
+\pnum{Exercise 2.5.7}
+
+By definition, $v$ is a regular value of $u$ if and only if $u$ is transverse to the $0$-manifold $\{v\}$.
+By Homework 5 Exercise 1.5.7, this is the case if and only if $\id_X$ is transverse to $u^{-1}(v)$, i.e., if $X$ is transverse to $u^{-1}(v) = r$.
+
+\pnum{Exercise 2.5.8}
+
+By Exercise 2.5.7, the direction vector $v$ of $r$ is a regular value of $u_{\iota, z_i}$, so
+\[
+    W_2(X, z_i)
+        = \deg_2 u_{\iota, z_i}
+        = \#u_{\iota, z_i}^{-1}(v) \mod{2}.
+\]
+Note that $u_{\iota, z_i}^{-1}(v)$ is precisely the intersection of the ray $\{z_i + tv : t \geq 0\}$ with $X$.
+But the ray emanating from $z_0$ intersects $X$ at the same points as the ray emanating from $z_1$, plus the $\ell$ additional points on the segment from $z_0$ and $z_1$.
+So
+\[
+    \#\big(\{z_0 + tv : t \geq 0\} \cap X\big) = \#\big(\{z_1 + tv : t \geq 0\} \cap X\big) + \ell,
+\]
+and taking this equation modulo $2$ gives us the result.
+
+
+\pnum{Exercise 2.5.9}
+
+We first show that there does in fact exist a ray $r$ originating from a point $z_0 \in \R^n \setminus X$ which intersects $X$ both transversally and nontrivially.
+Let $x \in X$ be any point.
+After translating and rotating, assume $x = e_n$ and $T_{e_1}X = \R^{n-1}$.
+Then consider the normalization map $u = u_{\iota, 0} : X \to S^{n-1}$.
+The derivative of this map $\dd{u}_{e_1}$ is the identity on the tangent spaces $T_{e_1}X = \R^{n-1} = T_{e_1}S^{n-1}$.
+By the inverse function theorem, $u$ is a local diffeomorphism at $e_n$, so in particular the image of $u$ contains an open set in $S^{n-1}$.
+Since almost every point of $S^{n-1}$ is a regular value of $u$, we can find a regular value $v \in \im u$.
+Then $v$ defines the desired ray.
+
+
+Then let $z_1$ be a point on the ray $r$ between its first and second intersection with $X$.
+Then by Exercise 2.5.8, we know that $W_2(X, z_0) = W_2(X, z_1) + 1 \mod{2}$.
+In particular, $W_2(X, z_0) \ne W_2(X, z_1)$ so Exercise 2.5.6 implies that $z_0$ and $z_1$ must be in separate connected components of $\R^n \setminus X$, hence there are at least two components.
+Since Exercise 2.5.5 tells us there are at most two components, we conclude that there are exactly two components.
+Since the winding number can only ever be $0$ or $1$, it follows that two points are in the same connected component if and only if their winding numbers are the same.
+
+
+\pnum{Exercise 2.5.10}
+
+Since $X$ is a compact subset of $\R^n$, it is bounded, i.e., $X \seq B_R(0)$ for some radius $R > 0$.
+Let $z \in X \setminus B_R(0)$, i.e., $|z| \geq R$.
+After a translation and rotation, we can put $z$ at the origin and $B_R(0)$ in the upper half space $H^n$.
+Then $u_{\iota, z} : X \to S^{n-1}$ is just the normalization map.
+But $X \seq H^n$ implies the image of $X$ is still inside the upper half space.
+In particular, $-e_n$ is a regular value of $u_{\iota, z}$ so
+\[
+    W_2(X, z) = \deg_2 u_{\iota, z} = \# u_{\iota, z}^{-1}(-e_n) \mod{2} = 0.
+\]
+
+
+\pnum{Exercise 2.5.11}
+
+Exercise 2.5.9 tells us that $\R^n \setminus X$ consists of the two connected components $D_0$ and $D_1$.
+If $z \in D_i$, then $X$ being closed implies $B_r(z) \seq \R^n \setminus X$ for some radius $r > 0$.
+But $B_r(z)$ is convex, so $B_r(z) \seq D_i$, hence $D_i$ is open.
+Exercise 2.5.10 tells us $D_1 \seq B_R(0)$, so $D_1$ is bounded, hence $\clo{D_1}$ is compact.
+
+
+Since $D_1 \seq \R^n$ is open, the identity map $D_1 \to D_1$ is a local parameterization of $\clo{D_1}$ at all the points in $D_1$.
+Let $\phi : B \to \R^n$ be as in the proof of Exercise 2.5.4 at a point $x \in X$.
+Assume $\phi(V^+) \seq D_1$; otherwise precompose $\phi$ with the map $\R^n \to \R^n$ which takes the opposite of the $n$th coordinate.
+Since we could make $\phi(B)$ arbitrary small but it always intersects $D_1$ at $\phi(V^+)$, we deduce that $x \in \clo{D_1}$.
+Then the restriction of $\phi$ to $H^n \cap B$ is a local parameterization of $\clo{D_1}$ at $x$, and tells us that $x \in \bd\clo{D_1}$.
+Lastly, $D_1 \cup X$ is a closed set containing $D_1$ and contained on the closure, so we must have $\clo{D_1} = D_1 \cup X$.
+Therefore, we have found local parameterizations everywhere in $\clo{D_1}$, making it a manifold with boundary, and $\bd\clo{D_1} = X$.
+
+
+
+
+\pnum{Exercise 2.5.12}
+
+Since $X$ is compact, assume $X \seq B_R(0)$ and choose $z' \in r$ with $\|z'\| > R$.
+Then $r$ does not cross $X$ beyond $z'$, i.e., $r$ intersects $X$ only at points between $z$ and $z'$.
+By Exercise 2.5.10 we know $W_2(X, z') = 0$.
+Then Exercise 2.5.8 tells us $W_2(X, z) = \ell \bmod 2$.
+Then by definition $x$ is inside $X$, i.e., $x \in D_1$, if and only if $\ell$ is odd.
+
+\end{document}
