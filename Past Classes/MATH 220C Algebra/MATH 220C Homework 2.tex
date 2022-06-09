@@ -1,0 +1,251 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+\usepackage[shortlabels]{enumitem}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\def\temp{#1}\ifx\temp\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\iso}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+
+% Extra Commands
+\newcommand{\Char}{\operatorname{char}}
+
+% Document
+\begin{document}
+\title{MATH 220C Homework 2}
+\author{Harry Coleman}
+\date{June 3, 2022}
+\maketitle
+
+\begin{pbox}[1]
+    Let $n \geq 3$ be an odd integer such that $\Char F \nmid n$.
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Show that the cyclotomic polynomial $\Phi_n \in F[X]$ has even degree.
+\end{pbox}
+
+\begin{proof}
+    We perform (strong) induction on $n$.
+
+    For the base case $n = 3$, we have $\Phi_3 = X^2 + X + 1$, so $\deg\Phi_3 = 2$.
+
+    Assume that the result holds for all odd integers $d$ with $3 \leq d < n$.
+    We now write
+    \[
+        X^n - 1 = \prod_{\substack{1 \leq d \leq n \\ d \mid n}} \Phi_d.
+    \]
+    Because $n$ is odd, then $d \mid n$ only if $d$ is also odd, so we can write
+    \[
+        X^n - 1 = \Phi_1 \Phi_n \prod_{\substack{3 \leq d < n \\ d \mid n}} \Phi_d.
+    \]
+    Then taking degrees, we obtain
+    \[
+        \deg\Phi_n
+            = \deg(X^n - 1) - \deg\Phi_1 - \sum_{\substack{3 \leq d < n \\ d \mid n}} \deg\Phi_d
+            = n - 1 - \sum_{\substack{3 \leq d < n \\ d \mid n}} \deg\Phi_d.
+    \]
+    By the inductive hypothesis, each $\deg\Phi_d$ is even.
+    And since $n - 1$ is also even, this equation tells us that $\deg\Phi_n$ is even.
+\end{proof}
+
+\begin{pbox}[(b)]
+    Now assume that $\Char F \nmid 2n$.
+    Show that $\Phi_{2n} = \Phi_n(-X)$.
+    [Hint: Show that in an algebraic closure $\clo{F}$ of $F$, the primitive $2n$th roots of unity are exactly the elements $-\zeta$ where $\zeta$ is a primitive $n$th root of unity in $\clo{F}$.]
+\end{pbox}
+
+\begin{proof}
+    Per the hint, fix an algebraic closure $\clo{F}$ of $F$.
+
+    Suppose $\zeta \in \clo{F}$ is a primitive $n$th root of unity.
+    Then
+    \[
+        (-\zeta)^{2n} = ((-1)^2)^n(\zeta^n)^2 = 1^n \cdot 1^2 = 1,
+    \]
+    so $-\zeta$ is a $2n$th root of unity.
+    Because $\zeta$ is a primitive $n$th root of unity, we know that $\zeta^j \ne 1$ for $1 \leq j < n$.
+    Moreover, since $n$ is odd, we also know $\zeta^j \ne -1$ for $1 \leq j < n$, since $-1$ is the primitive $2$nd root of unity.
+    It follows that $\zeta^{n + j} = -\zeta^j \ne 1$ for $1 \leq j < n$, and we conclude that $-\zeta$ is a primitive $2n$th root of unity.
+
+    Use similar argument to show $\zeta$ primitive $2n$th root implies $-\zeta$ primitive $n$th root.
+
+    By definition, we have $\Phi_n = \prod (X - \zeta)$, where the product is taken over all $\zeta \in \clo{F}$ primitive $n$th roots of unity.
+    Since the $-\zeta$'s are precisely the primitive $2n$th roots of unity, we deduce
+    \[
+        \Phi_{2n}
+            = \prod(X + \zeta)
+            = \prod -(-X - \zeta)
+            = (-1)^{\deg\Phi_n} \Phi_n(-X)
+            = \Phi_n(-X).
+    \]
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[2]
+    Suppose $\Char F = 0$, and let $f \in F[X]$ be irreducible.
+    Moreover, assume there exists an extension by radicals $F \seq K$ such that $f$ has a root in $K$.
+    Show that $f$ is solvable by radicals over $F$.
+\end{pbox}
+
+\begin{proof}
+    Let $L$ be a normal closure of $K$ over $F$, then Lemma 8.6 tells us that $F \seq L$ is an extension by radicals.
+    Since $F \seq L$ is normal and $f \in F[X]$ is irreducible, we know that $f$ must split over $L$.
+    Hence, $f$ is solvable by radicals over $F$.
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[3]
+    Let $F \seq K$ be a Galois field extension with finite degree, such that $\Char(F) \ne 2$.
+    An \textit{iterated square root extension of $F$} is any field $L$ for which there exists a tower
+    \[
+        L_0 = F \seq L_1 \seq \cdots \seq L_n = L
+    \]
+    with $L_i = L_{i-1}(a_i)$ and $a_i^2 \in L_{i-1}$ for $1 \leq i \leq n$.
+    Prove that the following conditions are equivalent:
+    \begin{enumerate}[(a)]
+        \item $K$ is an iterated square root extension of $F$.
+        \item $K$ is contained in an iterated square root extension of $F$.
+        \item $G(K : F)$ is a $2$-group.
+    \end{enumerate}
+\end{pbox}
+
+\begin{proof}
+    Assuming (a) is true, then (b) follows trivially since $K \seq K$.
+
+    Assume (b) is true---say $K$ is contained in an iterated square root extension $L$ of $F$.
+    By repeatedly applying the tower rule to the tower in the definition of $L$, we obtain
+    \[
+        [L : F] = [L_n : L_{n-1}] \cdots [L_1 : L_0].
+    \]
+    To compute this degree, we consider each extension $L_i = L_{i-1}(a_i)$ in the tower.
+    If $a_i \in L_{i-1}$ then $L_i = L_{i-1}$, so $[L_i : L_{i-1}] = 1$.
+    If $a_i \notin L_{i-1}$ then the minimal polynomial of $a_i$ over $L_{i-1}$ is simply $X^2 - a_i^2$, so
+    \[
+        [L_i : L_{i-1}] = \deg(X^2 - a_i^2) = 2.
+    \]
+    Thus, $[L_i : L_{i-1}]$ is either $1$ or $2$ for all $i = 1, \dots, n$.
+    It follows that $[L : F]$ is a power of $2$, i.e., $[L : F] = 2^m$ for some nonnegative integer $m$.
+    Now apply the tower rule to $F \seq K \seq L$ to obtain
+    \[
+        2^m
+            = [L : F]
+            = [L : K][K : F].
+    \]
+    Hence, $[K : F]$ is also a power of $2$, i.e., $G(K : F)$ is a $2$-group.
+
+    Lastly, we prove (c) implies (a) by induction on $m$, where $[K : F] = |G(K : F)| = 2^m$.
+
+    For the base case, assume $[K : F] = 2$.
+    Necessarily, we must have $K = F(b)$ where the minimal polynomial of $b$ over $F$ is a quadratic $X^2 + \beta X + \gamma \in F[X]$.
+    Since $\Char F \ne 2$, then we can also write $K = F(a)$ for $a = \beta + 2b \in K$.
+    Then squaring $a$ gives us
+    \[
+        a^2
+            = (\beta + 2b)^2
+            = \beta^2 + 4(b^2 + b\beta)
+            = \beta^2 - 4\gamma,
+    \]
+    which is an element of $F$.
+    In other words, $K$ is a square root extension of $F$.
+
+    For the inductive step, assume the result holds for powers of $2$ up to $m - 1$ for $m \geq 2$.
+    (That is, we assume that whenever we have a Galois group of order $2^k$ with $1 \leq k \leq m - 1$, the corresponding fields form an iterated square root extension.)
+    Recall that, by assumption, $G = G(K : F)$ is a group of order $2^m$.
+    We claim that there is a nontrivial proper normal subgroup of $G$.
+    To see this, let $G$ act on itself via conjugation and let $x_1, \dots, x_r \in G$ be representatives of the non-center conjugacy classes, then the class equation gives us
+    \[
+        |G| = |Z(G)| + \sum_{i=1}^{r} [G : C_G(x_i)],
+    \]
+    where $Z(G)$ is the center of $G$ and $C_G(x_i)$ is centralizer of $x_i$ in $G$.
+    Note that each $[G : C_G(x_i)]$ is a positive power of $2$---say $2^{k_i}$ for $k_i \geq 1$.
+    Then we write
+    \[
+        2^m = |Z(G)| + \sum_{i=1}^{r} 2^{k_i}.
+    \]
+    Since $Z(G)$ contains at least the identity, then $|Z(G)| \geq 1$, but in order for the above equation to hold we must in fact have $|Z(G)| > 1$.
+    In other words, the center of $G$ is nontrivial.
+    
+    We may now choose $H \teq G$ to be a nontrivial proper normal subgroup: if $G$ is abelian then any nontrivial proper subgroup will do, otherwise we take the center of $G$.
+    By the main theorem of Galois theory, the fixed field $L = \operatorname{Fix}_K(H)$ is a intermediate field $F \seq L \seq K$ with both extensions $F \seq L$ and $L \seq K$ nontrivial and Galois.
+    By the tower rule,
+    \[
+        2^m = [K : F] = [K : L][L : F],
+    \]
+    which implies
+    \[
+        |G(K : L)| = [K : L] = 2^{k}
+        \isp{and}
+        |G(L : F)| = [L : F] = 2^\ell,
+    \]
+    where $1 \leq k, \ell \leq m - 1$.
+    By the inductive hypothesis, both $F \seq L$ and $L \seq K$ are iterated square root extensions.
+    Joining their respective towers from the definition at $L$ shows that $F \seq K$ is also an iterated square root extension.
+\end{proof}
+
+\end{document}

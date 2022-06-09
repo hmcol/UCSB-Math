@@ -14,7 +14,7 @@
 
 % Problem Box
 \setlength{\fboxsep}{4pt}
-\newlength{\myparskip}
+\newlength{\myparskip} 
 \setlength{\myparskip}{\parskip}
 \newsavebox{\savefullbox}
 \newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
@@ -595,7 +595,7 @@ Given sequence $\{x_n\}$ in $B$ and $x \in B$:
     Let $T \in \LL(B_1, B_2)$.
     \begin{enumerate}[(a)]
         \item If $\{T_k\}$ is a sequence of compact operators in $\LL(B_1, B_2)$ such that $T_k \to T$ with respect to the operator norm, i.e., $\|T_k - T\| \to 0$, then $T$ is also compact.
-        \item $T$ is compact if and only if $T^*$ is compact.
+        \item $T$ is compact if and only if $T'$ is compact. (special case $T^*$?)
         \item If $S \in \LL(B_0, B_1)$ arbitrary and $T$ is compact, then $TS \in \LL(B_0, B_2)$ is compact.
     \end{enumerate}
 \end{theorem}
