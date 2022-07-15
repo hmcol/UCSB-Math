@@ -74,7 +74,7 @@
 \renewcommand{\>}{\right\rangle}
 
 % Relations
-\newcommand{\isom}{\cong}
+\newcommand{\iso}{\cong}
 \newcommand{\seq}{\subseteq}
 \newcommand{\teq}{\trianglelefteq}
 \newcommand{\tensor}{\otimes}
@@ -309,7 +309,7 @@ Equivalently, $f$ is an isomorphism if there exists $g : y \to x$ such that the 
 \end{cd}
 In which case, $g$ is called the[footnote] \keyword{inverse} of $f$, denoted $f^{-1} = g$.
 
-Additionally, we say $x$ and $y$ are \keyword{isomorphic}, written $x \isom y$.
+Additionally, we say $x$ and $y$ are \keyword{isomorphic}, written $x \iso y$.
 
 An \keyword{endomorphism} is a morphism whose domain and codomain are the same.
 
@@ -345,6 +345,12 @@ As both a definition and example: a \keyword{group} is a groupoid with only one 
 A \keyword{subcategory} $\DD$ of a category $\CC$ is a category such that $\Ob(\DD) \seq \Ob(\CC)$ and $\Mor_\DD(x, y) \seq \Mor_\CC(x, y)$ for all $x, y \in \DD$, and we write $\DD \seq \CC$.
 (e.g., $\Ab \seq \Grp$ and $\CRing \seq \Ring$.)
 It is sometimes required that $\Mor_\DD(x, y) = \Mor_\CC(x, y)$ for all $x, y \in \DD$.
+
+\sepline
+
+mono and epic
+
+
 
 \sepline
 
@@ -541,7 +547,7 @@ In the case that $\alpha$ is a natural transformation from $F$ to $G$. we expres
     & \DD
 \end{cd}
 
-We say that $\alpha$ is a \keyword{natural isomorphism} if each component $\alpha_x : Fx \to Gx$ is an isomorphism in $\DD$; sometimes write this as $\alpha : F \isom G$.
+We say that $\alpha$ is a \keyword{natural isomorphism} if each component $\alpha_x : Fx \to Gx$ is an isomorphism in $\DD$; sometimes write this as $\alpha : F \iso G$.
 
 \sepline
 
@@ -605,9 +611,9 @@ These define functors
 (The third is the two-sided represented functor $\Set(-, -)$ previously discussed.)
 Then we have the following natural isomorphisms:
 \begin{align*}
-    A \times (B \sqcup C) &\isom (A \times B) \sqcup (A \times C)   & (A \times B)^C &\isom A^C \times B^C \\
-    A^{B \sqcup C} &\isom A^B \times A^C 
-        & (A^B)^C &\isom A^{B \times C}
+    A \times (B \sqcup C) &\iso (A \times B) \sqcup (A \times C)   & (A \times B)^C &\iso A^C \times B^C \\
+    A^{B \sqcup C} &\iso A^B \times A^C 
+        & (A^B)^C &\iso A^{B \times C}
 \end{align*}
 
 \sepline
@@ -630,7 +636,7 @@ The naturally is immediate from the construction of the comma category, hence th
 An \keyword{equivalence of categories} is given by
 \begin{itemize}
     \item functors $F : \CC \to \DD$ and $G : \DD \to \CC$;
-    \item natural isomorphisms $\eta : 1_\CC \isom GF$ and $\eps : FG \isom 1_\DD$.
+    \item natural isomorphisms $\eta : 1_\CC \iso GF$ and $\eps : FG \iso 1_\DD$.
 \end{itemize}
 Say $\CC$ and $\DD$ are \keyword{equivalent}, written $\CC \simeq \DD$.
 
@@ -661,7 +667,7 @@ A \keyword{full embedding} is a fully faithful functor which is injective on obj
 \end{theorem}
 
 \begin{lemma}
-    Any morphism $f : x \to y$ and fixed isomorphisms $x \isom x'$ and $y \isom y'$ determine a unique morphism $f' : x' \to y'$ so that any of---or, equivalently, all of---the following four diagrams commute:
+    Any morphism $f : x \to y$ and fixed isomorphisms $x \iso x'$ and $y \iso y'$ determine a unique morphism $f' : x' \to y'$ so that any of---or, equivalently, all of---the following four diagrams commute:
     \begin{center}
         \begin{tikzcd}
             x \dar["f"'] \ar[from=r, tail, two heads] & x' \dar["f'"] \\
@@ -669,8 +675,8 @@ A \keyword{full embedding} is a fully faithful functor which is injective on obj
         \end{tikzcd}
         \hspace{1em}
         \begin{tikzcd}
-            x \dar["f"'] \rar["\isom"] & x' \dar["f'"] \\
-            y \rar["\isom"'] & y'
+            x \dar["f"'] \rar["\iso"] & x' \dar["f'"] \\
+            y \rar["\iso"'] & y'
         \end{tikzcd}
         \hspace{1em}
         \begin{tikzcd}
@@ -679,8 +685,8 @@ A \keyword{full embedding} is a fully faithful functor which is injective on obj
         \end{tikzcd}
         \hspace{1em}
         \begin{tikzcd}
-            x \dar["f"'] \rar["\isom"'] & x' \dar["f'"] \\
-            y \ar[from=r, "\isom"] & y'
+            x \dar["f"'] \rar["\iso"'] & x' \dar["f'"] \\
+            y \ar[from=r, "\iso"] & y'
         \end{tikzcd}
     \end{center}
 \end{lemma}
@@ -688,10 +694,10 @@ A \keyword{full embedding} is a fully faithful functor which is injective on obj
 \begin{proof}[Proof of Theorem]
     Let $F : \CC \to \DD$ be a functor.
 
-    Suppose $F$ defines an equivalence of categories; let $G : \DD \to \CC$ be an inverse functor with natural isomorphisms $\eta : 1_\CC \isom GF$ and $\eps : GF \isom 1_\DD$.
+    Suppose $F$ defines an equivalence of categories; let $G : \DD \to \CC$ be an inverse functor with natural isomorphisms $\eta : 1_\CC \iso GF$ and $\eps : GF \iso 1_\DD$.
 
     (ess. surj.) 
-    Given $y \in \DD$, the natural isomorphism $\eps$ has component $\eps_y : FGy \isom y$.
+    Given $y \in \DD$, the natural isomorphism $\eps$ has component $\eps_y : FGy \iso y$.
     
     (faithful)
     Suppose $f, g \in \CC(x, y)$ such that $Ff = Fg$.
@@ -721,7 +727,7 @@ A \keyword{full embedding} is a fully faithful functor which is injective on obj
 
     Now suppose $F$ is fully faithful and essentially surjective.
     We will construct an functor $G : \DD \to \CC$ inverse to $F$.
-    For each object $y \in \DD$, the fact that $F$ is essentially surjective means we can choose an object $Gx \in \CC$ and isomorphism $\eps_x : FGx \isom x$.
+    For each object $y \in \DD$, the fact that $F$ is essentially surjective means we can choose an object $Gx \in \CC$ and isomorphism $\eps_x : FGx \iso x$.
     Then we have bijections
     \begin{cd}[column sep=huge]
         \CC(Gx, Gy) \rar["F_{Gx, Gy}"] & \DD(FGx, FGy) \rar["\eps_y \circ - \circ \eps_x^{-1}"] & \DD(x, y)
@@ -1191,6 +1197,36 @@ If only know $\CC$ and $\DD$ to be locally small, know nothing of $[\CC, \DD]$.
 
 Let $J$ and $\CC$ be any categories.
  
-For any object $c \in \CC$, there is a \keyword{constant functor} $\Delta c : J \to \D$ sending every object of $J$ to $c$ and every morphism to $1_c$.
+For any object $c \in \CC$, there is a \keyword{constant functor} $\Delta c : J \to \DD$ sending every object of $J$ to $c$ and every morphism to $1_c$.
+
+
+\sepline
+
+abelian categories innit
+
+sections and retractions
+
+A short exact sequence $0 \to K \to A \to Q \to 0$ \keyword{splits} iff $K \to A$ section iff $A \to Q$ retraction:
+\begin{cd}[row sep=small]
+    & & & Q \dar[equal] \dlar[dashed] \\
+    0 \rar & K \rar & A \rar \dlar[dashed] & Q \rar & 0 \\
+    & K \uar[equal] 
+\end{cd}
+in which case,
+\begin{cd}[row sep=small]
+    0 \rar 
+    & K \rar \dar[phantom, "="{rotate=-90, anchor=center}]
+    & A \rar \dar[phantom, "\iso"{rotate=-90, anchor=center}]
+    & Q \rar \dar[phantom, "="{rotate=-90, anchor=center}]
+    & 0 \\
+    0 \rar & K \rar & K \oplus Q \rar & Q \rar & 0 \\
+\end{cd}
+
+projective and injective
+
+``any epimorphism to a projective object has a section'' (epi to proj has sec)
+
+``any monomorphism from an injective object has a retraction'' (mono from inj has retr)
+
 
 \end{document}
