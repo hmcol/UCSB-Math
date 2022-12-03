@@ -1,0 +1,464 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+
+\usetikzlibrary{decorations.markings}
+
+\tikzset{->-/.style={decoration={
+    markings,
+    mark=at position 0.5 with {\arrow{>}}},postaction={decorate}}}
+
+\tikzset{->>-/.style={decoration={
+    markings,
+    mark=at position 0.5 with {\arrow{>>}}},postaction={decorate}}}
+
+\tikzset{->>>-/.style={decoration={
+    markings,
+    mark=at position 0.5 with {\arrow{>>>}}},postaction={decorate}}}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\def\temp{#1}\ifx\temp\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\iso}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+
+% Extra Commands
+\newcommand{\bd}{\partial}
+
+% Document
+\begin{document}
+\title{MATH 232A Homework 1}
+\author{Harry Coleman}
+\date{October 2, 2022}
+\maketitle
+
+I worked with Joseph Sullivan and Gahl Shemy.
+
+\begin{pbox}[1]
+    Let $A$ be a $\Delta$-complex and build a new $\Delta$-complex $X$ by adding a single new $n$-simplex $D$.
+    Using simplicial homology, compute the difference between $H_*(A)$ and $H_*(X)$.
+\end{pbox}
+
+First note that $C_n(X) = C_n(A) \oplus \Z D$ and $C_i(X) = C_i(A)$ for $i \ne n$.
+
+Because of this, the kernels and images of the boundary maps $\bd_i$ for $i \ne n$ are entirely unchanged.
+Therefore, when $i > n$ or $i \leq n - 2$ we have
+\[
+    H_i(X) 
+        = Z_i(X) / B_i(X)
+        = Z_i(A) / B_i(A)
+        = H_i(A).
+\]
+
+It remains to check $H_n$ and $H_{n-1}$.
+
+$H_{n-1}(X) = Z_{n-1}(X) / B_{n-1}(X) = Z_{n-1}(A) / (B_{n-1}(A) + \Z\bd_n(D))$
+
+
+$H_n(X) = Z_n(X) /B_n(X) = Z_n(X) / B_n(A)$
+
+\newpage
+\begin{pbox}[2 Hatcher 2.1.1]
+    What familiar space is the quotient $\Delta$-complex of a $2$-simplex $[v_0, v_1, v_2]$ obtained by identifying the edges $[v_0, v_1]$ and $[v_1, v_2]$, preserving the ordering of vertices?
+\end{pbox}
+
+We want to form the following quotient:
+
+\begin{drawing}
+    \node (A) at (0, 1) {};
+    \node (B) at (1, 0) {};
+    \node (C) at (2, 1) {};
+
+    \fill (A) circle (2pt) node[anchor=east] {$v_0$};
+    \fill (B) circle (2pt) node[anchor=north] {$v_1$};
+    \fill (C) circle (2pt) node[anchor=west] {$v_2$};
+
+    \draw[->-] (A) -- (B);
+    \draw[->-] (B) -- (C);
+    \draw (A) -- (C);
+\end{drawing}
+
+Before identifying the edges, we make the following cut:
+\begin{drawing}
+    \draw[->-] (0, 2) -- (2, 0);
+    \draw (0, 2) -- (2, 2);
+    \draw[->>-, dashed] (2, 0) -- (2, 2);
+
+    \draw (3, 2) -- (5, 2);
+    \draw[->-] (3, 0) -- (5, 2);
+    \draw[->>-, dashed] (3, 0) -- (3, 2);
+\end{drawing}
+
+We now glue the original pair of edges to obtain the following:
+\begin{drawing}
+    \draw (0, 2) -- (2, 2);
+    \draw (0, 0) -- (2, 0);
+    \draw[->>-] (0, 2) -- (0, 0);
+    \draw[->>-] (2, 0) -- (2, 2);
+
+    \draw[->-, dashed] (0, 2) -- (2, 0);
+\end{drawing}
+
+Regluing the cut we made gives us the M\"obius strip.
+
+
+
+\newpage
+\begin{pbox}[3 Hatcher 2.1.5]
+    Compute the simplicial homology groups of the Klein bottle using the $\Delta$-complex structure described at the beginning of this section.
+\end{pbox}
+
+We use the following $\Delta$-complex construction:
+\begin{drawing}
+    \fill (0, 0) circle (2pt) node[anchor=north east] {$v$};
+    \fill (2, 0) circle (2pt) node[anchor=north west] {$v$};
+    \fill (0, 2) circle (2pt) node[anchor=south east] {$v$};
+    \fill (2, 2) circle (2pt) node[anchor=south west] {$v$};
+
+    \draw[->-] (0, 0) -- (0, 2) node[midway, anchor=east] {$a$};
+    \draw[->-] (2, 0) -- (2, 2) node[midway, anchor=west] {$a$};
+
+    \draw[->>-] (0, 2) -- (2, 2) node[midway, anchor=south] {$b$};
+    \draw[->>-] (2, 0) -- (0, 0) node[midway, anchor=north] {$b$};
+
+    \draw[->>>-] (0, 0) -- (2, 2) node[midway, anchor=west] {$c$};
+
+    \node at (0.5, 1.5) {$U$};
+    \node at (1.5, 0.5) {$L$};
+\end{drawing}
+
+We first compute the boundaries of the 1-simplices:
+\[
+    \bd_1(a) = \bd_1(b) = \bd_1(c) = v - v = 0.
+\]
+This allows us to compute the 0th homology group
+\[
+    H_0 = \<v\>/0 \iso \Z.
+\]
+
+We now compute the boundaries of the 2-simplices:
+\begin{align*}
+    \bd_2(U) &= a + b - c, \\
+    \bd_2(L) &= -a + b + c.
+\end{align*}
+This gives us
+\[
+    H_1 = \<a, b, c\>/\<a + b - c, -a + b + c\>.
+\]
+
+Consider the map
+\begin{align*}
+    f : \Z^2 &\longrightarrow \Z^3 = \<a, b, c\>, \\
+        e_1 &\longmapsto a + b - c, \\
+        e_2 &\longmapsto -a + b + c.
+\end{align*}
+Then we can write $H_2 = \Z^3 / \im f$.
+If $P : \Z^2 \to \Z^2$ and $Q : \Z^3 \to \Z^3$ are invertible linear maps, then we also have $H_2 = \Z^3/\im(QfP)$.
+Write the linear map $f$ as the matrix
+\[
+    \mat{1 & -1 \\ 1 & 1 \\ -1 & 1},
+\]
+then $P$ and $Q$ correspond to row and column operations on this matrix.
+We find the following equivalent matrix:
+\[
+    \mat{1 & -1 \\ 1 & 1 \\ -1 & 1}
+    \xrightarrow{r_1 = r_1 + r_3}
+    \mat{0 & 0 \\ 1 & 1 \\ -1 & 1}
+    \xrightarrow{r_3 = r_3 + r_2}
+    \mat{0 & 0 \\ 1 & 1 \\ 0 & 2}
+    \xrightarrow{c_2 = c_2 + c_1}
+    \mat{0 & 0 \\ 1 & 0 \\ 0 & 2}.
+\]
+Thus, we can now compute the 1st homology group
+\[
+    H_1
+        = \<a, b, c\> / \<b, 2c\>
+        = \<a\> \oplus \<c\>/\<2c\>
+        \iso \Z \oplus \Z/2\Z.
+\]
+
+We compute the kernel of $\bd_2$:
+\begin{align*}
+    0
+        &= \bd_2(\alpha U + \beta L) \\
+        &= \alpha(a + b - c) + \beta(-a + b + c) \\
+        &= (\alpha - \beta)a + (\alpha + \beta)b + (-\alpha + \beta)c.
+\end{align*}
+This implies $\alpha = \beta = -\beta$, so we must have $\alpha = \beta = 0$.
+Hence, we compute the 2nd homology group to be
+\[
+    H_2 = 0.
+\]
+
+
+\newpage
+\begin{pbox}[4 Hatcher 2.1.8]
+    Construct a $3$-dimensional $\Delta$-complex $X$ from $n$ tetrahedra $T_1, \dots, T_n$ by the following two steps.
+    First, arrange the tetrahedra in a cyclic pattern as in the figure, so that each $T_i$ shares a common vertical face with its two neighbors $T_{i-1}$ and $T_{i+1}$, subscripts being taken mod $n$.
+    Then identify the bottom face of $T_i$ with the top face of $T_{i+1}$ for each $i$.
+    Show the simplicial homology groups of $X$ in dimensions 0, 1, 2, 3 are $\Z$, $\Z/n\Z$, 0, $\Z$, respectively.
+\end{pbox}
+
+After making the prescribed identifications, we may label the simplices of $T_i$ as follows:
+\begin{drawing}
+    \fill (0, 0) circle (2pt) node[anchor=east] {$x$};
+    \fill (2, -1) circle (2pt) node[anchor=north] {$x$};
+    \fill (5, 1) circle (2pt) node[anchor=north west] {$y$};
+    \fill (5, 3) circle (2pt) node[anchor=south west] {$y$};
+
+    \draw[->-] (0, 0) -- (2, -1) node[midway, anchor=north east] {$a$};
+    \draw[->-] (5, 1) -- (5, 3) node[midway, anchor=west] {$b$};
+
+
+    \draw[->-] (0, 0) -- (5, 3) node[midway, above, sloped] {$c_i$};
+    \draw[->-, dashed] (0, 0) -- (5, 1) node[midway, above, sloped] {$c_{i+1}$};
+    \draw[->-] (2, -1) -- (5, 3) node[midway, above, sloped] {$c_{i+1}$};
+    \draw[->-] (2, -1) -- (5, 1) node[midway, below, sloped] {$c_{i+2}$};
+\end{drawing}
+Additionally, we label the top face $U_i$, the bottom face $U_{i+1}$, the back/left face $L_i$, and the front/right face $L_{i+1}$.
+
+We compute the boundaries of the 1-simplices:
+\begin{align*}
+    \bd_1(a) &= x - x = 0, \\
+    \bd_1(b) &= y - y = 0, \\
+    \bd_1(c_i) &= y - x.
+\end{align*}
+We compute the 0th homology group
+\[
+    H_0
+        = \<x, y\> / \<y - x\>
+        = \<x\>
+        \iso \Z.
+\]
+
+We compute the kernel of $\bd_1$:
+\[\textstyle
+    0
+        = \bd_1(\alpha a + \beta b + \sum_i \gamma_i c_i)
+        = \sum_i \gamma_i(y - x).
+\]
+This implies $\sum_i \gamma_i = 0$ so $\gamma_1 = -\sum_{i=2}^{n} \gamma_i$.
+So in $C_2 = \<a, b, c_1, \dots, c_n\>$, the kernel of of the boundary map consists of elements represented as vectors of the form
+\begin{align*}
+    \mat{\alpha \\ \beta \\ -\sum_{i=2}^{n} \gamma_i \\ \gamma_2 \\ \vdots \\ \gamma_n}
+        &= \alpha\mat{1 \\ 0 \\ \vdots \\ 0}
+            + \beta\mat{0 \\ 1 \\ 0 \\ \vdots \\ 0}
+            + \gamma_2\mat{0 \\ 0 \\ -1 \\ 1 \\ 0 \\ \vdots \\ 0}
+            + \gamma_2\mat{0 \\ 0 \\ -1 \\ 0 \\ 1 \\ 0 \\ \vdots \\ 0}
+            + \gamma_2\mat{0 \\ 0 \\ -1 \\ 0 \\ \vdots \\ 0 \\ 1} \\
+        &= \alpha a + \beta b + \gamma_2(c_2 - c_1) + \gamma_3(c_3 - c_1) + \cdots + \gamma_n(c_n - c_1) \\
+        &= \alpha a  + \beta b + \sum_{i=2}^{n} \gamma_i(c_i - c_1).
+\end{align*}
+So $\ker\bd_1 = \<a, b, c_2 - c_1, c_3 - c_1, \dots, c_n - c_1\>$.
+
+We can manipulate the generators to get $\ker\bd_1 = \<a, b, c_2 - c_1, c_3 - c_2, \dots, c_n - c_{n-1}\>$.
+
+Define the 1-chains $d_i = c_{i + 1} - c_i$ for $i = 1, \dots, n-1$.
+The $d_i$'s are linearly independent, so we can write $\ker\bd_1 = \<a, b, d_1, \dots, d_{n-1}\> \iso \Z^{n+1}$.
+
+We compute the boundaries of the 2-simplices:
+\begin{align*}
+    \bd_2(U_i) &= a + c_{i+1} - c_i = a + d_i, \\
+    \bd_2(L_i) &= b + c_{i+1} - c_i = b + d_i.
+\end{align*}
+
+Then the 1st homology group is
+\[
+    H_1 = \<a, b, d_1, \dots, d_{n-1}\> / \<a + d_1, \dots, a + d_n, b + d_1, \dots, b + d_n\>,
+\]
+where $d_n = -d_1 - \cdots - d_{n-1}$.
+We consider the kernel as the image of a linear map $\Z^{2n} \to \Z^{n+1}$ which we represent as the matrix
+\[
+    \begin{array}{c}
+        a \\
+        b \\
+        d_1 \\
+        d_2 \\
+        \vdots \\
+        d_{n-1}
+    \end{array}
+    \mat{
+        1 & 1 & \cdots & 1 & 1 & 0 & 0 & \cdots & 0 & 0 \\
+        0 & 0 & \cdots & 0 & 0 & 1 & 1 & \cdots & 1 & 1 \\
+        1 & 0 & \cdots & 0 & -1 & 1 & 0 & \cdots & 0 & -1 \\
+        0 & 1 & \cdots & 0 & -1 & 0 & 1 & \cdots & 0 & -1 \\ 
+        \vdots & & \ddots & & \vdots & \vdots & & \ddots & & \vdots \\
+        0 & 0 & \cdots & 1 & -1 & 0 & 0 & \cdots & 1 & -1 \\ 
+    }
+    =
+    \begin{array}{c}
+        a \\
+        b \\
+        d_i
+    \end{array}
+    \mat{
+        1 & 1 & 0 & 0 \\
+        0 & 0 & 1 & 1 \\
+        I_{n-1} & -1 & I_{n-1} & -1
+    }.
+\]
+
+We now perform row and column operations on this matrix to produce a more useful presentation of the quotient.
+Note that when a column is repeated, this corresponds to a repeated relation, so we can safely remove that any repeated columns.
+Additionally, if a column contains all 0's except for a 1 in the $j$th row, this corresponds to the $j$th generator reducing to zero in the quotient.
+In this case, we can safely remove that column and the $j$th row and discard that generator.
+
+\begin{align*}
+    \mat{
+        1 & 1 & 0 & 0 \\
+        0 & 0 & 1 & 1 \\
+        I_{n-1} & -1 & I_{n-1} & -1
+    }
+        &\to
+        \mat{
+            1 & 1 & -1 & -1 \\
+            0 & 0 & 1 & 1 \\
+            I_{n-1} & -1 & 0 & 0
+        } && \text{column operations} \\
+        &\to
+        \mat{
+            1 & 1 & -1 \\
+            0 & 0 & 1 \\
+            I_{n-1} & -1 & 0 
+        } && \text{remove repeat columns} \\
+        &\to
+        \mat{
+            0 & n & -1 \\
+            0 & 0 & 1 \\
+            I_{n-1} & -1 & 0 
+        } && \text{row operations} \\
+        &\to
+        \mat{
+            n & -1 \\
+            0 & 1 \\
+        } && \text{remove null generators} \\
+        &\to \mat{
+            n & 0 \\
+            0 & 1 \\
+        } && \text{row operations} \\
+        &\to \mat{n} && \text{remove null generators}
+\end{align*}
+Thus, the 1st homology group is
+\[
+    H_1 = \<a\> / \<na\> \iso \Z/n\Z.
+\]
+
+
+We compute the kernel of $\bd_2$:
+\begin{align*}
+    \bd_2(\textstyle\sum_{i=1}^{n} \alpha_i U_i + \sum_{i=1}^{n} \beta_i L_i)
+        &= \sum_{i=1}^{n} \alpha_i(a + c_{i+1} - c_i) + \beta_i(b + c_{i+1} - c_i) \\
+        &= \sum_{i=1}^{n} \alpha_i a + \sum_{i=1}^{n} \beta_i b + \sum_{i=1}^{n} (\alpha_{i-1} - \alpha_i + \beta_{i-1} - \beta_i)c_i.
+\end{align*}
+Elements of the kernel are of the form
+\begin{align*}
+    \mat{
+        \sum_i \alpha_i \\
+        \sum_i \beta_i \\
+        \alpha_n - \alpha_1 + \beta_n - \beta_1 \\
+        \alpha_1 - \alpha_2 + \beta_1 - \beta_2 \\
+        \vdots \\
+        \alpha_{n-1} - \alpha_n + \beta_{n-1} - \beta_n
+    }
+        &= \alpha_1 \mat{1 \\ 0 \\ -1 \\ 1 \\ 0 \\ \vdots \\ 0}
+            % + \alpha_2 \mat{1 \\ 0 \\ 0 \\ -1 \\ 1 \\ 0 \\ \vdots \\ 0} 
+            + \cdots
+            + \alpha_n \mat{1 \\ 0 \\ 1 \\ 0 \\ \vdots \\ 0 \\ -1}
+            + \beta_1 \mat{0 \\ 1 \\ -1 \\ 1 \\ 0 \\ \vdots \\ 0}
+            % + \beta_2 \mat{0 \\ 1 \\ 0 \\ -1 \\ 1 \\ 0 \\ \vdots \\ 0} 
+            + \cdots
+            + \beta_n \mat{0 \\ 1 \\ 1 \\ 0 \\ \vdots \\ 0 \\ -1} \\
+        &= \sum_{i=1}^{n} \alpha_i(a + c_{i+1} - c_i) +   \sum_{i=1}^{n} \beta_i(b + c_{i+1} - c_i).
+\end{align*}
+Then
+\[
+    \ker\bd_2 = \<a + c_{i+1} - c_i, b + c_{i+1} - c_i\>.
+\]
+
+We compute the image of $\bd_3$:
+\begin{align*}
+    \bd_3(U_i) &= a + c_{i+1} - c_i, \\
+    \bd_3(L_i) &= b + c_{i+1} - c_i.
+\end{align*}
+
+Hence, the 2nd homology group is
+\[
+    H_2
+        = \<a + c_{i+1} - c_i, b + c_{i+1} - c_i\>/\<a + c_{i+1} - c_i, b + c_{i+1} - c_i\>
+        = 0.
+\]
+
+We compute the kernel of $\bd_3$:
+\begin{align*}
+    0 
+        &= \bd_3(\textstyle\sum_i \alpha_i T_i) \\
+        &= \sum_{i=1}^{n} \alpha_i(L_{i+1} - L_i + U_i - U_{i+1}) \\
+        &= \sum_{i=1}^{n} (\alpha_{i-1} - \alpha_i)L_i + \sum_{i=}^{n} (\alpha_i - \alpha_{i-1}) U_i 
+\end{align*}
+This implies $\alpha_1 = \cdots = \alpha_n$, so $\ker\bd_3 = \<T_1 + \cdots + T_n\>$.
+Hence, the 3rd homology group is
+\[
+    H_3 = \<T_1 + \cdots + T_n\>/0 \iso \Z.
+\]
+
+
+\end{document}

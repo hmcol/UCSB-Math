@@ -1,0 +1,192 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+\usepackage[shortlabels]{enumitem}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\def\temp{#1}\ifx\temp\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\iso}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\renewcommand{\tilde}{\widetilde}
+\renewcommand{\hat}{\widehat}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+
+% Extra Commands
+\DeclareMathOperator{\supp}{supp}
+\newcommand{\pdv}[2]{\frac{\partial #1}{\partial #2}}
+
+% Document
+\begin{document}
+\title{MATH 240A Homework 4}
+\author{Harry Coleman}
+\date{Octobter 21, 2022}
+\maketitle
+
+\begin{pbox}[1]
+    Let $M$ be a smooth manifold.
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Use partition of unity to show that, if $F_1, F_2$ are two closed subsets of $M$ such that $F_1 \cap F_2 = \emptyset$, then there is a smooth function $f$ on $M$ such that $f=1$ on $F_1$ and $f=0$ on $F_2$.
+\end{pbox}
+
+Note that $\{M \setminus F_1, M \setminus F_2\}$ is an open cover of $M$.
+Let $\{\psi_1, \psi_2\}$ be a smooth partition of unity subordinate to this cover.
+By construction, the support of $\psi_1$ is contained in $M \setminus F_1$, which means that $\psi_1 \equiv 0$ on $F_1$.
+Similarly, $\psi_2 \equiv 0$ on $F_2$.
+Since $\psi_1 + \psi_2 \equiv 1$, we deduce that $\psi_2 \equiv 1$ on $F_1$.
+Hence, $f = \psi_2$ is the desired function.
+
+
+
+\begin{pbox}[(b)]
+    Now let $U$ be an open set of $M$ (which then inherits a smooth manifold structure) and $F$ be a closed subset such that $F\subseteq U$. Show that for any smooth function $f$ on $U$, there is a smooth function $\overline{f}$ on $M$ such that $\overline{f}|_F = f|_F$. (We have made use of this extension result in HW2.)
+\end{pbox}
+
+Applying part (a), choose $h \in C^\infty(M)$ such that $h \equiv 1$ on $F$ and $h \equiv 0$ on $M \setminus U$.
+We now define the smooth function $\overline{f} = f \cdot h$ on $U$, which we can extend to all of $M$ by defining $\overline{f} \equiv 0$ outside of $U$.
+
+By construction, $\overline{f}$ is smooth inside of $U$.
+For a point $x \in M \setminus U$, we have $x \notin \supp f$.
+Since the support of $f$ is a closed set, there is a neighborhood $V$ of $x$ which is entirely outside of $\supp f$.
+In which case, $f \equiv 0$ on $V$, which is clearly smooth.
+
+
+
+
+\newpage
+\begin{pbox}[2]
+    Let $S^n$ be the standard sphere in $\R^{n+1}$. Show that, for any $p\in S^n$, $T_p S^n$ can be naturally identified with the subspace of vectors in $\R^{n+1}$ perpendicular to $p$.
+\end{pbox}
+
+Consider the inclusion $\iota : S^n \inc \R^{n+1}$.
+
+We claim that the differential $\iota_* : T_pS^n \to T_p\R^{n+1} \iso \R^{n+1}$ is injective.
+The radial projection $\pi : \R^{n+1} \setminus \{0\} \to S^n$ is a retraction, i.e., $\pi \circ \iota = \id$.
+Then functorality of the differential gives us $\pi_* \circ \iota_* = \id$, hence $\iota_*$ is injective.
+
+
+
+
+\newpage
+\begin{pbox}[3]
+    Recall that the graph $\Gamma$ of the function $f(x) = |x|$, $x\in \R$, is a smooth manifold.
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Show that it is diffeomorphic to $\R$.
+\end{pbox}
+
+Note that $\R$ is a smooth manifold with a global chart $\id_\R : \R \to \R$.
+
+There is a global chart $\phi : \Gamma \to \R$ given by $(x, |x|) \mapsto x$.
+By definition, this is a smooth map of manifolds.
+
+Moreover, the inverse $\phi^{-1} : \R \to \Gamma$ is also smooth:
+\[
+    \widehat{\phi^{-1}}
+        = \phi \circ \phi^{-1} \circ \id_\R^{-1}
+        = \id_\R
+\]
+
+Hence, $\phi$ is a diffeomorphism.
+
+\begin{pbox}[(b)]
+    Show that, however, there is no diffeomorphism $F: \R^2\to \R^2$ taking $\R$ to $\Gamma$ (or vice versa). Here you can take $\R$ to be the real axis of $\R^2$. (\textbf{Hint}: By contradiction, assume that there is such an $F$. Without loss of generality, we can assume that $F(0,0) = (0,0)$ (why?). Write $F(x,y) = (g(x,y), h(x,y))$. What does $F$ taking $\R$ to $\Gamma$ tell you about the form of $F(x,0)$? This will depend on which side you are approaching the origin. Now what does this information translate to $F_*(\frac{\partial}{\partial x})$? )
+\end{pbox}
+
+Per the hint, assume $F$ is such a diffeomorphism.
+We may assume $F(0, 0) = (0, 0)$ since translation on $\R^2$ is a diffeomorphism.
+
+The fact that $F$ takes $\R$ to $\Gamma$ tells us that $F(x, 0) = (g(x, 0), |g(x, 0)|)$.
+
+At the point $(a, 0)$ we compute
+\[\textstyle
+    F_*(\pdv{}{x})(x) = \pdv{}{x}\big|_{(a,0)}g
+    \isp{and}
+    F_*(\pdv{}{x})(y) = \pdv{}{x}\big|_{(a,0)}|g|.
+\]
+Therefore, we have
+\[\textstyle
+    F_*(\pdv{}{x}) = \left(\pdv{}{x}\big|_{(a,0)}g\right)\pdv{}{x} + \left(\pdv{}{x}\big|_{(a,0)}|g|\right)\pdv{}{y}.
+\]
+For $a < 0$ we get 
+\[\textstyle
+    F_*(\pdv{}{x}) = \left(\pdv{}{x}\big|_{(a,0)}g\right)\pdv{}{x} - \left(\pdv{}{x}\big|_{(a,0)}g\right)\pdv{}{y}
+\]
+and for $a > 0$ we get
+\[\textstyle
+    F_*(\pdv{}{x}) = \left(\pdv{}{x}\big|_{(a,0)}g\right)\pdv{}{x} + \left(\pdv{}{x}\big|_{(a,0)}g\right)\pdv{}{y}.
+\]
+Since $F$ is a diffeomorphism, $F_*$ is an isomorphism, so these are nonzero for all values of $a$.
+But then taking the limit as $a \to 0$ gives us different answers from the left and the right, which is a contradiction.
+
+
+
+
+\newpage
+\begin{pbox}[4 Lee 3-5]
+    (second part only) Let $S^1 \subseteq \R^2$ be the unit circle, and let $K\subseteq \R^2$ be the boundary of the square of side 2 centered at the origin: $K=\{(x,y): \max(|x|,|y|)=1\}$. Show that there is a homeomorphism $F: \R^2\to \R^2$ such that $F(S^1)=K$, but there is no \textit{diffeomorphism} with the same property. [Hint: let $\gamma$ be a smooth curve whose image lies in $S^1$, and consider the action of $\mathrm{d} F(\gamma'(t))$ on the coordinate functions $x$ and $y$.]
+\end{pbox}
+
+
+\end{document}

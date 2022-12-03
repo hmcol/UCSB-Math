@@ -1,0 +1,353 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+\usepackage[shortlabels]{enumitem}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\def\temp{#1}\ifx\temp\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\iso}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+
+% Extra Commands
+\renewcommand{\tilde}{\widetilde}
+\renewcommand{\hat}{\widehat}
+
+% Document
+\begin{document}
+\title{MATH 240A Homework 2}
+\author{Harry Coleman}
+\date{October 7, 2022}
+\maketitle
+
+\begin{pbox}[1 Lee 1.9]
+    \textbf{Complex projective $n$-space}, denoted by $\C\P^n$, is the set of all 1-dimensional complex-linear subspaces of $\C^{n+1}$, with the quotient topology inherited from the natural projection $\pi: \C^{n+1}\setminus\{0\} \to \C\P^n$. Show that $\C\P^n$ is a compact $2n$-dimensional topological manifold, and show how to give it a smooth structure analogous to the one we constructed for $\R\P^n$. (We use the correspondence
+    \[(x^1+iy^1,\dots,x^{n+1}+iy^{n+1}) \leftrightarrow (x^1,y^1,\dots,x^{n+1},y^{n+1})\]
+    to identify $\C^{n+1}$ with $\R^{2n+2}$.)
+\end{pbox}
+
+Denote $X = \C^{n+1} \setminus \{0\}$.
+
+We first check that $\pi$ is an open map.
+
+\begin{proof}
+    Let $U \seq X$ be open.
+    We compute
+    \[
+        \pi^{-1}(\pi(U))
+            = \bigcup_{z \in U} [z]
+            = \bigcup_{z \in U} \bigcup_{\lambda \ne 0} \{\lambda z\}
+            = \bigcup_{\lambda \ne 0} \bigcup_{z \in U} \{\lambda z\}
+            = \bigcup_{\lambda \ne 0} \lambda U.
+    \]
+    For $\lambda \ne 0$, the map $z \mapsto \lambda z$ is a homeomorphism $X \to X$.
+    Therefore, the image of $U$ under this map, $\lambda U$, is open.
+    Hence, $\pi^{-1}(\pi(U))$ is open, which implies $\pi(U)$ is open since $\pi$ is a quotient map.
+\end{proof}
+
+We now check that $\C\P^n$ is Hausdorff.
+
+\begin{proof}
+    Let $R \seq X \times X$ be the pairs of points that are identified under the projection $\pi$.
+    That is, $R = \{(z, w) \mid z \sim w\}$ where $z \sim w$ if and only if $z = \lambda w$ for some $\lambda \ne 0$.
+    Equivalently, $z \sim w$ if and only if $z^iw^j = z^jw^i$ for all $i$ and $j$.
+    For each $i$ and $j$ define the polynomial map
+    \begin{align*}
+        f_{ij} : X \times X &\longrightarrow \C, \\
+            (z, w) &\longmapsto z^iw^j - z^jw^i.
+    \end{align*}
+    In particular, these maps are continuous, so their zero loci are closed in $X \times X$.
+    Moreover, we can write $R$ as the intersection of all of these zero loci, i.e.,
+    \[
+        R = \bigcap_{i, j} f_{ij}^{-1}(0).
+    \]
+    Therefore, $R$ is closed and by the lemma from class, we conclude that $\C\P^n = X/{\sim}$ is Hausdorff.
+\end{proof}
+
+Lastly, we construct a smooth structure on $\C\P^n$.
+
+For $i = 1, \dots, n+1$ define the open set $\tilde{U}_i = \{z \in X \mid z^i \ne 0\}$---these cover $X$.
+Since $\pi$ is an open map, the images $U_i = \pi(\tilde{U}_i) \seq \C\P^n$ form an open cover of $\C\P^n$.
+We now define continuous maps
+\begin{align*}
+    \tilde{\phi}_i : \tilde{U}_i &\longrightarrow \C^n, \\
+        z &\longmapsto \textstyle\left(\frac{z^1}{z^i}, \dots, \hat{\frac{z^i}{z^i}}, \dots, \frac{z^{n+1}}{z^i}\right).
+\end{align*}
+We claim that $\tilde{\phi}_i$ factors through the projection $\pi|_{\tilde{U}_i}$.
+To see this, suppose $z, w \in \tilde{U}_i$ are such that $[z] = [w]$.
+This is the case if and only if $z = \lambda w$ for some $\lambda \ne 0$, so
+\begin{align*}
+    \tilde{\phi}_i(z)
+        &= \textstyle\left(\frac{z^1}{z^i}, \dots, \hat{\frac{z^i}{z^i}}, \dots, \frac{z^{n+1}}{z^i}\right) \\
+        &= \textstyle\left(\frac{\lambda w^1}{\lambda w^i}, \dots, \hat{\frac{\lambda w^i}{\lambda w^i}}, \dots, \frac{\lambda w^{n+1}}{\lambda w^i}\right) \\
+        &= \textstyle\left(\frac{w^1}{w^i}, \dots, \hat{\frac{w^i}{w^i}}, \dots, \frac{w^{n+1}}{w^i}\right) \\
+        &= \tilde{\phi}_i(w).
+\end{align*}
+Therefore, there exists a unique continuous map $\phi_i : U_i \to \C^n$ such that $\phi_i \circ \pi|_{\tilde{U}_i} = \tilde{\phi}_i$.
+This map is surjective since for any $z \in \C^n$ we have
+\[
+    \phi_i([z^1 : \cdots : z^{i-1} : 1 : z^i : \cdots : z^n]) = z.
+\]
+Additionally, this map is injective since $\phi_i([z]) = \phi_i([w])$ implies that $z^j/z^i = w^j/w^i$ for all $j$.
+In other words, $z = \lambda w$ with $\lambda = z^i/w^i$ so in fact $[z] = [w]$.
+Moreover, the inverse map $\phi_i : \C^n \to U_i$ can be constructed as the composition of the continuous map
+\begin{align*}
+    \C^n &\longrightarrow \C^{n+1}, \\
+    z &\longmapsto (z^1, \dots, z^{i-1}, 1, z^i, \dots, z^n)
+\end{align*}
+and the projection $\pi : X \to \C\P^n$.
+Hence, the atlas $\{(U_i, \phi_i)\}_{i=1}^{n+1}$ gives us a (complex) topological manifold structure on $\C\P^n$.
+Since we have a homeomorphism $\C^1 \iso \R^2$ by splitting coordinates into real and imaginary parts, this complex $n$-manifold structure induces a real $2n$-manifold structure.
+
+We now check smooth compatibility.
+For $i \ne j$ and $z \in \im \phi_i$ we have
+\begin{align*}
+    \phi_j \circ \phi_i^{-1}(z)
+        &= \phi_j([z^1 : \cdots : z^{i-1} : 1 : z^i : \cdots : z^n]) \\
+        &= \phi_j([w^1 : \cdots : w^{i-1} : 1 : w^{i+1} : \cdots : w^{n+1}]) \\
+        &= \textstyle\left(\frac{w^1}{w^j}, \dots, \frac{w^{i-1}}{w^j}, \frac{1}{w^j}, \frac{w^{i+1}}{w^j}, \dots, \hat{\frac{w^j}{w^j}}, \dots, \frac{w^{n+1}}{w^j}\right),
+\end{align*}
+where we are denoting $w^k = z^k$ for $k < i$ and $w^{k+1} = z^k$ for $k \geq i$.
+We can rewrite this result in corresponding real coordinates by using
+\[
+    \frac{a + ib}{c + id}
+        = \frac{(a + ib)(c - id)}{c^2 + d^2}
+        = \frac{ac + bd}{c^2 + d^2} + i\frac{ad - bc}{c^2 + d^2}.
+\]
+With $w^j \ne 0$, this is a smooth map $\R^{2n} \to \R^{2n}$, hence we have found a smooth manifold structure on $\C\P^n$.
+
+
+
+
+\newpage
+\begin{pbox}[2 Lee 2.1]
+    Define $f:\R\to \R$ by
+    \[
+        f(x) = \begin{cases}
+            1, & x \geq 0,\\
+            0, & x < 0.
+        \end{cases}
+    \]
+    Show that for every $x\in \R$, there are smooth coordinate charts $(U,\phi)$ containing $x$ and $(V,\psi)$ containing $f(x)$ such that $\psi \circ f \circ \phi^{-1}$ is smooth as a map from $\phi(U \cap f^{-1}(V))$ to $\psi(V)$, but $f$ is not smooth in the sense we have defined in this chapter.
+\end{pbox}
+
+Take $U = \R$ and $\phi = \id$.
+
+For $x < 0$ choose $V = (-1, 1)$ and $\psi = \id$.
+Then
+\[
+    \phi(U \cap f^{-1}(V))
+        = \id(\R \cap (-\infty, 0))
+        = (-\infty, 0),
+\]
+and on this set $\psi \circ f \circ \phi^{-1} = f$ restricts to the constant 0 map, which is smooth.
+
+For $x \geq 0$ choose $V = (0, 2)$ and $\psi = \id$.
+Then 
+\[
+    \phi(U \cap f^{-1}(V))
+        = \id(\R \cap [0, \infty))
+        = [0, \infty),
+\]
+and on this set $f$ restricts to the constant $1$ map, which is smooth (by any suitable definition that supports non-open domains).
+
+However, if we add in the restriction that the charts be chosen such that $f(U) \seq V$, we find that $f$ is not smooth at 0.
+Say $(U, \phi)$ is a chart at 0 and $(V, \psi)$ is a chart at $f(0) = 1$ such that $f(U) \seq V$.
+Without loss of generality, we may assume $U$ is an open interval around zero; in particular, $\phi(U)$ is a connected set in $\R$.
+On the other hand, the image of $f|_U$ is disconnected and therefore so will the image of $\psi \circ f \circ \phi^{-1}$.
+In particular, this shows the map is not continuous and therefore not smooth.
+
+
+\newpage
+\begin{pbox}[3 Lee 2.6]
+    Let $P: \R^{n+1}\setminus \{0\} \to \R^{k+1}\setminus \{0\}$ be a smooth function, and suppose that for some $d\in \Z$, $P(\lambda x) = \lambda^d P(x)$ for all $\lambda \in \R \setminus \{0\}$ and $x\in \R^{n+1} \setminus \{0\}$. (Such a function is said to be \textbf{homogeneous of degree d}.) Show that the map $\tilde{P}: \R\P^n \to \R\P^k$ defined by $\tilde{P}([x]) = [P(x)]$ is well defined and smooth.
+\end{pbox}
+
+We claim that the map $\pi \circ P : \R^{n+1} \setminus \{0\} \to \R\P^k$ factors through the quotient map $\pi : \R^{n+1} \setminus \{0\} \to \R\P^n$.
+Suppose $x, y \in \R^{n+1} \setminus \{0\}$ such that $[x] = [y]$, i.e., $x = \lambda y$ for some $\lambda \ne 0$.
+Then
+\[
+    P(x)
+        = P(\lambda y)
+        = \lambda^dP(y),
+\]
+which implies $[P(x)] = [P(y)]$.
+Hence, there is a unique continuous map $\tilde{P} : \R\P^n \to \R\P^k$ satisfying $\tilde{P} \circ \pi = \pi \circ P$, i.e., $\tilde{P}([x]) = [P(x)]$.
+
+Given a point $[x] \in \R\P^n$, choose a chart $(U_i, \phi_i)$ in the standard smooth atlas on $\R\P^n$ containing $[x]$ and a chart $(V_j, \psi_j)$ in the standard smooth atlas on $\R\P^k$ containing $\tilde{P}([x])$.
+Restrict the first chart to the open set $U = U_i \cap \tilde{P}^{-1}(V_j)$ and $\phi = \phi_i|_U$.
+Then for $y \in \phi(U) \seq \R^n$ we have
+\begin{align*}
+    \psi \circ \tilde{P} \circ \phi^{-1}(y)
+        &= \psi \circ \tilde{P}([y^1 : \cdots : y^{i-1} : 1 : y^i : \cdots : y^n]) \\
+        &= \psi([P_1(y^1, \dots, 1, \dots, y^n) : \cdots : P_{k+1}(y^1, \dots, 1, \dots, y^n)]) \\
+        &= \psi \circ \pi \circ P(y^1, \dots, 1, \dots, y^n).
+\end{align*}
+The map $\R^n \to \R^{n+1}$ defined by $y \mapsto (y^1, \dots, 1, \dots, y^n)$ is smooth so it remains to check that $\psi \circ \pi : \tilde{V}_j = \pi^{-1}(V)_j \to \R^k$ is smooth:
+\begin{align*}
+    \psi \circ \pi(y)
+        &= \psi([y])
+        = \textstyle\left(\frac{y^1}{y^j}, \dots, \hat{\frac{y^j}{y^j}}, \dots, \frac{y^k}{y^j}\right).
+\end{align*}
+Indeed, this is smooth provided $y_j \ne 0$, which is exactly the points in $\tilde{V}_j$.
+
+
+
+
+\newpage
+\begin{pbox}[4 Lee 2.10]
+    For any topological space $M$, let $C(M)$ denote the algebra of continuous functions $f:M\to \R$. Given a continuous map $F: M\to N$, define $F^*: C(N) \to C(M)$ by $F^*(f) = f\circ F$.
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Show that $F^*$ is a linear map.
+\end{pbox}
+
+\begin{proof}
+    Let $f, g \in C(N)$, $\alpha \in \R$, and $x \in N$.
+    Then
+    \[
+        F^*(\alpha f + g)(x)
+            = (\alpha f + g)(F(x))
+            = \alpha f(F(x)) + g(F(x))
+            = \alpha F^*f(x) + F^*g(x),
+    \]
+    hence $F^*(\alpha f + g) = \alpha F^*f + F^*g$.
+\end{proof}
+
+\begin{pbox}[(b)]
+    Suppose $M$ and $N$ are smooth manifolds. Show that $F : M\to N$ is smooth if and only if $F^*(C^\infty(N)) \subseteq C^\infty(M)$.
+\end{pbox}
+
+
+
+\begin{proof}
+    If $F$ is smooth, then for $f \in C^\infty(N)$ the composition $f \circ F$ is smooth, so $F^*f \in C^\infty(M)$.
+
+    Assume $F^*(C^\infty(N)) \seq C^\infty(M)$.
+    It suffices to prove that $F$ is locally smooth.
+    Given $x \in M$, choose a chart $(V, \psi)$ of $N$ such that $\psi(F(x)) = 0$ and $\psi(V) \supseteq B_2(0)$.
+    Let $H : \R^k \to [0,1]$ be a smooth cutoff function with $H \equiv 1$ on $B_1(0)$ and $H \equiv 0$ outside $B_2(0)$.
+
+    We now define $g : N \to \R^k$ by
+    \[
+        g(y) = \begin{cases}
+            H(y)\psi(y) &\text{if } y \in V, \\
+            0 &\text{otherwise}.
+        \end{cases}
+    \]
+    Define the open set $V' = \psi^{-1}(B_1(0))$, on which $g$ is the same as $\psi$.
+    Defining $\psi' = \psi|_{V'}$ gives us a new restricted chart $(V', \psi')$ at $F(x)$.
+
+    Now choose a chart $(U, \phi)$ of $M$ at $x$ such that $F(U) \seq V'$ (which can be done since $F$ is continuous).
+    Then on $\phi(U)$ we have
+    \[
+        \psi' \circ F \circ \phi^{-1}
+            = g \circ F \circ \phi^{-1}.
+    \]
+    Note that $g \circ F = (F^*g_1, \dots, F^*g_k)$ where each $g_i \in C^\infty(N)$, so $g \circ F$ is smooth since each component is smooth.
+    Since $\phi^{-1}$ is also smooth, so is their composition, hence $F$ is a smooth map of manifolds.
+\end{proof}
+
+
+\newpage
+\begin{pbox}[(c)]
+    Suppose $F: M\to N$ is a homeomorphism between smooth manifolds. Show that it is a diffeomorphism if and only if $F^*$ restricts to an isomorphism from $C^\infty(N)$ to $C^\infty(M)$.
+\end{pbox}
+
+\begin{proof}
+    Let $G : N \to M$ be the continuous inverse of $F$.
+    By part (a), $G^* C(M) \to C(N)$ is also linear.
+    For any $f \in C(M)$ we have
+    \[
+        F^*G^*f
+            = F^*(f \circ G)
+            = f \circ G \circ F
+            = f \circ \id_M
+            = f
+    \]
+    and for any $g \in C(N)$ we have
+    \[
+        G^*F^*g
+            = G^*(g \circ F)
+            = g \circ F \circ G
+            = g \circ \id_N
+            = g.
+    \]
+    This shows that $G^*$ is the inverse of $F^*$, i.e., $(F^{-1})^* = (F^*)^{-1}$.
+
+    Suppose $F : M \to N$ is a diffeomorphism, so $G$ is smooth.
+    Applying part (b), the restrictions $F^* : C^\infty(N) \to C^\infty(M)$ and $G^* : C^\infty(M) \to C^\infty(N)$ are well-defined.
+    Since they are also linear inverses, they describe an isomorphism of vector spaces.
+
+    Suppose the restriction $F^* : C^\infty(N) \to C^\infty(M)$ is an isomorphism.
+    In particular, the restriction of its inverse $G^* : C^\infty(M) \to C^\infty(N)$ is well-defined.
+    Applying part (b), both $F$ and $G$ must be smooth.
+    Since they are also inverses, we conclude $F$ is a diffeomorphism.
+\end{proof}
+
+\begin{pbox}[Remark]
+    this result shows that in a certain sense, the entire smooth structure of $M$ is encoded in the subset $C^\infty(M) \subseteq C(M)$. In fact, some authors \textit{define} a smooth structure on a topological manifold $M$ to be a subalgebra of $C(M)$ with certain properties.
+\end{pbox}
+
+
+\end{document}
