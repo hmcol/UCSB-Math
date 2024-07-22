@@ -4,6 +4,7 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{parskip}
 \usepackage{amsmath, amsthm, amssymb}
+\usepackage{mathrsfs}
 \usepackage{tikz, tikz-cd}
 \usepackage[shortlabels]{enumitem}
 
@@ -61,6 +62,7 @@
 \newcommand{\BB}{\mathcal{B}}
 \newcommand{\CC}{\mathcal{C}}
 \newcommand{\DD}{\mathcal{D}}
+\newcommand{\EE}{\mathcal{E}}
 \newcommand{\OO}{\mathcal{O}}
 
 % Symbols
@@ -80,6 +82,7 @@
 \newcommand{\tensor}{\otimes}
 
 \newcommand{\inc}{\hookrightarrow}
+\newcommand{\surj}{\twoheadrightarrow}
 \newcommand{\To}{\longrightarrow}
 \newcommand{\tto}{\rightrightarrows}
 \newcommand{\Mapsto}{\longmapsto}
@@ -132,14 +135,26 @@
 
 \newcat{\Ring}{Ring}
 \newcat{\CRing}{CRing}
+
 \newcat{\Mod}{\text{-}Mod}
 \newcat*{\Mod}{Mod}
+
+\newcat{\lMod}{\text{-}Mod}
+\newcat{\rMod}{Mod\text{-}}
+
+\newcat{\lmod}{\text{-}mod}
+\newcat{\rmod}{mod\text{-}}
+
+
 \newcat{\Vect}{\text{-}Vect}
 \newcat*{\Vect}{Vect}
+\newcat{\Comp}{\text{-}Comp}
+\newcat*{\Comp}{Comp}
 
 \newcat{\Cat}{Cat}
 \newcat{\CAT}{CAT}
 
+\renewcommand{\_}[1]{{_{#1}}}
 
 
 
@@ -357,7 +372,7 @@ mono and epic
 A category $\CC$ is called
 \begin{itemize}
     \item \keyword{small} if $\Mor(\CC)$ is a set;
-    \item \keyword{locally small} if $\Mor(x, y)$ is a set for all $x, y \in \CC$; 
+    \item \keyword{locally small} if $\Mor(x, y)$ is a set for all $x, y \in \CC$ (in which case, we usually write $\Hom$ instead of $\Mor$); 
 \end{itemize}
 
 \sepline
@@ -418,13 +433,21 @@ such that the following \keyword{functoriality axioms} hold:
     \item $F(1_x) = 1_{Fx}$ for all $x \in \CC$.
 \end{itemize}
 
+Remark: A functor $\CC \to \DD$ sends isomorphisms in $\CC$ to isomorphisms in $\DD$.
+
 A \keyword{contravariant functor} $\CC \to \DD$ is given by the data of a covariant functor $\CC^\op \to \DD$.
+
+\sepline
+
+Given functors $F : \CC \to \DD$ and $G : \DD \to \EE$ there is a functor $G \circ F : \CC \to \EE$ defined in the obvious way.
+
 
 \sepline
 
 There is a category $\Cat$ whose objects are small categories and whose morphisms are functors.
 
 There is a category $\CAT$ whose objects are locally small categories and whose morphisms are functors.
+
 
 \sepline
 
@@ -452,6 +475,7 @@ We construct the following pair of covariant and contravariant \keyword{functors
         y & \Mapsto & \CC(y, c) \ar[uu, "f^*"'] 
     \end{tikzcd}
 \end{center}
+
 
 
 \sepline
@@ -495,6 +519,8 @@ If $\CC$ is locally small, there is a \keyword{two-sided represented functor}
 \[
     \Mor_\CC(-, -) : \CC^\op \times \CC \to \Set.
 \]
+
+In other words, $\Mor_\CC(-, -)$ is a bifunctor such that each $\Mor_\CC(c, -)$ and $\Mor_\CC(-, c)$ is a (obviously) a represented functor.
 
 \sepline
 
@@ -1083,7 +1109,7 @@ such that
             \drar["\mu \tensor 1_M"']
             \ar[rr, "\alpha_{M, M, M}"]
         && M \tensor (M \tensor M)
-            \ar[rr, "\mu"]
+            \ar[rr, "1_M \tensor \mu"]
         && M \tensor M
             \dlar["\mu"]
         \\

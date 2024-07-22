@@ -1,0 +1,196 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+\usepackage[shortlabels]{enumitem}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\def\temp{#1}\ifx\temp\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\iso}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\renewcommand{\tilde}{\widetilde}
+\renewcommand{\hat}{\widehat}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+
+% Extra Commands
+\renewcommand{\AA}{\mathcal{A}}
+
+% Document
+\begin{document}
+\title{MATH 236B Homework 1}
+\author{Harry Coleman}
+\date{April 7, 2023}
+\maketitle
+
+\begin{pbox}
+    By an \textbf{element} $y$ of an object $Y$ (notation $y \in Y$) of an abelian category $\AA$ we mean an equivalence class of pairs $(X, h)$, $X \in \AA$, $h : X \to Y$, by the following equivalence relation: $(X, h) \sim (X', h')$ if and only if there exists $Z \in \AA$ and epimorphisms $u : Z \to X$ and $u' : Z \to X'$ such that $hu = h'u'$.
+\end{pbox}
+
+We will use the following properties from the previous exercise.
+
+\begin{pbox}[(a)]
+    $f : Y_1 \to Y_2$ is a monomorphism if and only if $f(y) = 0$ for $y \in Y_1$ implies $y = 0$.
+\end{pbox}
+
+\begin{pbox}[(b)]
+    $f : Y_1 \to Y_2$ is a monomorphism if and only if $f(y) = f(y')$ for $y, y' \in Y_1$ implies $y = y'$.
+\end{pbox}
+
+\begin{pbox}[(c)]
+    $f : Y_1 \to Y_2$ is an epimorphism if and only if for any $y \in Y_2$ there exists $y' \in Y_1$ such that $f(y') = y$.
+\end{pbox}
+
+\begin{pbox}[(d)]
+    $f : Y_1 \to Y_2$ is the zero morphism if and only if $f(y) = 0$ for all $y \in Y_1$.
+\end{pbox}
+
+\begin{pbox}[(e)]
+    A sequence \begin{tikzcd} Y_1 \rar["f"] & Y \rar["g"] & Y_2 \end{tikzcd} is exact at $Y$ if and only if $gf = 0$ and for any $y \in Y$ with $g(y) = 0$ there exists $y' \in Y_1$ with $f(y') = y$.
+\end{pbox}
+
+\begin{pbox}[(f)]
+    Assume we are given a morphism $g : Y_1 \to Y_2$ and elements $y, y' \in Y_1$ such that $g(y) = g(y')$.
+    Then there exists $z \in Y_1$ such that $g(z) = 0$ and, moreover, for any $f : Y_1 \to Y$ with $f(y) = 0$ we have $f(z) = -f(y')$ and for any $f' : Y_1 \to Y$ with $f'(y') = 0$ we have $f'(z) = f'(y)$. (The element $z$ is an analogue of the difference $y - y'$.)
+\end{pbox}
+
+\begin{pbox}[1 Exercise II.5.6 (Five Lemma)]
+    Assume we are given a commutative diagram
+    \begin{cd}
+        X_1 \rar["a_1"] \dar["f_1"]
+        & X_2 \rar["a_2"] \dar["f_2"]
+        & X_3 \rar["a_3"] \dar["f_3"]
+        & X_4 \rar["a_4"] \dar["f_4"]
+        & X_5 \dar["f_5"]
+        \\
+        Y_1 \rar["b_1"']
+        & Y_2 \rar["b_2"']
+        & Y_3 \rar["b_3"']
+        & Y_4 \rar["b_4"']
+        & Y_5
+    \end{cd}
+    with exact rows.
+    Assume also that $f_1$ is an epimorphism, $f_5$ is a monomorphism, and $f_2$ and $f_4$ are isomorphisms.
+    Then $f_3$ is also an isomorphism.
+\end{pbox}
+
+\begin{proof}
+    We prove that $f_3$ is an isomorphism by showing that it is both a monomorphism and and epimorphism.
+
+    Suppose $x \in \ker f_3$, i.e., $x \in X_3$ such that $f_3(x) = 0$.
+    Then commutativity of the third square gives us
+    \[
+        0 = b_3f_3(x) = f_4a_3(x).
+    \]
+    Since $f_4$ is an monomorphism and $f_4(0) = 0$, we deduce that $a_3(x) = 0$.
+    By exactness at $X_3$, there exists $x' \in X_2$ such that $a_2(x') = x$.
+    Then commutativity of the second square gives us
+    \[
+        0 = f_3(x) = f_3a_2(x') = b_2f_2(x').
+    \]
+    So, by exactness at $Y_2$, there exists $y \in Y_1$ such that $b_1(y) = f_2(x')$.
+    Since $f_1$ is an epimorphism, there exists $x'' \in X_1$ such that $f_1(x'') = y$.
+    Then commutativity of the first square gives us
+    \[
+        f_2a_1(x'') = b_1f_1(x'') = b_1(y) = f_2(x').
+    \]
+    And since $f_2$ is a monomorphism, we deduce that $a_1(x'') = x'$.
+    But exactness at $X_2$ gives us $a_2a_1 = 0$, so in fact
+    \[
+        x = a_2(x') = a_2a_1(x'') = 0.
+    \]
+    This proves that $f_2$ is a monomorphism.
+
+    Suppose $y \in Y_3$.
+    Exactness at $Y_4$ gives us $b_4b_3(y) = 0$.
+    Since $f_4$ is an epimorphism, there exists $x \in X_4$ such that $f_4(x) = b_3(y)$.
+    By commutativity of the fourth square, we have
+    \[
+        0 = b_4b_3(y) = b_4f_4(x) = f_5a_4(x).
+    \]
+    This $f_5$ is a monomorphism and $f_5(0) = 0$, we deduce that $a_4(x) = 0$.
+    By exactness at $X_4$, there exists $x' \in X_3$ such that $a_3(x') = x$.
+    Then commutativity of the third square gives us
+    \[
+        b_3f_3(x') = f_4a_3(x') = f_4(x) = b_3(y).
+    \]
+    In other words, we do not know if $f_3(x')$ and $y$ are equal, but they are sent to the same element by $b_3$.
+    Let $z \in Y_3$ be as in (f), i.e., $z$ is an analogue of the difference $f_3(x') - y$.
+    In particular, $b_3(z) = 0$, so exactness at $Y_3$ tells us there exists $y' \in Y_2$ such that $b_2(y') = z$.
+    Since $f_2$ is an epimorphism, there exists $x'' \in X_2$ such that $f_2(x'') = y'$.
+    Commutativity of the second square gives us
+    \[
+        z = b_2(y') = b_2f_2(x'') = f_3a_2(x'').
+    \]
+    We now apply (f) to obtain $\tilde{x} \in X_3$ as an analogue of the difference $x' - a_2(x'')$.
+
+    Then we should get something like the following:
+    \[
+        f_3(\tilde{x})
+            = f_3(x') - f_3a_2(x'')
+            = f_3(x') - z
+            \approx f_3(x') - (f_3(x') - y)
+            = y.
+    \]
+    However, I am not sure how to make this rigorous given the current setup with (f) handling the differences.
+    Assuming this works out, we conclude that $f_3$ is an epimorphism.
+\end{proof}
+
+\end{document}
