@@ -1,0 +1,703 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+\usepackage[shortlabels]{enumitem}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\def\temp{#1}\ifx\temp\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lem}{Lemma}
+\newtheorem{defn}{Definition}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\iso}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+
+% mathcal letters
+\renewcommand{\AA}{\mathcal{A}}
+\newcommand{\FF}{\mathcal{F}}
+
+% Extra Commands
+\newcommand{\keyword}{\textbf}
+\newcommand{\liff}{\leftrightarrow}
+
+
+
+
+% Document
+\begin{document}
+\title{Henkin Extension}
+\author{Harry Coleman}
+\date{8/17/2024}
+\maketitle
+
+\begin{pbox}
+    A \keyword{first-order language} $L$ consists of the following data:
+    \begin{enumerate}[(1)]
+        \item \keyword{logical symbols} consisting of
+            \begin{enumerate}[(i)]
+                \item \keyword{variables} $x_0, x_1, x_2, \dots$,
+                \item \keyword{connectives} $\lnot$ (negation) and $\lor$ (disjunction),
+                \item \keyword{quantifier} $\exists$ (existential quantifier),
+                \item \keyword{equality symbol} $=$;
+            \end{enumerate}
+        \item \keyword{nonlogical symbols}
+            \begin{enumerate}[(i)]
+                \item \keyword{constant symbols} $\{c_i : i \in I\}$ for any indexing set $I$,
+                \item for all $n \in \Z_{>0}$, \keyword{$n$-ary function symbols} $\{f_j : j \in J_n\}$ for any indexing set $J_n$ (constants may be considered as $0$-ary functions),
+                \item for all $n \in \Z_{>0}$, \keyword{$n$-ary relation symbols} $\{R_k : k \in K_n\}$ for an indexing set $K_n$.
+            \end{enumerate}
+    \end{enumerate}
+\end{pbox}
+
+\begin{pbox}
+    Let $L$ be a first-order language.
+    A \keyword{term} of $L$ is defined inductively as follows:
+    \begin{enumerate}[(i)]
+        \item any variable or constant is a term (of \keyword{rank} $0$),
+        \item if $t_1, \dots, t_n$ are terms (of ranks $k_1, \dots, k_n$), respectively, and $f_j$ is an $n$-ary function symbol, then $f_j t_1 \cdots t_n$ (or $f(t_1, \dots, t_n)$) is a term (of rank $\max\{k_1, \dots, k_n\} + 1$).
+    \end{enumerate}
+\end{pbox}
+
+\begin{pbox}
+    Let $L$ be a first-order language.
+    An \keyword{atomic formula} of $L$ is one of the following:
+    \begin{enumerate}[(i)]
+        \item $t = s$ whenever $t$ and $s$ are terms.
+        \item $p t_1 \cdots t_n$ whenever $p$ is an $n$-ary relation symbol and $t_1, \dots, t_n$ are terms.
+    \end{enumerate}
+\end{pbox}
+
+\begin{pbox}
+    Let $L$ be a first-order language.
+    A \keyword{formula} of $L$ is defined inductively as follows:
+    \begin{enumerate}[(i)]
+        \item any atomic formula is a formula (of \keyword{rank} $0$),
+        \item if $A$ is a formula, then $\lnot A$ is a formula,
+        \item if $A$ and $B$ are formulas, then $A \lor B$ is a formula,
+        \item if $A$ is a formula and $x$ is a variable, then $\exists x A$ is a formula.
+    \end{enumerate}
+
+    The set of all formulas of $L$ is the smallest set of expressions/strings which contains the atomic formulas and is closed under negation, disjunction, and existential quantification.
+\end{pbox}
+
+\begin{pbox}
+    For quality of life, we introduce a number of commonly used symbols, which in this context will function as abbreviations for for formulas.
+    Note that our definition of a first-order language could include these as "built-in" symbols, but we choose to implement them as syntax sugar for ease of use.
+    \begin{itemize}
+        \item $A \land B := \lnot(\lnot A \lor \lnot B)$ (conjunction),
+        \item $A \to B := \lnot A \lor B$ (implication),
+        \item $A \liff B := (A \to B) \land (B \to A)$ (biconditional),
+        \item $\forall x A := \lnot \exists x \lnot A$ (universal quantification).
+    \end{itemize}
+\end{pbox}
+
+\begin{pbox}
+    A formula of the form $\exists x A$ is called an \keyword{instantiation} of $A$,
+
+    A formula of the form $\forall x A$ is called a \keyword{generalization} of $A$.
+
+    A formula is called \keyword{elementary} if it is an atomic formula or an instantiation of a formula.
+\end{pbox}
+
+
+\begin{pbox}
+    Let $A$ be a formula.
+    A \keyword{subformula} of $A$ is defined inductively as follows:
+    \begin{enumerate}
+        \item $A$ is a subformula of $A$,
+        \item $B$ is a subformula of $A$ whenever $\lnot B$ or $\exists x B$ is a subformula of $A$,
+        \item $B$ and $C$ are subformulas of $A$ whenever $B \lor C$ is a subformula of $A$.
+    \end{enumerate}
+\end{pbox}
+
+\begin{pbox}
+    An occurrence of a variable $v$ in a formula $A$ is \keyword{bound} if it occurs in a subformula of the form $\exists v B$ (specifically, if $v$ occurs in $B$); otherwise, the occurrence is \keyword{free}.
+
+    (write $\phi[v_1, \dots, v_n]$ if $\phi$ is a formula in which the free variables are among $v_1, \dots, v_n$)
+
+    A formula with no free variables is called a \keyword{sentence} or said to be \keyword{closed}.
+
+    A formula which contains no quantifiers (i.e., all variables occur free) is said to be \keyword{open}.
+\end{pbox}
+
+\begin{pbox}
+    Let $t$ be a term, $v$ a variable, and $A$ a formula of a language $L$.
+    We say that $t$ is \keyword{substitutable} for $v$ in $A$ if for each variable $w$ occurring $t$ there is no subformula of $A$ of the form $\exists w B$ where $v$ is free in $B$.
+
+    In which case, we write $A[t/v]$ (or $A_v[t]$) for the formula obtained by replacing each free occurrence of $v$ in $A$ by $t$.
+\end{pbox}
+
+
+\newpage
+
+\begin{pbox}
+    A first-order theory $T$ consists of the following data:
+    \begin{enumerate}[(i)]
+        \item a first-order language $L$ (or $L(T)$),
+        \item a set of formulas of $L$ called the \keyword{nonlogical axioms} of $T$.
+    \end{enumerate}
+\end{pbox}
+
+\begin{pbox}[Example.]
+    We define the theory $N$.
+    It's nonlogical symbols are as follows:
+    \begin{itemize}
+        \item a constant symbol $0$,
+        \item a unary function symbol $S$ (successor),
+        \item binary function symbols $+$ (addition) and $\cdot$ (multiplication),
+        \item a binary relation symbol $<$ (``less than'').
+    \end{itemize}
+    It's nonlogical axioms are as follows:
+    \begin{enumerate}[(1)]
+        \item $\forall x (\lnot (Sx = 0))$,
+        \item $\forall x \forall y (Sx = Sy \to x = y)$,
+        \item $\forall x (x + 0 = x)$,
+        \item $\forall x \forall y (x + Sy = S(x + y))$,
+        \item $\forall x (x \cdot 0 = 0)$,
+        \item $\forall x \forall y (x \cdot Sy = (x \cdot y) + x)$,
+        \item $\forall x (\lnot(x < 0))$,
+        \item $\forall x \forall y (x < Sy \to (x < y \lor x = y))$,
+        \item $\forall x \forall y (x < y \lor x = y \lor y < x)$.
+    \end{enumerate}
+
+    For any nonnegative integer $n$, we define the term $k_n := S \cdots S0$ with $n$ occurrences of $S$.
+    Such terms are called \keyword{numerals}.
+    Note that $k_0 = 0$ is a constant. 
+\end{pbox}
+
+\begin{pbox}[Example.]
+    \keyword{Peano Arithmetic} ($PA$) is the theory obtained from $N$ by removing axiom (9) and adding the \keyword{induction axiom schema}: for each formula $A[v]$ the formula
+    \[
+        A[0/v] \to \forall v (A \to A[Sv]) \to A.
+    \]
+    (why not $\cdots \to \forall v A[v]$? why is the conclusion a formula with free variables?)
+\end{pbox}
+
+
+We define \keyword{Zermelo-Fraenkel set theory} ($ZF$).
+There are multiple equivalent formulations with slightly different sets of axioms, we provide one of these.
+It's nonlogical symbols are as follows:
+\begin{itemize}
+    \item a binary relation symbol $\in$ (``in'' or ``is an element of'').
+\end{itemize}
+It's nonlogical axioms are as follows:
+\begin{enumerate}[(1)]
+    \item \keyword{Existence.} There exists a set.
+    The formula
+    \[
+        \exists x (x = x)
+    \]
+    is an axiom.
+    (This axiom is not necessary, as it can generally be deduced from the other axioms.)
+    \item \keyword{Extensionality.} Two sets are equal if they have the same elements.
+    The formula
+    \[
+        \forall x \forall y (\forall z (z \in x \liff z \in y) \to x = y)
+    \]
+    is an axiom.
+    \item \keyword{Comprehension/Specification Schema.} For each formula $\phi[x, w_1, \dots, w_n]$ (in which $y$ is not free) the formula
+    \[
+        \forall z \forall w_1 \cdots \forall w_n (\exists y \forall x (x \in y \liff (x \in z \land \phi[x, w_1, \dots, w_n])))
+    \]
+    is an axiom.
+    In other words, given a set $z$ and a predicate of sets $\phi$, there is a subset $y$ of $z$ which contains exactly the elements of $z$ satisfying $\phi$.
+    Sometimes denote
+    \[
+        y = \{x \in z : \phi[x, w_1, \dots, w_n]\}.
+    \]
+    \item \keyword{Replacemnt Schema.} For each formula $\phi[x, y, z, u_1, \dots, u_n]$ the formula
+    \[
+        \forall z \forall u_1 \cdots \forall u_n (\forall(x \in z)\exists! y\phi \to \exists v \forall x (x \in z \to \exists y (y \in v \land \phi)))
+    \]
+    is an axiom.
+    Here, we use $\exists!$ to denote unique existence, i.e.,
+    \[
+        \exists! y \phi := \exists y (\phi \land \forall u (\phi[u/y] \to u = y)).
+    \]
+    Also, $\forall(x \in z)A := \forall x (x \in z \to A)$.
+    With comprehension, this says that the range of a function is a set.
+    \item \keyword{Pairing.} Given sets $x$ and $y$ there is a set containing both $x$ and $y$. The formula
+    \[
+        \forall x \forall y \exists z (x \in z \land y \in z)
+    \]
+    is an axiom.
+    \item \keyword{Union.} Given a set $x$, there is a set containing all the elements of the elements of $x$.
+    The formula
+    \[
+        \forall x \exists y \forall z \forall u ((z \in x \land u \in z) \to u \in y)
+    \]
+    is an axiom.
+    Together with comprehension, this implies that the union of a set of sets is a set.
+    \item \keyword{Power Set.} Given a set $x$, there is a set containing all the subsets of $x$.
+    The formula
+    \[
+        \forall x \exists y \forall z (\forall u (u \in z \to u \in x) \to z \in y)
+    \]
+    is an axiom.
+    \item \keyword{Infinity.} There exists an infinite set.
+    The formula
+    \[
+        \exists x (\emptyset \in x \land \forall y (y \in x \to (y \cup \{y\}) \in x))
+    \]
+
+    It can be shown that the \keyword{empty set} $\emptyset$ exists.
+    \item \keyword{Foundation/Regularity.} Every nonempty set has an $\in$-minimal element.
+    The formula
+    \[
+        \forall x (\exists y (y \in x) \to \exists y(y \in x \land \lnot\exists z (z \in x \land z \in y)))
+    \]
+    is an axiom.
+\end{enumerate}
+
+
+\newpage
+
+
+\begin{pbox}
+    A \keyword{structure/interpretation} of a first-order language $L$ consists of the following data:
+    \begin{enumerate}[(i)]
+        \item a nonempty set $M$ called the \keyword{domain/universe} of the structure,
+        \item for each constant symbol $c$ of $L$ a fixed element $c_M \in M$,
+        \item for each $n$-ary function symbol $f$ of $L$ an $n$-ary map $f_M : M^n \to M$,
+        \item for each $n$-ary relation symbol $p$ of $L$ an $n$-ary relation $p_M \seq M^n$ on $M$.
+    \end{enumerate}
+    The interpretation of ``$=$'' is always taken to the be the equality relation on $M$.
+\end{pbox}
+
+
+
+\begin{pbox}[Example.]
+    Let $\N$ be the set of natural numbers, where $0$, $1$, $+$, $\cdot$, $<$ have their usual meanings.
+    Define the successor function as $S(n) = n + 1$ for all $n \in \N$.
+    Then $\N$ is a structure of the language $L(N)$, which we take to be the standard structure of $N$.
+\end{pbox}
+
+\begin{pbox}
+    Let $M$ be a structure of $L$.
+    For each variable-free term $t$ of $L$, we define the \keyword{interpretation/meaning} $t_M$ of $t$ in $M$ inductively on the rank of $t$:
+    \begin{itemize}
+        \item $c_M$ is automatic for constants $c$,
+        \item $(f t_1 \cdots t_n)_M := f_M((t_1)_M, \dots, (t_n)_M)$ for $n$-ary function symbols $f$ and variable-free terms $t_1, \dots, t_n$.
+    \end{itemize}
+\end{pbox}
+
+\begin{pbox}
+    Let $L$ be a first-order language with universe $M$.
+    
+    Define $L_M$ to be the first-order language obtained from $L$ by adding a constant symbol $i_a$ for each $a \in M$.
+    The symbol $i_a$ is called the \keyword{name} of $a$.
+    We regard $M$ itself as a structure of $L_M$ by setting the interpretation of $i_a$ to be $a$ for each $a \in M$.
+\end{pbox}
+
+
+\begin{pbox}
+    Let $L$ be a first-order language with universe $M$.
+
+    We define a \keyword{valuation} function $v = v_M$ from the set of closed formulas of $L_M$ to the set $\{T, F\}$ of truth values inductively on the rank of sentences:
+    \begin{itemize}
+        \item $v(p t_1 \cdots t_n) := T$ if $p_M((t_1)_M, \dots, (t_n)_M)$ (equivalently if $((t_1)_M, \dots, (t_n)_M) \in p_M$) for $n$-ary relation symbols $p$ and closed terms $t_1, \dots, t_n$,
+        \[
+            v(p t_1 \cdots t_n) := \begin{cases}
+                T & \text{if $p_M((t_1)_M, \dots, (t_n)_M)$} \\
+                F & \text{otherwise}
+            \end{cases}
+        \]
+        \item $v(\lnot A) := T$ if $v(A) = F$,
+        \[
+            v(\lnot A) := \begin{cases}
+                T & \text{if $v(A) = F$} \\
+                F & \text{otherwise}
+            \end{cases}
+        \]
+        \item $v(A \lor B) := T$ if $v(A) = T$ or $v(B) = T$,
+        \[
+            v(A \lor B) := \begin{cases}
+                T & \text{if $v(A) = T$ or $v(B) = T$} \\
+                F & \text{otherwise}
+            \end{cases}
+        \]
+        \item $v(\exists x A) := T$ if $v(A[i_a/x]) = T$ for some $a \in M$.
+        \[
+            v(\exists x A) := \begin{cases}
+                T & \text{if $v(A[i_a/x]) = T$ for some $a \in M$} \\
+                F & \text{otherwise}
+            \end{cases}
+        \]
+    \end{itemize}
+
+    If $A$ is any formula of $L$, its \keyword{closure} is given by $\clo{A} := \forall x_1 \cdots \forall x_n A$ where $x_1, \dots, x_n$ are the free variables of $A$.
+    Define $v(A) := v(\clo{A})$.
+
+    If $v(A) = T$, we say $A$ is \keyword{valid} in $M$ and write $M \vDash A$ (``$M$ satisfies $A$'').
+    If $A$ is not valid in $M$, write $M \nvDash A$.
+    Note that $M \vDash \lnot A$ iff $M \nvDash A$ and $M \vDash A \lor B$ iff $M \vDash A$ or $M \vDash B$.
+\end{pbox}
+
+\begin{pbox}
+    For clarity, the following are equivalent by definition:
+    \begin{enumerate}[(i)]
+        \item $v_M(A) = T$,
+        \item $A$ is valid in $M$,
+        \item $A$ is true in $M$,
+        \item $M \vDash A$,
+        \item $M$ satisfies $A$.
+    \end{enumerate}
+    Similarly, the following are equivalent:
+    \begin{enumerate}[(i)]
+        \item $A$ is not valid in $M$,
+        \item $A$ is false in $M$
+        \item $v_M(A) = F$,
+        \item $M$ does not satisfy $A$,
+        \item $M \nvDash A$.
+        \item $M \vDash \lnot A$.
+    \end{enumerate}
+\end{pbox}
+
+\begin{pbox}[Exercise.]
+    \begin{enumerate}[(a)]
+        \item $M \vDash A \land B$ iff $M \vDash A$ and $M \vDash B$.
+        \item $M \vDash \forall v \phi[v]$ iff $M \vDash \phi[i_a/v]$ for all $a \in M$.
+        \item $M \vDash A \to B$ iff $M \nvDash A$ or $M \vDash B$.
+        \item $M \vDash A \liff B$ iff both $A$ and $B$ are valid or both not valid in the structure $M$.
+    \end{enumerate}
+\end{pbox}
+
+\begin{pbox}[Exercise.]
+    Let $A[v_1, \dots, v_n]$ be a formula and $t_1, \dots, t_n$ be closed (i.e., variable-free) terms of $L$.
+    Then
+    \[
+        \forall v_1 \cdots \forall v_n A \to A[t_1, \dots, t_n]
+    \]
+    and 
+    \[
+        A[t_1, \dots, t_n] \to \exists v_1 \cdots \exists v_n A
+    \]
+    are valid in all structures of $L$.
+\end{pbox}
+
+\begin{pbox}
+    Let $T$ be a first-order theory.
+
+    A \keyword{model} of $T$ is a structure of $L(T)$ in which all nonlogical axioms of $T$ are valid.
+\end{pbox}
+
+\begin{pbox}
+    Let $T$ be a first-order theory and $A$ a formula of $T$.
+
+    If $A$ is valid in all models of $T$, say $A$ is \keyword{valid} in $T$ and write $T \vDash A$.
+
+    If $A$ is not valid in some model of $T$, write $T \nvDash A$.
+\end{pbox}
+
+\begin{pbox}
+    Let $M$ be a structure of $L$.
+    
+    Define $\operatorname{Th}(M)$ to be the set of all sentences of $L$ that are true in $M$, called the \keyword{theory of $M$}.
+\end{pbox}
+
+\begin{pbox}
+    A class $\mathcal{M}$ of structures of a language $L$ is called \keyword{elementary} if there is a theory $T$ with language $L$ such that the elements of $\mathcal{M}$ are exactly the models of $T$.
+\end{pbox}
+
+model theory stuff. morphisms and so on as you would expect.
+
+\begin{pbox}
+    Let $M$ be a structure of a language $L$.
+
+    A subset $X \leq M^n$ is called \keyword{definable} in $L$ if there is a formula $\phi[x_1, \dots, x_n, y_1, \dots, y_m]$ of $L$ and \keyword{parameters} $\clo{b} \in M^m$ such that 
+    \[
+        \clo{a} \in X \isp{iff} M \vDash \phi[i_{\clo{a}}, i_{\clo{b}}].
+    \]
+    If $\clo{b} \in A^n$ for some $A \seq M$, say $X$ is $A$-\keyword{definable}.
+
+    A function $f : M^k \to M^\ell$ is \keyword{definable} if its graph is definable.
+
+    An element $a \in M$ is $A$-\keyword{definable} if the singleton $\{a\}$ is $A$-definable.
+\end{pbox}
+
+
+\newpage
+
+\begin{pbox}
+    The \keyword{language of a propositional logic} $L$ consists of the following data:
+    \begin{enumerate}[(i)]
+        \item \keyword{variables}: a nonempty set of symbols,
+        \item \keyword{logical connectives}: $\lnot$ (negation) and $\lor$ (disjunction),
+    \end{enumerate}
+
+    The set of \keyword{formulas} $\FF$ is the smallest set of expressions in $L$ that is closed under negation $\lnot A$ and disjunction $A \lor B$.
+\end{pbox}
+
+\begin{pbox}
+    Let $L$ be the language of a propositional logic.
+    A \keyword{truth valuation} or \keyword{interpretation} or \keyword{structure} of $L$ is a map $v$ from the set of all variables of $L$ to the set $\{T, F\}$ of truth values.
+
+    There is a natural extension of $v$ to $\FF$:
+    \begin{itemize}
+        \item $v(\lnot A) = T$ iff $v(A) = F$,
+        \item $v(A \lor B) = T$ iff $v(A) = T$ or $v(B) = T$.
+    \end{itemize}
+
+    If $v(A) = T$, say $A$ is \keyword{true} in the structure $v$ or that $v$ \keyword{satisfies} $A$; otherwise $A$ is \keyword{false} in the structure $v$.
+\end{pbox}
+
+\begin{pbox}
+    Let $\AA \seq \FF$ be a set of formulas in a propositional logical language $L$.
+
+    An interpretation $v$ is called a \keyword{model} of $\AA$ if every $A \in \AA$ is true in $v$.
+    In which case, write $v \vDash \AA$.
+
+    That is, $v \vDash \AA$ whenever $v(A) = T$ for all $A \in \AA$.
+
+    If $\AA$ has a model, say $\AA$ is \keyword{satisfiable}.
+
+    Let $A$ and $B$ be formulas of $L$.
+
+    Say $A$ is a \keyword{tautological consequence} of $\AA$, written $\AA \vDash A$, if $A$ is true in every model of $\AA$.
+
+    If $A$ is a tautological consequence of the empty set, say $A$ is a \keyword{tautology} and write $\vDash A$.
+    So $A$ is a tautology iff $v(A) = T$ for all structures $v$ of $L$.
+
+    If $A \liff B$ is a tautology (i.e., $v(A) = v(B)$ for all $v$), say $A$ and $B$ are \keyword{tautologically equivalent} and write $A \equiv B$.
+\end{pbox}
+
+
+\begin{pbox}[Exercise.]
+    $\mathbb{B} = \FF/\equiv$ is a Boolean algebra on equivalence classes of formulas $[A]$ with the following operations:
+    \begin{align*}
+        0 &= [A \land \lnot A], \\
+        1 &= [A \lor \lnot A], \\
+        [A]' &= [\lnot A], \\
+        [A] \lor [B] &= [A \lor B], \\
+        [A] \land [B] &= [A \land B].
+    \end{align*}
+\end{pbox}
+
+\begin{pbox}[Proposition.]
+    Let $A, A_1, A_2, \dots, A_n$ be formulas of a propositional logic language.
+    Then the following are equivalent:
+    \begin{enumerate}[(a)]
+        \item $A$ is a tautological consequence of $A_1, \dots, A_n$ (i.e., $\{A_1, \dots, A_n\} \vDash A$),
+        \item $A_1 \to A_2 \to \cdots \to A_n \to A$ is a tautology.
+    \end{enumerate}
+\end{pbox}
+
+\begin{pbox}
+    A formula $A$ is said to be in \keyword{conjunctive normal form} (CNF) if it is written as
+    \[
+        A = \bigwedge_{i=1}^{k} \bigvee_{j=1}^{n_i} A_{ij},
+    \]
+    where each $A_{ij}$ is a variable or its negation.
+    That is, $A$ is a conjunction of disjunctions of literals.
+
+    A formula $A$ is said to be in \keyword{disjunctive normal form} (DNF) if it is written as
+    \[
+        A = \bigvee_{i=1}^{k} \bigwedge_{j=1}^{n_i} A_{ij},
+    \]
+    where each $A_{ij}$ is a variable or its negation.
+    That is, $A$ is a disjunction of conjunctions of literals.
+\end{pbox}
+
+\begin{pbox}[Fact.]
+    Every formula of a propositional logic language is tautologically equivalent to a formula in CNF and a formula in DNF.
+\end{pbox}
+
+\begin{pbox}[Intuition.]
+    Recall that tautologies in propositional logic are those formulas that are true in every interpretation.
+    For any propositional statement, we can find out if it is a tautology by constructing a truth table, i.e., by systematically examining all possible truth valuations of the relevant variables.
+    For short propositions this is fine, and even for longer propositions it isn't hard to get a computer to crank through the possibilities.
+    However, looking ahead to more complex logics, this approach quickly becomes infeasible.
+    What we want is a structured way to find out if a formula is a tautology without having to check every possible interpretation.
+    More generally, we want to check if a formula is a tautological consequence of a set of formulas.
+    This is one way of looking at a problem like ``if we assume $X$, $Y$, and $Z$, does it follow that $A$?''
+
+    This is the motivation behind proofs.
+    A proof should be a way of deducing tautological consequences without having to check every possible interpretation.
+    In particular, we want to be able to shuffle around the statements of core facts pertaining to $X$, $Y$, and $Z$ and show how they work together to necessitate $A$, disregarding exactly what the facts pertain to. 
+\end{pbox}
+
+
+srvivastava p 48
+
+\newpage
+
+\begin{pbox}[Henkin Extension]
+    The \emph{Henkin Extension} $T'$ of a first-order theory $T$ is conservative.
+\end{pbox}
+
+\begin{proof}
+    We assume without loss of generality that $T'$ is the extension of $T$ by a (witness) constant $c$ and the nonlogical axiom $\psi_c = \exists x F \to F[c/x]$, as $T'$ is simply the limit of such of such extensions. (needs better justification, but only relies on fact that proofs are finite.)
+
+    (assume we break down proofs into only axioms and logical inference rules, i.e., extract theorems from $T$ and inline proofs)
+
+    We must show that for any formula $A$ of $T$ which is provable in $T'$ ($T' \vdash A$), there is also a proof in $T$ ($T \vdash A$). 
+    Suppose $A_1, \dots, A_n$ is a proof of $A = A_n$ in $T'$, where $A$ is any formula of $T'$ (not necessarily in $A$), i.e.,
+    \[
+        T', A_1, \dots, A_{k-1} \vdash A_k,
+    \]
+    for each $k < n$.
+    
+    We will prove by (strong) induction on $n$ that $T \vdash \exists{t}A_k[t/c]$ for all $k = 1, \dots, n$, where $t$ is a variable that does not appear in any of $A_1, \dots, A_n$.
+
+    In the base case, $n = 0$, we have $T' \vdash A$, which requires that $A$ is an axiom of $T'$ (since we fully explicate all our proofs). 
+    By definition of $T'$, either $A$ is an axiom of $T$ (in which case $T \vdash A$ trivially) or $A = \psi_c$.
+    In the latter case, we have
+    \begin{align*}
+        T 
+            &\vdash \exists{x}F \to \exists{t}F[t/x] 
+                &&\text{tautology} \\
+            &\sim \exists{t}(\exists{x}F \to F[t/x]) 
+                &&\text{\textcolor{red}{$\exists$-$\lor$-Distributivity}}\\
+            &= \exists{t}(\exists{x}F \to F[c/x])[t/c] \\
+            &= \exists{t}A[t/c].
+    \end{align*}
+    This completes the base case of the induction.
+
+    For the inductive step, assume that $T \vdash \exists{t}A_k[t/c]$ for all $k < n$.
+    Now $A$ is either an axiom of $T'$--in which case we are done by the same method as the base case--or $A$ is the result of applying a logical inference rule to some $A_k$'s.
+
+    There are five cases to consider: (i) expansion, (ii) contraction, (iii) associative, (iv) cut, and (v) $\exists$-introduction.
+
+    (i) Expansion: $A = B \lor A_k$ for some $k < n$.
+    \begin{align*}
+        T
+            &\vdash \exists{t}A_k[t/c] 
+                && \text{inductive hypothesis}\\
+            &\vdash \exists{t}B[t/c] \lor \exists{t}A_k[t/c] 
+                && \text{expansion rule}\\
+            &= (\exists{t}B \lor \exists{t}A_k)[t/c] \\
+            &\sim \exists{t}(B \lor A_k)[t/c] 
+                && \text{\textcolor{red}{$\exists$-$\lor$-Distributivity}}\\
+            &= \exists{t}A[t/c]
+    \end{align*}
+
+    (ii) Contraction: $A_k = A \lor A$ for some $k < n$.
+    \begin{align*}
+        T 
+            &\vdash \exists{t}A_k[t/c] 
+                && \text{inductive hypothesis}\\
+            &= \exists{t}(A \lor A)[t/c] \\
+            &\sim \exists{t}A[t/c] \lor \exists{t}A[t/c] 
+                && \text{\textcolor{red}{$\exists$-$\lor$-Distributivity}}\\
+            &\vdash \exists{t}A[t/c]
+                &&\text{Contraction Rule} \\
+    \end{align*}
+    
+    (iii) Associative: $A = (B \lor C) \lor D$ with $A_k = B \lor (C \lor D)$ for some $k < n$.
+    \begin{align*}
+        T 
+            &\vdash \exists{t}A_k[t/c] 
+                &&\text{Inductive Hypothesis}\\
+            &= \exists{t}(B \lor (C \lor D))[t/c] \\
+            &\sim \exists{t}B[t/c] \lor (\exists{t}C[t/c] \lor \exists{t}D[t/c])  
+                &&\text{\textcolor{red}{$\exists$-$\lor$-Distributivity}}\\
+            &\vdash (\exists{t}B[t/c] \lor \exists{t}C[t/c]) \lor \exists{t}D[t/c]
+                &&\text{Associativity Rule}\\
+            &\sim \exists{t}((B \lor C) \lor D)[t/c]
+                &&\text{\textcolor{red}{$\exists$-$\lor$-Distributivity}}\\
+            &= \exists{t}A[t/c].
+    \end{align*}
+
+    (iv) Cut: $A = C \lor D$, $A_k = B \lor C$ and $A_\ell = \lnot B \lor D$ for some $k, \ell < n$.
+    \begin{align*}
+        T
+            &\vdash \exists{t}A_k[t/c]
+                &&\text{Inductive Hypothesis}\\
+            &= \exists{t}(B \lor C)[t/c] \\
+            &\sim \exists{t}B[t/c] \lor \exists{t}C[t/c]
+                &&\text{\textcolor{red}{$\exists$-$\lor$-Distributivity}}
+    \end{align*}
+    and
+    \begin{align*}
+        T
+            &\vdash \exists{t}A_\ell[t/c]
+                &&\text{Inductive Hypothesis}\\
+            &= \exists{t}(\lnot B \lor D)[t/c] \\
+            &\sim \exists{t}(\lnot B)[t/c] \lor \exists{t}D[t/c]
+                &&\text{\textcolor{red}{$\exists$-$\lor$-Distributivity}}
+    \end{align*}
+
+    (now need something that gives
+    
+    \textcolor{red}{$(\exists{t}X \lor Y) \land (\exists{t} \lnot X \lor Z) \vdash Y \lor Z$}.
+
+    but there are problems here.
+    can't be what we want, since you can absolutely have a $t$ satisfying $X$ and another one not satisfying it and have both $Y$ and $Z$ be false.
+    so need something stronger or that deals with $\exists$ better.)
+
+    (v) $\exists$-Introduction: $A = \exists{x}B \to C$ and $A_k = B \to C$, where $x$ is not free in $C$ and $k < n$.
+    \begin{align*}
+        T
+            &\vdash \exists{t}A_k[t/c]
+                &&\text{Inductive Hypothesis}\\
+            &= \exists{t}(B \to C)[t/c] \\
+            &\sim \exists{t}B[t/c] \to \exists{t}C[t/c]
+                &&\text{\textcolor{red}{$\exists$-$\to$-Distributivity}} \\
+            &\vdash \exists{x}\exists{t}B[t/c] \to \exists{t}C[t/c]
+                &&\text{$\exists$-Introduction Rule} \\
+            &\sim \exists{x}\exists{t}B[t/c] \to \exists{t}C[t/c]
+                &&\text{\textcolor{red}{$\exists$-commutativity/interchange}} \\
+    \end{align*}
+
+
+\end{proof}
+
+
+\end{document}
