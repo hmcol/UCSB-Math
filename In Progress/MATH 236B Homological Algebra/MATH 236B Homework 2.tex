@@ -1,0 +1,206 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+\usepackage[shortlabels]{enumitem}
+\usepackage{mathrsfs}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\def\temp{#1}\ifx\temp\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\iso}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\renewcommand{\tilde}{\widetilde}
+\renewcommand{\hat}{\widehat}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+
+% Extra Commands
+\renewcommand{\AA}{\mathcal{A}}
+\newcommand{\Hom}{\mathrm{Hom}}
+\newcommand{\Ab}{\mathsf{Ab}}
+\newcommand{\rMod}{\mathsf{Mod\text{-}}}
+\newcommand{\rmod}{\mathsf{mod\text{-}}}
+\DeclareMathOperator{\coker}{coker}
+
+% Document
+\begin{document}
+\title{MATH 236B Homework 2}
+\author{Harry Coleman}
+\date{April 19, 2023}
+\maketitle
+
+\begin{pbox}[(a)]
+    Let $\AA$ be an abelian category satisfying AB3.
+    An object $P$ of $\AA$ is said to be \textbf{strictly projective} if the functor $h' : X \mapsto \Hom_\AA(P, X)$ from $\AA$ to $\Ab$ is exact (projectivity of $P$), strict (i.e., $h'(X) = 0$ implies $X = 0$), and commutes with direct sums.
+    For such an object $P$ we set $R = \Hom_\AA(P, P)$.
+    Prove that $h'$ determines an equivalence of $\AA$ and $\rMod R$.
+\end{pbox}
+
+\begin{proof}
+    We prove that $h'$ is an equivalence by showing that it is full, faithful, and essentially surjective on objects.
+
+    First, we show that $h'$ is faithful.
+    Let $f : X \to Y$ be a morphism in $\AA$ such that $h'(f) = 0$.
+    Decompose $f$ into its image, with morphisms
+    \begin{cd}
+        X \rar[twoheadrightarrow, "i"] \ar[rr, bend right, "f"'] 
+        & I \rar[hook, "j"] & Y
+    \end{cd}
+    Since $h'$ is exact, it sends this to a similar diagram in $\rMod R$:
+    \begin{cd}
+        h'(X) \rar[twoheadrightarrow, "h'(i)"] \ar[rr, bend right, "h'(f) = 0"'] 
+        & h'(I) \rar[hook, "h'(j)"] & h'(Y)
+    \end{cd}
+    Since $h'(j)$ is a monomorphism, $h'(j) \circ h'(i) = 0$ implies that $h'(i) = 0$.
+    But since $h'(i)$ is an epimorphism, we must have $h'(I) = 0$.
+    Then strictly projective gives us $I = 0$.
+    Now since $f$ factors through the zero object, it must be zero.
+
+    We now show full, i.e., that $h'$ gives a surjection $\Hom_\AA(X, Y) \to \Hom_R(h'(X), h'(Y))$.
+    First, consider the case when $X = P^{(I)}$.
+    Consider a morphism
+    \begin{cd}
+        \oplus_{\alpha \in I} R = h'(\oplus_{\alpha \in I} P) \rar["f"] & h'(Y).
+    \end{cd}
+    For each $\alpha \in I$, let $\iota_\alpha : R \inc \oplus_{\alpha \in I} R$ be the canonical inclusion and define $f_\alpha = f \circ \iota_\alpha : R \to h'(Y)$.
+    Then take $\phi_\alpha = f_\alpha(\id_P) \in h'(Y) = \Hom_\alpha(P, Y)$.
+    By the universal property of the direct sum, there is a morphism $\phi : \bigoplus_{\alpha \in I} P \to Y$ such that for all $\alpha \in I$ the following diagram commutes in $\AA$:
+    \begin{cd}
+        P \rar[hook, "\iota_\alpha"] \ar[rr, bend right, "\phi_\alpha"'] 
+        & \bigoplus_{\alpha \in I} P \rar[dashed, "\phi"] & Y
+    \end{cd}
+    Then $h'$ sends this diagram to the following diagram $\rMod R$:
+    \begin{cd}
+        P \rar[hook, "\iota_\alpha"] \ar[rr, bend right, "f_\alpha"'] 
+        & \bigoplus_{\alpha \in I} P \rar["h'(\phi)"] & Y
+    \end{cd}
+    But by uniqueness in the universal property of the direct sum, we must have $h'(\phi) = f$.
+
+    We now consider the general case: $X$ is arbitrary.
+    We want to find something like a free resolution for $X$ in the category $\AA$.
+    Consider the direct sum $\bigoplus_{\alpha \in h'(X)} P$, where the indexing set is $h'(X) = \Hom_\AA(P, X)$.
+    Then each $\alpha \in h'(X)$ is a morphism $\alpha : P \to X$.
+    So by the universal property of the direct sum, there is a unique morphism $\phi : \bigoplus_{\alpha \in h'(X)} P \to X$ such that for all $\alpha \in h'(X)$ the following diagram commutes in $\AA$:
+    \begin{cd}
+        P \rar[hook, "\iota_\alpha"] \ar[rr, bend right, "\alpha"'] 
+        & \bigoplus_{\alpha \in h'(X)} P \rar[dashed, "\phi"] & X
+    \end{cd}
+    We claim that $\phi$ is an epimorphism.
+    Let $C = \coker\phi$, then $h'$ sends the above diagram to the following diagram in $\rMod R$:
+    \begin{cd}
+        R \rar[hook, "\iota_\alpha"] \ar[rr, bend right, "h'(\alpha)"']
+        & \bigoplus_{\alpha \in h'(X)} R \rar["h'(\phi)"] & h'(X) \rar & h'(C)
+    \end{cd}
+    Since $h'$ is exact, it preserves kernels and cokernels, so $h'(C)$ is the relevant cokernel.
+    But for any $\alpha \in h'(X)$, we have $\id_P \in R$ and $h'(\alpha)(\id_P) = \alpha$.
+    By commutativity, this means $\alpha$ is in the image of $h'(\phi)$, so $h'(\phi)$ is surjective, so the cokernel is zero.
+    Since $h'$ is strict, this means $C = 0$, so $\phi$ is an epimorphism.
+
+    We can now construct the following exact sequence in $\AA$ (something like a free presentation):
+    \begin{cd}
+        \bigoplus_J P \rar["\phi_1"] & \bigoplus_{I} P \rar["\phi_0"] & X \rar & 0
+    \end{cd}
+    Here, $\phi_0$ is the epimorphism constructed above, and $\phi_1$ uses the same construction applied to the kernel of $\phi_0$.
+    We now apply the contravariant functors $\Hom_\AA(-,Y)$ and $\Hom_R(h'(-), h'(Y))$ to get exact sequences of abelian groups:
+    \begin{cd}
+        0 \rar 
+        & \Hom_\AA(X, Y) \rar \dar["h'"]
+        & \Hom_\AA(\bigoplus_I P, Y) \rar \dar["h'"]
+        & \Hom_\AA(\bigoplus_J P, Y) \dar["h'"]
+        \\
+        0 \rar
+        & \Hom_R(h'(X), h'(Y)) \rar
+        & \Hom_R(\bigoplus_I R, h'(Y)) \rar
+        & \Hom_R(\bigoplus_J R, h'(Y))
+    \end{cd}
+    The vertical arrows are $h'$ mapping morphisms.
+    The last two vertical morphisms are surjective from the special case of fullness of $h'$ and injective from the faithfulness of $h'$.
+    Adding an extra zero to the left of each row allows us to apply the 5-Lemma, which tells us that the first vertical arrow is an isomorphism.
+    In particular, this arrow is surjective, so $h'$ is full for arbitrary $X$.
+
+    Lastly, we check essentially surjective on objects.
+    Let $M$ be a right $R$-module and consider a free presentation
+    \begin{cd}
+        \bigoplus_J R \rar["f_1"] & \bigoplus_{I} R \rar["f_0"] & M \rar & 0
+    \end{cd}
+    Here, $M = \coker\phi_1$.
+    Clearly, the first two terms are in the image of $h'$, since we can just take the same size direct sum of copies of $P$.
+    Then the fullness and faithfulness of $h'$ tells us there is a unique $\phi \in \Hom_\AA(\bigoplus_J P, \bigoplus_I P)$ such that $h'(\phi) = f_1$.
+    Taking the cokernel of $\phi$, we get an exact sequence in $\AA$:
+    \begin{cd}
+        \bigoplus_J P \rar["\phi"] & \bigoplus_{I} P \rar[twoheadrightarrow] & \coker\phi \rar & 0
+    \end{cd}
+    Since $h'$ is exact, it sends this diagram to an exact sequence in $\rMod R$:
+    \begin{cd}
+        \bigoplus_J R \rar["f_1"] & \bigoplus_{I} R \rar[twoheadrightarrow] & h'(\coker\phi) \rar & 0
+    \end{cd}
+    In particular, $h'(\coker\phi)$ is the cokernel of $f_1$.
+    Since the cokernel is unique up to isomorphism, we conclude that $M \iso h'(\coker\phi)$.
+\end{proof}
+
+\begin{pbox}[(b)]
+    Let $\AA$ be a Noetherian category (i.e., any increasing chain of subobjects stabilizes), and let $P$ be a projective object in $\AA$ such that $h'$ is a strict functor.
+    Then the ring $R = \Hom_\AA(P, P)$ is right Noetherian and $h'$ determines an equivalence between $\AA$ and the category of finitely generated $R$-modules.
+\end{pbox}
+
+
+
+
+\end{document}

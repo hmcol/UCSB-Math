@@ -1,0 +1,722 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+\usepackage[shortlabels]{enumitem}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\def\temp{#1}\ifx\temp\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\iso}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\renewcommand{\tilde}{\widetilde}
+\renewcommand{\hat}{\widehat}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+
+% Extra Commands
+\newcommand{\tensor}{\otimes}
+
+\renewcommand{\_}[1]{{_{#1}}}
+
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\GL}{GL}
+
+\newcommand{\CC}{\mathcal{C}}
+\newcommand{\DD}{\mathcal{D}}
+
+\newcommand{\mathcat}{\mathsf}
+\newcommand{\newcat}[2]{\newcommand{#1}{\mathcat{#2}}}
+
+\newcat{\Set}{Set}
+
+\newcat{\Mod}{Mod}
+\newcat{\lMod}{\text{-}Mod}
+\newcat{\rMod}{Mod\text{-}}
+
+\newcat{\lmod}{\text{-}mod}
+\newcat{\rmod}{mod\text{-}}
+
+\newcat{\Rep}{Rep}
+
+% Document
+\begin{document}
+\title{MATH 236A Homework 1}
+\author{Harry Coleman}
+\date{February 17, 2022}
+\maketitle
+
+\begin{pbox}[1]
+    Let $R$, $S$ be rings and $\_SB_R$ an $S$-$R$-bimodule. Prove that the functors $G = B \tensor_R - : R\lMod \to S\lMod$ and $F = \Hom_S(B,-) : S\lMod \to R\lMod$ form an adjoint pair $(G, F)$.
+\end{pbox}
+
+We will construct a natural isomorphism
+\begin{cd}[column sep=huge]
+    R\lMod \times S\lMod
+        \rar[bend left=24, "{\Hom_S(B \tensor_R -, -)}" name=U]
+        \rar[bend right=20, "{\Hom_R(-, \Hom_S(B, -))}"' name=L]
+        \ar[from=U, to=L, shorten=1ex, Rightarrow, "\iso"]
+    & \Set
+\end{cd}
+
+Fix a pair of left modules $M \in R\lMod$ and $N \in S\lMod$.
+
+We define the component
+\[
+    \alpha_{M, N} : \Hom_S(B \tensor_R M, N) \to \Hom_R(M, \Hom_S(B, N)).
+\]
+Given a homomorphism of left $S$-modules $f : B \tensor_R M \to N$ and an element $m \in M$, we define a map $\alpha f(m) : B \to N$ by $b \mapsto f(b \tensor m)$.
+We check that $\alpha f (m)$ is a homomorphism of left $S$-modules:
+\begin{align*}
+    \alpha f(m)(sb_1 + b_2)
+        &= f((sb_1 + b_2) \tensor m) \\
+        &= f(s(b_1 \tensor m) + b_2 \tensor m) \\
+        &= s \alpha f(m)(b_1) + \alpha f(m)(b_2).
+\end{align*}
+Hence, $\alpha f : M \to \Hom_S(B, N)$ is a well-defined map.
+Next, we check that $\alpha f$ is a homomorphism of left $R$-modules:
+\begin{align*}
+    \alpha f(rm_1 + m_2)(b)
+        &= f((rm_1 + m_2) \tensor b) \\
+        &= f(r(m_1 \tensor b) + m_2 \tensor b) \\
+        &= r \alpha f(m_1)(b) + \alpha f(m_2)(b) \\
+        &= (r \alpha f(m_1) + \alpha f(m_2))(b).
+\end{align*}
+Hence, $\alpha_{M, N} : \Hom_S(B \tensor_R M, N) \to \Hom_R(M, \Hom_S(B, N))$ is a well-defined map.
+
+We now define the component
+\[
+    \beta_{M, N} : \Hom_R(M, \Hom_S(B, N)) \to \Hom_S(B \tensor_R M, N).
+\]
+Given a homomorphism of left $R$-modules $g : M \to \Hom_S(B, N)$, there is a map $\tilde{g} : B \times M \to N$ given by $\tilde{g}(b, m) = g(m)(b)$.
+We check that $\tilde{g}$ is an $R$-balanced map:
+\[
+    \tilde{g}(b, m_1 + m_2)
+        = g(m_1 + m_2)(b)
+        = g(m_1)(b) + g(m_2)(b)
+        = \tilde{g}(b, m_1) + \tilde{g}(b, m_2),
+\]
+\[
+    \tilde{g}(b_1 + b_2, m)
+        = g(m)(b_1 + b_2)
+        = g(m)(b_1) + g(m)(b_2)
+        = \tilde{g}(b_1, m) + \tilde{g}(b_2, m),
+\]
+\[
+    \tilde{g}(br, m)
+        = g(m)(br)
+        = rg(m)(b)
+        = g(rm)(b)
+        = \tilde{g}(b, rm).
+\]
+The second equality in the third condition follows from the fact that $\Hom_S(B, N)$ is a left $R$-module by $(rh)(b) = h(br)$ for $h \in \Hom_S(B, N)$.
+By the universal property of the tensor product, there is a unique homomorphism of left $S$-modules $\beta g$ which makes the following diagram commute:
+\begin{cd}
+    B \times M 
+        \rar["\tilde{g}"]
+        \dar["\tau"'] 
+    & N \\
+    B \tensor_R M 
+        \urar[dashed, "\beta g"']
+\end{cd}
+Here, $\tau$ is the canonical map from the product to the tensor product.
+By this construction, we have the characterization $\beta g(b \tensor m) = g(m)(b)$.
+Hence, $\beta_{M, N} : \Hom_R(M, \Hom_S(B, N)) \to \Hom_S(B \tensor_R M, N)$ is a well-defined map.
+
+Lastly, we check that $\alpha_{M, N}$ and $\beta_{M, N}$ are inverses to each other:
+\[
+    (\beta \alpha f)(b \tensor m)
+        = \alpha f (m)(b)
+        = f(b \tensor m),  
+\]
+\[
+    (\alpha \beta g)(m)(b)
+        = \beta g(b \tensor m)
+        = g(m)(b).
+\]
+
+Hence, $\alpha$ and $\beta$ describe the desired natural isomorphism.
+
+\newpage
+\begin{pbox}[2]
+    Let $K$ be a field. Show that the contravariant functor $D = \Hom_K(-, K): K\lMod \to K\lMod$ is not a natural equivalence. In particular, show that the vector spaces $V$ and $D(V)$ fail to be isomorphic if $V \iso K^{(\N)}$.
+\end{pbox}
+
+We consider the vector space $V = K^{(\N)} = \bigoplus_{i \in \N} K$.
+It has a countable basis given by $\{e_i\}_{i \in \N}$.
+In particular, the dimension of $V$ as a $K$-vector space is countably infinite.
+
+Consider its dual space $D(V) = \Hom_K(V, K)$.
+A linear functional on $V$ is determined by where in $K$ it sends the basis vectors of $V$.
+Moreover, any choice of image in $K$ for each basis vector of $V$ determines a linear functional on $V$.
+In other words, a choice of linear functional on $V$ is equivalent to a choice of element in $K$ for each natural number, so $D(V) \iso K^\N$ as $K$-vector spaces.
+
+We claim that the dimension of $K^\N$ as a $K$-vector space is uncountably infinite.
+In particular, this would mean $\dim_K V \ne \dim_K D(V)$, implying that $V$ and $D(V)$ could not possibly be isomorphic.
+
+Let $F = K_0$ be the prime subfield of $K$.
+Then $F = \Q$ or $F = \Z/p\Z$ for some prime $p$---in particular, $F$ is countable.
+
+\begin{lemma}\label{lem:dimF^N}
+    $\dim_F F^\N$ is uncountably infinite.
+\end{lemma}
+
+\begin{proof}
+    The dimension of $F^{(\N)}$ as an $F$-vector space is countably infinite since it has a countably infinite basis given by $\{e_i\}_{i \in \N}$.
+
+    The dimension of $F^\N$ is at least countably infinite, since $\{e_i\}_{i \in \N}$ is an $F$-linearly independent set in $F^\N$ (though not a basis).
+    It other words, $\dim_F F^\N \geq \dim_F F^{(\N)}$; it remains to prove that this inequality is strict.
+
+    We can write $F^{(\N)}$ as the direct limit $F^{(\N)} = \varinjlim F^n$ with respect to the natural inclusions $F^n \inc F^{n+1}$ for each $n \in \N$.
+    This gives $F^{(N)} = F^1 \cup F^2 \cup F^3 \cup \cdots$, which is a countable union of countable sets, therefore the cardinality of $F^{(\N)}$ is countable.
+    On the other hand, the cardinality of $F^\N$ is given by $|F^\N| = |F|^{|\N|}$, which is uncountable.
+
+    Since the cardinalities of $F^{(\N)}$ and $F^\N$ as sets are different, there can be no bijection between them.
+    In particular, there can be no isomorphism between the respective $F$-vector spaces.
+    It follows that their dimensions must be different, so indeed $\dim_F F^\N > \dim_F F^{(\N)}$.
+\end{proof}
+
+By Lemma \ref{lem:dimF^N}, let $\mathcal{S} \seq F^\N$ be an uncountable $F$-linearly independent set.
+Under the natural set inclusion $F^\N \inc K^\N$, we can interpret $\mathcal{S}$ as a set of vectors in $K^\N$.
+We claim that $\mathcal{S}$ is also $K$-linearly independent.
+
+To prove that $\mathcal{S}$ is $K$-linearly independent, we will prove the equivalent condition that every finite subset of $\mathcal{S}$ is $K$-linearly independent.
+Let $S = \{x_1, \dots, x_n\} \seq \mathcal{S}$ be an arbitrary finite subset.
+Of course, $S$ is $F$-linearly independent.
+
+\begin{lemma}\label{lem:truncate}
+    There exists $m \in \N$ such that $S_m = \{x_1^{(m)}, \dots, x_n^{(m)}\}$ is $F$-linearly independent, where $x_i^{(m)} \in F^m$ is the truncation of $x_i$ to the first $m$ components.
+\end{lemma}
+
+\begin{proof}
+    For $m \in \N$ define the following subspace of $F^n$: 
+    \[
+        D_m = \{a \in F^n \mid \textstyle\sum_{i=1}^{n} a_i x_i^{(m)} = 0\}.
+    \]
+    Notice that $\dim_F D_m < \infty$ and $D_m \seq D_{m+1}$ for all $m \in \N$.
+    Moreover, if it happens for some $m \in \N$ that $\dim_F D_m = 0$ then $S_m$ would be $F$-linearly independent.
+    We will show that such an $m$ can be found.
+
+    Suppose for a given $m \in \N$ that $\dim_F D_m > 0$.
+    Choose any nonzero element $a \in D_m$, then $Ka$ is a $1$-dimensional subspace of $D_m$.
+    Since $S$ is $F$-linearly independent and $a$ is nonzero, we must have $x = \sum_{i=1}^{n} a_i x_i \ne 0$.
+    By assumption, the first $m$ components of $x$ are zero, but in order for $x$ to be nonzero there must be some $m' \geq m$ such that the $m'$th component is nonzero.
+    Then $a \notin D_{m'}$ and we compute 
+    \begin{align*}
+        \dim_F D_{m'}
+            &= \dim_F(D_{m'} + Ka) - \dim_F Ka + \dim_F(D_{m'} \cap Ka) \\
+            &= \dim_F(D_{m'} + Ka) - 1 + 0 \\
+            &\leq \dim_F D_m - 1 \\
+            &< \dim_F D_m.
+    \end{align*}
+    Since $D_m$ is always finite dimensional, we can repeat this process which strictly reduces the dimension a finite number of times to find $m \in \N$ large enough that $\dim_F D_m = 0$.
+\end{proof}
+
+Choose $m \in \N$ as in Lemma \ref{lem:truncate}.
+We will show that $S_m$ is $K$-linearly independent as a set of vectors in $K^m$.
+Extend $S_m$ to an $F$-basis $\beta = S_m \cup \{y_1, \dots, y_{m - n}\}$ of $F^m$.
+The fact that $\beta$ is a basis is equivalent to the invertibility of the following matrix:
+\[
+    A = \mat{
+        | & & | & | & & | \\
+        x_1^{(m)} & \dots & x_n^{(m)} & y_1 & \dots & y_{m - n} \\
+        | & & | & | & & |
+    } \in M_m(F).
+\]
+So there exists an inverse matrix $A^{-1} \in M_m(F)$.
+Under the inclusion $M_m(F) \inc M_m(K)$, we may consider both $A$ and $A^{-1}$ to be matrices in $M_m(K)$.
+Moreover, it is still true in $M_m(K)$ that $AA^{-1} = A^{-1}A = I_m$, i.e., that $A$ is invertible.
+Equivalently, the columns of $A$---the elements of $\beta$ under the inclusion $F^m \inc K^m$---form a $K$-basis of $K^m$.
+In particular, $S_m$ is $K$-linearly independent.
+
+From this, we deduce that $S$ is $K$-linearly independent, since for any nonzero $a \in K^n$ we must have $\sum_{i=1}^{n} a_i x_i^{(m)} \ne 0$, which implies $\sum_{i=1}^{n} a_i x_i \ne 0$.
+Therefore, every finite subset of $\mathcal{S}$ is $K$-linearly independent, which means $\mathcal{S}$ is $K$-linearly independent.
+Thus, we have found an uncountable set of $K$-linearly independent vectors in $K^\N$, so indeed $\dim_K K^\N$ is uncountably infinite.
+In particular, $\dim_K K^\N > \dim_K K^{(\N)}$ so $K^\N \ncong K^{(\N)}$.
+
+
+
+\rule{\textwidth}{0.4pt}
+
+
+\begin{lemma}\label{lem:coprod_iso}
+    Let $\{X_i\}_{i \in I}$ be a collection of objects in a category.
+    Suppose there exists a coproduct $X = \bigsqcup_{i \in I} X_i$ with inclusion morphisms $\iota_i : X_i \to X$.
+    If there exists an isomorphism $\alpha : X \to \tilde{X}$, then $\tilde{X}$ with inclusion morphisms $\alpha \circ \iota_i : X_i \to \tilde{X}$ is also a categorical coproduct of the $X_i$'s.
+\end{lemma}
+
+\begin{proof}
+    Suppose $f_i : X_i \to Y$ is a collection of morphisms.
+    Then by the universal property of the coproduct $X$, there is a unique morphism $f : X \to Y$ such that $f \circ \iota_i = f_i$ for all $i \in I$.
+    Then the composition $\tilde{f} = f \circ \alpha^{-1} : \tilde{X} \to Y$ is a morphism satisfying $\tilde{f} \circ (\alpha \circ \iota_i) = f_i$.
+    In other words, the following diagram commutes for all $i \in I$:
+    \begin{cd}[column sep=huge]
+        \tilde{X} \ar[ddr, dashed, "\tilde{f}"]\\
+        X \uar["\alpha", "\iso"'] \drar[dashed, "f"'] \\
+        X_i \uar["\iota_i"] \rar["f_i"'] & Y
+    \end{cd}
+    To check the uniqueness of $\tilde{f}$, suppose $g : \tilde{X} \to Y$ is another morphism satisfying the same diagram.
+    But then, considering $g \circ \alpha$, we have the following commutative diagram:
+    \begin{cd}[column sep=huge]
+        \tilde{X} \ar[ddr, dashed, "g"]\\
+        X \uar["\alpha", "\iso"'] \drar[dashed, "g \circ \alpha"'] \\
+        X_i \uar["\iota_i"] \rar["f_i"'] & Y
+    \end{cd}
+    By the universal property of the coproduct $X$, we must have $g \circ \alpha = f$, so $g = f \circ \alpha^{-1} = \tilde{f}$.
+\end{proof}
+
+\begin{lemma}\label{lem:coprod_equiv}
+    Suppose $\CC$ and $\DD$ are equivalent categories via functors $F : \CC \to \DD$ and $G : \DD \to \CC$, and natural isomorphisms $\alpha : \id_\CC \Rightarrow GF$ and $\beta : \id_\DD \Rightarrow FG$.
+    If $\iota_i : X_i \to X$ describes a categorical coproduct in $\CC$, then $F\iota_i : FX_i \to FX$ describes a categorical coproduct in $\DD$.
+\end{lemma}
+
+\begin{proof}
+    Suppose we have a family of morphisms $g_i : FX_i \to Y$ in $\DD$.
+    Then $G$ gives us a family of morphisms $Gg_i : GFX_i \to GY$ in $\CC$.
+    Lemma \ref{lem:coprod_iso} and the naturality of $\alpha$ gives us a unique morphism $\tilde{g}$ which makes the following diagram in $\DD$ commute for all $i \in I$:
+    \begin{cd}
+        X \rar["\alpha_X", "\iso"']
+        & GFX \drar[dashed, "\tilde{g}"]
+        \\
+        X_i \uar["\iota_i"] \rar["\alpha_{X_i}"', "\iso"]
+        & GFX_i \uar["GF\iota_i"] \rar["Gg_i"']
+        & GY
+    \end{cd}
+    Mapping the triangle of this diagram under $F$, and using the naturality of $\beta$, we obtain the following commutative diagram in $\CC$:
+    \begin{cd}
+        FX \rar["\beta_{FX}", "\iso"']
+        & FGFX \drar["F\tilde{g}"]
+        \\
+        FX_i \uar["F\iota_i"] \rar["\beta_{FX_i}"', "\iso"]
+        & FGFX_i \uar["FGF\iota_i"] \rar["FGg_i"']
+        & FGY \rar["\beta_Y^{-1}"]
+        & Y 
+    \end{cd}
+    Now, $g = \beta_Y^{-1} \circ F\tilde{g} \circ \beta_{FX} : FX \to Y$ is a morphism satisfying $g \circ F\iota_i = \beta_Y^{-1} \circ FGg_i \circ \beta_{FX_i}$, which equals $g_i$ by the naturality of $\beta$, for all $i \in I$.
+
+    It remains to prove that $g$ is the unique such morphism.
+    Suppose $h : FX \to Y$ is a morphism satisfying $h \circ F\iota_i = g_i$ for all $i \in I$.
+    Mapping under $G$, we find that $Gh$ makes the following diagram in $\CC$ commute for all $i \in I$:
+    \begin{cd}
+        X \rar["\alpha_X", "\iso"']
+        & GFX \drar["Gh"]
+        \\
+        X_i \uar["\iota_i"] \rar["\alpha_{X_i}"', "\iso"]
+        & GFX_i \uar["GF\iota_i"] \rar["Gg_i"']
+        & GY
+    \end{cd}
+    But then the universal property of $GFX$ as a coproduct of $X_i$'s tells us that $Gh = \tilde{g}$, so
+    \[
+        FGh
+            = F\tilde{g}
+            = \beta_Y \circ g \circ \beta_{FX}^{-1}.
+    \]
+    Combining this with the naturality of $\beta$, we find that the following  diagram in $\DD$ commutes:
+    \begin{cd}
+        FX \dar["h"'] \rar["\beta_{FX}", "\iso"']
+        & FGFX \dar["FGh"']
+        & FX \lar["\beta_{FX}"', "\iso"] \dar["g"]
+        \\
+        Y \rar["\beta_Y"', "\iso"]
+        & FGY 
+        & Y \lar["\beta_Y", "\iso"']
+    \end{cd}
+    The perimeter of this diagram gives us $h = g$, and we conclude that $F\iota_i : FX_i \to FX$ indeed describes a categorical coproduct in $\DD$.
+\end{proof}
+
+
+
+\rule{\textwidth}{0.4pt}
+
+Finally, suppose for contradiction that $D$ is part of a natural equivalence of categories.
+Consider the $K$-vector space $K^{(\N)} = \bigoplus_{i \in \N} K$ as above.
+Notice that $K^{(\N)}$ is the categorical coproduct of countably infinitely many copies of $K$.
+Applying Lemma \ref{lem:coprod_equiv}, we compute
+\[
+    K^{\N}
+        \iso D(K^{(\N)}) 
+        \iso \bigoplus_{i \in \N} D(K) 
+        \iso \bigoplus_{i \in \N} K
+        = K^{(\N)}
+\]
+But this is a contradiction, as we have already shown these two vector spaces to be non-isomorphic.
+
+
+
+
+
+\newpage
+\begin{pbox}[3]
+    Given $M \in R\lMod$, consider the co- and contravariant hom-functors $F_1, F_2 : R\lMod \to \Z\lMod$, given by $F_1 = \Hom_R(M, -)$ and $F_2 = \Hom_R(-, M)$. For either choice of $k \in \{1, 2\}$, prove those of the following statements which are true in general, and provide a counterexample for those that are not. (Here $(N_i)_{i \in I}$ is an arbitrary family of left $R$-modules.)
+\end{pbox}
+
+
+
+
+
+\begin{pbox}[(a) 1]
+    $\Hom_R(M, \bigoplus_{i\in I} N_i) \iso \bigoplus_{i\in I} \Hom_R(M, N_i)$
+\end{pbox}
+
+Probably false.
+
+
+
+\begin{pbox}[(a) 2]
+    $\Hom_R(\bigoplus_{i\in I} N_i, M) \iso \bigoplus_{i\in I} \Hom_R(N_i, M)$
+\end{pbox}
+
+False.
+
+\begin{lemma}\label{lem:co_hom_coprod}
+    $\Hom_R(\bigoplus_{i \in I} N_i, M) \iso \prod_{i \in I} \Hom_R(N_i, M)$.
+\end{lemma}
+
+\begin{proof}
+    For $i \in I$, let $\iota_i : N_i \inc \bigoplus_{i\in I} N_i$ be the canonical projection.
+    Define the map
+    \begin{align*}
+        \phi : \Hom_R(\textstyle\bigoplus_{i \in I} N_i, M) &\to \textstyle\prod_{i\in I} \Hom_R(N_i, M) \\
+            f &\mapsto (f \circ \iota_i)_{i \in I}.
+    \end{align*}
+    We check that $\phi$ is a $\Z$-module homomorphism:
+    \begin{align*}
+        \phi(af + g)(n)
+            &= ((af + g)\iota_i(n))_{i \in I} \\
+            &= (af\iota_i(n) + g\iota_i(n))_{i \in I} \\
+            &= a(f\iota_i(n))_{i \in I} + (g\iota_i(n))_{i \in I} \\
+            &= a\phi(f)(n) + \phi(g)(n) \\
+            &= (a\phi(f) + \phi(g))(n).
+    \end{align*}
+    The bijectivity of of $\phi$ follows from the universal property of the direct sum (categorical coproduct) of $\Z$-modules, i.e., given a family of $\Z$-module homomorphisms $f_i : N_i \to M$ with $i \in I$, there is a unique $\Z$-module homomorphism $f : \bigoplus_{i \in I} N_i \to M$ such that $f_i = f \circ \iota_i$ for all $i \in I$.
+    In other words, $\phi(f) = (f_i)_{i \in I}$.
+    The existence in this condition gives us surjectivity and the uniqueness gives us injectivity.
+    Hence, $\phi$ is an isomorphism of $\Z$-modules.
+\end{proof}
+
+Take $R = \Z$, $M = \Z$, $N_i = \Z$, and $I = \N$
+By \ref{lem:co_hom_coprod}, we have
+\[\textstyle
+    \Hom_\Z(\bigoplus_{i\in\N} \Z, \Z)
+        \iso \prod_{i \in I} \Hom_\Z(\Z, \Z)
+        \iso \prod_{i \in I} \Z
+        = \Z^\N.
+\]
+However, we also have
+\[
+    \bigoplus_{i\in\N} \Hom_\Z(\Z, \Z)
+        \iso \bigoplus_{i\in\N} \Z
+        = \Z^{(\N)}.
+\]
+The set $\Z^\N$ is uncountable whilst $\Z^{(\N)}$ is countable.
+In particular, the cardinalities of the two sets are different, so there can be no bijection between them.
+Therefore, there can be no isomorphism between the respective $\Z$-modules.
+
+
+\begin{pbox}[(b) 1]
+    $\Hom_R(M, \prod_{i\in I} N_i) \iso \prod_{i\in I} \Hom_R(M, N_i)$
+\end{pbox}
+
+True.
+
+For $i \in I$, let $\pi_i : \prod_{i\in I} N_i \to N_i$ be the canonical projection.
+Define the map
+\begin{align*}
+    \phi : \Hom_R(M, \textstyle\prod_{i\in I} N_i) &\to \textstyle\prod_{i\in I} \Hom_R(M, N_i) \\
+        f &\mapsto (\pi_i \circ f)_{i \in I}.
+\end{align*}
+We check that $\phi$ is a $\Z$-module homomorphism:
+\begin{align*}
+    \phi(af + g)(m)
+        &= (\pi_i(af + g)(m))_{i \in I} \\
+        &= (\pi_i(af(m) + g(m)))_{i \in I} \\
+        &= (a\pi_if(m) + \pi_ig(m))_{i \in I} \\
+        &= a(\pi_if(m))_{i \in I} + (\pi_ig(m))_{i \in I} \\
+        &= a\phi(f)(m) + \phi(g)(m) \\
+        &= (a\phi(f) + \phi(g))(m).
+\end{align*}
+The bijectivity of of $\phi$ follows from the universal property of the direct product (categorical product) of $\Z$-modules, i.e., given a family of $\Z$-module homomorphisms $f_i : M \to N_i$ with $i \in I$, there is a unique $\Z$-module homomorphism $f : M \to \prod_{i \in I} N_i$ such that $f_i = \pi_i \circ f$ for all $i \in I$.
+In other words, $\phi(f) = (f_i)_{i \in I}$.
+The existence in this condition gives us surjectivity and the uniqueness gives us injectivity.
+Hence, $\phi$ is an isomorphism of $\Z$-modules.
+
+
+
+\begin{pbox}[(b) 2]
+    $\Hom_R(\prod_{i\in I} N_i, M) \iso \prod_{i\in I} \Hom_R(N_i, M)$
+\end{pbox}
+
+Probably false.
+
+
+
+
+
+
+\newpage
+\begin{pbox}[4]
+    Let $\CC$ be an additive category; in particular, finite direct sums and products of objects in $\CC$ exist. Prove that for any choice of objects $C_1, \dots, C_n$ of $\CC$, the direct sum $\bigsqcup_{1\leq i \leq n} C_i$ is isomorphic to the direct product $\prod_{1\leq i \leq n} C_i$.
+\end{pbox}
+
+
+\begin{proof}
+    Let $X = \prod_{i=1}^{n} C_i$ be the product with projection maps $\pi_i : X \to C_i$.
+    For all $i$ and $j$, define the morphism $\lambda_{i,j} \in \Hom(C_i, C_j)$ by
+    \[
+        \lambda_{i,j} = \begin{cases}
+            \id_{C_i} &\text{if } i = j \\
+            0 &\text{otherwise}.
+        \end{cases}
+    \]
+    For a fixed $i$, the universal property of the product gives us a unique morphism $\lambda_i$ which makes the following diagram commute for all $j$:
+    \begin{cd}
+        & X \dar["\pi_j"] \\
+        C_i \rar["\lambda_{i,j}"'] \urar[dashed, "\lambda_i"]
+        & C_j
+    \end{cd}
+    Consider the morphism $\sigma = \sum_{j=1}^{n} (\lambda_j \circ \pi_j) \in \Hom(X, X)$.
+    Composing with $\pi_i$ gives
+    \[
+        \pi_i \circ \sigma
+            = \sum_{j=1}^{n} (\pi_i \circ \lambda_j) \circ \pi_j
+            = \sum_{j=1}^{n} \lambda_{j,i} \circ \pi_j
+            = \id_{C_i} \circ \pi_i.
+            = \pi_i.
+    \]
+    In other words, $\sigma$ is a morphism which makes the following diagram commute for all $i$:
+    \begin{cd}
+        & X \dar["\pi_i"] \\
+        X \rar["\pi_i"'] \urar[dashed, "\sigma"] & C_i
+    \end{cd}
+    However, $\id_X$ makes the same diagram commute, so the universal property of the product $X$ gives us $\sigma = \id_X$.
+
+    We claim that the morphisms $\lambda_i : C_i \to X$ describe a coproduct.
+    Let $f_i : C_i \to Y$ be an arbitrary collection of morphisms.
+    Define $f = \sum_{j=1}^n (f_j \circ \pi_j) \in \Hom(X, Y)$, for which we compute
+    \[
+        f \circ \lambda_i
+            = \sum_{j=1}^n f_j \circ (\pi_j \circ \lambda_i)
+            = \sum_{j=1}^n f_j \circ \lambda_{i,j}
+            = f_i \circ \id_{C_i}
+            = f_i.
+    \]
+    That is, $f$ is a morphism which makes the following diagram commute:
+    \begin{cd}
+        X \drar[dashed, "f"] \\
+        C_i \rar["f_i"'] \uar["\lambda_i"] & Y
+    \end{cd}
+    Suppose $h : X \to Y$ is a morphism which makes the same diagram commute, i.e., $h \circ \lambda_i = f_i$ for all $i$.
+    Then
+    \[
+        f
+            = \sum_{i=1}^{n} (f_i \circ \pi_i)
+            = \sum_{i=1}^{n} (h \circ \lambda_i) \circ \pi_i
+            = h \circ \sum_{i=1}^{n} (\lambda_i \circ \pi_i)
+            = h \circ \sigma
+            = h \circ \id_X
+            = h.
+    \]
+    We conclude that $\lambda_i : C_i \to X$ is indeed a coproduct.
+
+    By the uniqueness of coproducts, there is a unique isomorphism $\alpha : \bigsqcup_{i=1}^{n} C_i \to X$.
+
+    Moreover, it follows from Lemma \ref{lem:coprod_iso} that the inclusions $\lambda_i : C_i \to X$ we constructed are precisely the inclusions $\alpha \circ \iota_i$ induced on $X$ by the isomorphism $\alpha$, coming from the coproduct's inclusions $\iota_i : C_i \to \bigsqcup_{i=1}^{n} C_i$.
+\end{proof}
+
+\newpage
+\begin{pbox}[5]
+    Let $G$ be a group, $K$ a field. Consider the category $\Rep_KG$ whose objects are the group homomorphisms $\rho : G \to \GL(V)$, $g \mapsto \rho_g$, where $V$ is any vector space over $K$; a morphism from $\rho : G \to \GL(V)$ to $\sigma : G\to \GL(V)$ is a map $f \in \Hom_K(V, W)$ such that $f\circ \rho_g = \sigma_g \circ f$ for all $g \in G$. Clearly, $\Rep_K G$ is a pre-additive category.
+    
+    Moreover, consider the group algebra $KG$, defined as follows: As a $K$-vector space, $KG$ is the vector space on basis $G$, whence its elements can be represented as finite sums $\sum k_g g$ with $k_g \in K$ and $g \in G$. The algebra multiplication on $KG$ mimics the multiplication of $G$, namely
+    \[
+        \left(\sum_{g\in G, \text{finite}} k_g g\right)\left(\sum_{h\in G, \text{finite}} l_h h\right)
+            := \sum_{u\in G, \text{finite}} \left(\sum_{gh=u} k_g l_h\right) u.
+    \]
+    Show that the categories $\Rep_KG$ and $KG\lMod$ are naturally equivalent by way of additive functors (they are even isomorphic as categories, a rare phenomenon).
+\end{pbox}
+
+We will construct a functor $\Phi : \Rep_KG \to KG\lMod$.
+
+On objects $(\rho : G \to \GL(V) \in \Rep_KG)$, we define $\Phi(\rho)$ as follows.
+The group homomorphism $\rho : G \to \GL(V)$ induces a $K$-algebra homomorphism $\tilde{\rho} : KG \to \operatorname{End}_K(V)$.
+Here, $\tilde{\rho}$ is a $K$-linear map characterized on the basis $G$ by $\tilde{\rho}(g) = \rho_g$.
+Moreover, we get a left $KG$-multiplication on $V$:
+\[\textstyle
+    (\sum k_g g) \cdot v
+        = \sum k_g \rho_g(v).
+\]
+This multiplication makes $\Phi(\rho)$ a left $KG$-module with $V$ as its underlying set.
+
+On morphisms $f \in \Hom(\rho : G \to \GL(V), \sigma : G \to \GL(W))$, we define $\Phi(f)$ as follows.
+The data of $f$ is a $K$-linear map $V \to W$.
+We use this as the underlying map of $\Phi(f) : \Phi(\rho) \to \Phi(\sigma)$.
+We already know that $f$ is $K$-linear, so to ensure that it is a homomorphism of left $KG$-modules, we only need to check that it commutes with multiplication by elements of the basis $G$:
+\[
+    f(g \cdot v)
+        = f(\rho_g(v))
+        = (f \circ \rho_g)(v)
+        = (\sigma_g \circ f)(v)
+        = \sigma_g(f(v))
+        = g \cdot f(v).
+\]
+
+Having defined $\Phi$ on objects and morphisms, we now check that it is indeed a functor.
+
+The identity morphism on $\rho : G \to \GL(V)$ consists of the identity map on $V$.
+The data of $\Phi(\rho)$ is also the identity map on $V$, which happens to also be the identity of the left $KG$-module $\Phi(\rho)$.
+Thus, $\Phi$ preserves identity morphisms.
+
+The fact that $\Phi$ preserves composition of morphisms follows similarly from the fact that the underlying data of morphisms in both $\Rep_KG$ and $KG\lMod$ are functions between the underlying sets, which $\Phi$ preserves.
+Moreover, the composition of morphisms in each category is precisely the composition of the underlying functions.
+
+
+We now define a functor in the reverse direction: $\Psi : KG\lMod \to \Rep_KG$.
+
+There is a forgetful functor $U : KG\lMod \to K\lMod$ which remembers only the addition and multiplication by $K$.
+For an object $M \in KG\lMod$, the multiplication on $M$ is given by a $K$-algebra homomorphism $m : KG \to \operatorname{End}_K(UM)$.
+We define $\Psi(M)$ to be the representation $m|_G : G \to \GL(UM)$; since the elements of $G$ are invertible in $KG$ and $m$ is a homomorphism, the images $m(g)$ are invertible in $\operatorname{End}_K(UM)$, hence the map is well-defined.
+
+On morphisms $f \in \Hom(M, N)$, the data of $\Psi(f)$ is provided by the $K$-linear map $Uf : UM \to UN$.
+We check that $Uf$ commutes with images of the representations:
+\[
+    (Uf \circ m_g)(v)
+        = f(g \cdot v)
+        = g \cdot f(v)
+        = n_g(f(v))
+        = (n_g \circ Uf)(v).
+\]
+
+The fact that $\Psi$ is a functor follows similarly to the previous case in that the data of morphisms are functions between the underlying sets, which $\Psi$ preserves.
+
+We now show that $\Phi$ and $\Psi$ are inverse to each other.
+
+Let $\rho : G \to \GL(V) \in \Rep_KG$.
+Then $\Phi(\rho)$ is a left $KG$-module $M$ with underlying set $V$. Moreover, the multiplication on $M$ is characterized by the representation $\rho$.
+Then, $\Psi\Phi(\rho)$ is a representation of $G$ in $UM = V$, characterized by the multiplication on $M$, which is precisely the representation $\rho$.
+Hence, $\Psi\Phi(\rho) = \rho$.
+
+Conversely, let $M \in KG\lMod$.
+Then $\Psi(M)$ is a representation of $G$ in $UM$, characterized by the multiplication on $M$.
+Then, $\Phi\Psi(M)$ is a left $KG$-module with underlying set $UM$, characterized by the representation $\Psi(M)$, which is precisely the multiplication on $M$.
+Hence, $\Phi\Psi(M) = M$.
+
+Thus, we have strongly inverse functors $\Psi\Phi = \id_{\Rep_KG}$ and $\Phi\Psi = \id_{KG\lMod}$.
+
+Moreover, both $\Phi$ and $\Psi$ are additive functors since the addition of the underlying functions is commutative and both maps simply preserve the underlying sets and functions.
+
+\begin{pbox}
+    Deduce that $\Rep_K G$ is an abelian category.
+\end{pbox}
+
+Since $\Psi : KG\lMod \to \Rep_KG$ is additive, it carries over the zero object and commutes with finite biproducts.
+Moreover, since $\Psi$ is part of an equivalence of categories, it preserves monomorphisms and epimorphisms.
+Additionally, the fact that $\Psi$ is part of an equivalence also means it is an exact functor and therefore preserves kernels and cokernels.
+Thus, $\Psi$ carries over all the abelian structure of $KG\lMod$ to $\Rep_KG$.
+
+
+\newpage
+\begin{pbox}[6 (a)]
+    Let $M\in R\lMod$. Verify that the contravariant functor $\Hom_R(-,M): R\lMod \to \Z\lMod$ is left exact.
+\end{pbox}
+
+Let
+\begin{cd}
+    A \rar["f"] & B \rar["g"] & C \rar & 0
+\end{cd}
+be an exact sequence in $R\lMod$ and consider the image sequence
+\begin{cd}
+    0 \rar & \Hom_R(C, M) \rar["g^*"] & \Hom_R(B, M) \rar["f^*"] & \Hom_R(A, M)
+\end{cd}
+in $\Z\lMod$.
+
+Suppose $\phi \in \ker g^*$, so $0 = g^*\phi = \phi \circ g$.
+This means that $\ker\phi \supseteq \im g = C$, so in fact $\phi$ is zero on all of $C$.
+Hence, $\ker g^* = 0$.
+
+We have $f^* \circ g^* = (g \circ f)^* = 0$, so $\im g^* \seq \ker f^*$.
+It remains to check the opposite inclusion.
+
+Suppose $\psi \in \ker f^*$, so $0 = f^*\psi = \psi \circ f$.
+This means that $\ker\psi \supseteq \im f = \ker g$.
+We define a map $\phi : C \to M$ as follows: for $c \in C$ pick any $b \in g^{-1}(c)$ then put $\phi(c) = \psi(b)$.
+In order for this to be well-defined, we must check that $g(b) = g(b')$ implies $\psi(b) = \psi(b')$ for all $b \in B$.
+Indeed, if $g(b) = g(b')$, then we have $g(b - b') = 0$ so 
+$b - b' \in \ker g \seq \ker\psi$.
+Then $\psi(b - b') = 0$ which implies $\psi(b) = \psi(b')$.
+By construction, this gives $\psi = \phi \circ g = g^*\phi$.
+Therefore, $\psi \in \im g^*$ and we conclude that $\im g^* = \ker f^*$.
+
+
+
+\begin{pbox}[(b)]
+    Now let $R=M=\Z$. Show that the functor $\Hom_\Z(-,\Z): \Z\lMod \to \Z\lMod$ fails to be right exact.
+\end{pbox}
+
+Consider the short exact sequence
+\begin{cd}
+    0 \rar & \Z \rar["\cdot n"] & \Z \rar["q"] & \Z/n\Z \to 0
+\end{cd}
+Taking the image under the contravariant hom-functor, we obtain the sequence
+\begin{cd}
+    0 \rar & \Hom_\Z(\Z/n\Z, \Z) \rar["q^*"] & \Hom_\Z(\Z, \Z) \rar["(\cdot n)^*"] \dar["\iso"] & \Hom_\Z(\Z, \Z) \rar \dar["\iso"] & 0 \\
+    0 \rar & 0 \uar[equals] \rar & \Z \rar["\cdot n"'] & \Z \rar & 0
+\end{cd}
+But this sequence is not exact in general since multiplying my $n$ for $n \ne \pm1$ is not an isomorphism. 
+
+\end{document}

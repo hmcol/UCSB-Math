@@ -1,0 +1,480 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+\usepackage[shortlabels]{enumitem}
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\def\temp{#1}\ifx\temp\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\iso}{\cong}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\renewcommand{\tilde}{\widetilde}
+\renewcommand{\hat}{\widehat}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+
+% Extra Commands
+\newcommand{\tensor}{\otimes}
+
+\renewcommand{\_}[1]{{_{#1}}}
+
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\GL}{GL}
+
+\newcommand{\CC}{\mathcal{C}}
+\newcommand{\DD}{\mathcal{D}}
+
+\newcommand{\mathcat}{\mathsf}
+\newcommand{\newcat}[2]{\newcommand{#1}{\mathcat{#2}}}
+
+\newcat{\Set}{Set}
+
+\newcat{\Mod}{Mod}
+\newcat{\lMod}{\text{-}Mod}
+\newcat{\rMod}{Mod\text{-}}
+
+\newcat{\lmod}{\text{-}mod}
+\newcat{\rmod}{mod\text{-}}
+
+\newcommand{\supp}{\operatorname{supp}}
+
+% Document
+\begin{document}
+\title{MATH 236A Homework 2}
+\author{Harry Coleman}
+\date{March 10, 2023}
+\maketitle
+
+\begin{pbox}[1]
+    Let $R$ be any ring.
+    For a left $R$-module $M$ the following conditions are equivalent:
+    \begin{enumerate}[(A)]
+        \item $M$ is projective;
+        \item There exists a family $(m_i)_{i \in I}$ of element of $M$, together with a family of maps $(\Phi_i)_{i \in I}$ in $M^* = \Hom_R(M, R)$ such that
+        \begin{enumerate}[(i)]
+            \item for each $m \in M$, there are only finitely many $i \in I$ with the property that $\Phi_i(m) \ne 0$;
+            \item $\id_M = \sum_{i \in I} \Phi_i(-)m_i$, that is, $m = \sum_{i \in I} \Phi_i(m)m_i$ for every $m \in M$.
+        \end{enumerate}
+    \end{enumerate}
+
+    Prove only ``(B) $\implies$ (A).''
+\end{pbox}
+
+\begin{proof}
+    Assume (B) holds.
+    Consider the free left $R$-module $F = \bigoplus_{i \in I} Rx_i$.
+    We define a morphism $\Psi : F \to M$ by $x_i \mapsto m_i$.
+    It follows from property (ii) tells us that the $m_i$'s generate $M$ as a left $R$-module, so in fact $\Psi$ is an epimorphism.
+    This gives us the a short exact sequence in $R\lMod$:
+    \begin{cd}
+        0 \rar & \ker\Psi \rar[hook] & F \rar["\Psi"] & M \rar & 0
+    \end{cd}
+    For each $m \in M$, we define $\Phi(m) = \sum_{i \in I}\Phi_i(m)x_i$, which is a finite sum by property (i) and therefore well-defined.
+    This gives us a map $\Phi : M \to F$, which is in fact a homomorphism of left $R$-modules:
+    \begin{align*}
+        \Phi(rm + m')
+        &= \sum_{i \in I} \Phi_i(rm + m')x_i \\
+        &= \sum_{i \in I} (r\Phi_i(m) + \Phi_i(m'))x_i \\
+        &= r\sum_{i \in I} \Phi_i(m)x_i + \sum_{i \in I} \Phi_i(m')x_i \\
+        &= r\Phi(m) + \Phi(m').
+    \end{align*}
+    Note that the third equality relies on the fact that each sum is finite by property (i).
+    Now, for all $m \in M$, we have
+    \[
+        \Psi\Phi(m)
+        = \Psi\left(\sum_{i \in I} \Phi_i(m)x_i\right)
+        = \sum_{i \in I} \Phi_i(m)\Psi(x_i)
+        = \sum_{i \in I} \Phi_i(m)m_i
+        = m.
+    \]
+
+    In other words, the exact sequence above splits, so $F \iso \ker\Psi \oplus M$.
+    In particular, $M$ is a direct summand of a free module, so by definition $M$ is projective.
+\end{proof}
+
+\newpage
+\begin{pbox}[2]
+    This problem shows that projective modules (in contrast to free modules) need not be direct sums of finitely generated modules.
+
+    Let $R$ be the ring of continuous real functions $f : [0, 1] \to \R$ with the standard operations and $M$ the ideal consisting of those functions $g \in R$ which vanish on some (variable) neighborhood of $0$; that is
+    \[
+        M = \{g \in R \mid \exists\text{ a neighborhood $N$ of $0$ such that } g|_N = 0\}. 
+    \]
+\end{pbox}
+
+\begin{pbox}[(a)]
+    Prove that $M$ is not finitely generated as an $R$-module.
+\end{pbox}
+
+\begin{proof}
+    Assume for contradiction that $M$ is finitely generated by $g_1, \dots, g_n \in R$, i.e., that we can write $M = \sum_{i=1}^{n} Rg_i$.
+    For each $i = 1, \dots, n$ choose $\eps_i > 0$ such that $g_i|_{[0, \eps_i)} = 0$.
+    
+    Define $\eps = \min\{\eps_1, \dots, \eps_n\} > 0$, so that $[0, \eps) \seq [0, \eps_i)$ for all $i$.
+    By assumption, for an arbitrary $g \in M$ we have $g = \sum_{i=1}^{n} a_i g_i$ for some coefficient functions $a_i \in R$.
+    For any $x \in [0, \eps)$ we have
+    \[
+        g(x)
+            = \sum_{i=1}^{n} a_i(x) g_i(x)
+            = \sum_{i=1}^{n} a_i(x) \cdot 0
+            = 0.
+    \]
+    In other words, $g|_{[0, \eps)} = 0$ for all $g \in M$.
+
+    Define the function $f : [0, 1] \to \R$ by
+    \[
+        f(x) = \max\{0, x - \eps/2\}.
+    \]
+    As the composition of continuous functions, $f$ is continuous, i.e., $f \in R$.
+    More specifically, $f$ is zero on the interval $[0, \eps/2)$, which is an open neighborhood of $0$ in $[0, 1]$, so in fact $f \in M$.
+    However, we also have
+    \[
+        f(3\eps/4)
+            = \max\{0, 3\eps/4 - \eps/2\}
+            = \max\{0, \eps/4\}
+            = \eps/4 
+            > 0,
+    \]
+    which contradicts the fact that all functions in $M$ should vanish on $[0, \eps)$.
+\end{proof}
+
+\begin{pbox}[(b)]
+    Show that $M$ is an indecomposable $R$-module, i.e., whenever $M = A \oplus B$ with submodules $A$, $B$ (ideals of $R$ contained in $M$ in our case), then $A = 0$ or $B = 0$.
+\end{pbox}
+
+\begin{proof}
+    For each $S \seq R$, define the support of $S$ in $[0, 1]$ by
+    \[
+        \supp S = \{x \in [0, 1] \mid \exists f \in S \text{ such that } f(x) \ne 0\}.
+    \]
+    Assume for contradiction that $M = A \oplus B$.
+    On one hand, $A \seq M$ and $B \seq M$, from which it follows that $\supp A \cup \supp B \seq \supp M$.
+    On the other hand, if $x \in \supp M$ then there is some $f \in M$ such that $f(x) \ne 0$.
+    Since $M = A \oplus B$, we can write $f = f_A + f_B$ with $f_A \in A$ and $f_B \in B$.
+    Then $f(x) = f_A(x) + f_B(x) \ne 0$, so either $f_A(x) \ne 0$ or $f_B(x) \ne 0$.
+    Therefore, either $x \in \supp A$ or $x \in \supp B$, so in fact $\supp M = \supp A \cup \supp B$.
+
+    We claim $\supp A$ and $\supp B$ are disjoint.
+    Suppose $x \in \supp A \cap \supp B$, which means there exists $f \in A$ adn $g \in B$ such that $f(x)$ and $g(x)$ are both nonzero.
+    But then their product $fg$ is an element of $A \cap B$, which must be trivial.
+    That is, $fg = 0$, but we must have $fg(x) = f(x)g(0) \ne 0$.
+    This is a contradiction, so $\supp A$ and $\supp B$ are disjoint.
+
+    Since $\supp M$ connected, and $\supp A$ and $\supp B$ are disjoint open sets, we must have either $\supp A = \emptyset$ or $\supp B = \emptyset$.
+    But this implies either $A = 0$ or $B = 0$.
+\end{proof}
+
+
+
+\begin{pbox}[(c)]
+    Prove that $M$ is a projective $R$-module.
+\end{pbox}
+
+\begin{proof}
+    We will apply Problem 1, i.e., we will construct a dual basis for $M$.
+    Define $m_n \in M$ as per the hint.
+    Additionally, define $\Phi_n \in \Hom_R(M, R)$ by $\Phi_1(f) = f$ and $\Phi_n(f) = (1 - m_{n-1})f$ for $n \geq 2$.
+
+    For every $f \in M$, there is some $\eps > 0$ such that $f|_{[0, \eps)} = 0$.
+    By construction, $1 - m_n$ is zero on the interval $[\frac{1}{n}, 1]$.
+    Then for $n > \frac{1}{\eps}$, we have $1 - m_n$ zero on the interval $[\eps, 0]$, which implies $\Phi_{n+1}(f) = (1 - m_n)f$ is zero on all of $[0, 1]$.
+    In particular, $\Phi_n(f)$ is nonzero for finitely many $n \in \N$, i.e., condition (i) is satisfied.
+
+    For $x \in (\frac{1}{i+1}, \frac{1}{i})$, we have $m_n(x) = 0$ for $n \leq i-1$ and $m_n(x) = 1$ for $n \geq i+1$.
+    Then
+    \begin{align*}
+        \sum_{n \in \N} (1 - m_{n-1}(x))m_n(x)
+            &= (1 - m_{i-1}(x))m_i(x) + (1 - m_i(x))m_{i+1}(x) \\
+            &= (1 - 0)m_i(x) + (1 - m_i(x)) \cdot 1 \\
+            &= m_i(x) + (1 - m_i(x)) \\
+            &= 1.
+    \end{align*}
+    Therefore, for $f \in M$ and $x \in [0, 1]$, we have
+    \[
+        \left(\sum_{n \in \N} \Phi_n(f)m_n\right)(x)
+            = \sum_{n \in \N} (1 - m_{n-1}(x))f(x)m_n(x)
+            = f(x).
+    \]
+    In other words, condition (ii) is satisfied.
+    This means we have successfully constructed a dual basis for $M$, hence $M$ is projective.
+\end{proof}
+
+
+
+\newpage
+\begin{pbox}[3]
+    Prove that, up to isomorphism, the divisible abelian groups are precisely the direct sums of copies of $\Q$ and Pr\"ufer groups $\Z(p^\infty)$, for primes $p$.
+\end{pbox}
+
+\begin{lemma}\label{lem:divab_torfree}
+    If $A$ is a torsionfree divisible abelian group, $A \iso \Q^{(I)}$.
+\end{lemma}
+
+\begin{proof}
+    We want to define a $\Q$-module structure on $A$.
+    For $\frac{a}{b} \in \Q$ and $x \in A$, choose $y \in A$ such that $x = by$, then define $\frac{a}{b} \cdot x = ay$.
+
+    For this to be well-defined, we check that the choice of $y$ is unique.
+    Suppose $x = by = by'$, then $b(y - y') = 0$.
+    Since $b \in \Z_{>0}$ and $A$ is torsionfree, we must have $y - y' = 0$, i.e., $y = y'$.
+
+    We now check that the scalar multiplication above defines a $\Q$-module structure on $A$:
+    \[
+        \tfrac{1}{1} \cdot x = 1x = x,
+    \]
+    \[
+        \tfrac{a}{b} \cdot (x + x') 
+        = \tfrac{a}{b} \cdot (by + by') 
+        = \tfrac{a}{b} \cdot b(y + y') 
+        = a(y + y') = ay + ay' 
+        = \tfrac{a}{b} \cdot x + \tfrac{a}{b} \cdot x',
+    \]
+    \[
+        (\tfrac{a}{b} + \tfrac{a'}{b'}) \cdot x
+        = \tfrac{ab' + a'b}{bb'} \cdot bb'y
+        = (ab' + a'b)y
+        = ab'y + a'by
+        = \tfrac{a}{b} \cdot bb'y + \tfrac{a'}{b'} \cdot bb'y
+        = \tfrac{a}{b} \cdot x + \tfrac{a'}{b'} \cdot x,
+    \]
+    \[
+        \tfrac{a}{b} \cdot (\tfrac{a'}{b'} \cdot x)
+        = \tfrac{a}{b} \cdot (\tfrac{a'}{b'} \cdot bb'y)
+        = \tfrac{a}{b} \cdot a'by
+        = aa'y
+        = \tfrac{aa'}{b} \cdot bb'y
+        = (\tfrac{a}{b} \cdot \tfrac{a'}{b'}) \cdot x.
+    \]
+    Hence, $A$ is a $\Q$-vector space and therefore we have an isomorphism $A \iso \Q^{(I)}$.
+\end{proof}
+
+\begin{lemma}\label{lem:tor_decomp}
+    If $A$ is a nonzero divisible torsion abelian group, then $A = \bigoplus_{p \text{ prime}} T_p(A)$, where
+    \[
+        T_p(A) = \{x \in A \mid \exists n \in \N \text{ such that } p^nx = 0\}.
+    \]
+\end{lemma}
+
+\begin{proof}
+    It is quick to check that each $T_p(A)$ is a subgroup.
+    Given $x, y \in T_p(A)$, say $p^nx = 0$ and $p^mx = 0$.
+    Then $p^{n+m}(x + y) = p^m(p^nx) + p^n(p^my) = 0 + 0 = 0$, hence $x + y \in T_p(A)$.
+
+    We first show that $A = \sum_{p \text{ prime}} T_p(A)$.
+    Given $x \in A$, say $p^nx = 0$.
+    Take a prime decomposition $n = p_1^{k_1}p_2^{k_2} \cdots p_m^{k_m}$, with all the $p_i$'s distinct.
+    We perform induction on $m$ to show that $x \in \sum_{i=1}^{m} T_{p_i}(A)$.
+    Trivially, if $m = 1$ then $p_1^{k_1}x = 0$ so indeed $x \in T_{p_1}(A)$.
+
+    For the inductive hypothesis, assume that the conclusion is true whenever the prime decomposition has at most $m \geq 1$ distinct primes.
+    Suppose $n = p^kn_0$ where $n_0 = p_1^{k_1} \cdots p_m^{k_m}$, so that $n$ has $m + 1$ distinct primes in its prime factor decomposition.
+    Note that $p^k$ and $n_0$ are coprime, so B\'ezout's Lemma tells us there exist $u, v \in \Z$ such that $un_0 + vp^k = 1$.
+    Then we can write $x = un_0x + vp^kx$ and notice that $p^k(n_0x) = nx = 0$, so $n_0x \in T_p(A)$.
+    Additionally, $n_0(p^kx) = nx = 0$, so $p^kx$ is an element of $A$ which is annihilated by an integer $n_0$ which has $m$ distinct primes in its prime factorization.
+    Therefore, the inductive hypothesis gives us
+    \[
+        x = un_0x + vp^kx \in T_p(A) + \sum_{i=1}^{m} T_{p_i}(A).
+    \]
+    This completes the induction, thus $A = \sum_{p \text{ prime}} T_p(A)$.
+
+    To prove that the summation is direct, we must show that every element $x \in A$ has a unique representation $x = x_1 + \dots + x_n$ with $x_i \in T_{p_1}(A)$ for some finite collection of primes $p_1, \dots, p_n$.
+    It suffices to prove that $0 \in A$ has a unique representation, i.e., that whenever $x_1 + \cdots + x_n = 0$ with $x_i \in T_{p_i}(A)$, we must have $x_i = 0$ for all $i$.
+    If this is the case and we have $x = x_1 + \cdots + x_n = y_1 + \cdots + y_n$ for an arbitrary $x \in A$, with $x_i, y_i \in T_{p_i}(A)$, then $0 = (x_1 - y_1) + \cdots + (x_n - y_n)$ with each $x_i - y_i \in T_{p_i}(A)$.
+    If indeed zero has a unique representation, then it must be the case that $x_i = y_i$ for all $i$, so indeed $x$ would have a unique representation.
+
+    To prove that zero has a unique representation, suppose $x_1 + \cdots + x_n = 0$ with $x_i \in T_{p_i}(A)$.
+    We perform induction on $n$.
+    The base case is trivial.
+    Suppose the result holds for $n \geq 1$ and that $0 = x + x_1 + \cdots + x_n$ with $x_i \in T_{p_i}(A)$ and $x \in T_p(A)$; say $p^kx = 0$.
+    Then
+    \[
+        0 = -p^kx = p^kx_1 + \cdots + p^kx_n,
+    \]
+    where $p^kx_i \in T_{p_i}(A)$.
+    By the inductive hypothesis, we must have $p^kx_i = 0$ for all $i$.
+    But this implies $x_i \in T_p(A) \cap T_{p_i}(A)$.
+    say $p_i^{k_i}x_i = 0$, then $p^k$ and $p_i^{k_i}$ are coprime and B\'ezout's Lemma gives us $u, v \in \Z$ such that $up^k + vp_i^{k_i} = 1$.
+    Then
+    \[
+        x_i = up^kx_i + vp_i^{k_i} = 0 + 0 = 0,
+    \]
+    from which we deduce
+    \[
+        x = x + x_1 + \cdots + x_n = 0.
+    \]
+    This completes the induction, thus $A = \bigoplus_{p \text{ prime}} T_p(A)$.
+\end{proof}
+
+\begin{lemma}\label{lem:ptor_pruefer}
+    If $A$ is a nonzero divisible $p$-torsion abelian group, then there exists a subgroup of $A$ isomorphic to the Pr\"ufer group, i.e., there is an embedding $\Z(p^\infty) \inc A$.
+    In particular, $\Z(p^\infty)$ is a direct summand of $A$, so $A \iso \Z(p^\infty) \oplus B$ for some subgroup $B$ of $A$.
+\end{lemma}
+
+\begin{proof}
+    Given $y \in A$ nonzero, say $p^ny = 0$.
+    Define $x_1 = p^{n-1}y \in A$ so the order of $x_1$ is $p$.
+    Then the cyclic subgroup $\<x_1\> \leq A$ is isomorphic to $\Z/p\Z$.
+
+    Given $x_i \in A$ with $\<x_i\> \iso \Z/p^i\Z$, choose $x_{i+1} \in A$ such that $x_i = px_{i+1}$.
+    Then $\<x_{i+1}\> \iso \Z/p^{i+1}\Z$ with an embedding $\<x_i\> \inc \<x_{i+1}\>$ given by $x_i \mapsto px_i = x_{i+1}$.
+
+    This is an inductive construction of a system of inclusions $\<x_i\> \inc \<x_{i+1}\>$ for which $\<x_i\> \iso \Z/p^i\Z$.
+    Taking the direct limit of this system gives us a subgroup $X \leq A$.
+    Moreover, this construction is the same as our construction of $\Z(p^\infty)$ so in fact $X \iso \Z(p^\infty)$.
+\end{proof}
+
+\begin{lemma}\label{lem:divab_ptor}
+    If $A$ is a divisible $p$-torsion abelian group, $A \iso \Z(p^\infty)^{(I)}$.
+\end{lemma}
+
+\begin{proof}
+    Define the set
+    \[\textstyle
+        \mathcal{U} = \{(U_i)_{i \in I} \mid \Z(p^\infty) \iso U_i \leq A \text{ and } \sum_{i \in I} U_i = \bigoplus_{i \in I} U_i\}.
+    \]
+    We define a partial order on $\mathcal{U}$ by $(U_i)_{i \in I} \leq (V_j)_{j \in J}$ whenever there is an inclusion $I \inc J$ of index sets and $U_i = V_i$ for all $i \in I$.
+
+    Let $C \seq U$ be a chain.
+    Take the index set $I_0 = \bigcup\{I \mid (U_i)_{i \in I} \in C\}$, where we identify indices using the inclusions implied by the partial order.
+    Then the upper bound of $C$ is simply $(U_i)_{i \in I_0}$.
+    The fact that $(U_i)_{i \in I_0}$ is an element of $\mathcal{U}$ follows from the fact that to check if a sum is direct, it suffices to check that each finite ``sub-sum'' is direct.
+    And the fact that a given finite sub-sum is direct reduces to the condition for some $(U_i)_{i \in I} \in C$.
+
+    By Zorn's Lemma, let $(U_i)_{i \in I}$ be a maximal element of $\mathcal{U}$.
+    Define $U = \bigoplus_{i \in I} U_i$, which is a direct sum of divisible abelian groups and therefore an injective abelian group.
+    So $A = U \oplus B$ for some $B \leq A$; we claim that $B$ is trivial.
+
+    Note that $B$ is a divisible $p$-torsion abelian group, so by Lemma \ref{lem:ptor_pruefer}, if $B$ is nonzero then it must have a subgroup $X \leq B$ isomorphic to $\Z(p^\infty)$.
+    In particular, $B = X \oplus C$ for some $C \leq B$.
+    But then $A = U \oplus X \oplus C$, and we could add $X$ into the collection $(U_i)_{i \in I}$ and get a strictly larger element of $\mathcal{U}$.
+    This would contradict the maximality of $(U_i)_{i \in I}$, so $B$ must be trivial.
+    Hence, $A = U = \bigoplus_{i \in I} U_i \iso \Z(p^\infty)^{(I)}$.
+\end{proof}
+
+\begin{proposition}
+    If $A$ is a divisible abelian group, then $A \iso \Q^{(I)} \oplus \bigoplus_{p \text{ prime}} \Z(p^\infty)^{(I_p)}$.
+\end{proposition}
+
+\begin{proof}
+    Let $T(A)$ be the torsion subgroup of $A$.
+
+    We check that $T(A)$ is divisible.
+    Let $x \in T(A)$ and $n \in \Z_{>0}$.
+    Since $A$ is divisible, there is some $y \in A$ such that $x = ay$.
+    Since $x$ is torsion, there is some $m \in \Z_{>0}$ such that $mx = 0$.
+    But then $0 = mx = (mn)y$, so $y$ is torsion.
+    That is, $y \in T(A)$, so $T(A)$ is a divisible group. 
+
+    Hence, $T(A)$ is an injective $\Z$-module, so we can write $A = A_0 \oplus T(A)$, where $A_0 \iso A/T(A)$.
+    We apply Lemma \ref{lem:divab_torfree} to $A_0$, Lemma \ref{lem:tor_decomp} to $T(A)$, and Lemma \ref{lem:divab_ptor} to each $T_p(A) = T_p(T(A))$:
+    \[
+        A
+            \iso A_0 \oplus T(A)
+            \iso \Q^{(I)} \oplus \bigoplus_{p \text{ prime}} \Z(p^\infty)^{(I_p)}
+    \]
+\end{proof}
+
+\newpage
+\begin{pbox}[4]
+    Show that an abelian group $A$ is a flat $\Z$-module if and only if $A$ is torsionfree.
+\end{pbox}
+
+\begin{proof}
+    For each $n \in \Z_{>0}$, there is an isomorphism of abelian groups $\Z \iso n\Z$ given by $1 \mapsto n$, i.e., the multiplication by $n$ map.
+
+    Suppose $A$ is flat.
+    For any ideal inclusion $\iota : n\Z \inc \Z$, tensoring with $A$ gives a monomorphism $A \tensor_Z n\Z \to A \tensor_Z \Z$.
+    Therefore, the following sequence of maps is a monomorphism:
+    \begin{cd}[row sep=tiny]
+        A \rar["\iso"]
+        & A \tensor_\Z \Z \rar["\iso"]
+        & A \tensor_\Z n\Z \rar["A \tensor \iota"]
+        & A \tensor_\Z \Z \rar["\iso"]
+        & A \\
+        x \rar[mapsto]
+        & x \tensor 1 \rar[mapsto]
+        & x \tensor n \rar[mapsto]
+        & x \tensor n \rar[mapsto]
+        & nx
+    \end{cd}
+    In other words, multiplying by $n$ is an injective operation on $A$ for all $n \in \Z_{>0}$, hence $A$ is torsionfree.
+
+    Suppose $A$ is torsionfree.
+    Let $\iota : n\Z \inc \Z$ be the inclusion of any ideal.
+    We know that multiplication by $n$ is an injective operation on $A$, so the following sequence of maps is a monomorphism:
+    \begin{cd}[row sep=tiny]
+        A \tensor_\Z n\Z \rar["\iso"]
+        & A \tensor_\Z \Z \rar["\iso"]
+        & A \rar ["\cdot n"]
+        & A \rar["\iso"]
+        & A \tensor_\Z \Z \\
+        x \tensor n \rar[mapsto]
+        & x \tensor 1 \rar[mapsto]
+        & x \rar[mapsto]
+        & nx \rar[mapsto]
+        & nx \tensor 1 = x \tensor n
+    \end{cd}
+    But this is precisely the map $A \tensor \iota$, so in fact $A$ is flat.
+\end{proof}
+
+
+\end{document}

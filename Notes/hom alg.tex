@@ -1,0 +1,3727 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{mathrsfs}
+\usepackage{tikz, tikz-cd}
+\usepackage[shortlabels]{enumitem}
+
+\usepackage{suffix}
+\usetikzlibrary{decorations.pathmorphing}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+
+% Environments
+\setlist[enumerate]{nosep}
+\newcommand{\keyword}[1]{\textbf{#1}}
+\newcommand{\sepline}{\rule{\textwidth}{0.4pt}}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+
+% Document Formatting
+\newtheoremstyle{mythmstyle}% name of the style to be used
+  { }% measure of space to leave above the theorem. E.g.: 3pt
+  { }% measure of space to leave below the theorem. E.g.: 3pt
+  { }% name of font to use in the body of the theorem
+  { }% measure of space to indent
+  {\scshape}% name of head font
+  {.}% punctuation between head and body
+  { }% space after theorem head; " " = normal interword space
+  {\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}}% Manually specify head
+
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+
+% Math Formatting
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+
+% mathbb
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\D}{\mathbb{D}}
+
+
+% mathcal
+\renewcommand{\AA}{\mathcal{A}}
+\newcommand{\BB}{\mathcal{B}}
+\newcommand{\CC}{\mathcal{C}}
+\newcommand{\DD}{\mathcal{D}}
+\newcommand{\EE}{\mathcal{E}}
+\newcommand{\OO}{\mathcal{O}}
+
+\newcommand{\FF}{\mathcal{F}}
+\newcommand{\GG}{\mathcal{G}}
+\newcommand{\HH}{\mathcal{H}}
+
+\renewcommand{\SS}{\mathcal{S}}
+
+% Symbols
+
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+
+% Delimiters
+\newcommand{\<}{\left\langle}
+\renewcommand{\>}{\right\rangle}
+
+% Relations
+\newcommand{\iso}{\cong}
+\newcommand{\htpy}{\simeq}
+\newcommand{\seq}{\subseteq}
+\newcommand{\teq}{\trianglelefteq}
+\newcommand{\tensor}{\otimes}
+
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\surj}{\twoheadrightarrow}
+\newcommand{\To}{\longrightarrow}
+\newcommand{\tto}{\rightrightarrows}
+\newcommand{\Mapsto}{\longmapsto}
+
+\newcommand{\nato}{\Rightarrow}
+\newcommand{\Nato}{\Longrightarrow}
+
+
+\newcommand{\eqby}[1]{\overset{\mathrm{(#1)}}{=}}
+
+% Math Operators
+\DeclareMathOperator{\Ob}{Ob}
+\DeclareMathOperator{\Mor}{Mor}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Iso}{Iso}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\supp}{supp}
+
+\DeclareMathOperator{\RHom}{RHom}
+
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\cod}{cod}
+\newcommand{\op}{\mathrm{op}}
+
+
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\Ann}{Ann}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\Cyl}{Cyl}
+
+
+
+
+\newcommand{\dd}{\mathrm{d}}
+
+% Other
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\newcommand{\udl}{\underline}
+
+\renewcommand{\hat}{\widehat}
+\renewcommand{\bar}{\overline}
+
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+
+% Category Names
+\newcommand{\mathcat}{\mathsf}
+\newcommand{\newcat}[2]{\newcommand{#1}{\mathcat{#2}}}
+\WithSuffix\newcommand\newcat*[2]{\WithSuffix\newcommand#1*{\mathcat{#2}}}
+
+
+\newcat{\Set}{Set}
+
+\newcat{\Top}{Top}
+\newcat{\Htpy}{Htpy}
+
+\newcat{\Mon}{Mon}
+\newcat{\CMon}{CMon}
+\newcat{\Grp}{Grp}
+\newcat{\Ab}{Ab}
+
+\newcat{\Ring}{Ring}
+\newcat{\CRing}{CRing}
+
+\newcat{\Mod}{\text{-}Mod}
+\newcat*{\Mod}{Mod}
+
+\newcat{\lMod}{\text{-}Mod}
+\newcat{\rMod}{Mod\text{-}}
+
+\newcat{\lmod}{\text{-}mod}
+\newcat{\rmod}{mod\text{-}}
+
+
+\newcat{\Vect}{\text{-}Vect}
+\newcat*{\Vect}{Vect}
+\newcat{\Comp}{\text{-}Comp}
+\newcat*{\Comp}{Comp}
+
+\newcat{\Cat}{Cat}
+\newcat{\CAT}{CAT}
+
+\newcat{\SAb}{SAb}
+\newcat{\PAb}{PAb}
+
+\newcat{\Kom}{Kom}
+
+\renewcommand{\_}[1]{{_{#1}}}
+
+
+
+\title{Homological Algebra \\
+    \large 
+}
+\author{}
+\date{}
+
+
+\begin{document}
+
+Stuff for MATH 236A Homological Algebra 
+
+\sepline
+
+Example: Homology functors
+
+\begin{cd}[row sep=tiny, column sep=tiny]
+    R\Comp \ar[rr, "{H_n}"] && \Z\Mod \\
+    A_\bullet \ar[dd, "f"'] & \Mapsto & \ker d_n / \im d_{n+1} \ar[dd, "an + \im d_{n+1} \mapsto f_n(a_n) + \im d_{n+1}'"] \\
+    & \Mapsto \\
+    A_\bullet' & \Mapsto & \ker d_n' / \im d_{n+1}'
+\end{cd}
+
+\sepline
+
+A \keyword{pre-additive category} is a category $\CC$ such that for all $A, B \in \Ob\CC$ the hom-set $\Hom_\CC(A, B)$ is an (additive) abelian group such that
+\[
+    h \circ (f + g) = hf + hg
+    \isp{and}
+    (f + g) \circ k = fk + gk
+\]
+for all suitable $f, g, h, k \in \Hom\CC$.
+
+\sepline
+
+Let $\CC$, $\DD$ be pre-additive categories.
+
+A functor $F : \CC \to \DD$ is called \keyword{additive} if for all $A, B \in \Ob\CC$ the map
+\[
+    F : \Hom_\CC(A, B) \To \Hom_\DD(FA, FB)
+\]
+is a homomorphism of abelian groups.
+
+\sepline
+
+Let $F: R\Mod \to S\Mod$ be an additive functor.
+Then $F$ induces a an additive functor
+\begin{align*}
+    \tilde{F} : R\Comp &\To S\Comp, \\
+        A_\bullet &\Mapsto FA_\bullet.
+\end{align*}
+
+For $F : R\Mod \to S\Mod$, we care about e.g. $H_n \circ \tilde{F} : A_\bullet \mapsto H_n(FA_\bullet)$.
+
+\sepline
+
+Important Example I: hom-functor
+
+\begin{align*}
+    \Hom_R(\_RM_S, -) &: R\Mod \To S\Mod, \\
+    \Hom_R(-, \_RN_T) &: R\Mod \To \Mod*\text{-}T.
+\end{align*}
+
+In general, $\Hom_R(\_RM_S, \_RN_T)$ is an $S$-$T$-bimodule.
+
+\sepline
+
+Important Example II: tensor-functor
+
+Let $M \in \Mod*{-}R$, $N \in R\Mod$.
+
+A \keyword{tensor product} of $M$ and $N$ consists of 
+\begin{itemize}
+    \item an abelian group $T$,
+    \item a $\Z$-bilinear and $R$-balanced map $\tau : M \times N \to T$,
+\end{itemize}
+satisfying the following universal property:
+
+Whenever $\sigma : M \times N \to A$ is $\Z$-bilinear and $R$-balanced ($A$ abelian group), there exists a unique $\Z$-linear map $\sigma' : T \to A$ such that the following diagram commutes:
+\begin{cd}
+    M \times N
+        \rar["\sigma"]
+        \dar["\tau"']
+    & A \\
+    T 
+        \urar[dashed, "\exists!\sigma'"']
+\end{cd}
+
+Write $M \tensor_R N := T$ for a (the) tensor product.
+
+\sepline
+
+\begin{theorem}
+    Let $M \in \Mod*{-}R$ and $N \in R\Mod$.
+    There exists a unique up to isomorphism tensor product $M \tensor_R N$.
+\end{theorem} 
+
+\begin{proof}
+    Let $F$ be the free abelian group on basis $M \times N$, i.e., $F = \bigoplus_{m,n} \Z_{m,n}$.
+
+    Define $M \tensor_R N = F/U$ where $U$ is the submodule generated by all elements of the form
+    \begin{align*}
+        & (m_1 + m_2, n) - (m_1, n) - (m_2, n), \\
+        & (m, n_1 + n_2) - (m, n_1) - (m, n_2), \\
+        & (mr, n) - (m, rn).
+    \end{align*}
+
+    Define $\tau : M \times N \to M \tensor_R N$ by $(m, n) \mapsto m \tensor n := (m, n) + U$.
+    Then $\tau$ is $\Z$-bilinear and $R$-balanced.
+
+    Claim $M \tensor_R N$ with $\tau$ satisfied the universal property.
+
+    Given $\sigma : M \times N \to A$ an $\Z$-bilinear, $R$-balanced map to abelian group $A$.
+    Define $\tilde{\sigma} : F \to A$ by $(m, n) \mapsto \sigma(m, n)$ and extend bilinearly.
+
+    By definition of $U$, $\tilde{\sigma}(U) = 0$.
+
+    Hence, there exists a $\Z$-linear map $\sigma' : F/U \to A$ with the property that
+    \[
+        \sigma'(m, n) 
+            = \tilde{\sigma}((m, n) + U)
+            = \tilde{\sigma}(m \tensor n).
+    \]
+
+    Exercise: show $\sigma'$ is unique.
+\end{proof}
+
+
+\sepline
+
+1/23/23 (missed)
+
+define natural transformation, equivalence of categories, morita equivalence of rings, adjoint functors.
+
+\sepline
+
+1/25/23
+
+category theory is ``the mathematician's filing cabinet.''
+good tool for transporting information from one area of math to another area, when one has equivalence of categories or sufficiently good functors.
+
+
+\sepline
+
+Let $F : \CC \to \DD$ and $G : \DD \to \CC$ be functors.
+We say that $F$ and $G$ are \keyword{adjoint}, written $F \dashv G$ if the bifunctors $\CC \times \DD \to \Set$ are naturally isomorphic:
+\[
+    \Mor_\DD(F(-), -) \iso \Mor_\CC(-, G(-)).
+\]
+That is, the following diagram commutes:
+\begin{cd}[column sep=huge]
+    \CC \times \DD
+        \rar[bend left=20, "{\Mor_\DD(F(-), -)}" name=U]
+        \rar[bend right=20, "{\Mor_\CC(-, G(-))}"' name=L]
+        \ar[from=U, to=L, shorten=1ex, Rightarrow]
+    & \Set
+\end{cd}
+
+\sepline
+
+Examples
+
+1.\begin{enumerate}[(a)]
+    \item $R \tensor_R - \iso \id_{R\Mod}$.
+
+    $R \tensor_R - : R\Mod \to R\Mod$ well-defined since $\_RR_R$ isa bimodule.
+    \item $\Hom_{R\lMod}(\_RR_R, -) \iso \id_{R\lMod}$
+\end{enumerate}
+
+
+2. $R$ morita equivalent to $M_n(R)$ for $n \in \N$.
+
+Why? Let $F_R = R_R^n$ and $S = \End_R(F) \iso M_n(R)$ (ring iso).
+
+Let $\_SF_R$ is a bimodule.
+
+Consider $F^* = \_R\left(\Hom_R(\_SF_R, R)\right)_S$.
+
+Claim: The functors $\Hom_R(F, -) : \rMod{R} \to \Mod*{-}S$ and $\Hom_S(F^*, -) : \Mod*{-}S \to \Mod*{-}R$ are mutually inverse functors.
+
+Want to show that for $M \in \rMod{R}$, have iso $\id_{\Mod*{-}R} \iso \Hom_S(F^*, \Hom_R(F, -))$.
+For $M \in \Mod*{-}R$, have
+\begin{align*}
+    \Phi(M) : M &\To \Hom_S(F^*, \Hom_R(F, M)) \\
+        m &\Mapsto \left(f \mapsto (x \mapsto mf(x))\right)
+\end{align*}
+
+Check $\Phi(M)$ is an $R$-module homomorphism and in fact is an isomorphism of $R$-modules.
+
+3. Let $R = K$ bea field.
+Then we have a duality $(-)^* : K\lmod \to K\lmod$, $V \mapsto V^*$ (dual vector space).
+Then there is a natural isomorphism $\Phi : \id_{K\lmod} \Rightarrow (-)^{**}$
+\begin{align*}
+    \Phi(V) : V &\To V^{**} = \Hom_K(\Hom_K(V, K), K), \\
+        x &\Mapsto \operatorname{eval}_x = (f \mapsto f(x)).
+\end{align*}
+
+Then $(\Phi(V))_{V \in K\lmod}$ is a duality $K\lmod \to K\lmod$.
+
+We may extend $\Phi$ to a functor $K\lMod \to K\lMod$ contravariant.
+
+$\Phi(V) : V \to V^{**}$ is not surjective if $\dim V = \infty$ (hw problem).
+
+\sepline
+
+Example of adjoint pair.
+
+slogan: ``tensor functors are left-adjoint to hom-functors''
+
+Let $\_SB_R$ be an $S$-$R$-bimodule.
+
+Then the functors 
+\[
+    B\tensor_R - : R \To R\lMod
+\]
+is left-adjoint to
+\[
+    \Hom_S(B, -) : S\lMod \To R\lMod.
+ \]
+
+ \sepline
+
+1/27/2023
+
+An \keyword{additive category} is a pre-additive category $\CC$ together with the following additional data  
+\begin{itemize}
+    \item a \keyword{zero object} $0 \in \CC$
+\end{itemize}
+such that
+\begin{itemize}
+    \item for every $A \in \CC$ the hom-sets $\Hom(0, A)$ and $\Hom(A, 0)$ are singletons;
+    \item $\CC$ has all finite direct sums and finite direct products;
+\end{itemize}
+
+Additionally, say $\CC$ is \keyword{abelian} if 
+\begin{itemize}
+    \item every morphism in $\CC$ has a kernel and cokernel;
+    \item every monomorphism is a kernel and every epimorphism is a cokernel.
+\end{itemize}
+
+\sepline
+
+Example
+
+In $\Ring$, there are categorical epimorphisms which fail to be surjective, e.g., $f : \Z \inc \Q$.
+
+Let $g, h \in \Hom_\Ring(\Q, R)$ be such that $gf = hf$, i.e., $g|_\Z = h|_\Z$.
+It follows that $g = h$.
+For $b \in \Z \setminus \{0\}$, 
+\[
+    1_R
+        = g(1_\Q)
+        = g(b \cdot 1/b)
+        = g(b) g(1/b)
+        = g(1/b)g(b).
+\]
+Hence, $g(b)$ is a unit in $R$ and $g(1/b) = g(b)^{-1}$.
+
+\sepline
+
+In $R\lMod$, $R\Comp$, monomorphisms/epimorphisms coincide with injective/surjective homomorphisms.
+
+\sepline
+
+Example
+
+abelian: $R\lMod$, in particular $\Z\lMod = \Ab$.
+
+$R\Comp$, let $\operatorname{\mathscr{T}-\Ab}$ be the full subcategory of $\Ab$ consisting of the torsion abelian groups ($A \in \Ab$ such that for all $a \in A$ there exists $n \in \Z \setminus \{0\}$ such that $na = 0$).
+
+What about the full subcategory $\operatorname{\mathscr{F}-\Ab}$ having objects as torsion-free abelian groups? No.
+
+Further non-abelian: $R\lmod$ is not abelian if $R$ is left-noetherian
+
+e.g., $R = K^\N$ with $K$ a field.
+$I = K^{(\N)}$ is not finitely generated as a left ideal, and canonical quotient map $\pi : R \surj R/I$ in $R\lmod$ does not have a kernel.
+
+Note: $K^\N = \prod_{i\in\N} K_i$ with $K_i = K$ and $K^{(\N)} = \{(k_i) \in K^\N \text{ with finite support}\}$.
+
+\sepline
+
+Remark.
+
+\begin{cd}[row sep=0]
+    R\lMod \rar[rightsquigarrow] 
+        & R\Comp \rar[rightsquigarrow] 
+        & H(R\Comp) \rar[rightsquigarrow]
+        & D(R\lMod) \\
+    \text{ab} 
+        & \text{ab}
+        & \text{not ab}
+        & \text{not ab} \\
+    & & \text{in general}
+        & \text{derived category}
+\end{cd}
+
+\sepline
+
+On the road to derived functors.
+
+Note: we will develop the theory for the abelian category $R\lMod$, but it easily adapts to arbitrary categories.
+
+\sepline
+
+Let $R$ and $S$ be rings, $F : R\lMod \to S\lMod$ an additive functor (covariant or contravariant).
+
+Say covariant $F$ is \keyword{exact} if for all short exact sequences
+\begin{cd}
+    0 \rar & A \rar["f"] & B \rar["g"] & C \rar & 0
+\end{cd}
+in $R\lMod$, the image sequence
+\begin{cd}
+    0 \rar & FA \rar["Ff"] & FB \rar["Fg"] & FC \rar & 0
+\end{cd}
+is exact in $S\lMod$.
+
+(In the case that $F$ is contravariant, the definition is the same with respect to the with appropriate image sequence.)
+
+Say covariant $F$ is left-exact if for every exact sequence 
+\begin{cd}
+    0 \rar & A \rar["f"] & B \rar["g"] & C
+\end{cd}
+in $R\lMod$, (equivalent if add $C \to 0$) the image sequence
+\begin{cd}
+    0 \rar & FA \rar["Ff"] & FB \rar["Fg"] & FC
+\end{cd}
+is exact in $S\lMod$.
+
+
+\sepline
+
+2/1/23
+
+\sepline
+
+2/3/23
+
+
+Recall: properties of groups
+\begin{itemize}
+    \item torsion and torsion-free,
+    \item divisible and reduced (no nonzero divisible subgroup).
+\end{itemize}
+Then
+\begin{itemize}
+    \item $\Hom_\Z(\text{torsion}, \text{torsion-free}) = 0$,
+    \item $\Hom_\Z(\text{divisible}, \text{reduced}) = 0$.
+\end{itemize}
+
+Examples showing that hom-functors fail to be right exact and tensor-functors fail to be left exact, in general.
+
+1. $\Hom_\Z(\Z/n\Z, -)$ is not right exact, $n \geq 2$.
+Apply the canonical map $\Z \to \Z/n\Z$, get
+\begin{cd}
+    \Hom_\Z(\Z/n\Z, \Z) 
+        \rar 
+    & \Hom_\Z(\Z/n\Z, \Z/n\Z)
+\end{cd}
+
+2. $F = \Hom_\Z(\Q, -)$ is not right exact.
+
+Take $\_RM \in \R\lmod$, then
+\begin{align*}
+    \_RR^{(M)} &\To \_RM \\
+    1_R &\Mapsto m
+\end{align*}
+
+Consider an epimorphism $g : \Z^{(\N)} \to \Q$.
+Apply $F$  to get
+\begin{cd}
+    \Hom_\Z(\Q, \Z^{(\N)}) 
+        \rar
+    & \Hom_\Z(\Q, \Q).
+\end{cd}
+$\Q$ is divisible, $\Z^{\N}$ is reduced so left is zero, but right is nonzero.
+
+3. $R = \Z$, $F = \Z/n\Z \tensor_\Z -$, $n \geq 2$.
+Apply $F$ to embedding $\Z \inc \Q$ to get
+\begin{cd}
+    \Z/n\Z \tensor_\Z \Z
+        \rar
+    & \Z/n\Z \tensor_\Z \Q.
+\end{cd}
+Left is $\Z/n\Z$ but right is zero.
+
+mnemonic $\text{torsion} \tensor_\Z \text{divisible} = 0$.
+
+\sepline
+
+Short-term program:
+\begin{enumerate}
+    \item find exact functors
+    \item characterize exact sequences $A_\bullet \in R\lMod$ such that $F(A_\bullet) \in S\lMod$ is exact for any additive functor $F : R\lMod \to S\lMod$.
+\end{enumerate}
+
+\sepline
+
+\begin{theorem}[4]
+    If $F : R\lMod \to S\lMod$ is an exact functor (sends SES's to SES's), then $F(A_\bullet)$ is exact in $S\lMod$ whenever $A_\bullet$ is exact in $R\lMod$.
+\end{theorem}
+
+\begin{proof}
+    Let $F : R\lMod \to S\lMod$ be exact and $A_\bullet$ an exact sequence in $R\lMod$.
+
+    Then $F$ sends $A_\bullet$ to complex $F(A_\bullet)$ in $S\lMod$.
+
+    Factor each $f_n : A_n \to A_{n-1}$ as 
+    \begin{cd}
+        A_n \rar["\tilde{f}_n"]
+        & \im f_n \rar[hook, "\iota_n"]
+        & A_{n-1}
+    \end{cd}
+
+    Consider the short exact sequences for $n \in \Z$
+    \begin{cd}
+        0 \rar
+        & \im\iota_{n+1} \rar[hook, "\iota_{n+1}"]
+        & A_n \rar["\tilde{f}_n"]
+        & \im\tilde{f}_n = \im f_n \rar
+        & 0.
+    \end{cd}
+    If $F$ is exact, we obtain a short exact sequence
+    \begin{cd}
+        0 \rar
+        & F(\im\iota_{n+1}) \rar[hook, "F(\iota_{n+1})"]
+        & F(A_n) \rar["F(\tilde{f}_n)"]
+        & F(\im\tilde{f}_n) \rar
+        & 0.
+    \end{cd}
+
+    In particular,
+    \[
+        \im F(\iota_{n+1}) = \ker F(\tilde{f}_n)
+    \]
+    for $n \in \N$.
+
+    
+    Claim.
+    \begin{enumerate}[(a)]
+        \item $\ker F(f_n) = \ker F(\tilde{f}_n)$,
+        \item $\im F(f_{n+1}) = \im F(\iota_{n+1})$.
+    \end{enumerate}
+
+    Proof.
+    \begin{enumerate}[(a)]
+        \item $f_n = \iota_n \circ \tilde{f}_n$, so $F(f_n) = F(\iota_n) \circ F(f_n)$.
+
+        Since $F$ is exact, $F(\iota_n)$ is a monomorphism.
+
+        Hence, $\ker F(f_n) = \ker F(\tilde{f}_n)$.
+
+        \item $F(f_{n+1}) = F(\iota_{n+1}) \circ F(\tilde{f}_{n+1})$.
+        
+        Since $F$ is exact, $F(\tilde{f}_{n+1})$ is an epimorphism.
+
+        Hence, $\im F(f_{n+1}) = \im F(\iota_{n+1})$
+    \end{enumerate}
+
+    Combining all the stuff completes the proof.
+\end{proof}
+
+\sepline
+
+First installment of program part 1.
+
+\begin{proposition}[5]
+    Let $I$ be any indexing set and consider the functors
+    \begin{align*}
+        (R\lMod)^I &\To R\lMod 
+            & (R\lMod)^{(I)} &\To R\lMod \\
+        (M_i)_{i \in I} &\Mapsto \prod_{i \in I} M_i 
+            & (M_i)_{i \in I} &\Mapsto \bigoplus_{i \in I} M_i \\
+        (f_i)_{i \in I} &\Mapsto \prod_{i \in I} f_i
+            & (f_i)_{i \in I} &\Mapsto \bigoplus_{i \in I} f_i.
+    \end{align*}
+    Both functors are exact.
+\end{proposition}
+
+\begin{proof}
+    obvious
+\end{proof}
+
+\sepline
+
+First installment of program part 2.
+
+Let $A, B \in R\lMod$ and $f \in \Hom_R(A, B)$.
+
+Say $f$ is \keyword{split} if $\ker f$ is a direct summand of $A$ and $\im f$ is a direct summand of $B$, i.e., there exist $A',B' \in R\lMod$ with $A = \ker f \oplus A'$ and $B = \im f \oplus B'$.
+
+In Birge notation, $f$ split if $\ker f \seq^\oplus A$ and $\im f \seq^\oplus B$.
+
+\sepline
+
+2/6/23
+
+\sepline
+
+2/8/23
+
+Q: Is the following true or false?
+$P \in R\lMod$ finitely generated projective, then there exists $n \in \N$ with $P$ isomorphic to a direct summand of $\_RR^n$. 
+
+True.
+
+Up to isomorphism, $P \seq^\oplus \_RR^{(I)} = \bigoplus_{i \in I} R_i$ with $R_i = R$.
+
+With $P = Rx_1 + \cdots + Rx_m$.
+
+Pick finite $I' \seq I$ with $x_k \in \bigoplus_{i \in I} R_i$ for all $k \leq m$.
+
+Then $P \seq \bigoplus_{i \in I'} R_i \iso R^n$ with $n = |I'|$ and hence $P \seq^\oplus R^n$.
+
+In general, $\_RV \seq \_U \seq \_RM$, if $V \seq^\oplus M$ then $V \seq^\oplus U$.
+Look up the ``modular law.''
+
+\sepline
+
+\begin{theorem}[9]
+    For $P \in R\lMod$, the following are equivalent
+    \begin{enumerate}[(1)]
+        \item $\_RP$ is projective (direct summand of free left $R$-module);
+        \item $\Hom_R(P, -) : R\lMod \to \Z\lMod$ is exact;
+        \item whenever $f \in \Hom_R(B, C)$ is an epimorphism and $g \in \Hom_R(P, C)$, there exists $\phi \in \Hom_R(P, B)$ with $f \circ \phi = g$, i.e., each diagram of the following format
+        \begin{cd}
+            & P \dar["g"] \dlar[dashed, "\phi"'] \\
+            B \rar["f"'] & C \rar & 0
+        \end{cd}
+        can be supplemented to a commutative triangle;
+        \item every epimorphism onto $M$ is split.
+    \end{enumerate}
+\end{theorem}
+
+Remark. Will write $[M, -] := \Hom_R(M, -)$.
+
+\begin{proof}
+    Follow sequence (1) $\implies$ (3) $\implies$ (2) $\implies$ (4) $\implies$ (1).
+
+    (1) $\implies$ (3).
+
+    have $M \leq^\oplus \_RF$ with $F$ free on basis $\{x_i\}_{i \in I}$, $F = M \oplus N$.
+    Let $f$ and $g$ be as under (3)
+    \begin{cd}
+        B \rar["f"] & C \rar & 0 \\
+        & M \uar["g"'] \\
+        & F \uar["\pi"'] \ar[uul, dashed, "\psi"]
+    \end{cd}
+    where $\phi : F \to M$ is the projection along $N$ and $\iota : M \inc F$ to be the embedding.
+    Define $\psi \in \Hom_R(F, B)$ via $\psi(x_i) = b_i$ if $f(b_i) = g\pi(x_i)$.
+    (This is how it has to be.)
+    This is well-defined because $F$ is free, so we can choose any images of the basis elements $x_i$; simply choosing any $b_i \in f^{-1}g\pi(x_i)$, which exist because $f$ is an epimorphism.
+
+    Then $f \circ \psi = g \circ \pi$ and thus $g \circ (\psi \circ \iota) = g \circ \pi \circ \iota = g$.
+    
+    Hence, define $\phi = \psi \circ \iota$ is as required.
+    \begin{cd}
+        B \rar["f"] & C \rar & 0 \\
+        & M \uar["g"'] \ular[dashed, "\phi"'] \\
+        & F \uar["\pi"'] \ar[uul, dashed, "\psi"]
+    \end{cd}
+
+    (3) $\implies$ (2).
+
+    Since $[M, -]$ is left exact, it suffices to show that $[M, -]$ takes epis to epis.
+
+    Let $B \xrightarrow{f} C \to 0$ be exact.
+    
+    To see that $[M, f] : [M, B] \to [M, C]$ is an epi, let $g \in [M, C]$.
+
+    By (3), there exists $\phi \in [M, B]$ with $[M, f](\phi) = f \circ \phi = g$.
+
+    (2) $\implies$ (4).
+
+    Let $f : N \to M$ be an epimorphism.
+    
+    Then by (2), the map $[M, f] : [M, N] \to [M, M]$ is an epimorphism.
+
+    In particular, $\id_M \in \im [M, f]$---there exists $\phi \in [M, N]$ with $f \circ \phi = \id_M$, i.e.,
+    \begin{cd}
+        M \rar["\phi"] & N \dlar["f"] \\
+        M \uar[equal, "\iso"]
+    \end{cd}
+    Hence, $N = \im \phi \oplus \ker f$, so $\ker f \leq^\oplus N$ and indeed $f$ splits.
+
+    (4) $\implies$ (1).
+
+    If $\{m_i\}_{i \in I}$ is a generating set for $M$, then $F = R^{(I)} \to M$ sending $(r_i) \mapsto \sum_{\substack{i \in I \\ \text{finite}}} r_i m_i$ is an epimorphism.
+    By (4), $f$ splits, i.e., $F = \ker f \oplus N$.
+    Thus $N \iso F / \ker f \iso M$, i.e., (1) holds.
+\end{proof}
+
+\sepline
+
+Examples of projective modules and structure results.
+
+1. $R$ a ring.
+All $M \in \R\lMod$ are projective if and only if every submodule $U$ of any left $R$ module $N$ is a direct summand $N = U \oplus V$. 
+
+(Every $R\lMod$ is projective iff every $R\lMod$ is semisimple.)
+
+\sepline
+
+2/10/23
+
+\sepline
+
+2/13/23
+
+$M \in R\lMod$.
+
+Recall. A projective resolution of $M$ is any exact sequence
+\begin{cd}
+    \cdots \rar & P_2 \rar["f_2"] & P_1 \rar["f_1"] & P_0 \rar["f_0"] & M \rar & 0
+\end{cd}
+with all $P_i$ projective.
+
+\sepline
+
+Example
+
+$R = \Z/p^n\Z$, $p$ prime, $n \geq$.
+
+Write $\eqc{x} = x + p^n\Z$ and consider $M = R \eqc{p}^{n-1}$.
+
+A projective resolution of $M$ is
+\begin{cd}[column sep=small]
+    \cdots \rar
+    & R \ar[rr, "f_2"] \drar["r \mapsto r\eqc{p}^{n-1}" description]
+    && R \ar[rr, "f_1"] \drar["r \mapsto r\eqc{p}^n" description]
+    && R \ar[rr, "f_0", "r \mapsto r\eqc{p}^{n-1}"']
+    && M = R\eqc{p}^{n-1} \rar
+    & 0 \\
+    && \ker f_1 = R\eqc{p}^{n-1} \urar
+    && \ker f_0 = R\eqc{p} \urar
+\end{cd}
+
+All kernels fail to be free.
+
+$R$ is a local ring: $R \geq R\eqc{p} \geq R\eqc{p}^2 \geq \cdots \geq R\eqc{p}^n = 0$.
+
+These are all ideals, so $R\eqc{p}$ is the only maximal ideal.
+Since projectives over a local ring are free, the modules $R\eqc{p}$ and $R\eqc{p}^{n-1}$ are not projective.
+
+\sepline
+
+Let $M \in R\lMod$ and
+\begin{cd}
+    \cdots \rar & P_2 \rar["f_2"] & P_1 \rar["f_1"] & P_0 \rar["f_0"] & M \rar & 0
+\end{cd}
+a projective resolution.
+Then $\im f_n = \ker f_{n-1}$ is called an \keyword{$n$th syzygy} of $M$.
+
+(``syzygy'' from astronomy term ``syn-zygon'' (yoked together).)
+
+Remark. syzygies are not unique up to isomorphism.
+
+e.g., $R\eqc{p}$ is a first syzygy of $M = R\eqc{p}^{n-1}$.
+
+But consider
+\begin{cd}[row sep=0]
+    R \oplus R \rar["g_0"] & M \rar & 0 \\
+    (x, y) \rar[mapsto] & x\eqc{p}^{n-1}
+\end{cd}
+Then $\ker g_0 = R\eqc{p} \oplus R$, also a first syzygy of $M$.
+
+\sepline
+
+\begin{lemma}[15 Schanuel]
+    Let $f : P \to M$, $g : Q \to M$ be epimorphisms in $R\lMod$ with $P$ and $Q$ projective.
+    Then $\ker f \oplus Q \iso \ker g \oplus P$.
+
+    ``First syzygies of a module are unique up to projective summands.''
+\end{lemma}
+
+\begin{proof}
+    Consider the following commutative diagram:
+    \begin{cd}
+        & & & 0 \dar \\
+        & & & \ker g \dar[hook] \\
+        & & & Q \dar["g"] \\
+        0 \rar 
+            & \ker f \rar[hook] 
+            & P \rar["f"'] 
+            & M \rar \dar
+            & 0 \\
+        & & & 0
+    \end{cd}
+    Let $L = P \times_M Q$ be the pullback of $f : P \to M$ and $g : Q \to M$ with projections $\pi_P : L \to P$ and $\pi_Q : L \to Q$:
+    \begin{cd}
+        & & & 0 \dar \\
+        & & & \ker g \dar[hook] \\
+        & & L \dar["\pi_P"'] \rar["\pi_Q"]
+            & Q \dar["g"] \\
+        0 \rar 
+            & \ker f \rar[hook] 
+            & P \rar["f"'] 
+            & M \rar \dar
+            & 0 \\
+        & & & 0
+    \end{cd}
+    By the universal property of the pullback, we have unique maps $i$ and $j$ satisfying
+    \begin{center}
+        \begin{tikzcd}
+            \ker f 
+                \ar[ddr, bend right=20, hook] 
+                \ar[drr, bend left=20, "0"]
+                \drar[dashed, "i"] \\
+            & L \dar["\pi_P"'] \rar["\pi_Q"]
+                & Q \dar["g"] \\
+            & P \rar["f"'] & M 
+        \end{tikzcd}
+        \begin{tikzcd}
+            \ker g 
+                \ar[ddr, bend right=20, "0"'] 
+                \ar[drr, bend left=20, hook]
+                \drar[dashed, "j"] \\
+            & L \dar["\pi_P"'] \rar["\pi_Q"]
+                & Q \dar["g"] \\
+            & P \rar["f"'] & M 
+        \end{tikzcd}
+    \end{center}
+    Note that the perimeter of these diagrams commute because the composition of a map and the inclusion of its kernel is always zero.
+    Combining these into our original diagram, we get
+    \begin{cd}
+        & & & 0 \dar \\
+        & & \ker g \rar[equals] \dar["j"']
+            & \ker g \dar[hook] \\
+        & \ker f \dar[equals] \rar["i"]
+            & L \dar["\pi_P"'] \rar["\pi_Q"]
+            & Q \dar["g"] \\
+        0 \rar 
+            & \ker f \rar[hook] 
+            & P \rar["f"'] 
+            & M \rar \dar
+            & 0 \\
+        & & & 0
+    \end{cd}
+    Add zeros in places to get following diagram:
+    \begin{cd}
+        & & 0 \dar & 0 \dar \\
+        & & \ker g \rar[equals] \dar["j"']
+            & \ker g \dar[hook] \\
+        0 \rar
+            & \ker f \dar[equals] \rar["i"]
+            & L \dar["\pi_P"'] \rar["\pi_Q"]
+            & Q \dar["g"] \rar
+            & 0\\
+        0 \rar 
+            & \ker f \rar[hook] 
+            & P \rar["f"'] \dar
+            & M \rar \dar
+            & 0 \\
+        & & 0 & 0
+    \end{cd}
+    Claim that center row and column are exact.
+
+    Easy to check that $i$ and $j$ are monomorphisms.
+
+    By construction, $\pi_Q \circ i = 0$ and $\pi_P \circ j = 0$.
+
+    Say $\ell \in \ker \pi_Q$, then
+    \[
+        f(\pi_P(\ell)) = g(\pi_Q(\ell)) = g(0) = 0.
+    \]
+    Therefore, $\pi_P(\ell) \in \ker f$, but then $\ell = i(\pi_P(\ell)) \in \im i$.
+    Hence, $\im i = \ker \pi_Q$.
+
+    Similarly, $\im j = \ker \pi_P$.
+
+    Given $y \in Q$, since $f$ is an epimorphism there exists $x \in P$ such that $f(x) = g(y)$.
+    With a concrete construction of the pullback, it is clear that $(x, y)$ should be an element of $L$.
+    In which case, $\pi_Q(x, y) = y$, so $\pi_Q$ is an epimorphism.
+
+    Since $P$ and $Q$ are projective, both $\pi_P$ and $\pi_Q$ split, hence
+    \[
+        P \oplus \ker g \iso L \iso Q \oplus \ker f.
+    \]
+\end{proof}
+
+\sepline
+
+\begin{lemma}[16]
+    Suppose $U_n$ and $V_n$ are $n$th syzygies of $M$ in $R\lMod$.
+    Then there exists projective modules $X_n$, $Y_n$ with $U_n \oplus X_n \iso V_n \oplus Y_n$.
+
+    ``All the $n$th syzygies are unique up to projective summands.''
+\end{lemma}
+
+\begin{proof}
+    Schanuel + induction [GauchoSpace]
+\end{proof}
+
+\sepline
+
+\begin{theorem}[17]
+    \
+    \begin{enumerate}[(1)]
+        \item For $M \in R\lMod$, the following are equivalent:
+        \begin{enumerate}[(a)]
+            \item The projective dimension $\operatorname{pdim} M \leq n < \infty$;
+            \item There exists a projective resolution
+            \begin{cd} 
+                0 \rar & P_n \rar["f_n"] & P_{n-1} \rar["f_{n-1}"] & \cdots \rar["f_0"] & M \rar & 0 
+            \end{cd}
+            such that $\im f_n = \ker f_{n-1}$ (an $n$th syzygy) is projective;
+            \item In all projective resolutions of $M$, the $n$th syzygy is projective.
+        \end{enumerate}
+        \item For $M \in R\lMod$, the following are equivalent:
+        \begin{enumerate}[(a)]
+            \item $\operatorname{pdim} M = \infty$;
+            \item There exists a non-projective resolution of $M$ with a projective $n$th syzygy;
+            \item In all projective resolutions of $M$, the $n$th syzygy is non-projective.
+        \end{enumerate}
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}(1) 
+
+    (a $\implies$ b)
+
+    Suppose $\operatorname{pdim} M \leq n$, i.e., there is a projective resolution
+    \begin{cd} 
+        0 \rar & P_n \rar["f_n"] & P_{n-1} \rar["f_{n-1}"] & \cdots \rar["f_0"] & M \rar & 0 
+    \end{cd}
+    Then $\im f_n \iso P_n$ is projective.
+
+    (b $\implies$ c)
+
+    Suppose (b) holds, and let
+    \begin{cd} 
+        \cdots \rar & Q_2 \rar["g_2"] & Q_1 \rar["g_1"] & Q_0 \rar["g_0"] & M \rar & 0 
+    \end{cd}
+    be another projective resolution of $M$.
+    By Lemma 16, $\im g_n = \ker g_{n-1}$ differs only by projective summands from $\im f_n = \ker f_{n-1}$.
+    Therefore, since $\ker f_{n-1}$ is projective, so is $\ker g_{n-1}$.
+
+    (c $\implies$ a)
+
+    Assume (c) and let
+    \begin{cd} 
+        \cdots \rar & P_{n+1} \rar["f_{n+1}"] & P_n \rar["f_n"] & P_{n-1} \rar["f_{n-1}"] & \cdots \rar & P_0 \rar["f_0"] & M \rar & 0 
+    \end{cd}
+    be a projective resolution of $M$.
+    Then $\im f_n = \ker f_{n-1}$ is projective by hypothesis.
+    So consider the sequence
+    \begin{cd}
+        0 \rar & \ker f_{n-1} \rar[hookrightarrow] & P_{n-1} \rar["f_{n-1}"] & P_{n-2} \rar["f_{n-2}"] & \cdots \rar["f_0"] & M \rar & 0
+    \end{cd}
+    This is a projective resolution of length $\leq n$.
+\end{proof}
+
+\sepline
+
+2/15/23
+
+$M \in R\lMod$ is \keyword{injective} if and only if $\Hom_R(-, M) : R\lMod \to \Z\lMod$ is exact.
+
+\begin{theorem}[18]
+    For $E \in R\lMod$, the following are equivalent:
+    \begin{enumerate}[(1)]
+        \item $\_RE$ is injective;
+        \item whenever $f : X \to Y$ is an monomorphism and $g : X \to E$ is any, there exists $\psi$ with $\psi \circ f = g$, i.e., each diagram of the format 
+        \begin{cd}
+            0 \rar &X \rar["f"] \dar["g"'] & Y \dlar[dashed, "\psi"] \\
+            & E
+        \end{cd}
+        can be supplement to a commutative triangle;
+        \item every monomorphism with domain $M$ is split.
+    \end{enumerate}
+\end{theorem}
+
+Remarks.
+\begin{enumerate}[(a)]
+    \item $M_i \in R\lMod$ for $i \in I$, then $\prod M_i$ injective iff all $M_i$ injective.
+    \item All left $R$-modules injective iff $R$ semisimple iff all right $R$-modules injective.
+    \item $\Z$, $\Z/m\Z$ ($m \geq 2$) not injective
+\end{enumerate}
+
+\begin{lemma}[19 Baer's Criterion]
+    Let $M \in R\lMod$.
+    Then the following are equivalent:
+    \begin{enumerate}[(1)]
+        \item $M$ is injective;
+        \item For every diagram with $I \teq R$ left ideal
+        \begin{cd}
+            I \rar[hookrightarrow] \dar["\phi"'] & R \dlar[dashed, "\Phi"] \\
+            M
+        \end{cd}
+        there exists $\Phi$ with $\Phi|_I = \phi$
+    \end{enumerate}
+\end{lemma}
+
+\sepline
+
+2/17/23
+
+\begin{proof}
+    (2 $\implies$ 1)
+
+    Without loss of generality, $X \leq Y$ is a submodule and $f$ the embedding.
+    To find $\psi \in \Hom(Y, M)$ with $g = \psi \circ f$, we picked a maximal element $(Y_0, g_0)$ in the poset
+    \[
+        \mathcal{P} = \{(Y', g') \mid X \leq Y' \leq Y, g'|_X = g\}.
+    \]
+
+    Assume $Y_0 \subset Y$ and pick $\hat{y} \in Y \setminus Y_0$.
+    Define
+    \[
+        I = \{r \in R \mid r\hat{y} \in Y_0\} \seq \_RR
+    \]
+    and $\phi \in \Hom_R(I, M)$ with $\phi(r) = g_0(r\hat{y})$.
+
+    By (2), there exists $\Phi \in \Hom_R(R, M)$ with $\Phi|_I = \phi$.
+
+    Set $Y_1 = Y_0 + R\hat{y}$ and define $g_1 : Y_1 \to M$ with $y + r\hat{y} \mapsto g_0(y) + \Phi(r)$ if $y \in Y_0$ and $r \in R$.
+
+    Well-definedness of $g_1$.
+    Suppose $y_1 + r_1\hat{y} = y_2 + r_2\hat{y}$ with $y_i \in Y_0$ and $r_i \in R$.
+    Then
+    \begin{align*}
+        0 
+            &= g_0(0) \\
+            &= g_0((y_1 + r_1\hat{y}) - (y_2 + r_2\hat{y})) \\
+            &= g_0((y_1 - y_2) + (r_1 - r_2)\hat{y}) \\
+            &= g_0(y_1 - y_2) + g_0((r_1 - r_2)\hat{y}) \\
+            &= g_0(y_1) - g_0(y_2) + \phi(r_1 - r_2) \\
+            &= g_0(y_1) - g_0(y_2) +\Phi(r_1 - r_2) \\
+            &= (g_0(y_1) + \Phi(r_1)) - (g_0(y_2) + \Phi(r_2)) \\
+            &= g_1(y_1 + r_1\hat{y}) - g_1(y_2 + r_2\hat{y}).
+    \end{align*}
+\end{proof}
+
+\sepline
+
+\begin{theorem}[20]
+    Let $R$ be a PID and $M \in R\lMod$, then FTAE:
+    \begin{enumerate}[(1)]
+        \item $M$ is injective;
+        \item $M$ is divisible, i.e., $aM = M$ for all $a \in R \setminus \{0\}$;
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    (1 $\implies$ 2)
+
+    Assume (1), and let $a \in R \setminus \{0\}$.
+    Fix $x \in M$ and consider
+    \begin{cd}
+        ra \dar[mapsto] & I = Ra \rar[hook] \dar["g"'] & R \dlar[dashed, "\exists\psi"] \\
+        rx & M
+    \end{cd}
+    So $g(a) = g(a \cdot 1) = \psi(a \cdot 1) = a\psi(1) \in aM$.
+
+    (2 $\implies$ 1)
+
+    Assume (2).
+    We will apply Baer, so let $\_RI \inc \_RR$ and $\phi \in \Hom_R(I, M)$.
+
+    Know $I = Ra$ wlog $a \ne 0$.
+    By hypothesis, there exists $x \in M$ with $\phi(a) = a \cdot x$.
+    Define $\Phi \in \Hom(R, M)$ via $r \mapsto rx$.
+    Check that $\Phi|_I = \phi$.
+\end{proof}
+
+\sepline
+
+Supplement: The divisible abelian groups.
+
+Examples.
+
+1. $\Q$
+
+2. $\Z(p^\infty)$ ``Pr\"ufer groups'' for prime $p$, where
+\[\textstyle
+    \Z(p^\infty) := \bigoplus_{i \in \N} \Z x_i / U(p)
+\]
+where $U(p)$ is the subgroup of $\bigoplus_{i \in \N} \Z x_i$, generated by $px_1, px_{i+1} - x_i$ for all $i \in \N$.
+
+Find that $\Z\eqc{x}_i \iso \Z/p^i\Z$.
+Get embeddings
+\begin{cd}[row sep=tiny]
+    \Z\eqc{x}_i \iso \Z/p^i\Z \rar[hook] & \Z/p^{i+1}\Z \\
+    z + p^i\Z \rar[mapsto] & pz + p^{i+1}\Z
+\end{cd}
+
+With $\Z\eqc{x}_i \iso \Z/p^i\Z$, can visualize
+\begin{cd}
+    \Z\eqc{x}_1 \rar[hook, "\cdot p"]
+    & \Z\eqc{x}_2 \rar[hook, "\cdot p"]
+    & \Z\eqc{x}_3 \rar[hook, "\cdot p"]
+    & \Z\eqc{x}_4 \rar[hook, "\cdot p"]
+    & \cdots \rar[hook]
+    & \Z(p^\infty)
+\end{cd}
+
+Alternate descriptions:
+\[\textstyle
+    \Z(p^\infty)
+        = T_p(\Q/\Z)
+        = \{x + \Z \mid p^nx \in \Z \text{ for some } n \in \N\}.
+\]
+
+Reminder: $T$ a torsion abelian group.
+Then
+\[
+    T = \bigoplus_{p\text{ prime}} T_p 
+    \isp{where}
+    T_p = \{x \in T \mid p^n x = 0 \text{ for some } n \in \N\}.
+\]
+
+Also
+\[
+    \Z(p^\infty) \iso \{x \in \C \mid x^{p^n} = 1 \text{ for some } n \in \N\}
+    \quad\text{(multiplicative group)}.
+\]
+
+\sepline
+
+\begin{theorem}[21]
+    $A \in \Z\Mod$ is divisible iff
+    \[
+        A \iso \Q^{(I)} \oplus \bigoplus_{p\text{ prime}} (\Z(p^\infty))^{(I_p)}
+    \]
+\end{theorem}
+
+\begin{proof}
+    Exercise.
+\end{proof}
+
+\sepline
+
+Injective Resolutions.
+
+\begin{theorem}[22 Echmann]
+    Every left $R$-module is a submodule of (or embeds into) an injective module.
+\end{theorem}
+
+\begin{lemma}[23]
+    If $M \in \Z\lMod$, then there exists a divisible $D \in \Z\lMod$ with $M \overset{\iso}{\inc} D$.
+
+    Every abelian group can be embedded as a subgroup of some divisible (injective) abelian group.
+\end{lemma}
+
+\begin{proof}
+    We know $M \iso \Z^{(I)}/K \seq \Q^{(I)}/K$ (divisible) for some subgroup $K \leq \Z^{(I)}$.
+\end{proof}
+
+
+\sepline
+
+2/22/23
+
+A right $R$-module $M$ is \keyword{flat} in case the tensor functor $M \tensor_R - : R\lMod \to \Z\lMod$ is exact.
+Flatness of a left $R$-module is defined symmetrically.
+
+Remarks.
+\begin{enumerate}[(1)]
+    \item Any tensor functor $M \tensor_R -$ is right exact, hence $M_R$ is flat precisely when $M \tensor_R -$ takes monomorphisms to monomorphisms.
+    
+    \item Since tensor products commute with arbitrary direct sums, a direct sum $\bigoplus_{i \in I} M_i$ is flat if and only if each $M_i$ is flat.
+    
+    \item The regular $R$-module $R_R$ is flat, because $R \tensor_R - \iso \id_{R\lMod}$.
+    In light of the preceding remark, we find that every free $R$-module is flat, and hence so is every projective $R$-module.
+    In particular, if $R$ is semisimple, then all $R$-modules are flat.
+
+    Caution: Here the converse does not hold.
+    In fact, all right $R$-modules are flat if and only if $R$ is von Neumann regular, meaning that for any $r \in R$ there exists $s \in R$ with $rsr = r$.
+    For instance: the endomorphism rings or infinite dimensional vector spaces are von Neumann regular but not semisimple.
+
+    \item Using the adjointness of tensor and hom functors, one obtains: If $\_SM_R$ is a bimodule such that $M_R$ is flat and $N \in S\lMod$ is injective, then $\_R\Hom_S(M, N)$ is injective in $R\lMod$.
+    The proof is a carbon copy of that for injectivity of $\_R\Hom_\Z(R, D)$ in case $D$ is injective in $\Z\lMod$.
+\end{enumerate}
+
+\sepline
+
+\begin{lemma}
+    If $D$ is a divisible abelian group, then $\Hom_\Z(R, D)$ is an injective left $R$-module.
+
+    Generalize: $\_SM_R$ bimodule with $M_R$ flat and $\_SN$ injective, then $R(\Hom_S(M, N))$ is injective $R$-module.
+\end{lemma}
+
+\begin{proof}
+    Consider a short exact sequence of left $R$-modules:
+    \begin{cd}
+        0 \rar & U \rar & V \rar & W \rar & 0
+    \end{cd}
+    Recall that $R \tensor_R - \iso \id_{R\lMod}$ is an exact functor, so we get an exact sequence of left $R$-modules:
+    \begin{cd}
+        0 \rar
+        & \_R(\_RR_R \tensor_R \_RU) \rar 
+        & \_R(\_RR_R \tensor_R \_RV) \rar 
+        & \_R(\_RR_R \tensor_R \_RW) \rar 
+        & 0
+    \end{cd}
+    The forgetful functor $R\lMod \to \Z\lMod = \Ab$ is exact so we also have an exact sequence of abelian groups:
+    \begin{cd}
+        0 \rar
+        & \_\Z(\_{\Z}R_R \tensor_R \_RU) \rar 
+        & \_\Z(\_{\Z}R_R \tensor_R \_RV) \rar 
+        & \_\Z(\_{\Z}R_R \tensor_R \_RW) \rar 
+        & 0
+    \end{cd}
+    Then if $\_{\Z}D \in \Z\lMod$ is divisible, it must also be injective by some result.
+    Then by definition the contravariant hom functor $\Hom_\Z(-, D) : \Z\lMod \to \Z\lMod$ is exact, so we get an exact sequence of abelian groups:
+    \begin{cd}
+        0 \rar
+        & \Hom_\Z(R \tensor_R U, D) \rar 
+        & \Hom_\Z(R \tensor_R V, D) \rar 
+        & \Hom_\Z(R \tensor_R W, D) \rar 
+        & 0
+    \end{cd}
+    For a left $R$-module $X$ we have the hom-tensor adjunction:
+    \[
+        \_\Z(\Hom_\Z(\_\Z(\_{\Z}R_R \tensor_R \_RX), \_{\Z}D))
+            \iso \_\Z(\Hom_R(\_RX_\Z, \_R(\Hom_\Z(\_{\Z}R_R, \_{\Z}D))))
+    \]
+    \begin{align*}
+        \Hom_\Z(R \tensor_R X, D)
+            &= \_\Z(\Hom_\Z(\_\Z(\_{\Z}R_R \tensor_R \_RX), \_{\Z}D)) \\
+            &\iso \_\Z(\Hom_R(\_RX_\Z, \_R(\Hom_\Z(\_{\Z}R_R, \_{\Z}D)))) \\
+            &= \Hom_R(X, \Hom_\Z(R, D))
+    \end{align*}
+    Hence, we obtain an exact sequence of abelian groups:
+    \begin{cd}[column sep=tiny]
+        0 \rar
+        & \Hom_R(U, \Hom_\Z(R, D)) \rar 
+        & \Hom_R(V, \Hom_\Z(R, D)) \rar 
+        & \Hom_R(W, \Hom_\Z(R, D)) \rar 
+        & 0
+    \end{cd}
+    In other words, $\Hom_R(-, \Hom_\Z(R, D)) : \R\lMod \to \Z\lMod$ is an exact functor, so by definition, $\Hom_\Z(R, D)$ is an injective left $R$-module.
+\end{proof}
+
+
+\begin{theorem}
+    Let $R$ be any ring.
+    Every left $R$-module can be embedded as a submodule of an injective left $R$-module.
+\end{theorem}
+
+\begin{proof}
+    Let $\_RM \in \R\lMod$.
+    There is a homomorphism of abelian groups defined as follows:
+    \begin{align*}
+        \phi : \_{\Z}M &\To \Hom_\Z(R, M) \\
+            m &\Mapsto (\phi_m : r \mapsto rm)
+    \end{align*}
+    (Probably easy to check well-defined, i.e., that $\phi_m$ is $\Z$-linear for all $m \in M$, and that $\phi$ itself is $\Z$-linear.)
+
+    We check that $\phi$ is injective.
+    Suppose $\phi_m = 0 \in \Hom_\Z(R, M)$, i.e., that $\phi_m(r) = 0$ for all $r \in R$.
+    Then in particular, $m = 1 \cdot m = \phi_m(1) = 0$, so $\ker \phi = 0$.
+
+    By Lemma 23, there is an embedding $\iota : \_{\Z}M \inc \_{\Z}D$ with $D$ an injective abelian group.
+
+    Left exactness of the hom-functor gives us an injection $\iota_* : \Hom_\Z(R, M) \to \Hom_\Z(R, D)$ of abelian groups.
+
+    Hence, we have an injection of abelian group $\Phi := \iota_* \circ \phi : \_{\Z}M \to \Hom_\Z(R, D)$.
+
+    Then $\Phi$ acts by $\Phi(m) = \iota_*\phi_m = \iota \circ \phi_m$ with $(\iota \circ \phi_m)(x) = \iota(\phi_m(x)) = \iota(xm) = xm$ in $D$.
+
+    Recall that $\Hom_\Z(R, D)$ has a left $R$-module structure $r \cdot f = f(- \cdot r)$, i.e., $(r \cdot f)(x) = f(xr)$ (where $xr$ is simply multiplication in $R$) for all $r, x \in R$ and $f \in \Hom_\Z(R, D)$.
+
+    We check that $\Phi$ is $R$-linear.
+    For $r \in R$ and $m \in M$,
+    \[
+        \Phi(rm)
+            = \iota_*\phi_{rm}
+            = \iota \circ \phi_{rm}.
+    \]
+    Applying this to $x \in R$ we have the following in $D$:
+    \[
+        (\iota \circ \phi_{rm})(x)
+            = \iota_*\phi_{rm}(x)
+            = x \cdot rm
+            = xr \cdot m
+            = \iota_*\phi_m(xr)
+            = (r \cdot \iota_*\phi_m)(x)
+            = (r \cdot \Phi(m))(x)
+    \]
+    Hence, $\Phi(rm) = r \cdot \Phi(m)$, so indeed $\Phi$ is $R$-linear.
+
+    In other words, $\Phi$ corresponds to a left $R$-module homomorphism $\tilde{\Phi} : \_RM \to \_R(\Hom_\Z(R, D))$ which is defined the same as $\Phi$ set-theoretically.
+    Since $\Phi$ is injective, so is $\tilde{\Phi}$.
+
+    Thus, we have embedded $\_RM$ into $\Hom_\Z(R, D)$, which is an injective left $R$-module by the previous lemma.
+\end{proof}
+
+\sepline
+
+9/24/23
+
+Derived Functors
+
+\begin{theorem}[31 Long Exact Homology Sequence]
+    Suppose $\AA$ is SES in $R\Comp$:
+    \begin{cd}
+        0 \rar & A_\bullet \rar["f"] & A_\bullet' \rar["f'"] & A_\bullet'' \rar & 0
+    \end{cd}
+    Then for each $n \in \Z$, there exists $\partial_n \in \Hom_R(H_n(A_\bullet''), H_{n-1}(A_\bullet))$ such that the following sequence is exact in $R\lMod$:
+    \begin{cd}
+        \cdots \rar
+        & H_n(A_\bullet) \rar["H_n(f)"]
+        & H_n(A_\bullet') \rar["H_n(f')"]
+        & H_n(A_\bullet'') \rar["\partial_n"]
+        & H_{n-1}(A_\bullet) \rar
+        & \cdots
+    \end{cd}
+
+    In addition, we have naturality in the following sense:
+    For any $\AA$ as above, the family $(\partial_n)_{n \in \Z} = (\partial_n^\AA)_{n \in \Z}$ satisfies the following condition:
+    Whenever $h : \AA \to \BB$ is a morphism of SES's, i.e., the following diagram commutes:
+    \begin{cd}
+        0 \rar 
+        & A_\bullet \rar["f"] \dar["h"]
+        & A_\bullet' \rar["f'"] \dar["h'"]
+        & A_\bullet'' \rar \dar["h''"]
+        & 0 \\
+        0 \rar & B_\bullet \rar["g"] & B_\bullet' \rar["g'"] & B_\bullet'' \rar & 0
+    \end{cd}
+    then the following diagram commutes:
+    \begin{cd}
+        H_n(A_\bullet'') \rar["\partial_n^\AA"] \dar["H_n(h'')"']
+        & H_{n-1}(A_\bullet) \dar["H_{n-1}(h)"] \\
+        H_n(B_\bullet'') \rar["\partial_n^\BB"] 
+        & H_{n-1}(B_\bullet)
+    \end{cd}
+\end{theorem}
+
+\sepline
+
+Let $u : A_\bullet \to A_\bullet'$ be a morphism in $R\Comp$.
+Say $u = (u_n)_{n \in \Z}$.
+
+Call $u$ \keyword{nullhomotopic} if there exists $s_n \in \Hom_R(A_n, A_{n+1}')$ such that
+\[
+    u_n = d_{n+1}' \circ s_n + s_{n-1} \circ d_n.
+\]
+Looks like
+\begin{cd}
+    A_{n+1} \rar["d_{n+1}"] \dar["u_{n+1}"']
+    & A_n \rar["d_n"] \dar["u_n"'] \dlar["s_n" description]
+    & A_{n-1} \dar["u_{n-1}"] \dlar["s_{n-1}" description] \\
+    A_{n+1}' \rar["d_{n+1}'"']
+    & A_n' \rar["d_n'"']
+    & A_{n-1}'
+\end{cd}
+
+Call $(s_n)_{n \in \Z}$ chain maps of degree $+1$.
+
+
+\begin{proposition}[32]
+    Suppose $u \in \Hom_{R\Comp}(A_\bullet, A_\bullet')$ is nullhomotopic.
+    Then $H_n(u) = 0$ for all $n \in \Z$.
+\end{proposition}
+
+
+\sepline
+
+Let $f, g : A_\bullet \to A_\bullet'$ be morphisms in $R\Comp$.
+
+Say $f$ and $g$ are \keyword{homotopic}, denoted $f \htpy g$, if $f - g$ is nullhomotopic.
+
+Two complexes are \keyword{homotopy equivalent}, $A_\bullet \htpy A_\bullet'$, if there exist $f : A_\bullet \to A_\bullet'$ and $f' : A_\bullet' \to A_\bullet$ such that $f' \circ f \htpy \id_{A_\bullet}$ and $f \circ f' \htpy \id_{A_\bullet'}$.
+
+\begin{corollary}
+    If $f \htpy g$ then $H_n(f) = H_n(g)$ for all $n \in \Z$.
+\end{corollary}
+
+\sepline
+
+Deleted Resolution
+
+Let $M \in R\lMod$ and
+\begin{cd}
+    \cdots \rar & P_n \rar & \cdots \rar & P_1 \rar & P_0 \rar & M \rar & 0
+\end{cd}
+be a projective resolution of $M$.
+
+The \keyword{deleted projective resolution} is the complex $P_\bullet$:
+\begin{cd}
+    \cdots \rar & P_n \rar & \cdots \rar & P_1 \rar & P_0 \rar & 0
+\end{cd}
+(maybe not exact at $P_0$)
+
+
+Given injective resolution
+\begin{cd}
+    0 \rar & M \rar & E_0 \rar & E_1 \rar & \cdots \rar & E_n \rar & \cdots
+\end{cd}
+the \keyword{deleted injective resolution} is complex $E_\bullet$:
+\begin{cd}
+    0 \rar & E_0 \rar & E_1 \rar & \cdots \rar & E_n \rar & \cdots
+\end{cd}
+
+
+\sepline
+
+Plan: study model problem.
+
+Look at $\FF = X \tensor_R -$.
+For SES
+\begin{cd}
+    0 \rar & M \rar["f"] & M' \rar["f'"] & M'' \rar & 0
+\end{cd}
+in $R\lMod$, we want some information about $\ker(X \tensor_R f : X \tensor_R M \to X \tensor_R M')$.
+
+Step 1.
+
+One can construct projective resolutions of $M$, $M'$, $M''$ such we get a SES of deleted projective resolutions $0 \to P_\bullet \to P_\bullet' \to P_\bullet'' \to 0$.
+
+In particular, if $\bar{f} = (f_n)_{n \in \Z}$ and 
+
+some more stuff...
+
+\sepline
+
+\begin{lemma}[33 Comparison]
+    Let $M, M' \in R\lMod$, $f \in \Hom_R(M, M')$.
+    Let $P_\bullet, P_\bullet'$ be deleted projective resolutions.
+    Then there exists $\bar{f} = (f_n)_{n \geq 0} \in \Hom_R(P_\bullet, P_\bullet')$ such that the following diagram commutes:
+    \begin{cd}
+        \cdots \rar
+        & P_1 \rar["d_1"] \dar[dashed, "f_1"]
+        & P_0 \rar["d_0"] \dar[dashed, "f_0"]
+        & M \rar \dar["f"]
+        & 0 \\
+        \cdots \rar
+        & P_1' \rar["d_1'"]
+        & P_0' \rar["d_0'"]
+        & M' \rar
+        & 0 \\
+    \end{cd}
+
+    Moreover, given another chain map $\bar{g} \in \Hom_R(P_\bullet, P_\bullet')$, we obtain $\bar{f} \htpy \bar{g}$ (as chain maps of deleted projective resolutions).
+\end{lemma}
+
+\begin{corollary}
+    Any two deleted projective resolutions are homotopy equivalent.
+\end{corollary}
+
+\begin{lemma}[Horseshoe]
+    Given a SES
+    \begin{cd}
+        0 \rar & M \rar["f"] & M' \rar["f'"] & M'' \rar & 0
+    \end{cd}
+    and projective resolutions $P_\bullet \to M$ and $P_\bullet'' \to M''$, there is a projective resolution $P_\bullet' \to M'$ and chain maps $\bar{f}$ and $\bar{f}'$ such that stuff commute good:
+    \begin{cd}
+        0 \rar
+        & P_\bullet \rar["\bar{f}"] \dar
+        & P_\bullet' \rar["\bar{f}'"] \dar
+        & P_\bullet'' \rar \dar
+        & 0 \\
+        0 \rar
+        & M \rar["f"]
+        & M' \rar["f'"] 
+        & M'' \rar
+        & 0
+    \end{cd}
+\end{lemma}
+
+\sepline
+
+Left Derived Functors
+
+Let $T : R\lMod \to S\lMod$ be a covariant additive functor.
+
+Want to extract functors $L_nT$ for $n \geq 0$ which sends a SES to a LES.
+
+Also if $T$ is right exact, want $L_0(T) \iso T$.
+
+
+Pick and fix a (deleted) projective resolution $\P_M \to M$ for each $M \in R\lMod$.
+
+Define $L_nT$ on objects $M \in R\lMod$ by
+\[
+    L_nT(M) = H_n(T(\P_M)).
+\]
+
+Define $L_nT$ on morphisms $f \in \Hom_R(M, M')$.
+
+By Lemma 33, choose and fix $\bar{f} \in \Hom_{R\Comp}(\P_M, \P_{M'})$ lying over $f$.
+Then define
+\[
+    L_nT(f) = H_n(T(\bar{f})).
+\]
+
+
+\begin{theorem}[36]
+    $L_nT$ is a well-defined covariant functor $R\lMod \to S\lMod$.
+
+    Moreover, if $\hat{\P}_M$ is a different choice of deleted projective resolution for each $M \in R\lMod$, then the functor $\hat{L}_nT$ defined with respect to the $\P_M$'s satisfies $\hat{L}_nT \iso L_nT$.
+\end{theorem}
+
+\begin{theorem}[37]
+    All notations as before.
+    Suppose
+    \begin{cd}
+        0 \rar & M \rar["f"] & M' \rar["f'"] & M'' \rar & 0
+    \end{cd}
+    is a SES in $R\lMod$.
+    Then there exists an exact sequence
+    \begin{cd}
+        \cdots \rar
+        & L_{n+1}T(M'') \rar["\partial_{n+1}"]
+        & L_nT(M) \rar["L_nT(f)"]
+        & L_nT(M') \rar["L_nT(f')"]
+        & L_nT(M'') \rar["\partial_n"]
+        & \cdots \\
+        & L_1(M'') \rar["\partial_1"]
+        & L_0T(M) \rar["L_0T(f)"]
+        & L_0T(M') \rar["L_0T(f')"]
+        & L_0T(M'') \rar
+        & 0
+    \end{cd}
+    (In particular, $L_0T$ is always right exact.)
+
+    Moreover:
+    \begin{enumerate}[(a)]
+        \item If $T$ is right-exact then $L_0T \iso T$;
+        \item If $M$ is projective then $L_nT(M) = 0$ for $n \geq 1$;
+        \item All $\partial_n$ for $n \geq 1$ are natural in the sense specified in Theorem 31.
+    \end{enumerate}
+\end{theorem}
+
+
+\begin{theorem}[38 Dimension Shifting]
+    Notation as before.
+    Then
+    \[
+        L_nT(M)
+        \iso L_{n-1}T(K_1)
+        \iso L_{n-1}(K_2)
+        \iso \cdots
+        \iso L_1T(K_{n-1})
+    \]
+    where $K_i$ is an $i$th syzygy of $M$.
+\end{theorem}
+
+
+
+\sepline
+
+Other derived functors in a nutshell, i.e., left/right derived functors of co-/contravariant functors.
+
+mnemonic:
+
+left derived fill in the left, come from left $\infty$
+
+right derived fill in the right, come from right $\infty$
+
+
+$T : R\lMod \to S\lMod$, $M \in R\lMod$, get injective resolution $M \to \E_M$.
+Apply $T$, take $n$th homology, define $R^nT(M) = H_n(T(\E_M))$.
+
+From $0 \to M \to M' \to M'' \to 0$ get LES 
+\begin{cd}
+    0 \rar
+    & R^0T(M) \rar
+    & R^0T(M') \rar
+    & R^0T(M'') \rar["\partial_1"]
+    & R_1T(M) \rar
+    & \cdots
+\end{cd}
+
+
+If $T$ left exact then $R^0T \iso T$.
+
+If $M$ injective then $R^nT(M) = 0$ for $n \geq 1$.
+
+For contravariant $T : R\lMod^\op \to S\lMod$, right used $\P_M$ and left uses $\E_M$.
+
+
+\sepline
+
+3/10/23
+
+Change of index position in right derived functors.
+
+Indexing going down from left to right $A_\bullet$:
+\begin{cd}
+    \cdots \rar & A_{n+1} \rar["d_{n+1}"] & A_n \rar["d_n"] & A_{n-1} \rar["d_{n-1}"] & \cdots
+\end{cd}
+
+Indexing going up from left to right $B_\bullet$:
+\begin{cd}
+    \cdots \rar & B_{n-1} \rar["d_n"] & B_n \rar["d_{n+1}"] & B_{n+1} \rar & \cdots
+\end{cd}
+
+(Some use indexing with superscripts)
+
+$n$th homology of $A_\bullet$ is $H_n(A_\bullet) = \ker d_n / \im d_{n+1}$.
+
+$n$th homology of $B_\bullet$ is $H^n(B_\bullet) = \ker d_{n+1} / \im d_n$.
+
+``$n$th homology is the homology in the position which is labeled $n$''
+
+$n$th right derived functor: homology of a complex of type $B_\bullet$, write $R^n$ instead of $R_n$.
+
+\sepline
+
+The Functors $\Tor$ and $\Ext$.
+
+Let $\_SX_R$ be a bimodule, $T = X \tensor_R - : R\lMod \to S\lMod$.
+
+We know $T$ is right exact but not left exact in general.
+
+Define left derived functor $\Tor_n^R(X, Y) = L_nT(Y) = H_n(X \tensor_R \P_Y)$ with $\P_Y$ a deleted projective resolution of $Y$.
+
+For $\Tor_n^R(X, f) = L_nT(f)$ for $f \in \Hom_R(Y, Y')$.
+
+\sepline
+
+Comments.
+
+1. $T$ is right exact, hence $\Tor_0^R(X, Y) = X \tensor_R Y$.
+
+2. If
+\begin{cd}
+    0 \rar & Y \rar["f"] & Y' \rar["f'"] & Y'' \rar & 0
+\end{cd}
+is exact in $R\lMod$, then we get an exact sequence in $S\lMod$:
+\begin{cd}[column sep=tiny]
+    \cdots \rar["\partial_2"]
+    & \Tor_1^R(X, Y) \rar
+    & \Tor_1^R(X, Y') \rar
+    & \Tor_1^R(X, Y'') \rar["\partial_1"]
+    & X \tensor_R Y \rar
+    & X \tensor_R Y' \rar
+    & X \tensor_R Y'' \rar
+    & 0
+\end{cd}
+
+3. Let $Y \iso P/K$, $P$ projective, i.e.,
+\begin{cd}
+    0 \rar & K \rar[hook] & P \rar["\text{can}"] & Y \rar & 0
+\end{cd}
+is exact, then $\Tor_n^R(X, P) = 0$ for all $n \geq 1$.
+So
+\begin{cd}
+    0 \rar
+    & \Tor_1^R(X, P/K) \rar
+    & X \tensor_R K \rar["{X \tensor \iota}"]
+    & X \tensor_R P \rar
+    & \cdots
+\end{cd}
+is exact.
+So $\Tor_1^R(X, P/K) = \ker(X \tensor \iota)$
+
+\sepline
+
+Define analogously
+\[
+    \Tor_n^R(-, Y)(X) = H_n(\P_X \tensor_R Y) = L_n\tilde{T}(X).
+\]
+Then $\Tor_n^R(X, Y)$ has two definitions.
+
+How are $H_n(X \tensor_R \P_Y)$ and $H_n(\P_X \tensor_R Y)$ related?
+
+\begin{theorem}[39 Balancedness of arguments of $\Tor$]
+    For $X \in \rMod{R}$, $Y \in R\lMod$,
+    \[
+        H_n(X \tensor_R \P_Y) \iso H_n(\P_X \tensor_R Y)
+    \]
+    in $S\lMod$.
+    (Both defined as $\Tor_n^R(X, Y)$ up to isomorphism.)
+\end{theorem}
+
+\begin{proof}
+    See Rotman
+\end{proof}
+
+\sepline
+
+Comment.
+
+1. The tor functors commute with arbitrary direct sums.
+
+Reason: tensor and homology commutes with arbitrary direct sums, and tor is just the composition of these two devices.
+
+2. The tor functors also commute with direct limits extending over directed partially ordered sets (not with arbitrary colimits nor limits).
+
+A poset $(S, \leq)$ is \keyword{directed} if for all $x, y \in S$, there exists $z \in S$ with $x \leq z$ and $y \leq z$.
+
+\sepline
+
+\begin{theorem}[40]
+    \
+    \begin{enumerate}[(A)]
+        \item For $X \in \rMod{R}$, TFAE:
+        \begin{enumerate}[(i)]
+            \item $X_R$ is flat,
+            \item $\Tor_n^R(X, Y) = 0$ for all $n \geq 1$ and $Y \in R\lMod$,
+            \item $\Tor_1^R(X, Y) = 0$ for all $Y \in R\lMod$.
+        \end{enumerate}
+        \item Analogous statement for $\_RY$.
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    (i $\implies$ ii)
+
+    Assume (i) and let $Y \in R\lMod$, $\cdots \to P_1 \to P_0 \to Y \to 0$ a projective resolution.
+
+    By flatness, get exact $\cdots \to X \tensor P_1 \to X \tensor P_0 \to X \tensor Y \to 0$.
+
+    Since $X$ is flat,
+    \begin{cd}
+        \cdots \rar
+        & X \tensor P_4 \rar
+        & X \tensor P_3 \rar
+        & X \tensor P_2 \rar
+        & X \tensor P_1 \rar
+        & X \tensor P_0
+    \end{cd}
+    is an exact portion of $X \tensor \P_Y$.
+
+    Somehow get $H_n(X \tensor \P_Y) = 0$ for all $n \geq 1$.
+
+    (ii $\implies$ iii) trivial
+
+    (iii $\implies$ i)
+
+    Assume (iii) and let $0 \to Y \to Y' \to Y'' \to 0$ be an exact sequence in $R\lMod$.
+    Then by long exact homology sequence get
+    \begin{cd}
+        \Tor_1^R(X, Y'') \rar
+        & X \tensor Y \rar
+        & X \tensor Y' \rar
+        & X \tensor Y'' \rar
+        & 0
+    \end{cd}
+    is exact.
+    But $\Tor_1^R(X, Y'')$ is zero by hypothesis, i.e., $X \tensor_R -$ is exact.
+\end{proof}
+
+\sepline
+
+$\Tor$ for $R = \Z$. (`tor' is short for `torsion,' comes from $\Z$) [Analogous for $R$ a PID.]
+
+
+If $R$ is commutative, then $X \tensor_R Y \iso Y \tensor_R X$, and hence $\Tor_n^R(X, Y) \iso \Tor_n^R(Y, X)$.
+
+\begin{proposition}[41]
+    If $X, Y \in \Z\lMod$, then $\Tor_n^\Z(X, Y) = 0$ for $n \geq 2$.
+\end{proposition}
+
+\begin{proof}
+    Know $\operatorname{pdim}_\Z Y = 1$, i.e., any first syzygy $K$ of $Y$ is projective.
+
+    So by dimension-shifting, $\Tor_2^\Z(X, Y) \iso \Tor_1^\Z(X, K_1) = 0$ since $K_1$ is projective and hence flat.
+
+    Rest by induction.
+    For $n \geq 3$, get $\Tor_n^\Z(X, Y) \iso \Tor_{n-1}^\Z(X, K_1) = 0$ since $K_1$ projective.
+\end{proof}
+
+\sepline
+
+Example.
+
+$\Tor_1^\Z(\Q, \Z/6\Z) = 0$ because $\Q$ is torsionfree hence flat.
+
+
+\sepline
+
+3/13/23
+
+
+\begin{proposition}[42]
+    \
+    \begin{enumerate}[(1)]
+        \item $\Tor_1^\Z(X, Y) \iso \Tor_1^\Z(T(X), T(Y))$ where $T(X)$ is torsion subgroup of $X$.
+        ($\Tor$ only sees torsion part.)
+        \item $\Tor_1^\Z(X< \Z/n\Z) = \{x \in X \mid nx = 0\} =: X[n]$.
+        \item $\Tor_1^\Z(\Z/m\Z, \Z/n\Z) \iso \Z/d\Z$ where $d = \gcd(m, n)$.
+        \item $\Tor_1^\Z(X, Y)$ is torsion for all $X$ and $Y$.
+        \item $\Tor_1^\Z(\Q/\Z, Y) \iso T(Y)$ for all $Y$.
+    \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+    (1) Consider the exact sequence $0 \to T(Y) \to Y \to Y/T(Y) \to 0$.
+    Then
+    \begin{cd}
+        \Tor_2^\Z(X, Y/T(Y)) \rar
+        & \Tor_1^\Z(X, T(Y)) \rar
+        & \Tor_1^\Z(X, Y) \rar
+        & \Tor_1^\Z(X, Y/T(Y))
+    \end{cd}
+    is exact.
+
+    But $\Tor_2^\Z(X, Y/T(Y)) = 2$ and $\Tor_1^\Z(X, Y/T(Y)) = 0$ because $n \geq 2$ and $Y/T(Y)$ is torsionfree, respectively.
+
+    Hence, $\Tor_1^\Z(X, Y) \iso \Tor_1^\Z(X, T(Y)) \iso \Tor_1^\Z(T(X), T(Y))$.
+
+    (2) Consider
+    \begin{cd}
+        0 \rar
+        & n\Z \rar[hook, "\iota"]
+        & \Z \rar["\text{can}"]
+        & \Z/n\Z \rar
+        & 0
+    \end{cd}
+    Then get
+    \begin{cd}[row sep=tiny]
+        \Tor_1^\Z(X, \Z) \rar \dar[equals]
+        & \Tor_1^\Z(X, \Z/n\Z) \rar["\partial_1"]
+        & X \tensor_\Z n\Z \rar
+        & X \tensor_\Z \Z \\
+        0
+    \end{cd}
+    This
+    \begin{align*}
+        \Tor_1^\Z(X, \Z/n\Z) 
+            &\iso \ker(X \tensor \iota) \\
+            &= \{x \tensor n \in X \tensor_\Z n\Z \mid x \tensor n = 0 \in X \tensor_\Z \Z\}.
+    \end{align*}
+    Note $x \tensor n = nx \tensor 1$ in $X \tensor_\Z \Z$ but not in $X \tensor_\Z n\Z$.
+    In particular, $X \tensor_Z \Z \iso X$ via $X \tensor 1 \mapsto x$.
+    \begin{align*}
+        &= \{x \tensor n \in X \tensor_\Z n\Z \mid xn = 0 \in X\} \\
+        &\iso \{x \in X \mid xn = 0\} \\
+        &= X[n].
+    \end{align*}
+    Why is isomorphism true?
+    Have map
+    \begin{cd}[row sep=tiny]
+        X \tensor n\Z \rar["\iso"] & X \tensor \Z \rar["\iso"] & X \\
+        x \tensor n \rar[mapsto] & x \tensor 1 \\
+        & x \tensor z \rar[mapsto] & zx
+    \end{cd}
+
+    (3) Have
+    \[
+        \Tor_1^\Z(\Z/m\Z, \Z/n\Z)
+            \iso \Z/m\Z[n]
+            = \tfrac{m}{d}\Z/m\Z
+            \iso \Z/d\Z
+    \]
+    (Last is cyclic of order $d$.)
+
+    (4) (a) For $Y$ finitely generated torsion, have $T(Y) = \bigoplus_{\text{finite}} C_i$ with $C_i \iso \Z/p_i^{m_i} \Z$.
+
+    Hence,
+    \[
+        \Tor_1^\Z(X, Y)
+            \iso \Tor_1^\Z(X, T(Y))
+            \iso \bigoplus_{\text{finite}} \Tor_1^\Z(X, C_i)
+            \iso \bigoplus_{\text{finite}} X[p_i^{m_i}].
+    \]
+    Each $X[p_i^{m_i}]$ is obviously torsion by definition, so direct sum is torsion.
+
+    (b) $Y$ arbitrary.
+    Then $Y = \bigcup_{i \in I} Y_i$ with $Y_i$ finitely generated.
+    In other words, $Y$ is the direct limit of all of its finitely generated subgroups?
+    That is, $Y = \varinjlim_{i \in I} Y_i$.
+
+    Then
+    \[
+        \Tor_1^\Z(X, Y)
+            \iso \varinjlim_{i \in I} \Tor_1^\Z(X, Y_i)  
+    \]
+    Each $\Tor_1^\Z(X, Y_i)$ is torsion, so the limit is torsion.
+
+
+    (5) Consider the following exact sequence:
+    \begin{cd}[row sep=small]
+        \Tor_1^\Z(\Q, Y) \rar \dar[equals]
+        & \Tor_1^\Z(\Q/\Z, Y) \rar
+        & \Z \tensor_\Z Y \rar \dar["\iso"]
+        & \Q \tensor_Z Y
+        \\
+        0 & & Y \urar["\psi = 1 \tensor -"']
+    \end{cd}
+    First since $\Q$ torsionfree.
+
+    Hence
+    \[
+        \Tor_1^\Z(\Q/\Z, Y)
+            \iso \ker(\iota \tensor Y)
+            \iso \ker\psi
+            \leq Y.
+    \]
+    Since $\Tor_1^\Z(\Q/\Z, Y)$ is torsion, then $\ker\psi$ is torsion and sitting inside $Y$, so $\ker\psi \seq T(Y)$.
+
+    To see that $T(Y) \seq \ker\psi$, let $y \in T(Y)$ and $z \in \Z \setminus \{0\}$ with $zy = 0$.
+
+    Then $\psi(y) = 1 \tensor y \in \Q \tensor_\Z Y$.
+    Here,
+    \[
+        1 \tensor y
+        = \tfrac{z}{z} \tensor y 
+        = \tfrac{1}{z} \tensor zy
+        = 0.
+    \]
+
+\end{proof}
+
+
+\sepline
+
+last class or two of A
+
+
+\newpage
+\sepline
+
+4/3/23
+
+starting 236B
+
+(Re)introduce additive and abelian categories
+
+Prototypical example: sheaves of abelian groups on a topological space.
+
+Will define derived categories (objects: complexes of objects in an abelian category. morphism: want such that quasi-isomorphisms of complexes become isomorphisms of objects.)
+
+Then get a natural way of talking about derived functors.
+
+will find a few functors $f_*$, $f^*$, $f_!$, $f^!$, $\D$, $\udl{\Hom}$ for sheaves.
+
+will define triangulated category
+
+will define $t$-structures (extra data on triangulated category)
+
+example is perverse sheaves
+
+textbook: \textit{Methods of Homological Algebra} by Gelfand and Manin
+
+\sepline
+
+Examples
+\begin{enumerate}[(a)]
+    \item $\Ab$ is abelian groups with group homomorphisms
+    \item $R\lMod$ is (left) $R$-modules with (left) $R$-module homomorphisms
+    \item $\SAb$ is sheaves of abelian groups
+
+    $\PAb$ is presheaves of abelian groups
+    \item (quasi-)coherent sheaves of modules over a ringed space
+\end{enumerate}
+
+\sepline
+
+Let $\CC$ be a (locally-small) category.
+
+\paragraph{A1.}
+Each set $\Mor_\CC(X, Y)$ is an abelian group ($+$), the composition of morphism is bi-additive.
+In which case, usually write $\Hom_\CC$ in place of $\Mor_\CC$.
+
+(note that it is ambiguous whether A1 is a structure or a property.)
+
+In particular, $\Hom_\CC$ is a functor $\CC^\op \times \CC \to \Ab$.
+
+And automatically get a zero morphism $0 \in \Hom_\CC(X, Y)$.
+
+\paragraph{A2.}
+There exists a zero object $0 \in \CC$, i.e., an object such that $\Hom_\CC(0, 0) = 0$.
+
+This gives $\Hom_\CC(0, X) = 0$ and $\Hom_\CC(X, 0) = 0$ for all $X \in \CC$.
+
+Always have identity $\id_0 : 0 \to 0$, but then $\id_0 = 0$.
+So then for any $f : 0 \to X$, must have $f = f \circ \id_0 = f \circ 0 = 0$, using A1.
+
+Exercise: any two zero objects are isomorphic.
+
+\paragraph{A3.}
+For any $X_1, X_2 \in \CC$, there exists an object $Y \in \CC$ any morphisms \begin{cd}
+    X \rar["i_1", shift left] & Y \lar["p_1", shift left]
+    & X_2 \rar["i_2", shift left] & Y \lar["p_2", shift left]
+\end{cd}
+such that $p_1i_1 = \id_{X_1}$, $p_2i_2 = \id_{X_2}$, $i_1p_1 + i_2p_2 = \id_Y$, and $p_2i_1 = p_1i_2 = 0$.
+
+\begin{lemma}
+    We have a cartesian diagram
+    \begin{cd}
+        Y \rar["p_1"] \dar["p_2"'] & X_1 \dar \\
+        X_2 \rar & 0
+    \end{cd}
+    That is, for all $Z$ with $Z \to X_i$ making the diagram commute, there is a unique $Z \to Y$ which completes the diagram.
+    and a co-cartesian diagram
+    \begin{cd}
+        Y & X_1 \lar["i_1"'] \\
+        X_2 \uar["i_2"] & 0 \lar \uar
+    \end{cd}
+
+\end{lemma}
+
+
+\begin{proof}
+    Suppose we have commutative diagram
+    \begin{cd}
+        Z \ar[drr, bend left=20, "q_1"] \ar[ddr, bend right=20, "q_2"'] \drar[dashed, "\phi"]\\
+        & Y \rar["p_1"] \dar["p_2"'] & X_1 \dar \\
+        & X_2 \rar & 0
+    \end{cd}
+    Need to construct $\phi : Z \to Y$ such that $q_i = p_i \circ \phi$.
+
+    Take $\phi = i_1q_1 + i_2q_2$, then
+    \[
+        p_1 \circ \phi
+            = p_1i_1q_1 + p_1i_2q_2
+            = \id_{X_1}q_1 + 0q_2
+            = q_1.
+    \]
+    Similarly, $p_2 \circ \phi = q_2$.
+
+    Verify uniqueness of $\phi$...
+\end{proof}
+
+An \keyword{additive category} is a category satisfying A1, A2, A3.
+
+\sepline
+
+To state A4, need more notation
+
+Let $\CC$ be a category satisfying A1 and A2.
+
+Let $\phi : X \to Y$ be a morphism in $\CC$.
+
+A \keyword{kernel} of $\phi$ is a morphism $i : Z \to X$ such that
+\begin{enumerate}[(a)]
+    \item $\phi \circ i = 0$
+    \item for any $i' : Z' \to X$ with $\phi \circ i' = 0$, there is a unique $g : Z' \to Z$ such that $i' = i \circ g$. (that is, $i$ is unique up to unique isomorphism with respect to (a)).
+\end{enumerate}
+
+A \keyword{cokernel} is the dual notion.
+
+Exercise: this definition of kernel is equivalent to the following: for all $Z' \in \CC$, the sequence
+\begin{cd}
+    0 \rar & \Hom(Z', Z) \rar["i_*"] & \Hom(Z', X) \rar["\phi_*"] & \Hom(Z', X)
+\end{cd}
+is exact.
+Similar for cokernel.
+
+\paragraph{A4.}
+For any morphism $\phi : X \to Y$, there is a sequence of morphisms
+\begin{cd}
+    K \rar["k"] & X \rar["i"] & I \rar["j"] & Y \rar["c"] & K'
+\end{cd}
+such that
+\begin{enumerate}[(a)]
+    \item $j \circ i = \phi$
+    \item $K = \ker\phi$ and $K' = \coker\phi$
+    \item $I = \coker k = \ker c$
+\end{enumerate}
+
+An \keyword{abelian category} is a category satisfying A1-4.
+
+\sepline
+
+4/5/23
+
+II Sheaves
+
+Examples from complex analysis
+
+\paragraph{(a)} Holomorphic functions on the Riemann sphere $\P = \C \cup \{\infty\}$.
+
+For each open subset $U \seq \P$, we consider the ring of holomorphic functions $f : U \to \C$.
+
+There is a sheaf $\OO$ of holomorphic functions on $\P$ is given by the data
+\[
+    \{(f, V) \mid V \seq \P \text{ open}, f : V \to \C \text{ holomorphic}\}.
+\]
+Note that $V$ need not be the maximal open set on which $f$ is defined.
+
+\paragraph{(b)} The sheaf of solutions of a linear ODE.
+
+Let $U \seq \P$ be open, $a_i(z) \in \Gamma(U, \OO) := \{f : U \to \C \text{ holomorphic}\}$ for $i = 0, 1, \dots, n - 1$.
+
+Denote by $S$ the collection of all $(V, f)$ such that $V \seq U$ is open and $f$ is holomorphic on $V$ such that
+\[
+    Lf := \frac{\dd^nf}{\dd z^n} + \sum_{i=0}^{n} a_i(z)\frac{\dd^if}{\dd  z^i} = 0.
+\]
+
+When $V$ is connected and simply connected, basic result of ODE gives
+\[
+    \Gamma(V) = \{f : V \to \C \text{ holomorphic with } Lf = 0\} \iso \C^n.
+\]
+
+In general, the solution may depend on the topology of $V$.
+
+e.g., $U = \C \setminus \{0\}$, $L = \frac{\dd^2}{\dd{z}^2} + \frac{1}{z}\frac{\dd}{\dd{z}}$.
+The solutions are $c_1\log{z} + c_2$ for any ``branch'' of $\log$, but $\Gamma(U) = \{\text{const}\}$.
+
+(Riemann-Hilbert correspondence)
+
+\sepline
+
+A \keyword{presheaf (of sets)} $\FF$ on a topological space $Y$ consists of the following data:
+\begin{itemize}
+    \item a set $\FF(U)$ for each open subset $U \seq Y$,
+    \item a (restriction) map $r_{UV} : \FF(U) \to \FF(V)$ for each pair of open sets $V \seq U$,
+\end{itemize}
+satisfying
+\begin{itemize}
+    \item $r_{UU} = \id_{\FF(U)}$,
+    \item $r_{VW} \circ r_{UV} = r_{UW}$ whenever $W \seq V \seq U$.
+\end{itemize}
+
+A \keyword{sheaf} is a presheaf $\FF$ satisfying:
+\begin{itemize}
+    \item for any open covering $U = \bigcup_{i \in I} U_i$ and $s_i \in \FF(U_i)$ such that for all $i, j \in I$ with
+    \[
+        r_{U_i, U_i \cap U_j}(s_i) = r_{U_j, U_i \cap U_j}(s_j)
+    \]
+    then there exists a unique $s \in \FF(U)$ with $s_i = r_{U,U_i}(s)$ for all $i \in I$.
+\end{itemize}
+
+
+A \keyword{morphism of presheaves on $Y$} $f : \FF \to \GG$  consists of the following data:
+\begin{itemize}
+    \item a family of maps $f(U) : \FF(U) \to \GG(U)$ for each open subset $U \seq Y$
+\end{itemize}
+satisfying
+\begin{itemize}
+    \item for each pair of open sets $V \seq U$, the following diagram commutes:
+    \begin{cd}
+        \FF(U) \rar["f(U)"] \dar["r_{UV}^\FF"']
+        & \GG(U) \dar["r_{UV}^\GG"] \\
+        \FF(V) \rar["f(V)"'] & \GG(V)
+    \end{cd}
+\end{itemize}
+
+A \keyword{morphism of sheaves} is a morphism of the underlying presheaves.
+
+
+A \keyword{presheaf of groups/rings/vector spaces} is a presheaf $\FF$ of sets such that each $\FF(U)$ is a group/ring/vector space and each restriction map is a morphism is the corresponding category.
+
+sheaves and morphisms defined in the natural way.
+
+\sepline
+
+A \keyword{abelian presheaf} is a presheaf of abelian groups. (this course only, not standard language)
+
+Let $f : \FF \to \GG$ be a morphism of abelian presheaves.
+
+Recall $f(U) : \FF(U) \to \GG(U)$.
+
+Define a kernel $K(U) := \ker f(U)$ and a cokernel $C(U) := \coker f(U)$.
+
+With natural restrictions, $K$ and $C$ are presheaves. (exercise)
+
+
+A sequence of presheaves 
+\begin{cd}
+    \FF \rar["f"] & \GG \rar["g"] & \HH
+\end{cd}
+is exact if for all $U$, the sequence
+\begin{cd}
+    \FF(U) \rar["f(U)"] & \GG(U) \rar["g(U)"] & \HH(U)
+\end{cd}
+is exact.
+
+
+This implies that $\PAb$ is an abelian category.
+
+\sepline
+
+What about abelian sheaves?
+
+Let $f : \FF \to \GG$ be a morphism of abelian sheaves.
+
+Can try to define kernel $K(U) = \ker f(U)$ and cokernel $C(U) := \coker f(U)$.
+Know that both are presheaves, but are they sheaves?
+
+\begin{proposition}
+    \
+    \begin{enumerate}[(a)]
+        \item The kernel $K$ is an abelian sheaf.
+        \item The cokernel presheaf $C$ may not be a sheaf.
+    \end{enumerate}
+\end{proposition}
+
+\sepline
+
+4/10/23
+
+Functors Between Abelian Categories.
+
+Let $\CC$ and $\CC'$ be additive categories.
+
+A functor $F : \CC \to \CC'$ is \keyword{additive} if all maps
+\[
+    F : \Hom_\CC(X, Y) \to \Hom_\CC(FX, FY)
+\]
+are homomorphisms of abelian groups.
+
+A \keyword{complex in $\CC$}, denoted by $X^\bullet$, is a sequence of objects and morphisms:
+\begin{cd}
+    \cdots \rar["d^{n-1}"]
+    & X^n \rar["d^n"]
+    & X^{n+1} \rar["d^{n+1}"]
+    & \cdots
+\end{cd}
+with $d^n \circ d^{n-1} = 0$.
+
+Assume $\CC$ and $\CC'$ are abelian.
+Have diagram
+\begin{cd}
+    & \coker d^n \drar[dashed, "b^{n+1}"]
+    \\
+    X^n \rar["d^n"] \drar[dashed, "a^n"'] 
+    & X^{n+1} \rar["d^{n+1}"] \uar
+    & X^{n+1}
+    \\
+    & \ker d^{n+1} \uar[hook]
+\end{cd}
+The \keyword{$(n+1)$-cohomology} of $X^\bullet$ is
+\[
+    H^{n+1}(X^\bullet) := \coker a^n = \ker b^{n+1}.
+\]
+
+$X^\bullet$ is \keyword{acyclic} at $X^n$ if $H^n(X^\bullet) = 0$.
+
+$X^\bullet$ is \keyword{exact/acyclic} if it is acyclic at $X^n$ for all $n$.
+
+An additive functor $F : \CC \to \CC'$ is \keyword{exact} if it sends SES $0 \to X \to Y \to Z \to 0$ in $\CC$ to SES $0 \to FX \to FY \to FZ \to 0$ in $\CC'$.
+
+\keyword{left exact} in case each $0 \to FX \to FY \to FZ$ is exact.
+
+\keyword{right exact} in case each $FX \to FY \to FZ \to 0$ is exact.
+
+\sepline
+
+Examples.
+
+1. $\CC$ abelian.
+Then $\Hom_\CC(Y, -) : \CC \to \Ab$ and $\Hom_\CC(-, Y) : \CC^\op \to \Ab$ are left exact.
+
+2. Consider $R\lMod$ and a right $R$-module $Y_R$.
+Then $Y \tensor_R - : R\lMod \to \Ab$ is right exact.
+
+\sepline
+
+\begin{proposition}
+    $X$ a topological space, $U \seq X$ open, consider the category $\SAb_X$ of sheaves of abelian groups on $X$.
+    The functor $\SAb \to \Ab$, $\FF \mapsto \FF(U)$, is left exact.
+\end{proposition}
+
+\begin{proof}
+    The inclusion functor $\iota : \SAb \inc \PAb$ is left exact: kernel does not need sheafification.
+
+    The functor $\PAb \to \Ab$, $\FF \mapsto \FF(U)$ is exact by definition.
+
+    Composing an exact functor with a left exact functor gives a left exact functor.
+\end{proof}
+
+\sepline
+
+Let $\CC$ be an abelian category.
+
+An object $Y$ is \keyword{projective} if $\Hom_\CC(Y, -)$ is exact.
+
+An object $X$ is \keyword{injective} if $\Hom_\CC(-, Y)$ is exact.
+
+A right $R$-module $Y_R$ is \keyword{flat} if $Y \tensor_R -$ is exact.
+
+\sepline
+
+Let $f : M \to N$ be a continuous map of topological spaces, $\FF$ a sheaf on $M$.
+
+The \keyword{direct image} or \keyword{pushforward} $f_*\FF$ is a sheaf defined by
+\[
+    f_*\FF(U) := \FF(f^{-1}(U)).
+\]
+and restriction for $V \seq U$ induced from $r_{f^{-1}(U), f^{-1}(V)}$.
+
+Exercise: This is a sheaf.
+
+\sepline
+
+\begin{proposition}
+    \
+    \begin{enumerate}[(a)]
+        \item Let $F : M \to \mathrm{pt}$, then $f_*\FF = \Gamma(M, \FF) = \FF(M)$.
+        \item $i : M \to N$ closed embedding, then have stalk
+        \[
+            (i_*\FF)_x = \begin{cases}
+                \FF_x & x \in M \\
+                0 & x \notin M
+            \end{cases}
+        \]
+        Called ``extension by zero.''
+
+        (Exercise: $i : M \inc N$ open embedding; $i_*\FF$ may have nonzero stalk at $x \in N \setminus M$)
+
+        \item $f_* : \SAb_M \to \SAb_N$ is a functor: $(fg)_* = f_* \circ g_*$ and $\id_* = \id$ (not sure right id condition here).
+    \end{enumerate}
+\end{proposition}
+
+\sepline
+
+4/12/23
+
+Let $f : M \to N$ be a continuous map.
+
+Let $\FF \in \SAb_N$ be a sheaf on $N$.
+
+Define $f^*_p\FF$ as a presheaf
+\[
+    f^*_p\FF(U) = \FF(f(U)) := \varinjlim_{f(U) \seq V \seq N} \FF(V)
+\]
+Then take sheafification $f^*\FF = s(f^*_p\FF)$, called the \keyword{inverse image} or \keyword{pullback}.
+
+Exercise: for all $x \in M$, have stalk $(f^*\FF)_x = \FF_{f(x)}$.
+
+\sepline
+
+\begin{proposition}
+    Adjunction $f^* \dashv f_*$.
+    \[
+        \Hom_{\SAb_M}(f^*\FF, \GG) \iso \Hom_{\SAb_N}(\FF, f_*\GG)
+    \]
+\end{proposition}
+
+\begin{proof}
+    As $s \dashv \iota$, we only need to show
+    \[
+        \Hom_{\PAb_M}(f^*_p\FF, \GG) \iso \Hom_{\PAb_N}(\FF, f_*\GG).
+    \]
+
+    Want to establish a functorial morphism $\FF \to f_*f^*_p\FF$.
+    
+    (Remark: Why should we expect this?
+    In the original statement, take $\GG = f^*_p\FF$, then should have $\Hom(f^*_p\FF, f^*_p\FF) \iso \Hom(\FF, f_*f^*_p\FF)$.
+    Identity $\id$ on the left should give something on the right, which is the thing we are talking about.)
+
+    Note, for $V \seq N$ open, need to define morphism $\FF(V) \to f_*f^*_p\FF(V)$.
+    Have
+    \[
+        f_*f^*_p\FF(V)
+        = (f^*_p\FF)(f^{-1}(V))
+        = \varinjlim_{f(f^{-1}(V)) \seq U \seq N} \FF(U)
+    \]
+    But $V$ is an open neighborhood of $f(f^{-1}(V))$, so there is a canonical morphism $\FF(V) \to \varinjlim \FF(U)$.
+
+    This is compatible with restrictions and gives us a presheaf morphism $i_\FF : \FF \to f_*f^*_p\FF$.
+
+    And this induces the arrow in the statement: given $\psi \in \Hom_{\PAb_M}(f^*_p\FF, \GG)$, send to the composition
+    \begin{cd}
+        \FF \rar["i_\FF"] & f_*f^*_p\FF \rar["f_*\psi"] \rar & f_*\GG
+    \end{cd}
+
+    The other direction uses $f^*_pf_*\GG \to \GG$.
+
+    Exercise: construct this and check it is the desired inverse.
+\end{proof}
+
+
+(Think about adjunction $f^* \dashv f_*$ as a pair of natural transformations $\id \to f_*f^*$ and $f^*f_* \to \id$.)
+
+\begin{proposition}
+    \begin{tikzcd}
+        \CC \rar[shift left=3pt, "F"] & \DD \lar[shift left=3pt, "G"]
+    \end{tikzcd}
+    and $F \dashv G$.
+    Then $F$ is right exact and $G$ is left exact.
+\end{proposition}
+
+\begin{proof}
+    We prove the second part, i.e., that $G$ is left exact.
+    Given SES
+    \begin{cd}
+        0 \rar & Y' \rar["f"] & Y \rar["g"] & Y'' \rar & 0
+    \end{cd}
+    in $\DD$.
+    Apply left exact functor $\Hom_\DD(FX, -)$ for all $X \in \CC$.
+    Gives a
+    \begin{cd}
+        0 \rar & \Hom_\DD(FX, Y') \rar & \Hom_\DD(Fx, Y) \rar & \Hom_\DD(Fx, Y'')
+    \end{cd}
+    This is really the same as 
+    \begin{cd}
+        0 \rar & \Hom_\CC(X, GY') \rar & \Hom_\CC(X, GY) \rar & \Hom_\CC(X, GY'')
+    \end{cd}
+    This is true for any $X \in \CC$, which is equivalent to 
+    \begin{cd}
+        0 \rar & GY' \rar & GY \rar & GY''
+    \end{cd}
+    being exact.
+\end{proof}
+
+\begin{proposition}
+    In $\SAb$, $f_*$ is left exact and $f^*$ is exact.
+\end{proposition}
+
+\begin{proof}
+    By earlier exercise, $f^*$ is exact on stalks.
+\end{proof}
+
+\sepline
+
+Direct Images with Compact Support. (III.8.7-10)
+
+Assume all topological spaces are 
+\begin{enumerate}
+    \item locally compact: for any $x \in X$ there exists an open set $U$ and compact set $K$ such that $x \in U \seq K$;
+    \item first-countable: every point has a countable local basis;
+    \item (often) Hausdorff.
+\end{enumerate}
+
+A morphism between topological spaces is \keyword{proper} if the preimages of compact sets are compact.
+(Sort of like a morphism with compact fibers.)
+
+Let $f : X \to Y$ be continuous, $\FF$ a sheaf on $X$, $U \seq Y$ open.
+Define the \keyword{direct image with compact support} sheaf $f_!\FF$ on $Y$ by
+\[
+    f_!\FF(U) = \{s \in \Gamma(f^{-1}(U), \FF) \mid f : \supp(s) \to U \text{ is proper}\}.
+\]
+
+Let $s \in \Gamma(V, \GG)$, the \keyword{support} of $s$ is
+\[
+    \supp(s) := \clo{\{x \in V \mid \eqc{s} \ne 0 \in \GG_x\}}.
+\]
+where $\Gamma(V, \GG) \to \GG_x$, $s \mapsto \eqc{s}$, takes the germ of $s$ at $x$.
+In other words, the closure of the set of points where the germ of $s$ is nonzero.
+
+\begin{theorem}
+    \
+    \begin{enumerate}[(a)]
+        \item $f_!\FF$ is a subsheaf of $f_*\FF$;
+        \item $f_! : \SAb_X \to \SAb_Y$ is a left exact functor
+    \end{enumerate}
+\end{theorem}
+
+\sepline
+
+4/14/23
+
+\begin{proof}
+    (a)
+    It is clear that $f_!\FF$ is a subpresheaf of $f_*\FF$, since $f_!\FF(U) \seq f_*\FF(U)$ by definition.
+    So the main thing to check is that $f_!\FF$ is a sheaf.
+
+    Any set of compatible sections of $f_!\FF$ glue uniquely to a section of $f_*\FF$.
+    We want this glued section to be a section of $f_!\FF$, i.e., that it satisfies the relevant condition.
+
+    This comes down to a topological statement.
+
+    Exercise: given a collection of proper maps $V_i \to U_i$, the glued map $\bigcup V_i \to \bigcup U_i$ is proper.
+
+    (b)
+    follows from the fact that $f_!$ is a subsheaf?
+\end{proof}
+
+\sepline
+
+Consider the special case $f : X \to \mathrm{pt}$.
+Then $f_!\FF \approx f_!\FF(\mathrm{pt})$ is the sections $s \in \FF(X)$ such that $\supp(s)$ is compact, denote this by $\Gamma_c(X, \FF)$.
+
+(Remark: category of abelian sheaves over a point is equivalent (isomorphic?) to the category of abelian groups.)
+
+Now consider a single point $y \in Y$.
+Have the following diagram:
+\begin{cd}
+    X \rar["f"] & Y \\
+    f^{-1}(y) \uar[hook, "i"] \rar & y \uar[hook]
+\end{cd}
+
+\begin{proposition}
+    For a point $y \in Y$, we have the stalk
+    \[
+        (f_!\FF)_y = \Gamma_c(f^{-1}(y), \FF|_{f^{-1}(y)} = i^*\FF).
+    \]
+\end{proposition}
+
+\begin{proof}
+    First want to construct the morphism $\phi : (f_!\FF)_y \to \Gamma_c(f^{-1}(y), \FF|_{f^{-1}(y)})$.
+
+    Let $s \in (f_!\FF)_y$.
+    Choose a representative $\tilde{s} \in \Gamma(f^{-1}(U), \FF)$ with $U$ an open neighborhood of $y$ and $\supp(\tilde{s}) \to U$ proper.
+
+    Then $\tilde{s}|_{f^{-1}(y)}$ is in $\Gamma_c(f^{-1}(y), \FF|_{f^{-1}(y)})$, since $\supp(\tilde{s}|_{f^{-1}(y)}) = \supp(\tilde{s}) \cap f^{-1}(y)$.
+
+    Exercise: $\phi(s) := \tilde{s}|_{f^{-1}(y)}$ only depends on $s$.
+
+    Now show $\phi$ is injective.
+    Suppose $\phi(s) = 0$.
+    Then induced section $tilde{s} = 0$, which says that $\supp(\tilde{s})$ is disjoint from $f^{-1}(y)$.
+    In particular, $y \notin f(\supp\tilde{s})$.
+    Note that the support is closed and $f$ is proper (also need space is locally compact), so $f(\supp\tilde{s})$ is closed.
+    So there is a neighborhood of $y$ where a representative of $s$ is zero, hence $s = 0$.
+
+    Now show $\phi$ is surjective.
+    Choose a local basis $\{U_i\}$ around $y$ such that $\bigcap U_i = y$.
+    Then $f^{-1}(y) = \bigcap f^{-1}(U_i)$.
+
+    Exercise: locally compact implies $\Gamma_c(f^{-1}(y), \FF|_{f^{-1}(y)}) = \varinjlim A_i$, where
+    \[
+        A_i = \{t \in \Gamma(f^{-1}(U_i), \FF) \mid \supp t = K \cap f^{-1}(U_i) \text{ for some compact } K \seq X\}.
+    \]
+    (This is annoying to verify.)
+
+    
+\end{proof}
+
+\sepline
+
+Example
+
+1. open immersion $U \inc X$, $\FF$ a sheaf on $U$.
+Look at stalk:
+\[
+    (i_!\FF)_x = \begin{cases}
+        \FF_x & x \in U \\
+        0 & x \notin U
+    \end{cases}
+\]
+For points in the complement, map is never proper.
+Called ``extension by zero.''
+
+
+2. $j : E \to X$ proper (in particular, closed embedding).
+Then $j_!\GG = j_*\GG$.
+The closed image of a compact set is also compact, so every map is proper.
+
+\sepline
+
+Derived Categories via Localizations.
+(More classical approach)
+
+Let $f : K^\bullet \to L^\bullet$ be a morphism of complexes in an abelian category $\AA$.
+
+Say $f$ is a \keyword{quasi-isomorphism} if the induced morphisms $H^n(f) : H^n(K^\bullet) \to H^n(L^\bullet)$ are all isomorphisms.
+
+Define $\Kom(\AA)$ to be the category of complexes in $\AA$.
+
+There exists a category $D(\AA)$ and a functor $Q : \Kom(\AA) \to D(A)$ such that
+\begin{enumerate}
+    \item $Q(f)$ is an isomorphism for any quasi-isomorphism $f$;
+    \item $Q$ is universal with respect to all such categories:
+    \begin{cd}
+        \Kom(\AA) \drar \ar[rr] && \DD' \\
+        & D(\AA) \urar[dashed, "\exists!"']
+    \end{cd}
+\end{enumerate}
+Call $D(\AA)$ the \keyword{derived category} of $\AA$.
+
+\sepline
+
+4/17/23
+
+Remark: Consider full subcategory $\Kom^+(\AA)$ of $\Kom(\AA)$ consisting of all complexes $K^\bullet$ with $K^i = 0$ for $i \ll 0$, i.e., $K^\bullet$ is bounded from below.
+Also have $\Kom^-(\AA)$ of complexes bounded above, and $\Kom^b(\AA)$ of complexes bounded from both sides.
+These induce bounded derived categories $D^+(\AA)$, $D^-(\AA)$, and $D^b(\AA)$, respectively, which are full subcategories of $D(\AA)$.
+
+
+\sepline
+
+Construction of $D(\AA)$.
+
+Think about it like ``localization of noncommutative rings.''
+
+A class of morphisms $S \seq \Mor\BB$ is said to be \keyword{localizing} if
+\begin{enumerate}[(a)]
+    \item $S$ is closed under composition: $id_X \in S$ for all $X \in \BB$ and $s \circ t \in S$ for all $s, t \in S$ for which the composition is defined;
+    \item extension: for all $f \in \Mor\BB$ and $s \in S$, there exists $g \in \Mor\BB$ and $t \in S$ such that the following diagram commutes:
+    \begin{center}
+        \begin{tikzcd}
+            W \rar[dashed, "g"'] \dar[dashed, "t"'] & Z \dar["s"] \\
+            X \rar["f"'] & Y
+        \end{tikzcd}
+        \hspace*{1cm}
+        or
+        \hspace*{1cm}
+        \begin{tikzcd}
+            W & Z \lar[dashed, "g"] \\
+            X \uar[dashed, "t"] & Y \lar["f"] \uar["s"']
+        \end{tikzcd}
+    \end{center}
+    \item $f, g \in \Mor(X, Y)$, the existence of $s \in S$ with $sf = sg$ is equivalence to the existence of $t \in S$ with $ft = gt$.
+\end{enumerate}
+
+The \keyword{localization} of $\BB$ at $S$ is the category $\BB[S^{-1}]$ with $\Ob\BB[S^{-1}] = \Ob\BB$.
+A morphism $X \to Y$ in $\BB[S^{-1}]$ is the equivalence class of \keyword{roofs} of the form
+\begin{cd}
+    & X' \dlar["s"'] \drar["f"] \\
+    X && Y
+\end{cd}
+with $s \in S$ and $f \in \Mor\BB$.
+Two roofs are equivalence if there exists a third roof on top, which makes the following diagram commute:
+\begin{cd}
+    & X''' \dlar[dashed, "r"'] \drar[dashed, "h"] \\
+    X' \dar["s"'] \ar[drr, "f" near start] && X'' \ar[dll, "t"' near start] \dar["g"] \\
+    X && Y
+\end{cd}
+The identity $\id_X$ is the class of
+\begin{cd}
+    & X \dlar["\id_X"'] \drar["\id_X"] \\
+    X && X
+\end{cd}
+
+The composition of roofs $(s, f)$ and $(t, g)$ is the class of $(st', gf')$ where
+\begin{cd}
+    && X'' \dlar[dashed, "t'"'] \drar[dashed, "f'"] \\
+    & X' \dlar["s"'] \drar["f"] && Y' \dlar["t"'] \drar["g"] \\
+    X && Y && Z
+\end{cd}
+Extension condition gives existence of square, so 
+\[
+    gt^{-1}fs^{-1}
+        = gf't'^{-1}s^{-1}
+        = (gf')(st')^{-1}.  
+\]
+
+\begin{lemma}
+    \
+    \begin{enumerate}[(a)]
+        \item This is an equivalence relation on roofs,
+        \item composition is well-defined.
+    \end{enumerate}
+\end{lemma}
+
+\begin{proof}
+    (a) Reflexive and symmetric easy.
+
+    Suppose $(s, f) \sim (t, g)$ adn $(t, g) \sim (u, e)$.
+    So we have
+    \begin{cd}[column sep=small, row sep=small]
+        && {Z'} && {Z''} \\
+        & {X'} && {X''} && {X'''} \\
+        \\
+        X &&&&&& Y
+        \arrow["s"', from=2-2, to=4-1]
+        \arrow["f"'{pos=0.6}, from=2-2, to=4-7]
+        \arrow["t"'{pos=0.6}, from=2-4, to=4-1]
+        \arrow["e", from=2-6, to=4-7]
+        \arrow["g"{pos=0.6}, from=2-4, to=4-7]
+        \arrow["u"{pos=0.6}, from=2-6, to=4-1]
+        \arrow["r"', from=1-3, to=2-2]
+        \arrow["h", from=1-3, to=2-4]
+        \arrow["p"', from=1-5, to=2-4]
+        \arrow["i", from=1-5, to=2-6]
+    \end{cd}
+    First, consider
+    \begin{cd}
+        Z' \dar["sr"'] & W \lar[dashed, "v"'] \dar[dashed, "k"]\\
+        X & Z'' \lar["tp"]
+    \end{cd}
+    Then $srv = tpk$.
+    By first diagram, have $srv = thv$.
+    So by (c), there exists $w : Z''' \to W$ in $S$ such that $hvw = pkw$.
+    Now
+    \begin{cd}
+        & Z''' \dlar[dashed, "rvw"'] \drar[dashed, "ikw"] \\
+        X' \dar["s"'] \ar[drr, "f" near start] && X''' \ar[dll, "u"' near start] \dar["e"] \\
+        X && Y
+    \end{cd}
+\end{proof}
+
+Construct morphism $F : \BB \to \BB[S^{-1}]$ which is the identity on objects and sends a morphism $f \in \Mor_\BB(X, Y)$ to the equivalence class of the roof
+\begin{cd}
+    & X \dlar["\id_X"'] \drar["f"] \\
+    X && Y
+\end{cd}
+
+This satisfies the following universal property: If $T : \BB \to \DD$ is functor such that $T(s)$ is an isomorphism for all $s \in S$, then there exists a unique factorization
+\begin{cd}
+    \BB \ar[rr, "T"] \drar["F"'] && \DD \\
+    & \BB[S^{-1}] \urar[dashed, "\exists!"']
+\end{cd}
+
+\sepline
+
+4/19/23
+
+\begin{proposition}
+    Let $T : \BB \to \DD$ be a functor such that $T(s)$ is an isomorphism for any $s$ in a localizing class $S$ of $\BB$.
+    Then $T$ uniquely factors through $\BB[S^{-1}]$:
+    \begin{cd}
+        \BB \ar[rr, "T"] \drar["F"'] && \DD \\
+        & \BB[S^{-1}] \urar[dashed, "\exists!G"']
+    \end{cd}
+\end{proposition}
+
+\begin{proof}
+    To construct $G : \BB[S^{-1}] \to \DD$ such that $T = G \circ F$, must have
+    \[
+        G(X \in \BB[S^{-1}]) = T(X \in \BB)
+    \]
+    and
+    \[
+        G([s, f]) = T(f) \circ T(s)^{-1}.
+    \]
+    Exercise: well-defined and unique.
+\end{proof}
+
+\sepline
+
+Issue: The quasi-isomorphisms in $\Kom(\AA)$ do not form a localizing class.
+
+Fix $n$.
+For $K^\bullet = (K^\bullet, d_K^\bullet)$, define a complex $K[n]^\bullet
+$ by
+\[
+    (K[n])^i := K^{n + i}
+    \isp{and}
+    d_{K[n]} := (-1)^n d_K.
+\]
+(A shift to the left by $n$.)
+
+\begin{cd}
+    \cdots \rar K^i \rar["d_K^i"] & K^{i+1} \rar["d_K^{i+1}"] & \cdots
+\end{cd}
+
+For $f : \to K^\bullet \to L^\bullet$, define $f[n] : K[n]^\bullet \to L[n]^\bullet$ to coincide with $f$ componentwise.
+
+This describes a \keyword{translation functor} $T^n : \Kom(\AA) \to \Kom(\AA)$, which is an autoequivalence.
+
+
+Let $f : K^\bullet \to L^\bullet$ be a morphism of complexes, the \keyword{cone} of $f$ is the complex $c(f)^\bullet$ with
+\[
+    c(f)^i = K[1]^i \oplus L^i
+    \isp{and}
+    d_{c(f)}(K^{i+1}, L_i) = (-d_K K^{i+1}, f(K^{i+1}) + d_L(L^i))
+\]
+\begin{cd}[column sep=large]
+    K^{i+1} \rar["-d_K"] \dar[draw=none, "\oplus" description] \drar["f^{i+1}"]
+    & K^{i+1} \dar[draw=none, "\oplus" description] \\
+    L_i \rar["d_L"] & L^{i+1}
+\end{cd}
+Check $d_{c(f)}^2 = 0$.
+
+\sepline
+
+Example: $f$ is a morphism of a ``$0$-complex,'' i.e., $f : K^0 \to L^0$ where $K^0$ and $L^0$ have at most one nonzero entry, in the $0$th position.
+Then $c(f)$ is the complex
+\begin{cd}
+    \cdots \rar & 0 \rar & K^0 \rar["f"] & L^0 \rar & 0 \rar & \cdots \\
+    & & \deg -1 \uar & \deg 0 \uar
+\end{cd}
+
+In particular, $H^{-1}(c(f)) = \ker f$ and $H^0(c(f)) = \coker f$.
+
+\sepline
+
+The \keyword{cylinder} $\Cyl(f)$ is a complex
+\[
+    \Cyl(f)^\bullet = K^\bullet \oplus K[1]^\bullet \oplus L^\bullet
+\]
+and $d_{Cyl(f)}^i$ given by
+\begin{cd}[column sep=large]
+    K^i \rar["d_K"] & K^{i+1} \\
+    K^{i+1} \urar["-\id"] \rar["-d_K"] \drar["f"] & K^{i+2} \\
+    L_i \rar["d_L"] & L^{i+1}
+\end{cd}
+
+\begin{lemma}
+    The following diagram commutes with exact rows:
+    \begin{cd}
+        & 0 \rar 
+        & L^\bullet \rar \dar["\alpha"]
+        & c(f) \rar \dar[equal]
+        & K[1]^\bullet \rar & 0
+        \\
+        0 \rar 
+        & K^\bullet \rar \dar[equal] 
+        & \Cyl(f) \rar \dar["\beta"]
+        & c(f) \rar
+        & 0
+        \\
+        & K^\bullet \rar["f"]
+        & L^\bullet
+    \end{cd}
+    It's functorial in $f$.
+    The morphisms $\alpha$ and $\beta$ are quasi-isomorphisms: $\beta\alpha = \id_L$ and $\alpha\beta$ is homotopic to $\id_{\Cyl(f)}$.
+\end{lemma}
+
+Say $f, g : K^\bullet \to L^\bullet$ are \keyword{homotopic}, written $f \sim g$ if there exists $k$ such that $f - g = kd + dk$ where
+\begin{cd}
+    K^{i-1} \rar 
+    & K^i \rar \dlar["k^i"'] \dar["f - g"'] 
+    & K^{i+1} \dlar["k^{i+1}"']
+    \\
+    L^{i-1} \rar
+    & L^i \rar
+    & L^{i+1}
+\end{cd}
+
+\begin{proof}
+    $\alpha$ is the ``inclusion.''
+
+    And $\beta$ maps
+    \begin{cd}
+        (K^i, K^{i+1}, L^i) \rar["d_{\Cyl(f)}"] \dar["\beta_i"]
+        & (\quad) \dar["\beta^{i+1}"]
+        \\
+        (f(K^i) + L^i) \rar["d_L"]
+        & (\quad)
+    \end{cd}
+    Consider map
+    \begin{cd}[row sep=tiny]
+        \Cyl(f)^i \rar["k^i"] & \Cyl(f)^{i-1} \\
+        (K^i, K^{i+1}, L^i) \rar[mapsto] & (0, K^i, 0)
+    \end{cd}
+    Then $\alpha\beta = \id + dk + kd$.
+\end{proof}
+
+\sepline
+
+4/21/23
+
+Let $\AA$ be an abelian category.
+
+The \keyword{homotopy category} $K(\AA)$ is
+\begin{itemize}
+    \item $\Ob K(\AA) = \Ob \Kom(\AA)$;
+    \item $\Mor K(\AA) = \Mor\Kom(\AA) / \{\text{homotopy equivalence}\}$
+\end{itemize}
+
+Recall that homotopy equivalence on morphisms induces the same morphisms on cohomology, so it makes sense to talk about quasi-isomorphisms inside $K(\AA)$.
+
+\begin{theorem}[III.4.4]
+    The class of quasi-isomorphisms in $K(\AA)$ is localizing.
+\end{theorem}
+
+Will give a more conceptual proof later, based on two more results:
+\begin{itemize}
+    \item $K(\AA)$ is a triangulated category;
+    \item quasi-isomorphisms are ``obtained by cohomological functors.''
+\end{itemize}
+
+Taste of proof of localization:
+
+obviously closed under composition
+
+Want to complete the following diagram:
+\begin{cd}
+    N^\bullet \rar[dashed, "k", "\text{q-iso}"'] \dar[dashed, "h"']
+    & M^\bullet \dar["g"]
+    \\
+    K^\bullet \rar["f", "\text{q-iso}"']
+    & L^\bullet
+\end{cd}
+This comes from the following diagram:
+\begin{cd}
+    c(\pi g)^\bullet[-1] \rar["k"] \dar[dashed, "\exists h"]
+    & M^\bullet \rar["\pi g"] \dar["g"]
+    & c(f)^\bullet \dar[equals] \rar
+    & c(\pi g)^\bullet \dar["{h[1]}"]
+    \\
+    K^\bullet \rar["f"']
+    & L^\bullet \rar["\pi"']
+    & c(f)^\bullet \rar
+    & K^\bullet[1]
+\end{cd}
+This diagram commutes up to homotopy.
+
+$c(f)$ is cyclic (no cohomology), will imply something about $M^\bullet$.
+
+Bottom row is common thing.
+
+\sepline
+
+Can now define derived category as $D(\AA) := K(A)[\{\text{q-iso}\}^{-1}]$.
+
+\sepline
+
+$D(\AA)$ is an additive category.
+
+For two morphisms
+\begin{center}
+    \begin{tikzcd}
+        & Z \dlar["s"'] \drar["f"] \\
+        X && Y
+    \end{tikzcd}
+    \hspace*{1cm}
+    \begin{tikzcd}
+        & Z' \dlar["s'"'] \drar["f'"] \\
+        X && Y
+    \end{tikzcd}
+\end{center}
+take
+\begin{cd}
+    U \dar[dashed, "r"'] \rar[dashed, "r'"] 
+    & Z' \dar["s'"]
+    \\
+    Z \rar["s"]
+    & X
+\end{cd}
+Both $r$ and $r'$ are quasi-isomorphisms.
+\begin{cd}
+    & U \dlar["r"'] \drar["r'"]
+    \\
+    Z \dar["s"'] \ar[drr, "f" near start] 
+    && Z' \ar[dll, "s'"' near start] \dar["f'"] \\
+    X && Y
+\end{cd}
+Take
+\[
+    (s, f) + (s', f') = (sr = s'r', fr + f'r')
+\]
+
+Exercise: this is an additive structure.
+
+\sepline
+
+Let $\DD$ be an additive category.
+
+A \keyword{triangle} in $\DD$ is a sequence
+\begin{cd}
+    X \rar["u"] & Y \rar["v"] & Z \rar["w"] & X[1]
+\end{cd}
+and a morphism of triangles is a diagram
+\begin{cd}
+    X \rar \dar["f"] 
+    & Y \rar \dar["g"] 
+    & Z \rar \dar["k"] 
+    & X[1] \dar["{f[1]}"]
+    \\
+    X' \rar
+    & Y' \rar
+    & Z' \rar
+    & X'[1]
+\end{cd}
+
+A \keyword{$\Delta$-category structure} on $\DD$ consists of the data
+\begin{enumerate}[(a)]
+    \item Additive autoequivalence $T : \DD \to \DD$ called the translation, denote ($X[n] := T^nX$ and $f[n] := T^nf$);
+    \item a class of \textit{distinguished triangles} 
+\end{enumerate}
+satisfying
+\begin{enumerate}[TR1.]
+    \item \begin{enumerate}[(1)]
+        \item Every triangle of the form
+        \begin{cd}
+            X \rar["\id"] & X \rar & 0 \rar & X[1]
+        \end{cd}
+        is distinguished,
+        \item any triangle isomorphic to a distinguished triangle is distinguished,
+        \item any morphism $u : X \to Y$ can be completed to a distinguished triangle.
+    \end{enumerate}
+    \item A triangle
+    \begin{cd}
+        X \rar["u"] & Y \rar["v"] & Z \rar["w"] & X[1]
+    \end{cd}
+    is distinguished if and only if
+    \begin{cd}
+        Y \rar["v"] & Z \rar["w"] & X[1] \rar["{-u[1]}"] & Y[1]
+    \end{cd}
+    is distinguished.
+    \item Assume we have two distinguished triangles and morphisms $f$ and $g$, then there exists $h$ (not necessarily unique) which completes the following diagram:
+    \begin{cd}
+        X \rar \dar["f"] 
+        & Y \rar \dar["g"]
+        & Z \rar \dar[dashed, "\exists h"]
+        & X[1] \dar["{f[1]}"]
+        \\
+        X' \rar & Y' \rar & Z' \rar & X[1]
+    \end{cd}
+    \item Starting with commutative square
+    \begin{cd}
+        X \rar["f"] \dar["g"']
+        & Y \dar["w"]
+        \\
+        X' \rar["h"]
+        & Y'
+    \end{cd}
+    Then there is a (unique?) way to complete it to a diagram:
+    \begin{cd}
+        X \rar["f"] \dar["g"']
+        & Y \dar["w"] \rar
+        & Z \dar
+        \\
+        X' \rar["h"] \dar
+        & Y' \rar \dar
+        & Z' \dar
+        \\
+        X'' \rar 
+        & Y'' \rar
+        & Z''
+    \end{cd}
+\end{enumerate}
+
+(Unknown if TR4 follows from the previous axioms)
+
+generalized by stable $\infty$-categories.
+
+\sepline
+
+Octahedron:
+Given three triangles of the form
+\begin{cd}
+    X \rar["f"] & Y \rar["h"] & Y/X \rar & X[1] \\
+    Y \rar["g"] & Z \rar["k"] & Z/Y \rar & Y[1] \\
+    X \rar["g \circ f"] & Z \rar["\ell"] & Z/X \rar & X[1]
+\end{cd}
+
+\sepline
+
+4/24/23
+
+\begin{proposition}
+    Let $\DD$ be a triangulated category, and
+    \begin{cd}
+        X \rar["u"] & Y \rar["v"] & Z \rar["w"] & X[1]
+    \end{cd}
+    Then there exists $U \in \Ob\DD$ such that the following sequences are exact
+    \begin{cd}
+        \cdots \rar 
+        & \Hom(U, X[i]) \rar["{(u[i])_*}"]
+        & \Hom(U, Y[i]) \rar["{(v[i])_*}"]
+        & \Hom(U, Z[i]) 
+        \\
+        && \rar["{(w[i])_*}"]
+        & \Hom(U, X[i+1]) \rar
+        & \cdots
+    \end{cd}
+    and
+    \begin{cd}
+        \cdots \rar
+        & \Hom(X[i+1]) \rar["{(w[i])^*}"]
+        & \Hom(Z[i], U) \rar
+        & \cdots
+    \end{cd}
+\end{proposition}
+
+\begin{proof}
+    By TR2, we only need to check exactness at $\Hom(U, Y)$ (i.e., we can shift to get Lemma applies elsewhere).
+
+    First, we show that $vu = 0$.
+    By TR3 (applied to TR1 and assumption)
+    \begin{cd}
+        X \rar["\id"] \dar["\id"]
+        & X \rar["0"] \dar["u"]
+        & 0 \rar \dar[dashed, "h"]
+        & X[1] \dar["\id"]
+        \\
+        X \rar["u"]
+        & Y \rar["v"]
+        & Z \rar["w"]
+        & X[1]
+    \end{cd}
+    The only option for $h$ is $0$ so $0 = vu$.
+    Thus $v_*u_* = 0$ so the hom sequence is a complex.
+
+    Now, we show exactness.
+    Let $f : U \to Y$ be such that $vf = 0$.
+    ($f \in \ker v_*$, show $f \in \im u_*$.)
+    Need to find $g : U \to X$ such that $f = ug$.
+    By TR2 and TR3
+    \begin{cd}
+        U \rar["\id"] \dar[dashed, "g"]
+        & U \rar \dar["f"]
+        & 0 \rar \dar
+        & U[1] \dar[dashed, "{g[1]}"]
+        \\
+        X \rar["u"]
+        & Y \rar["v"]
+        & Z \rar
+        & X[1]
+    \end{cd}
+    So $f = ug$, so exact at $\Hom(U, Y)$ so exact.
+\end{proof}
+
+\begin{corollary}
+    If $f$ and $g$ uin TR3 are isomorphisms, then $h$ is also an isomorphism.
+    In particular, distinguished triangles in TR1c is unique up to (non-unique) isomorphism.
+\end{corollary}
+
+\begin{proof}
+    \begin{cd}
+        X \rar \dar["f"]
+        & Y \rar \dar["g"]
+        & Z \dar[dashed, "h"]
+        \\
+        X' \rar
+        & Y' \rar
+        & Z'
+    \end{cd}
+\end{proof}
+Apply $\Hom(Z', -)$ to get
+\begin{cd}[column sep=tiny]
+    \Hom(Z', X) \rar \dar["f_*", "\iso"']
+    & \Hom(Z', Y) \rar \dar["g_*", "\iso"']
+    & \Hom(Z', Z) \rar \dar[dashed, "h_*"]
+    & \Hom(Z', X[1]) \rar \dar["{f[1]_*}", "\iso"']
+    & \Hom(Z', Y[1]) \dar["{g[1]_*}", "\iso"']
+    \\
+    \Hom(Z', X') \rar
+    & \Hom(Z', Y') \rar
+    & \Hom(Z', Z') \rar
+    & \Hom(Z', X'[1]) \rar
+    & \Hom(Z', Y'[1])
+\end{cd}
+So by the five lemma, $h_*$ is an isomorphism of abelian groups, so there exists $\phi : Z' \to Z$ such that $h\phi = \id_{Z'}$.
+
+By applying $\Hom(-, Z)$, get left inverse of $h$, which implies $h$ is an isomorphism.
+
+\begin{corollary}
+    Diagram
+    \begin{cd}
+        & X \rar["u"] \dar[dashed, "f"]
+        & Y \rar["v"] \dar["g"]
+        & Z \rar["w"] \dar[dashed, "h"]
+        & X[1] \dar["{f[1]}"]
+        \\
+        Z'[-1] \rar
+        & X' \rar["u'"]
+        & Y' \rar["v'"]
+        & Z' \rar["w'"]
+        & X'[1]
+    \end{cd}
+    There exists $f, h$ if $v'gu = 0$.
+
+    If, moreover, $\Hom(X, Z'[-1]) = 0$, then this morphism of distinguished triangles is unique.
+\end{corollary}
+
+\sepline
+
+By TR1c and corollary, any $u : X \to Y$ determines an object $C(u)$ (unique up to isomorphism) in distinguished triangle
+\begin{cd}
+    X \rar["u"] & Y \rar & C(u) \rar & X[1]
+\end{cd}
+This object is called the \keyword{cone} of $u$.
+
+Recall TR4:
+\begin{cd}
+    X \rar["u"] \dar[equals]
+    & Y \rar \dar["v"]
+    & C(u) \dar
+    \\
+    X \rar["vy"] \dar
+    & Z \rar \dar
+    & C(vu) \dar
+    \\
+    0 \rar
+    & C(v) \rar
+    & C(v)
+\end{cd}
+third column is important distinguished triangle, like an isomorphism theorem
+\begin{cd}
+    0 \rar & Y/X \rar & Z/X \rar & Z/Y \rar & 0
+\end{cd}
+
+
+
+
+
+
+\sepline
+
+A triangle in $\Kom(\AA)/K(A)$ is distinguished if it is 
+
+\sepline
+
+4/26/23
+
+Recall $K(\AA)$ with autoequivalence $T = [1]$.
+
+A distinguished triangle is a triangle isomorphic to
+\begin{cd}
+    K^\bullet \rar["\bar{f}"] & \Cyl(f) \rar["\pi"] & c(f) \rar["\delta"] & K[1]^\bullet
+\end{cd}
+for some $f : K^\bullet \to L^\bullet$.
+
+\begin{theorem}
+    This gives $K(\AA)$ the structure of a triangulated category.
+\end{theorem}
+
+\begin{proof}
+    Must check TR1-4.
+
+    Only show TR1.
+
+    Must construct
+    \begin{cd}
+        X \rar["\id"] \dar[equals]
+        & X \rar \dar[equals]
+        & 0 \rar \dar
+        & X[1] \dar[equals]
+        \\
+        X \rar["\id"]
+        & X \rar
+        & c(\id) \rar
+        & X[1]
+    \end{cd}
+    This is to show $0 : c(\id) \to c(\id)$ is homotopic to $\id : c(\id) \to c(\id)$.
+
+    Note: $c(\id) = X[1] \oplus X$ by definition.
+    The differential of this cone is
+    \begin{cd}
+        X^{i+1} \rar["-d^{i+1}"] \drar["\id"]
+        & X^{i+2}
+        \\
+        X^i \rar["d^i"']
+        & X^{i+1}
+    \end{cd}
+    Write
+    \[
+        h = \mat{X^{i+1} && X^i} \mat{0 & 0 \\ \id & 0}  = \mat{X^i & 0}
+    \]
+    so
+    \[
+        \id_{c(\id)} = h \circ d + d \circ h
+    \]
+    Then
+    \begin{cd}
+        & X^1 \oplus X^0 \dlar["h"'] \dar["\id"] \rar 
+        & X^2 \oplus X^1 \dlar["h"]
+        \\X
+        X^0 \oplus X^{-1} \rar
+        & X^1 \oplus X^0
+    \end{cd}
+    with
+    \begin{cd}
+        & (a, b) \dlar["h"'] \dar["\id"] \rar 
+        & (-da, a + db) \dlar["h"]
+        \\X
+        (b, 0) \rar
+        & (-db, b)
+    \end{cd}
+\end{proof}
+
+\sepline
+
+Let $\DD$ be a triangulated category and $\AA$ an abelian category.
+
+A functor $H : \DD \to \AA$ is \keyword{cohomological} if its additive and for any distinguished triangle
+\begin{cd}
+    X \rar["u"] & Y \rar["v"] & Z \rar["w"] & X[1]
+\end{cd}
+in $\DD$ the sequence
+\begin{cd}
+    H(X) \rar["H(u)"] & H(Y) \rar["H(v)"] & H(Z)
+\end{cd}
+in $\AA$ is exact.
+
+Then TR2 gives us a long exact sequence
+\begin{cd}
+    \cdots \rar & H(X[i]) \rar & H(Y[i]) \rar & H(Z[i]) \rar & H(X[i+1]) \rar & \cdots
+\end{cd}
+
+\sepline
+
+Examples
+
+1. $\DD = K(\AA) \to \AA$, $C^\bullet \mapsto H^0(C^\bullet)$.
+
+2. $\DD \to \Ab$, $X \mapsto \Hom_\DD(U, X)$ for some fixed $U \in \DD$.
+
+\begin{proposition}
+    Let $H : \DD \to \AA$ be a cohomological functor.
+    Consider $\SS$, the class of morphisms $s \in \Hom\DD$ such that $H^i(s) := H(s[i])$ is an isomorphism in $\AA$ for any $i \in \Z$.
+    Then $\SS$ is a localizing class (a-c).
+    Moreover, $\SS$ is compatible with $\DD$, i.e.,
+    \begin{enumerate}[(d)]
+        \item $s \in \SS$ iff $T(s) \in \SS$;
+        \item In TR3, if $f, g \in \SS$ then there exists $h \in \SS$ completing the diagram.
+    \end{enumerate}
+\end{proposition}
+
+Example: If $s : C^\bullet \to D^\bullet$, then $s[i]  : C^\bullet[i] \to D^\bullet[i]$.
+Need $H(s[i]) : H^i(C^\bullet) \to H^i(D^\bullet)$ to be an isomorphism.
+Then $\SS$ is the quasi-isomorphisms.
+
+\begin{proof}
+    (a) ok
+
+    (b) Let $f : X \to Y$ and $s : Z \to Y$.
+    Take distinguished triangle
+    \begin{cd}
+        & X \dar["f"]
+        \\
+        Z \rar["s"]
+        & Y \rar["u"]
+        & C \rar
+        & Z[1]
+    \end{cd}
+    Then make square
+    \begin{cd}
+        & X \dar["f"] \rar["uf"]
+        & C \dar[equals]
+        \\
+        Z \rar["s"]
+        & Y \rar["u"]
+        & C \rar
+        & Z[1]
+    \end{cd}
+    Complete top row to a triangle
+    \begin{cd}
+        W \rar["t"] \dar["g"']
+        & X \rar["uf"] \dar["f"]
+        & C \rar \dar[equals]
+        & W[1] \dar["{g[1]}"]
+        \\
+        Z \rar["s"]
+        & Y \rar["u"]
+        & C \rar
+        & Z[1]
+    \end{cd}
+    with $t \in \SS$
+    Then 
+    \begin{cd}
+        H(Z[i]) \rar["\iso"] & H(Y[i]) \rar & H(C[i]) = 0
+    \end{cd}
+
+    (c) Consider $f, g \in \Mor(X, Y)$.
+    If there exists $s : Y \to Y'$ such that $s(f - g) = 0$, consider distinguished triangle
+    \begin{cd}
+        Z \rar["u"] & Y \rar["s"] & Y' \rar["\delta"] & Z[1]
+    \end{cd}
+    Then
+    \begin{cd}[row sep=tiny]
+        \Hom(X, Z) \rar["u_*"] & \Hom(X, Y) \rar["s_*"] & \Hom(X, Y')
+        \\
+        v \rar[mapsto] & f - g \rar[mapsto] & 0
+    \end{cd}
+    There exists $v : X \to Z$ such that $f - g = uv$.
+
+    Consider distinguished triangle
+    \begin{cd}
+        X' \rar["t"] & X \rar["v"] & Z \rar & X'[1]
+    \end{cd}
+    Then $vt = 0$ implies $(f - g)t = uvt = 0$.
+
+    Hve $s \in \SS$, implies $H^*(Z) = 0$ implies $t \in \SS$.
+
+    (d) ok
+
+    (e) consequence of 5-Lemma.
+\end{proof}
+
+\sepline
+
+\begin{theorem}
+    Let $\DD$ be a triangulated category and $\SS$ a localizing class compatible with $\DD$.
+    Then $\DD[S^{-1}]$ is a triangulated category with a natural translation $T$, distinguished triangles defined to be the triangles isomorphic to the images of distinguished triangles in $\DD$ under the canonical functor $\DD \to \DD[S^{-1}]$.
+\end{theorem}
+
+Example: $D(\AA) = K(\AA)[\{\text{q-iso}\}^{-1}]$ is a triangulated category.
+
+\sepline
+
+4/28/23
+
+\begin{proof}
+    Only need to show how to complete $a : X \to Y$ in $\DD[S^{-1}]$ to a distinguished triangle.
+    By definition, $a$ is represented by a roof
+    \begin{cd}
+        & Y' \dlar["s"'] \drar["f"] \\
+        X && Y
+    \end{cd}
+    with $s \in S$.
+    Then there exists
+    \begin{cd}
+        & Y' \dlar["s"'] \drar["f"]
+        \\
+        X \drar[dashed, "f'"']
+        && Y \dlar[dashed, "s'"]
+        \\
+        & Y''
+    \end{cd}
+    In $\DD$, take distinguished triangle
+    \begin{cd}
+        X \rar["f'"] & Y'' \rar["g"] & Z \rar["h"] & X[1]
+    \end{cd}
+    This gives a distinguished triangle in $\DD[S^{-1}]$
+    \begin{cd}
+        X \rar["a"]
+        & Y \ar[rr, "gs'"] \drar["s"']
+        && Z \rar["h"]
+        & X[1]
+        \\
+        && Z'' \urar["g"']
+    \end{cd}
+
+    TR3 \& TR4 [Stacks Project, Prop 13.5.5]
+\end{proof}
+
+
+\begin{corollary}
+    $D(\AA)$ is a triangulated category.
+\end{corollary}
+
+\sepline
+
+\begin{proposition}
+    Consider the functor $Q : \AA \to D(\AA)$ sending an object $E$ to the complex
+    \begin{cd}[row sep=small]
+        \cdots \rar & 0 \rar & E \rar & 0 \rar & \cdots \\
+        && \deg 0 \uar
+    \end{cd}
+    and sending morphisms in the obvious unique way.
+    This yields an equivalence of $\AA$ awith the subcategory of $D(\AA)$ formed bu $H^0$-complexes (i.e., complexes $K^\bullet$ such that $H^i(K^\bullet) = 0$ for $i \neq 0$).
+\end{proposition}
+
+\begin{proof}
+    Have sequence
+    \begin{cd}
+        \AA \rar & K(\AA) \rar & D(\AA)
+    \end{cd}
+    First functor is fully faithful.
+
+    Let $X, Y \in \AA$.
+    Need to show that $\Hom_\AA(E, F) = \Hom_{K(A)}(E, F)$ is equal (isomorphic) to $\Hom_{D(\AA)}(QE, QF)$.
+    Take map
+    \begin{cd}[row sep=tiny]
+        \Hom_\AA(E, F) \rar["a"] & \Hom_{D(\AA)}(E, F) \\
+        f \rar[mapsto] & {[(\id_X, f)]}
+    \end{cd}
+    The inverse $b$ is induced by $H^0 : D(\AA) \to A$.
+    By definition $b \circ a = \id$.
+
+    To check $a \circ b = \id$, say $\tilde{f} : X \to F$ (between $0$-complexes) in $D(\AA)$ is represented by
+    \begin{cd}
+        & Z \dlar["s"'] \drar["f"] \\
+        X && Y
+    \end{cd}
+    As $s$ is a quasi-isomorphism, $b(\tilde{f})$ is\
+    \begin{cd}
+        & X \dlar["\id_X"'] \drar["g"] \\
+        X && Y
+    \end{cd}
+    where $g = H^0(f) \circ H^0(s)^{-1}$
+        
+\end{proof}
+
+copy from notebook
+
+\sepline
+
+5/1/23
+
+copy
+
+\sepline
+
+5/3/23
+
+Natural morphism $K^+(I) \to D^+(\AA)$
+
+If there exists enough injectives in $\AA$, then this is an equivalence.
+
+Concretely, for any $C^\bullet \in D^+(\AA)$ there exists a quasi-isomorphism $C^\bullet \to I^\bullet$ with $I^\bullet \in K^+(I)$.
+
+In the following, we will not use ``injective'' property.
+Will only use: for all $C \in \AA$ there exists $I \in \mathcal{I}$ with $C \inc I$.
+
+suppose we have a complex
+\begin{cd}
+    \cdots \rar 
+    & 0 \rar
+    & C^0 \rar["d_C^0"] \dar["t^0"]
+    & C^1 \rar["d_C^1"] \dar["t^1"]
+    & C^2 \rar \dar["t^2"]
+    & \cdots
+    \\
+    & 0 \rar
+    & I^0 \rar["d_I^0"]
+    & I^1 \rar["d_I^1"]
+    & I^2 \rar
+    & \cdots
+\end{cd}
+with $t^i$ quasi-isomorphisms and $I^i \in \mathcal{I}$.
+
+A \keyword{cocartesian product} (fibered coproduct) is the completion of the following diagram:
+\begin{cd}
+    A \rar["f"] \dar["g"']
+    & B \dar[dashed]
+    \\
+    C \rar[dashed]
+    & B \sqcup_A C
+\end{cd}
+In abelian category,
+\begin{cd}
+    A \rar["{(f, g)}"] & B \oplus C \rar & B \sqcup_A C \rar & 0
+\end{cd}
+
+Now take
+\begin{cd}
+    C^0 \rar \dar[hook, "t^0"]
+    & C^1 \dar \drar[dashed, "t^1"]
+    \\
+    I^0 \rar \ar[rr, dashed, bend right, "d_I^0"']
+    & I^0 \sqcup_{C^0} C^1 \rar[hook]
+    & I^1
+\end{cd}
+Can check $t^0 : \ker d_I^0 \to \ker d_C^0$ is an isomorphism---basically by definition of $\sqcup$.
+
+Next, consider
+\begin{cd}
+    & C^1 \dlar["t^1"'] \dar \rar
+    & C^2 \dar \drar[dashed, "t^2"]
+    \\
+    I^1 \rar \ar[rrr, dashed, bend right=15, "d_I^1"']
+    & \coker d_I^0 \rar
+    & C^2 \sqcup_{C^1} \coker d_I^0 \rar[hook]
+    & I^2
+\end{cd}
+Can check this is quasi-isomorphism at degree $1$.
+
+All the rest will be essentially the same story.
+
+Details in III.5.25.
+
+
+\sepline
+
+Derived Functors.
+
+Let $F : \AA \to \BB$ be an additive functor between abelian categories.
+This induces a functor $\Kom(\AA) \to \Kom(\BB)$, by applying $F$ termwise.
+This clearly preserves homotopy, so it gives a well-defined functor $K(F) : K(\AA) \to K(\BB)$.
+
+Issue: $K(F)$ preserves quasi-isomorphisms only when $F$ is exact.
+But we want to define functors $D(\AA) \to D(\BB)$ for left/right exact functors $F$.
+
+Assume: $F$ is left exact and we work with $\Kom^+$, $K^+$, $D^+$.
+
+Recall functor $Q_A : K^+(\AA) \to D^+(\AA)$.
+
+\begin{theorem}
+    There exists a \keyword{derived functor} $RF : D^+(\AA) \to D^+(\BB)$, together with a natural transformation
+    \begin{cd}
+        Q_B \circ K^+(F) \rar[Rightarrow, "\eps_F"] & RF \circ Q_A
+    \end{cd}
+    such that
+    \begin{enumerate}[(1)]
+        \item $RF$ is exact: $T_B \circ RF = RF \circ T_A$ and it sends distinguished triangles to distinguished triangles;
+        \item universal property: given $G : D^+(\AA) \to D^+(\BB)$ and $\eps_G : Q_B \circ K^+(F) \Rightarrow G \circ Q_A$, then there exists a unique $\eta : RF \Rightarrow G$ such that $\eps_G = \eta \circ \eps_F$.
+    \end{enumerate}
+\end{theorem}
+
+
+A class of objects $R$ in $\AA$ is \keyword{adapted} to $F$ if
+\begin{enumerate}[(1)]
+    \item $R$ is closed under finite direct sum.
+    \item For every $X^\bullet \in \Kom^+(\AA)$ acyclic complex of objects in $R$, we have $F(X^\bullet)$ is also acyclic.
+    \item There exists enough objects in $R$ such that for any $M \in \AA$, there exists an injection $M \inc B$ for some $B \in R$.
+\end{enumerate}
+
+View $R$ as an additive full subcategory of $\AA$, us convention $\Kom^+(R)$ and $K^+(R)$ as subcategories of $\Kom^+(\AA)$ and $K^+(\AA)$, respectively, as these don't necessarily require the abelian structure.
+
+\begin{lemma}
+    \
+    \begin{itemize}
+        \item For every $X^\bullet \in \Kom^+(\AA)$, there exists a quasi-isomorphism $X^\bullet \to M^\bullet$ with $M^\bullet \in \Kom^+(R)$.
+        \item The class of quasi-isomorphisms in $K^+(R)$ is localizing.
+        \item $\GG := K^+(R)[\{\text{q-iso}\}^{-1}] \to D^+(\AA)$ is an equivalence
+    \end{itemize}
+\end{lemma}
+
+Now have diagram
+\begin{cd}
+    & K^+(\AA) \rar["K^+(F)"] 
+    & K^+(\BB) \dar["Q_B"]
+    \\
+    K^+(R) \dar \urar
+    && D^+(\BB)
+    \\
+    K^+(R)[\{\text{q-iso}\}^{-1}] \ar[rr, "\iso"] \ar[urr, dashed]
+    && D^+(\AA) \uar[dashed, "RF"']
+\end{cd}
+
+\sepline
+
+5/5/23
+
+Note that a morphism $u$ in $K^+(R)$ is a quasi-isomorphism iff $c(u)$ is acyclic.
+Then by (2) of adapted class, acyclic $c(u) \in K^+(R)$ tells us that $F(c(u)) = C(F(u))$ is acyclic (strictly speaking, this is $K^+(F)(i(c(u)))$).
+Then $F(u)$ is quasi-isomorphic.
+
+Quasi-isomorphism in $K^+(R)$ sent to isomorphism in $D^+(\BB)$ by top path in diagram.
+This map factors through the localization, equivalent to $D^+(\AA)$, so we get the functor $RF : D^+(\AA) \to D^+(\BB)$.
+
+Explicitly, for any $X^\bullet \in D^+(\AA)$, we take a quasi-isomorphism $X^\bullet \to M^\bullet \in \Kom^+(R)$ and $RF(X^\bullet) = F(M^\bullet)$
+
+\begin{proposition}
+    This is a derived functor $RF$ with $\eps_F(X^\bullet) : F(X^\bullet) \to F(M^\bullet)$ induced by $X^\bullet \to M^\bullet$, giving natural transformation $Q_B \circ F \Rightarrow RF \circ Q_A$.
+\end{proposition}
+
+\begin{proof}
+    Exercise
+\end{proof}
+
+Exercise: If $\AA$ has enough injectives, then the class of injective objects is adapted to any left exact functor. 
+(Only need to verify (2): exercise from last time.)
+
+\sepline
+
+\begin{theorem}
+    Let $F : \AA \to \BB$ and $G : \BB \to \CC$ be left exact functors.
+    Suppose we have adapted classed $R_\AA$ for for $F$ and $R_\BB$ for $G$ such that $F(M) \in R_\BB$ if $M \in R_\AA$.
+    Then there is a natural isomorphism $RG \circ RF \Rightarrow R(G \circ F)$.
+\end{theorem}
+
+\begin{proof}
+    By definition, replace $X^\bullet$ with some $M^\bullet$ and map to $FM^\bullet \in \Kom^+(R_\BB)$ then get $G(FM^\bullet)$.
+\end{proof}
+
+\sepline
+
+Want to define $\RHom$.
+
+Let $\AA$ be an abelian category with enough injectives.
+
+Let $X^\bullet \in \Kom(\AA)$ and $Y^\bullet \in \Kom^+(\AA)$.
+
+Define \keyword{hom complex}
+\[
+    \Hom_\AA^n(X^\bullet, Y^\bullet) := \prod_{i \in \Z} \Hom_\AA(X^i, Y^{n+i})
+\]
+with differentials
+\[
+    d((f_i)_{i \in \Z}) := (d_Y \circ f_i + (-1)^{n+1} f_{i+1} \circ d_X)_{i \in \Z}
+\]
+
+Key Observation: $Z^0(\Hom^\bullet) = \Hom_{\Kom(\AA)}(X^\bullet, Y^\bullet)$.
+
+$B^0(\Hom^\bullet) = \{f \text{ homotopic to } 0\}$.
+
+So $H^0(\Hom^\bullet(X^\bullet, Y^\bullet)) = \Hom_{K(\AA)}(X^\bullet, Y^\bullet)$.
+
+\sepline
+
+Choose a quasi-isomorphism $Y^\bullet \to I^\bullet \in \Kom^+(\mathcal{I})$, where $\mathcal{I}$ is class of injectives in $\AA$.
+Define
+\[
+    \RHom_\AA(X^\bullet, Y^\bullet) := \Hom^\bullet(X^\bullet, I^\bullet) \in D(\Ab).
+\]
+
+Won't write dot, so remember $X, Y \in \AA$.
+
+Note
+\begin{align*}
+    \Ext_\AA^i(X, Y) 
+        &:= \Hom_{D(\AA)}(X[0], Y[i]) \\
+        &= \Hom_{D(\AA)}(X[0], I^\bullet[i]) \\
+        &= \Hom_{K(\AA)}(X[0], I^\bullet[i]) \\
+        &= H^i(\RHom_\AA(X, Y))
+\end{align*}
+where $Y \to I^\bullet$ is some quasi-isomorphism.
+
+
+\end{document}

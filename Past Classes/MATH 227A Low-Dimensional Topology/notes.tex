@@ -1,0 +1,533 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+\usepackage[shortlabels]{enumitem}
+
+\usepackage{bbm}
+
+\usepackage{suffix}
+\usetikzlibrary{decorations.pathmorphing}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip} 
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+
+% Environments
+\setlist[enumerate]{nosep}
+\newcommand{\keyword}[1]{\textbf{#1}}
+\newcommand{\sepline}{\rule{\textwidth}{0.4pt}}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+
+% Document Formatting
+\newtheoremstyle{mythmstyle}% name of the style to be used
+{ }% measure of space to leave above the theorem. E.g.: 3pt
+{ }% measure of space to leave below the theorem. E.g.: 3pt
+{ }% name of font to use in the body of the theorem
+{ }% measure of space to indent
+{\scshape}% name of head font
+{.}% punctuation between head and body
+{ }% space after theorem head; " " = normal interword space
+{\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}}% Manually specify head
+
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{claim}{Claim}
+
+
+% Math Formatting
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+
+% mathbb
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\renewcommand{\k}{\mathbbm{k}}
+
+% mathcal
+\newcommand{\LL}{\mathcal{L}}
+\newcommand{\FF}{\mathcal{F}}
+
+% Symbols
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+
+% Delimiters
+\newcommand{\<}{\left\langle}
+\renewcommand{\>}{\right\rangle}
+
+% Relations
+\newcommand{\iso}{\cong}
+\newcommand{\seq}{\subseteq}
+
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\To}{\longrightarrow}
+\newcommand{\Mapsto}{\longmapsto}
+
+
+
+% Math Roman
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\DD}{\mathrm{D}}
+
+
+\DeclareMathOperator{\im}{im}
+
+\newcommand{\Isom}{\mathrm{Isom}}
+\newcommand{\Stab}{\mathrm{Stab}}
+\newcommand{\orb}{\mathrm{orb}}
+
+% Other
+\newcommand{\pdv}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+\newcommand{\clo}{\overline}
+\newcommand{\conj}{\overline}
+
+
+
+\title{Geometry \& Topology in Low Dimensions \\
+    \large Fall 2022
+}
+\author{}
+\date{}
+
+
+\begin{document}
+\maketitle
+
+this requires some topology, maybe algebraic topology, linear algebra, a little group theory
+
+\sepline
+
+9/22/2022
+
+we'll cover some hyperbolic geometry and topology, but will start with Euclidean
+
+\sepline
+
+Euclidean Geometry
+
+Talking about $\R^n$ with norm $\|x\| = x_1^2 + \cdots + x_n^2$, then Euclidean metric
+$d(x, y) = \|x - y\|$.
+
+A map $T : \R^n \to \R^n$ is an \keyword{isometry} if for all $x, y \in \R^n$ we have $d(Tx, Ty) = d(x, y)$.
+
+Examples:
+\begin{itemize}
+    \item translation: $Tx = x + t$ for some constant $t \in \R^n$.
+    \item orthogonal: $Tx = Ax$ where $A \in M_n(\R)$ and $n \times n$ matrix with $A^TA = I$.
+    Check
+    \[
+        \|Ax\|^2
+            = \<Ax, Ax\>
+            = (Ax)^T(Ax)
+            = x^T(A^TA)x
+            = x^Tx
+            = \|x\|^2.
+    \]
+    Therefore,
+    \[
+        d(x, y)^2
+        = \|Tx - Ty\|^2
+        = \|Ax - Ay\|^2
+        = \|A(x - y)\|^2
+        = \|x - y\|^2
+        = d(x, y)^2
+    \]
+    \item composition.
+    In fact, the set of isometries of $\R^n$ is a group under composition.
+\end{itemize}
+
+\begin{theorem}
+    If $T$ is an isometry of $\R^n$ of then there exists $b \in \R^n$ and $A \in O(n)$ such that $Tx = Ax b$.
+\end{theorem}
+
+\begin{proof}
+    Suppose $T$ is an isometry, set $b = T(0)$.
+
+    Define $S(x) = x - b$, a translation.
+
+    Define $T' = S \circ T$, an isometry with $T'(0) = 0$.
+
+    Suffices to prove $T'x = Ax$.
+    
+    Without loss of generality $T(0) = 0$.
+
+    In $\R^n$, the distances of a point to $0, e_1, \dots, e_n$ uniquely determines the point.
+
+    Define $v_i = T(e_i)$, then $\|v_i\| = 1$ since $T$ isometry.
+
+    For $i \ne j$, we have $d(v_i, v_j) = d(e_i, e_j) = \sqrt{2}$, so $\<v_i, v_j\> = 0$.
+
+    Hence, $T$ sends $e_i$'s to $v_i$'s, which form an orthonormal basis.
+
+    Now define matrix
+    \[
+        A = \mat{| & | & & | \\ v_1 & v_2 & \cdots & v_n \\ | & | & & |}.
+    \]
+    This matrix has $A^TA = I$ so $A \in O(n)$.
+    Moreover, 
+    \[
+        (A^{-1} \circ T)e_i
+            = A^{-1}(Te_i)
+            = A^{-1}v_i
+            = e_i.
+    \]
+    Therefore, $A^{-1} \circ T$ fixes $0, e_1, \dots, e_n$, so $A^{-1} \circ T = I$, so $T = A$.
+\end{proof}
+
+\sepline
+
+Classification of isometries
+
+dim $n = 1$.
+\begin{enumerate}
+    \item \keyword{reflection}: $Tx = 2c - x$ for some $c \in \R$
+    \item \keyword{translation}: $Tx = x + t$ for some $t \in \R$
+\end{enumerate}
+
+notice that the composition of two reflections is a translation: For $Tx = x + c$ and $T'x = x + c'$, we have $(T \circ T')x = x + 2(c - c')$.
+
+Group of isometries:
+\[
+    \Isom(\R)
+        = \{x \mapsto ax + b \mid a = \pm1, b \in \R\}
+        \iso \mat{\pm1 & \R \\ 0 & 1}
+        \iso Z_2 \ltimes \R.
+\]
+Let $S$ be a reflection, $T$ a translation.
+Note $S = S^{-1}$, then
+\[
+    S \circ T \circ S^{-1}
+        = S \circ T \circ S
+        = T^{-1}.  
+\]
+
+dim $n = 2$
+\begin{enumerate}
+    \item \keyword{reflection} across a line
+    \item \keyword{translation}
+    \item \keyword{rotation} around a point
+    \item \keyword{glide reflection}: reflect across a line and translate along the line
+\end{enumerate}
+
+dim $n = 3$
+\begin{enumerate}
+    \item \keyword{translation}
+    \item \keyword{rotation} around a line
+    \item \keyword{reflection} across a plane
+    \item \keyword{screw}: rotate around a line and translate along the line
+    \item \keyword{glide reflection}: reflect across a plane and translate along a line in the plane
+\end{enumerate}
+
+dim $n = n$ (up to conjugacy)
+\begin{itemize}
+    \item Case 1: there exists a fixed point.
+    Then the isometry is conjugate to an orthogonal transformation.
+    \item Case 2: no fixed point.
+    Conjugate to $Tx = Ax + b$, with $A \in O(n)$ such that $Ab = b$.
+    \[
+        b^\perp = \{x \in \R^n \mid \<x, b\> = 0\} \iso \R^{n-1}
+    \]
+    So $A$ preserves the copy of $\R^{n-1}$ orthogonal to $b$.
+    Say $T$ ``translates along an axis and `rotates' (really orthogonal) in hyperplane orthogonal to axis''
+\end{itemize}
+
+HW 1: prove all this
+
+\begin{corollary}
+    \[
+        \Isom(\R^n) \iso O(n) \ltimes \R^n = \mat{A & b \\ 0 & 1}
+    \]
+    with $A \in O(n), b \in \R^n$.
+\end{corollary}
+
+
+\sepline
+
+Composition of Rotation
+
+In a plane, take points $p$ and $q$
+
+\begin{drawing}
+    \fill (0, 0) circle (2pt) node[left] {$p$};
+    \fill (2, 0) circle (2pt) node[right] {$q$};
+
+    \draw (0, 0) -- (1.5, 1);
+    \draw (0, 0) -- (1.5, -1);
+
+    \draw (2, 0) -- (1.5, 1);
+    \draw (2, 0) -- (1.5, -1);
+
+    \draw (0, 0) -- (2, 0);
+\end{drawing}
+
+\sepline
+
+Euclidean Manifolds
+
+A metric manifold $M^n$ is \keyword{Euclidean} if it is locally isometric to Euclidean space.
+
+\begin{theorem}
+    Every complete simply-connected Euclidean manifold is isometric to $\R^n$.
+\end{theorem}
+
+\begin{proof}[Proof Sketch]
+    Let $N$ be simply-connected complete Euclidean manifold.
+
+    Goal: construct isometry $\mathrm{dev} : N \to \R^n$, called the ``developing map.''
+
+    Know every point has a little neighborhood $U \seq N$ with isometry $h : U \to h(U) \seq \R^n$.
+
+    For another such isometry $k : V \to k(V) \seq \R^n$.
+
+    Then look at $h(U \cap V)$ and $k(U \cap V)$; would be great if these were the same in $\R^n$.
+
+    There exists an isometry $T : \R^n \to \R^n$ such that $T|_{k(U \cap V)} = h \circ k^{-1}$.
+
+    We then map $V$ using $T \circ k$ instead of $k$.
+
+    Can continue this process for countably many open sets and charts.
+
+    Take an atlas of isometries and adjust the charts so that the charts of intersection open sets agree.
+
+    Simply-connected will ensure that this is well-defined.
+
+    Completeness implies the map is surjective.
+
+    Geometry gives injectivity.
+    If two points in $N$ were sent to the same point in $\R^n$ then straight lines bad.
+\end{proof}
+
+\begin{corollary}
+    If $M^n$ is a closed (complete?) Euclidean manifold, then universal cover $\widetilde{M}$ is a simply-connected complete Euclidean manifold.
+    Therefore, $\widetilde{M} = \R^n$.
+\end{corollary}
+
+Covering transformations of $\widetilde{M}$ are isometries of $\R^n$.
+Then holonomy map $\pi_1M \to \Isom(\R^n)$.
+Then
+\[
+    M = \R^n / \mathrm{hol}(\pi_1M).
+\]
+
+
+\sepline
+
+9/27/22
+
+Examples
+\begin{enumerate}
+    \item $\R^n$, $G = 1$
+    \item $S^1 = \R/\Z$
+    \item $T^2 = \R^2/\Z^2$
+    \item Klein Bottle: $K = \R^2/G$ where $G = \<\alpha, \beta : \text{ relations}\>$ with
+    \[
+        \beta(x, y) = (x, y + 2) \isp{and} \alpha(x, y) = (x + 2, -y),
+    \]
+    a translation and glide reflection, respectively.
+    There is a twofold (and cyclic) cover $T^2 \to K = \R^2/G$.
+    $T^2 = \R^2/H$ with $H = \mathrm{ab}\<\alpha^2, \beta\> \leq G$. 
+\end{enumerate}
+
+Exercise: only compact Euclidean $2$-manifolds are torus and Klein bottle (up to homeomorphism).
+
+\sepline
+
+\begin{theorem}[Baberbach]
+    \begin{enumerate}
+        \item Every closed Euclidean $n$-manifold is finitely covered by an $n$-torus ($T^n = S^1 \times \cdots \times S^1$).
+        \item Up to homeomorphism, there are finitely many.
+    \end{enumerate}
+\end{theorem}
+
+\begin{center}
+    \begin{tabular}{r|l}
+        dim & \# closed Euclidean $n$-manifolds \\
+        \hline
+        1 & 1 \\
+        2 & 2 \\
+        3 & 10 \\
+        4 & 74 \\
+        5 & 1060 \\
+        6 & 38746
+    \end{tabular}
+\end{center}
+
+\sepline
+
+Example: $M^3$ place diagram
+$G = \<\alpha, \beta, \gamma\> \leq \Isom(\R^3)$ with
+\begin{align*}
+    \alpha(x, y, z) &= (x + 1, y, z) \\
+    \beta(x, y, z) &= (x, y + 1, z) \\
+    \gamma(x, y, z) &= (-y, x, z + 1).
+\end{align*}
+Here, $\gamma$ is a screw motion.
+
+There is a $4$-fold cyclic cover $T^3 \to M^3$.
+
+\sepline
+
+Example: Hexagonal torus. place picture
+
+\sepline
+
+Torus Bundle
+
+\begin{cd}
+    T^{n - 1} \rar & M^n \dar["p"] \\
+    & S^1
+\end{cd}
+$p$ is a submersion; for all $x \in S^1$, $p^{-1}(x) \iso T^{n-1}$.
+
+Then $M = T^{n-1} \times [0, 1] / {\sim}$
+
+\sepline
+
+IF $M^n$ is a closed Euclidean manifold, then $M = \R^n/G$ and $G \leq \Isom(\R^n)$.
+There exists a short exact sequence of groups
+\begin{cd}[row sep=tiny]
+    0 \rar & \R^n \rar & \Isom(\R^n) \rar & O(n) \rar & 1 \\
+    & \mat{I & b \\ 0 & 1} \rar[mapsto] & \mat{A & b \\ 0 & 1} \rar[mapsto] & A
+\end{cd}
+The $A$ is called the linear or rotational part of isometry.
+
+\sepline
+
+\begin{theorem}[Baberbach]
+    There is a maximal subgroup $\Z^n \leq G$ and there is a short exact sequence
+    \begin{cd}
+        0 \rar & \Z^n \rar & G \rar & F \rar & 1
+    \end{cd}
+    where $F$ is a finite subgroup of $O(n)$.
+\end{theorem}
+
+\sepline
+
+Remark: these isometries of $R^n$ never have a fixed point.
+for, say, a rotation, the point of rotation will have a nasty neighborhood.
+
+\sepline
+
+A manifold $Q$ is a \keyword{Euclidean Orbifold} if $Q = \R^n/G$ and $G$ is a discrete subgroup of $\Isom(\R^n)$.
+
+\sepline
+
+Example
+
+$n = 1$, $G = \<\sigma, \tau : \sigma^2 = \tau^2 = 1\> \iso D_\infty$.
+
+$\sigma(x) = -x$, $\tau(x = 2 - x)$, $\sigma\tau(x) = x - 2$ (translation)
+
+$\R^1/G = [0, 1]$.
+
+$p^{-1}(0) = 2\Z$
+
+Given $x \in \R$, $\Stab(x) = \{g \in G : g(x) = x\}$.
+Zero is a singular point, i.e., does not have a little manifold neighborhood around it.
+
+\sepline
+
+Example
+
+$n = 2$.
+If $Q$ is compact, $G$ is called a \keyword{wallpaper group} (there are $17$ up to conjugacy).
+There are $17$ compact Euclidean orbifolds.
+
+Could have $(\R/G) \times (\R/G) = \R \times \R / G \times G$ where $G$ is from previous example.
+
+This is $[0, 1]^2$... put drawing
+
+Every point in a EUclidean orbifold has some stabilizer group associated to it. most (generic) points have the trivial group and therefore have a little euclidean neighborhood.
+Other points do not, and these are called \keyword{singular locus} points.
+
+In $2$-dimensions, singular points can be mirror, corner, or cone.
+
+\sepline
+
+Example
+
+$H$ is orientation-preserving subgroup of $G \times G$.
+
+This contains $\pi$ rotations about $\Z \oplus \Z$.
+
+Then $\R^2/H = S^2$ with singular points of $Z_2$; cone points.
+
+Cone points are $D^2$ quotient by a rotation of finite order.
+
+\sepline
+
+Orbifold fundamental group
+
+Let $Q = \R^n/G$ be a Euclidean orbifold.
+
+If $Q$ happens to be a manifold, then $\R^n$ is universal cover and $G$ is group of covering transformations, then $G$ is the fundamental group of $Q$.
+
+The orbifold fundamental group of $Q$ is defined as
+\[
+    \pi^{\mathrm{orb}}_1(Q) = G.
+\]
+
+Remark: if $G$ acts freely, then $G$ is the group of covering transformations of $Q$ as a manifold, so $G = \pi_1(Q)$.
+
+\sepline
+
+Let $\pi : \R^n \to Q = \R^n/G$ be orbifold projection
+
+The \keyword{singular locus} of $Q$ is the set
+\[
+    \Sigma(Q) = \pi\{x \in \R^n : \text{there exists } 1 \ne g \in G \text{ such that } g(x) = x\}.
+\]
+
+For $n = 2$ there are three kinds of singular points:
+\begin{enumerate}
+    \item cone point: $D^2$ mod rotation by $2\pi/n$
+    \item mirror neighborhood: $D^2$ mod reflection
+    \item corner point: $D^2/D_{2n}$
+\end{enumerate}
+
+To see that these are the only possibilities, check the finite subgroups of $O(2)$.
+
+\sepline
+
+Calculating the orbifold fundamental group in a special case
+
+$Q$ a surface of genus 2 with cone points $x_1, x_2, \dots, x_k$ of orders $n_1, n_2, \dots, n_k$.
+
+\[
+    \pi^\orb_1(Q) = \<\pi_1(Q \setminus \Sigma(Q)) \mid \alpha_i^{n_1} = 1\>
+\]
+
+\sepline
+
+Example
+
+Pillowcase
+
+\sepline
+
+\begin{theorem}[Holden, Lozano, Montesinos]
+    Every closed orientable $3$-manifold is a branched cover of $S^3$ branched over Boromean rings
+\end{theorem}
+
+
+
+\end{document}

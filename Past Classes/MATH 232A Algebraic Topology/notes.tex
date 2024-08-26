@@ -1,0 +1,318 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+\usepackage[shortlabels]{enumitem}
+
+\usepackage{bbm}
+
+\usepackage{suffix}
+\usetikzlibrary{decorations.pathmorphing}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip} 
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+
+% Environments
+\setlist[enumerate]{nosep}
+\newcommand{\keyword}[1]{\textbf{#1}}
+\newcommand{\sepline}{\rule{\textwidth}{0.4pt}}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+
+% Document Formatting
+\newtheoremstyle{mythmstyle}% name of the style to be used
+{ }% measure of space to leave above the theorem. E.g.: 3pt
+{ }% measure of space to leave below the theorem. E.g.: 3pt
+{ }% name of font to use in the body of the theorem
+{ }% measure of space to indent
+{\scshape}% name of head font
+{.}% punctuation between head and body
+{ }% space after theorem head; " " = normal interword space
+{\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}}% Manually specify head
+
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{claim}{Claim}
+
+
+% Math Formatting
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+
+% mathbb
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\renewcommand{\k}{\mathbbm{k}}
+
+% mathcal
+\newcommand{\LL}{\mathcal{L}}
+\newcommand{\FF}{\mathcal{F}}
+
+% Symbols
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+
+% Delimiters
+\newcommand{\<}{\left\langle}
+\renewcommand{\>}{\right\rangle}
+
+% Relations
+\newcommand{\iso}{\cong}
+\newcommand{\seq}{\subseteq}
+
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\To}{\longrightarrow}
+\newcommand{\Mapsto}{\longmapsto}
+
+% Math Roman
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\DD}{\mathrm{D}}
+\newcommand{\bd}{\partial}
+
+\DeclareMathOperator{\im}{im}
+\newcommand{\GL}{\mathrm{GL}}
+
+% Other
+\newcommand{\pdv}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+\newcommand{\clo}{\overline}
+\newcommand{\conj}{\overline}
+\renewcommand{\hat}{\widehat}
+
+
+\title{Algebraic Topology \\
+    \large Fall 2022
+}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+requires homotopy stuff and some group theory.
+helpful to have some category theory.
+
+\sepline
+
+9/22/2022
+
+Why algebraic topology?
+
+We want to learn about spaces, but spaces are squishy and complicated so we want to reduce them down to something more rigid.
+
+Idea: look for algebraic `invariants' (maps from spaces to algebraic things, where homeomorphic and homotopy equivalent spaces give the same thing).
+
+Example: Euler Characteristic.
+Take a surface and tile it with polygons, then
+\[
+    \chi = (\#\text{vertices}) - (\#\text{edges}) + (\#\text{faces}).
+\]
+Claim: this doesn't depend on the particular tiling, only the original surface.
+To prove this, show that certain moves/operations on the tilings doesn't change $\chi$ and that the set of moves is enough to get between any two tilings.
+Homology will tell us how this works out.
+
+More generally: someone gives you a space defined implicitly, e.g., given $(X, x_0)$ nice space define $\Omega X$ to be the set of loops in $X$ based at $x_0$ with the $C^0$ topology (supremum distance between loops as functions $[0, 1] \to X$).
+
+\sepline
+
+What is homology?
+
+Slogan: $H_n(X)$ ($n$th homology group of $X$) measures the ``$n$-dimensional holes'' of $X$.
+
+
+What should This mean?
+
+Example: $n$-sphere $S^n$ should have an $n$-dimensional hole.
+
+How to formalize this?
+\begin{enumerate}
+    \item homotopy groups.
+    \[
+        \pi_n(X, x_0) = \{\text{based maps } (S^n, s_0) \to (X, x_0)\} / \text{homotopy}
+    \]
+    Problems: hard to compute; $\pi_2(S^2) = \Z$, $\pi_3(S^2) = \Z$, $\pi_4(S^2) = Z_2$, $\pi_5(S^2) = Z_2$, $\pi_6(S^2) = Z_{12}$, $\pi_7(S^2) = Z_2$, etc.
+    \item cycles and boundaries.
+    An $n$-chain is some sort of $n$-dimensional subsurface.
+    Say two $n$-chains are equivalent if together they form the boundary of an $(n+1)$-chain.
+    Say an $n$-dimensional hole is a $n$-cycle which is not the boundary of an $(n+1)$-chain.
+    Issues when trying to make this rigorous: multiplicity, orientation, intersections, need machinery to compute.
+\end{enumerate}
+
+How is $H_1$ different from $\pi_1$?
+e.g., punctured torus deformation retracts to figure-eight with $\pi_1 \iso F_2$.
+But the embedded figure-eight is simply the boundary of the $2$-chain formed by the rest of the surface; it turns out $H_1$ is abelian (in fact $H_1$ is the abelianization $\pi_1/\text{commutators}$).
+
+\sepline
+
+9/27/22
+
+Simplicial Homology
+
+Idea: Impose strong restriction on what is a chain.
+
+The \keyword{standard $n$-simplex} is constructed as
+\[\textstyle
+    \Delta^n = \{(t_0, \dots, t_n) \in \R^{n+1} \mid t_i \geq 0, \sum_i t_i = 1\}.
+\]
+Equivalently, $\Delta^n$ is the convex hull of the vertices $e_1, \dots, e_{n+1}$.
+
+Call the tuple $(t_0, \dots, t_n)$ the \keyword{Barycentric coordinates}.
+
+A \keyword{face} of $\Delta^n$ is a copy of $\Delta^{n-1}$ obtained by setting $t_i = 0$ (called the $i$-th face for each $i$).
+
+
+\sepline
+
+An \keyword{abstract simplicial complex} consists of
+\begin{itemize}
+    \item a set $V$ of vertices;
+    \item a set $D$ of finite subsets of $V$, closed under $\seq$ (taking faces/subsimplices), which tells you which simplices are included.
+\end{itemize}
+
+The \keyword{geometric realization} of an abstract simplicial complex is constructed by taking simplices corresponding to the elements of $D$ and gluing faces according to the recipe.
+Give this space the quotient topology.
+
+
+\sepline
+
+Examples
+
+$S^1$ homeomorphic to
+\begin{drawing}
+    \fill (0, 0) circle (2pt);
+    \fill (1, 0) circle (2pt);
+    \fill (0, 1) circle (2pt);
+
+    \draw (0, 0) -- (1, 0) -- (0, 1) -- (0, 0);
+\end{drawing}
+
+
+Torus $T^2$ homeomorphic to
+\begin{drawing}
+    \draw (0, 0) rectangle (3, 3);
+    \draw (0, 1) -- (3, 1);
+    \draw (0, 2) -- (3, 2);
+    \draw (1, 0) -- (1, 3);
+    \draw (2, 0) -- (2, 3);
+
+
+\end{drawing} 
+
+\begin{drawing}
+    \node (A) at (0 : 2) {};
+
+    \foreach \a in {0, 60, 120, 180, 240, 300} {
+        \fill (\a : 2) circle (2pt);
+    }
+
+    \fill (0, 1) circle (2pt);
+    fill 
+
+
+    \draw (0 : 2) -- (60 : 2) -- (120 : 2) -- (180 : 2) -- (240 : 2) -- (300 : 2) -- (0 : 2);
+
+    
+
+
+
+\end{drawing}
+
+\sepline
+
+An \keyword{$n$-chain} in a simplicial complex $X$ is a formal linear combination of $n$-simplices. 
+
+There is a \keyword{boundary homomorphism}
+\begin{cd}
+    C_n(X) \rar["\bd_n"] & C_{n-1}(X)
+\end{cd}
+which sends each simplex to its boundary and extends by linearity.
+
+$\bd[v_0, v_1] = [v_1] - [v_0]$.
+
+$\bd[v_0, v_1, v_2] = [v_1, v_2] - [v_0, v_2] + [v_0, v_1]$.
+
+$\bd[v_0, v_1, v_2, v_3] = [v_1, v_2, v_3] - [v_0, v_2, v_3] + [v_0, v_1, v_3] - [v_0, v_1, v_2]$.
+
+In general,
+\[
+    \bd[v_0, \dots, v_n] = \sum_{i} (-1)^{i} [v_0, \dots, \hat{v}_i, \dots, v_n].
+\]
+
+
+To ways to fully formalize this:
+\begin{enumerate}
+    \item Global ordering on vertices, giving fixed orientation on each simplex;
+    \item include ordering on the notation, adopt convention of putting arrows on edges and writing $[v_0, v_1] = -[v_1, v_0]$.
+    \item Then $[v_0, \dots, v_0] = \mathrm{sign}(\sigma)[v_{\sigma(0)}, \dots, v_{\sigma(n)}]$ for any permutation $\sigma$ (equivalently, should be sign of determinant of transformation taking one to the other).
+\end{enumerate}
+
+
+\sepline
+
+Let $X$ be a simplicial complex.
+
+Have $n$-chains $C_n(X)$.
+
+Have $n$-cycles $Z_n(X) = \ker\bd_n \seq C_n(X)$.
+
+Have $n$-boundaries $B_n(X) = \im\bd_{n+1} \seq Z_n(X)$.
+
+Have \keyword{chain complex}
+\begin{cd}
+    \cdots \rar["\bd_{n+2}"]
+    & C_{n+1}(X) \rar["\bd_{n+1}"]
+    & C_n(X) \rar["\bd_n"]
+    & C_{n-1}(X) \rar["\bd{n-1}"]
+    & \cdots
+\end{cd}
+
+The \keyword{$n$th simplicial homology group} of $X$ is $H_n(X) = Z_n(X)/B_n(X)$.
+An element of $H_n(X)$ is called a \keyword{homology class}.
+Two cycles in the same class are said to be \keyword{homologous}, i.e., they differ by the boundary of something.
+
+\sepline
+
+Example
+
+$S_1$
+\begin{drawing}
+    \fill (0, 0) circle (2pt) node[anchor=north east] {$v_0$};
+    \fill (1, 0) circle (2pt) node[anchor=west] {$v_1$};
+    \fill (0, 1) circle (2pt) node[anchor=south] {$v_2$};
+
+    \draw (0, 0) -- (1, 0) -- (0, 1) -- (0, 0);
+\end{drawing}
+
+$H_0(S^1) = \<v_0, v_1, v_2\> / \<v_1 - v_0, v_2 - v_1, v_0 - v_2\> \iso \Z$ with $[v_0] = [v_1] = [v_2]$.
+
+$H_1(S^1) = Z_1(S^1)/B_1(S^1)$.
+Have $B_1(S^1) = 0$ because no $2$-simplices, and
+\[
+    Z_1(S^1) = \<[v_1, v_2] - [v_0, v_1] + [v_0, v_1]\> \iso \Z.
+\]
+
+\sepline
+
+$\Delta$-Complexes
+
+
+
+
+\end{document}
