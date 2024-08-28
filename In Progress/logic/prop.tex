@@ -36,8 +36,11 @@
 
 % Theorem Environments
 \theoremstyle{definition}
-\newtheorem{theorem}{Theorem}
+\newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{claim}[theorem]{Claim}
+
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{example}[theorem]{Example}
 \newtheorem{remark}[theorem]{Remark}
@@ -78,6 +81,7 @@
 \newcommand{\FF}{\mathcal{F}}
 \renewcommand{\SS}{\mathcal{S}}
 \newcommand{\VV}{\mathcal{V}}
+\newcommand{\UU}{\mathcal{U}}
 
 % Extra Commands
 \newcommand{\keyword}{\textbf}
@@ -92,6 +96,8 @@
 \author{Harry Coleman}
 \date{2024}
 \maketitle
+
+\section{Language}
 
 \begin{definition}
     A \keyword{propositional logic language} $L$ consists of the following data:
@@ -167,10 +173,20 @@
     In other words, $\FF = \clo{\VV}$ is the closure of $\VV$ under these operations. 
 \end{remark}
 
+\section{Semantics}
+
 \begin{definition}
     Let $L$ be a language of propositional logic.
     A \keyword{truth valuation} on $L$ is a map $v : \VV \to \{T, F\}$ from the set of propositional variables to the set of truth values.
 \end{definition}
+
+\begin{remark}
+    A truth valuation may also be called a truth assignment or structure or interpretation of $L$.
+    All of these terms express the fact that $v$ provides \keyword{semantics} for $L$.
+    In the context of logic, semantics refers to something like the meaning of the words.
+    Semantics for a language tell us what the words and sentences refer to.
+    etc
+\end{remark}
 
 \begin{remark}
     A truth valuation $v$ can be extended to a map $\clo{v} : \FF \to \{T, F\}$ by defining it recursively on formulas of $L$:
@@ -196,7 +212,7 @@
             F & \text{otherwise}.
         \end{cases}
     \end{align*}
-    Displayed below in a truth table format, where the rows correspond to the possible truth values of the relevant propositional variables:
+        Displayed below in a truth table format, where the rows correspond to the possible truth values of the relevant propositional variables:
     \[
         \begin{array}{cc|c|c|c|c|c}
             \phi & \psi & \lnot\phi & \phi\land\psi & \phi\lor\psi & \phi\to\psi & \phi\liff\psi \\
@@ -207,12 +223,198 @@
             F & F & T & F & F & T & T
         \end{array}
     \]
+    These definitions are chosen in such a way that they mirror the meanings of these concepts as they appear in our metalanguage of mathematical English.
+
+    It should be noted that the uniqueness of the extension $\clo{v}$ is something worth proving.
+    Taking uniqueness for granted, we will only refer to $v$, identifying it with its extension $\clo{v}$.
+
+    In this manner, we consider a truth valuation to be a map $v : \FF \to \{T, F\}$ which is characterized by the restriction $v|_\VV : V \to \{T, F\}$ to propositional variables.
 \end{remark}
 
+\begin{definition}
+    Let $L$ be a language of propositional logic, $v$ a truth valuation on $L$.
+    
+    For a formula $\phi \in \FF$, we say that $v$ \keyword{satisfies} $\phi$ if $v(\phi) = T$.
+    Equivalently, we might say $\phi$ is \keyword{true} in $v$ when $v(\phi) = T$, and \keyword{false} if $v(\phi) = F$.
+
+    For a set of formulas $\Sigma \seq \FF$, say $v$ \keyword{satisfies} $\Sigma$ if $v$ satisfies all the formulas in $\Sigma$.
+\end{definition}
+
+\begin{definition}
+    $\Sigma$ \keyword{tautologically implies} $\tau$ (written $\Sigma \vDash \tau$) if every truth valuation satisfying $\Sigma$ also satisfies $\tau$.
+
+    In case $\emptyset \vDash \tau$, say $\tau$ is a \keyword{tautology} and write $\vDash \tau$.
+
+    In case $\{\sigma\} \vDash \tau$, write $\sigma \vDash \tau$.
+
+    If $\phi \vDash \psi$ and $\psi \vDash \phi$, say $\phi$ and $\psi$ are \keyword{tautologically equivalent} and write $\phi \equiv \psi$.
+\end{definition}
+
+\begin{remark}
+    When $\Sigma \vDash \tau$, it may also be said that $\Sigma$ \keyword{semantically implies} $\tau$, or that $\tau$ is a \keyword{tautological/semantic consequence} of $\Sigma$.
+    Similarly, $\phi \equiv \psi$ could be read as semantic equivalence.
+\end{remark}
+
+\begin{remark}
+    Recall that truth valuations on $L$ are characterized by their valuation on the set of variables $\VV = \VV(L)$.
+    So there is a bijection between the set of truth valuations on $L$ and the set of functions
+    \[
+        \{T, F\}^\VV = \{\text{functions } \VV \to \{T, F\}\}.
+    \]
+    This set has cardinality $2^{|\VV|}$, hence there are as many truth valuations on $L$.
+
+    In particular, if $\VV$ is a finite set then there are only finitely many truth valuations on $L$.
+    In which case, it is ``straightforward'' to simply check all possible truth valuations to determine if $\Sigma \vDash \tau$ or indeed if $\vDash \tau$.
+    However, the number of cases to check grows exponentially with the number of variables, so it quickly becomes practically intractable.
+
+    Note, however, that for any given formula $\phi \in \FF$, there are only finitely many propositional variables--say $\VV(\phi) = \{A_1, \dots, A_n\}$--which occur in $\phi$.
+    Informally, we should expect that the truth valuation of $\phi$ to only depend on the truth valuations of the $A_i$'s.
+    One way to formalize this claim is as follows: if two truth valuations agree on $\VV(\phi)$ then they must also agree on $\phi$, i.e., if $v|_{\VV(\phi)} = v'|_{\VV(\phi)}$ then $v(\phi) = v'(\phi)$.
+
+    In practice, this means that we can determine whether or not $\Sigma \vDash \tau$, only needing to consider variables occurring in $\tau$ and formulas of $\Sigma$.
+    To account for this, we could consider equivalence classes of truth valuations.
+    Or, equivalently, we could modify our definition of truth valuations so that they are relative to a subset $S \seq \VV$ of variables of $L$, instead of all variables.
+\end{remark}
+
+\begin{example}
+    A selected list of tautologies (like most of these notes, lifted from Enderton)
+    \begin{enumerate}
+        \item Associativity and Commutativity.
+        \begin{align*}
+            (A \land (B \land C)) &\liff ((A \land B) \land C)
+                & (A \land B) &\liff (B \land A) \\
+            (A \lor (B \lor C)) &\liff ((A \lor B) \lor C)
+                & (A \lor B) &\liff (B \lor A) \\
+            (A \liff (B \liff C)) &\liff ((A \liff B) \liff C)
+                & (A \liff B) &\liff (B \liff A) \\
+        \end{align*}
+        \item Distributivity.
+        \begin{align*}
+            (A \land (B \lor C)) &\liff ((A \land B) \lor (A \land C)) \\
+            (A \lor (B \land C)) &\liff ((A \lor B) \land (A \lor C))
+        \end{align*}
+        \item Negation.
+        \begin{align*}
+            (\lnot(\lnot A)) &\liff A \\
+            (\lnot(A \to B)) &\liff (A \land (\lnot B)) \\
+            (\lnot(A \liff B)) &\liff ((A \land (\lnot B)) \lor ((\lnot A) \land B))
+        \end{align*}
+        \item De Morgan's Laws.
+        \begin{align*}
+            (\lnot(A \land B)) &\liff ((\lnot A) \lor (\lnot B)) \\
+            (\lnot(A \lor B)) &\liff ((\lnot A) \land (\lnot B)) \\
+        \end{align*}
+        \item Other
+        \begin{align*}
+            &\text{Excluded Middle} && A \lor (\lnot A) \\
+            &\text{Non-Contradiction} && \lnot(A \land (\lnot A)) \\
+            &\text{Contraposition} && (A \to B) \liff ((\lnot B) \to (\lnot A)) \\
+            &\text{Exportation} && ((A \land B) \to C) \liff (A \to (B \to C)) \\
+        \end{align*}
+    \end{enumerate}
+\end{example}
+
+\begin{claim}
+    For $\Sigma \seq \FF$ and $\alpha, \beta \in \FF$,
+    \begin{enumerate}[(i)]
+        \item $\Sigma \cup \{\alpha\} \vDash \beta$ iff $\Sigma \vDash (\alpha \to \beta)$,
+        \item $\alpha \equiv \beta$ iff $\vDash (\alpha \liff \beta)$.
+    \end{enumerate}
+\end{claim}
+
+\section{Compactness}
+
+\begin{theorem}[Compactness for Propositional Logic]
+    A set of formulas is satisfiable iff every finite subset is satisfiable.
+\end{theorem}
+
+\begin{proof}
+    The $(\implies)$ direction of the proof is clear: if $v$ satisfies $\Sigma$ then it also satisfies every finite subset of $\Sigma$.
+
+    For the $(\impliedby)$ direction, let $\Sigma \seq \FF$ be a (possibly infinite) set of formulas.
+    Moreover, assume $\Sigma$ is \keyword{finitely satisfiable}, i.e., every finite subset of $\Sigma$ is satisfiable.
+
+    We extend $\Sigma$ to a maximal set of formulas $\Delta$ using Zorn's Lemma.
+    Consider the set
+    \[
+        \SS := \{U \mid \Sigma \seq U \seq \FF \text{ and $U$ is finitely satisfiable}\},
+    \]
+    ordered with the usual subset relation $\seq$.
+    Let $C \seq \SS$ be a chain (a totally ordered subset), and construct the union
+    \[
+        \UU := \bigcup_{U \in C} U.
+    \]
+    Clearly, $\UU$ is an upper bound of $C$ and $\Sigma \seq \UU \seq \FF$.
+    We claim that $\UU$ is finitely satisfiable, whence $\UU \in \SS$.
+    Let $\{\alpha_1, \dots, \alpha_n\} \seq \UU$ be an arbitrary finite subset of formulas.
+    By construction of $\UU$, each $\alpha_i$ is an element of some $U_i \in C$.
+    Since $C$ is totally ordered with respect to the subset relation, there is a maximum $U = \max_\seq\{U_1, \dots, U_n\}$.
+    Then $\{\alpha_1, \dots, \alpha_n\} \seq U$ and $U$ is finitely satisfiable, so $\{\alpha_1, \dots, \alpha_n\}$ is satisfiable.
+    Thus, $\UU$ is finitely satisfiable and is therefore an upper bound of $C$ in $\SS$.
+
+    By Zorn's Lemma, a maximal $\Delta \in \SS$ exists.
+    Automatically, we know $\Sigma \seq \Delta$ and $\Delta$ is finitely satisfiable.
+
+    \begin{claim}\label{clm:delta-comp}
+        For all $\alpha \in \FF$, either $\alpha \in \Delta$ or $(\lnot\alpha) \in \Delta$.
+    \end{claim}
+
+    \begin{proof}[Proof of Claim]
+        \textcolor{red}{waaahhhhhh}
+    \end{proof}
+
+    We will postpone the proof of Claim \ref{clm:delta-comp} for the moment.
+
+    We now wish to construct a truth valuation $v$ satisfying $\Delta$.
+    For propositional variables $A \in \VV$, put
+    \[
+        v(A) := T \isp{iff} A \in \Delta.
+    \]
+    Of course, this characterizes $v$ on all of $\FF$, but it remains to show that $v$ satisfies $\Delta$.
+    In fact, not only does $v$ satisfy $\Delta$, but we can say something slightly stronger.
+
+    \begin{claim}\label{clm:v-sat}
+        For all $\alpha \in \FF$, $v$ satisfies $\alpha$ iff $\alpha \in \Delta$.
+    \end{claim}
+
+    We first prove the $(\implies)$ direction of the claim.
+    Suppose $v$ satisfies $\alpha$.
+    By Claim \ref{clm:delta-comp}, either $\alpha$ or $\lnot\alpha$ is in $\Delta$.
+    Assume for contradiction that $(\lnot\alpha) \in \Delta$.
+    Additionally, let $\VV(\alpha)$ be the set of propositional variables occurring in $\alpha$--in particular, $\VV(\alpha)$ is finite.
+    Define the set
+    \[
+        V := \{A \mid A \in\VV(\alpha) \text{ and } A \in \Delta\}
+            \cup \{(\lnot A) \mid A \in \VV(\alpha) \text{ and } (\lnot A) \in \Delta\}  
+    \]
+    Then $\VV(\alpha) \cup \{\lnot\alpha\}$ is a finite subset of $\Delta$, so the finite satisfiability of $\Delta$ tells us that there exists a truth valuation $v'$ which satisfies $\VV(\alpha) \cup \{\lnot\alpha\}$.
+    Then $v$ and $v'$ agree on the propositional variables occurring in $\alpha$, so they must agree on $\alpha$.
+    Since $v$ satisfies $\alpha$, we must have $v'(\alpha) = v(\alpha) = T$, but this implies $v'(\lnot\alpha) = F$.
+    This is a contradiction since we assumed $v'$ satisfied $\alpha$, hence $\alpha \in \Delta$.
+
+    \textcolor{red}{fix this using $V$ instead of $\VV(\alpha)$}
+    
+    We now prove the $(\impliedby)$ direction.
+    Assume $\alpha \in \Delta$.
+    Then $V \cup \{\alpha\}$ is a finite subset of $\Delta$ and is therefore satisfiable; let $v'$ be a truth valuation satisfying $V \cup \{\alpha\}$.
+    Then the value of $v'$ on $A \in \VV(\alpha)$ can be determined by $v'(A) = T$ iff $A \in \Delta$ and $v'(A) = F$ iff $(\lnot A) \in \Delta$.
+    But this is also true of $v$, so the two must agree on $\alpha$.
+    Since $v'$ satisfies $\alpha$, we conclude that $v(\alpha) = T$.
+
+    This completes the proof of Claim \ref{clm:v-sat}, hence compactness.
+\end{proof}
 
 
+\begin{corollary}
+    If $\Sigma \vDash \tau$ then there exists a finite $\Sigma_0 \seq \Sigma$ such that $\Sigma_0 \vDash \tau$.
+\end{corollary}
 
+\begin{proof}
+    Note that $\Sigma \vDash \tau$ iff $\Sigma \cup \{\lnot\tau\}$ is not unsatisfiable.
 
+    Assume for contradiction that there does not exist a finite $\Sigma_0 \seq \Sigma$ such that $\Sigma_0 \vDash \tau$.
+    Equivalently, for every every finite $\Sigma_0 \seq \Sigma$, the set $\Sigma_0 \cup \{\lnot\tau\}$.
+\end{proof}
 
 
 \end{document}
