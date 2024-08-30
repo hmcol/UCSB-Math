@@ -50,6 +50,9 @@
 % \tikzcdset{row sep/normal=0pt}
 \newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
 
+% Display Math Environments
+\allowdisplaybreaks
+
 % Default Commands
 \newcommand{\isp}[1]{\quad\text{#1}\quad}
 \newcommand{\N}{\mathbb{N}} 
@@ -135,13 +138,28 @@
     In fact, we don't even need all five of the canonical connectives, as we can define some in terms of others.
     Some equivalencies are sketched below and will be treated more formally later.
     \begin{align*}
-        P \land Q &\approx \lnot(\lnot P \lor \lnot Q)
-            & P \lor Q &\approx \lnot(\lnot P \land \lnot Q) \\
-        P \to Q &\approx \lnot P \lor Q
-            & P \liff Q &\approx (P \to Q) \land (Q \to P)
+        (P \land Q) &\approx (\lnot(\lnot P \lor \lnot Q))
+            & (P \lor Q) &\approx (\lnot(\lnot P \land \lnot Q)) \\
+        (P \to Q) &\approx (\lnot P \lor Q)
+            & (P \liff Q) &\approx ((P \to Q) \land (Q \to P))
     \end{align*}
     For our purposes, we will take either $\{\lnot, \lor\}$ or $\{\lnot, \to\}$ as the minimal set of logical connectives.
 \end{remark}
+
+\begin{remark}
+    Sometimes \keyword{logical constants} are included in the language, e.g., $\top$ and $\bot$ for truth/tautology and falsehood/contradiction, respectively.
+    We could call nullary connectives, in the same sense that negation is a unary connective and the others are binary connectives.
+    More generally, we could consider $n$-ary connectives for $n \geq 0$.
+    In which case, $\{\bot, \to\}$ is also a possible minimal set of logical connectives.
+\end{remark}
+
+\begin{remark}
+    Sometimes \keyword{auxiliary symbols} are included in the language to make formulas easier to read, e.g., parentheses, brackets, and commas.
+    We will use parentheses here to disambiguate the order of operations.
+    Something like reverse Polish notation can achieve the same effect without parentheses, but at the cost of readability.
+\end{remark}
+
+
 
 \begin{definition}
     Let $L$ be a language of propositional logic.
@@ -189,8 +207,9 @@
 \end{remark}
 
 \begin{remark}
-    A truth valuation $v$ can be extended to a map $\clo{v} : \FF \to \{T, F\}$ by defining it recursively on formulas of $L$:
+    A truth valuation $v$ can be \emph{uniquely} extended to a map $\clo{v} : \FF \to \{T, F\}$ by defining it recursively on formulas of $L$:
     \begin{align*}
+        \clo{v}(A) &:= v(A) \isp{for} A \in \VV, \\
         \clo{v}(\lnot \phi) &:= \begin{cases}
             T & \text{if } \clo{v}(\phi) = F, \\
             F & \text{otherwise},
@@ -225,7 +244,8 @@
     \]
     These definitions are chosen in such a way that they mirror the meanings of these concepts as they appear in our metalanguage of mathematical English.
 
-    It should be noted that the uniqueness of the extension $\clo{v}$ is something worth proving.
+    It should be noted that both the existence and uniqueness of the extension $\clo{v}$ are worth proving.
+    This fact depends on some of the specifics of the language $L$, but it should come about easily if formulas can be uniquely parsed into abstract syntax trees.
     Taking uniqueness for granted, we will only refer to $v$, identifying it with its extension $\clo{v}$.
 
     In this manner, we consider a truth valuation to be a map $v : \FF \to \{T, F\}$ which is characterized by the restriction $v|_\VV : V \to \{T, F\}$ to propositional variables.
@@ -238,6 +258,8 @@
     Equivalently, we might say $\phi$ is \keyword{true} in $v$ when $v(\phi) = T$, and \keyword{false} if $v(\phi) = F$.
 
     For a set of formulas $\Sigma \seq \FF$, say $v$ \keyword{satisfies} $\Sigma$ if $v$ satisfies all the formulas in $\Sigma$.
+
+    A formula or set of formulas is \keyword{satisfiable} if there exists a truth valuation satisfying it.
 \end{definition}
 
 \begin{definition}
@@ -267,7 +289,7 @@
     In which case, it is ``straightforward'' to simply check all possible truth valuations to determine if $\Sigma \vDash \tau$ or indeed if $\vDash \tau$.
     However, the number of cases to check grows exponentially with the number of variables, so it quickly becomes practically intractable.
 
-    Note, however, that for any given formula $\phi \in \FF$, there are only finitely many propositional variables--say $\VV(\phi) = \{A_1, \dots, A_n\}$--which occur in $\phi$.
+    Note, however, that for any given formula $\phi \in \FF$, there are only finitely many propositional variables---say $\VV(\phi) = \{A_1, \dots, A_n\}$---which occur in $\phi$.
     Informally, we should expect that the truth valuation of $\phi$ to only depend on the truth valuations of the $A_i$'s.
     One way to formalize this claim is as follows: if two truth valuations agree on $\VV(\phi)$ then they must also agree on $\phi$, i.e., if $v|_{\VV(\phi)} = v'|_{\VV(\phi)}$ then $v(\phi) = v'(\phi)$.
 
@@ -286,7 +308,7 @@
             (A \lor (B \lor C)) &\liff ((A \lor B) \lor C)
                 & (A \lor B) &\liff (B \lor A) \\
             (A \liff (B \liff C)) &\liff ((A \liff B) \liff C)
-                & (A \liff B) &\liff (B \liff A) \\
+                & (A \liff B) &\liff (B \liff A)
         \end{align*}
         \item Distributivity.
         \begin{align*}
@@ -302,14 +324,14 @@
         \item De Morgan's Laws.
         \begin{align*}
             (\lnot(A \land B)) &\liff ((\lnot A) \lor (\lnot B)) \\
-            (\lnot(A \lor B)) &\liff ((\lnot A) \land (\lnot B)) \\
+            (\lnot(A \lor B)) &\liff ((\lnot A) \land (\lnot B))
         \end{align*}
         \item Other
         \begin{align*}
             &\text{Excluded Middle} && A \lor (\lnot A) \\
             &\text{Non-Contradiction} && \lnot(A \land (\lnot A)) \\
             &\text{Contraposition} && (A \to B) \liff ((\lnot B) \to (\lnot A)) \\
-            &\text{Exportation} && ((A \land B) \to C) \liff (A \to (B \to C)) \\
+            &\text{Exportation} && ((A \land B) \to C) \liff (A \to (B \to C))
         \end{align*}
     \end{enumerate}
 \end{example}
@@ -324,7 +346,7 @@
 
 \section{Compactness}
 
-\begin{theorem}[Compactness for Propositional Logic]
+\begin{theorem}[Compactness for Propositional Logic]\label{thm:prop-compact}
     A set of formulas is satisfiable iff every finite subset is satisfiable.
 \end{theorem}
 
@@ -335,18 +357,19 @@
     Moreover, assume $\Sigma$ is \keyword{finitely satisfiable}, i.e., every finite subset of $\Sigma$ is satisfiable.
 
     We extend $\Sigma$ to a maximal set of formulas $\Delta$ using Zorn's Lemma.
+    (cf. Enderton p59. There, compactness is proven for a countable language without the Axiom of Choice, using an enumeration of the formulas.)
     Consider the set
     \[
         \SS := \{U \mid \Sigma \seq U \seq \FF \text{ and $U$ is finitely satisfiable}\},
     \]
     ordered with the usual subset relation $\seq$.
-    Let $C \seq \SS$ be a chain (a totally ordered subset), and construct the union
+    Let $C \seq \SS$ be a chain (a totally ordered subset), and denote the union
     \[
         \UU := \bigcup_{U \in C} U.
     \]
-    Clearly, $\UU$ is an upper bound of $C$ and $\Sigma \seq \UU \seq \FF$.
-    We claim that $\UU$ is finitely satisfiable, whence $\UU \in \SS$.
-    Let $\{\alpha_1, \dots, \alpha_n\} \seq \UU$ be an arbitrary finite subset of formulas.
+    Clearly, $\UU$ is an upper bound of $C$.
+    Moreover, $\Sigma \seq \UU \seq \FF$ and we claim that $\UU$ is finitely satisfiable, whence $\UU \in \SS$.
+    Let $\{\alpha_1, \dots, \alpha_n\} \seq \UU$ be a finite subset of formulas.
     By construction of $\UU$, each $\alpha_i$ is an element of some $U_i \in C$.
     Since $C$ is totally ordered with respect to the subset relation, there is a maximum $U = \max_\seq\{U_1, \dots, U_n\}$.
     Then $\{\alpha_1, \dots, \alpha_n\} \seq U$ and $U$ is finitely satisfiable, so $\{\alpha_1, \dots, \alpha_n\}$ is satisfiable.
@@ -360,16 +383,31 @@
     \end{claim}
 
     \begin{proof}[Proof of Claim]
-        \textcolor{red}{waaahhhhhh}
-    \end{proof}
+        Assume for contradiction that the claim is false, i.e., there exists a formula $\alpha$ such that $\alpha \notin \Delta$ and $(\lnot\alpha) \notin \Delta$.
+        
+        We will show that if this is the case, then $\Delta$ can be extended by either $\alpha$ or $\lnot\alpha$ while remaining finitely satisfiable.
 
-    We will postpone the proof of Claim \ref{clm:delta-comp} for the moment.
+        By assumption, $\Delta \cup \{\alpha\}$ is not finitely satisfiable.
+        In other words, there exists a finite, unsatisfiable subset $\{\beta_1, \dots, \beta_n, \alpha\}$.
+        We know $\alpha$ is included since just the $\beta_i$'s would be satisfiable as a finite subset of $\Delta$.        
+        Similarly, $\Delta \cup \{\lnot\alpha\}$ is not finitely satisfiable, so there exists a finite, unsatisfiable subset $\{\gamma_1, \dots, \gamma_m, \lnot\alpha\}$.
+
+        Now consider the finite subset
+        \[
+            S := \{\beta_1, \dots, \beta_n, \gamma_1, \dots, \gamma_m\} \seq \Delta.
+        \]
+        Then $S$ is satisfiable; let $v$ be a truth valuation satisfying it.
+        Then either $v(\alpha) = T$ or $v(\lnot\alpha) = T$.
+        The former implies that $\{\beta_1, \dots, \beta_n, \alpha\}$ is satisfiable, while the latter implies that $\{\gamma_1, \dots, \gamma_m, \lnot\alpha\}$ is satisfiable.
+        Either case is a contradiction, so the claim holds.
+    \end{proof}
 
     We now wish to construct a truth valuation $v$ satisfying $\Delta$.
     For propositional variables $A \in \VV$, put
     \[
         v(A) := T \isp{iff} A \in \Delta.
     \]
+
     Of course, this characterizes $v$ on all of $\FF$, but it remains to show that $v$ satisfies $\Delta$.
     In fact, not only does $v$ satisfy $\Delta$, but we can say something slightly stronger.
 
@@ -377,29 +415,35 @@
         For all $\alpha \in \FF$, $v$ satisfies $\alpha$ iff $\alpha \in \Delta$.
     \end{claim}
 
-    We first prove the $(\implies)$ direction of the claim.
-    Suppose $v$ satisfies $\alpha$.
-    By Claim \ref{clm:delta-comp}, either $\alpha$ or $\lnot\alpha$ is in $\Delta$.
-    Assume for contradiction that $(\lnot\alpha) \in \Delta$.
-    Additionally, let $\VV(\alpha)$ be the set of propositional variables occurring in $\alpha$--in particular, $\VV(\alpha)$ is finite.
-    Define the set
+    We first perform a construction that will aid in the proof of this claim.
+    Let $\alpha \in \FF$ be any formula.
+    Additionally, let $\VV(\alpha)$ be the (necessarily finite) set of propositional variables occurring in $\alpha$.
+    Moreover, define the set's elementwise negation
     \[
-        V := \{A \mid A \in\VV(\alpha) \text{ and } A \in \Delta\}
-            \cup \{(\lnot A) \mid A \in \VV(\alpha) \text{ and } (\lnot A) \in \Delta\}  
+        \lnot\VV(\alpha) := \{\lnot A \mid A \in \VV(\alpha)\}
     \]
-    Then $\VV(\alpha) \cup \{\lnot\alpha\}$ is a finite subset of $\Delta$, so the finite satisfiability of $\Delta$ tells us that there exists a truth valuation $v'$ which satisfies $\VV(\alpha) \cup \{\lnot\alpha\}$.
-    Then $v$ and $v'$ agree on the propositional variables occurring in $\alpha$, so they must agree on $\alpha$.
-    Since $v$ satisfies $\alpha$, we must have $v'(\alpha) = v(\alpha) = T$, but this implies $v'(\lnot\alpha) = F$.
-    This is a contradiction since we assumed $v'$ satisfied $\alpha$, hence $\alpha \in \Delta$.
+    to be the set of negations of the propositional variables occurring in $\alpha$.
+    Then the set
+    \[
+        V := (\VV(\alpha) \cup \lnot\VV(\alpha)) \cap \Delta
+    \]
+    is the set of propositional variables occurring in $\alpha$ and their negations which are in $\Delta$.
+    This set has two important properties for our purposes.
+    First, the truth of a valuation on $\alpha$ is completely determined by its truth on the variables in $V$.
+    This follows from Claim \ref{clm:delta-comp}---for every propositional variable $A \in \VV(\alpha)$, either $A$ or its negation $\lnot A$ is an element of $\Delta$ and therefore an element of $V$.
+    Second, $v$ satisfies $V$, since $V \seq \Delta$.
 
-    \textcolor{red}{fix this using $V$ instead of $\VV(\alpha)$}
-    
-    We now prove the $(\impliedby)$ direction.
+    % We now proceed with the proof of Claim \ref{clm:v-sat}.
+
     Assume $\alpha \in \Delta$.
-    Then $V \cup \{\alpha\}$ is a finite subset of $\Delta$ and is therefore satisfiable; let $v'$ be a truth valuation satisfying $V \cup \{\alpha\}$.
-    Then the value of $v'$ on $A \in \VV(\alpha)$ can be determined by $v'(A) = T$ iff $A \in \Delta$ and $v'(A) = F$ iff $(\lnot A) \in \Delta$.
-    But this is also true of $v$, so the two must agree on $\alpha$.
-    Since $v'$ satisfies $\alpha$, we conclude that $v(\alpha) = T$.
+    Now $V \cup \{\alpha\}$ is a finite subset of $\Delta$ and is therefore satisfiable; let $v'$ be a truth valuation satisfying it.
+    Once again, $v$ and $v'$ agree on $V$, so they must also agree on $\alpha$.
+    Hence $v(\alpha) = v'(\alpha) = T$.
+
+    Assume $(\lnot\alpha) \in \Delta$.
+    Since $V \cup \{\lnot\alpha\}$ is a finite subset of $\Delta$, there exists a truth valuation $v'$ satisfying it.
+    But this means $v$ and $v'$ agree on $V$, so they must agree on $\alpha$.
+    And since $v'(\lnot\alpha) = T$, we must have $v(\alpha) = v'(\alpha) = F$.
 
     This completes the proof of Claim \ref{clm:v-sat}, hence compactness.
 \end{proof}
@@ -409,12 +453,29 @@
     If $\Sigma \vDash \tau$ then there exists a finite $\Sigma_0 \seq \Sigma$ such that $\Sigma_0 \vDash \tau$.
 \end{corollary}
 
-\begin{proof}
-    Note that $\Sigma \vDash \tau$ iff $\Sigma \cup \{\lnot\tau\}$ is not unsatisfiable.
+(Are we assuming $\Sigma$ is satisfiable?)
 
-    Assume for contradiction that there does not exist a finite $\Sigma_0 \seq \Sigma$ such that $\Sigma_0 \vDash \tau$.
-    Equivalently, for every every finite $\Sigma_0 \seq \Sigma$, the set $\Sigma_0 \cup \{\lnot\tau\}$.
+\begin{proof}
+    Note that $\Sigma \vDash \tau$ iff $\Sigma \cup \{\lnot\tau\}$ is unsatisfiable.
+    \textcolor{red}{worth proving?}
+
+    We prove by contrapositive.
+
+    Assume there does not exist a finite $\Sigma_0 \seq \Sigma$ which tautologically implies $\tau$.
+    Then for every finite $\Sigma_0 \seq \Sigma$, the set $\Sigma_0 \cup \{\lnot\tau\}$ is satisfiable.
+    Equivalently, for every every finite $\Sigma_0 \seq \Sigma$, the set $\Sigma_0 \cup \{\lnot\tau\}$ is satisfiable.
+    It follows that $\Sigma \cup \{\lnot\tau\}$ is finitely satisfiable, and compactness implies it is satisfiable.
+    By the fact, $\Sigma \nvDash \tau$.
 \end{proof}
 
+\begin{remark}
+    This Corollary is equivalent to the compactness theorem.
+    One can show that compactness is provable from the Corollary.
+    In fact, such a proof is easier than the proof of compactness itself.
+\end{remark}
+
+\section{Deduction}
+
+What's a theory? language+axioms or semantically closed set of formulas?
 
 \end{document}
