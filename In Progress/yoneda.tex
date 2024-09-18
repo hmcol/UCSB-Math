@@ -87,7 +87,7 @@
 \begin{document}
 \title{Yoneda Lemma}
 \author{Harry Coleman}
-\date{, 2024}
+\date{2024}
 \maketitle
 
    
@@ -96,7 +96,16 @@
     \[
         \Nat(\Mor_\CC(c, -), F) \iso Fc
     \]
-    that associates a natural transformation $\alpha : \Mor_\CC(c, -) \to F$ with the element $\alpha_c(1_c) \in Fc$.
+    that associates a natural transformation $\alpha : \Mor_\CC(c, -) \nato F$ with the element $\alpha_c(1_c) \in Fc$.
+    Moreover, this correspondence is natural in both $c$ and $F$.
+\end{pbox}
+
+\begin{pbox}[Yoneda Lemma']
+    For any functor $F : \CC \to \Set$, whose domain $\CC$ is locally small and any object $c \in \CC$, there is a bijection
+    \[
+        \Mor_{[\CC, \Set]}(h_c, F) \iso Fc
+    \]
+    that associates a natural transformation $\alpha : h_c \to F$ with the element $\alpha_c(1_c) \in Fc$.
     Moreover, this correspondence is natural in both $c$ and $F$.
 \end{pbox}
 
@@ -110,7 +119,7 @@
 
     We now wish to construct $\Phi$'s inverse, $\Psi : Fc \to \Nat(\Mor_\CC(c, -), F)$.
     That is, given an element $x \in Fc$, we must construct a natural transformation $\Psi(x) : \Mor_\CC(c, -) \nato F$.
-    To do this, we will construct its components $\Psi(x)_a : \Mor_\CC(c, a) \to Fd$ for each object $a \in \CC$.
+    To do this, we will construct its components $\Psi(x)_a : \Mor_\CC(c, a) \to Fa$ for each object $a \in \CC$.
     Moreover, this construction must adhere to the naturality condition, i.e., for all morphisms $f : a \to b$ in $\CC$, the following diagram must commute:
     \begin{cd}
         \Mor_\CC(c, a) \dar["f_*"'] \rar["\Psi(x)_a"] & Fa \dar["Ff"] \\
@@ -118,37 +127,76 @@
     \end{cd}
     Here, $f_* = \Mor_\CC(c, f)$ is the function which takes a morphism $g : c \to a$ and sends it to the composition $f_*g = f \circ g : c \to b$.
 
-    Let us look at what this diagram is saying in the particular case of $a = c$ and $f : c \to b$.
+    Let us look at what this diagram is saying in the particular case of $f : c \to a$.
     The diagram looks like this:
     \begin{cd}
         \Mor_\CC(c, c) \dar["f_*"'] \rar["\Psi(x)_c"] & Fc \dar["Ff"] \\
-        \Mor_\CC(c, b) \rar["\Psi(x)_b"'] & Fb
+        \Mor_\CC(c, a) \rar["\Psi(x)_a"'] & Fa
     \end{cd}
     Consider the identity $1_c$ in the upper left corner.
     Following the left side of the square, we obtain
     \[
-        \Psi(x)_b(f_*1_c) = \Psi(x)_b(f \circ 1_c) = \Psi(x)_b(f).
+        \Psi(x)_a(f_*1_c) = \Psi(x)_a(f \circ 1_c) = \Psi(x)_a(f).
     \]
     Since we eventually want to this square to commute, this must be equal to the result of following the right side, i.e., we must have
     \[
-        \Psi(x)_b(f) = Ff(\Psi(x)_c(1_c)).
+        \Psi(x)_a(f) = Ff(\Psi(x)_c(1_c)).
     \]
 
     In other words, it would suffice to define $\Psi(x)_c(1_c)$.
     
     Recall our definition of $\Phi$, for which we want $\Psi$ to be an inverse.
-    Plugging in $\Psi(x)$ for $\alpha$, we have
+    Plugging in $\Psi(x)$ for $\alpha$,
     \[
         \Psi(x)_c(1_c) = \Phi(\Psi(x)) = x.
     \]
-    Our hand is now forces to define
+    Our hand is now forced to define
     \[
-        \Psi(x)_b(f) := Ff(x).
+        \Psi(x)_a(f) := Ff(x).
     \]
 
-    
+    We can be reasonably confident that because we made only the ``obvious'' choices that $\Psi$ is correct, but there are a few things we must check to be sure.
 
+    First, we check the naturality of $\Psi(x)$, i.e., that the diagram from earlier commutes for all $f : a \to b$ in $\CC$.
+    For a morphism $g : c \to a$ in $\CC$, we find
+    \begin{align*}
+        \Psi(x)_b(f_* g)
+            &= \Psi(x)_b(f \circ g) &&\text{def of } f_* \\
+            &= F(f \circ g)(x) &&\text{def of } \Psi \\
+            &= (Ff \circ Fg)(x) &&\text{functorality of } F \\
+            &= Ff(Fg(x)) &&\text{def of } \circ \\
+            &= Ff(\Psi(x)_a(g)). &&\text{def of } \Psi
+    \end{align*}
+    This tells us that $\Psi(x)$ is indeed a natural transformation $\Mor_\CC(c, -) \nato F$, so $\Psi$ is a well-defined map.
+
+    Lastly, we check that $\Phi$ and $\Psi$ are inverses.
+
+    For $x \in Fc$, we apply definitions to obtain
+    \[
+        \Phi(\Psi(x))
+            = \Psi(x)_c(1_c)
+            = F1_c(x)
+            = 1_{Fc}(x)
+            = x.
+    \]
+    For a natural transformation $\alpha : \Mor_CC(c, -) \nato F$, we consider the natural transformation $\Psi(\Phi(\alpha))$ at a morphism $f \in \Mor_\CC(c, b)$.
+    \begin{align*}
+        \Psi(\Phi(\alpha))_b(f)
+            &= Ff(\alpha_c(1_c)) &&\text{defs of $\Phi$ and $\Psi$}\\
+            &= (Ff \circ \alpha_c)(1_c) \\
+            &= (\alpha_b \circ f_*)(1_c) &&\text{naturality of } \alpha \\
+            &= \alpha_b(f_* 1_c) \\
+            &= \alpha_b(f)
+    \end{align*}
+    This shows that $\Psi(\Phi(\alpha)) = \alpha$.
+
+    We conclude that $\Phi$ and $\Psi$ are inverses.
 \end{proof}
+
+
+\color{red}{remains to prove naturality in $c$ and $F$}
+
+then do embedding
 
 
 

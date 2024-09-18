@@ -1,0 +1,537 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr, parskip}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz, tikz-cd}
+\usepackage[shortlabels]{enumitem}
+
+% Font
+\usepackage{tgpagella} % Palatino clone
+\usepackage[euler-digits]{eulervm}
+\DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{m}{n} % Computer Modern calligraphic font
+
+% Page Style
+\makeatletter
+\fancypagestyle{title}{
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headheight}{15pt}
+    \fancyhead[R]{\@author}
+    \fancyhead[L]{\@title}
+    \fancyhead[C]{\@date}
+}
+\makeatother
+\renewcommand{\maketitle}{\thispagestyle{title}}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyfoot[R]{\thepage}
+}
+\pagestyle{plain}
+
+% Problem Box
+\setlength{\fboxsep}{4pt}
+\newlength{\myparskip}
+\setlength{\myparskip}{\parskip}
+\newsavebox{\savefullbox}
+\newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
+\newenvironment{pbox}[1][]{\begin{fullbox}\def\temp{#1}\ifx\temp\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
+
+% Theorem Environments
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+% Tikz Environments
+\newenvironment{drawing}{\begin{center}\begin{tikzpicture}}{\end{tikzpicture}\end{center}}
+% \tikzcdset{row sep/normal=0pt}
+\newenvironment{cd}{\begin{center}\begin{tikzcd}}{\end{tikzcd}\end{center}}
+
+
+
+% Default Commands
+\newcommand{\isp}[1]{\quad\text{#1}\quad}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\eqc}{\overline}
+\newcommand{\clo}{\overline}
+\renewcommand{\tilde}{\widetilde}
+\renewcommand{\hat}{\widehat}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+
+% infix symbols
+\newcommand{\iso}{\cong}
+\newcommand{\seq}{\subseteq}
+% \newcommand{\teq}{\trianglelefteq} % bro what
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\tensor}{\otimes}
+
+% math roman and operator names
+\newcommand{\id}{\mathrm{id}} % yes (:
+\newcommand{\pr}{\mathrm{pr}}
+
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\Mor}{Mor}
+
+% mathbb
+\newcommand{\N}{\mathbb{N}} 
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
+
+% mathcal
+\newcommand{\CC}{\mathcal{C}}
+\newcommand{\GG}{\mathcal{G}}
+\newcommand{\NN}{\mathcal{N}}
+
+% category names
+\newcommand{\mathcat}{\mathsf}
+\newcommand{\Set}{\mathcat{Set}}
+\newcommand{\Mod}{\mathcat{Mod}}
+
+% Extra Commands
+\newcommand{\obj}{\bullet}
+\newcommand{\keyword}{\textbf}
+
+
+% Document
+\begin{document}
+\title{TRS Exercises 1}
+\author{Harry Coleman}
+\date{2024}
+\maketitle
+
+\begin{pbox}[1.1.A.]
+    A category in which each morphism is an isomorphism is called a \textbf{groupoid}.
+\end{pbox}
+
+\begin{pbox}[(a)]
+    A perverse definition of a \textbf{group} is: a groupoid with one object. 
+    Make sense of this.
+\end{pbox}
+
+Let $\GG$ be a (locally-small) category with one object.
+Call the object $\obj$ and assume all morphisms are isomorphisms, i.e.,
+\[
+    \Mor_\GG(\obj, \obj) = \Mor_\GG(\obj) = \operatorname{Aut}_\GG(\obj) = \operatorname{Iso}_\GG(\obj).
+\]
+
+We claim there is a group $G$ whose underlying set is $\underline{G} = \Mor_G(\obj)$ and whose operation is given by composition of morphisms.
+For any two elements $f, g \in G$, put $f \cdot g = f \circ g$, where composition is performed in $\GG$. The distinguished identity element of $G$ will be the identity morphism of $\obj$; put $1_G = \id_\obj$.
+
+To see that this element satisfied the identity axioms of a group, we appeal to the axioms of a category.
+The associativity of the operation in $G$ follows from the associativity of composition in $\GG$:
+\[
+    (f \cdot g) \cdot h
+        = (f \circ g) \circ h
+        = f \circ (g \circ h)
+        = f \cdot (g \cdot h).
+\]
+The properties of $1_G$ in $G$ ``are the same as'' the properties of $\id_\obj$ in $\GG$:
+\[
+    f \cdot 1_G = f \circ \id_\obj = f
+    \isp{and}
+    1_G \cdot f = \id_\obj \circ f = f.
+\]
+The existence of inverses in $G$ is guaranteed by the fact that all morphisms in $\GG$ are isomorphisms: if $f \in \Mor_\GG(\obj)$ then there exists $f^{-1} \in \Mor_\GG(\obj)$ giving us
+\[
+    f \cdot f^{-1} = f \circ f^{-1} = \id_\obj = 1_G
+    \isp{and}
+    f^{-1} \cdot f = f^{-1} \circ f = \id_\obj = 1_G.
+\]
+
+Hence, $G$ is a group.
+
+This construction may be followed backwards from a group to obtain a category with one object, where all morphisms are isomorphisms.
+
+\begin{pbox}[(b)]
+    Describe a groupoid that is not a group.
+\end{pbox}
+
+We give the data of a category $\NN$ as follows:
+\begin{enumerate}[1.]
+    \item a single object $\obj$,
+    \item a set of morphisms $\Mor_\NN(\obj) = \{\id_\obj, s, s^2, \dots, s^n, \dots\}$, for which $s^n = s \circ \cdots \circ s$ is the $n$-times composition of $s$ with itself, and all such compositions are distinct.
+\end{enumerate}
+
+Putting $s^0 = \id_\obj$ and $s^1 = s$ suggests an obvious bijection between the set of morphisms $\Mor_\NN(\obj)$ and the set of natural numbers $\N = \{0, 1, 2, \dots,\}$.
+
+Indeed, this construction of $\NN$ mirrors the inductive construction of the natural numbers, in which the morphism $s$ is the successor function.
+
+Indeed, this is a monoid, where composition is the addition of natural numbers.
+
+\begin{pbox}[1.1.C, 1.1.D]
+    omitted
+\end{pbox}
+
+Did in MATH 237A Homework 7.
+
+Didn't check naturality for D?
+
+
+\begin{pbox}[1.2.A.]
+    Show that any two initial objects are uniquely isomorphic.
+    Show that any two final objects are uniquely isomorphic.
+\end{pbox}
+
+Let $I$ and $I'$ be two initial objects.
+
+Let $f : I \to I'$ be the unique map from $I$ to $I'$, which exists since $I$ is initial.
+
+Let $g : I' \to I$ be the unique map from $I'$ to $I$, which exists since $I'$ is initial.
+
+Then $g \circ f : I \to I$ is an endomorphism of $I$.
+But $\id_I$ is also an endomorphism of $I$, so by the universal property of the initial object $I$, we have $g \circ f = \id_I$.
+
+By an analogous argument, $f \circ g = \id_{I'}$.
+
+Hence, $f$ and $g$ are inverse morphisms, so $I$ and $I'$ are isomorphic.
+
+The uniqueness of this isomorphism follows from the universal properties of the initial objects.
+
+By duality, a final object in a category is an initial object in the opposite category.
+Initial objects in (opposite) categories are uniquely isomorphic, so final objects in the original category are uniquely isomorphic.
+
+\begin{pbox}[1.2.B]
+    omitted
+\end{pbox}
+
+Did in MATH 237A Homework 7.
+
+\begin{pbox}[1.2.C.]
+    Show that $\iota : A \to S^{-1}A$ ($a \mapsto a/1$) is injective iff $S$ contains no zero divisors.
+\end{pbox}
+
+In a stupid predicate logic way for fun.
+\begin{align*}
+    \iota \text{ is injective}
+        &\iff \ker\iota = 0 && \text{classic algebra result} \\
+        &\iff \forall a \in A \text{ nonzero}, \iota(a) \ne 0 && \text{def of kernel} \\
+        &\iff \forall a \in A \text{ nonzero, } a/1 \ne 0 && \text{def of } \iota \\
+\end{align*}
+Then
+\begin{align*}
+    a/1 = 0
+        &\iff \exists u \in S \text{ s.t. } ua = 0 && \text{def of `$=$' in } S^{-1}A \\
+        &\iff \lnot\forall u \in S, ua \ne 0 && \text{quantifier duality} \\
+\end{align*}
+Then
+\begin{align*}
+    \iota \text{ is injective} 
+        &\iff \forall a \in A \text{ nonzero, } \forall u \in S, ua \ne 0 
+            && \text{substitution} \\
+        &\iff \forall u \in S, \forall a \in A \text{ nonzero, } ua \ne 0 
+            && \text{$\forall$-commutativity}\\
+        &\iff \forall u \in S, \lnot\exists a \in A \text{ nonzero s.t. } ua = 0 
+            && \text{quantifier duality} \\
+        &\iff \forall u \in S, u \text{ is not a zero divisor} 
+            && \text{def of zero divisor} \\
+        &\iff \lnot\exists u \in S \text{ s.t. } u \text{ is a zero divisor} 
+            && \text{quantifier duality} \\
+        &\iff S \text{ contains no zero divisors}
+            && \text{rewriting} \\
+\end{align*}
+
+
+\begin{pbox}[1.2.D.]
+    Verify that $A \to S^{-1}A$ satisfies the following universal property: $S^{-1}A$ is initial among $A$-algebras $B$ where every element of $S$ is sent to an invertible element in $B$.
+\end{pbox}
+
+Define the map $f : S^{-1}A \to B$ by $a/s \mapsto s^{-1}a$ where $s^{-1} \in B$ is the inverse of $s \in S$.
+
+Check well-definedness: show $a/s = b/t$ implies  $s^{-1}a = t^{-1}b$. (falls out of equality in $S^{-1}A$).
+
+Check that $f$ is an $A$-Homomorphism.
+Show
+\begin{itemize}
+    \item $f(a/s + b/t) = f(a/s) + f(b/t)$
+    \item $f((a/s)(b/t)) = f(a/s)f(b/t)$
+    \item $f(a(b/s)) = af(b/s)$
+\end{itemize}
+
+For another $A$-Hom $g : S^{-1}A \to B$
+
+Check uniqueness: show that if $g : S^{-1}A \to B$ is an $A$-Hom which sends elements of $S$ to invertible elements of $B$, then $g = f$.
+Use def of $A$-Hom and def of $f$.
+
+\begin{pbox}[1.2.I.]
+    Show that the tensor product $(T, t : M \times N \to T)$ defined by the universal property is unique up to unique isomorphism.
+\end{pbox}
+
+Consider the category $\CC$ consisting of
+\begin{itemize}
+    \item objects: pairs $(T, t)$ where $t : M \times N \to T$ is $A$-bilinear,
+    \item morphisms: a morphism $(T, t) \to (T, t')$ consists of an $A$-linear map $f : T \to T'$ such that the following diagram commutes:
+    \begin{cd}
+        & M \times N \dlar["t"'] \drar["t'"] \\
+        T \ar[rr, "f"] && T'
+    \end{cd}
+\end{itemize}
+Moreover, the identity morphism on $(T, t)$ is the identity map on $T$, and composition of morphisms is composition of the linear maps.
+
+If $(T, t)$ and $(T', t')$ are two tensor products of $M$ and $N$, then there are morphisms $f : T \to T'$ and $g : T' \to T$, which both commute with $t$ and $t'$.
+Then their compositions must be the endomorphisms of $T$ and $T'$ which make the relevant diagrams commute.
+But the universal property requires that these be the identity morphisms on $T$ and $T'$, respectively.
+Hence, $(T, t)$ and $(T', t')$ are isomorphic in $\CC$.
+Additionally, the universal property of the tensor product guarantees that this isomorphism is unique.
+
+\begin{pbox}[1.2.J.]
+    no
+\end{pbox}
+
+\begin{pbox}[Tensor Product Construction]
+    Let $A$ be a commutative ring and let $M$ and $N$ be $A$-modules.
+    For elements $m \in M$ and $n \in N$, define the \keyword{pure tensor} \textit{of $m$ and $n$} to be the symbol
+    \[
+        m \tensor n.
+    \]
+    We now consider the free $A$-module $F$ generated by the set of all pure tensors:
+    \[
+        F 
+            := \bigoplus_{\substack{m \in M \\ n \in N}} A\<m \tensor n\>
+            \iso A^{(M \times N)},
+    \]
+    where each $A\<m \tensor n\>$ is a copy of $A$ with basis element $m \tensor n$.
+    Now define the submodule $K$ of $F$, generated by the following elements:
+    \[
+        K := \left\<\begin{array}{l}
+            (m_1 + m_2) \tensor n - m_1 \tensor n - m_2 \tensor n, \\
+            m \tensor (n_1 + n_2) - m \tensor n_1 - m \tensor n_2, \\
+            a(m \tensor n) - am \tensor n, \\
+            a(m \tensor n) - m \tensor an
+        \end{array}
+        \right\>.
+    \]
+    Now we define the \keyword{tensor product} of $M$ and $N$ over $A$ to be the quotient module
+    \[
+        M \tensor_A N := F/K.
+    \]
+
+    In other words, $M \tensor_A N$ is the module whose elements are finite $A$-linear combinations of pure tensors, subject to the relations generating $K$.
+\end{pbox}
+
+\begin{pbox}[1.2.K. (a)]
+    If $M$ is an $A$-module and $A \to B$ is a morphism of rings, give $B \tensor_A M$ the structure of a $B$-module (this is part of the exercise).
+    Show that this describes a functor $\Mod_A \to \Mod_B$.
+\end{pbox}
+
+With $A \to B$ a morphism of rings, we consider $B$ as an $A$-algebra and, in particular, as an $A$-module.
+
+Fix a scalar $\beta \in B$.
+We now define the map
+\begin{align*}
+    g_\beta : B \times M &\longrightarrow B \tensor_A M, \\
+    (b, m) &\longmapsto (\beta b) \tensor m.
+\end{align*}
+We claim that this map is $A$-bilinear, i.e., it is $A$-linear in each variable.
+\begin{align*}
+    g_\beta(ab_1 + b_2, m)
+        &= (\beta(ab_1 + b_2)) \tensor m \\
+        &= (\beta ab_1 + \beta b_2) \tensor m \\
+        &= (\beta ab_1) \tensor m + (\beta b_2) \tensor m \\
+        &= a(\beta b_1 \tensor m) + (\beta b_2 \tensor m) \\
+        &= a g_\beta(b_1, m) + g_\beta(b_2, m)
+\end{align*}
+\begin{align*}
+    g_\beta(b, am_1 + m_2)
+        &= (\beta b) \tensor (am_1 + m_2) \\
+        &= (\beta b) \tensor am_1 + (\beta b) \tensor m_2 \\
+        &= a((\beta b) \tensor m_1) + (\beta b) \tensor m_2 \\
+        &= a g_\beta(b, m_1) + g_\beta(b, m_2)
+\end{align*}
+By the universal property of the tensor product, there is an $A$-linear map
+\begin{align*}
+    \beta\cdot : B \tensor_A M &\longrightarrow B \tensor_A M, \\
+        b \tensor m &\longmapsto (\beta b) \tensor m.
+\end{align*}
+We call this the $B$-scalar multiplication on $B \tensor_A M$.
+We check that this indeed satisfies the requirements of a $B$-module structure:
+\begin{enumerate}[(i)]
+    \item Because $\beta\cdot$ is $A$-linear on simple tensors, we get this for free:
+    \[
+        \beta \cdot (b_1 \tensor m_1 + b_2 \tensor m_2)
+            = \beta \cdot (b_1 \tensor m_1) + \beta \cdot (b_2 \tensor m_2).
+    \]
+    \item Using the rules of tensor products, we have
+    \begin{align*}
+        (\beta_1 + \beta_2) \cdot (b \tensor m)
+            &= ((\beta_1 + \beta_2)b) \tensor m \\
+            &= (\beta_1 b + \beta_2 b) \tensor m \\
+            &= (\beta_1 b) \tensor m + (\beta_2 b) \tensor m \\
+            &= \beta_1 \cdot (b \tensor m) + \beta_2 \cdot (b \tensor m).
+    \end{align*}
+    \item This property comes down to the associativity of multiplication in $B$:
+    \begin{align*}
+        (\beta_1\beta_2) \cdot (b \tensor m)
+            &= ((\beta_1\beta_2)b) \tensor m \\
+            &= (\beta_1(\beta_2 b)) \tensor m \\
+            &= \beta_1 \cdot ((\beta_2 b) \tensor m) \\
+            &= \beta_1 \cdot (\beta_2 \cdot (b \tensor m)).
+    \end{align*}
+    \item Lastly,
+    \[
+        1_B \cdot (b \tensor m)
+            = (1_B b) \tensor m
+            = b \tensor m.
+    \]
+\end{enumerate}
+Thus, we have indeed found a $B$-module structure on $B \tensor_A M$.
+
+(In the case of noncommutative rings, this is a left $B$-module structure.
+We do not have a notion of scaling elements of $M$ by elements of $B$, except those coming from $A \to B$.
+In other words, we have $\alpha b \tensor m = b \tensor \alpha m$, but $\beta b \tensor m \ne b \tensor \beta m$ (what would $\beta m$ even mean?).
+We can think of the $B$ in $B \tensor_A M$ as holding all the $B$-scalar data that cannot be directly applied to $M$.
+It is ``the most general'' way to extend the $A$-module structure of $M$ to a $B$-module structure, while respecting the $A$-module structure of $B$.)
+
+We now have a rule between the categories
+\begin{cd}[row sep=small, column sep=large]
+    \Mod_A \rar["B \tensor_A -"] & \Mod_B \\
+    M \rar[|->] & B \tensor_A M
+\end{cd}
+We claim that this is a functor.
+
+To define $B \tensor_A -$ on morphisms, consider $f : M \to N$ an $A$-homomorphism and the $A$-bilinear maps characterizing the tensor products in following diagram:
+\begin{cd}[row sep=large]
+    B \times M \rar["\id_B \times f"] \dar & B \times N \dar \\
+    B \tensor_A M & B \tensor_A N
+\end{cd}
+Composing the top and right arrows gives us an $A$-bilinear map as follows:
+\begin{cd}[row sep=large]
+    B \times M \rar["\id_B \times f"] \dar \drar[dashed] & B \times N \dar \\
+    B \tensor_A M & B \tensor_A N
+\end{cd}
+Now, the universal property of the tensor product gives us a unique $A$-linear map which makes the following diagram commute:
+\begin{cd}[row sep=large]
+    B \times M \rar["\id_B \times f"] \dar & B \times N \dar \\
+    B \tensor_A M \rar[dashed, "\exists!"'] & B \tensor_A N
+\end{cd}
+This map is what we will take as $B \tensor_A f$.
+On pure tensors, this is the map $b \tensor m \mapsto b \tensor f(m)$.
+However, as we want this to be a morphism in $\Mod_B$, we need to check that it is $B$-linear.
+We get additivity for free as we already know the map to be $A$-linear, so we need only check that it commutes with arbitrary scalars in $B$.
+Let $\beta \in B$, then
+\begin{align*}    
+    (B \tensor_A f)(\beta(b \tensor m))
+        &= (B \tensor_A f)(\beta b \tensor m) \\
+        &= \beta b \tensor f(m) \\
+        &= \beta(b \tensor f(m)) \\
+        &= \beta(B \tensor_A f)(b \tensor m).  
+\end{align*}
+
+We now have the data of a functor $B \tensor_A -$ from $\Mod_A$ to $\Mod_B$:
+\begin{itemize}
+    \item For each $A$-module $M$, a $B$-module $B \tensor_A M$.
+    \item For each $A$-homomorphism $f : M \to N$, a $B$-homomorphism $B \tensor_A f$ from $B \tensor_A M$ to $B \tensor_A N$.
+\end{itemize}
+We now check the functorial properties.
+Temporarily denote the functor by $T = B \tensor_A -$.
+\begin{enumerate}[(i)]
+    \item \textit{Preserves composition}.
+    Let $f : M \to N$ and $g : N \to P$ be $A$-homomorphisms.
+    We check how $T(g \circ f)$ acts on pure tensors:
+    \begin{align*}
+        (T(g \circ f))(b \tensor m)
+            &= b \tensor (g(f(m))) \\
+            &= (Tg)(b \tensor f(m)) \\
+            &= (Tg)((Tf)(b \tensor m)) \\
+            &= (Tg \circ Tf)(b \tensor m).
+    \end{align*}
+    So in fact, $T(g \circ f) = Tg \circ Tf$.
+    \item \textit{Preserves identities}.
+    Let $M$ be an $A$-module, then
+    \[ 
+        (T\id_M)(b \tensor m)
+            = b \tensor \id_M(m)
+            = b \tensor m
+            = \id_{TM}(b \tensor m).
+    \]
+\end{enumerate}
+
+Hence, $T = B \tensor_A -$ is a functor from $\Mod_A$ to $\Mod_B$.
+
+\begin{pbox}[1.2.K. (b)]
+    If further $A \to C$ is another morphism of rings, show that $B \tensor_A C$ has a natural structure of a ring.
+    Hint: multiplication will be given by $(b_1 \tensor c_1)(b_2 \tensor c_2) = (b_1b_2) \tensor (c_1c_2)$.
+\end{pbox}
+
+Sketch:
+
+map $(b_1, c_1, b_2, c_2) \mapsto b_1 b_2 \tensor c_1 c_2$ is multilinear so should factor good.
+See this by looking at diagram
+\begin{cd}
+    B \times C \times B \times C \dar["\text{transposition}"] \\
+    B \times B \times C \times C \dar["m_B \times m_C"] \\
+    B \times C \dar["\tau"] \\
+    B \tensor_A C
+\end{cd}
+Then by universal property has to factor thru multi tensor product
+\[
+    B \times C \times B \times C \longrightarrow B \tensor_A C \tensor_A B \tensor_A C
+\]
+Which should factor thru
+\[
+    B \times C \times B \times C \longrightarrow (B \tensor_A C) \times (B \tensor_A C)
+\]
+
+Whole thing can prolly just be shown elementwise easy.
+
+\begin{pbox}[1.2.R.]
+    Given morphisms $X_1 \to Y$, $X_2 \to Y$, and $Y \to Z$, show that there is a natural morphism $X_1 \times_Y X_2 \to X_1 \times_Z X_2$, assuming that both the fibered products exist.
+\end{pbox}
+
+We consider the fiber product $X_1 \times_Z X_2$ to relative to the morphisms obtained by composition, i.e.,
+\[
+    X_1 \to Y \to Z
+    \isp{and}
+    X_2 \to Y \to Z.
+\]
+The universal property of this fiber product lets us fill in the following commutative diagram:
+\begin{cd}
+    X_1 \times_Y X_2 \ar[ddr, bend right=20] \ar[drr, bend left=15] \drar[dashed, "\exists!"] \\
+    & X_1 \times_Z X_2 \dar \rar & X_2 \dar \\
+    & X_1 \rar & Y \drar \\
+    & & & Z
+\end{cd}
+
+
+\begin{pbox}[1.2.S.]
+    The Diagonal Base Change Diagram.
+    Suppose we are given morphism $X_1, X_2 \to Y$ and $Y \to Z$.
+    Show that the following diagram is a Cartesian square.
+    \begin{cd}
+        X_1 \times_Y X_2 \rar \dar & X_1 \times_Z X_2 \dar \\
+        Y \rar & Y \times_Z Y
+    \end{cd}
+\end{pbox}
+
+Give the following names to relevant maps:
+\begin{cd}
+    X_1 \times_Y X_2 
+        \ar[ddr, bend right=20, "p_1"']
+        \ar[drr, bend left=15, "p_2"]
+        \drar[dashed, "\exists!f"] \\
+    & X_1 \times_Z X_2 \dar["q_1"] \rar["q_2"'] & X_2 \dar["\beta"] \\
+    & X_1 \rar["\alpha"'] & Y \drar["\gamma"] \\
+    & & & Z
+\end{cd}
+By the universal property of the fiber product $Y \times_Z Y$, we have the following commutative diagram:
+\begin{cd}
+    Y 
+        \ar[ddr, bend right=20, "1_Y"']
+        \ar[drr, bend left=15, "1_Y"]
+        \drar[dashed, "\exists!i"] \\
+    & Y \times_Z Y \dar["r_1"] \rar["r_2"'] & Y \dar["\gamma"] \\
+    & Y \rar["\gamma"'] & Z
+\end{cd}
+
+
+\end{document}

@@ -11,6 +11,10 @@
 \usepackage{suffix}
 \usetikzlibrary{decorations.pathmorphing}
 
+% Font
+\usepackage{newpxtext}
+\usepackage{newpxmath}
+
 % Problem Box
 \setlength{\fboxsep}{4pt}
 \newlength{\myparskip}
@@ -85,7 +89,7 @@
 \newcommand{\surj}{\twoheadrightarrow}
 \newcommand{\To}{\longrightarrow}
 \newcommand{\tto}{\rightrightarrows}
-\newcommand{\Mapsto}{\longmapsto}
+\renewcommand{\Mapsto}{\longmapsto}
 
 \newcommand{\nato}{\Rightarrow}
 \newcommand{\Nato}{\Longrightarrow}
@@ -121,11 +125,13 @@
 \newcommand{\mathcat}{\mathsf}
 \newcommand{\newcat}[2]{\newcommand{#1}{\mathcat{#2}}}
 \WithSuffix\newcommand\newcat*[2]{\WithSuffix\newcommand#1*{\mathcat{#2}}}
+\newcommand{\renewcat}[2]{\renewcommand{#1}{\mathcat{#2}}}
+
 
 
 \newcat{\Set}{Set}
 
-\newcat{\Top}{Top}
+\renewcat{\Top}{Top}
 \newcat{\Htpy}{Htpy}
 
 \newcat{\Mon}{Mon}

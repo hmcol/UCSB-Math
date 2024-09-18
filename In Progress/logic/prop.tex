@@ -7,6 +7,16 @@
 \usepackage{tikz, tikz-cd}
 \usepackage[shortlabels]{enumitem}
 
+% extra
+\usepackage{booktabs} % for thick table lines
+
+\usepackage{tabularray} % alternate table stuff
+\UseTblrLibrary{booktabs}
+
+% Font
+\usepackage{newpxtext}
+\usepackage{newpxmath}
+
 % Page Style
 \makeatletter
 \fancypagestyle{title}{
@@ -34,12 +44,16 @@
 \newenvironment{fullbox}{\begin{lrbox}{\savefullbox}\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\setlength{\parskip}{\myparskip}}{\end{minipage}\end{lrbox}\framebox[\textwidth]{\usebox{\savefullbox}}}
 \newenvironment{pbox}[1][]{\begin{fullbox}\def\temp{#1}\ifx\temp\empty\else\paragraph{#1}\phantom{}\fi}{\end{fullbox}}
 
+% Section Style
+\setcounter{section}{-1} % start at 0
+
 % Theorem Environments
 \theoremstyle{definition}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{claim}[theorem]{Claim}
+\newtheorem{fact}[theorem]{Fact}
 
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{example}[theorem]{Example}
@@ -86,6 +100,14 @@
 \newcommand{\VV}{\mathcal{V}}
 \newcommand{\UU}{\mathcal{U}}
 
+% mathfrak letters
+\newcommand{\aaa}{\mathfrak{a}}
+\newcommand{\ccc}{\mathfrak{c}}
+\newcommand{\PPP}{\mathfrak{P}}
+\newcommand{\QQQ}{\mathfrak{Q}}
+\newcommand{\XXX}{\mathfrak{X}}
+\newcommand{\xxx}{\mathfrak{x}}
+
 % Extra Commands
 \newcommand{\keyword}{\textbf}
 \newcommand{\liff}{\leftrightarrow}
@@ -100,9 +122,25 @@
 \date{2024}
 \maketitle
 
-\section{Language}
+\section[0]{Conventions}
 
-\begin{definition}
+The natural numbers include 0, so $\N = \{0, 1, 2, \dots\}$.
+
+This document is written in the \keyword{metalanguage} of mathematical English.
+We assume familiarity with the basic concepts of set theory and \keyword{metalogical} reasoning.
+In this context, \keyword{metalogic} is that thing which, in the metalanguage, is usually called ``logic.''
+On the other hand, the subject of this document is \keyword{propositional logic} (a type of \emph{formal logic}).
+In Section \ref{sec:lang}, we describe the \keyword{object langauge} of propositional logic.
+In later sections, we go on to describe the other components of propositional logic.
+
+Many of the concepts we describe about the object language have parallel concepts in the metalanguage.
+Often, there is a particular metalogical concept which must be encoded in the object language.
+To do this, we might invoke the metalogical concept to explain or justify the corresponding formal logic concept.
+Best efforts are made to keep the distinction between the two clear.
+
+\section{Language}\label{sec:lang}
+
+\begin{definition}\label{def:lang}
     A \keyword{propositional logic language} $L$ consists of the following data:
     \begin{enumerate}[(a)]
         \item a nonempty set of symbols called \keyword{propositional variables} (e.g., $P, Q, R, \dots$),
@@ -120,13 +158,15 @@
     For historical reasons, the following five logical connectives are considered canonical in some sense:
     \begin{center}
         \begin{tabular}{clll}
-            Symbol & Formal Name & Informal Name & Alternate Symbols\\
-            \hline
+            \toprule
+            \textbf{Symbol} & \textbf{Formal Name} & \textbf{Informal Name} & \textbf{Alternate Symbols}\\
+            \midrule
             $\lnot$ & negation & ``not'' & $\sim$, $!$, $'$, $-$ \\ 
             $\land$ & conjunction & ``and'' & $\&$, $\&\&$, $\cdot$ \\ 
             $\lor$ & disjunction & ``or'' & $|$, $||$, $+$ \\ 
             $\to$ & implication & ``implies'' or ``if-then'' & $\implies$, $\supset$ \\
-            $\liff$ & biconditional & ``if and only if'' or ``iff'' & $\iff$, $\equiv$
+            $\liff$ & biconditional & ``if and only if'' or ``iff'' & $\iff$, $\equiv$ \\
+            \bottomrule
         \end{tabular}
     \end{center}
     The alternate symbols may be found in older texts or for logic in other contexts.
@@ -191,6 +231,18 @@
     In other words, $\FF = \clo{\VV}$ is the closure of $\VV$ under these operations. 
 \end{remark}
 
+\begin{definition}
+    Let $\phi \in \FF$ be a formula, $A \in \VV(\phi)$ a propositional variable occurring in $\phi$, and $B \in \VV$ any propositional variable.
+    Then there is a formula obtained from $\phi$ via \keyword{substitution} \emph{of $B$ for $A$}, written as $\phi[B/A]$ or $\phi_A[B]$.
+    This operation is defined on formulas recursively as follows:
+    \begin{align*}
+        A[B/A] &:= B, \\
+        C[B/A] &:= C \isp{for} C \in \VV \setminus \{A\}, \\
+        (\lnot \phi)[B/A] &:= \lnot(\phi[B/A]), \\
+        (\phi \star \psi)[B/A] &:= (\phi[B/A] \star \psi[B/A]) \isp{for} \star \in \{\land, \lor, \to, \liff\}.
+    \end{align*}
+\end{definition}
+
 \section{Semantics}
 
 \begin{definition}
@@ -234,12 +286,14 @@
         Displayed below in a truth table format, where the rows correspond to the possible truth values of the relevant propositional variables:
     \[
         \begin{array}{cc|c|c|c|c|c}
+            \toprule
             \phi & \psi & \lnot\phi & \phi\land\psi & \phi\lor\psi & \phi\to\psi & \phi\liff\psi \\
-            \hline
+            \midrule
             T & T & F & T & T & T & T \\
             T & F & F & F & T & F & F \\
             F & T & T & F & T & T & F \\
-            F & F & T & F & F & T & T
+            F & F & T & F & F & T & T \\
+            \bottomrule
         \end{array}
     \]
     These definitions are chosen in such a way that they mirror the meanings of these concepts as they appear in our metalanguage of mathematical English.
@@ -292,6 +346,13 @@
     Note, however, that for any given formula $\phi \in \FF$, there are only finitely many propositional variables---say $\VV(\phi) = \{A_1, \dots, A_n\}$---which occur in $\phi$.
     Informally, we should expect that the truth valuation of $\phi$ to only depend on the truth valuations of the $A_i$'s.
     One way to formalize this claim is as follows: if two truth valuations agree on $\VV(\phi)$ then they must also agree on $\phi$, i.e., if $v|_{\VV(\phi)} = v'|_{\VV(\phi)}$ then $v(\phi) = v'(\phi)$.
+    
+    \begin{fact}
+        Let $v$ and $v'$ be two truth valuations on $L$, let $\phi \in \FF$ be a formula of $L$, and let $\VV(\phi)$ be the set of propositional variables occurring in $\phi$.
+        If $v|_{\VV(\phi)} = v'|_{\VV(\phi)}$ then $v(\phi) = v'(\phi)$.
+    \end{fact}
+
+    In general
 
     In practice, this means that we can determine whether or not $\Sigma \vDash \tau$, only needing to consider variables occurring in $\tau$ and formulas of $\Sigma$.
     To account for this, we could consider equivalence classes of truth valuations.
@@ -335,6 +396,8 @@
         \end{align*}
     \end{enumerate}
 \end{example}
+
+
 
 \begin{claim}
     For $\Sigma \seq \FF$ and $\alpha, \beta \in \FF$,
@@ -477,11 +540,253 @@
 \section{Deduction}
 
 \begin{definition}
-    A \keyword{deductive system} or \keyword{proof system} ($\Pi$?) for propositional logic consists of the following data:
-    \begin{enumerate}
-        \item a set $\Lambda$ of tautologies called \keyword{logical axioms},
-        \item a set of \keyword{inference rules} or \keyword{rules of deduction} 
+    An \keyword{inference rule} consists of the following data:
+    \begin{enumerate}[(i)]
+        \item a finite set of formulas $\alpha_1, \dots, \alpha_n \in \FF$ called the \emph{premises},
+        \item a formula $\beta \in \FF$ called the \emph{conclusion}.
+    \end{enumerate}
+    Such an inference rule is denoted by
+    \[
+        \frac{\alpha_1, \dots, \alpha_n}{\beta}.
+    \]
+\end{definition}
+
+\begin{remark}
+    Consider the metalogical inference rule of \emph{modus ponens}, which typically takes the following form:
+    \begin{enumerate}[(1)]
+        \item If $\PPP$, then $\QQQ$.
+        \item $\PPP$.
+        \item Therefore, $\QQQ$.
+    \end{enumerate}
+    In mathematical English, modus ponens tells us that whenever we know (1) and (2), we may deduce (3).
+    To implement modus ponens as an inference rule of propositional logic, we may try taking as premises $P \to Q$ and $P$, and as conclusion $Q$.
+    In which case, we would write
+    \[
+        \frac{P \to Q, P}{Q}.
+    \]
+    However, this only expresses modus ponens for the propositional variables $P$ and $Q$.
+    What if we want modus ponens for the propositional variables $A$ and $B$?
+    Or, indeed, for any formulas $\alpha$ and $\beta$?
+\end{remark}
+
+\begin{definition}
+    An \keyword{inference rule schema} $R$ consists of the following data:
+    \begin{enumerate}[(i)]
+        \item a finite set of metalogical variables/symbols $\XXX  = \{\xxx_1, \dots, \xxx_k\}$,
+        \item finitely many metaformulas $\aaa_1, \dots, \aaa_n \in \FF_\XXX$,
+        \item a metaformula $\mathfrak{b} \in \FF_\XXX$,
+    \end{enumerate}
+    where $\FF_\XXX$ is the closure of $\XXX$ under the formula building operations, i.e., the language $L$ with only the $\xxx_i$'s as the variables.
+
+    An \keyword{instance} of $R$ is an inference rule obtained by substituting formulas for the $\xxx_i$'s in the metaformulas.
+    Given formulas $\chi_1, \dots, \chi_k \in \FF$, the instance $R[\chi_1, \dots, \chi_k]$ of $R$ defined by formulas  has
+    \begin{enumerate}[(i)]
+        \item premises $\alpha_i = \aaa_i[\chi_1/\xxx_1, \dots, \chi_k/\xxx_k]$ for $i = 1, \dots, n$,
+        \item conclusion $\beta = \mathfrak{b}[\chi_1/\xxx_1, \dots, \chi_k/\xxx_k]$.
     \end{enumerate}
 \end{definition}
+
+\begin{remark}
+    An inference rule schema provides a way of describing a family of inference rules which share a common structure.
+    In practice, 
+\end{remark}
+
+\begin{definition}
+    A \keyword{deductive system} or \keyword{proof system} ($\Pi$?) \emph{for propositional logic} consists of the following data:
+    \begin{enumerate}[(i)]
+        \item a set $\Lambda$ of tautologies called \keyword{logical axioms},
+        \item a set of \keyword{inference rules} or \keyword{rules of deduction},
+    \end{enumerate}
+\end{definition}
+
+\begin{remark}
+    Some common axioms are listed below. they are usually taken to be some tautologies
+\end{remark}
+
+\begin{table}[htbp]
+    \centering
+    \begin{tblr}{
+      colspec = {Q[l,t] Q[l,t] Q[l,t] Q[l,t]},
+      row{1} = {font=\bfseries},
+      hline{1,Z} = {1pt},
+      hline{2} = {0.5pt},
+      rowsep = 3pt,
+    }
+        Name & Abbr. & Tautology \\
+        Law of the Excluded Middle
+            & LEM
+            & $A \lor (\lnot A)$ \\
+        Law of Non-Contradiction
+            & LNC
+            & $\lnot(A \land (\lnot A))$ \\
+        P2
+            & P2(i)
+            & $(A \to (B \to A))$ \\
+        & P2(ii)
+            & $((A \to (B \to C)) \to ((A \to B) \to (A \to C)))$ \\
+        & P2(iii)
+            & $((\lnot B \to \lnot A) \to (A \to B))$ \\
+    \end{tblr}
+    \caption{Common Tautologies in Propositional Logic}
+    \label{tab:propositional-tautologies}
+\end{table}
+
+\begin{remark}
+    Some common inference rules are listed in Table \ref{tab:inference-rules} below.
+\end{remark}
+
+\begin{longtblr}[
+    caption = {Common Inference Rules of Propositional Logic},
+    label = {tab:inference-rules},
+]{
+    colspec = {Q[l,t] Q[l,t] Q[l,t] Q[l,t]},
+    row{1} = {font=\bfseries},
+    hline{1,Z} = {1pt},
+    hline{2} = {0.5pt},
+    rowsep = 3pt,
+}
+    Name & Abbr. & Premise(s) & Conclusion(s) \\
+    Modus Ponens 
+        & MP 
+        & $\alpha \to \beta, \alpha$ 
+        & $\beta$ \\
+    Modus Tollens 
+        & MT 
+        & $\alpha \to \beta, \lnot\beta$
+        & $\lnot\alpha$ \\
+    {Conjunction Introduction \\ or Adjunction} 
+        & {$\land$I \\ or Adj} 
+        & $\alpha, \beta$
+        & $\alpha \land \beta$ \\
+    {Conjunction Elimination \\ or Simplification}
+        & {$\land$E \\ or Simp}
+        & $\alpha \land \beta$
+        & {$\alpha$ \\ or $\beta$} \\
+    Conjunction Associativity
+        & $\land$-Ass
+        & {$\alpha \land (\beta \land \gamma)$ \\ $(\alpha \land \beta) \land \gamma$}
+        & {$(\alpha \land \beta) \land \gamma$ \\ $\alpha \land (\beta \land \gamma)$} \\
+    Conjunction Commutativity
+        & $\land$-Comm
+        & $\alpha \land \beta$
+        & $\beta \land \alpha$ \\
+    Contraction
+        & Contr
+        & $\alpha \lor \alpha$
+        & $\alpha$ \\
+    {Disjunction Introduction \\ or Expansion}
+        & $\lor$I
+        & $\alpha$
+        & {$\alpha \lor \beta$ \\ or $\beta \lor \alpha$} \\
+    {Disjunction Elimination \\ or Disjunctive Syllogism}
+        & $\lor$E
+        & $\alpha \lor \beta, \lnot\alpha$
+        & $\beta$ \\
+    Disjunction Associativity
+        & $\lor$-Ass & {$\alpha \lor (\beta \lor \gamma)$ \\ $(\alpha \lor \beta) \lor \gamma$}
+        & {$(\alpha \lor \beta) \lor \gamma$ \\ $\alpha \lor (\beta \lor \gamma)$} \\
+    Disjunction Commutativity
+        & $\lor$-Comm
+        & $\alpha \lor \beta$
+        & $\beta \lor \alpha$ \\
+    Cut Rule
+        & Cut
+        & $\alpha \lor \beta, \lnot\alpha \lor \gamma$
+        & $\beta \lor \gamma$ \\
+    Biconditional Introduction
+        & $\leftrightarrow$I
+        & $\alpha \to \beta, \beta \to \alpha$
+        & $\alpha \leftrightarrow \beta$ \\
+    Biconditional Elimination
+        & $\leftrightarrow$E
+        & $\alpha \leftrightarrow \beta, \alpha$
+        & $\beta$ \\
+\end{longtblr}
+
+\begin{remark}[Crazy Waffling]
+    Notice that axioms and inference rules are in some respects made of the same stuff.
+    They play slightly different roles on our formalization of proofs, but both serve to encode properties we want to assert about out methods of proof.
+    
+    Our proof system should encode the shape of arguments. 
+    We want to know that whenever an argument takes a certain form, then it is ``correct''.
+    The axioms and inference rules are the most fundamental forms of arguments we can make.
+    They are the building blocks of our proofs.
+
+    These basic rules are built out of simple tautologies that should generally ``feel true.''
+
+    Modus Ponens is perhaps the most fundamental rule of all.
+    It states that if we \emph{have} $\alpha \to \beta$ and $\alpha$, then we should also \emph{have} $\beta$.
+    The term \emph{have} here is intentionally vague to not overlap with any of the formal terminology.
+    Ideally, this notion of have should overlap with truth and knowledge and whatever other semantics you want to attach to the language.
+    The actual assertion of Modus Ponens should feel true: if it is the case that having $\alpha$ leads to having $\beta$, and we do indeed have $\alpha$, then it should also be the case that we have $\beta$.
+    
+    Applications of MP can appear circular in some respects.
+    Once more, MP states that whenever we have $\alpha \to \beta$ and $\alpha$, then we should also have $\beta$.
+    And supposing we have obtained $\alpha \to \beta$ and $\alpha$ by some other means, then MP allows us to obtain $\beta$.
+    However, notice that this application of MP in the language of propositional logic, also took the form of MP in the metalanguage of mathematical English.
+    That is, from the following two facts:
+    \begin{enumerate}[(I)]
+        \item Modus Ponens: if we have $\{\alpha \to \beta, \alpha\}$, then we also have $\beta$,
+        \item we have $\{\alpha \to \beta, \alpha\}$;
+    \end{enumerate}
+    we can conclude that (III) we also have $\beta$.
+    More specifically, (I) is structurally similar to $\alpha \to \beta$, (II) is structurally similar to $\alpha$, and of course the final conclusion of (III) is structurally similar to $\beta$.
+    In order to apply MP in the object language, we have packaged up the the object language facts into metalanguage facts and then applied MP in the metalanguage.
+
+    \[
+        \text{have }\{ \{\alpha \to \beta, \alpha\} \vdash \beta,  \{\alpha \to \beta, \alpha\}\} \implies \text{have } \beta
+    \]
+
+    One could look at the previous previous paragraph and once again notices that an implicit application of MP has occurred in the metalanguage.
+    That is, in describing MP in the object language, we turn to the metalanguage, but to describe MP in the metalanguage, we have only the metalanguage itself.
+    There is no meta-metalanguage upon which we can base our description of MP in the metalanguage.
+
+    Maybe we can take something like the following as a sort of core principle of logic, expressed in the most general terms possible:
+    \[
+        \{\mathfrak{P} \rightsquigarrow \mathfrak{Q} \quad\text{ and }\quad \mathfrak{P}\} \qquad\rightsquigarrow\qquad \mathfrak{Q}.
+    \]
+    The symbols $\mathfrak{P}$ and $\mathfrak{Q}$ (mathfrak $P$ and $Q$) stand for something like a statement or proposition or sentence or any other \emph{assertion} of fact or truth or knowledge or belief or possibility or any other sort of notion that is of interest in regards to argumentation.
+    Similarly, the arrow $\rightsquigarrow$ stands for something like implication or entailment or deduction or inference or construction or determination or any other sort of relation that is relevant to objects such as $\mathfrak{P}$ and $\mathfrak{Q}$.
+    The expression $\mathfrak{P} \rightsquigarrow \mathfrak{Q}$ should be understood as the following assertion: that assertions of $\mathfrak{P}$ lead to assertions of $\mathfrak{Q}$.
+    If, in addition, we assert $\mathfrak{P}$, then we should also assert $\mathfrak{Q}$.
+
+    In fact, we can see that MP is sort of a recursive definition of the symbol $\rightsquigarrow$.
+    To characterize $\mathfrak{P} \rightsquigarrow \mathfrak{Q}$, we might ask what assertion should we put in the blank space to make the following assertion correct:
+    \[
+        \{- \quad\text{ and }\quad \mathfrak{P}\} \qquad\rightsquigarrow\qquad \mathfrak{Q}.
+    \]
+    We might think of this as a sort of universal property of the squiggly arrow.
+    To fill in this blank is to answer the following question: what assertion, when combined with an assertion of $\mathfrak{P}$, should lead to an assertion of $\mathfrak{Q}$?
+    Clearly, $\mathfrak{P} \rightsquigarrow \mathfrak{Q}$ is the assertion we need.
+    In a sense, the definition of $\mathfrak{P} \rightsquigarrow \mathfrak{Q}$ is that assertions of $\mathfrak{P}$ can be turned into assertions of $\mathfrak{Q}$.
+    
+    Another way to see the redundancy is to look at a particular case.
+    Returning to normal propositional logic, consider the formula
+    \[
+        ((P \to Q) \land P) \to Q,
+    \]
+    which encodes the this MP structure.
+    This formula is of course a tautology, which can be seen by examining its truth table:
+    \[
+        \begin{array}{cc|c|c|c}
+            \toprule
+            P & Q & P \to Q & (P \to Q) \land P & ((P \to Q) \land P) \to Q \\
+            \midrule
+            T & T & T & T & T \\
+            T & F & F & F & T \\
+            F & T & T & F & T \\
+            F & F & T & F & T \\
+            \bottomrule
+        \end{array}
+    \]
+\end{remark}
+
+
+
+
+
+
+
+
 
 \end{document}
